@@ -72,7 +72,7 @@ attempts        user, item, chosen_option, correct, misconception_id, at
 
 | # | What | Status |
 |---|---|---|
-| M0 | Concept graph + 3 complete concepts as reviewable files, **no app**. Validates granularity and misconception quality | Graph approved 2026-10-13. 3 concepts (C06, C14, C25) written and verified, awaiting review. Rules in [content/AUTHORING.md](content/AUTHORING.md) |
+| M0 | Concept graph + 3 complete concepts as reviewable files, **no app**. Validates granularity and misconception quality | **Done** 2026-10-13: graph and 3 concepts approved; now TypeScript in `src/content/` (rules: [src/content/AUTHORING.md](src/content/AUTHORING.md)) |
 | M1 | Repo, PWA shell, Supabase schema + DB constraints, content import | |
 | M2 | Concept flow + mastery/unlock engine (test-first) | |
 | M1b | Pull real PYQs from PYQ Vault by concept tag (read-only import script) | After M2: the loop runs on authored items first |
@@ -90,7 +90,7 @@ there's no Docker here, so no local Supabase.
    PWA package. Offline support is deferred. KaTeX is the only extra dependency
    (math rendering; PYQ Vault uses it too).
 2. **Content is TypeScript:** `src/content/types.ts` +
-   `src/content/complex-numbers/{graph.ts, concepts/*.ts}`. TS becomes the
+   `src/content/chapters/complex-numbers/{graph.ts, concepts/*.ts}`. TS becomes the
    **single source of truth**. The M0 markdown concept files are retired
    (git history keeps them). Review happens in the app instead (step 5).
 3. **Content validation tests (test-first):** the graph is acyclic and all its
