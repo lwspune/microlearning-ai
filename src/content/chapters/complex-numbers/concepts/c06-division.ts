@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You can divide by $2$ in your head. You can't divide by $1 - i$ the same way, because the bottom isn't a plain number. But one multiplication turns $1 - i$ into a plain number. **Which number, multiplied by $1 - i$, gives a real answer?**`,
     reveal: t`$1 + i$, its conjugate: $(1 - i)(1 + i) = 1 - i^2 = 2$.`,

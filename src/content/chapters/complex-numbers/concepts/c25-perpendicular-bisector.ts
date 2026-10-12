@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c25: Concept = {
   id: "C25",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: "You want to stand exactly as far from your home as from your school. **Is there one such spot, a few, or a whole line of them?**",
     reveal: "A whole line. Every point on the perpendicular bisector of the segment from home to school works.",

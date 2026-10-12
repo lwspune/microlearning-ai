@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c14: Concept = {
   id: "C14",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$1 + i$ and $-1 - i$ both have $\dfrac{y}{x} = 1$, so $\tan^{-1}\dfrac yx$ gives $\dfrac\pi4$ for both. **Do they point the same way?**`,
     reveal: t`No, they point in exactly opposite directions. $\tan^{-1}$ only knows the slope, not which way the arrow points. The argument needs both.`,
