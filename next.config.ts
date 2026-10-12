@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
-  partialPrefetching: true,
+  // partialPrefetching is off: it streams the static shell before notFound()
+  // runs, so unknown dynamic params answered 200 instead of 404.
   turbopack: {
     rules: {
       "*.css": {
