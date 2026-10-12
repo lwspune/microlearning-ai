@@ -1,35 +1,44 @@
 /**
- * Asserts HTTP statuses against a running server. Catches status regressions
- * that unit tests can't see: e.g. with partialPrefetching on, notFound() for an
- * unknown concept answered 200 because the static shell had already streamed.
+ * Smoke-checks routes against a running build (made with REVIEW_ENABLED=true).
+ *
+ * "missing" routes must render the not-found UI with a noindex tag. Their status
+ * may be 404, or 200 when Partial Prefetching streamed the App Shell before
+ * notFound() ran (documented Next.js behaviour; see next.config.ts).
  *
  * Usage: node scripts/smoke-routes.ts [baseUrl]   (default http://localhost:3000)
- * Run against a build made with REVIEW_ENABLED=true.
  */
 export {}; // module scope, for top-level await
 
 const base = process.argv[2] ?? "http://localhost:3000";
 
-const expected: [path: string, status: number][] = [
-  ["/", 200],
-  ["/manifest.webmanifest", 200],
-  ["/icon/192", 200],
-  ["/icon/512", 200],
-  ["/review", 200],
-  ["/review/complex-numbers/division", 200],
-  ["/review/complex-numbers/argument", 200],
-  ["/review/complex-numbers/perpendicular-bisector", 200],
-  ["/review/complex-numbers/not-a-concept", 404],
-  ["/review/not-a-chapter/division", 404],
-  ["/review/complex-numbers/conjugate", 404], // in the graph, not yet authored
+const routes: [path: string, expect: "ok" | "missing"][] = [
+  ["/", "ok"],
+  ["/manifest.webmanifest", "ok"],
+  ["/icon/192", "ok"],
+  ["/icon/512", "ok"],
+  ["/review", "ok"],
+  ["/review/complex-numbers/division", "ok"],
+  ["/review/complex-numbers/argument", "ok"],
+  ["/review/complex-numbers/perpendicular-bisector", "ok"],
+  ["/review/complex-numbers/not-a-concept", "missing"],
+  ["/review/not-a-chapter/division", "missing"],
+  ["/review/complex-numbers/conjugate", "missing"], // in the graph, not yet authored
 ];
 
+const NOT_FOUND_TEXT = "This page could not be found";
+const NOINDEX = /<meta name="robots" content="noindex"/;
+
 let failed = 0;
-for (const [path, status] of expected) {
+for (const [path, expect] of routes) {
   const res = await fetch(base + path, { redirect: "manual" });
-  const ok = res.status === status;
+  const body = await res.text();
+  const isNotFoundPage = body.includes(NOT_FOUND_TEXT) && NOINDEX.test(body);
+  const ok =
+    expect === "ok"
+      ? res.status === 200 && !isNotFoundPage
+      : (res.status === 404 || res.status === 200) && isNotFoundPage;
   if (!ok) failed++;
-  console.log(`${ok ? "ok  " : "FAIL"} ${res.status} (want ${status}) ${path}`);
+  console.log(`${ok ? "ok  " : "FAIL"} ${res.status} ${expect.padEnd(7)} ${path}${expect === "missing" && !isNotFoundPage ? " (no not-found page + noindex)" : ""}`);
 }
 console.log(failed ? `${failed} route(s) wrong` : "all routes ok");
 process.exit(failed ? 1 : 0);

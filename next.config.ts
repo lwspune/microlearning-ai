@@ -2,8 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  // partialPrefetching is off: it streams the static shell before notFound()
-  // runs, so unknown dynamic params answered 200 instead of 404.
+  // With partialPrefetching the App Shell streams before notFound() runs, so an
+  // unknown dynamic param renders the not-found UI with noindex but status 200
+  // (documented Next.js behaviour). scripts/smoke-routes.ts asserts exactly that.
+  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {
