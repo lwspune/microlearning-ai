@@ -13,7 +13,9 @@
     "test:watch": "vitest",
     "test:verify": "python -m unittest discover -s verify -p \"test_*.py\"",
     "content:verify": "node scripts/export-content.ts .content && python verify/verify_content.py .content",
-    "smoke": "node scripts/smoke-routes.ts"
+    "smoke": "node scripts/smoke-routes.ts",
+    "db:push": "supabase db push",
+    "db:types": "supabase gen types typescript --linked --schema public > src/db/types.ts"
   },
   "dependencies": {
     "katex": "0.18.9",
@@ -28,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
+    "supabase": "2.118.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^5.0.4"
