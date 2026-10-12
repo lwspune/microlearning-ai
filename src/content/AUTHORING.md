@@ -12,7 +12,12 @@ prerequisite graph) and one file per concept in `concepts/`, typed by
 
 To add a concept: write its file, add its misconception models to
 `verify/models/<chapter>.py`, register it in the chapter's `index.ts`, and
-run both commands.
+run both commands. Students only ever see concepts with `status: "approved"`.
+
+To publish: `npm run content:seed`. It re-runs both checks and writes nothing
+if either fails; then it seeds each chapter in one transaction. The database
+enforces the structural rules again and refuses to delete any item or concept
+a student has used: retire it instead of removing it.
 
 ## Graph
 

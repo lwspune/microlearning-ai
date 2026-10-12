@@ -73,7 +73,7 @@ attempts        user, item, chosen_option, correct, misconception_id, at
 | # | What | Status |
 |---|---|---|
 | M0 | Concept graph + 3 complete concepts as reviewable files, **no app**. Validates granularity and misconception quality | **Done** 2026-10-13: graph and 3 concepts approved; now TypeScript in `src/content/` (rules: [src/content/AUTHORING.md](src/content/AUTHORING.md)) |
-| M1 | Repo, PWA shell, Supabase schema + DB constraints, content import | Steps 1–5 done 2026-10-13 (scaffold, TS content, validator, sympy verify, /review). Next: step 6 schema, step 7 seed |
+| M1 | Repo, PWA shell, Supabase schema + DB constraints, content import | **Done** 2026-10-13: scaffold, TS content, validator, sympy verify, /review, Supabase schema (DB-enforced rules, RLS), content:seed. Dev DB seeded |
 | M2 | Concept flow + mastery/unlock engine (test-first) | |
 | M1b | Pull real PYQs from PYQ Vault by concept tag (read-only import script) | After M2: the loop runs on authored items first |
 | M3 | Misconception routing + review queue | |
