@@ -32,3 +32,6 @@ Thumbs.db
 # deploy / certs
 .vercel/
 *.pem
+
+# exported content (content:verify)
+.content/

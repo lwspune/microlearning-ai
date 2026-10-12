@@ -1,11 +1,12 @@
 """Content verifier — enforces AUTHORING.md rules 1-3 on exported content.
 
-Usage: python verify/verify_content.py <exported-chapter.json>
+Usage: python verify/verify_content.py <exported-chapter.json | dir of them>...
 Exit code 1 if any item fails.
 """
 import importlib
 import json
 import sys
+from pathlib import Path
 from itertools import combinations
 
 from sympy import I, Poly, simplify, symbols, sympify
@@ -135,16 +136,24 @@ def verify_chapter(chapter):
     return errors
 
 
-def main(path):
-    with open(path, encoding="utf-8") as f:
-        chapter = json.load(f)
-    errors = verify_chapter(chapter)
-    n = sum(len(c["items"]) for c in chapter["concepts"])
-    for e in errors:
-        print("FAIL", e)
-    print(f"{chapter['chapter']}: {n} items checked, {len(errors)} problem(s)")
-    return 1 if errors else 0
+def main(args):
+    paths = []
+    for a in map(Path, args):
+        paths.extend(sorted(a.glob("*.json")) if a.is_dir() else [a])
+    if not paths:
+        print("no exported chapters found")
+        return 1
+    failed = False
+    for path in paths:
+        chapter = json.loads(path.read_text(encoding="utf-8"))
+        errors = verify_chapter(chapter)
+        n = sum(len(c["items"]) for c in chapter["concepts"])
+        for e in errors:
+            print("FAIL", e)
+        print(f"{chapter['chapter']}: {n} items checked, {len(errors)} problem(s)")
+        failed = failed or bool(errors)
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1]))
+    sys.exit(main(sys.argv[1:]))
