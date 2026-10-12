@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# build / test output
+coverage/
+*.tsbuildinfo
+
+# env — secrets never committed
+.env
+.env.*
+!.env.example
+
+# supabase local state
+supabase/.temp/
+supabase/.branches/
+
+# python (content verifier)
+__pycache__/
+*.pyc
+.venv/
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
