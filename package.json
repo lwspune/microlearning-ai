@@ -15,6 +15,7 @@
     "content:verify": "node scripts/export-content.ts .content && python verify/verify_content.py .content"
   },
   "dependencies": {
+    "katex": "0.18.9",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
