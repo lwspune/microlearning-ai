@@ -11,7 +11,7 @@ export const c14: Concept = {
   },
   explanation: {
     intuition: t`Draw an arrow from the origin to $z$. The argument is the angle that arrow makes with the positive real axis. Turning anticlockwise is positive and clockwise is negative. Opposite points share a slope, so the slope alone can't give the angle. **Plot the point first.**`,
-    formal: t`$\arg z = \theta$ where $\cos\theta = \dfrac{x}{|z|}$ and $\sin\theta = \dfrac{y}{|z|}$ ($z \ne 0$). The **principal argument** is the one value with $\theta \in (-\pi, \pi]$.
+    formal: t`$\arg z = \theta$ where $\cos\theta = \dfrac{x}{|z|}$ and $\sin\theta = \dfrac{y}{|z|}$, $(z \ne 0)$. The **principal argument** is the one value with $\theta \in (-\pi, \pi]$.
 
 With the reference angle $\alpha = \tan^{-1}\left|\dfrac yx\right|$:
 - Quadrant I: $\theta = \alpha$
