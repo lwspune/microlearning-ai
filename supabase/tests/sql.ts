@@ -4,6 +4,10 @@
  *
  * `rolledBack` wraps the statements in a transaction that is always rolled
  * back, after forcing deferred constraints to run, so tests leave no data.
+ *
+ * Asserting errors: match a constraint name or the exact raised message, never
+ * a plain word. Postgres echoes the failing SQL in its error, so /attempts/
+ * "passed" against a missing-function error whose echoed SQL said "attempts".
  */
 try {
   process.loadEnvFile(".env.local");

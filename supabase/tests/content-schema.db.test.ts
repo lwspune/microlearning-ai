@@ -57,11 +57,11 @@ describe("content schema", () => {
     });
 
     it("rejects a cycle", async () => {
-      await expect(rolledBack(FIXTURE + prereq("C01", "C03"))).rejects.toThrow(/cycle/);
+      await expect(rolledBack(FIXTURE + prereq("C01", "C03"))).rejects.toThrow(/prerequisite cycle:/);
     });
 
     it("rejects a prerequisite from another chapter", async () => {
-      await expect(rolledBack(FIXTURE + prereq("C01", "C01", "u"))).rejects.toThrow(/same chapter/);
+      await expect(rolledBack(FIXTURE + prereq("C01", "C01", "u"))).rejects.toThrow(/prerequisite must be in the same chapter/);
     });
 
     it("rejects approving a concept that has no authored body", async () => {
@@ -81,7 +81,7 @@ describe("content schema", () => {
     it("rejects a fallback that is not a prerequisite ancestor", async () => {
       await expect(
         rolledBack(FIXTURE + misconception("C02-M1", "C02", `'concept', ${concept("C03")}, null`)),
-      ).rejects.toThrow(/ancestor/);
+      ).rejects.toThrow(/fallback is not a prerequisite ancestor of/);
     });
 
     it("rejects a fallback whose kind and target disagree", async () => {
@@ -93,7 +93,7 @@ describe("content schema", () => {
     it("rejects a code not prefixed by its concept", async () => {
       await expect(
         rolledBack(FIXTURE + misconception("C01-M1", "C02", `'none', null, null`)),
-      ).rejects.toThrow(/must start with/);
+      ).rejects.toThrow(/misconception C01-M1 must start with C02-/);
     });
   });
 
@@ -107,7 +107,7 @@ describe("content schema", () => {
     it("rejects two correct options", async () => {
       await expect(
         rolledBack(FIXTURE + itemWithOptions(`('A', true, null), ('B', true, null), ('C', false, 'C03-M2'), ('D', false, 'C03-M3')`)),
-      ).rejects.toThrow(/exactly one correct/);
+      ).rejects.toThrow(/needs exactly one correct option/);
     });
 
     it("rejects an item with no options", async () => {
@@ -115,7 +115,7 @@ describe("content schema", () => {
         rolledBack(
           FIXTURE + `insert into items (concept_id, code, stem, source, verify) values (${concept("C03")}, 'C03-Q1', 's', '{}', '{}');`,
         ),
-      ).rejects.toThrow(/exactly one correct/);
+      ).rejects.toThrow(/needs exactly one correct option/);
     });
 
     it("rejects an option tagged with another concept's misconception", async () => {
@@ -126,12 +126,12 @@ describe("content schema", () => {
             itemWithOptions(VALID_OPTIONS) +
             `update item_options set misconception_id = (select id from misconceptions where code = 'C02-M1') where key = 'B';`,
         ),
-      ).rejects.toThrow(/same concept/);
+      ).rejects.toThrow(/option misconception must belong to the same concept as its item/);
     });
   });
 
   describe("published views", () => {
-    const publishedItems = `select code from published_items order by code;`;
+    const publishedItems = `select i.code from published_items i join concepts c on c.id = i.concept_id join chapters ch on ch.id = c.chapter_id where ch.slug = 't' order by i.code;`;
 
     it("hides items of draft concepts and unverified items", async () => {
       const draftConcept = await rolledBackSelect(

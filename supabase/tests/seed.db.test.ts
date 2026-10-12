@@ -45,13 +45,15 @@ function seed(p: Payload) {
   return `select seed_chapter('${JSON.stringify(p).replace(/'/g, "''")}'::jsonb);`;
 }
 
+// Scoped to chapter "t": the dev DB also holds real content.
+const T = `(select id from chapters where slug = 't')`;
 const COUNTS = `select
-  (select count(*) from concepts) as concepts,
-  (select count(*) from concept_prereqs) as prereqs,
-  (select count(*) from misconceptions) as misconceptions,
-  (select count(*) from items) as items,
-  (select count(*) from item_options) as options,
-  (select count(*) from published_items) as published;`;
+  (select count(*) from concepts where chapter_id = ${T}) as concepts,
+  (select count(*) from concept_prereqs cp join concepts c on c.id = cp.concept_id where c.chapter_id = ${T}) as prereqs,
+  (select count(*) from misconceptions m join concepts c on c.id = m.concept_id where c.chapter_id = ${T}) as misconceptions,
+  (select count(*) from items i join concepts c on c.id = i.concept_id where c.chapter_id = ${T}) as items,
+  (select count(*) from item_options o join items i on i.id = o.item_id join concepts c on c.id = i.concept_id where c.chapter_id = ${T}) as options,
+  (select count(*) from published_items i join concepts c on c.id = i.concept_id where c.chapter_id = ${T}) as published;`;
 
 describe("seed_chapter", () => {
   it("writes a whole chapter", async () => {
@@ -74,7 +76,7 @@ describe("seed_chapter", () => {
       rolledBack(
         `insert into auth.users (id, email) values ('${USER}', 'c@test.invalid');` +
           seed(payload()) +
-          `insert into attempts (user_id, item_id, option_key, correct) select '${USER}', id, 'A', true from items where code = 'C02-Q2';` +
+          `insert into attempts (user_id, item_id, option_key, correct) select '${USER}', i.id, 'A', true from items i join concepts c on c.id = i.concept_id where c.chapter_id = ${T} and i.code = 'C02-Q2';` +
           seed(payload({ items: ["C02-Q1"] })),
       ),
     ).rejects.toThrow(/violates foreign key constraint .* on table \\"attempts\\"/);
@@ -82,7 +84,7 @@ describe("seed_chapter", () => {
 
   it("rolls back entirely when the content is invalid", async () => {
     // C01 <- C02 plus C02 <- C01 is a cycle; nothing from this seed may remain.
-    await expect(rolledBack(seed(payload({ c01Prereqs: ["C02"] })))).rejects.toThrow(/cycle/);
+    await expect(rolledBack(seed(payload({ c01Prereqs: ["C02"] })))).rejects.toThrow(/prerequisite cycle:/);
   });
 
   for (const role of ["anon", "authenticated"]) {
