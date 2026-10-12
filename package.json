@@ -16,7 +16,8 @@
     "smoke": "node scripts/smoke-routes.ts",
     "test:db": "vitest run --config vitest.db.config.ts",
     "db:push": "supabase db push",
-    "db:types": "supabase gen types typescript --linked --schema public > src/db/types.ts"
+    "db:types": "supabase gen types typescript --linked --schema public > src/db/types.ts",
+    "content:seed": "node scripts/seed-content.ts"
   },
   "dependencies": {
     "katex": "0.18.9",
