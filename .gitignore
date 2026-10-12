@@ -28,3 +28,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 *.log
+
+# deploy / certs
+.vercel/
+*.pem
