@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
+import { FigureView } from "@/figures/FigureView";
 import type { RenderedSlide } from "@/lessons/renderDeck";
 import type { ConceptSession } from "@/server/learning";
 import { QuestionPanel } from "./QuestionPanel";
@@ -11,6 +12,19 @@ import { primaryButton, secondaryButton } from "./ui";
 type Open = Extract<ConceptSession, { kind: "open" }>;
 
 const SWIPE_MIN_PX = 60;
+
+/** Seconds between steps when a figure plays through on its own (the idea slide). */
+const FIGURE_STAGGER_S = 0.9;
+
+/** Text beside its figure on tablet and up; the figure below the text on phones. */
+function WithFigure({ figure, children }: { figure: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div className="grid gap-6 md:grid-cols-2 md:items-start">
+      <div>{children}</div>
+      <div className="mx-auto w-full max-w-sm md:max-w-none">{figure}</div>
+    </div>
+  );
+}
 
 function SlideBody({ slide }: { slide: RenderedSlide }) {
   switch (slide.kind) {
@@ -24,9 +38,15 @@ function SlideBody({ slide }: { slide: RenderedSlide }) {
         </>
       );
     case "text":
-      return <RenderedRichText blocks={slide.body} />;
-    case "worked":
-      return (
+      return slide.figure ? (
+        <WithFigure figure={<FigureView figure={slide.figure} stagger={FIGURE_STAGGER_S} className="h-auto w-full" />}>
+          <RenderedRichText blocks={slide.body} />
+        </WithFigure>
+      ) : (
+        <RenderedRichText blocks={slide.body} />
+      );
+    case "worked": {
+      const body = (
         <>
           <RenderedRichText blocks={slide.prompt} />
           <ol className="mt-4 list-decimal space-y-3 pl-6">
@@ -44,6 +64,12 @@ function SlideBody({ slide }: { slide: RenderedSlide }) {
           )}
         </>
       );
+      return slide.figure ? (
+        <WithFigure figure={<FigureView figure={slide.figure} upTo={slide.step} className="h-auto w-full" />}>{body}</WithFigure>
+      ) : (
+        body
+      );
+    }
     case "questions":
       return null;
   }

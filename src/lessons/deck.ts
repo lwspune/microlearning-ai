@@ -1,4 +1,4 @@
-import type { Concept } from "@/content/types";
+import type { Concept, Figure } from "@/content/types";
 
 /**
  * A concept as a slide deck. Slide ids are stable ("hook", "formal-2",
@@ -7,8 +7,9 @@ import type { Concept } from "@/content/types";
 export type SlideSpec = { id: string; title: string } & (
   | { kind: "hook"; prompt: string }
   | { kind: "reveal"; prompt: string; reveal: string }
-  | { kind: "text"; body: string }
-  | { kind: "worked"; prompt: string; steps: string[]; answer: string | null }
+  | { kind: "text"; body: string; figure?: Figure }
+  /** `step` is this slide's step number (1-based): the figure shows elements up to it. */
+  | { kind: "worked"; prompt: string; steps: string[]; answer: string | null; figure?: Figure; step: number }
   | { kind: "questions" }
 );
 
@@ -36,7 +37,7 @@ export function buildDeck(concept: Pick<Concept, "hook" | "explanation">): Slide
   return [
     { id: "hook", title: "Think about this", kind: "hook", prompt: hook.prompt },
     { id: "reveal", title: "Think about this", kind: "reveal", prompt: hook.prompt, reveal: hook.reveal },
-    { id: "idea", title: "The idea", kind: "text", body: ex.intuition },
+    { id: "idea", title: "The idea", kind: "text", body: ex.intuition, ...(ex.figure && { figure: ex.figure }) },
     ...formal.map((body, i) => ({ id: `formal-${i + 1}`, title: "Precisely", kind: "text" as const, body })),
     ...steps.map((_, i) => ({
       id: `worked-${i + 1}`,
@@ -45,6 +46,8 @@ export function buildDeck(concept: Pick<Concept, "hook" | "explanation">): Slide
       prompt: ex.worked.prompt,
       steps: steps.slice(0, i + 1),
       answer: i === steps.length - 1 ? ex.worked.answer : null,
+      step: i + 1,
+      ...(ex.worked.figure && { figure: ex.worked.figure }),
     })),
     { id: "questions", title: "Check yourself", kind: "questions" },
   ];

@@ -1,4 +1,5 @@
 import "server-only";
+import type { Figure } from "@/content/types";
 import type { RenderedBlock, RenderedInline } from "@/lib/renderedText";
 import { renderInlineText, renderRichText } from "@/lib/richText";
 import type { SlideSpec } from "./deck";
@@ -7,8 +8,8 @@ import type { SlideSpec } from "./deck";
 export type RenderedSlide = { id: string; title: string } & (
   | { kind: "hook"; prompt: RenderedBlock[] }
   | { kind: "reveal"; prompt: RenderedBlock[]; reveal: RenderedBlock[] }
-  | { kind: "text"; body: RenderedBlock[] }
-  | { kind: "worked"; prompt: RenderedBlock[]; steps: RenderedInline[][]; answer: RenderedInline[] | null }
+  | { kind: "text"; body: RenderedBlock[]; figure?: Figure }
+  | { kind: "worked"; prompt: RenderedBlock[]; steps: RenderedInline[][]; answer: RenderedInline[] | null; figure?: Figure; step: number }
   | { kind: "questions" }
 );
 
