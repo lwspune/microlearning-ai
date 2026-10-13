@@ -19,7 +19,13 @@ describe("refresherFrom", () => {
   });
 
   it("rejects a source that is not published", () => {
-    expect(refresherFrom(complexNumbers, "arithmetic", "purely-real-imaginary")).toBeNull();
+    // C07 needs C04 (via C06, C05); as a draft it can't send learners anywhere.
+    const withDraft = {
+      ...complexNumbers,
+      concepts: complexNumbers.concepts.map((c) => (c.id === "C07" ? { ...c, status: "draft" as const } : c)),
+    };
+    expect(refresherFrom(complexNumbers, "arithmetic", "purely-real-imaginary")).not.toBeNull();
+    expect(refresherFrom(withDraft, "arithmetic", "purely-real-imaginary")).toBeNull();
   });
 
   it("rejects unknown or malformed slugs", () => {

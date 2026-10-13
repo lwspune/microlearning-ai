@@ -1,7 +1,10 @@
 /**
  * Golden path, end to end in a real browser:
- * guest → chapter map → concept cards → wrong answer (remediation) →
- * 3 different correct answers → mastered → map shows it.
+ * guest → chapter map (only C01 ready) → C01 opens → [C01 fast-forwarded] →
+ * Standard form: a repeated mistake rooted outside the chapter → "worth revising" →
+ * [C03 fast-forwarded] → Arithmetic slides → wrong answer (remediation) →
+ * 3 different correct answers → mastered → map shows it → Conjugate: a repeated
+ * mistake rooted in Arithmetic → refresher and back → spaced review.
  *
  * Usage: npm run e2e -- [baseUrl]   (default http://localhost:3000; needs the app running)
  * Env:   BROWSER  path to a Chromium-based browser (default: Microsoft Edge on Windows)
@@ -73,20 +76,89 @@ await (async () => {
     await page.goto(BASE + "/");
     await page.getByRole("link", { name: /Start learning/ }).click();
     await page.waitForURL("**/learn/complex-numbers");
-    await page.getByText("Arithmetic").first().waitFor();
+    await page.getByText("The imaginary unit").first().waitFor();
     const ready = await page.locator("section[aria-labelledby=ready] li").allInnerTexts();
     const soon = await page.getByText("Coming soon", { exact: true }).count();
-    // New learners start where nothing published is left to master first: C04 and C10.
-    check(ready.length === 2 && ready[0].includes("Arithmetic") && ready[1].includes("Argand plane"), `map: "Ready for you" lists Arithmetic and Argand plane (got ${ready.length})`);
-    check(soon === 23, `map: outline shows 23 coming soon (got ${soon})`);
-    check((await page.getByText("Locked", { exact: true }).count()) === 5, "map: the other 5 published concepts are locked");
+    const locked = await page.getByText("Locked", { exact: true }).count();
+    // A new learner starts at the root of the graph: C01, the only concept with no prerequisites.
+    check(ready.length === 1 && ready[0].includes("The imaginary unit"), `map: "Ready for you" lists only The imaginary unit (got ${ready.length})`);
+    check(soon === 0, `map: nothing is coming soon (got ${soon})`);
+    check(locked === 29, `map: the other 29 concepts are locked (got ${locked})`);
     await shot("01-map-guest");
     await noSideScroll("map");
 
-    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /Arithmetic/ }).click();
+    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /The imaginary unit/ }).click();
     await page.getByRole("button", { name: "Start as guest" }).waitFor();
     await shot("02-guest-start");
     await page.getByRole("button", { name: "Start as guest" }).click();
+    await page.getByRole("heading", { name: "Think about this" }).waitFor();
+    ok("a new guest can open the first concept");
+
+    // Fast-forward past C01 so the rest of the path runs on later concepts.
+    const [guest] = await sql(
+      `select id from auth.users where is_anonymous and created_at > now() - interval '2 minutes' order by created_at desc limit 1`,
+    );
+    userId = String(guest.id); // captured early so cleanup runs even if a later step fails
+    const masterConcept = (code: string) =>
+      sql(
+        `insert into learner_concept_state (user_id, concept_id, state, mastery, review_box, next_review_at)
+         select '${userId}', c.id, 'mastered', 1, 1, now() + interval '30 days'
+           from concepts c join chapters ch on ch.id = c.chapter_id
+          where ch.slug = 'complex-numbers' and c.code = '${code}'
+         on conflict (user_id, concept_id) do update
+           set state = 'mastered', mastery = 1, review_box = 1, next_review_at = excluded.next_review_at`,
+      );
+    await masterConcept("C01");
+
+    // Options on the current question, with each misconception's fallback.
+    const optionsWithRoutes = async () => {
+      const itemId = await page.locator("fieldset[data-item-id]:visible").getAttribute("data-item-id");
+      return (await sql(
+        `select o.key, o.is_correct, m.code, m.fallback_kind, fc.code as fallback_code, fc.status as fallback_status
+           from item_options o
+           left join misconceptions m on m.id = o.misconception_id
+           left join concepts fc on fc.id = m.fallback_concept_id
+          where o.item_id = '${itemId}' order by o.key`,
+      )) as { key: string; is_correct: boolean; code: string | null; fallback_kind: string | null; fallback_code: string | null; fallback_status: string | null }[];
+    };
+    const pick = async (key: string) => {
+      await page.locator(`fieldset[data-item-id]:visible input[type=radio][value=${key}]`).check();
+      await page.getByRole("button", { name: "Check answer" }).click();
+      // Visible only: the hidden, still-mounted previous lesson may show old feedback.
+      await page.getByText(/Correct!|Not quite\.|Mastered ✓/).filter({ visible: true }).first().waitFor();
+    };
+    const nextQ = async () => {
+      await page.getByRole("button", { name: /Next question|Keep trying here/ }).click();
+      await page.getByRole("button", { name: "Check answer" }).waitFor();
+    };
+    const toQuestions = async () => {
+      await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
+      while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
+        await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+      }
+      await page.getByRole("button", { name: "Check answer" }).waitFor();
+    };
+
+    // ---- M3a: a repeated mistake whose root is an outside topic → "worth revising" ----
+    await page.goto(BASE + "/learn/complex-numbers");
+    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Standard form/ }).click();
+    await toQuestions();
+    let outsideTarget: string | null = null;
+    for (let i = 0; i < 6 && !(await page.getByText("Worth revising:").filter({ visible: true }).isVisible()); i++) {
+      if (i > 0) await nextQ();
+      const opts = await optionsWithRoutes();
+      const choice = opts.find((o) => o.code && o.fallback_kind === "ext" && (!outsideTarget || o.code === outsideTarget));
+      if (choice) outsideTarget ??= choice.code;
+      await pick((choice ?? opts.find((o) => o.is_correct)!).key);
+    }
+    check(await page.getByText("Worth revising:").filter({ visible: true }).isVisible(), `repeating ${outsideTarget} suggests revising its outside topic`);
+    check((await page.getByRole("link", { name: /Quick refresher/ }).count()) === 0, "no refresher link for an outside topic");
+    await shot("12-route-revise");
+    await masterConcept("C03");
+
+    await page.goto(BASE + "/learn/complex-numbers");
+    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Arithmetic/ }).click();
+    await page.waitForURL("**/learn/complex-numbers/arithmetic");
     // :visible, because Next keeps previously visited lessons mounted but hidden.
     const stage = page.locator('section[aria-roledescription="carousel"]:visible');
     const counter = async () => (await stage.locator("header p").innerText()).trim();
@@ -154,7 +226,7 @@ await (async () => {
     await page.keyboard.press("Enter");
     await page.getByText("Not quite.").waitFor();
     const [u] = await sql(`select user_id from attempts where item_id = '${q1.itemId}' order by id desc limit 1`);
-    userId = String(u.user_id); // captured early so cleanup runs even if a later step fails
+    check(String(u.user_id) === userId, "the attempt is recorded for this guest");
     check(await page.getByText("✗ Your answer").isVisible(), "wrong answer: marks the pick");
     check(await page.getByText("✓ Correct answer").isVisible(), "wrong answer: shows the correct option");
     const remediation = await page.locator(".bg-warning-surface").innerText();
@@ -191,62 +263,24 @@ await (async () => {
     // Database agrees.
     const cookies = await ctx.cookies();
     const [db] = await sql(
-      `select (select count(*) from attempts where user_id = '${userId}') as attempts,
-              (select state from learner_concept_state where user_id = '${userId}') as state,
+      `select (select count(*) from attempts a join items i on i.id = a.item_id join concepts c on c.id = i.concept_id
+                where a.user_id = '${userId}' and c.code = 'C04') as attempts,
+              (select s.state from learner_concept_state s join concepts c on c.id = s.concept_id
+                where s.user_id = '${userId}' and c.code = 'C04') as state,
               (select is_anonymous from auth.users where id = '${userId}') as anonymous`,
     );
-    check(db.attempts === 4 && db.state === "mastered" && db.anonymous === true, `DB: 4 attempts, mastered, anonymous user (${JSON.stringify(db)})`);
+    check(db.attempts === 4 && db.state === "mastered" && db.anonymous === true, `DB: 4 Arithmetic attempts, mastered, anonymous user (${JSON.stringify(db)})`);
     check(cookies.some((c) => c.name.includes("auth-token")), "session cookie set");
 
-    // ---- M3a: a repeated mistake routes back to its root concept ----
-    // Options on the current question, with each misconception's fallback and whether it is published.
-    const optionsWithRoutes = async () => {
-      const itemId = await page.locator("fieldset[data-item-id]:visible").getAttribute("data-item-id");
-      return (await sql(
-        `select o.key, o.is_correct, m.code, m.fallback_kind, fc.status as fallback_status
-           from item_options o
-           left join misconceptions m on m.id = o.misconception_id
-           left join concepts fc on fc.id = m.fallback_concept_id
-          where o.item_id = '${itemId}' order by o.key`,
-      )) as { key: string; is_correct: boolean; code: string | null; fallback_kind: string | null; fallback_status: string | null }[];
-    };
-    const pick = async (key: string) => {
-      await page.locator(`fieldset[data-item-id]:visible input[type=radio][value=${key}]`).check();
-      await page.getByRole("button", { name: "Check answer" }).click();
-      // Visible only: the hidden, still-mounted previous lesson may show old feedback.
-      await page.getByText(/Correct!|Not quite\.|Mastered ✓/).filter({ visible: true }).first().waitFor();
-    };
-    const nextQ = async () => {
-      await page.getByRole("button", { name: /Next question|Keep trying here/ }).click();
-      await page.getByRole("button", { name: "Check answer" }).waitFor();
-    };
-
+    // ---- M3a: a repeated mistake whose root concept is published → refresher ----
     await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Conjugate/ }).click();
-    await page.getByRole("heading", { name: "Think about this" }).waitFor();
-    while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
-      await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
-    }
-    await page.getByRole("button", { name: "Check answer" }).waitFor();
+    await toQuestions();
 
-    // 1. Repeat a mistake whose root concept isn't written yet → "worth revising".
-    let unpublishedTarget: string | null = null;
-    for (let i = 0; i < 6 && !(await page.getByText("Worth revising:").isVisible()); i++) {
-      if (i > 0) await nextQ();
-      const opts = await optionsWithRoutes();
-      const choice = opts.find((o) => o.code && o.fallback_kind === "concept" && o.fallback_status === "draft" && (!unpublishedTarget || o.code === unpublishedTarget));
-      if (choice) unpublishedTarget ??= choice.code;
-      await pick((choice ?? opts.find((o) => o.is_correct)!).key);
-    }
-    check(await page.getByText(/Worth revising: .+\(coming soon\)/).isVisible(), `repeating ${unpublishedTarget} suggests revising its unwritten root concept`);
-    check((await page.getByRole("link", { name: /Quick refresher/ }).count()) === 0, "no refresher link to an unwritten concept");
-    await shot("12-route-revise");
-
-    // 2. Repeat a mistake whose root concept is published → refresher link.
     let target: string | null = null;
     for (let i = 0; i < 8 && !(await page.getByRole("link", { name: /Quick refresher/ }).isVisible()); i++) {
-      await nextQ();
+      if (i > 0) await nextQ();
       const opts = await optionsWithRoutes();
-      const choice = opts.find((o) => o.code && o.fallback_status === "approved" && (!target || o.code === target));
+      const choice = opts.find((o) => o.code && o.fallback_code === "C04" && (!target || o.code === target));
       if (choice) target ??= choice.code;
       await pick((choice ?? opts.find((o) => o.is_correct)!).key);
     }
