@@ -45,8 +45,12 @@ def _same_locus(p, q):
     return all(simplify(b - k * a) == 0 for a, b in zip(pc, qc))
 
 
-def _on_locus(point, poly):
-    return simplify(poly.subs({X: point.as_real_imag()[0], Y: point.as_real_imag()[1]})) == 0
+def _on_locus(point, locus):
+    """A locus is a polynomial in x, y (the set where it is 0) or, for rays and
+    regions, a membership test taking the point."""
+    if callable(locus):
+        return bool(locus(point))
+    return simplify(locus.subs({X: point.as_real_imag()[0], Y: point.as_real_imag()[1]})) == 0
 
 
 def _project(result, ask):

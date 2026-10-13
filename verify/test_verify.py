@@ -166,3 +166,17 @@ class OmegaValues(unittest.TestCase):
     def test_different_values_differ(self):
         from verify_content import _expr, _same_value
         self.assertFalse(_same_value(_expr("omega"), _expr("omega**2")))
+
+
+class PredicateLoci(unittest.TestCase):
+    """Rays and regions can't be polynomials: a model may return a membership test instead."""
+
+    def test_point_on_a_ray(self):
+        from verify_content import _expr, _on_locus
+        ray = lambda p: (p - 3).as_real_imag()[0] > 0 and (p - 3).as_real_imag()[1] == -(p - 3).as_real_imag()[0]
+        self.assertTrue(_on_locus(_expr("4 - I"), ray))
+        self.assertFalse(_on_locus(_expr("2 + I"), ray))  # on the line, but on the other side of 3
+
+    def test_polynomial_loci_still_work(self):
+        from verify_content import X, _expr, _on_locus
+        self.assertTrue(_on_locus(_expr("2"), X - 2))
