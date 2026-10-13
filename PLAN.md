@@ -76,7 +76,7 @@ attempts        user, item, chosen_option, correct, misconception_id, at
 | M1 | Repo, PWA shell, Supabase schema + DB constraints, content import | **Done** 2026-10-13: scaffold, TS content, validator, sympy verify, /review, Supabase schema (DB-enforced rules, RLS), content:seed. Dev DB seeded |
 | M2 | Concept flow + mastery/unlock engine (test-first) | **Done** 2026-10-13: guest sign-in, cards → questions → mastery, server-side grading (`record_attempt`), `npm run e2e` golden path |
 | M1b | Pull real PYQs from PYQ Vault by concept tag (read-only import script) | After M2: the loop runs on authored items first |
-| M3 | Misconception routing + review queue | In progress: M3a routing |
+| M3 | Misconception routing + review queue | **Done** 2026-10-13: repeated mistake → refresher of the root concept (or a revise note); spaced review 1/3/7/14/30 days with Review today; a refresher counts as the root's review |
 | M4 | AI tutor | |
 | M5 | Pilot with a small group of real students; measure | |
 

@@ -135,6 +135,10 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Knob | Where | Notes |
 |---|---|---|
 | Mastery streak (3) | `mastery_streak_needed()` SQL function | new migration; the app reads it from the DB |
+| Review schedule (1/3/7/14/30 days) | `review_interval()` SQL function | new migration |
+| Answers to pass a review (2) | `review_answers_needed()` SQL function | the app reads it from the DB |
+| Repeated-mistake trigger (2 in last 10) | `ROUTING_REPEATS`, `ROUTING_WINDOW` in `src/engine/routing.ts` | tested |
+| Refresher questions before "Back" (2) | `REFRESHER_QUESTIONS` in `QuestionPanel.tsx` | |
 | Next-question choice | `src/engine/nextItem.ts` | tested |
 | Unlock rule | `src/engine/unlock.ts` | tested; unpublished prerequisites count as known |
 | Min items per concept (5) | `MIN_ITEMS` in `src/content/validate.ts` | |
