@@ -40,10 +40,20 @@ describe("conceptStates", () => {
     expect(s.get("B")).toBe("learning");
   });
 
-  it("opens all three pilot concepts for a new learner", () => {
-    const published = new Set(complexNumbers.concepts.map((c) => c.id));
+  it("opens all three pilot concepts for a new learner while only they are published", () => {
+    const published = new Set(["C06", "C14", "C25"]);
     const s = conceptStates(complexNumbers.graph, published, new Map());
     expect([s.get("C06"), s.get("C14"), s.get("C25")]).toEqual(["available", "available", "available"]);
+  });
+
+  it("once C04, C05, C10 and C11 are published, new learners start at C04 and C10", () => {
+    const published = new Set(["C04", "C05", "C06", "C10", "C11", "C14", "C25"]);
+    const s = conceptStates(complexNumbers.graph, published, new Map());
+    const open = [...published].filter((id) => s.get(id) === "available").sort();
+    expect(open).toEqual(["C04", "C10"]);
+    // Mastering C04 and C10 opens C05 (needs C04) and C11 (needs C10, C04) and C14 (needs C10).
+    const after = conceptStates(complexNumbers.graph, published, new Map([["C04", "mastered"], ["C10", "mastered"]]));
+    expect([...published].filter((id) => after.get(id) === "available").sort()).toEqual(["C05", "C11", "C14"]);
   });
 });
 

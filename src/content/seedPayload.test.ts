@@ -12,7 +12,7 @@ describe("toSeedPayload", () => {
   });
 
   it("sends an unwritten node as a draft with no body or items", () => {
-    expect(byCode("C05")).toMatchObject({ status: "draft", body: null, misconceptions: [], items: [], prereqs: ["C04"] });
+    expect(byCode("C07")).toMatchObject({ status: "draft", body: null, misconceptions: [], items: [], prereqs: ["C06"] });
   });
 
   it("sends an authored concept with its body, misconceptions and items", () => {
