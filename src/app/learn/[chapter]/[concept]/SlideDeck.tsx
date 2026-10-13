@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
 import type { RenderedSlide } from "@/lessons/renderDeck";
@@ -54,11 +55,25 @@ const subscribeFullscreen = (cb: () => void) => {
 };
 
 /** A concept as full-screen slides: swipe, arrow keys or Back/Next; questions are the last slide. */
-export function SlideDeck({ chapterHref, session }: { chapterHref: string; session: Open }) {
+export type RefresherInfo = { title: string; href: string };
+
+export function SlideDeck({
+  chapterHref,
+  conceptSlug,
+  session,
+  refresher,
+}: {
+  chapterHref: string;
+  conceptSlug: string;
+  session: Open;
+  /** Set when the learner was sent here to fix a gap in a later concept. */
+  refresher: RefresherInfo | null;
+}) {
   const { slides } = session;
   const questionsIndex = slides.findIndex((s) => s.kind === "questions");
   const startedBefore = session.progress.state === "learning" || session.progress.state === "mastered";
-  const [index, setIndex] = useState(startedBefore ? questionsIndex : 0);
+  // A refresher always starts at the beginning: rereading is the point.
+  const [index, setIndex] = useState(startedBefore && !refresher ? questionsIndex : 0);
   const slide = slides[index];
 
   const stageRef = useRef<HTMLElement>(null);
@@ -129,6 +144,16 @@ export function SlideDeck({ chapterHref, session }: { chapterHref: string; sessi
         if (Math.abs(dx) > SWIPE_MIN_PX && Math.abs(dx) > 1.5 * Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
       }}
     >
+      {refresher && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-t-xl bg-warning-surface px-4 py-2 text-sm">
+          <span>
+            <span className="font-semibold">Refresher</span> for {refresher.title}
+          </span>
+          <Link href={refresher.href} className="font-medium text-accent underline underline-offset-2">
+            Back to {refresher.title} →
+          </Link>
+        </div>
+      )}
       <header className="flex items-center gap-3 border-b border-border px-4 py-2">
         <p className="text-sm tabular-nums text-muted">
           {index + 1} / {slides.length}
@@ -170,6 +195,8 @@ export function SlideDeck({ chapterHref, session }: { chapterHref: string; sessi
           <QuestionPanel
             title={session.title}
             chapterHref={chapterHref}
+            conceptSlug={conceptSlug}
+            refresher={refresher}
             initialQuestion={session.question}
             progress={session.progress}
             onReread={() => go(0)}

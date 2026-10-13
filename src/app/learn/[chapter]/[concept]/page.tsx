@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { chapters } from "@/content/chapters";
 import { currentUserId } from "@/lib/supabase/server";
+import { refresherFrom } from "@/lessons/refresher";
 import { getConceptSession } from "@/server/learning";
 import { GuestStart } from "../../GuestStart";
 import { SlideDeck } from "./SlideDeck";
@@ -31,13 +32,15 @@ async function ConceptSection({
   concept: string;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const sp = await searchParams;
   const userId = await currentUserId();
   if (!userId) {
-    const { error } = await searchParams;
-    return <GuestStart next={`/learn/${chapter}/${concept}`} error={error === "signin"} />;
+    return <GuestStart next={`/learn/${chapter}/${concept}`} error={sp.error === "signin"} />;
   }
 
-  const session = await getConceptSession(chapter, concept, userId);
+  const ch = chapters.find((c) => c.slug === chapter)!;
+  const refresher = typeof sp.from === "string" ? refresherFrom(ch, concept, sp.from) : null;
+  const session = await getConceptSession(chapter, concept, userId, { allowLocked: refresher !== null });
   if (!session) notFound();
   if (session.kind === "locked") {
     return (
@@ -49,7 +52,16 @@ async function ConceptSection({
       </p>
     );
   }
-  return <SlideDeck chapterHref={`/learn/${chapter}`} session={session} />;
+  return (
+    <SlideDeck
+      // Next keeps visited pages alive (React Activity); a refresher must not inherit the old slide position.
+      key={refresher ? `refresher:${refresher.fromSlug}` : "lesson"}
+      chapterHref={`/learn/${chapter}`}
+      conceptSlug={concept}
+      session={session}
+      refresher={refresher && { title: refresher.fromTitle, href: `/learn/${chapter}/${refresher.fromSlug}` }}
+    />
+  );
 }
 
 async function ConceptContent({

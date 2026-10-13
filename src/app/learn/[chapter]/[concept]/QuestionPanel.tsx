@@ -5,7 +5,11 @@ import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
+import type { RefresherInfo } from "./SlideDeck";
 import { primaryButton, secondaryButton } from "./ui";
+
+/** Questions answered in a refresher before offering the way back. */
+const REFRESHER_QUESTIONS = 2;
 
 function StreakDots({ streak, needed }: { streak: number; needed: number }) {
   return (
@@ -26,12 +30,16 @@ function StreakDots({ streak, needed }: { streak: number; needed: number }) {
 export function QuestionPanel({
   title,
   chapterHref,
+  conceptSlug,
+  refresher,
   initialQuestion,
   progress,
   onReread,
 }: {
   title: string;
   chapterHref: string;
+  conceptSlug: string;
+  refresher: RefresherInfo | null;
   initialQuestion: Question;
   progress: Progress;
   onReread: () => void;
@@ -43,6 +51,7 @@ export function QuestionPanel({
   const [streak, setStreak] = useState(progress.streak);
   const [mastered, setMastered] = useState(progress.state === "mastered");
   const [celebrate, setCelebrate] = useState(false);
+  const [answered, setAnswered] = useState(0);
   const [pending, startTransition] = useTransition();
   const groupId = useId();
   const feedbackRef = useRef<HTMLDivElement>(null);
@@ -62,6 +71,7 @@ export function QuestionPanel({
         return;
       }
       setResult(res.data);
+      setAnswered((n) => n + 1);
       setStreak(res.data.streak);
       if (res.data.mastered) setMastered(true);
       if (res.data.masteredNow) setCelebrate(true);
@@ -84,8 +94,8 @@ export function QuestionPanel({
           You answered {progress.needed} different questions in a row correctly. {title} is mastered.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href={chapterHref} className={primaryButton}>
-            Back to the chapter
+          <Link href={refresher?.href ?? chapterHref} className={primaryButton}>
+            {refresher ? `Back to ${refresher.title} →` : "Back to the chapter"}
           </Link>
           <button type="button" className={secondaryButton} onClick={nextQuestion}>
             Keep practising
@@ -161,14 +171,38 @@ export function QuestionPanel({
               {result.correct ? "Correct!" : "Not quite."}
             </p>
             {result.remediation && <RenderedRichText blocks={result.remediation} className="mt-2" />}
+            {result.route && (
+              <div className="mt-3 border-t border-border pt-3">
+                <p>This mistake has come up twice, which usually means a gap in an earlier idea.</p>
+                {result.route.kind === "refresher" ? (
+                  <Link
+                    href={`${chapterHref}/${result.route.conceptSlug}?from=${conceptSlug}`}
+                    className={`mt-3 inline-block ${primaryButton}`}
+                  >
+                    Quick refresher: {result.route.title} →
+                  </Link>
+                ) : (
+                  <p className="mt-1 font-medium">Worth revising: {result.route.label}</p>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
 
       <div ref={feedbackRef} className="mt-5 flex flex-wrap gap-3">
-        {result ? (
-          <button type="button" className={primaryButton} onClick={nextQuestion}>
-            Next question
+        {result && refresher && answered >= REFRESHER_QUESTIONS ? (
+          <>
+            <Link href={refresher.href} className={primaryButton}>
+              Back to {refresher.title} →
+            </Link>
+            <button type="button" className={secondaryButton} onClick={nextQuestion}>
+              One more question
+            </button>
+          </>
+        ) : result ? (
+          <button type="button" className={result.route ? secondaryButton : primaryButton} onClick={nextQuestion}>
+            {result.route ? "Keep trying here" : "Next question"}
           </button>
         ) : (
           <button type="button" className={primaryButton} onClick={check} disabled={!selected || pending}>
