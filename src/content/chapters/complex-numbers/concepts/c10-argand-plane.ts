@@ -23,6 +23,26 @@ export const c10: Concept = {
         t`$x < 0$ and $y > 0$: top left, quadrant II.`,
       ],
       answer: t`The point $(-1, 4)$, in quadrant II.`,
+      figure: {
+        alt: "Plotting −1 + 4i: one unit left along the real axis, then four units up, landing at (−1, 4) in quadrant II.",
+        view: { x: [-4, 3], y: [-1.5, 5] },
+        elements: [
+          { kind: "segment", from: [0, 0], to: [-1, 0], label: "1 left", labelAt: "n", step: 1 },
+          { kind: "segment", from: [-1, 0], to: [-1, 4], label: "4 up", labelAt: "w", step: 2 },
+          { kind: "point", at: [-1, 4], label: "−1 + 4i", step: 3 },
+          { kind: "label", at: [-2.6, 2.2], label: "II", tone: "muted", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The Argand plane with the point 3 + 2i: three units right along the real axis, then two units up, with an arrow from the origin to the point.",
+      view: { x: [-2, 5], y: [-1.5, 3.5] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [3, 0], label: "3 right", labelAt: "n", step: 1 },
+        { kind: "segment", from: [3, 0], to: [3, 2], label: "2 up", labelAt: "e", step: 2 },
+        { kind: "point", at: [3, 2], label: "3 + 2i", step: 3 },
+        { kind: "vector", to: [3, 2], tone: "muted", step: 4 },
+      ],
     },
     visualSpec: t`Tap anywhere on the plane and that point's complex number appears as $x + iy$. Type a number and its point and arrow from the origin appear, with dashed lines to each axis.`,
   },
@@ -58,6 +78,22 @@ export const c10: Concept = {
         { key: "C", text: t`$(3, 2)$`, correct: false, misconceptionId: "C10-M2", value: "3+2*I" },
         { key: "D", text: t`$(-3, -2)$`, correct: false, misconceptionId: "C10-M3", value: "-3-2*I" },
       ],
+      solution: {
+        steps: [
+          t`The real part is $3$, so $x = 3$: three units right.`,
+          t`The coefficient of $i$ is $-2$, sign included, so $y = -2$: two units down.`,
+          t`The point is $(3, -2)$.`,
+        ],
+        figure: {
+          alt: "3 − 2i: three units right, then two units down, at the point (3, −2).",
+          view: { x: [-1, 5], y: [-3, 1.5] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "3 right", labelAt: "n", step: 1 },
+            { kind: "segment", from: [3, 0], to: [3, -2], label: "2 down", labelAt: "e", step: 2 },
+            { kind: "point", at: [3, -2], label: "3 − 2i", labelAt: "sw", step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C10-Q2",
@@ -70,6 +106,22 @@ export const c10: Concept = {
         { key: "C", text: t`$-4 - i$`, correct: false, misconceptionId: "C10-M2", value: "-4-I" },
         { key: "D", text: t`$4 + i$`, correct: false, misconceptionId: "C10-M3", value: "4+I" },
       ],
+      solution: {
+        steps: [
+          t`The first coordinate is the real part: $x = -4$.`,
+          t`The second coordinate is the coefficient of $i$: $y = 1$.`,
+          t`So the number is $-4 + 1 \cdot i = -4 + i$.`,
+        ],
+        figure: {
+          alt: "The point (−4, 1): four units left, then one unit up, which is −4 + i.",
+          view: { x: [-5.5, 1.5], y: [-1.5, 2.5] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [-4, 0], label: "4 left", labelAt: "n", step: 1 },
+            { kind: "segment", from: [-4, 0], to: [-4, 1], label: "1 up", labelAt: "e", step: 2 },
+            { kind: "point", at: [-4, 1], label: "−4 + i", labelAt: "n", step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C10-Q3",
@@ -82,6 +134,24 @@ export const c10: Concept = {
         { key: "C", text: "Quadrant III", correct: false, misconceptionId: "C10-M2", value: "3" },
         { key: "D", text: "Quadrant I", correct: false, misconceptionId: "C10-M3", value: "1" },
       ],
+      solution: {
+        steps: [
+          t`Real part $-2 < 0$: left of the imaginary axis.`,
+          t`Imaginary part $5 > 0$: above the real axis.`,
+          t`Left and above is the top-left quadrant: quadrant II.`,
+        ],
+        figure: {
+          alt: "The left half-plane and the upper half-plane overlap in quadrant II, where −2 + 5i lies.",
+          view: { x: [-4, 3], y: [-1.5, 6] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [0, 1]] }], tone: "muted", step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "muted", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [0, 1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 3 },
+            { kind: "point", at: [-2, 5], label: "−2 + 5i", labelAt: "e", step: 3 },
+            { kind: "label", at: [-3, 2], label: "II", step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C10-Q4",
@@ -94,6 +164,24 @@ export const c10: Concept = {
         { key: "C", text: "Quadrant I", correct: false, misconceptionId: "C10-M2", value: "1" },
         { key: "D", text: "Quadrant III", correct: false, misconceptionId: "C10-M3", value: "3" },
       ],
+      solution: {
+        steps: [
+          t`Real part $4 > 0$: right of the imaginary axis.`,
+          t`Imaginary part $-3 < 0$: below the real axis.`,
+          t`Right and below is the bottom-right quadrant: quadrant IV.`,
+        ],
+        figure: {
+          alt: "The right half-plane and the lower half-plane overlap in quadrant IV, where 4 − 3i lies.",
+          view: { x: [-2, 5.5], y: [-4.5, 2] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 1], [0, 0]] }], tone: "muted", step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[1, 0], [0, 0]] }], tone: "muted", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 1], [0, 0]] }, { kind: "halfPlane", through: [[1, 0], [0, 0]] }], step: 3 },
+            { kind: "point", at: [4, -3], label: "4 − 3i", labelAt: "w", step: 3 },
+            { kind: "label", at: [2, -1.4], label: "IV", step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C10-Q5",
@@ -106,6 +194,22 @@ export const c10: Concept = {
         { key: "C", text: t`$-3 + i$`, correct: false, misconceptionId: "C10-M2", value: "-3+I" },
         { key: "D", text: t`$3 - i$`, correct: false, misconceptionId: "C10-M3", value: "3-I" },
       ],
+      solution: {
+        steps: [
+          t`The first coordinate is the real part: $x = -3$.`,
+          t`The second coordinate is the coefficient of $i$, sign included: $y = -1$.`,
+          t`So the number is $-3 + (-1)i = -3 - i$.`,
+        ],
+        figure: {
+          alt: "The point (−3, −1): three units left, then one unit down, which is −3 − i.",
+          view: { x: [-4.5, 1.5], y: [-2.5, 1.5] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [-3, 0], label: "3 left", labelAt: "n", step: 1 },
+            { kind: "segment", from: [-3, 0], to: [-3, -1], label: "1 down", labelAt: "e", step: 2 },
+            { kind: "point", at: [-3, -1], label: "−3 − i", labelAt: "s", step: 3 },
+          ],
+        },
+      },
     },
   ],
   engineNotes: [
