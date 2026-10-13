@@ -10,7 +10,7 @@ Result types by item kind:
   locus  -> polynomial in x, y (the locus is "poly = 0")
   point  -> polynomial in x, y (the locus the option point must lie on)
 """
-from sympy import Abs, I, Integer, Rational, Symbol, arg, atan, atan2, cos, expand, im, pi, re, real_root, sin, simplify, sqrt, symbols, sympify
+from sympy import Abs, I, Integer, Rational, Symbol, arg, atan, atan2, cos, expand, im, pi, re, real_root, simplify, sin, sqrt, symbols, sympify
 
 x, y = symbols("x y", real=True)
 
@@ -848,4 +848,256 @@ def _c23(kind):
 C23 = {k: _c23(k) for k in ["key", "C23-M1", "C23-M2", "C23-M3", "C23-M4", "C23-M5"]}
 
 
-MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13, "C14": C14, "C15": C15, "C16": C16, "C17": C17, "C18": C18, "C19": C19, "C20": C20, "C21": C21, "C22": C22, "C23": C23, "C25": C25}
+# ---------- C24 Circle locus ----------
+def _circle(c, r2):
+    """x^2 + y^2 - ... locus polynomial for centre c and RIGHT-HAND SIDE r2 (the squared radius)."""
+    return expand((x - re(c)) ** 2 + (y - im(c)) ** 2 - r2)
+
+
+def _c24(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "circle":  # |k z - w| = R
+            k, w, R = v["k"], v["w"], v["R"]
+            c, r = w / k, R / Abs(k)
+            if kind == "key":
+                return _circle(c, r**2)
+            if kind == "C24-M1":  # flips the sign of the centre
+                return _circle(-c, r**2)
+            if kind == "C24-M2":  # writes the radius, not its square, on the right
+                return _circle(c, r)
+            if kind == "C24-M3":  # forgets to divide the radius by |k|
+                if Abs(k) == 1:
+                    raise ValueError("C24-M3 needs |k| != 1")
+                return _circle(c, R**2)
+            if kind == "C24-M4":  # flips only one sign of the centre
+                return _circle(re(c) - I * im(c), r**2)
+            if kind == "C24-M5":  # divides the radius but not the centre
+                if k == 1:
+                    raise ValueError("C24-M5 needs k != 1")
+                return _circle(w, r**2)
+            raise ValueError(kind)
+        if op == "zzbar":  # z conj(z) + q (z + conj(z)) + s = 0, i.e. x^2 + y^2 + 2 q x + s = 0
+            q, s_ = v["q"], v["s"]
+            if kind == "key":
+                return expand(x**2 + y**2 + 2 * q * x + s_)
+            if kind == "C24-M1":
+                return expand(x**2 + y**2 - 2 * q * x + s_)
+            if kind == "C24-M2":  # treats r^2 as r
+                return _circle(-q, (q**2 - s_) ** 2)
+            if kind == "C24-M6":  # z + conj(z) = x (forgets the 2)
+                return expand(x**2 + y**2 + q * x + s_)
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C24 = {k: _c24(k) for k in ["key", "C24-M1", "C24-M2", "C24-M3", "C24-M4", "C24-M5", "C24-M6"]}
+
+
+# ---------- C26 Loci from algebraic conditions ----------
+def _c26(kind):
+    def model(v, p):
+        op = p["op"]
+        a, b = v["a"], v["b"]
+        if op == "apollonius":  # |z - a| = k |z - b|
+            k = v["k"]
+            if kind == "key":
+                return expand(_dist2(a) - k**2 * _dist2(b))
+            if kind == "C26-M1":  # calls it the perpendicular bisector even though k != 1
+                return _bisector(a, b)
+            if kind == "C26-M3":  # uses k instead of k^2 after squaring
+                return expand(_dist2(a) - k * _dist2(b))
+            raise ValueError(kind)
+        if op == "quotient_part":  # Re or Im of (z - a)/(z - b) is zero
+            z = x + I * y
+            num = expand((z - a) * ((x - re(b)) - I * (y - im(b))))  # (z - a) * conj(z - b)
+            part = p["part"]
+            pick = (lambda e: e.as_real_imag()[0]) if part == "re" else (lambda e: e.as_real_imag()[1])
+            other = (lambda e: e.as_real_imag()[1]) if part == "re" else (lambda e: e.as_real_imag()[0])
+            if kind == "key":
+                return expand(pick(num))
+            if kind == "C26-M2":  # applies the condition to the numerator z - a only
+                return expand(pick(expand(z - a)))
+            if kind == "C26-M4":  # sets the other part to zero
+                return expand(other(num))
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+def _dist2(c):
+    return (x - re(c)) ** 2 + (y - im(c)) ** 2
+
+
+C26 = {k: _c26(k) for k in ["key", "C26-M1", "C26-M2", "C26-M3", "C26-M4"]}
+
+
+# ---------- C27 Argument loci ----------
+def _side_of_diameter(a, b, theta):
+    """For arg((z - a)/(z - b)) = theta = +/-pi/2: 1 if the arc is on the side of c + i(a - b)/2, else 2."""
+    c = (a + b) / 2
+    probe = c + I * (a - b) / 2
+    return 1 if simplify(arg(expand((probe - a) / (probe - b))) - theta) == 0 else 2
+
+
+def _ray(a, theta):
+    """Membership test for the ray arg(z - a) = theta (a itself excluded)."""
+    def on(pt):
+        w = expand(pt - a)
+        return w != 0 and simplify(arg(w) - theta) == 0
+    return on
+
+
+def _c27(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "arc":  # arg((z - a)/(z - b)) = theta: code 1/2 = the two half circles, 3 = whole circle, 4 = bisector
+            a, b, th = v["a"], v["b"], v["theta"]
+            side = _side_of_diameter(a, b, th)
+            if kind == "key":
+                return Integer(side)
+            if kind == "C27-M1":  # the whole circle
+                return Integer(3)
+            if kind == "C27-M2":  # the other half
+                return Integer(3 - side)
+            if kind == "C27-M3":  # treats it like |(z - a)/(z - b)| = 1
+                return Integer(4)
+            raise ValueError(kind)
+        if op == "ray_start":  # arg(z - a) = theta starts at a
+            a = v["a"]
+            if kind == "key":
+                return a
+            if kind == "C27-M4":  # starts the ray at the origin
+                return Integer(0)
+            if kind == "C27-M5":  # misreads the sign of the starting point
+                return -a
+            raise ValueError(kind)
+        if op == "ray_point":  # which point lies on arg(z - a) = theta
+            a, th = v["a"], v["theta"]
+            if kind == "key":
+                return _ray(a, th)
+            if kind == "C27-M4":
+                return _ray(0, th)
+            if kind == "C27-M5":
+                return _ray(-a, th)
+            if kind == "C27-M6":  # turns the wrong way
+                return _ray(a, -th)
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C27 = {k: _c27(k) for k in ["key", "C27-M1", "C27-M2", "C27-M3", "C27-M4", "C27-M5", "C27-M6"]}
+
+
+# ---------- C28 Conic loci ----------
+# codes: 1 ellipse, 2 one branch of a hyperbola, 3 line segment, 4 ray, 5 no points, 6 circle, 7 both branches
+def _c28(kind):
+    def model(v, p):
+        op = p["op"]
+        a, b, k = v["a"], v["b"], v["k"]
+        d = Abs(a - b)
+        if op == "classify":
+            plus = p["sign"] == "+"
+            if kind == "key":
+                if plus:
+                    return Integer(1 if k > d else 3 if k == d else 5)
+                return Integer(2 if k < d else 4 if k == d else 5)
+            if kind == "C28-M1":  # never compares k with the focal distance
+                return Integer(1 if plus else 2)
+            if kind == "C28-M2":  # swaps ellipse and hyperbola
+                return Integer(2 if plus else 1)
+            if kind == "C28-M3":  # a difference gives both branches
+                if plus:
+                    raise ValueError("C28-M3 is about differences")
+                return Integer(7)
+            if kind == "C28-M4":  # two moduli make a circle
+                return Integer(6)
+            raise ValueError(kind)
+        if op == "max_mod":  # foci +/-c on the real axis: greatest |z| on |z - a| + |z - b| = k
+            if kind == "key":
+                return k / 2
+            if kind == "C28-M5":  # uses half the focal distance
+                return d / 2
+            if kind == "C28-M6":  # uses the whole sum
+                return k
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C28 = {k: _c28(k) for k in ["key", "C28-M1", "C28-M2", "C28-M3", "C28-M4", "C28-M5", "C28-M6"]}
+
+
+# ---------- C29 Greatest/least modulus on a circle or disc ----------
+def _c29(kind):
+    def model(v, p):
+        a, r, c = v["a"], v["r"], v["c"]
+        want, region = p["want"], p.get("region", "circle")
+        w = a - c
+        dist = Abs(re(w)) + Abs(im(w)) if kind == "C29-M3" else Abs(w)
+        if kind == "C29-M2":  # least as dist - r even when the point is inside the disc
+            if want != "min":
+                raise ValueError("C29-M2 is about the least value")
+            return Abs(w) - r
+        if kind == "C29-M1":  # the other extreme
+            want = "min" if want == "max" else "max"
+        if kind not in ("key", "C29-M1", "C29-M3"):
+            raise ValueError(kind)
+        if want == "max":
+            return dist + r
+        if dist >= r:
+            return dist - r
+        return Integer(0) if region == "disc" else r - dist
+    return model
+
+
+C29 = {k: _c29(k) for k in ["key", "C29-M1", "C29-M2", "C29-M3"]}
+
+
+# ---------- C30 Regions and areas ----------
+def _c30(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "area":  # disc of radius r, keeping the fraction f of it
+            r, f = v["r"], v["f"]
+            if kind == "key":
+                return pi * r**2 * f
+            if kind == "C30-M2":  # pi r instead of pi r^2
+                return pi * r * f
+            if kind == "C30-M3":  # ignores the extra condition: whole disc
+                if f == 1:
+                    raise ValueError("C30-M3 needs a part of the disc")
+                return pi * r**2
+            if kind == "C30-M4":  # circumference instead of area
+                return 2 * pi * r * f
+            raise ValueError(kind)
+        if op == "closer":  # |z - a| < |z - b|
+            a, b = v["a"], v["b"]
+            closer = lambda pt, u, w: simplify(Abs(pt - u) - Abs(pt - w)) < 0
+            if kind == "key":
+                return lambda pt: closer(pt, a, b)
+            if kind == "C30-M1":  # the wrong side of the bisector
+                return lambda pt: closer(pt, b, a)
+            if kind == "C30-M5":  # misreads the sign of b: |z + w| as the distance from +w
+                return lambda pt: closer(pt, a, -b)
+            raise ValueError(kind)
+        if op == "disc_half":  # |z - a| <= r and Im z >= 0
+            a, r = v["a"], v["r"]
+            in_disc = lambda pt: simplify(Abs(pt - a) - r) <= 0
+            if kind == "key":
+                return lambda pt: in_disc(pt) and im(pt) >= 0
+            if kind == "C30-M6":  # flips the disc inequality
+                return lambda pt: not in_disc(pt) and im(pt) >= 0
+            if kind == "C30-M7":  # flips the half-plane
+                return lambda pt: in_disc(pt) and im(pt) <= 0
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C30 = {k: _c30(k) for k in ["key", "C30-M1", "C30-M2", "C30-M3", "C30-M4", "C30-M5", "C30-M6", "C30-M7"]}
+
+
+MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13, "C14": C14, "C15": C15, "C16": C16, "C17": C17, "C18": C18, "C19": C19, "C20": C20, "C21": C21, "C22": C22, "C23": C23, "C24": C24, "C25": C25, "C26": C26, "C27": C27, "C28": C28, "C29": C29, "C30": C30}

@@ -27,7 +27,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from sympy import I, latex, simplify, sympify
+from sympy import I, latex, simplify, symbols, sympify, expand
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -38,6 +38,28 @@ def _ts_string(s: str) -> str:
     """A TypeScript String.raw template literal (the content files use `t`)."""
     assert "`" not in s and "${" not in s, f"can't embed {s!r} in a template literal"
     return f"t`{s}`"
+
+
+_XR, _YR = symbols("x y", real=True)
+
+
+def cartesian_text(poly) -> str:
+    """A locus polynomial (= 0) as completed squares for a circle, x = c / y = mx + c for a line."""
+    from sympy import Poly
+
+    p = Poly(expand(poly), _XR, _YR)
+    if p.is_zero:
+        return "every point of the plane"
+    if p.total_degree() == 2:
+        p = Poly(p.as_expr() / p.coeff_monomial(_XR**2), _XR, _YR)
+        h, k = -p.coeff_monomial(_XR) / 2, -p.coeff_monomial(_YR) / 2
+        rhs = simplify(h**2 + k**2 - p.coeff_monomial(1))
+        sq = lambda v, c: f"{latex(v)}^2" if c == 0 else f"\\left({latex(v - c)}\\right)^2"
+        return f"${sq(_XR, h)} + {sq(_YR, k)} = {latex(rhs)}$"
+    cx, cy, c0 = p.coeff_monomial(_XR), p.coeff_monomial(_YR), p.coeff_monomial(1)
+    if cy == 0:
+        return f"$x = {latex(-c0 / cx)}$"
+    return f"$y = {latex(simplify(-cx / cy * _XR - c0 / cy))}$"
 
 
 def polar_text(val) -> str:
@@ -94,7 +116,7 @@ def draft(spec_path: str) -> str:
         for key, m in zip(KEYS, order):
             v = values[m]
             value_str = v if isinstance(v, str) else str(simplify(v))
-            val = simplify(sympify(value_str, locals={"I": I}))
+            val = simplify(sympify(value_str, locals={"I": I, "x": _XR, "y": _YR}))
             fmt = it.get("fmt")
             if fmt == "pair":  # a complex value standing for the pair (x, y)
                 r, i = val.as_real_imag()
@@ -107,6 +129,8 @@ def draft(spec_path: str) -> str:
                 auto = f"$\\pm {part}$" if r == 0 else f"${latex(r)} \\pm {part}$"
             elif fmt == "polar":  # r(cos θ + i sin θ)
                 auto = polar_text(val)
+            elif fmt == "cartesian":  # a locus polynomial in x, y
+                auto = cartesian_text(val)
             elif fmt == "quadrant":
                 auto = f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
             else:
