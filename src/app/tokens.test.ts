@@ -42,7 +42,9 @@ const TEXT_PAIRS: [string, string][] = [
   ["accent", "surface"],
   ["accent", "card"],
   ["accent", "accent-soft"],
-  ["background", "accent"], // primary button label
+  ["background", "accent"], // primary button label, selected answer chip
+  ["background", "success"], // correct answer chip, mastered path node
+  ["background", "danger"], // wrong answer chip
   ["success", "success-surface"],
   ["success", "card"],
   ["danger", "danger-surface"],

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
+import { StepList } from "@/components/StepList";
+import { FigureFrame } from "@/figures/FigureFrame";
 import { FigureView } from "@/figures/FigureView";
 import type { RenderedSlide } from "@/lessons/renderDeck";
 import type { ConceptSession } from "@/server/learning";
 import { QuestionPanel } from "./QuestionPanel";
-import { primaryButton, secondaryButton } from "@/components/ui";
+import { card, primaryButton, secondaryButton } from "@/components/ui";
 
 type Open = Extract<ConceptSession, { kind: "open" }>;
 
@@ -19,9 +21,9 @@ const FIGURE_STAGGER_S = 0.9;
 /** Text beside its figure on tablet and up; the figure below the text on phones. */
 function WithFigure({ figure, children }: { figure: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="grid gap-6 md:grid-cols-2 md:items-start">
+    <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-10">
       <div>{children}</div>
-      <div className="mx-auto w-full max-w-sm md:max-w-none">{figure}</div>
+      <FigureFrame>{figure}</FigureFrame>
     </div>
   );
 }
@@ -34,7 +36,7 @@ function SlideBody({ slide }: { slide: RenderedSlide }) {
       return (
         <>
           <RenderedRichText blocks={slide.prompt} className="text-muted" />
-          <RenderedRichText blocks={slide.reveal} className="mt-6 border-l-4 border-accent pl-4" />
+          <RenderedRichText blocks={slide.reveal} className="mt-6 rounded-2xl border-l-4 border-accent bg-accent-soft px-5 py-4 motion-safe:animate-rise" />
         </>
       );
     case "text":
@@ -49,15 +51,11 @@ function SlideBody({ slide }: { slide: RenderedSlide }) {
       const body = (
         <>
           <RenderedRichText blocks={slide.prompt} />
-          <ol className="mt-4 list-decimal space-y-3 pl-6">
-            {slide.steps.map((s, i) => (
-              <li key={i} className={i === slide.steps.length - 1 ? "motion-safe:animate-slide-in" : "text-muted"}>
-                <RenderedInlineNodes nodes={s} />
-              </li>
-            ))}
-          </ol>
+          <div className="mt-5">
+            <StepList steps={slide.steps} current={slide.steps.length - 1} />
+          </div>
           {slide.answer && (
-            <p className="mt-5 border-t border-border pt-4">
+            <p className="mt-6 rounded-2xl bg-success-surface px-5 py-4 motion-safe:animate-rise">
               <span className="font-semibold">Answer: </span>
               <RenderedInlineNodes nodes={slide.answer} />
             </p>
@@ -157,7 +155,7 @@ export function SlideDeck({
       ref={stageRef}
       aria-roledescription="carousel"
       aria-label={`${session.title} lesson`}
-      className="flex h-[calc(100dvh-7.5rem)] min-h-[26rem] flex-col rounded-xl border border-border bg-background md:h-[min(calc(100dvh-8rem),48rem)]"
+      className={`${card} flex h-[calc(100dvh-8.5rem)] min-h-[26rem] flex-col overflow-hidden md:h-[min(calc(100dvh-10rem),48rem)]`}
       onPointerDown={(e) => {
         if (e.pointerType !== "mouse") swipeStart.current = { x: e.clientX, y: e.clientY };
       }}
@@ -171,7 +169,7 @@ export function SlideDeck({
       }}
     >
       {refresher && (
-        <div className="flex flex-wrap items-center justify-between gap-2 rounded-t-xl bg-warning-surface px-4 py-2 text-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-warning-surface px-5 py-2.5 text-sm">
           <span>
             <span className="font-semibold">Refresher</span> for {refresher.title}
           </span>
@@ -180,21 +178,24 @@ export function SlideDeck({
           </Link>
         </div>
       )}
-      <header className="flex items-center gap-3 border-b border-border px-4 py-2">
-        <p className="text-sm tabular-nums text-muted">
+      <header className="flex items-center gap-4 border-b border-border px-5 py-3">
+        <p className="text-sm font-medium tabular-nums text-muted">
           {index + 1} / {slides.length}
         </p>
-        <div className="h-1.5 flex-1 rounded-full bg-surface" aria-hidden="true">
-          <div
-            className="h-full rounded-full bg-accent transition-[width] motion-reduce:transition-none"
-            style={{ width: `${((index + 1) / slides.length) * 100}%` }}
-          />
+        {/* One segment per slide; the questions slide is the last. */}
+        <div className="flex flex-1 gap-1" aria-hidden="true">
+          {slides.map((s, i) => (
+            <span
+              key={s.id}
+              className={`h-1.5 flex-1 rounded-full transition-colors duration-300 motion-reduce:transition-none ${i <= index ? "bg-accent" : "bg-surface"}`}
+            />
+          ))}
         </div>
         {canFullscreen && (
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="rounded-md px-2 py-1 text-sm text-muted hover:bg-surface"
+            className="rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface hover:text-foreground"
             aria-label={isFullscreen ? "Exit full screen" : "Full screen"}
           >
             {isFullscreen ? "Exit full screen" : "⛶ Full screen"}
@@ -202,14 +203,14 @@ export function SlideDeck({
         )}
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 md:px-12 md:py-10">
+      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-7 md:px-14 md:py-12">
         <div
           key={slide.id}
           aria-roledescription="slide"
           aria-label={`${index + 1} of ${slides.length}: ${slide.title}`}
           className="mx-auto max-w-3xl leading-relaxed motion-safe:animate-slide-in md:text-xl"
         >
-          <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-semibold outline-none md:text-3xl">
+          <h2 ref={headingRef} tabIndex={-1} className="font-display text-3xl font-semibold tracking-tight outline-none md:text-4xl">
             {slide.title}
           </h2>
           <div className="mt-5">
@@ -230,7 +231,7 @@ export function SlideDeck({
         </div>
       </div>
 
-      <footer className="flex items-center justify-between gap-3 border-t border-border px-4 py-3">
+      <footer className="flex items-center justify-between gap-3 border-t border-border bg-surface/60 px-5 py-3">
         <button type="button" className={secondaryButton} onClick={() => go(index - 1)} disabled={index === 0}>
           ← Back
         </button>

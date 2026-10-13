@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { RenderedInlineNodes } from "@/components/RenderedRichText";
+import { StepList } from "@/components/StepList";
 import { FigureView } from "@/figures/FigureView";
 import type { RenderedSolution } from "@/server/learning";
-import { secondaryButton } from "@/components/ui";
+import { card, secondaryButton } from "@/components/ui";
+import { FigureFrame } from "@/figures/FigureFrame";
 
 /** Seconds between solution steps; figure elements tagged with a step appear in sync. */
 const STEP_S = 0.9;
@@ -28,19 +29,14 @@ export function SolutionReveal({ solution }: { solution: RenderedSolution }) {
       </button>
       {open && (
         // Remounting on replay restarts the CSS animations.
-        <div key={plays} ref={panelRef} id={panelId} data-solution className="mt-4 rounded-lg border border-border p-4">
-          <div className={solution.figure ? "grid gap-6 md:grid-cols-2 md:items-start" : undefined}>
-            <ol className="list-decimal space-y-3 pl-6">
-              {solution.steps.map((step, i) => (
-                <li key={i} className="fig-in" style={{ animationDelay: `${i * STEP_S}s` }}>
-                  <RenderedInlineNodes nodes={step} />
-                </li>
-              ))}
-            </ol>
+        <div key={plays} ref={panelRef} id={panelId} data-solution className={`${card} mt-4 p-5`}>
+          <p className="font-display text-lg font-semibold">Solution</p>
+          <div className={`mt-4 ${solution.figure ? "grid gap-6 md:grid-cols-2 md:items-start" : ""}`}>
+            <StepList steps={solution.steps} stagger={STEP_S} />
             {solution.figure && (
-              <div className="mx-auto w-full max-w-sm md:max-w-none">
+              <FigureFrame>
                 <FigureView figure={solution.figure} stagger={STEP_S} className="h-auto w-full" />
-              </div>
+              </FigureFrame>
             )}
           </div>
           <button type="button" className="mt-4 text-sm font-medium text-accent underline underline-offset-2" onClick={() => setPlays((n) => n + 1)}>
