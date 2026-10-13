@@ -13,11 +13,9 @@ export function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params }: PageProps<"/review/[chapter]/[concept]">): Promise<Metadata> {
-  const { chapter, concept } = await params;
-  const found = findConcept(chapter, concept);
-  return { title: found ? `${found.node.id} ${found.node.title} · review` : "Content review" };
-}
+// Static: the page is otherwise fully prerendered, and Cache Components rejects
+// reading params in generateMetadata there. The concept is named in the heading.
+export const metadata: Metadata = { title: "Content review" };
 
 function fallbackLabel(f: Fallback): string {
   if (f.kind === "concept") return `Route to ${f.id}`;
