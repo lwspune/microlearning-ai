@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c24: Concept = {
   id: "C24",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Think of all the points at distance 3 from $1 + 2i$. **What shape do they make, and how would you write it using $z$?**`,
     reveal: t`A circle with centre $1 + 2i$ and radius 3: $|z - (1 + 2i)| = 3$.`,

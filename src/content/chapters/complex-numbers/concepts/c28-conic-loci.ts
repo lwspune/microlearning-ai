@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c28: Concept = {
   id: "C28",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Pin a loop of string at two points and pull it tight with a pencil. **What curve does the pencil draw?**`,
     reveal: t`An ellipse: the total distance to the two pins stays fixed. With complex numbers that is $|z - a| + |z - b| = k$.`,

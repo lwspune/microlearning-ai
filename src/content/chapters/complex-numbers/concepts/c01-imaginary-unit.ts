@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`No real number squares to $-1$: squares of real numbers are never negative. **So what could $\sqrt{-1}$ be?**`,
     reveal: t`A new number, called $i$, defined by $i^2 = -1$. Then every negative number has a square root: $\sqrt{-49} = 7i$, because $(7i)^2 = 49i^2 = -49$.`,

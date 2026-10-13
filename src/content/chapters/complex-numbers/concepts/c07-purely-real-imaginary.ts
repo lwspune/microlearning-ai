@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For which $k$ does $(k - 2) + 5i$ lie on the imaginary axis? **What has to vanish?**`,
     reveal: t`The real part: $k - 2 = 0$, so $k = 2$. Every point on the imaginary axis has real part zero.`,

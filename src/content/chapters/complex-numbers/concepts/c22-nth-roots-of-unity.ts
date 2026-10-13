@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c22: Concept = {
   id: "C22",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$z^6 = 1$ has six solutions. **Where are they on the Argand plane?**`,
     reveal: t`Equally spaced round the unit circle, $60^\circ$ apart, starting at $1$: the corners of a regular hexagon.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c16: Concept = {
   id: "C16",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$i \times i = -1$. **In terms of direction, what happened to the angle $\dfrac\pi2$?**`,
     reveal: t`It doubled: $\dfrac\pi2 + \dfrac\pi2 = \pi$, the direction of $-1$. Multiplying adds angles.`,

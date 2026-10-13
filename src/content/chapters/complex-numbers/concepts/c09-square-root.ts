@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$(2 + i)^2 = 3 + 4i$. **So what are the square roots of $3 + 4i$?**`,
     reveal: t`$2 + i$ and $-(2 + i) = -2 - i$. Every non-zero complex number has exactly two square roots, and they are negatives of each other.`,

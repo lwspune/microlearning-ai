@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\lvert 3 + 4i \rvert = 5$ and $\lvert 1 + i \rvert = \sqrt2$. **Guess $\lvert (3 + 4i)(1 + i) \rvert$ without multiplying out.**`,
     reveal: t`$5\sqrt2$: moduli multiply. Check: $(3 + 4i)(1 + i) = -1 + 7i$, and $\lvert -1 + 7i \rvert = \sqrt{50} = 5\sqrt2$.`,

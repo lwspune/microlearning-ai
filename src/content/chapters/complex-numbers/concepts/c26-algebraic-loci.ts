@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c26: Concept = {
   id: "C26",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Think of the points twice as far from $4$ as from $1$. **Is that a straight line, like equal distances gave?**`,
     reveal: t`No, it's a circle. Equal distances give a line, but any other ratio gives a circle (the circle of Apollonius).`,

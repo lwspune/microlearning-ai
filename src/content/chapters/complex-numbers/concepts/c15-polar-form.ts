@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c15: Concept = {
   id: "C15",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Describe the point $1 + i$ without using $x$ and $y$. **Which two numbers would tell someone exactly where it is?**`,
     reveal: t`How far it is from the origin ($\sqrt2$) and which way it points ($\dfrac\pi4$). That is polar form: $\sqrt2\left(\cos\dfrac\pi4 + i\sin\dfrac\pi4\right)$.`,

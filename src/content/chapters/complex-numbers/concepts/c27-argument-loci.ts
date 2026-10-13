@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c27: Concept = {
   id: "C27",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Points $z$ with $\arg(z - 1) = \dfrac\pi4$: the arrow from $1$ to $z$ points at $45^\circ$. **Is that a whole line?**`,
     reveal: t`No, only half of one: a ray starting at $1$ (not including $1$), going up and to the right. The other half of the line points the opposite way, at $-\dfrac{3\pi}4$.`,

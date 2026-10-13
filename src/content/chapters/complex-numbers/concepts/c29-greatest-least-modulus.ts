@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c29: Concept = {
   id: "C29",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$z$ can be anywhere on the circle $|z - 6 - 8i| = 3$. **How close can $z$ get to the origin?**`,
     reveal: t`$10 - 3 = 7$. The centre is $10$ from the origin, and the nearest point of the circle is $3$ closer, on the line through the origin and the centre.`,

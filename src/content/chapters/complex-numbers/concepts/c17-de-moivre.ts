@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c17: Concept = {
   id: "C17",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Square $\cos\theta + i\sin\theta$ by multiplying it by itself. **What angle does the result have?**`,
     reveal: t`$2\theta$. Multiplying adds angles, so squaring doubles the angle, and the $n$th power multiplies it by $n$.`,

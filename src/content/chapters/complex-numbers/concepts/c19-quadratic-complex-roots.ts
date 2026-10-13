@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c19: Concept = {
   id: "C19",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $x^2 + 4 = 0$. **No real number works, so what are the roots?**`,
     reveal: t`$x^2 = -4$, so $x = \pm 2i$. With complex numbers, every quadratic has two roots.`,

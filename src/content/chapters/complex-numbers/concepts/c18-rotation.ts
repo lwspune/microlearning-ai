@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c18: Concept = {
   id: "C18",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Multiply $3 + 4i$ by $i$ to get $-4 + 3i$. **Plot both points. What did multiplying by $i$ do?**`,
     reveal: t`It turned the point a quarter-turn anticlockwise about the origin. Multiplying by $\cos\alpha + i\sin\alpha$ rotates by $\alpha$.`,

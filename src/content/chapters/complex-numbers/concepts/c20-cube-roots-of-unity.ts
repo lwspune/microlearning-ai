@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c20: Concept = {
   id: "C20",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $z^3 = 1$. **Is $z = 1$ the only answer?**`,
     reveal: t`No. $z^3 - 1 = (z - 1)(z^2 + z + 1)$, and the quadratic gives two more roots, $\dfrac{-1 \pm i\sqrt3}{2}$. One is called $\omega$; the other is $\omega^2$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Work out $i^1, i^2, i^3, i^4, i^5$. **What do you notice?**`,
     reveal: t`They repeat every four: $i, -1, -i, 1$, then $i$ again. So every power of $i$ is one of just four values.`,

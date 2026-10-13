@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c21: Concept = {
   id: "C21",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$1 + \omega + \omega^2 = 0$. **Write $1 + \omega$ as a single term.**`,
     reveal: t`$1 + \omega = -\omega^2$. Any two of $1, \omega, \omega^2$ add to minus the third.`,

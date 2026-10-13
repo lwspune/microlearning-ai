@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An equation mixes $z$ and $\bar z$: $z + \bar z = 6$. **Can you find $z$ from this alone?**`,
     reveal: t`Only its real part. $z + \bar z = 2x = 6$ gives $x = 3$, but $y$ could be anything. You need both parts to pin $z$ down.`,

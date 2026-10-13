@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c13: Concept = {
   id: "C13",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\lvert z \rvert = 2$, so $z$ lies on a circle of radius 2. **How far can $z$ be from the point $-5$?**`,
     reveal: t`At most $7$ (at $z = 2$, the far side) and at least $3$ (at $z = -2$, the near side). The distance ranges from $5 - 2$ to $5 + 2$.`,

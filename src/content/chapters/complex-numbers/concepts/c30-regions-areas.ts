@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c30: Concept = {
   id: "C30",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Shade every point closer to $1$ than to $-1$. **What does the region look like?**`,
     reveal: t`Everything to the right of the imaginary axis: the bisector of $1$ and $-1$ splits the plane in two, and you keep $1$'s side.`,
