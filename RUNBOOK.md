@@ -46,16 +46,22 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    straight from the definition (never via the method being taught), plus
    one function per misconception. Raise `ValueError` where a model doesn't
    apply.
-4. **Compute the options from the models** before writing them down (run the
-   models on the planned inputs and copy the outputs). Never do the arithmetic
-   by hand.
-5. **Write the concept file** `concepts/cNN-<slug>.ts` with `status: "draft"`:
-   hook (+ reveal), intuition, formal, worked example, visual spec,
-   misconceptions (fallback must be a prerequisite *ancestor*), 5–6 items
-   with `verify` blocks. Use `String.raw` for LaTeX. The hook and worked
-   example must not reuse an item.
-6. Register it in the chapter's `index.ts` and update the chapter test's
-   authored list.
+4. **Draft the items from the models** with `python verify/draft_items.py <spec.py>`.
+   A spec lists each item's stem, inputs and which models give its options
+   (key first). The tool computes every value, writes each option's text
+   from its value (so text and value can't disagree), varies the correct
+   letter, and refuses duplicate options. Use `text=`/`value=` overrides
+   only for non-numeric options (loci, phrases) and `fmt=` for pairs (`x =, y =`),
+   ± roots and quadrants. Where only two real misconceptions apply, an item
+   may have 3 options; never invent a distractor.
+5. **Write the content** (hook + reveal, intuition, formal with blank lines
+   between slide-sized sections, worked example, visual spec, misconceptions
+   with remediation and an ancestor fallback) as data, then build the files:
+   `python verify/build_concepts.py <content.py> <items.ts>`, which writes
+   `concepts/cNN-<slug>.ts` with `status: "draft"`. The hook and worked
+   example must not reuse an item. Misconception IDs have no gaps.
+6. Register: `python verify/build_index.py` regenerates the chapter's
+   `index.ts`; the chapter test fails if any concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
    Look for KaTeX errors, sideways scrolling, and brackets stranded at line
@@ -84,6 +90,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    intermediate version, commit, restore, then diff against the saved copy).
 6. **Definition of done:**
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
+   - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
    - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103` and `npm run e2e -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
    - Leave no test data behind (check `auth.users` and `attempts`).
@@ -129,6 +136,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | New packages: avoid releases under 2 weeks old | pin exact versions (`-E`) |
 | A hard-coded "unpublished" example in the smoke check went stale when that concept was published | smoke routes are derived from the content registry |
 | Next keeps visited pages alive, so `useState` initial values don't re-run on return: the refresher opened at the old slide 8/8 | give a distinct mode its own `key` (`SlideDeck` in refresher mode); e2e waits on `:visible` / `filter({ visible: true })` |
+| Only the review-enabled build was ever checked; the plain production build failed (params read in `generateMetadata` on a fully static page) | Definition of done runs a plain `npm run build` as well |
+| `npm run x \| tail` reports `tail`'s exit code and can cut off the pass/fail summary, so a check looked "done" without its result | grep for the summary line (`Tests `, `items checked`) and read `${PIPESTATUS[0]}` before reporting a gate as passed |
+| Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 
 ## 7. Fine-tuning knobs
 

@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from itertools import combinations
 
-from sympy import I, Poly, simplify, symbols, sympify
+from sympy import I, Poly, Rational, Symbol, simplify, sqrt, symbols, sympify
 
 X, Y = symbols("x y", real=True)
 _LOCALS = {"I": I, "x": X, "y": Y}
@@ -19,7 +19,17 @@ def _expr(s):
     return sympify(s, locals=_LOCALS)
 
 
+# Options may be written in omega, a non-real cube root of unity; values compare by its true value.
+OMEGA = Symbol("omega")
+OMEGA_VALUE = Rational(-1, 2) + sqrt(3) / 2 * I
+
+
+def _true_value(e):
+    return e.subs(OMEGA, OMEGA_VALUE) if hasattr(e, "subs") else e
+
+
 def _same_value(a, b):
+    a, b = _true_value(a), _true_value(b)
     return simplify(a - b) == 0
 
 
@@ -35,8 +45,12 @@ def _same_locus(p, q):
     return all(simplify(b - k * a) == 0 for a, b in zip(pc, qc))
 
 
-def _on_locus(point, poly):
-    return simplify(poly.subs({X: point.as_real_imag()[0], Y: point.as_real_imag()[1]})) == 0
+def _on_locus(point, locus):
+    """A locus is a polynomial in x, y (the set where it is 0) or, for rays and
+    regions, a membership test taking the point."""
+    if callable(locus):
+        return bool(locus(point))
+    return simplify(locus.subs({X: point.as_real_imag()[0], Y: point.as_real_imag()[1]})) == 0
 
 
 def _project(result, ask):

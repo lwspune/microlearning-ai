@@ -1,3 +1,5 @@
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { ancestorsOf, validateChapter } from "../../validate";
 import { complexNumbers } from "./index";
@@ -24,7 +26,9 @@ describe("Complex Numbers chapter", () => {
     expect(redundant).toEqual([]);
   });
 
-  it("has the authored concepts registered", () => {
-    expect(complexNumbers.concepts.map((c) => c.id).sort()).toEqual(["C04", "C05", "C06", "C10", "C11", "C14", "C25"]);
+  it("registers every concept file", () => {
+    const files = readdirSync(join(__dirname, "concepts")).filter((f) => /^c\d\d-.+\.ts$/.test(f));
+    const ids = files.map((f) => f.slice(0, 3).toUpperCase()).sort();
+    expect(complexNumbers.concepts.map((c) => c.id).sort()).toEqual(ids);
   });
 });

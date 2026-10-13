@@ -256,3 +256,45 @@ re-learning.
 **Tests:** engine unit tests (trigger, Leitner intervals) · DB tests for the
 review rule · e2e: two repeated mistakes → refresher → back → mastered; a
 due concept appears in "Review today".
+
+## Backfill ledger
+
+### 1. The correct answer is always option A (logged 2026-10-13, done 2026-10-13: option a)
+All 38 live items list the key first, so a student can learn to tap A.
+- **Scope:** every published item (C04, C05, C06, C10, C11, C14, C25); new
+  concepts avoid it from the start (positions vary per item).
+- **Blast radius:** option keys are referenced by `attempts.option_key`, so
+  re-lettering stored options would rewrite history. Only one guest exists
+  in the dev DB, with 0 attempts.
+- **Does it really apply:** yes. Fixed key position is a known test-taking
+  cue, and the e2e test even had to look keys up because A was always right.
+- **Options:**
+  (a) **shuffle the display order per item** (deterministic from the item id)
+  and show letters by position, while the stored keys stay as they are. No
+  content, database or history change; it covers every item, including future
+  ones. (b) Re-letter the stored options: touches content and the DB, and
+  would rewrite attempts later.
+- **Risk/reversibility:** (a) is UI-only and reverts in one commit.
+- **Recommendation:** (a), now, before any real students.
+- **Done:** (a), approved. `src/engine/optionOrder.ts` shuffles per learner
+  and item (seed `userId:itemId`, so the order is stable on reload);
+  `buildQuestion` sends options in display order with a positional `label`.
+
+## Content: all 30 concepts (published 2026-10-14)
+
+- All 30 Complex Numbers concepts are approved and seeded: 159 items, 0
+  verifier problems. A new learner starts at C01, the only root of the graph.
+- Built in four batches with `verify/draft_items.py` + `verify/build_concepts.py`
+  (RUNBOOK section 3).
+
+## Next: step-by-step solutions and visuals (approved 2026-10-14)
+
+Decisions: animated, step-synced figures now (draggable later); a step-by-step
+solution for every question, shown after answering; worked examples drive a
+figure step by step. New authoring rules, enforced by the validator.
+- **Phase A (engine):** SVG Argand-plane figure (points, vectors, circles,
+  lines, rays, arcs, regions, angle marks; each element can appear at a step),
+  rendered on the server, reduced-motion aware, with alt text. Item solutions
+  stored in the DB and returned only after the attempt is recorded. Pilot on
+  C10 and C24.
+- **Phase B (content):** figures + solutions for all 30 concepts, in batches.
