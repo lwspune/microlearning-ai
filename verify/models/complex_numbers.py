@@ -10,7 +10,7 @@ Result types by item kind:
   locus  -> polynomial in x, y (the locus is "poly = 0")
   point  -> polynomial in x, y (the locus the option point must lie on)
 """
-from sympy import Abs, I, Integer, atan, atan2, expand, im, pi, re, sqrt, symbols, sympify
+from sympy import Abs, I, Integer, arg, atan, atan2, cos, expand, im, pi, re, sin, sqrt, symbols, sympify
 
 x, y = symbols("x y", real=True)
 
@@ -467,4 +467,187 @@ def _c09(kind):
 C09 = {k: _c09(k) for k in ["key", "C09-M1", "C09-M2"]}
 
 
-MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C14": C14, "C25": C25}
+# ---------- C12 Modulus rules ----------
+def _c12(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "prod_pow":  # |z1^n z2|
+            a, n, b = Abs(v["z1"]), v["n"], Abs(v["z2"])
+            return {"key": a**n * b, "C12-M2": a**n + b, "C12-M3": n * a * b}[kind] if kind in ("key", "C12-M2", "C12-M3") else _no(kind)
+        if op == "quot_pow":  # |z1^n / z2|
+            a, n, b = Abs(v["z1"]), v["n"], Abs(v["z2"])
+            return {"key": a**n / b, "C12-M3": n * a / b, "C12-M4": a**n - b}[kind] if kind in ("key", "C12-M3", "C12-M4") else _no(kind)
+        if op == "scale_pow":  # |k z^n| given |z| = r
+            k, n, r = v["k"], v["n"], v["r"]
+            return {"key": Abs(k) * r**n, "C12-M3": Abs(k) * n * r, "C12-M5": k * r**n}[kind] if kind in ("key", "C12-M3", "C12-M5") else _no(kind)
+        if op == "pow_plus_zzbar":  # |z^n| + z conj(z) given |z| = r
+            n, r = v["n"], v["r"]
+            return {"key": r**n + r**2, "C12-M1": r**n + r, "C12-M3": n * r + r**2}[kind] if kind in ("key", "C12-M1", "C12-M3") else _no(kind)
+        raise ValueError(op)
+    return model
+
+
+def _no(kind):
+    raise ValueError(f"{kind} does not apply")
+
+
+C12 = {k: _c12(k) for k in ["key", "C12-M1", "C12-M2", "C12-M3", "C12-M4", "C12-M5"]}
+
+
+# ---------- C13 Greatest/least |z + c| on |z| = r ----------
+def _c13(kind):
+    def model(v, p):
+        r, c, want = v["r"], v["c"], p["want"]
+        size = Abs(re(c)) + Abs(im(c)) if kind == "C13-M3" else Abs(c)
+        if kind == "C13-M2":  # least value as |c| - r, absolute value forgotten
+            if want != "min":
+                raise ValueError("C13-M2 is about the least value")
+            return Abs(c) - r
+        if kind == "C13-M1":  # gives the other extreme
+            want = "min" if want == "max" else "max"
+        if kind not in ("key", "C13-M1", "C13-M3"):
+            raise ValueError(kind)
+        return r + size if want == "max" else Abs(r - size)
+    return model
+
+
+C13 = {k: _c13(k) for k in ["key", "C13-M1", "C13-M2", "C13-M3"]}
+
+
+# ---------- C15 Polar and Euler form ----------
+def _cis(r, th):
+    return expand(r * (cos(th) + I * sin(th)))
+
+
+def _c15(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "to_polar":
+            z = v["z"]
+            x, y = re(z), im(z)
+            r, th = Abs(z), arg(z)
+            if kind == "key":
+                return z
+            if kind == "C15-M1":  # tan^-1(y/x) without the quadrant
+                if x == 0:
+                    raise ValueError("C15-M1 needs x != 0")
+                return _cis(r, atan(y / x))
+            if kind == "C15-M2":  # r = x^2 + y^2, root forgotten
+                return _cis(x**2 + y**2, th)
+            if kind == "C15-M3":  # matches cos to y and sin to x
+                return _cis(r, pi / 2 - th)
+            raise ValueError(kind)
+        if op == "from_polar":
+            r, th = v["r"], v["theta"]
+            if kind == "key":
+                return _cis(r, th)
+            if kind == "C15-M3":  # swaps cos and sin
+                return expand(r * (sin(th) + I * cos(th)))
+            if kind == "C15-M4":  # r multiplies only the cosine
+                return expand(r * cos(th) + I * sin(th))
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C15 = {k: _c15(k) for k in ["key", "C15-M1", "C15-M2", "C15-M3", "C15-M4"]}
+
+
+# ---------- C16 Multiply and divide in polar form ----------
+def _c16(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "argsum":  # principal arg(z1 z2) from arg z1 and arg z2
+            s = v["t1"] + v["t2"]
+            principal = s - 2 * pi if s > pi else (s + 2 * pi if s <= -pi else s)
+            if kind == "key":
+                return principal
+            if kind == "C16-M2":  # subtracts when multiplying
+                return v["t1"] - v["t2"]
+            if kind == "C16-M4":  # leaves the sum outside (-pi, pi]
+                if principal == s:
+                    raise ValueError("C16-M4 needs a sum outside the range")
+                return s
+            raise ValueError(kind)
+        z1, z2 = v["z1"], v["z2"]
+        r1, r2, t1, t2 = Abs(z1), Abs(z2), arg(z1), arg(z2)
+        if op == "prod":
+            if kind == "key":
+                return expand(z1 * z2)
+            if kind == "C16-M1":  # adds the moduli
+                return _cis(r1 + r2, t1 + t2)
+            if kind == "C16-M2":  # subtracts the arguments
+                return _cis(r1 * r2, t1 - t2)
+            raise ValueError(kind)
+        if op == "quot":
+            if kind == "key":
+                return expand(_cis(r1 / r2, t1 - t2))
+            if kind == "C16-M1":  # subtracts the moduli
+                return _cis(r1 - r2, t1 - t2)
+            if kind == "C16-M2":  # adds the arguments
+                return _cis(r1 / r2, t1 + t2)
+            if kind == "C16-M3":  # subtracts the arguments the wrong way round
+                return _cis(r1 / r2, t2 - t1)
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C16 = {k: _c16(k) for k in ["key", "C16-M1", "C16-M2", "C16-M3", "C16-M4"]}
+
+
+# ---------- C17 De Moivre's theorem ----------
+def _c17(kind):
+    def model(v, p):
+        op = p["op"]
+        n = v["n"]
+        if op == "pow":  # z^n
+            z = v["z"]
+            r, th = Abs(z), arg(z)
+            if kind == "key":
+                return expand(_cis(r**n, n * th))
+            if kind == "C17-M1":  # doesn't raise the modulus
+                return _cis(r, n * th)
+            if kind == "C17-M3":  # multiplies the modulus by n
+                return _cis(n * r, n * th)
+            raise ValueError(kind)
+        if op == "sinpow":  # (sin t + i cos t)^n
+            th = v["theta"]
+            if kind == "key":
+                return expand((sin(th) + I * cos(th)) ** n)
+            if kind == "C17-M2":  # applies De Moivre to sin + i cos directly
+                return expand(sin(n * th) + I * cos(n * th))
+            if kind == "C17-M4":  # treats sin t + i cos t as cos t + i sin t
+                return _cis(1, n * th)
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C17 = {k: _c17(k) for k in ["key", "C17-M1", "C17-M2", "C17-M3", "C17-M4"]}
+
+
+# ---------- C18 Rotation about a point ----------
+def _c18(kind):
+    def model(v, p):
+        z, c, a = v["z"], v["c"], v["alpha"]
+        if kind == "key":
+            return expand((z - c) * _cis(1, a) + c)
+        if kind == "C18-M1":  # rotates about the origin instead
+            if c == 0:
+                raise ValueError("C18-M1 needs a centre other than 0")
+            return expand(z * _cis(1, a))
+        if kind == "C18-M2":  # rotates the wrong way
+            return expand((z - c) * _cis(1, -a) + c)
+        if kind == "C18-M3":  # forgets to add the centre back
+            if c == 0:
+                raise ValueError("C18-M3 needs a centre other than 0")
+            return expand((z - c) * _cis(1, a))
+        raise ValueError(kind)
+    return model
+
+
+C18 = {k: _c18(k) for k in ["key", "C18-M1", "C18-M2", "C18-M3"]}
+
+
+MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13, "C14": C14, "C15": C15, "C16": C16, "C17": C17, "C18": C18, "C25": C25}
