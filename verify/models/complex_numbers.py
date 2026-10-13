@@ -10,7 +10,7 @@ Result types by item kind:
   locus  -> polynomial in x, y (the locus is "poly = 0")
   point  -> polynomial in x, y (the locus the option point must lie on)
 """
-from sympy import Abs, I, Integer, arg, atan, atan2, cos, expand, im, pi, re, sin, sqrt, symbols, sympify
+from sympy import Abs, I, Integer, Rational, Symbol, arg, atan, atan2, cos, expand, im, pi, re, real_root, sin, simplify, sqrt, symbols, sympify
 
 x, y = symbols("x y", real=True)
 
@@ -650,4 +650,202 @@ def _c18(kind):
 C18 = {k: _c18(k) for k in ["key", "C18-M1", "C18-M2", "C18-M3"]}
 
 
-MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13, "C14": C14, "C15": C15, "C16": C16, "C17": C17, "C18": C18, "C25": C25}
+# ---------- helpers for omega (a non-real cube root of unity) ----------
+OMEGA = Symbol("omega")
+OMEGA_VALUE = Rational(-1, 2) + sqrt(3) / 2 * I
+
+
+def _omega_form(v):
+    """Writes an exact value of Q(omega) the way a teacher would: a, b*omega, -a*omega^2 or a + b*omega."""
+    v = expand(v.subs(OMEGA, OMEGA_VALUE)) if hasattr(v, "subs") else v
+    re_v, im_v = expand(v).as_real_imag()
+    b = simplify(2 * im_v / sqrt(3))
+    a = simplify(re_v + b / 2)
+    if b == 0:
+        return a
+    if a == 0:
+        return b * OMEGA
+    if a == b:
+        return -a * OMEGA**2
+    return a + b * OMEGA
+
+
+def _rewrite_powers(e, rule):
+    """Applies rule(n) -> expression to every omega**n term of a polynomial in omega."""
+    e = expand(e)
+    out = 0
+    for term in e.as_ordered_terms() if e.is_Add else [e]:
+        coeff, n = term.as_coeff_exponent(OMEGA)
+        out += coeff * rule(int(n))
+    return expand(out)
+
+
+def _mod3(n):
+    return OMEGA ** (n % 3)
+
+
+# ---------- C19 Quadratics with complex roots ----------
+def _c19(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "roots":  # a x^2 + b x + c = 0, discriminant negative; the root with positive imaginary part
+            a, b, c = v["a"], v["b"], v["c"]
+            s = sqrt(4 * a * c - b**2)
+            if kind == "key":
+                return (-b + I * s) / (2 * a)
+            if kind == "C19-M1":  # drops the i: (-b +/- sqrt|D|) / 2a, the larger real root
+                return (-b + s) / (2 * a)
+            if kind == "C19-M2":  # divides only -b by 2a
+                return -b / (2 * a) + I * s
+            if kind == "C19-M3":  # uses b instead of -b
+                return (b + I * s) / (2 * a)
+            raise ValueError(kind)
+        if op == "other_root":  # real quadratic with one root z
+            z = v["z"]
+            if kind == "key":
+                return re(z) - I * im(z)
+            if kind == "C19-M4":  # the negative of the root
+                return -z
+            if kind == "C19-M5":  # flips the real part
+                return -re(z) + I * im(z)
+            raise ValueError(kind)
+        if op == "vieta":
+            a, b, c, want = v["a"], v["b"], v["c"], p["want"]
+            s, prod = -b / a, c / a
+            if kind == "key":
+                return s if want == "sum" else prod
+            if kind == "C19-M6":  # gives the other one
+                return prod if want == "sum" else s
+            if kind == "C19-M7":  # sign slip: b/a and -c/a
+                return -s if want == "sum" else -prod
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C19 = {k: _c19(k) for k in ["key", "C19-M1", "C19-M2", "C19-M3", "C19-M4", "C19-M5", "C19-M6", "C19-M7"]}
+
+
+# ---------- C20 Cube roots of unity ----------
+_GOLDEN = (-1 + sqrt(5)) / 2  # a number with w + w^2 = 1, the world of C20-M5
+
+
+def _c20(kind):
+    def model(v, p):
+        e = v["e"]
+        if kind == "key":
+            return _omega_form(_rewrite_powers(e, _mod3))
+        if kind == "C20-M1":  # reduces exponents mod 4 (as for i), then omega^3 = 1
+            return _rewrite_powers(_rewrite_powers(e, lambda n: OMEGA ** (n % 4)), _mod3)
+        if kind == "C20-M2":  # omega^3 = -1
+            return _rewrite_powers(e, lambda n: (-1) ** (n // 3) * OMEGA ** (n % 3))
+        if kind == "C20-M3":  # omega^2 = -omega
+            return _rewrite_powers(_rewrite_powers(e, _mod3), lambda n: -OMEGA if n == 2 else OMEGA**n)
+        if kind == "C20-M4":  # off by one when reducing a power of 3 or more
+            return _rewrite_powers(_rewrite_powers(e, lambda n: OMEGA ** ((n % 3) + 1) if n >= 3 else OMEGA**n), _mod3)
+        if kind == "C20-M5":  # omega + omega^2 = 1
+            return simplify(_rewrite_powers(e, _mod3).subs(OMEGA, _GOLDEN))
+        raise ValueError(kind)
+    return model
+
+
+C20 = {k: _c20(k) for k in ["key", "C20-M1", "C20-M2", "C20-M3", "C20-M4", "C20-M5"]}
+
+
+# ---------- C21 Using omega ----------
+def _c21(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "binpow":  # (p + q omega + p omega^2)^n
+            pp, q, n = v["p"], v["q"], int(v["n"])
+            if kind == "key":
+                inner = pp + q * OMEGA + pp * OMEGA**2
+            elif kind == "C21-M1":  # 1 + omega^2 = omega (sign dropped)
+                inner = (pp + q) * OMEGA
+            elif kind == "C21-M2":  # 1 + omega^2 = -omega^2
+                inner = q * OMEGA - pp * OMEGA**2
+            elif kind == "C21-M3":  # a power distributes over a sum
+                return _omega_form(_rewrite_powers(pp**n + q**n * OMEGA**n + pp**n * OMEGA ** (2 * n), _mod3))
+            else:
+                raise ValueError(kind)
+            return _omega_form(_rewrite_powers(expand(inner**n), _mod3))
+        if op == "cube_roots":  # roots of z^3 = k, given by the root with positive imaginary part
+            k = v["k"]
+            c = real_root(k, 3)
+            if kind == "key":
+                roots = [c, c * OMEGA, c * OMEGA**2]
+            elif kind == "C21-M4":  # forgets to scale by the real cube root
+                roots = [c, OMEGA, OMEGA**2]
+            elif kind == "C21-M5":  # roots of z^3 = -k
+                roots = [-c, -c * OMEGA, -c * OMEGA**2]
+            else:
+                raise ValueError(kind)
+            return next(r for r in roots if im(expand(r.subs(OMEGA, OMEGA_VALUE))) > 0)
+        raise ValueError(op)
+    return model
+
+
+C21 = {k: _c21(k) for k in ["key", "C21-M1", "C21-M2", "C21-M3", "C21-M4", "C21-M5"]}
+
+
+# ---------- C22 nth roots of unity ----------
+def _c22(kind):
+    def model(v, p):
+        op = p["op"]
+        n = v["n"]
+        if op == "sum_powers":  # alpha + ... + alpha^(n-1)
+            return {"key": Integer(-1), "C22-M1": Integer(0), "C22-M5": n - 1}[kind] if kind in ("key", "C22-M1", "C22-M5") else _no(kind)
+        if op == "product_all":
+            return {"key": (-1) ** (n + 1), "C22-M3": Integer(1), "C22-M6": Integer(0)}[kind] if kind in ("key", "C22-M3", "C22-M6") else _no(kind)
+        if op == "first_root":  # root with the smallest positive argument
+            return {"key": _cis(1, 2 * pi / n), "C22-M2": _cis(1, pi / n), "C22-M7": I}[kind] if kind in ("key", "C22-M2", "C22-M7") else _no(kind)
+        if op == "roots_of":  # z^n = k, k > 0: root with the smallest positive argument
+            r = v["k"] ** (Integer(1) / n)
+            return {"key": _cis(r, 2 * pi / n), "C22-M2": _cis(r, pi / n), "C22-M4": _cis(1, 2 * pi / n)}[kind] if kind in ("key", "C22-M2", "C22-M4") else _no(kind)
+        raise ValueError(op)
+    return model
+
+
+C22 = {k: _c22(k) for k in ["key", "C22-M1", "C22-M2", "C22-M3", "C22-M4", "C22-M5", "C22-M6", "C22-M7"]}
+
+
+# ---------- C23 Polynomial at a complex x ----------
+_t = Symbol("t")
+
+
+def _c23(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "poly_at":
+            x = v["x"]
+            poly = sympify(p["poly"], locals={"t": _t})
+            if kind == "key":
+                return expand(poly.subs(_t, x))
+            if kind == "C23-M1":  # reduces with the sign-flipped quadratic: evaluates at -Re(x) + i Im(x)
+                return expand(poly.subs(_t, -re(x) + I * im(x)))
+            if kind == "C23-M2":  # decides the whole expression vanishes
+                return Integer(0)
+            raise ValueError(kind)
+        if op == "power_sum":  # alpha^n + beta^n for roots of t^2 + b t + c
+            b, c, n = v["b"], v["c"], int(v["n"])
+            from sympy import solve
+            al, be = solve(_t**2 + b * _t + c, _t)
+            if kind == "key":
+                return simplify(expand(al**n + be**n))
+            if kind == "C23-M3":  # (alpha + beta)^n
+                return (-b) ** n
+            if kind == "C23-M4":  # (alpha + beta)^2 + 2 alpha beta, for n = 2
+                if n != 2:
+                    raise ValueError("C23-M4 is about squares")
+                return b**2 + 2 * c
+            if kind == "C23-M5":  # treats the roots as cube roots of unity
+                return _omega_form(_rewrite_powers(OMEGA**n + OMEGA ** (2 * n), _mod3))
+            raise ValueError(kind)
+        raise ValueError(op)
+    return model
+
+
+C23 = {k: _c23(k) for k in ["key", "C23-M1", "C23-M2", "C23-M3", "C23-M4", "C23-M5"]}
+
+
+MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13, "C14": C14, "C15": C15, "C16": C16, "C17": C17, "C18": C18, "C19": C19, "C20": C20, "C21": C21, "C22": C22, "C23": C23, "C25": C25}

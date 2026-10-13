@@ -101,6 +101,10 @@ def draft(spec_path: str) -> str:
                 auto = f"$x = {latex(r)},\\ y = {latex(i)}$"
             elif fmt == "pm":  # a +/- pair of roots, given by one member
                 auto = f"$\\pm({latex(val)})$"
+            elif fmt == "conjpair":  # a conjugate pair a ± bi, given by one member
+                r, i = val.as_real_imag()
+                part = latex(simplify(abs(i)) * I)
+                auto = f"$\\pm {part}$" if r == 0 else f"${latex(r)} \\pm {part}$"
             elif fmt == "polar":  # r(cos θ + i sin θ)
                 auto = polar_text(val)
             elif fmt == "quadrant":
