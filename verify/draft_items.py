@@ -40,6 +40,25 @@ def _ts_string(s: str) -> str:
     return f"t`{s}`"
 
 
+def polar_text(val) -> str:
+    """LaTeX r(cos θ + i sin θ) for a value. θ is matched exactly against multiples
+    of π/24 (sympy often can't simplify arg() of a sum of surds) and the match is
+    confirmed symbolically; r is de-nested, so √(6 + 4√2) prints as 2 + √2."""
+    from sympy import Abs, N, Rational, arg, cos, pi, sin, sqrtdenest
+
+    r = sqrtdenest(simplify(Abs(val)))
+    k = round(float(N(arg(val))) / float(N(pi)) * 24)
+    th = Rational(k, 24) * pi
+    assert simplify(val - r * (cos(th) + I * sin(th))) == 0, f"no exact angle for {val}"
+    # θ = 0 still printed in polar form, so the option doesn't give itself away.
+    angle = f"\\left({latex(th)}\\right)" if th < 0 else latex(th)
+    trig = f"\\cos {angle} + i\\sin {angle}"
+    if r == 1:
+        return f"${trig}$"
+    radius = f"\\left({latex(r)}\\right)" if r.is_Add else latex(r)
+    return f"${radius}\\left({trig}\\right)$"
+
+
 def draft(spec_path: str) -> str:
     spec_mod = importlib.util.spec_from_file_location("spec", spec_path)
     spec = importlib.util.module_from_spec(spec_mod)
@@ -80,6 +99,8 @@ def draft(spec_path: str) -> str:
                 auto = f"$x = {latex(r)},\\ y = {latex(i)}$"
             elif fmt == "pm":  # a +/- pair of roots, given by one member
                 auto = f"$\\pm({latex(val)})$"
+            elif fmt == "polar":  # r(cos θ + i sin θ)
+                auto = polar_text(val)
             elif fmt == "quadrant":
                 auto = f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
             else:
