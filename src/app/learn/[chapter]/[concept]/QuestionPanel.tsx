@@ -7,6 +7,7 @@ import { daysUntil } from "@/engine/review";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
+import { SolutionReveal } from "./SolutionReveal";
 import { primaryButton, secondaryButton } from "./ui";
 
 /** Questions answered in a refresher before offering the way back. */
@@ -215,6 +216,7 @@ export function QuestionPanel({
           </div>
         )}
       </div>
+      {result?.solution && <SolutionReveal key={question.itemId} solution={result.solution} />}
 
       <div ref={feedbackRef} className="mt-5 flex flex-wrap gap-3">
         {result && refresher && answered >= REFRESHER_QUESTIONS ? (

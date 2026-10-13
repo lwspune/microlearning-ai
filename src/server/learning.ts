@@ -1,5 +1,5 @@
 import "server-only";
-import type { Concept, GraphNode, Tier } from "@/content/types";
+import type { Concept, Figure, GraphNode, Solution, Tier } from "@/content/types";
 import { conceptStates, type ConceptState } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
 import { displayOrder } from "@/engine/optionOrder";
@@ -230,6 +230,21 @@ export async function nextQuestionFor(itemId: string, userId: string): Promise<Q
     .order("id");
   if (ae) throw ae;
   return buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))), userId);
+}
+
+/** An item's step-by-step solution with its math rendered. */
+export type RenderedSolution = { steps: RenderedInline[][]; figure: Figure | null };
+
+/**
+ * The solution to a published item. Call only after the learner's attempt is
+ * recorded: it gives the answer away.
+ */
+export async function solutionFor(itemId: string): Promise<RenderedSolution | null> {
+  const { data, error } = await createAdminClient().from("published_items").select("solution").eq("id", itemId).single();
+  if (error) throw error;
+  // Shape enforced by the items_solution_shape constraint and the content validator.
+  const s = data.solution as unknown as Solution | null;
+  return s ? { steps: s.steps.map(renderInlineText), figure: s.figure ?? null } : null;
 }
 
 /** Where a repeated mistake should send the learner. */
