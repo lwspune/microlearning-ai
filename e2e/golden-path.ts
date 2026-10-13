@@ -87,7 +87,8 @@ await (async () => {
     await page.getByRole("button", { name: "Start as guest" }).waitFor();
     await shot("02-guest-start");
     await page.getByRole("button", { name: "Start as guest" }).click();
-    const stage = page.locator('section[aria-roledescription="carousel"]');
+    // :visible, because Next keeps previously visited lessons mounted but hidden.
+    const stage = page.locator('section[aria-roledescription="carousel"]:visible');
     const counter = async () => (await stage.locator("header p").innerText()).trim();
     await page.getByRole("heading", { name: "Think about this" }).waitFor();
     const total = Number((await counter()).split("/")[1]);
@@ -196,6 +197,90 @@ await (async () => {
     );
     check(db.attempts === 4 && db.state === "mastered" && db.anonymous === true, `DB: 4 attempts, mastered, anonymous user (${JSON.stringify(db)})`);
     check(cookies.some((c) => c.name.includes("auth-token")), "session cookie set");
+
+    // ---- M3a: a repeated mistake routes back to its root concept ----
+    // Options on the current question, with each misconception's fallback and whether it is published.
+    const optionsWithRoutes = async () => {
+      const itemId = await page.locator("fieldset[data-item-id]:visible").getAttribute("data-item-id");
+      return (await sql(
+        `select o.key, o.is_correct, m.code, m.fallback_kind, fc.status as fallback_status
+           from item_options o
+           left join misconceptions m on m.id = o.misconception_id
+           left join concepts fc on fc.id = m.fallback_concept_id
+          where o.item_id = '${itemId}' order by o.key`,
+      )) as { key: string; is_correct: boolean; code: string | null; fallback_kind: string | null; fallback_status: string | null }[];
+    };
+    const pick = async (key: string) => {
+      await page.locator(`fieldset[data-item-id]:visible input[type=radio][value=${key}]`).check();
+      await page.getByRole("button", { name: "Check answer" }).click();
+      // Visible only: the hidden, still-mounted previous lesson may show old feedback.
+      await page.getByText(/Correct!|Not quite\.|Mastered ✓/).filter({ visible: true }).first().waitFor();
+    };
+    const nextQ = async () => {
+      await page.getByRole("button", { name: /Next question|Keep trying here/ }).click();
+      await page.getByRole("button", { name: "Check answer" }).waitFor();
+    };
+
+    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Conjugate/ }).click();
+    await page.getByRole("heading", { name: "Think about this" }).waitFor();
+    while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+    }
+    await page.getByRole("button", { name: "Check answer" }).waitFor();
+
+    // 1. Repeat a mistake whose root concept isn't written yet → "worth revising".
+    let unpublishedTarget: string | null = null;
+    for (let i = 0; i < 6 && !(await page.getByText("Worth revising:").isVisible()); i++) {
+      if (i > 0) await nextQ();
+      const opts = await optionsWithRoutes();
+      const choice = opts.find((o) => o.code && o.fallback_kind === "concept" && o.fallback_status === "draft" && (!unpublishedTarget || o.code === unpublishedTarget));
+      if (choice) unpublishedTarget ??= choice.code;
+      await pick((choice ?? opts.find((o) => o.is_correct)!).key);
+    }
+    check(await page.getByText(/Worth revising: .+\(coming soon\)/).isVisible(), `repeating ${unpublishedTarget} suggests revising its unwritten root concept`);
+    check((await page.getByRole("link", { name: /Quick refresher/ }).count()) === 0, "no refresher link to an unwritten concept");
+    await shot("12-route-revise");
+
+    // 2. Repeat a mistake whose root concept is published → refresher link.
+    let target: string | null = null;
+    for (let i = 0; i < 8 && !(await page.getByRole("link", { name: /Quick refresher/ }).isVisible()); i++) {
+      await nextQ();
+      const opts = await optionsWithRoutes();
+      const choice = opts.find((o) => o.code && o.fallback_status === "approved" && (!target || o.code === target));
+      if (choice) target ??= choice.code;
+      await pick((choice ?? opts.find((o) => o.is_correct)!).key);
+    }
+    const refresherLink = page.getByRole("link", { name: "Quick refresher: Arithmetic →" });
+    check(await refresherLink.isVisible(), `repeating ${target} offers a refresher of Arithmetic`);
+    await shot("13-route-refresher");
+
+    await refresherLink.click();
+    await page.waitForURL("**/learn/complex-numbers/arithmetic?from=conjugate");
+    await page.getByText("Refresher", { exact: true }).waitFor();
+    check(await page.getByRole("link", { name: "Back to Conjugate →" }).first().isVisible(), "refresher shows a way back to Conjugate");
+    check((await counter()).startsWith("1 /"), "refresher starts at the first slide");
+    await shot("14-refresher");
+    while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+    }
+    for (let i = 0; i < 2; i++) {
+      if (i > 0) await nextQ();
+      else await page.getByRole("button", { name: "Check answer" }).waitFor();
+      await pick((await optionsWithRoutes()).find((o) => o.is_correct)!.key);
+    }
+    const backLink = page.locator("fieldset[data-item-id]:visible").locator("..").getByRole("link", { name: "Back to Conjugate →" });
+    await backLink.waitFor({ timeout: 10_000 }).catch(() => {});
+    check(await backLink.isVisible(), "after 2 refresher questions: Back to Conjugate");
+    await shot("15-refresher-done");
+    await backLink.click();
+    await page.waitForURL("**/learn/complex-numbers/conjugate");
+    await page.getByRole("heading", { name: "Check yourself" }).waitFor();
+    ok("returned to Conjugate's questions");
+
+    // A forged refresher link must not open a locked concept.
+    await page.goto(BASE + "/learn/complex-numbers/division?from=argand-plane");
+    await page.getByText(/builds on earlier ones you haven.t mastered yet/).waitFor();
+    ok("forged ?from= cannot unlock Division");
 
     check(consoleErrors.length === 0, "no console errors" + (consoleErrors.length ? ": " + consoleErrors.join(" | ") : ""));
   } catch (e) {

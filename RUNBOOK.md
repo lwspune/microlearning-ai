@@ -128,6 +128,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Shell `sed` edits silently failed on escaped patterns | edit with Python plus `assert old in s`, or the Edit tool |
 | New packages: avoid releases under 2 weeks old | pin exact versions (`-E`) |
 | A hard-coded "unpublished" example in the smoke check went stale when that concept was published | smoke routes are derived from the content registry |
+| Next keeps visited pages alive, so `useState` initial values don't re-run on return: the refresher opened at the old slide 8/8 | give a distinct mode its own `key` (`SlideDeck` in refresher mode); e2e waits on `:visible` / `filter({ visible: true })` |
 
 ## 7. Fine-tuning knobs
 
