@@ -6,7 +6,7 @@ import { chapters } from "@/content/chapters";
 import { currentUserId } from "@/lib/supabase/server";
 import { getConceptSession } from "@/server/learning";
 import { GuestStart } from "../../GuestStart";
-import { ConceptFlow } from "./ConceptFlow";
+import { SlideDeck } from "./SlideDeck";
 
 export function generateStaticParams() {
   return chapters.flatMap((ch) =>
@@ -49,7 +49,7 @@ async function ConceptSection({
       </p>
     );
   }
-  return <ConceptFlow chapterHref={`/learn/${chapter}`} session={session} />;
+  return <SlideDeck chapterHref={`/learn/${chapter}`} session={session} />;
 }
 
 async function ConceptContent({
@@ -67,11 +67,13 @@ async function ConceptContent({
 
   return (
     <>
-      <Link href={`/learn/${chapter}`} className="text-sm text-accent underline-offset-2 hover:underline">
-        ← {ch.title}
-      </Link>
-      <h1 className="mt-3 text-2xl font-semibold">{node.title}</h1>
-      <div className="mt-5">
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+        <Link href={`/learn/${chapter}`} className="text-sm text-accent underline-offset-2 hover:underline">
+          ← {ch.title}
+        </Link>
+        <h1 className="text-xl font-semibold">{node.title}</h1>
+      </div>
+      <div className="mt-3">
         <ConceptSection chapter={chapter} concept={concept} searchParams={searchParams} />
       </div>
     </>
@@ -80,7 +82,7 @@ async function ConceptContent({
 
 export default function ConceptPage({ params, searchParams }: PageProps<"/learn/[chapter]/[concept]">) {
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-6">
+    <main className="mx-auto w-full max-w-5xl px-4 py-4">
       <Suspense fallback={<p className="text-muted">Loading…</p>}>
         <ConceptContent params={params} searchParams={searchParams} />
       </Suspense>
