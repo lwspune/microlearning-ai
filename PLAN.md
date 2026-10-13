@@ -217,3 +217,42 @@ scripts + review → audio pipeline → lecture mode.
 **Parked (2026-10-13):** the voice provider (OpenAI recommended, sample first)
 and the API key. Steps 1, 2, 4 and the slide parts of 6–7 go ahead now;
 step 3 (audio) and step 5 (lecture mode) wait for that decision.
+
+## M3: routing back to the root gap + review queue (proposed 2026-10-13)
+
+**Insight:** with the unlock rule, a student who reaches a concept has
+usually already mastered its published prerequisites. So routing back is a
+**refresher** (slides plus 2 targeted questions, then straight back), not
+re-learning.
+
+### M3a: routing (first)
+1. **Trigger:** the same misconception shows up a second time in a learner's
+   recent attempts on a concept (window: last 10). Pure TypeScript engine
+   function, test-first. The threshold is a tuning knob.
+2. **Feedback panel:** besides the remediation, show "This looks like a gap
+   in **Conjugate**. Quick refresher (≈2 min) →" plus "Keep trying here".
+   - Fallback concept **published:** open its slides in *refresher mode*. A
+     banner says "Refresher for Division", and the end offers 2 questions from
+     that concept, then "Back to Division →", which returns to the questions slide.
+   - Fallback **not published yet**, or an outside topic: show the
+     remediation plus "Revise: expanding (x + y)²" (no link).
+3. **Return path:** `?from=<slug>` on the refresher URL, validated against
+   the chapter, so a student can never be sent off-site.
+4. **Data:** no schema change. Attempts already store `misconception_id`,
+   and fallbacks are in the database.
+
+### M3b: review queue
+1. **Spaced review:** when a concept is mastered it becomes due in 1 day,
+   then 3, 7, 14 and 30 days (Leitner boxes). A review is 2 questions: both
+   right moves it to the next box; any miss sends it back to box 1, with a
+   prompt to reread.
+2. **Routing feeds the queue:** a repeated misconception marks its fallback
+   concept *due now*.
+3. **Map:** a "Review today (n)" section above "Ready for you".
+4. **Data:** one migration adds `review_box` and moves the due/advance rule
+   into the database (like mastery: atomic and not farmable), test-first
+   with DB tests.
+
+**Tests:** engine unit tests (trigger, Leitner intervals) · DB tests for the
+review rule · e2e: two repeated mistakes → refresher → back → mastered; a
+due concept appears in "Review today".
