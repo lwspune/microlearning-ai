@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { RichInline, RichText } from "@/components/RichText";
 import { chapters } from "@/content/chapters";
-import type { Fallback, ItemSource } from "@/content/types";
+import type { Fallback, Figure, ItemSource } from "@/content/types";
+import { FigureView } from "@/figures/FigureView";
 import { findConcept, reviewEnabled } from "@/lib/review";
 
 export function generateStaticParams() {
@@ -27,6 +28,19 @@ function sourceLabel(s: ItemSource): string {
   if (s.kind === "authored") return "Authored";
   if (s.kind === "pyqvault-practice") return `PYQ Vault practice · ${s.ref}`;
   return `${s.exam} style${s.ref ? ` · ${s.ref}` : ""}`;
+}
+
+/** A figure with its alt text written out, so reviewers check both. */
+function ReviewFigure({ figure, upTo, caption }: { figure: Figure; upTo?: number; caption?: string }) {
+  return (
+    <figure className="rounded-lg border border-border p-3">
+      <FigureView figure={figure} upTo={upTo} className="h-auto w-full" />
+      <figcaption className="mt-2 text-sm text-muted">
+        {caption && <span className="font-medium text-foreground">{caption}. </span>}
+        Alt text: {figure.alt}
+      </figcaption>
+    </figure>
+  );
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -85,6 +99,12 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
       <Section title="Explanation">
         <h3 className="font-semibold">Intuition</h3>
         <RichText text={ex.intuition} className="mt-2" />
+        {ex.figure && (
+          <div className="mt-3 max-w-md">
+            <ReviewFigure figure={ex.figure} caption="Idea slide" />
+          </div>
+        )}
+        {node.visual && !ex.figure && <p className="mt-3 text-sm text-danger">Visual concept: idea figure missing.</p>}
         <h3 className="mt-6 font-semibold">Formal</h3>
         <RichText text={ex.formal} className="mt-2" />
         <h3 className="mt-6 font-semibold">Worked example</h3>
@@ -101,9 +121,17 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
             <span className="font-medium">Answer: </span>
             <RichInline text={ex.worked.answer} />
           </p>
+          {ex.worked.figure && (
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {ex.worked.steps.map((_, i) => (
+                <ReviewFigure key={i} figure={ex.worked.figure!} upTo={i + 1} caption={`After step ${i + 1}`} />
+              ))}
+            </div>
+          )}
+          {node.visual && !ex.worked.figure && <p className="mt-3 text-sm text-danger">Visual concept: worked figure missing.</p>}
         </div>
-        <h3 className="mt-6 font-semibold">Visual</h3>
-        <p className="mt-1 text-sm text-muted">Spec only. The interactive version is built in M2.</p>
+        <h3 className="mt-6 font-semibold">Interactive visual</h3>
+        <p className="mt-1 text-sm text-muted">Spec only; draggable visuals are not built yet.</p>
         <RichText text={ex.visualSpec} className="mt-2" />
       </Section>
 
@@ -152,6 +180,25 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
                   </li>
                 ))}
               </ul>
+              {item.solution ? (
+                <div className="mt-3 rounded-md border border-border p-3">
+                  <p className="text-sm font-medium">Solution</p>
+                  <ol className="mt-2 list-decimal space-y-1 pl-5">
+                    {item.solution.steps.map((st, i) => (
+                      <li key={i}>
+                        <RichInline text={st} />
+                      </li>
+                    ))}
+                  </ol>
+                  {item.solution.figure && (
+                    <div className="mt-3 max-w-sm">
+                      <ReviewFigure figure={item.solution.figure} />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="mt-3 text-sm text-muted">No solution yet.</p>
+              )}
             </li>
           ))}
         </ol>

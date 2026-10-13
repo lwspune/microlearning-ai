@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import { rolledBack, rolledBackSelect } from "./sql";
 
 /**
+ * Codes like C03-Q1 also exist in the real content, so every lookup is scoped
+ * to the fixture's chapter through `concept()`.
+ *
  * Fixture: chapter "t" with C01 ← C02 ← C03 (C03 needs C02 needs C01), and a
  * second chapter "u" with U01. All inside the test's rolled-back transaction.
  */
@@ -40,7 +43,7 @@ insert into item_options (item_id, key, text, is_correct, misconception_id, valu
   from items i
   cross join (values ${options}) as o(key, is_correct, mcode)
   left join misconceptions m on m.code = o.mcode and m.concept_id = i.concept_id
-  where i.code = 'C03-Q1';
+  where i.concept_id = ${concept("C03")} and i.code = 'C03-Q1';
 `;
 }
 
@@ -124,7 +127,8 @@ describe("content schema", () => {
           FIXTURE +
             misconception("C02-M1", "C02", `'concept', ${concept("C01")}, null`) +
             itemWithOptions(VALID_OPTIONS) +
-            `update item_options set misconception_id = (select id from misconceptions where code = 'C02-M1') where key = 'B';`,
+            `update item_options set misconception_id = (select id from misconceptions where concept_id = ${concept("C02")} and code = 'C02-M1')
+              where key = 'B' and item_id = (select id from items where concept_id = ${concept("C03")} and code = 'C03-Q1');`,
         ),
       ).rejects.toThrow(/option misconception must belong to the same concept as its item/);
     });
@@ -135,7 +139,7 @@ describe("content schema", () => {
 
     it("hides items of draft concepts and unverified items", async () => {
       const draftConcept = await rolledBackSelect(
-        FIXTURE + itemWithOptions(VALID_OPTIONS) + `update items set verified = true;`,
+        FIXTURE + itemWithOptions(VALID_OPTIONS) + `update items set verified = true where concept_id = ${concept("C03")};`,
         publishedItems,
       );
       expect(draftConcept).toEqual([]);
@@ -151,7 +155,7 @@ describe("content schema", () => {
       const rows = await rolledBackSelect(
         FIXTURE +
           itemWithOptions(VALID_OPTIONS) +
-          `update concepts set status = 'approved', body = '{}' where id = ${concept("C03")}; update items set verified = true;`,
+          `update concepts set status = 'approved', body = '{}' where id = ${concept("C03")}; update items set verified = true where concept_id = ${concept("C03")};`,
         publishedItems,
       );
       expect(rows).toEqual([{ code: "C03-Q1" }]);

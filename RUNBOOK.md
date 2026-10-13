@@ -60,12 +60,23 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    `python verify/build_concepts.py <content.py> <items.ts>`, which writes
    `concepts/cNN-<slug>.ts` with `status: "draft"`. The hook and worked
    example must not reuse an item. Misconception IDs have no gaps.
+5b. **Solutions and figures** (AUTHORING.md items 9–15): a 2+ step
+   `solution` on every item; for a `visual` concept, figures on the idea
+   slide, the worked example, and every point/locus solution, with element
+   `step`s matching the steps. `build_concepts.py` doesn't write these yet:
+   the C10/C24 pilot inserted them with a script
+   (`pilot_figures.py` pattern: insert the TS literal after each item's
+   options). Teach `build_concepts.py` to emit them before Phase B.
+   Then remove the concept from `backfill.ts`.
 6. Register: `python verify/build_index.py` regenerates the chapter's
    `index.ts`; the chapter test fails if any concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
    Look for KaTeX errors, sideways scrolling, and brackets stranded at line
-   ends (move them inside `$…$`).
+   ends (move them inside `$…$`). Check every figure in light and dark mode:
+   each "After step n" frame, labels clear of axis numbers and of each other.
+   A per-figure contact sheet beats a full-page screenshot (figures are too
+   small to judge at full-page scale).
 8. **Review:** the user approves on `/review`. Then set `status: "approved"`,
    commit, run `npm run content:seed`.
 9. **Remember the unlock consequence:** publishing a prerequisite *locks*
@@ -137,6 +148,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | A hard-coded "unpublished" example in the smoke check went stale when that concept was published | smoke routes are derived from the content registry |
 | Next keeps visited pages alive, so `useState` initial values don't re-run on return: the refresher opened at the old slide 8/8 | give a distinct mode its own `key` (`SlideDeck` in refresher mode); e2e waits on `:visible` / `filter({ visible: true })` |
 | Only the review-enabled build was ever checked; the plain production build failed (params read in `generateMetadata` on a fully static page) | Definition of done runs a plain `npm run build` as well |
+| Labels on a segment along the real axis, placed below it, sat on the axis numbers | AUTHORING.md item 15; axis numbers get a background halo; labels are clamped into the frame (`FigureView.test.tsx`) |
+| Stopping a background `next start` task left the server running, and the next run tested the stale build on that port | before `next start`, check the port (`Get-NetTCPConnection -LocalPort 3103`) and stop the old process |
+| A test fixture looked items up by code (`C03-Q1`) and collided with real content once it was published | scope fixture lookups to the fixture's own chapter |
 | `npm run x \| tail` reports `tail`'s exit code and can cut off the pass/fail summary, so a check looked "done" without its result | grep for the summary line (`Tests `, `items checked`) and read `${PIPESTATUS[0]}` before reporting a gate as passed |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 

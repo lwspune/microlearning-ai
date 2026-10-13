@@ -7,6 +7,7 @@ import { daysUntil } from "@/engine/review";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
+import { SolutionReveal } from "./SolutionReveal";
 import { primaryButton, secondaryButton } from "./ui";
 
 /** Questions answered in a refresher before offering the way back. */
@@ -248,6 +249,8 @@ export function QuestionPanel({
           Read the explanation again
         </button>
       </div>
+      {/* Below the buttons, so opening it never pushes "Next question" out of reach. */}
+      {result?.solution && <SolutionReveal key={question.itemId} solution={result.solution} />}
     </div>
   );
 }

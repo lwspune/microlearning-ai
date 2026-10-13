@@ -65,3 +65,37 @@ a student has used: retire it instead of removing it.
 7. **[S]** At least 5 items per concept, so mastery (2–3 in a row on fresh
    items) and the review queue never repeat an item too soon.
 8. **[S]** Exactly one correct option, which carries no misconception.
+
+## Solutions and figures
+
+Asked for 2026-10-14: every question teaches through an animated
+step-by-step solution, and anything that can be pictured on the Argand plane
+is. Figures are data ([types.ts](types.ts) `Figure`), drawn by
+[FigureView](../figures/FigureView.tsx). Concepts written before these rules
+are listed in `backfill.ts` until they are brought up to them.
+
+9. **[S]** Every item has a `solution` of at least 2 non-empty steps. It is
+   shown only after the learner answers, so it may state the answer. Steps
+   are inline text, one move each, ending at the answer. Never refer to an
+   option by its letter: the order is shuffled per learner.
+10. **[S]** A concept that can be pictured is marked `visual: true` in the
+    graph (points, distances, angles, rotations, loci, regions). A visual
+    concept has a figure on the idea slide (`explanation.figure`) and on the
+    worked example (`worked.figure`).
+11. **[S]** In a visual concept, every `point` and `locus` item has a figure
+    in its solution. Value items get one too wherever a picture helps (C10
+    adds one to every item).
+12. **[S]** Figures are well formed: alt text that says what the picture
+    shows in words; a view running low to high on both axes; finite
+    coordinates; positive radii; distinct points for lines, segments and
+    vectors; regions with at least one shape. Element `step`s stay within the
+    worked example's or solution's steps.
+13. **[S]** Labels are plain text, not LaTeX. Use Unicode: `−` for minus,
+    `²`, `√5`, `|z − (1 + 2i)| = 3`.
+14. **[R]** Each step adds what its text talks about (worked: `step` = the
+    worked step; idea slide: the order it plays in). Check the "After step n"
+    frames on `/review`.
+15. **[R]** Keep labels off the axis numbers: label a segment lying on the
+    real axis above it (`labelAt: "n"`), and a centre on an axis to the side
+    (`"nw"`). Labels are kept inside the frame automatically, but check
+    collisions on `/review` in light and dark mode.

@@ -351,6 +351,38 @@ await (async () => {
     await page.getByText(/builds on earlier ones you haven.t mastered yet/).waitFor();
     ok("forged ?from= cannot unlock Division");
 
+    // ---- Figures and step-by-step solutions (pilot concept: Argand plane, C10) ----
+    await page.goto(BASE + "/learn/complex-numbers");
+    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Argand plane/ }).click();
+    await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
+    while (!(await page.getByRole("heading", { name: "The idea" }).isVisible())) {
+      await page.getByRole("button", { name: "Next →" }).click();
+    }
+    const figure = stage.locator("svg[role=img]");
+    check(await figure.isVisible(), "idea slide shows a figure");
+    check(((await figure.locator("title").textContent()) ?? "").trim().length > 10, "the figure has alt text");
+    await shot("18-idea-figure");
+    await noSideScroll("idea figure");
+    while (!(await page.getByRole("heading", { name: "Worked example" }).isVisible())) {
+      await page.getByRole("button", { name: "Next →" }).click();
+    }
+    check(await figure.isVisible(), "worked example shows a figure");
+    while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+    }
+    await page.getByRole("button", { name: "Check answer" }).waitFor();
+    check((await page.getByRole("button", { name: "See the solution" }).count()) === 0, "no solution before answering");
+    await pick((await optionsWithRoutes()).find((o) => o.is_correct)!.key);
+    // The toggle's name flips to "Hide the solution" once open.
+    const solutionToggle = page.getByRole("button", { name: /^(See|Hide) the solution$/ }).filter({ visible: true });
+    check((await solutionToggle.getAttribute("aria-expanded")) === "false", "solution starts closed");
+    await solutionToggle.click();
+    check((await solutionToggle.getAttribute("aria-expanded")) === "true", "solution toggle reports it is open");
+    const solution = page.locator("[data-solution]:visible");
+    check((await solution.locator("ol > li").count()) >= 2, "solution shows at least 2 steps");
+    await shot("19-solution");
+    await noSideScroll("solution");
+
     check(consoleErrors.length === 0, "no console errors" + (consoleErrors.length ? ": " + consoleErrors.join(" | ") : ""));
   } catch (e) {
     fail("golden path aborted: " + String(e instanceof Error ? e.message : e).split("\n").slice(0, 6).join(" / "));

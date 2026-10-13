@@ -24,6 +24,31 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         t`Cartesian form: $x^2 + (y + 2)^2 = 16$.`,
       ],
       answer: t`The circle $x^2 + (y + 2)^2 = 16$: centre $-2i$, radius $4$.`,
+      figure: {
+        alt: "The circle with centre −2i and radius 4, which is x² + (y + 2)² = 16.",
+        view: { x: [-5.5, 5.5], y: [-6.8, 3] },
+        elements: [
+          { kind: "point", at: [0, -2], label: "−2i", labelAt: "w", step: 1 },
+          { kind: "segment", from: [0, -2], to: [4, -2], label: "4", labelAt: "n", tone: "muted", step: 2 },
+          { kind: "circle", centre: [0, -2], r: 4, step: 2 },
+          { kind: "label", at: [-5.3, 2.6], label: "x² + (y + 2)² = 16", labelAt: "e", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The point 1 + 2i, three points each at distance 3 from it, and the circle made of all such points: |z − (1 + 2i)| = 3.",
+      view: { x: [-3, 5], y: [-1.5, 6.8] },
+      elements: [
+        { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "sw", step: 1 },
+        { kind: "segment", from: [1, 2], to: [3.819, 3.026], tone: "muted", step: 2, label: "3", labelAt: "se" },
+        { kind: "point", at: [3.819, 3.026], step: 2 },
+        { kind: "segment", from: [1, 2], to: [-1.298, 3.928], tone: "muted", step: 2 },
+        { kind: "point", at: [-1.298, 3.928], step: 2 },
+        { kind: "segment", from: [1, 2], to: [0.479, -0.954], tone: "muted", step: 2 },
+        { kind: "point", at: [0.479, -0.954], step: 2 },
+        { kind: "circle", centre: [1, 2], r: 3, step: 3 },
+        { kind: "label", at: [-2.8, 6.3], label: "|z − (1 + 2i)| = 3", labelAt: "e", step: 3 },
+      ],
     },
     visualSpec: t`Drag a point $a$ and move a radius slider; the circle $|z - a| = r$ redraws, with its equation in both forms updating as you go.`,
   },
@@ -77,6 +102,22 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         { key: "C", text: t`$\left(x - 1\right)^2 + \left(y - 1\right)^2 = 4$`, correct: false, misconceptionId: "C24-M4", value: "x**2 - 2*x + y**2 - 2*y - 2" },
         { key: "D", text: t`$\left(x - 1\right)^2 + \left(y + 1\right)^2 = 4$`, correct: true, value: "x**2 - 2*x + y**2 + 2*y - 2" },
       ],
+      solution: {
+        steps: [
+          t`Group the constant: $|z - 1 + i| = |z - (1 - i)|$.`,
+          t`So the centre is $1 - i$ and the radius is $2$.`,
+          t`Cartesian form: $(x - 1)^2 + (y + 1)^2 = 2^2 = 4$.`,
+        ],
+        figure: {
+          alt: "The circle with centre 1 − i and radius 2.",
+          view: { x: [-2, 4.5], y: [-3.8, 1.8] },
+          elements: [
+            { kind: "point", at: [1, -1], label: "1 − i", labelAt: "sw", step: 2 },
+            { kind: "segment", from: [1, -1], to: [3, -1], label: "2", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "circle", centre: [1, -1], r: 2, step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C24-Q2",
@@ -89,6 +130,22 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         { key: "C", text: t`$\left(x - 2\right)^2 + \left(y + 1\right)^2 = 9$`, correct: true, value: "x**2 - 4*x + y**2 + 2*y - 4" },
         { key: "D", text: t`$\left(x - 2\right)^2 + \left(y + 1\right)^2 = 36$`, correct: false, misconceptionId: "C24-M3", value: "x**2 - 4*x + y**2 + 2*y - 31" },
       ],
+      solution: {
+        steps: [
+          t`Divide both sides by $2$: $|z - 2 + i| = 3$.`,
+          t`That is $|z - (2 - i)| = 3$: centre $2 - i$, radius $3$.`,
+          t`Cartesian form: $(x - 2)^2 + (y + 1)^2 = 9$.`,
+        ],
+        figure: {
+          alt: "The circle with centre 2 − i and radius 3.",
+          view: { x: [-1.8, 6], y: [-4.8, 2.6] },
+          elements: [
+            { kind: "point", at: [2, -1], label: "2 − i", labelAt: "sw", step: 2 },
+            { kind: "segment", from: [2, -1], to: [5, -1], label: "3", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "circle", centre: [2, -1], r: 3, step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C24-Q3",
@@ -101,6 +158,22 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         { key: "C", text: t`$\left(x - 2\right)^2 + y^2 = 5$`, correct: true, value: "x**2 - 4*x + y**2 - 1" },
         { key: "D", text: t`$\left(x + 2\right)^2 + y^2 = 5$`, correct: false, misconceptionId: "C24-M1", value: "x**2 + 4*x + y**2 - 1" },
       ],
+      solution: {
+        steps: [
+          t`Use $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$.`,
+          t`The equation becomes $x^2 + y^2 - 4x - 1 = 0$.`,
+          t`Complete the square: $(x - 2)^2 + y^2 = 5$, centre $2$, radius $\sqrt5$.`,
+        ],
+        figure: {
+          alt: "The circle with centre 2 and radius √5, which is (x − 2)² + y² = 5.",
+          view: { x: [-1, 5.5], y: [-3, 3] },
+          elements: [
+            { kind: "point", at: [2, 0], label: "2", labelAt: "nw", step: 3 },
+            { kind: "segment", from: [2, 0], to: [2, 2.236], label: "√5", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "circle", centre: [2, 0], r: 2.236, step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C24-Q4",
@@ -112,6 +185,22 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         { key: "B", text: t`$\left(x + 3\right)^2 + y^2 = 2$`, correct: false, misconceptionId: "C24-M2", value: "x**2 + 6*x + y**2 + 7" },
         { key: "C", text: t`$\left(x + 3\right)^2 + y^2 = 4$`, correct: true, value: "x**2 + 6*x + y**2 + 5" },
       ],
+      solution: {
+        steps: [
+          t`Rewrite $|z + 3|$ as $|z - (-3)|$.`,
+          t`So the centre is $-3$ and the radius is $2$.`,
+          t`Cartesian form: $(x + 3)^2 + y^2 = 4$.`,
+        ],
+        figure: {
+          alt: "The circle with centre −3 and radius 2.",
+          view: { x: [-6, 1], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "point", at: [-3, 0], label: "−3", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [-3, 0], to: [-3, 2], label: "2", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "circle", centre: [-3, 0], r: 2, step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C24-Q5",
@@ -124,6 +213,22 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         { key: "C", text: t`$x^2 + \left(y + 2\right)^2 = 9$`, correct: false, misconceptionId: "C24-M1", value: "x**2 + y**2 + 4*y - 5" },
         { key: "D", text: t`$x^2 + \left(y - 2\right)^2 = 9$`, correct: true, value: "x**2 + y**2 - 4*y - 5" },
       ],
+      solution: {
+        steps: [
+          t`Divide both sides by $3$: $|z - 2i| = 3$.`,
+          t`So the centre is $2i$ and the radius is $3$.`,
+          t`Cartesian form: $x^2 + (y - 2)^2 = 9$.`,
+        ],
+        figure: {
+          alt: "The circle with centre 2i and radius 3.",
+          view: { x: [-4, 4.5], y: [-1.8, 5.8] },
+          elements: [
+            { kind: "point", at: [0, 2], label: "2i", labelAt: "w", step: 2 },
+            { kind: "segment", from: [0, 2], to: [3, 2], label: "3", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "circle", centre: [0, 2], r: 3, step: 3 },
+          ],
+        },
+      },
     },
   ],
 };

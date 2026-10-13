@@ -32,6 +32,19 @@ describe("toSeedPayload", () => {
     expect(byCode("C14").body).toMatchObject({ engineNotes: [expect.stringContaining("C14-M1")] });
   });
 
+  it("sends each item's solution, or null while it has none", () => {
+    const solution = { steps: ["first", "second"], figure: { alt: "a", view: { x: [-1, 1] as [number, number], y: [-1, 1] as [number, number] }, elements: [] } };
+    const withSolution = {
+      ...complexNumbers,
+      concepts: complexNumbers.concepts.map((c) =>
+        c.id === "C06" ? { ...c, items: c.items.map((it, i) => (i === 0 ? { ...it, solution } : { ...it, solution: undefined })) } : c,
+      ),
+    };
+    const items = toSeedPayload(withSolution, true).concepts.find((c) => c.code === "C06")!.items;
+    expect(items[0].solution).toEqual(solution);
+    expect(items[1].solution).toBeNull();
+  });
+
   it("marks items verified only when told the verifier passed", () => {
     expect(byCode("C06").items.every((i) => i.verified)).toBe(true);
     expect(toSeedPayload(complexNumbers, false).concepts.flatMap((c) => c.items).some((i) => i.verified)).toBe(false);

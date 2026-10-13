@@ -298,3 +298,13 @@ figure step by step. New authoring rules, enforced by the validator.
   stored in the DB and returned only after the attempt is recorded. Pilot on
   C10 and C24.
 - **Phase B (content):** figures + solutions for all 30 concepts, in batches.
+  Needs: `build_concepts.py` to emit `figure`/`solution`; an `ellipse` and a
+  hyperbola-branch element for C28. When `backfill.ts` is empty, delete it
+  and make `items.solution` NOT NULL for approved concepts (new migration).
+
+**Phase A status (branch `figures-solutions`):** done, pending your review.
+`items.solution` column + shape check (migration `20261014120000`); content
+rules 9–15 enforced by the validator; SVG figure renderer; figures on idea and
+worked slides; "See the solution" after answering; review pages show figures
+per step. Pilot: C10 Argand plane and C24 circle locus. The other 28 concepts
+are in `backfill.ts`.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Chapter, Concept, GraphNode, Item } from "./types";
+import type { Chapter, Concept, Figure, GraphNode, Item } from "./types";
 import { validateChapter } from "./validate";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
@@ -18,7 +18,26 @@ function item(id: string, wrong: [string, string, string]): Item {
       { key: "C", text: "", correct: false, misconceptionId: wrong[1], value: "3" },
       { key: "D", text: "", correct: false, misconceptionId: wrong[2], value: "4" },
     ],
+    solution: { steps: ["first", "so the answer is 1"] },
   };
+}
+
+function figure(overrides: Partial<Figure> = {}): Figure {
+  return {
+    alt: "The point 1 + i",
+    view: { x: [-2, 2], y: [-2, 2] },
+    elements: [{ kind: "point", at: [1, 1], label: "1 + i" }],
+    ...overrides,
+  };
+}
+
+/** Makes C3 a visual concept that meets the figure rules. */
+function makeVisual(ch: Chapter) {
+  ch.graph[2].visual = true;
+  const c = ch.concepts[0];
+  c.explanation.figure = figure();
+  c.explanation.worked.steps = ["one", "two"];
+  c.explanation.worked.figure = figure({ elements: [{ kind: "point", at: [1, 1], step: 2 }] });
 }
 
 /** C1 → C2 → C3, with C3 fully authored and valid. */
@@ -146,6 +165,139 @@ describe("validateChapter", () => {
       expect(errorsAfter((ch) => (c3(ch).items[0].options[1].key = "A"))).toContainEqual(
         expect.stringMatching(/C3-Q1.*duplicate option key A/),
       );
+    });
+  });
+
+  describe("solutions (AUTHORING.md 9)", () => {
+    it("requires a solution on every item", () => {
+      expect(errorsAfter((ch) => delete c3(ch).items[0].solution)).toContainEqual(expect.stringMatching(/C3-Q1.*needs a step-by-step solution/));
+    });
+
+    it("requires at least two non-empty steps", () => {
+      expect(errorsAfter((ch) => (c3(ch).items[0].solution = { steps: ["all at once"] }))).toContainEqual(
+        expect.stringMatching(/C3-Q1.*solution needs at least 2 steps/),
+      );
+      expect(errorsAfter((ch) => (c3(ch).items[0].solution = { steps: ["one", " "] }))).toContainEqual(
+        expect.stringMatching(/C3-Q1.*solution step 2 is empty/),
+      );
+    });
+  });
+
+  describe("figures (AUTHORING.md 10–13)", () => {
+    it("accepts a visual concept with its figures", () => {
+      expect(errorsAfter(makeVisual)).toEqual([]);
+    });
+
+    it("requires a figure on the idea slide and the worked example of a visual concept", () => {
+      const errors = errorsAfter((ch) => {
+        makeVisual(ch);
+        delete c3(ch).explanation.figure;
+        delete c3(ch).explanation.worked.figure;
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3.*visual concept needs a figure on the idea slide/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3.*visual concept needs a figure on the worked example/));
+    });
+
+    it("requires a figure in the solution of a point or locus item in a visual concept", () => {
+      expect(
+        errorsAfter((ch) => {
+          makeVisual(ch);
+          c3(ch).items[0].verify = { kind: "locus", inputs: {} };
+        }),
+      ).toContainEqual(expect.stringMatching(/C3-Q1.*locus item in a visual concept needs a figure in its solution/));
+    });
+
+    it("rejects a figure without alt text", () => {
+      expect(errorsAfter((ch) => (c3(ch).explanation.figure = figure({ alt: " " })))).toContainEqual(
+        expect.stringMatching(/C3 idea figure.*needs alt text/),
+      );
+    });
+
+    it("rejects an empty or inverted view", () => {
+      expect(errorsAfter((ch) => (c3(ch).explanation.figure = figure({ view: { x: [2, -2], y: [-2, 2] } })))).toContainEqual(
+        expect.stringMatching(/C3 idea figure.*view/),
+      );
+    });
+
+    it("rejects a step beyond the worked example's steps", () => {
+      expect(
+        errorsAfter((ch) => {
+          makeVisual(ch);
+          c3(ch).explanation.worked.figure!.elements[0].step = 3;
+        }),
+      ).toContainEqual(expect.stringMatching(/C3 worked figure element 1.*step 3.*1 to 2/));
+    });
+
+    it("rejects a step beyond the solution's steps", () => {
+      expect(
+        errorsAfter((ch) => (c3(ch).items[0].solution!.figure = figure({ elements: [{ kind: "point", at: [0, 0], step: 5 }] }))),
+      ).toContainEqual(expect.stringMatching(/C3-Q1 solution figure element 1.*step 5.*1 to 2/));
+    });
+
+    it("rejects a non-positive radius and non-finite coordinates", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            elements: [
+              { kind: "circle", centre: [0, 0], r: 0 },
+              { kind: "point", at: [Number.NaN, 0] },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*radius/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*finite/));
+    });
+
+    it("rejects LaTeX in a label (labels are plain text)", () => {
+      expect(
+        errorsAfter((ch) => (c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "$z$" }] }))),
+      ).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*plain text/));
+    });
+
+    it("rejects a line through two equal points and an empty region", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            elements: [
+              { kind: "line", through: [[1, 1], [1, 1]] },
+              { kind: "region", within: [] },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*two different points/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*at least one shape/));
+    });
+  });
+
+  describe("backfill", () => {
+    it("exempts a listed concept from the solution and figure rules", () => {
+      expect(
+        errorsAfter((ch) => {
+          ch.backfillPending = ["C3"];
+          ch.graph[2].visual = true;
+          c3(ch).items.forEach((it) => delete it.solution);
+        }),
+      ).toEqual([]);
+    });
+
+    it("still checks figures that a listed concept already has", () => {
+      expect(
+        errorsAfter((ch) => {
+          ch.backfillPending = ["C3"];
+          c3(ch).items.forEach((it) => delete it.solution);
+          c3(ch).explanation.figure = figure({ alt: "" });
+        }),
+      ).toContainEqual(expect.stringMatching(/C3 idea figure.*needs alt text/));
+    });
+
+    it("flags a listed concept that already meets the rules, so the list only shrinks", () => {
+      expect(errorsAfter((ch) => (ch.backfillPending = ["C3"]))).toContainEqual(
+        expect.stringMatching(/C3 meets the solution and figure rules; remove it from backfillPending/),
+      );
+    });
+
+    it("rejects a listed concept that isn't authored", () => {
+      expect(errorsAfter((ch) => (ch.backfillPending = ["C2"]))).toContainEqual(expect.stringMatching(/backfillPending.*C2.*not an authored concept/));
     });
   });
 });

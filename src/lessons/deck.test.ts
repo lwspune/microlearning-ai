@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "@/content/chapters/complex-numbers";
-import type { Concept } from "@/content/types";
+import type { Concept, Figure } from "@/content/types";
 import { buildDeck } from "./deck";
 
 const concept = (id: string) => complexNumbers.concepts.find((c) => c.id === id)!;
@@ -12,7 +12,31 @@ function fake(formal: string, steps: string[]): Pick<Concept, "hook" | "explanat
   };
 }
 
+const FIG: Figure = { alt: "a point", view: { x: [-1, 1], y: [-1, 1] }, elements: [{ kind: "point", at: [0, 0] }] };
+
 describe("buildDeck", () => {
+  it("puts the concept's figure on the idea slide", () => {
+    const c = fake("F", ["s1"]);
+    c.explanation.figure = FIG;
+    const idea = buildDeck(c).find((s) => s.id === "idea");
+    expect(idea).toMatchObject({ kind: "text", figure: FIG });
+  });
+
+  it("gives each worked slide the worked figure, up to that slide's step", () => {
+    const c = fake("F", ["s1", "s2"]);
+    c.explanation.worked.figure = FIG;
+    const worked = buildDeck(c).filter((s) => s.kind === "worked");
+    expect(worked.map((s) => s.kind === "worked" && [s.figure, s.step])).toEqual([
+      [FIG, 1],
+      [FIG, 2],
+    ]);
+  });
+
+  it("leaves slides without a figure when the concept has none", () => {
+    const deck = buildDeck(fake("F", ["s1"]));
+    expect(deck.some((s) => "figure" in s && s.figure)).toBe(false);
+  });
+
   it("orders slides: hook, reveal, idea, formal, worked steps, questions", () => {
     expect(buildDeck(fake("F", ["s1", "s2", "s3"])).map((s) => s.id)).toEqual([
       "hook", "reveal", "idea", "formal-1", "worked-1", "worked-2", "worked-3", "questions",

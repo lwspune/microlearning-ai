@@ -13,9 +13,12 @@ function option(key: string, correct: boolean, misconception: string | null) {
   return { key, text: key, is_correct: correct, misconception, value: key };
 }
 
+const SOLUTION = { steps: ["first", "second"] };
+
 function item(code: string) {
   return {
     code,
+    solution: SOLUTION,
     stem: "s",
     source: { kind: "authored" },
     verify: { kind: "value", inputs: {} },
@@ -85,6 +88,29 @@ describe("seed_chapter", () => {
   it("rolls back entirely when the content is invalid", async () => {
     // C01 <- C02 plus C02 <- C01 is a cycle; nothing from this seed may remain.
     await expect(rolledBack(seed(payload({ c01Prereqs: ["C02"] })))).rejects.toThrow(/prerequisite cycle:/);
+  });
+
+  it("stores each item's step-by-step solution, readable through the published view", async () => {
+    const rows = await rolledBackSelect(
+      seed(payload()),
+      `select i.code, i.solution from published_items i join concepts c on c.id = i.concept_id where c.chapter_id = ${T} order by i.code;`,
+    );
+    expect(rows).toEqual([
+      { code: "C02-Q1", solution: SOLUTION },
+      { code: "C02-Q2", solution: SOLUTION },
+    ]);
+  });
+
+  it("rejects a solution with fewer than two steps", async () => {
+    const p = payload();
+    (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = { steps: ["only one"] };
+    await expect(rolledBack(seed(p))).rejects.toThrow(/items_solution_shape/);
+  });
+
+  it("rejects a solution whose steps are not text", async () => {
+    const p = payload();
+    (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = { steps: ["one", 2] };
+    await expect(rolledBack(seed(p))).rejects.toThrow(/items_solution_shape/);
   });
 
   for (const role of ["anon", "authenticated"]) {

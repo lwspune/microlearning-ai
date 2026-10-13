@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createSessionClient, currentUserId } from "@/lib/supabase/server";
 import type { RenderedBlock } from "@/lib/renderedText";
 import { renderRichText } from "@/lib/richText";
-import { nextQuestionFor, type Question, type Route, routeAfterMiss } from "@/server/learning";
+import { nextQuestionFor, type Question, type RenderedSolution, type Route, routeAfterMiss, solutionFor } from "@/server/learning";
 
 export type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -39,6 +39,8 @@ export type AnswerResult = {
   /** Spaced review: this answer was part of a due review; done = passed or missed. */
   review: { reviewing: boolean; done: boolean; passed: boolean; correct: number; needed: number; nextReviewAt: string | null };
   next: Question;
+  /** The answered item's step-by-step solution; sent only now that the attempt is recorded. */
+  solution: RenderedSolution | null;
 };
 
 type RecordAttemptResult = {
@@ -72,6 +74,11 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
   const r = data as RecordAttemptResult;
 
   try {
+    const [next, solution, route] = await Promise.all([
+      nextQuestionFor(itemId, userId),
+      solutionFor(itemId),
+      r.correct ? null : routeAfterMiss(itemId, userId),
+    ]);
     return {
       ok: true,
       data: {
@@ -82,7 +89,7 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
         needed: r.needed,
         mastered: r.state === "mastered",
         masteredNow: r.mastered_now,
-        route: r.correct ? null : await routeAfterMiss(itemId, userId),
+        route,
         review: {
           reviewing: r.reviewing,
           done: r.review_done,
@@ -91,7 +98,8 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
           needed: r.review_needed,
           nextReviewAt: r.next_review_at,
         },
-        next: await nextQuestionFor(itemId, userId),
+        next,
+        solution,
       },
     };
   } catch (e) {
