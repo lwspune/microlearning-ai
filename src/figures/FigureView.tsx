@@ -47,6 +47,10 @@ const LABEL_OFFSET = {
   sw: [-7, 16, "end"],
 } as const;
 
+/** Label font size, and a generous per-character width estimate used to keep labels in frame. */
+const LABEL_PX = 15;
+const LABEL_CHAR_PX = 8.5;
+
 /** Angle marks are drawn at a fixed size on screen. */
 const ANGLE_MARK_PX = 22;
 
@@ -121,7 +125,7 @@ function Axes({ view, f }: { view: View; f: Frame }) {
         {hasX && <line x1={0} x2={fmt(f.width)} y1={fmt(oy)} y2={fmt(oy)} />}
         {hasY && <line y1={0} y2={fmt(f.height)} x1={fmt(ox)} x2={fmt(ox)} />}
       </g>
-      <g fill="var(--muted)" fontSize={11}>
+      <g fill="var(--muted)" fontSize={11} stroke="var(--background)" strokeWidth={3} paintOrder="stroke" strokeLinejoin="round">
         {hasX &&
           xs.map((v) => (
             <text key={`tx${v}`} x={fmt(f.px([v, 0])[0])} y={fmt(oy + 14)} textAnchor="middle">
@@ -258,15 +262,20 @@ function Label({ el, view, f, motion }: { el: FigureElement; view: View; f: Fram
   if (!el.label) return null;
   const anchor = labelAnchor(el, view, f);
   if (!anchor) return null;
-  const [x, y] = f.px(anchor);
+  const [ax, ay] = f.px(anchor);
   const [dx, dy, textAnchor] = LABEL_OFFSET[el.labelAt ?? (el.kind === "label" ? "n" : "ne")];
+  // Clamp into the frame: a label anchored near an edge would otherwise be cut off.
+  const w = el.label.length * LABEL_CHAR_PX;
+  const lead = textAnchor === "start" ? 0 : textAnchor === "end" ? w : w / 2;
+  const x = Math.min(Math.max(ax + dx, lead + 2), f.width - (w - lead) - 2);
+  const y = Math.min(Math.max(ay + dy, LABEL_PX - 1), f.height - 4);
   return (
     <text
       {...motion}
-      x={fmt(x + dx)}
-      y={fmt(y + dy)}
+      x={fmt(x)}
+      y={fmt(y)}
       textAnchor={textAnchor}
-      fontSize={15}
+      fontSize={LABEL_PX}
       fontWeight={500}
       fill={el.tone && el.tone !== "accent" ? TONE[el.tone] : "var(--foreground)"}
       stroke="var(--background)"

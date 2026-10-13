@@ -47,6 +47,29 @@ describe("FigureView", () => {
     expect(out.match(/fig-(in|draw)/g)).toHaveLength(2); // the segment draws in, its label fades in
   });
 
+  it("keeps labels inside the frame, even when anchored at its edge", () => {
+    // 400 x 300 frame; labels anchored on the top and right edges.
+    const out = html({
+      figure: {
+        ...fig,
+        elements: [
+          { kind: "label", at: [5, 5], label: "a long label at the corner" },
+          { kind: "point", at: [5, 0], label: "edge", labelAt: "e" },
+        ],
+      },
+    });
+    const texts = [...out.matchAll(/<text x="([\d.-]+)" y="([\d.-]+)" text-anchor="(\w+)"[^>]*font-size="15"[^>]*>([^<]+)</g)];
+    expect(texts).toHaveLength(2);
+    for (const [, x, y, anchor, label] of texts) {
+      const w = label.length * 8.5;
+      const left = anchor === "start" ? +x : anchor === "end" ? +x - w : +x - w / 2;
+      expect(left).toBeGreaterThanOrEqual(0);
+      expect(left + w).toBeLessThanOrEqual(400);
+      expect(+y).toBeGreaterThanOrEqual(14);
+      expect(+y).toBeLessThanOrEqual(300);
+    }
+  });
+
   it("in sequence mode, delays each step's elements in turn", () => {
     const out = html({ figure: fig, stagger: 1 });
     expect(out).toContain("animation-delay:1s");
