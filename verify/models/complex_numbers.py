@@ -10,7 +10,7 @@ Result types by item kind:
   locus  -> polynomial in x, y (the locus is "poly = 0")
   point  -> polynomial in x, y (the locus the option point must lie on)
 """
-from sympy import I, Abs, atan, atan2, expand, im, pi, re, sqrt, symbols
+from sympy import Abs, I, Integer, atan, atan2, expand, im, pi, re, sqrt, symbols, sympify
 
 x, y = symbols("x y", real=True)
 
@@ -247,4 +247,224 @@ def _c11(kind):
 C11 = {k: _c11(k) for k in ["key", "C11-M1", "C11-M2", "C11-M3", "C11-M4", "C11-M5"]}
 
 
-MODELS = {"C04": C04, "C05": C05, "C06": C06, "C10": C10, "C11": C11, "C14": C14, "C25": C25}
+# ---------- C01 The imaginary unit ----------
+def _sqrt_variant(a, kind):
+    """sqrt of a real number a, using the misconception's rule when a < 0."""
+    if a >= 0:
+        return sqrt(a)
+    m = sqrt(-a)
+    return {
+        "C01-M3": -m,  # pulls the minus outside: sqrt(-a) = -sqrt(a)
+        "C01-M5": m,  # drops the minus: sqrt(-a) = sqrt(a)
+        "C01-M6": -I * m,  # takes the negative root
+    }.get(kind, I * m)
+
+
+_SQRT_KINDS = ("key", "C01-M3", "C01-M5", "C01-M6")
+
+
+def _c01(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "sqrt":
+            if kind not in _SQRT_KINDS:
+                raise ValueError(f"{kind} does not apply")
+            return _sqrt_variant(v["a"], kind)
+        if op == "sqrt_sum":
+            if kind not in _SQRT_KINDS:
+                raise ValueError(f"{kind} does not apply")
+            return _sqrt_variant(v["a"], kind) + _sqrt_variant(v["b"], kind)
+        if op == "sqrt_prod":
+            a, b = v["a"], v["b"]
+            if kind == "C01-M1":  # sqrt(a) sqrt(b) = sqrt(ab) even when both are negative
+                return sqrt(a * b)
+            if kind == "C01-M7":  # multiplies under one root but keeps a minus
+                return sqrt(-Abs(a * b))
+            if kind not in _SQRT_KINDS:
+                raise ValueError(f"{kind} does not apply")
+            return expand(_sqrt_variant(a, kind) * _sqrt_variant(b, kind))
+        if op == "isq":  # (k i)^2
+            k = v["k"]
+            if kind == "key":
+                return -(k**2)
+            if kind == "C01-M2":  # i^2 = +1
+                return k**2
+            if kind == "C01-M4":  # squares k but not i
+                return k**2 * I
+            raise ValueError(f"{kind} does not apply")
+        raise ValueError(f"unknown op {op}")
+    return model
+
+
+C01 = {k: _c01(k) for k in ["key", "C01-M1", "C01-M2", "C01-M3", "C01-M4", "C01-M5", "C01-M6", "C01-M7"]}
+
+
+# ---------- C02 Powers of i ----------
+def _c02(kind):
+    def model(v, p):
+        n = int(v["n"])
+        r = n % 4
+        if kind == "key":
+            return I**n
+        if kind == "C02-M1":  # i^3 = i
+            if r != 3:
+                raise ValueError("C02-M1 only shows on remainder 3")
+            return I
+        if kind == "C02-M2":  # off by one in the cycle
+            return I ** (r + 1)
+        if kind == "C02-M3":  # pairs up i^2 = -1 and forgets the leftover i
+            return Integer(-1) ** (n // 2)
+        if kind == "C02-M4":  # ignores the minus in a negative exponent
+            if n >= 0:
+                raise ValueError("C02-M4 needs a negative exponent")
+            return I ** (-n)
+        raise ValueError(kind)
+    return model
+
+
+C02 = {k: _c02(k) for k in ["key", "C02-M1", "C02-M2", "C02-M3", "C02-M4"]}
+
+
+# ---------- C03 Standard form and equality ----------
+def _c03(kind):
+    def model(v, p):
+        op = p["op"]
+        if op == "im":
+            z = expand(v["z"])
+            if kind == "key":
+                return im(z)
+            if kind == "C03-M1":  # keeps the i: Im(a + ib) = ib
+                return I * im(z)
+            if kind == "C03-M2":  # gives the real part instead
+                return re(z)
+            if kind == "C03-M3":  # drops the sign of the imaginary part
+                return Abs(im(z))
+            raise ValueError(kind)
+        if op == "equate":  # (a1 x + p) + i(a2 y + q) = c + i d, x and y real
+            a1, pp, c, a2, q, d = (v[k] for k in ("a1", "p", "c", "a2", "q", "d"))
+            if kind == "C03-M3":
+                d = -d
+            if kind == "C03-M4":  # equates real with imaginary
+                c, d = d, c
+            if kind == "C03-M5":  # moves the constant without changing its sign
+                return (c + pp) / a1 + I * (d + q) / a2
+            if kind not in ("key", "C03-M3", "C03-M4"):
+                raise ValueError(kind)
+            return (c - pp) / a1 + I * (d - q) / a2
+        raise ValueError(op)
+    return model
+
+
+C03 = {k: _c03(k) for k in ["key", "C03-M1", "C03-M2", "C03-M3", "C03-M4", "C03-M5"]}
+
+
+# ---------- C07 Purely real / purely imaginary (find real x) ----------
+_xr = symbols("x", real=True)
+
+
+def _solve_linear(part):
+    """Root of an expression linear in x."""
+    a = part.diff(_xr)
+    b = part.subs(_xr, 0)
+    if a == 0:
+        raise ValueError("no unique solution")
+    return -b / a
+
+
+def _parts_in_x(w):
+    r, i = expand(w).as_real_imag()
+    return expand(r), expand(i)
+
+
+def _c07(kind):
+    def model(v, p):
+        num = sympify(p["num"], locals={"x": _xr, "I": I})
+        den = sympify(p.get("den", "1"), locals={"x": _xr, "I": I})
+        z = expand(num * (den.conjugate()) / expand(den * den.conjugate()))
+        want_real = p["want"] == "real"
+        re_z, im_z = _parts_in_x(z)
+        part, other = (im_z, re_z) if want_real else (re_z, im_z)
+        if kind == "key":
+            return _solve_linear(part)
+        if kind == "C07-M1":  # swaps the condition
+            return _solve_linear(other)
+        if kind == "C07-M2":  # applies the condition to the numerator only
+            if den == 1:
+                raise ValueError("C07-M2 needs a quotient")
+            re_n, im_n = _parts_in_x(num)
+            return _solve_linear(im_n if want_real else re_n)
+        if kind == "C07-M3":  # solves a x + b = 0 as x = b / a
+            return part.subs(_xr, 0) / part.diff(_xr)
+        raise ValueError(kind)
+    return model
+
+
+C07 = {k: _c07(k) for k in ["key", "C07-M1", "C07-M2", "C07-M3"]}
+
+
+# ---------- C08 Solving a z + b conj(z) = c ----------
+_x8, _y8 = symbols("x y", real=True)
+
+
+def _solve_parts(a, b, c, cross=False):
+    from sympy import solve
+
+    lhs = expand(a * (_x8 + I * _y8) + b * (_x8 - I * _y8))
+    re_l, im_l = lhs.as_real_imag()
+    rc, ic = expand(c).as_real_imag()
+    if cross:
+        rc, ic = ic, rc
+    sol = solve([re_l - rc, im_l - ic], [_x8, _y8], dict=True)
+    if len(sol) != 1:
+        raise ValueError("no unique solution")
+    return sol[0][_x8] + I * sol[0][_y8]
+
+
+def _c08(kind):
+    def model(v, p):
+        a, b, c = v["a"], v["b"], v["c"]
+        if kind == "key":
+            return _solve_parts(a, b, c)
+        if kind == "C08-M1":  # treats conj(z) as z
+            return expand(c / (a + b))
+        if kind == "C08-M2":  # equates real with imaginary
+            return _solve_parts(a, b, c, cross=True)
+        if kind == "C08-M3":  # sign slip on the imaginary part
+            k = _solve_parts(a, b, c)
+            return re(k) - I * im(k)
+        raise ValueError(kind)
+    return model
+
+
+C08 = {k: _c08(k) for k in ["key", "C08-M1", "C08-M2", "C08-M3"]}
+
+
+# ---------- C09 Square root of a complex number (as a +/- pair) ----------
+def _normalise_root(w):
+    """Represent the pair +/-w by its member with positive real part (else positive imaginary part)."""
+    w = expand(w)
+    r, i = w.as_real_imag()
+    if r < 0 or (r == 0 and i < 0):
+        return expand(-w)
+    return w
+
+
+def _c09(kind):
+    def model(v, p):
+        z = v["z"]
+        a, b = z.as_real_imag()
+        if kind == "key":
+            return _normalise_root(sqrt(z))
+        if kind == "C09-M1":  # splits the root over the sum: sqrt(a) + i sqrt(b)
+            return _normalise_root(sqrt(a) + I * sqrt(b))
+        if kind == "C09-M2":  # sign slip in 2xy = b: the conjugate root
+            r, i = _normalise_root(sqrt(z)).as_real_imag()
+            return _normalise_root(r - I * i)
+        raise ValueError(kind)
+    return model
+
+
+C09 = {k: _c09(k) for k in ["key", "C09-M1", "C09-M2"]}
+
+
+MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C14": C14, "C25": C25}
