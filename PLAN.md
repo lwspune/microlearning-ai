@@ -121,3 +121,47 @@ there's no Docker here, so no local Supabase.
 **Definition of done for M1:** lint + tests + verify pass · `/review` checked in
 a browser at phone and desktop width · schema tests pass against the dev
 project.
+
+## M2 detailed plan (approved 2026-10-13)
+
+Goal: a student opens the app on a phone, picks a concept, learns it through
+cards, answers questions one at a time, and masters it. Answers are checked
+server-side.
+
+1. **Sign-in:** Supabase **anonymous sign-in** as the guest mode. Every
+   visitor gets a real (anonymous) user, so their progress is stored with no
+   separate guest system. Later they link Google to keep it. Google sign-in
+   needs an OAuth client from Google Cloud (you create it), so it can follow
+   when ready. New dependencies: `@supabase/supabase-js` + `@supabase/ssr`
+   (sessions in Next.js cookies).
+2. **Engine (pure TypeScript, test-first)** in `src/engine/`:
+   - **Unlock:** a published concept is available when all of its
+     *published* prerequisite ancestors are mastered. Unpublished ones are
+     assumed known, so in the pilot C06, C14 and C25 all start open.
+   - **Mastery** is enforced in the database (`record_attempt`) so it can't
+     be farmed or raced: 3 *different* questions answered correctly since the
+     last wrong answer. The app reads the target from the database.
+   - **Next question:** an unseen question first. Once all have been seen,
+     the least recently answered.
+3. **Recording an answer (server-side, one transaction):** a server action
+   grades the answer from the database. The client never receives the key or
+   the misconception tags before answering. A `record_attempt` database
+   function writes the attempt and the new state atomically, and refuses a
+   stale double-submit.
+4. **Screens (mobile-first):**
+   - `/learn/complex-numbers`: the chapter map, showing each concept's state
+     (locked / open / learning / mastered).
+   - `/learn/complex-numbers/[concept]`: cards for hook → reveal → intuition
+     → formal → worked example, then questions one at a time.
+   - Feedback after each answer: right, or the remediation for the specific
+     mistake that option reveals.
+   - "Mastered" screen, then back to the map.
+   Routing to the fallback concept is M3. Many fallbacks point to concepts
+   not written yet, so M3 also has to handle that case.
+5. **Tests:** engine unit tests · DB tests for `record_attempt` (atomic,
+   owner-only, no client writes) · a browser golden-path script (guest →
+   learn → answer → mastered) · screenshot sheet.
+
+**Split out as M2b (its own branch):** the three interactive visuals
+(Argand-plane widgets). They're independent of the engine and big enough to
+review on their own.
