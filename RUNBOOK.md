@@ -127,6 +127,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | `python -I` hides user-installed packages (sympy) | run the verifier without `-I` (it reads only our own JSON) |
 | Shell `sed` edits silently failed on escaped patterns | edit with Python plus `assert old in s`, or the Edit tool |
 | New packages: avoid releases under 2 weeks old | pin exact versions (`-E`) |
+| A hard-coded "unpublished" example in the smoke check went stale when that concept was published | smoke routes are derived from the content registry |
 
 ## 7. Fine-tuning knobs
 

@@ -7,9 +7,28 @@
  *
  * Usage: node scripts/smoke-routes.ts [baseUrl]   (default http://localhost:3000)
  */
-export {}; // module scope, for top-level await
+import { chapters } from "../src/content/chapters/index.ts";
 
 const base = process.argv[2] ?? "http://localhost:3000";
+
+// Derived from the content, so publishing a concept can't make this list stale.
+const contentRoutes = chapters.flatMap((ch) => {
+  const published = new Set(ch.concepts.filter((c) => c.status === "approved").map((c) => c.id));
+  const authored = new Set(ch.concepts.map((c) => c.id));
+  const slugOf = (id: string) => ch.graph.find((n) => n.id === id)!.slug;
+  const unwritten = ch.graph.find((n) => !authored.has(n.id));
+  return [
+    [`/learn/${ch.slug}`, "ok"],
+    ...[...authored].map((id) => [`/review/${ch.slug}/${slugOf(id)}`, "ok"]),
+    ...[...published].map((id) => [`/learn/${ch.slug}/${slugOf(id)}`, "ok"]), // guests see the start card
+    ...(unwritten
+      ? [
+          [`/review/${ch.slug}/${unwritten.slug}`, "missing"],
+          [`/learn/${ch.slug}/${unwritten.slug}`, "missing"], // not published: no guest card either
+        ]
+      : []),
+  ] as [string, "ok" | "missing"][];
+});
 
 const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/", "ok"],
@@ -17,17 +36,11 @@ const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/icon/192", "ok"],
   ["/icon/512", "ok"],
   ["/review", "ok"],
-  ["/review/complex-numbers/division", "ok"],
-  ["/review/complex-numbers/argument", "ok"],
-  ["/review/complex-numbers/perpendicular-bisector", "ok"],
+  ["/learn", "ok"],
   ["/review/complex-numbers/not-a-concept", "missing"],
   ["/review/not-a-chapter/division", "missing"],
-  ["/review/complex-numbers/conjugate", "missing"], // in the graph, not yet authored
-  ["/learn", "ok"],
-  ["/learn/complex-numbers", "ok"],
-  ["/learn/complex-numbers/division", "ok"], // guest sees the start card
-  ["/learn/complex-numbers/conjugate", "missing"], // not published: no guest card either
   ["/learn/not-a-chapter", "missing"],
+  ...contentRoutes,
 ];
 
 const NOT_FOUND_TEXT = "This page could not be found";
