@@ -24,7 +24,7 @@ describe("Complex Numbers chapter", () => {
     expect(redundant).toEqual([]);
   });
 
-  it("has the three M0 pilot concepts authored", () => {
-    expect(complexNumbers.concepts.map((c) => c.id).sort()).toEqual(["C06", "C14", "C25"]);
+  it("has the authored concepts registered", () => {
+    expect(complexNumbers.concepts.map((c) => c.id).sort()).toEqual(["C04", "C05", "C06", "C10", "C11", "C14", "C25"]);
   });
 });
