@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { RichInline, RichText } from "@/components/RichText";
 import { chapters } from "@/content/chapters";
 import type { Fallback, ItemSource } from "@/content/types";
@@ -39,7 +40,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-export default async function ConceptReview({ params }: PageProps<"/review/[chapter]/[concept]">) {
+async function ConceptReviewContent({ params }: { params: PageProps<"/review/[chapter]/[concept]">["params"] }) {
   if (!reviewEnabled()) notFound();
   const { chapter: chapterSlug, concept: conceptSlug } = await params;
   const found = findConcept(chapterSlug, conceptSlug);
@@ -168,5 +169,13 @@ export default async function ConceptReview({ params }: PageProps<"/review/[chap
         </Section>
       )}
     </main>
+  );
+}
+
+export default function ConceptReview({ params }: PageProps<"/review/[chapter]/[concept]">) {
+  return (
+    <Suspense fallback={<main className="mx-auto w-full max-w-2xl px-4 py-8 text-muted">Loading…</main>}>
+      <ConceptReviewContent params={params} />
+    </Suspense>
   );
 }

@@ -23,6 +23,11 @@ const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/review/complex-numbers/not-a-concept", "missing"],
   ["/review/not-a-chapter/division", "missing"],
   ["/review/complex-numbers/conjugate", "missing"], // in the graph, not yet authored
+  ["/learn", "ok"],
+  ["/learn/complex-numbers", "ok"],
+  ["/learn/complex-numbers/division", "ok"], // guest sees the start card
+  ["/learn/complex-numbers/conjugate", "missing"], // not published: no guest card either
+  ["/learn/not-a-chapter", "missing"],
 ];
 
 const NOT_FOUND_TEXT = "This page could not be found";
