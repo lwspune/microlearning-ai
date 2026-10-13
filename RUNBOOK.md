@@ -107,6 +107,20 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    - Leave no test data behind (check `auth.users` and `attempts`).
 7. Show the user, then **merge** (`git merge --ff-only`) and delete the branch.
 
+### UI conventions ("calm editorial" design system)
+
+- Colours only through tokens (`bg-card`, `text-muted`, `bg-accent-soft`…);
+  never raw hex in components. A new text/background combination goes into
+  `tokens.test.ts` first.
+- Shared class strings live in `src/components/ui.ts`; icons are inline SVG
+  in `src/components/icons.tsx` (decorative, always beside visible text).
+- Headings use `font-display`. Motion uses `motion-safe:` / `fig-in`, so it
+  is skipped under reduced motion.
+- Keep the accessible names the e2e relies on ("Next →", "← Back",
+  "Check answer", "Mastered ✓", "Not quite."…) when restyling.
+- Figures inside a card are wrapped in `FigureFrame`, which sets
+  `--figure-bg` so label halos match the card.
+
 ## 5. Database changes
 
 1. New migration file in `supabase/migrations/` (timestamped). **Never edit
@@ -150,6 +164,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Only the review-enabled build was ever checked; the plain production build failed (params read in `generateMetadata` on a fully static page) | Definition of done runs a plain `npm run build` as well |
 | Labels on a segment along the real axis, placed below it, sat on the axis numbers | AUTHORING.md item 15; axis numbers get a background halo; labels are clamped into the frame (`FigureView.test.tsx`) |
 | Stopping a background `next start` task left the server running, and the next run tested the stale build on that port | before `next start`, check the port (`Get-NetTCPConnection -LocalPort 3103`) and stop the old process |
+| A long-running dev server kept serving the old stylesheet after `globals.css` changed (new utilities missing) | if a style change doesn't show, probe the computed style, then restart `npm run dev` |
+| Two classes for one property in a class string (`bg-card` from a shared card plus `bg-accent-soft`) silently picked one | shared styles have colourless shapes (`linkCardShape`); each variant adds one border and one background |
+| Hiding answer radios with `sr-only` made Playwright unable to click them | an invisible radio covering the whole card (`absolute inset-0 opacity-0`) stays clickable and focusable |
 | A test fixture looked items up by code (`C03-Q1`) and collided with real content once it was published | scope fixture lookups to the fixture's own chapter |
 | `npm run x \| tail` reports `tail`'s exit code and can cut off the pass/fail summary, so a check looked "done" without its result | grep for the summary line (`Tests `, `items checked`) and read `${PIPESTATUS[0]}` before reporting a gate as passed |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
@@ -166,5 +183,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Next-question choice | `src/engine/nextItem.ts` | tested |
 | Unlock rule | `src/engine/unlock.ts` | tested; unpublished prerequisites count as known |
 | Min items per concept (5) | `MIN_ITEMS` in `src/content/validate.ts` | |
-| Colour tokens | `src/app/globals.css` | recompute contrast for every pair |
+| Colour tokens | `src/app/globals.css` | `src/app/tokens.test.ts` computes AA contrast for every pair the UI uses; add a pair with any new text/background combination |
+| Button, card, eyebrow styles | `src/components/ui.ts` | one border colour and one background per class string (variants use `linkCardShape`) |
+| Display font | `Fraunces` in `src/app/layout.tsx` (`font-display`) | |
 | Guest sign-in rate limit | Supabase auth config (30/hour/IP) | add CAPTCHA before public launch |

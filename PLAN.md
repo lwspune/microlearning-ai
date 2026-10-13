@@ -308,3 +308,15 @@ rules 9–15 enforced by the validator; SVG figure renderer; figures on idea and
 worked slides; "See the solution" after answering; review pages show figures
 per step. Pilot: C10 Argand plane and C24 circle locus. The other 28 concepts
 are in `backfill.ts`.
+
+## Premium look and feel (branch `premium-ui`, 2026-10-14)
+
+"Calm editorial" direction, chosen by you: warm paper and ink palette, deep
+indigo accent, Fraunces display headings, soft card shadows. Redesigned: the
+landing page (hero figure, how it works, chapter cards), chapter list,
+chapter map (progress ring + group bars, Continue card, chapter path), lesson
+slides (segmented progress, step chips, framed figures), questions (answer
+cards, feedback panels), solutions, mastery moment, guest and locked screens.
+Behaviour change: mastered concepts leave "Ready for you" and show on the path.
+Not restyled: the internal /review pages (they inherit the new tokens).
+
