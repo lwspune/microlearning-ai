@@ -216,7 +216,6 @@ export function QuestionPanel({
           </div>
         )}
       </div>
-      {result?.solution && <SolutionReveal key={question.itemId} solution={result.solution} />}
 
       <div ref={feedbackRef} className="mt-5 flex flex-wrap gap-3">
         {result && refresher && answered >= REFRESHER_QUESTIONS ? (
@@ -250,6 +249,8 @@ export function QuestionPanel({
           Read the explanation again
         </button>
       </div>
+      {/* Below the buttons, so opening it never pushes "Next question" out of reach. */}
+      {result?.solution && <SolutionReveal key={question.itemId} solution={result.solution} />}
     </div>
   );
 }

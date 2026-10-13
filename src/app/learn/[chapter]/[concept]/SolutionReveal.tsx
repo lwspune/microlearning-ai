@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { RenderedInlineNodes } from "@/components/RenderedRichText";
 import { FigureView } from "@/figures/FigureView";
 import type { RenderedSolution } from "@/server/learning";
@@ -14,6 +14,12 @@ export function SolutionReveal({ solution }: { solution: RenderedSolution }) {
   const [open, setOpen] = useState(false);
   const [plays, setPlays] = useState(0);
   const panelId = useId();
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // On small screens the solution opens below the fold of the slide.
+  useEffect(() => {
+    if (open) panelRef.current?.scrollIntoView({ block: "nearest" });
+  }, [open, plays]);
 
   return (
     <div className="mt-4">
@@ -22,7 +28,7 @@ export function SolutionReveal({ solution }: { solution: RenderedSolution }) {
       </button>
       {open && (
         // Remounting on replay restarts the CSS animations.
-        <div key={plays} id={panelId} data-solution className="mt-4 rounded-lg border border-border p-4">
+        <div key={plays} ref={panelRef} id={panelId} data-solution className="mt-4 rounded-lg border border-border p-4">
           <div className={solution.figure ? "grid gap-6 md:grid-cols-2 md:items-start" : undefined}>
             <ol className="list-decimal space-y-3 pl-6">
               {solution.steps.map((step, i) => (
