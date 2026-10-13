@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`How far is $3 + 4i$ from $0$? **Use the picture, not a formula.**`,
     reveal: t`It's the point $(3, 4)$: a right triangle with legs $3$ and $4$, so the distance is $\sqrt{9 + 16} = 5$.`,

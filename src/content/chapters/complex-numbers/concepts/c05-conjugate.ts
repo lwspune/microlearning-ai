@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $3 + 4i$ and $3 - 4i$. Add them, then multiply them. **What do the two answers have in common?**`,
     reveal: t`Both are real: the sum is $6$ and the product is $9 + 16 = 25$. A number and its conjugate always combine into real numbers.`,

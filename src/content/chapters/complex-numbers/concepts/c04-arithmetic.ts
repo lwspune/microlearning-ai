@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You know $(x + 2)(x + 3) = x^2 + 5x + 6$. **What changes when the letter is $i$?**`,
     reveal: t`Only one thing: $i \cdot i = i^2 = -1$. So $(2 + i)(3 + i) = 6 + 5i + i^2 = 5 + 5i$.`,

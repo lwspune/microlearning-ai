@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Real numbers live on a line. **Where could $3 + 2i$ possibly go?**`,
     reveal: t`Off the line. Add a second, vertical axis for the imaginary part: $3 + 2i$ is the point $(3, 2)$, three right and two up.`,
