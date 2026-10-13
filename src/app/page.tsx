@@ -9,9 +9,14 @@ export default function Home() {
         Learn a complex chapter one connected concept at a time: explanation, questions, and help that goes back to
         exactly the idea you missed.
       </p>
-      <p className="mt-6 text-muted">The learning experience is being built. First chapter: Complex Numbers.</p>
+      <Link
+        href="/learn/complex-numbers"
+        className="mt-8 self-start rounded-md bg-accent px-6 py-3 font-medium text-background hover:opacity-90"
+      >
+        Start learning: Complex Numbers
+      </Link>
       {reviewEnabled() && (
-        <Link href="/review" className="mt-8 self-start font-medium text-accent underline underline-offset-4">
+        <Link href="/review" className="mt-6 self-start text-sm font-medium text-accent underline underline-offset-4">
           Open content review
         </Link>
       )}
