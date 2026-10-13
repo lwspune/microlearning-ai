@@ -1,0 +1,113 @@
+"""Drafts check items from the answer models, so option values are never
+computed by hand and an option's text always matches its value.
+
+Usage: python verify/draft_items.py <spec.py>
+Prints TypeScript `items: [...]` entries to paste into the concept file.
+`npm run content:verify` then re-checks them independently.
+
+A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
+  dict(
+    id="C02-Q1",
+    stem=r"$i^{43} = ?$",
+    kind="value",                      # value | locus | point (see ItemVerify)
+    inputs={"n": "43"},                 # sympy expressions, as strings
+    params={"op": "pow"},               # optional
+    ask=None,                           # optional projection, an expression in z
+    models=["key", "C02-M1", "C02-M2", "C02-M3"],  # key first, then one per distractor
+    text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
+    fmt="pair",                         # optional: pair (x = .., y = ..) | pm (±(..)) | quadrant
+    value={"key": "x-2"},               # optional per-model value overrides (loci/points)
+    source='{ kind: "authored" }',      # optional, TypeScript literal
+  )
+The correct option's letter varies with the item id, so it isn't always A.
+"""
+import hashlib
+import importlib
+import importlib.util
+import sys
+from pathlib import Path
+
+from sympy import I, latex, simplify, sympify
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+KEYS = ["A", "B", "C", "D"]
+
+
+def _ts_string(s: str) -> str:
+    """A TypeScript String.raw template literal (the content files use `t`)."""
+    assert "`" not in s and "${" not in s, f"can't embed {s!r} in a template literal"
+    return f"t`{s}`"
+
+
+def draft(spec_path: str) -> str:
+    spec_mod = importlib.util.spec_from_file_location("spec", spec_path)
+    spec = importlib.util.module_from_spec(spec_mod)
+    spec_mod.loader.exec_module(spec)
+    models = importlib.import_module("models." + spec.CHAPTER).MODELS
+
+    out = []
+    for it in spec.ITEMS:
+        cid = it["id"].split("-")[0]
+        cm = models[cid]
+        inputs = {k: sympify(v, locals={"I": I}) for k, v in it["inputs"].items()}
+        params = it.get("params", {})
+        values = {}
+        for m in it["models"]:
+            v = cm[m](inputs, params)
+            if it.get("ask"):
+                v = sympify(it["ask"], locals={"I": I, "z": v})
+            values[m] = it.get("value", {}).get(m, v)
+        # Distinct options (rule 3, value kind); the verifier re-checks every kind.
+        if it.get("kind", "value") == "value":
+            vs = [simplify(sympify(values[m]) if isinstance(values[m], str) else values[m]) for m in it["models"]]
+            for i in range(len(vs)):
+                for j in range(i + 1, len(vs)):
+                    assert simplify(vs[i] - vs[j]) != 0, f"{it['id']}: {it['models'][i]} and {it['models'][j]} give the same value {vs[i]}"
+
+        # Vary the correct position deterministically by item id.
+        shift = int(hashlib.sha256(it["id"].encode()).hexdigest(), 16) % len(it["models"])
+        order = it["models"][shift:] + it["models"][:shift]
+
+        lines = []
+        for key, m in zip(KEYS, order):
+            v = values[m]
+            value_str = v if isinstance(v, str) else str(simplify(v))
+            val = simplify(sympify(value_str, locals={"I": I}))
+            fmt = it.get("fmt")
+            if fmt == "pair":  # a complex value standing for the pair (x, y)
+                r, i = val.as_real_imag()
+                auto = f"$x = {latex(r)},\\ y = {latex(i)}$"
+            elif fmt == "pm":  # a +/- pair of roots, given by one member
+                auto = f"$\\pm({latex(val)})$"
+            elif fmt == "quadrant":
+                auto = f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
+            else:
+                auto = f"${latex(val)}$"
+            text = it.get("text", {}).get(m) or auto
+            correct = m == "key"
+            tag = "" if correct else f', misconceptionId: "{m}"'
+            lines.append(
+                f'        {{ key: "{key}", text: {_ts_string(text)}, correct: {"true" if correct else "false"}{tag}, value: "{value_str}" }},'
+            )
+        verify = [f'kind: "{it.get("kind", "value")}"', "inputs: { " + ", ".join(f'{k}: "{v}"' for k, v in it["inputs"].items()) + " }"]
+        if params:
+            verify.append("params: { " + ", ".join(
+                f'{k}: ' + ("[" + ", ".join(f'"{x}"' for x in v) + "]" if isinstance(v, list) else f'"{v}"') for k, v in params.items()
+            ) + " }")
+        if it.get("ask"):
+            verify.append(f'ask: "{it["ask"]}"')
+        out.append(
+            "    {\n"
+            f'      id: "{it["id"]}",\n'
+            f'      source: {it.get("source", "{ kind: \"authored\" }")},\n'
+            f"      stem: {_ts_string(it['stem'])},\n"
+            f"      verify: {{ {', '.join(verify)} }},\n"
+            "      options: [\n" + "\n".join(lines) + "\n      ],\n"
+            "    },"
+        )
+    return "\n".join(out)
+
+
+if __name__ == "__main__":
+    print(draft(sys.argv[1]))
