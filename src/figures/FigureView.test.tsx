@@ -1,0 +1,55 @@
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
+import type { Figure } from "@/content/types";
+import { FigureView } from "./FigureView";
+
+const fig: Figure = {
+  alt: "The point 3 + 4i and its distance 5 from the origin",
+  view: { x: [-3, 5], y: [-1, 5] }, // 8 units wide: 50px per unit
+  elements: [
+    { kind: "point", at: [3, 4], label: "3 + 4i" },
+    { kind: "segment", from: [0, 0], to: [3, 4], label: "5", step: 2 },
+    { kind: "circle", centre: [0, 0], r: 5, dashed: true, step: 3 },
+  ],
+};
+
+const html = (props: Parameters<typeof FigureView>[0]) => renderToStaticMarkup(<FigureView {...props} />);
+
+describe("FigureView", () => {
+  it("is an image named by its alt text, for screen readers", () => {
+    const out = html({ figure: fig });
+    expect(out).toMatch(/<svg[^>]*role="img"/);
+    expect(out).toContain(`<title`);
+    expect(out).toContain(fig.alt);
+  });
+
+  it("escapes label text instead of injecting markup", () => {
+    const out = html({ figure: { ...fig, elements: [{ kind: "label", at: [1, 1], label: "<script>x</script>" }] } });
+    expect(out).not.toContain("<script>");
+    expect(out).toContain("&lt;script&gt;");
+  });
+
+  it("shows everything by default", () => {
+    const out = html({ figure: fig });
+    expect(out).toContain("3 + 4i");
+    expect(out).toContain(">5<");
+    expect(out).toMatch(/<circle[^>]*r="250"/);
+  });
+
+  it("in a worked example, shows elements up to the current step only", () => {
+    const out = html({ figure: fig, upTo: 2 });
+    expect(out).toContain(">5<");
+    expect(out).not.toMatch(/<circle[^>]*r="250"/);
+  });
+
+  it("animates only the elements the current step introduces", () => {
+    const out = html({ figure: fig, upTo: 2 });
+    expect(out.match(/fig-(in|draw)/g)).toHaveLength(2); // the segment draws in, its label fades in
+  });
+
+  it("in sequence mode, delays each step's elements in turn", () => {
+    const out = html({ figure: fig, stagger: 1 });
+    expect(out).toContain("animation-delay:1s");
+    expect(out).toContain("animation-delay:2s");
+  });
+});
