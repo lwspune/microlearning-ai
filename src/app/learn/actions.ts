@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createSessionClient, currentUserId } from "@/lib/supabase/server";
 import type { RenderedBlock } from "@/lib/renderedText";
 import { renderRichText } from "@/lib/richText";
-import { nextQuestionFor, type Question } from "@/server/learning";
+import { nextQuestionFor, type Question, type Route, routeAfterMiss } from "@/server/learning";
 
 export type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -34,6 +34,8 @@ export type AnswerResult = {
   needed: number;
   mastered: boolean;
   masteredNow: boolean;
+  /** Set when this wrong answer repeats a recent mistake: where to go to fix the root gap. */
+  route: Route | null;
   next: Question;
 };
 
@@ -72,6 +74,7 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
         needed: r.needed,
         mastered: r.state === "mastered",
         masteredNow: r.mastered_now,
+        route: r.correct ? null : await routeAfterMiss(itemId, userId),
         next: await nextQuestionFor(itemId, userId),
       },
     };

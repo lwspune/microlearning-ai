@@ -2,6 +2,7 @@ import "server-only";
 import type { Concept, GraphNode, Tier } from "@/content/types";
 import { conceptStates, type ConceptState } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
+import { isRepeatedMisconception } from "@/engine/routing";
 import { buildDeck } from "@/lessons/deck";
 import { type RenderedSlide, renderDeck } from "@/lessons/renderDeck";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -125,7 +126,12 @@ async function buildQuestion(itemId: string): Promise<Question> {
   };
 }
 
-export async function getConceptSession(chapterSlug: string, conceptSlug: string, userId: string): Promise<ConceptSession | null> {
+export async function getConceptSession(
+  chapterSlug: string,
+  conceptSlug: string,
+  userId: string,
+  options: { allowLocked?: boolean } = {},
+): Promise<ConceptSession | null> {
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
   const { concepts, graph, published, codeById } = loaded;
@@ -134,7 +140,7 @@ export async function getConceptSession(chapterSlug: string, conceptSlug: string
 
   const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
   const state = conceptStates(graph, published, states).get(concept.code)!;
-  if (state === "locked") return { kind: "locked" };
+  if (state === "locked" && !options.allowLocked) return { kind: "locked" };
 
   const db = createAdminClient();
   const [{ data: body, error: be }, { data: items, error: ie }, { data: needed, error: ne }] = await Promise.all([
@@ -184,4 +190,54 @@ export async function nextQuestionFor(itemId: string, userId: string): Promise<Q
     .order("id");
   if (ae) throw ae;
   return buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))));
+}
+
+/** Where a repeated mistake should send the learner. */
+export type Route =
+  | { kind: "refresher"; conceptSlug: string; title: string }
+  | { kind: "revise"; label: string };
+
+/**
+ * After a wrong answer: if the learner has now made the same mistake twice
+ * recently on this concept, return where its fallback points. A published
+ * concept gets a refresher link; an unwritten concept or an outside topic gets
+ * a "worth revising" note. Null when there's nothing to route.
+ */
+export async function routeAfterMiss(itemId: string, userId: string): Promise<Route | null> {
+  const db = createAdminClient();
+  const { data: item, error } = await db.from("published_items").select("concept_id").eq("id", itemId).single();
+  if (error) throw error;
+  const { data: items, error: ie } = await db.from("items").select("id").eq("concept_id", item.concept_id!);
+  if (ie) throw ie;
+  const { data: attempts, error: ae } = await db
+    .from("attempts")
+    .select("correct, misconception_id")
+    .eq("user_id", userId)
+    .in("item_id", items.map((i) => i.id))
+    .order("id");
+  if (ae) throw ae;
+
+  const latest = attempts.at(-1);
+  if (!latest || latest.correct || !latest.misconception_id) return null;
+  const history = attempts.map((a) => ({ correct: a.correct, misconceptionId: a.misconception_id }));
+  if (!isRepeatedMisconception(history, latest.misconception_id)) return null;
+
+  const { data: m, error: me } = await db
+    .from("misconceptions")
+    .select("fallback_kind, fallback_concept_id, fallback_topic")
+    .eq("id", latest.misconception_id)
+    .single();
+  if (me) throw me;
+  if (m.fallback_kind === "ext") return { kind: "revise", label: m.fallback_topic! };
+  if (m.fallback_kind !== "concept") return null;
+
+  const { data: target, error: te } = await db
+    .from("concepts")
+    .select("slug, title, status")
+    .eq("id", m.fallback_concept_id!)
+    .single();
+  if (te) throw te;
+  return target.status === "approved"
+    ? { kind: "refresher", conceptSlug: target.slug, title: target.title }
+    : { kind: "revise", label: `${target.title} (coming soon)` };
 }
