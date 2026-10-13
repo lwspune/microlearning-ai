@@ -17,6 +17,11 @@ import { c15 } from "./concepts/c15-polar-form.ts";
 import { c16 } from "./concepts/c16-polar-multiply-divide.ts";
 import { c17 } from "./concepts/c17-de-moivre.ts";
 import { c18 } from "./concepts/c18-rotation.ts";
+import { c19 } from "./concepts/c19-quadratic-complex-roots.ts";
+import { c20 } from "./concepts/c20-cube-roots-of-unity.ts";
+import { c21 } from "./concepts/c21-using-omega.ts";
+import { c22 } from "./concepts/c22-nth-roots-of-unity.ts";
+import { c23 } from "./concepts/c23-polynomial-at-complex-x.ts";
 import { c25 } from "./concepts/c25-perpendicular-bisector.ts";
 import { graph } from "./graph.ts";
 
@@ -24,5 +29,5 @@ export const complexNumbers: Chapter = {
   slug: "complex-numbers",
   title: "Complex Numbers",
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c25],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c25],
 };
