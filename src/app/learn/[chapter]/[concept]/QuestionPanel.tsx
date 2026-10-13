@@ -166,7 +166,7 @@ export function QuestionPanel({
                   onChange={() => setSelected(o.key)}
                   className="h-4 w-4 accent-[var(--accent)]"
                 />
-                <span className="font-mono text-sm font-semibold">{o.key}</span>
+                <span className="font-mono text-sm font-semibold">{o.label}</span>
                 <span className="min-w-0 flex-1">
                   <RenderedInlineNodes nodes={o.text} />
                 </span>

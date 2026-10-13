@@ -2,6 +2,7 @@ import "server-only";
 import type { Concept, GraphNode, Tier } from "@/content/types";
 import { conceptStates, type ConceptState } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
+import { displayOrder } from "@/engine/optionOrder";
 import { isReviewDue } from "@/engine/review";
 import { isRepeatedMisconception } from "@/engine/routing";
 import { buildDeck } from "@/lessons/deck";
@@ -32,7 +33,8 @@ export type ChapterMap = { slug: string; title: string; groups: { name: string; 
 export type Question = {
   itemId: string;
   stem: RenderedBlock[];
-  options: { key: string; text: RenderedInline[] }[];
+  /** In display order. `key` is the stored key, sent back for grading; `label` is the letter shown. */
+  options: { key: string; label: string; text: RenderedInline[] }[];
 };
 
 export type Progress = {
@@ -133,7 +135,7 @@ export async function getChapterMap(chapterSlug: string, userId: string | null):
   return { slug: chapter.slug, title: chapter.title, groups };
 }
 
-async function buildQuestion(itemId: string): Promise<Question> {
+async function buildQuestion(itemId: string, userId: string): Promise<Question> {
   const db = createAdminClient();
   const [{ data: item, error: ie }, { data: options, error: oe }] = await Promise.all([
     db.from("published_items").select("id, stem").eq("id", itemId).single(),
@@ -145,7 +147,10 @@ async function buildQuestion(itemId: string): Promise<Question> {
   return {
     itemId: item.id!,
     stem: renderRichText(item.stem!),
-    options: options.map((o) => ({ key: o.key!, text: renderInlineText(o.text!) })),
+    options: displayOrder(
+      options.map((o) => ({ key: o.key!, text: renderInlineText(o.text!) })),
+      `${userId}:${item.id}`,
+    ),
   };
 }
 
@@ -195,7 +200,7 @@ export async function getConceptSession(
     code: concept.code,
     title: concept.title,
     slides: renderDeck(buildDeck(content)),
-    question: await buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct })))),
+    question: await buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))), userId),
     progress: {
       streak: own?.streak ?? 0,
       needed,
@@ -224,7 +229,7 @@ export async function nextQuestionFor(itemId: string, userId: string): Promise<Q
     .in("item_id", itemIds)
     .order("id");
   if (ae) throw ae;
-  return buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))));
+  return buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))), userId);
 }
 
 /** Where a repeated mistake should send the learner. */
