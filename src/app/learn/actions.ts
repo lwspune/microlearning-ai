@@ -36,6 +36,8 @@ export type AnswerResult = {
   masteredNow: boolean;
   /** Set when this wrong answer repeats a recent mistake: where to go to fix the root gap. */
   route: Route | null;
+  /** Spaced review: this answer was part of a due review; done = passed or missed. */
+  review: { reviewing: boolean; done: boolean; passed: boolean; correct: number; needed: number; nextReviewAt: string | null };
   next: Question;
 };
 
@@ -47,6 +49,12 @@ type RecordAttemptResult = {
   needed: number;
   state: string;
   mastered_now: boolean;
+  reviewing: boolean;
+  review_done: boolean;
+  review_passed: boolean;
+  review_correct: number;
+  review_needed: number;
+  next_review_at: string | null;
 };
 
 /** Grades an answer server-side for the signed-in learner and returns the next question. */
@@ -75,6 +83,14 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
         mastered: r.state === "mastered",
         masteredNow: r.mastered_now,
         route: r.correct ? null : await routeAfterMiss(itemId, userId),
+        review: {
+          reviewing: r.reviewing,
+          done: r.review_done,
+          passed: r.review_passed,
+          correct: r.review_correct,
+          needed: r.review_needed,
+          nextReviewAt: r.next_review_at,
+        },
         next: await nextQuestionFor(itemId, userId),
       },
     };

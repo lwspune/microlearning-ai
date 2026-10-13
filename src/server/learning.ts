@@ -2,6 +2,7 @@ import "server-only";
 import type { Concept, GraphNode, Tier } from "@/content/types";
 import { conceptStates, type ConceptState } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
+import { isReviewDue } from "@/engine/review";
 import { isRepeatedMisconception } from "@/engine/routing";
 import { buildDeck } from "@/lessons/deck";
 import { type RenderedSlide, renderDeck } from "@/lessons/renderDeck";
@@ -16,7 +17,16 @@ import { renderInlineText, renderRichText } from "@/lib/richText";
  * which misconception an option reveals.
  */
 
-export type MapConcept = { code: string; slug: string; title: string; oneLiner: RenderedInline[]; tier: Tier; state: ConceptState };
+export type MapConcept = {
+  code: string;
+  slug: string;
+  title: string;
+  oneLiner: RenderedInline[];
+  tier: Tier;
+  state: ConceptState;
+  /** Mastered and due for spaced review now. */
+  due: boolean;
+};
 export type ChapterMap = { slug: string; title: string; groups: { name: string; concepts: MapConcept[] }[] };
 
 export type Question = {
@@ -25,7 +35,13 @@ export type Question = {
   options: { key: string; text: RenderedInline[] }[];
 };
 
-export type Progress = { streak: number; needed: number; state: ConceptState };
+export type Progress = {
+  streak: number;
+  needed: number;
+  state: ConceptState;
+  /** Spaced review: due now, correct answers so far in this review, answers needed to pass. */
+  review: { due: boolean; correct: number; needed: number };
+};
 
 export type ConceptSession =
   | { kind: "locked" }
@@ -74,10 +90,11 @@ async function loadGraph(chapterSlug: string) {
 
 async function learnerStates(userId: string | null, conceptIds: string[], codeById: Map<string, string>) {
   const states = new Map<string, "learning" | "mastered">();
-  if (!userId || conceptIds.length === 0) return { states, rows: [] as { concept_id: string; state: string; streak: number }[] };
+  type Row = { concept_id: string; state: string; streak: number; next_review_at: string | null; review_correct: number };
+  if (!userId || conceptIds.length === 0) return { states, rows: [] as Row[] };
   const { data, error } = await createAdminClient()
     .from("learner_concept_state")
-    .select("concept_id, state, streak")
+    .select("concept_id, state, streak, next_review_at, review_correct")
     .eq("user_id", userId)
     .in("concept_id", conceptIds);
   if (error) throw error;
@@ -91,8 +108,13 @@ export async function getChapterMap(chapterSlug: string, userId: string | null):
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
   const { chapter, concepts, graph, published, codeById } = loaded;
-  const { states } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
+  const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
   const computed = conceptStates(graph, published, states);
+  const idByCode = new Map(concepts.map((c) => [c.code, c.id]));
+  const now = Date.now();
+  const dueCodes = new Set(
+    rows.filter((r) => isReviewDue(r.state, r.next_review_at, now)).map((r) => codeById.get(r.concept_id)!),
+  );
 
   const groups = [...new Set(graph.map((n) => n.group))].map((name) => ({
     name,
@@ -105,6 +127,7 @@ export async function getChapterMap(chapterSlug: string, userId: string | null):
         oneLiner: renderInlineText(n.oneLiner),
         tier: n.tier,
         state: computed.get(n.id)!,
+        due: idByCode.has(n.id) && dueCodes.has(n.id),
       })),
   }));
   return { slug: chapter.slug, title: chapter.title, groups };
@@ -143,14 +166,17 @@ export async function getConceptSession(
   if (state === "locked" && !options.allowLocked) return { kind: "locked" };
 
   const db = createAdminClient();
-  const [{ data: body, error: be }, { data: items, error: ie }, { data: needed, error: ne }] = await Promise.all([
-    db.from("published_concepts").select("body").eq("id", concept.id).single(),
-    db.from("published_items").select("id").eq("concept_id", concept.id).order("code"),
-    db.rpc("mastery_streak_needed"),
-  ]);
+  const [{ data: body, error: be }, { data: items, error: ie }, { data: needed, error: ne }, { data: reviewNeeded, error: re }] =
+    await Promise.all([
+      db.from("published_concepts").select("body").eq("id", concept.id).single(),
+      db.from("published_items").select("id").eq("concept_id", concept.id).order("code"),
+      db.rpc("mastery_streak_needed"),
+      db.rpc("review_answers_needed"),
+    ]);
   if (be) throw be;
   if (ie) throw ie;
   if (ne) throw ne;
+  if (re) throw re;
 
   const itemIds = items.map((i) => i.id!);
   const { data: attempts, error: ae } = await db
@@ -170,7 +196,16 @@ export async function getConceptSession(
     title: concept.title,
     slides: renderDeck(buildDeck(content)),
     question: await buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct })))),
-    progress: { streak: own?.streak ?? 0, needed, state },
+    progress: {
+      streak: own?.streak ?? 0,
+      needed,
+      state,
+      review: {
+        due: own ? isReviewDue(own.state, own.next_review_at, Date.now()) : false,
+        correct: own?.review_correct ?? 0,
+        needed: reviewNeeded,
+      },
+    },
   };
 }
 
@@ -237,7 +272,10 @@ export async function routeAfterMiss(itemId: string, userId: string): Promise<Ro
     .eq("id", m.fallback_concept_id!)
     .single();
   if (te) throw te;
-  return target.status === "approved"
-    ? { kind: "refresher", conceptSlug: target.slug, title: target.title }
-    : { kind: "revise", label: `${target.title} (coming soon)` };
+  if (target.status !== "approved") return { kind: "revise", label: `${target.title} (coming soon)` };
+
+  // The gap shows the root concept needs revisiting: due for review now (no-op unless mastered).
+  const { error: de } = await db.rpc("mark_review_due", { p_user: userId, p_concept: m.fallback_concept_id! });
+  if (de) throw de;
+  return { kind: "refresher", conceptSlug: target.slug, title: target.title };
 }
