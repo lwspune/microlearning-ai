@@ -5,7 +5,7 @@
  *
  * Usage: npm run e2e -- [baseUrl]   (default http://localhost:3000; needs the app running)
  * Env:   BROWSER  path to a Chromium-based browser (default: Microsoft Edge on Windows)
- *        SCHEME   light | dark (default light)   VIEWPORT  phone | desktop (default phone)
+ *        SCHEME   light | dark (default light)   VIEWPORT  phone | tablet | desktop (default phone)
  *        SHOTS    directory for screenshots (optional)
  * Reads .env.local for the Supabase Management API (looks up keys, cleans up the guest).
  */
@@ -22,7 +22,12 @@ try {
 const BASE = process.argv[2] ?? "http://localhost:3000";
 const BROWSER = process.env.BROWSER ?? "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
 const SCHEME = process.env.SCHEME === "dark" ? "dark" : "light";
-const VIEWPORT = process.env.VIEWPORT === "desktop" ? { width: 1280, height: 900 } : { width: 390, height: 844 };
+const VIEWPORTS = {
+  phone: { width: 390, height: 844 },
+  tablet: { width: 1180, height: 820 }, // landscape iPad, the primary target
+  desktop: { width: 1280, height: 900 },
+} as const;
+const VIEWPORT = VIEWPORTS[(process.env.VIEWPORT ?? "phone") as keyof typeof VIEWPORTS] ?? VIEWPORTS.phone;
 const SHOTS = process.env.SHOTS;
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 
@@ -79,31 +84,49 @@ await (async () => {
     await page.getByRole("button", { name: "Start as guest" }).waitFor();
     await shot("02-guest-start");
     await page.getByRole("button", { name: "Start as guest" }).click();
+    const stage = page.locator('section[aria-roledescription="carousel"]');
+    const counter = async () => (await stage.locator("header p").innerText()).trim();
     await page.getByRole("heading", { name: "Think about this" }).waitFor();
-    ok("guest session started, concept opened at step 1");
+    const total = Number((await counter()).split("/")[1]);
+    check((await counter()) === `1 / ${total}`, `lesson opens on slide 1 of ${total}`);
     await shot("03-hook");
 
-    // Cards, driven by keyboard where it matters.
-    await page.getByRole("button", { name: "Reveal" }).focus();
-    await page.keyboard.press("Enter");
-    await page.getByRole("button", { name: "Continue" }).waitFor();
-    ok("Reveal works from the keyboard");
+    // Keyboard: the right arrow advances.
+    await page.keyboard.press("ArrowRight");
+    await page.getByText(`2 / ${total}`).waitFor();
+    ok("right arrow advances to the reveal slide");
     await shot("04-hook-revealed");
-    await page.getByRole("button", { name: "Continue" }).click();
+    await noSideScroll("reveal slide");
+
+    // Touch: a left swipe advances.
+    const box = (await stage.boundingBox())!;
+    const y = box.y + box.height / 2;
+    await stage.dispatchEvent("pointerdown", { pointerType: "touch", clientX: box.x + box.width * 0.8, clientY: y });
+    await stage.dispatchEvent("pointerup", { pointerType: "touch", clientX: box.x + box.width * 0.2, clientY: y });
     await page.getByRole("heading", { name: "The idea" }).waitFor();
-    await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("heading", { name: "Precisely" }).waitFor();
-    await shot("05-formal");
-    await noSideScroll("formal card");
-    await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("heading", { name: "Worked example" }).waitFor();
-    while (await page.getByRole("button", { name: "Show next step" }).count()) {
-      await page.getByRole("button", { name: "Show next step" }).click();
+    ok("swipe left advances to the next slide");
+
+    // Back returns, Next goes on.
+    await page.getByRole("button", { name: "← Back" }).click();
+    await page.getByText(`2 / ${total}`).waitFor();
+    ok("Back returns to the previous slide");
+    await page.getByRole("button", { name: "Next →" }).click();
+    await page.getByRole("heading", { name: "Precisely" }).or(page.getByRole("heading", { name: "The idea" })).first().waitFor();
+
+    let shotFormal = false;
+    while (await page.getByRole("button", { name: "Next →" }).count()) {
+      if (!shotFormal && (await page.getByRole("heading", { name: "Precisely" }).isVisible())) {
+        await shot("05-formal");
+        shotFormal = true;
+      }
+      await page.getByRole("button", { name: "Next →" }).click();
     }
+    await page.getByRole("heading", { name: "Worked example" }).waitFor();
     await shot("06-worked");
-    await page.getByRole("button", { name: "Try a question" }).click();
+    await page.getByRole("button", { name: "Try a question →" }).click();
     await page.getByRole("heading", { name: "Check yourself" }).waitFor();
-    ok("stepped through hook → idea → formal → worked example");
+    check((await counter()) === `${total} / ${total}`, "questions are the last slide");
+    ok("stepped through every slide to the questions");
 
     const keyFor = async () => {
       const itemId = await page.locator("fieldset[data-item-id]").getAttribute("data-item-id");
