@@ -90,6 +90,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    intermediate version, commit, restore, then diff against the saved copy).
 6. **Definition of done:**
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
+   - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
    - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103` and `npm run e2e -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
    - Leave no test data behind (check `auth.users` and `attempts`).
@@ -135,6 +136,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | New packages: avoid releases under 2 weeks old | pin exact versions (`-E`) |
 | A hard-coded "unpublished" example in the smoke check went stale when that concept was published | smoke routes are derived from the content registry |
 | Next keeps visited pages alive, so `useState` initial values don't re-run on return: the refresher opened at the old slide 8/8 | give a distinct mode its own `key` (`SlideDeck` in refresher mode); e2e waits on `:visible` / `filter({ visible: true })` |
+| Only the review-enabled build was ever checked; the plain production build failed (params read in `generateMetadata` on a fully static page) | Definition of done runs a plain `npm run build` as well |
 | `npm run x \| tail` reports `tail`'s exit code and can cut off the pass/fail summary, so a check looked "done" without its result | grep for the summary line (`Tests `, `items checked`) and read `${PIPESTATUS[0]}` before reporting a gate as passed |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 

@@ -280,12 +280,21 @@ All 38 live items list the key first, so a student can learn to tap A.
   and item (seed `userId:itemId`, so the order is stable on reload);
   `buildQuestion` sends options in display order with a positional `label`.
 
-## Content: all 30 concepts (on branch `content-all`)
+## Content: all 30 concepts (published 2026-10-14)
 
-- **Done, drafts (not yet published):** all 23 new concepts, in four batches:
-  Algebra C01, C02, C03, C07, C08, C09; Geometry & polar C12, C13, C15–C18;
-  Roots C19–C23; Loci C24, C26–C30. 159 items verified chapter-wide, 0
-  problems. Built with `verify/draft_items.py` + `verify/build_concepts.py`
+- All 30 Complex Numbers concepts are approved and seeded: 159 items, 0
+  verifier problems. A new learner starts at C01, the only root of the graph.
+- Built in four batches with `verify/draft_items.py` + `verify/build_concepts.py`
   (RUNBOOK section 3).
-- **Next:** your review of the 23 drafts on `/review` → approve → seed →
-  e2e → merge.
+
+## Next: step-by-step solutions and visuals (approved 2026-10-14)
+
+Decisions: animated, step-synced figures now (draggable later); a step-by-step
+solution for every question, shown after answering; worked examples drive a
+figure step by step. New authoring rules, enforced by the validator.
+- **Phase A (engine):** SVG Argand-plane figure (points, vectors, circles,
+  lines, rays, arcs, regions, angle marks; each element can appear at a step),
+  rendered on the server, reduced-motion aware, with alt text. Item solutions
+  stored in the DB and returned only after the attempt is recorded. Pilot on
+  C10 and C24.
+- **Phase B (content):** figures + solutions for all 30 concepts, in batches.
