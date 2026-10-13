@@ -58,7 +58,10 @@ await (async () => {
   page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text()));
   page.on("pageerror", (e) => consoleErrors.push(String(e)));
   const shot = async (name: string) => {
-    if (SHOTS) await page.screenshot({ path: join(SHOTS, `${name}.png`) });
+    if (!SHOTS) return;
+    // Let slide transitions finish, or the capture shows a half-faded slide.
+    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
+    await page.screenshot({ path: join(SHOTS, `${name}.png`) });
   };
   const noSideScroll = async (where: string) => {
     const { s, w } = await page.evaluate(() => ({ s: document.documentElement.scrollWidth, w: window.innerWidth }));
