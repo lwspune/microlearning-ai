@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState, useTransition } from "react";
+import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
@@ -45,6 +45,12 @@ export function QuestionPanel({
   const [celebrate, setCelebrate] = useState(false);
   const [pending, startTransition] = useTransition();
   const groupId = useId();
+  const feedbackRef = useRef<HTMLDivElement>(null);
+
+  // On small screens the feedback and Next button can sit below the fold of the slide.
+  useEffect(() => {
+    if (result) feedbackRef.current?.scrollIntoView({ block: "nearest" });
+  }, [result]);
 
   function check() {
     if (!selected) return;
@@ -159,7 +165,7 @@ export function QuestionPanel({
         )}
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-3">
+      <div ref={feedbackRef} className="mt-5 flex flex-wrap gap-3">
         {result ? (
           <button type="button" className={primaryButton} onClick={nextQuestion}>
             Next question
