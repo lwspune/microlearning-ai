@@ -74,7 +74,7 @@ attempts        user, item, chosen_option, correct, misconception_id, at
 |---|---|---|
 | M0 | Concept graph + 3 complete concepts as reviewable files, **no app**. Validates granularity and misconception quality | **Done** 2026-10-13: graph and 3 concepts approved; now TypeScript in `src/content/` (rules: [src/content/AUTHORING.md](src/content/AUTHORING.md)) |
 | M1 | Repo, PWA shell, Supabase schema + DB constraints, content import | **Done** 2026-10-13: scaffold, TS content, validator, sympy verify, /review, Supabase schema (DB-enforced rules, RLS), content:seed. Dev DB seeded |
-| M2 | Concept flow + mastery/unlock engine (test-first) | |
+| M2 | Concept flow + mastery/unlock engine (test-first) | **Done** 2026-10-13: guest sign-in, cards → questions → mastery, server-side grading (`record_attempt`), `npm run e2e` golden path |
 | M1b | Pull real PYQs from PYQ Vault by concept tag (read-only import script) | After M2: the loop runs on authored items first |
 | M3 | Misconception routing + review queue | |
 | M4 | AI tutor | |
@@ -165,3 +165,13 @@ server-side.
 **Split out as M2b (its own branch):** the three interactive visuals
 (Argand-plane widgets). They're independent of the engine and big enough to
 review on their own.
+
+## Follow-ups (logged 2026-10-13)
+
+- **Before a public launch:** CAPTCHA on guest (anonymous) sign-ins. Supabase
+  rate-limits them to 30/hour per IP, but bots could still create users.
+  Also a periodic cleanup of guest users inactive for N days.
+- **Google sign-in** (needs your Google Cloud OAuth client). Guests link
+  Google to keep their progress across devices.
+- **M3 must handle fallbacks to unwritten concepts.** Most pilot
+  misconceptions route to concepts not authored yet (e.g. C05, C10, C11).
