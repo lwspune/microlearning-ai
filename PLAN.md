@@ -76,7 +76,7 @@ attempts        user, item, chosen_option, correct, misconception_id, at
 | M1 | Repo, PWA shell, Supabase schema + DB constraints, content import | **Done** 2026-10-13: scaffold, TS content, validator, sympy verify, /review, Supabase schema (DB-enforced rules, RLS), content:seed. Dev DB seeded |
 | M2 | Concept flow + mastery/unlock engine (test-first) | **Done** 2026-10-13: guest sign-in, cards → questions → mastery, server-side grading (`record_attempt`), `npm run e2e` golden path |
 | M1b | Pull real PYQs from PYQ Vault by concept tag (read-only import script) | After M2: the loop runs on authored items first |
-| M3 | Misconception routing + review queue | |
+| M3 | Misconception routing + review queue | In progress: M3a routing |
 | M4 | AI tutor | |
 | M5 | Pilot with a small group of real students; measure | |
 
@@ -218,7 +218,7 @@ scripts + review → audio pipeline → lecture mode.
 and the API key. Steps 1, 2, 4 and the slide parts of 6–7 go ahead now;
 step 3 (audio) and step 5 (lecture mode) wait for that decision.
 
-## M3: routing back to the root gap + review queue (proposed 2026-10-13)
+## M3: routing back to the root gap + review queue (approved 2026-10-13)
 
 **Insight:** with the unlock rule, a student who reaches a concept has
 usually already mastered its published prerequisites. So routing back is a
