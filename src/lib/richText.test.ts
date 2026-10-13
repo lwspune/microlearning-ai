@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseInline, parseRichText, renderMath } from "./richText";
+import { parseInline, parseRichText, renderMath, renderRichText } from "./richText";
 
 describe("parseInline", () => {
   it("returns plain text as one segment", () => {
@@ -77,5 +77,30 @@ describe("renderMath", () => {
 
   it("does not throw on invalid TeX", () => {
     expect(() => renderMath("\\frac{", false)).not.toThrow();
+  });
+});
+
+describe("renderRichText", () => {
+  it("pre-renders math to KaTeX HTML and keeps text as text", () => {
+    const [p] = renderRichText("Let **$x$** be <b>");
+    expect(p.type).toBe("paragraph");
+    if (p.type !== "paragraph") return;
+    expect(p.inline[0]).toEqual({ type: "text", text: "Let ", bold: false, italic: false });
+    expect(p.inline[1]).toMatchObject({ type: "math", bold: true });
+    expect(p.inline[1].type === "math" && p.inline[1].html).toContain("katex");
+    // Author text is never turned into HTML; React escapes it when rendered.
+    expect(p.inline[2]).toEqual({ type: "text", text: " be <b>", bold: false, italic: false });
+  });
+
+  it("renders display math and list items", () => {
+    const blocks = renderRichText("$$a$$\n- $b$");
+    expect(blocks[0]).toMatchObject({ type: "math" });
+    expect(blocks[0].type === "math" && blocks[0].html).toContain("katex-display");
+    expect(blocks[1]).toMatchObject({ type: "list" });
+  });
+
+  it("produces plain data that survives JSON (safe to pass to client components)", () => {
+    const blocks = renderRichText("$x$ and **y**");
+    expect(JSON.parse(JSON.stringify(blocks))).toEqual(blocks);
   });
 });

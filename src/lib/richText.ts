@@ -1,4 +1,5 @@
 import katex from "katex";
+import type { RenderedBlock, RenderedInline } from "./renderedText";
 
 /**
  * Minimal rich text for authored content: `$…$` inline math, `$$…$$` display
@@ -100,4 +101,22 @@ function parseTextBlocks(src: string): Block[] {
 /** KaTeX HTML. `trust: false` blocks \href, \url and other link/HTML commands. */
 export function renderMath(tex: string, display: boolean): string {
   return katex.renderToString(tex, { displayMode: display, throwOnError: false, trust: false, strict: "ignore" });
+}
+
+function renderInline(nodes: Inline[]): RenderedInline[] {
+  return nodes.map((n) => (n.type === "math" ? { type: "math", html: renderMath(n.tex, false), bold: n.bold } : n));
+}
+
+/** Parses and pre-renders math on the server; the result is safe to send to the client. */
+export function renderRichText(src: string): RenderedBlock[] {
+  return parseRichText(src).map((b) => {
+    if (b.type === "math") return { type: "math", html: renderMath(b.tex, true) };
+    if (b.type === "list") return { type: "list", items: b.items.map(renderInline) };
+    return { type: "paragraph", inline: renderInline(b.inline) };
+  });
+}
+
+/** Single line (no paragraphs), pre-rendered. */
+export function renderInlineText(src: string): RenderedInline[] {
+  return renderInline(parseInline(src));
 }
