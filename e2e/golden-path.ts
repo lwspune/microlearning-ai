@@ -277,6 +277,41 @@ await (async () => {
     await page.getByRole("heading", { name: "Check yourself" }).waitFor();
     ok("returned to Conjugate's questions");
 
+    // ---- M3b: spaced review ----
+    const arithmeticState = async () =>
+      (await sql(
+        `select s.review_box, s.next_review_at > now() + interval '2 days' as later
+           from learner_concept_state s join concepts c on c.id = s.concept_id
+          where s.user_id = '${userId}' and c.code = 'C04'`,
+      ))[0] as { review_box: number; later: boolean };
+    const afterRefresher = await arithmeticState();
+    check(afterRefresher.review_box === 2 && afterRefresher.later, `refresher made Arithmetic due and its 2 answers passed the review (box ${afterRefresher.review_box})`);
+
+    await sql(
+      `update learner_concept_state s set next_review_at = now() - interval '1 minute'
+         from concepts c where c.id = s.concept_id and s.user_id = '${userId}' and c.code = 'C04'`,
+    );
+    await page.goto(BASE + "/learn/complex-numbers");
+    const reviewSection = page.locator("section[aria-labelledby=review]:visible");
+    await reviewSection.waitFor();
+    check(/Review today \(1\)/.test(await reviewSection.innerText()), "map shows Review today (1)");
+    await shot("16-review-today");
+    await reviewSection.getByRole("link", { name: /Arithmetic/ }).click();
+    await page.getByText("Review · 0 of 2").filter({ visible: true }).waitFor();
+    ok("review opens on the questions: Review · 0 of 2");
+    for (let i = 0; i < 2; i++) {
+      if (i > 0) await nextQ();
+      await pick((await optionsWithRoutes()).find((o) => o.is_correct)!.key);
+    }
+    const passed = page.getByText(/Review passed ✓ Next review in 7 days\./).filter({ visible: true });
+    await passed.waitFor({ timeout: 10_000 }).catch(() => {});
+    check(await passed.isVisible(), "2 correct answers pass the review: next in 7 days (box 3)");
+    await shot("17-review-passed");
+    await page.getByRole("link", { name: "Back to the chapter" }).filter({ visible: true }).click();
+    await page.waitForURL("**/learn/complex-numbers");
+    await page.getByRole("heading", { name: "Ready for you" }).filter({ visible: true }).waitFor();
+    check((await page.locator("section[aria-labelledby=review]:visible").count()) === 0, "nothing left to review on the map");
+
     // A forged refresher link must not open a locked concept.
     await page.goto(BASE + "/learn/complex-numbers/division?from=argand-plane");
     await page.getByText(/builds on earlier ones you haven.t mastered yet/).waitFor();
