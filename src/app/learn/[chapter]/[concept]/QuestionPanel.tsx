@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
+import { daysUntil } from "@/engine/review";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
@@ -52,6 +53,9 @@ export function QuestionPanel({
   const [mastered, setMastered] = useState(progress.state === "mastered");
   const [celebrate, setCelebrate] = useState(false);
   const [answered, setAnswered] = useState(0);
+  const [reviewDue, setReviewDue] = useState(progress.review.due);
+  const [reviewCorrect, setReviewCorrect] = useState(progress.review.correct);
+  const [reviewOutcome, setReviewOutcome] = useState<{ passed: boolean; inDays: number } | null>(null);
   const [pending, startTransition] = useTransition();
   const groupId = useId();
   const feedbackRef = useRef<HTMLDivElement>(null);
@@ -72,6 +76,17 @@ export function QuestionPanel({
       }
       setResult(res.data);
       setAnswered((n) => n + 1);
+      const review = res.data.review;
+      if (review.reviewing) {
+        setReviewCorrect(review.correct);
+        if (review.done) {
+          setReviewDue(false);
+          setReviewOutcome({
+            passed: review.passed,
+            inDays: review.nextReviewAt ? daysUntil(review.nextReviewAt, Date.now()) : 0,
+          });
+        }
+      }
       setStreak(res.data.streak);
       if (res.data.mastered) setMastered(true);
       if (res.data.masteredNow) setCelebrate(true);
@@ -108,7 +123,11 @@ export function QuestionPanel({
   return (
     <div>
       <div className="flex flex-wrap items-center justify-end gap-2">
-        {mastered ? (
+        {reviewDue ? (
+          <p className="rounded-full bg-warning-surface px-3 py-1 text-sm font-medium">
+            Review · {reviewCorrect} of {progress.review.needed}
+          </p>
+        ) : mastered ? (
           <p className="text-sm font-medium text-success">Mastered ✓</p>
         ) : (
           <StreakDots streak={streak} needed={progress.needed} />
@@ -171,6 +190,13 @@ export function QuestionPanel({
               {result.correct ? "Correct!" : "Not quite."}
             </p>
             {result.remediation && <RenderedRichText blocks={result.remediation} className="mt-2" />}
+            {reviewOutcome && result.review.done && (
+              <p className="mt-3 border-t border-border pt-3 font-medium">
+                {reviewOutcome.passed
+                  ? `Review passed ✓ Next review in ${reviewOutcome.inDays} ${reviewOutcome.inDays === 1 ? "day" : "days"}.`
+                  : "Review missed. This concept comes back for review tomorrow; a quick reread helps."}
+              </p>
+            )}
             {result.route && (
               <div className="mt-3 border-t border-border pt-3">
                 <p>This mistake has come up twice, which usually means a gap in an earlier idea.</p>
@@ -198,6 +224,15 @@ export function QuestionPanel({
             </Link>
             <button type="button" className={secondaryButton} onClick={nextQuestion}>
               One more question
+            </button>
+          </>
+        ) : result && result.review.done && !refresher ? (
+          <>
+            <Link href={chapterHref} className={primaryButton}>
+              Back to the chapter
+            </Link>
+            <button type="button" className={secondaryButton} onClick={nextQuestion}>
+              Keep practising
             </button>
           </>
         ) : result ? (

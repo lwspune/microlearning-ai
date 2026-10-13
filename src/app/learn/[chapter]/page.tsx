@@ -59,8 +59,28 @@ async function ChapterMapSection({ slug }: { slug: string }) {
   const map = await getChapterMap(slug, await currentUserId());
   if (!map) notFound();
   const ready = map.groups.flatMap((g) => g.concepts).filter((c) => isOpen(c.state));
+  const due = ready.filter((c) => c.due);
   return (
     <div className="mt-6 space-y-8">
+      {due.length > 0 && (
+        <section aria-labelledby="review">
+          <h2 id="review" className="text-lg font-semibold">
+            Review today ({due.length})
+          </h2>
+          <p className="mt-1 text-sm text-muted">Two quick questions each keep these fresh.</p>
+          <ul className="mt-3 divide-y divide-border rounded-lg border border-border bg-warning-surface">
+            {due.map((c) => (
+              <li key={c.code}>
+                <Link href={`/learn/${slug}/${c.slug}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:underline">
+                  <span className="font-medium">{c.title}</span>
+                  <span className="shrink-0 rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-background">Review</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section aria-labelledby="ready">
         <h2 id="ready" className="text-lg font-semibold">
           Ready for you
