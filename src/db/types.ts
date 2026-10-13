@@ -252,6 +252,7 @@ export type Database = {
           code: string
           concept_id: string
           id: string
+          solution: Json | null
           source: Json
           stem: string
           verified: boolean
@@ -261,6 +262,7 @@ export type Database = {
           code: string
           concept_id: string
           id?: string
+          solution?: Json | null
           source: Json
           stem: string
           verified?: boolean
@@ -270,6 +272,7 @@ export type Database = {
           code?: string
           concept_id?: string
           id?: string
+          solution?: Json | null
           source?: Json
           stem?: string
           verified?: boolean
@@ -498,6 +501,7 @@ export type Database = {
           code: string | null
           concept_id: string | null
           id: string | null
+          solution: Json | null
           source: Json | null
           stem: string | null
           verified: boolean | null
@@ -528,6 +532,7 @@ export type Database = {
           id: string
         }[]
       }
+      is_valid_solution: { Args: { s: Json }; Returns: boolean }
       mark_review_due: {
         Args: { p_concept: string; p_user: string }
         Returns: undefined
