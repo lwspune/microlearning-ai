@@ -12,7 +12,10 @@ describe("toSeedPayload", () => {
   });
 
   it("sends an unwritten node as a draft with no body or items", () => {
-    expect(byCode("C07")).toMatchObject({ status: "draft", body: null, misconceptions: [], items: [], prereqs: ["C06"] });
+    // Remove one concept's content so the test holds however much of the chapter is written.
+    const withoutC07 = { ...complexNumbers, concepts: complexNumbers.concepts.filter((c) => c.id !== "C07") };
+    const c07 = toSeedPayload(withoutC07, true).concepts.find((c) => c.code === "C07");
+    expect(c07).toMatchObject({ status: "draft", body: null, misconceptions: [], items: [], prereqs: ["C06"] });
   });
 
   it("sends an authored concept with its body, misconceptions and items", () => {
