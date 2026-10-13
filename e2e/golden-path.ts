@@ -65,15 +65,17 @@ await (async () => {
     await page.goto(BASE + "/");
     await page.getByRole("link", { name: /Start learning/ }).click();
     await page.waitForURL("**/learn/complex-numbers");
-    await page.getByText("Division").first().waitFor();
+    await page.getByText("Arithmetic").first().waitFor();
     const ready = await page.locator("section[aria-labelledby=ready] li").allInnerTexts();
     const soon = await page.getByText("Coming soon", { exact: true }).count();
-    check(ready.length === 3 && ready.every((t) => t.includes("Start")), `map: "Ready for you" lists 3 open concepts (got ${ready.length})`);
-    check(soon === 27, `map: outline shows 27 coming soon (got ${soon})`);
+    // New learners start where nothing published is left to master first: C04 and C10.
+    check(ready.length === 2 && ready[0].includes("Arithmetic") && ready[1].includes("Argand plane"), `map: "Ready for you" lists Arithmetic and Argand plane (got ${ready.length})`);
+    check(soon === 23, `map: outline shows 23 coming soon (got ${soon})`);
+    check((await page.getByText("Locked", { exact: true }).count()) === 5, "map: the other 5 published concepts are locked");
     await shot("01-map-guest");
     await noSideScroll("map");
 
-    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /Division/ }).click();
+    await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /Arithmetic/ }).click();
     await page.getByRole("button", { name: "Start as guest" }).waitFor();
     await shot("02-guest-start");
     await page.getByRole("button", { name: "Start as guest" }).click();
@@ -152,9 +154,11 @@ await (async () => {
     await page.getByRole("link", { name: "Back to the chapter" }).click();
     await page.waitForURL("**/learn/complex-numbers");
     // Next keeps the previous page mounted but hidden (React Activity), so scope to the map row.
-    const divisionRow = page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Division/ });
-    await divisionRow.getByText("Mastered ✓", { exact: true }).waitFor();
-    check(await divisionRow.getByText("Mastered ✓", { exact: true }).isVisible(), "map shows Division as Mastered ✓");
+    const ready2 = page.locator("section[aria-labelledby=ready]");
+    const arithmeticRow = ready2.getByRole("link", { name: /^Arithmetic/ });
+    await arithmeticRow.getByText("Mastered ✓", { exact: true }).waitFor();
+    check(await arithmeticRow.getByText("Mastered ✓", { exact: true }).isVisible(), "map shows Arithmetic as Mastered ✓");
+    check(await ready2.getByRole("link", { name: /^Conjugate/ }).isVisible(), "mastering Arithmetic unlocked Conjugate");
     await shot("11-map-after");
 
     // Database agrees.
