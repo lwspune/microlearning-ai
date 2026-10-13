@@ -128,7 +128,7 @@ function validateConcepts(chapter: Chapter): string[] {
   return errors;
 }
 
-/** Solution and figure rules (AUTHORING.md [S7]–[S9]). */
+/** Solution and figure rules (AUTHORING.md items 9–13). */
 function validateTeaching(chapter: Chapter): string[] {
   const errors: string[] = [];
   const nodes = new Map(chapter.graph.map((n) => [n.id, n]));
@@ -160,7 +160,7 @@ function validateTeaching(chapter: Chapter): string[] {
   return errors;
 }
 
-/** What a concept lacks under [S7] and [S8]. */
+/** What a concept lacks under items 9–11. */
 function missingTeaching(c: Concept, node: GraphNode): string[] {
   const errors: string[] = [];
   for (const item of c.items) errors.push(...missingSolution(item, node.visual === true));
@@ -190,7 +190,7 @@ const finite = (...ns: number[]) => ns.every(Number.isFinite);
 const finitePts = (...ps: Pt[]) => ps.every((p) => p.length === 2 && finite(...p));
 const samePt = (a: Pt, b: Pt) => a[0] === b[0] && a[1] === b[1];
 
-/** [S9]: well-formed figure. `maxStep` bounds element steps (worked examples and solutions). */
+/** Items 12–13: well-formed figure. `maxStep` bounds element steps (worked examples and solutions). */
 export function validateFigure(fig: Figure, where: string, maxStep?: number): string[] {
   const errors: string[] = [];
   if (fig.alt.trim() === "") errors.push(`${where}: needs alt text describing the picture`);

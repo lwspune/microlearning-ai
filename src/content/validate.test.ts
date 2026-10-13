@@ -168,7 +168,7 @@ describe("validateChapter", () => {
     });
   });
 
-  describe("solutions (S7)", () => {
+  describe("solutions (AUTHORING.md 9)", () => {
     it("requires a solution on every item", () => {
       expect(errorsAfter((ch) => delete c3(ch).items[0].solution)).toContainEqual(expect.stringMatching(/C3-Q1.*needs a step-by-step solution/));
     });
@@ -183,7 +183,7 @@ describe("validateChapter", () => {
     });
   });
 
-  describe("figures (S8, S9)", () => {
+  describe("figures (AUTHORING.md 10–13)", () => {
     it("accepts a visual concept with its figures", () => {
       expect(errorsAfter(makeVisual)).toEqual([]);
     });

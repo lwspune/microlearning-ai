@@ -144,7 +144,7 @@ export type Item = {
   stem: string;
   options: Option[];
   verify: ItemVerify;
-  /** Required by AUTHORING.md [S7] (concepts in `backfillPending` excepted). */
+  /** Required by AUTHORING.md item 9 (concepts in `backfillPending` excepted). */
   solution?: Solution;
 };
 
@@ -183,7 +183,7 @@ export type Chapter = {
   concepts: Concept[];
   /**
    * Concepts written before the solution and figure rules (AUTHORING.md
-   * [S7]–[S9]), exempt until backfilled. Only ever shrinks: the validator
+   * items 9–13), exempt until backfilled. Only ever shrinks: the validator
    * flags a listed concept that already meets the rules.
    */
   backfillPending?: ConceptId[];
