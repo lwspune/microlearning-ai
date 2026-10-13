@@ -297,6 +297,8 @@ export type Database = {
           concept_id: string
           mastery: number
           next_review_at: string | null
+          review_box: number
+          review_correct: number
           state: string
           streak: number
           updated_at: string
@@ -306,6 +308,8 @@ export type Database = {
           concept_id: string
           mastery?: number
           next_review_at?: string | null
+          review_box?: number
+          review_correct?: number
           state?: string
           streak?: number
           updated_at?: string
@@ -315,6 +319,8 @@ export type Database = {
           concept_id?: string
           mastery?: number
           next_review_at?: string | null
+          review_box?: number
+          review_correct?: number
           state?: string
           streak?: number
           updated_at?: string
@@ -522,11 +528,17 @@ export type Database = {
           id: string
         }[]
       }
+      mark_review_due: {
+        Args: { p_concept: string; p_user: string }
+        Returns: undefined
+      }
       mastery_streak_needed: { Args: never; Returns: number }
       record_attempt: {
         Args: { p_item: string; p_key: string; p_user: string }
         Returns: Json
       }
+      review_answers_needed: { Args: never; Returns: number }
+      review_interval: { Args: { p_box: number }; Returns: string }
       seed_chapter: { Args: { p: Json }; Returns: Json }
     }
     Enums: {
