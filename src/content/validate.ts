@@ -1,4 +1,4 @@
-import type { Chapter, ConceptId, GraphNode } from "./types";
+import type { Chapter, Concept, ConceptId, Figure, FigureElement, GraphNode, Item, Pt, Shape } from "./types";
 
 /** Minimum items per authored concept, so mastery and review never repeat an item too soon. */
 export const MIN_ITEMS = 5;
@@ -8,7 +8,7 @@ export const MIN_ITEMS = 5;
  * separately by the sympy verifier. Returns one message per problem; [] = valid.
  */
 export function validateChapter(chapter: Chapter): string[] {
-  return [...validateGraph(chapter.graph), ...validateConcepts(chapter)];
+  return [...validateGraph(chapter.graph), ...validateConcepts(chapter), ...validateTeaching(chapter)];
 }
 
 function validateGraph(graph: GraphNode[]): string[] {
@@ -126,4 +126,132 @@ function validateConcepts(chapter: Chapter): string[] {
     }
   }
   return errors;
+}
+
+/** Solution and figure rules (AUTHORING.md [S7]–[S9]). */
+function validateTeaching(chapter: Chapter): string[] {
+  const errors: string[] = [];
+  const nodes = new Map(chapter.graph.map((n) => [n.id, n]));
+  const authored = new Set(chapter.concepts.map((c) => c.id));
+  const pending = new Set(chapter.backfillPending ?? []);
+  for (const id of pending) {
+    if (!authored.has(id)) errors.push(`backfillPending lists ${id}, which is not an authored concept`);
+  }
+
+  for (const c of chapter.concepts) {
+    const node = nodes.get(c.id);
+    if (!node) continue; // reported by validateConcepts
+    const ex = c.explanation;
+    if (ex.figure) errors.push(...validateFigure(ex.figure, `${c.id} idea figure`));
+    if (ex.worked.figure) errors.push(...validateFigure(ex.worked.figure, `${c.id} worked figure`, ex.worked.steps.length));
+    for (const item of c.items) {
+      if (item.solution?.figure) {
+        errors.push(...validateFigure(item.solution.figure, `${item.id} solution figure`, item.solution.steps.length));
+      }
+    }
+
+    const missing = missingTeaching(c, node);
+    if (pending.has(c.id)) {
+      if (missing.length === 0) errors.push(`${c.id} meets the solution and figure rules; remove it from backfillPending`);
+    } else {
+      errors.push(...missing);
+    }
+  }
+  return errors;
+}
+
+/** What a concept lacks under [S7] and [S8]. */
+function missingTeaching(c: Concept, node: GraphNode): string[] {
+  const errors: string[] = [];
+  for (const item of c.items) errors.push(...missingSolution(item, node.visual === true));
+  if (node.visual) {
+    if (!c.explanation.figure) errors.push(`${c.id}: a visual concept needs a figure on the idea slide`);
+    if (!c.explanation.worked.figure) errors.push(`${c.id}: a visual concept needs a figure on the worked example`);
+  }
+  return errors;
+}
+
+function missingSolution(item: Item, visual: boolean): string[] {
+  const sol = item.solution;
+  if (!sol) return [`${item.id}: needs a step-by-step solution`];
+  const errors: string[] = [];
+  if (sol.steps.length < 2) errors.push(`${item.id}: solution needs at least 2 steps, has ${sol.steps.length}`);
+  sol.steps.forEach((step, i) => {
+    if (step.trim() === "") errors.push(`${item.id}: solution step ${i + 1} is empty`);
+  });
+  const kind = item.verify.kind;
+  if (visual && (kind === "point" || kind === "locus") && !sol.figure) {
+    errors.push(`${item.id}: a ${kind} item in a visual concept needs a figure in its solution`);
+  }
+  return errors;
+}
+
+const finite = (...ns: number[]) => ns.every(Number.isFinite);
+const finitePts = (...ps: Pt[]) => ps.every((p) => p.length === 2 && finite(...p));
+const samePt = (a: Pt, b: Pt) => a[0] === b[0] && a[1] === b[1];
+
+/** [S9]: well-formed figure. `maxStep` bounds element steps (worked examples and solutions). */
+export function validateFigure(fig: Figure, where: string, maxStep?: number): string[] {
+  const errors: string[] = [];
+  if (fig.alt.trim() === "") errors.push(`${where}: needs alt text describing the picture`);
+  const { x, y } = fig.view;
+  if (!finite(...x, ...y) || x[0] >= x[1] || y[0] >= y[1]) {
+    errors.push(`${where}: view must run from a smaller to a larger value on both axes`);
+  }
+  fig.elements.forEach((el, i) => {
+    const at = `${where} element ${i + 1} (${el.kind})`;
+    if (el.step !== undefined) {
+      if (!Number.isInteger(el.step) || el.step < 1) errors.push(`${at}: step must be a whole number from 1`);
+      else if (maxStep !== undefined && el.step > maxStep) errors.push(`${at}: step ${el.step} is outside 1 to ${maxStep}`);
+    }
+    if (el.label !== undefined && (el.label.trim() === "" || el.label.includes("$"))) {
+      errors.push(`${at}: label must be non-empty plain text (no LaTeX)`);
+    }
+    errors.push(...elementProblems(el).map((p) => `${at}: ${p}`));
+  });
+  return errors;
+}
+
+function elementProblems(el: FigureElement): string[] {
+  switch (el.kind) {
+    case "point":
+    case "label":
+      return finitePts(el.at) ? [] : ["coordinates must be finite numbers"];
+    case "vector": {
+      const from = el.from ?? [0, 0];
+      if (!finitePts(from, el.to)) return ["coordinates must be finite numbers"];
+      return samePt(from, el.to) ? ["a vector needs two different points"] : [];
+    }
+    case "segment":
+      if (!finitePts(el.from, el.to)) return ["coordinates must be finite numbers"];
+      return samePt(el.from, el.to) ? ["a segment needs two different points"] : [];
+    case "line":
+      if (!finitePts(...el.through)) return ["coordinates must be finite numbers"];
+      return samePt(...el.through) ? ["a line needs two different points"] : [];
+    case "ray":
+      return finitePts(el.from) && finite(el.angle) ? [] : ["coordinates must be finite numbers"];
+    case "circle":
+    case "arc":
+      if (!finitePts(el.centre) || !finite(el.r)) return ["coordinates must be finite numbers"];
+      return el.r > 0 ? [] : ["radius must be positive"];
+    case "angle":
+      return finitePts(el.at) && finite(el.from, el.to) ? [] : ["coordinates must be finite numbers"];
+    case "region":
+      if (el.within.length === 0) return ["a region needs at least one shape"];
+      return el.within.flatMap(shapeProblems);
+  }
+}
+
+function shapeProblems(sh: Shape): string[] {
+  switch (sh.kind) {
+    case "disc":
+    case "outsideDisc":
+      if (!finitePts(sh.centre) || !finite(sh.r)) return ["shape coordinates must be finite numbers"];
+      return sh.r > 0 ? [] : ["shape radius must be positive"];
+    case "halfPlane":
+      if (!finitePts(...sh.through)) return ["shape coordinates must be finite numbers"];
+      return samePt(...sh.through) ? ["a half-plane needs two different points"] : [];
+    case "sector":
+      return finitePts(sh.centre) && finite(sh.from, sh.to) ? [] : ["shape coordinates must be finite numbers"];
+  }
 }

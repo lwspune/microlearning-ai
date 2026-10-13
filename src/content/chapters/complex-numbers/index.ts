@@ -29,6 +29,7 @@ import { c27 } from "./concepts/c27-argument-loci.ts";
 import { c28 } from "./concepts/c28-conic-loci.ts";
 import { c29 } from "./concepts/c29-greatest-least-modulus.ts";
 import { c30 } from "./concepts/c30-regions-areas.ts";
+import { backfillPending } from "./backfill.ts";
 import { graph } from "./graph.ts";
 
 export const complexNumbers: Chapter = {
@@ -36,4 +37,5 @@ export const complexNumbers: Chapter = {
   title: "Complex Numbers",
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30],
+  backfillPending,
 };

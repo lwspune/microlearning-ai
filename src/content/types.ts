@@ -20,6 +20,8 @@ export type GraphNode = {
   oneLiner: string;
   group: string;
   tier: Tier;
+  /** Taught with pictures: needs a figure on the idea slide and the worked example (AUTHORING.md). */
+  visual?: true;
   /** Concepts that must be mastered before this one unlocks (transitively reduced). */
   prereqs: ConceptId[];
   /** Prerequisites from other chapters, assumed (and possibly diagnosed). */
@@ -74,18 +76,84 @@ export type ItemSource =
   | { kind: "pyqvault-practice"; ref: string }
   | { kind: "exam-style"; exam: "NDA" | "MHT-CET" | "JEE"; ref?: string };
 
+/** A point in the complex plane as [real part, imaginary part]. */
+export type Pt = [number, number];
+
+/** A convex or co-convex piece of the plane; a region is the overlap of its shapes. */
+export type Shape =
+  | { kind: "disc"; centre: Pt; r: number }
+  | { kind: "outsideDisc"; centre: Pt; r: number }
+  /** Keeps the side on the left when walking from the first point to the second. */
+  | { kind: "halfPlane"; through: [Pt, Pt] }
+  /** Angles in degrees, anticlockwise from `from` to `to`. */
+  | { kind: "sector"; centre: Pt; from: number; to: number };
+
+export type FigureElement = {
+  /**
+   * When the element appears. In a worked example or solution, the step
+   * (1-based) that introduces it; on the idea slide, the order it animates in.
+   * Omitted: shown from the start.
+   */
+  step?: number;
+  /** Plain text, no LaTeX: "z", "1 + 2i", "|z| = 3". */
+  label?: string;
+  /** Where the label sits relative to its anchor (default "ne"). */
+  labelAt?: "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
+  /** Colour role (default: accent for the main object). */
+  tone?: "accent" | "muted" | "good" | "bad";
+} & (
+  /** `hollow` marks an excluded point (e.g. the start of a ray). */
+  | { kind: "point"; at: Pt; hollow?: boolean }
+  /** An arrow; `from` defaults to the origin. */
+  | { kind: "vector"; from?: Pt; to: Pt }
+  | { kind: "segment"; from: Pt; to: Pt; dashed?: boolean }
+  /** The whole line through two points, clipped to the view. */
+  | { kind: "line"; through: [Pt, Pt]; dashed?: boolean }
+  /** Starts at `from` (excluded) in the direction `angle`, in degrees. */
+  | { kind: "ray"; from: Pt; angle: number }
+  | { kind: "circle"; centre: Pt; r: number; dashed?: boolean }
+  /** Angles in degrees, anticlockwise from `from` to `to`. */
+  | { kind: "arc"; centre: Pt; r: number; from: number; to: number }
+  /** A small arc marking an angle at `at`, anticlockwise from `from` to `to` degrees. */
+  | { kind: "angle"; at: Pt; from: number; to: number }
+  /** Text alone, anchored at a point. */
+  | { kind: "label"; at: Pt }
+  /** Shaded overlap of the shapes. */
+  | { kind: "region"; within: Shape[] }
+);
+
+/** An Argand-plane figure, drawn with axes. Equal scale on both axes. */
+export type Figure = {
+  /** Read by screen readers in place of the picture: what it shows, in words. */
+  alt: string;
+  /** The visible window: real parts from x[0] to x[1], imaginary parts from y[0] to y[1]. */
+  view: { x: [number, number]; y: [number, number] };
+  elements: FigureElement[];
+};
+
+/** Shown after the learner answers. Steps are inline text, like worked-example steps. */
+export type Solution = {
+  steps: string[];
+  /** Elements may carry `step` to appear alongside that step. */
+  figure?: Figure;
+};
+
 export type Item = {
   id: string; // "C06-Q1"
   source: ItemSource;
   stem: string;
   options: Option[];
   verify: ItemVerify;
+  /** Required by AUTHORING.md [S7] (concepts in `backfillPending` excepted). */
+  solution?: Solution;
 };
 
 export type WorkedExample = {
   prompt: string;
   steps: string[];
   answer: string;
+  /** Element `step`s match the worked steps (1-based). */
+  figure?: Figure;
 };
 
 export type Concept = {
@@ -96,7 +164,9 @@ export type Concept = {
     intuition: string;
     formal: string;
     worked: WorkedExample;
-    /** Spec for the interactive visual; built in M2. */
+    /** Shown on the idea slide; required for `visual` concepts. */
+    figure?: Figure;
+    /** Spec for an interactive (draggable) visual; not built yet. */
     visualSpec: string;
   };
   misconceptions: Misconception[];
@@ -111,4 +181,10 @@ export type Chapter = {
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */
   concepts: Concept[];
+  /**
+   * Concepts written before the solution and figure rules (AUTHORING.md
+   * [S7]–[S9]), exempt until backfilled. Only ever shrinks: the validator
+   * flags a listed concept that already meets the rules.
+   */
+  backfillPending?: ConceptId[];
 };
