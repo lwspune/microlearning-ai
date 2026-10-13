@@ -522,6 +522,12 @@ export type Database = {
           id: string
         }[]
       }
+      mastery_streak_needed: { Args: never; Returns: number }
+      record_attempt: {
+        Args: { p_item: string; p_key: string; p_user: string }
+        Returns: Json
+      }
+      seed_chapter: { Args: { p: Json }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
