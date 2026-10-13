@@ -17,7 +17,8 @@
     "test:db": "vitest run --config vitest.db.config.ts",
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --linked --schema public > src/db/types.ts",
-    "content:seed": "node scripts/seed-content.ts"
+    "content:seed": "node scripts/seed-content.ts",
+    "e2e": "node e2e/golden-path.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -35,6 +36,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
+    "playwright-core": "1.63.0",
     "supabase": "2.118.0",
     "tailwindcss": "^4",
     "typescript": "^5",
