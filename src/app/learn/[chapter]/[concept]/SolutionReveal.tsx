@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { RenderedInlineNodes } from "@/components/RenderedRichText";
 import { FigureView } from "@/figures/FigureView";
 import type { RenderedSolution } from "@/server/learning";
-import { secondaryButton } from "./ui";
+import { secondaryButton } from "@/components/ui";
 
 /** Seconds between solution steps; figure elements tagged with a step appear in sync. */
 const STEP_S = 0.9;

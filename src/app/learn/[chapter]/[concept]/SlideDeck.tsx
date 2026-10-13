@@ -7,7 +7,7 @@ import { FigureView } from "@/figures/FigureView";
 import type { RenderedSlide } from "@/lessons/renderDeck";
 import type { ConceptSession } from "@/server/learning";
 import { QuestionPanel } from "./QuestionPanel";
-import { primaryButton, secondaryButton } from "./ui";
+import { primaryButton, secondaryButton } from "@/components/ui";
 
 type Open = Extract<ConceptSession, { kind: "open" }>;
 

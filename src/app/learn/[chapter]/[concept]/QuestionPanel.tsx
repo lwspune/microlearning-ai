@@ -8,7 +8,7 @@ import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
 import { SolutionReveal } from "./SolutionReveal";
-import { primaryButton, secondaryButton } from "./ui";
+import { primaryButton, secondaryButton } from "@/components/ui";
 
 /** Questions answered in a refresher before offering the way back. */
 const REFRESHER_QUESTIONS = 2;
