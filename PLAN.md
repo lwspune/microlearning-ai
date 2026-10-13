@@ -175,3 +175,45 @@ review on their own.
   Google to keep their progress across devices.
 - **M3 must handle fallbacks to unwritten concepts.** Most pilot
   misconceptions route to concepts not authored yet (e.g. C05, C10, C11).
+
+## M2c: slide lessons with voiceover (approved 2026-10-13)
+
+Decided: **both modes** (self-paced slides + Coursera-style lecture),
+**pre-generated AI voice**, **tablet first** (landscape), phones supported.
+
+1. **Slides from existing content.** Each concept becomes a deck: hook →
+   reveal → the idea → precisely (split into one slide per point when long) →
+   worked example (one step per slide) → questions. No rewrite of the
+   approved explanations.
+2. **Narration scripts** (new content field, one per slide). Maths is written
+   as it's *spoken* ("z bar", "a plus i b", "the square root of 2"), because
+   text-to-speech can't read LaTeX. I draft them; you review them on
+   `/review`, which gets an audio player per slide. A check ensures every
+   slide has a script.
+3. **Audio generation is an offline script, never a public endpoint**
+   (English_AI_Tutor's lesson: its public TTS function was a cost-attack
+   risk). `npm run content:audio` sends each script to the TTS service and
+   uploads the MP3s to Supabase Storage. File names hash the script and voice,
+   so only changed slides are regenerated. Each slide's duration is stored
+   for the lecture timeline.
+4. **Self-paced mode:** full-screen slide stage (16:9 on tablet, stacked on
+   phone). Swipe, arrow keys and Back/Next buttons; progress dots; a 🔊 button
+   plays that slide's narration and stops when the student moves on. Question
+   slides use the existing server-side grading.
+5. **Lecture mode:** slides advance in sync with the narration, with play/pause,
+   a scrubber across the whole lecture, speed (0.75–1.5×), captions and a
+   transcript. Questions follow when the lecture ends. Students switch modes
+   at any time; their position is kept.
+6. **Accessibility:** captions/transcript for all audio, keyboard navigation,
+   focus management on slide change, reduced-motion support, no autoplay
+   without a tap (browsers block it anyway).
+7. **Tests:** deck building (pure, test-first) · narration completeness
+   check · audio manifest check (every slide has audio matching its current
+   script) · e2e for both modes on tablet and phone · screenshot sheet.
+
+Order: deck + self-paced mode first (useful without audio) → narration
+scripts + review → audio pipeline → lecture mode.
+
+**Parked (2026-10-13):** the voice provider (OpenAI recommended, sample first)
+and the API key. Steps 1, 2, 4 and the slide parts of 6–7 go ahead now;
+step 3 (audio) and step 5 (lecture mode) wait for that decision.
