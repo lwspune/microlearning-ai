@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from itertools import combinations
 
-from sympy import I, Poly, simplify, symbols, sympify
+from sympy import I, Poly, Rational, Symbol, simplify, sqrt, symbols, sympify
 
 X, Y = symbols("x y", real=True)
 _LOCALS = {"I": I, "x": X, "y": Y}
@@ -19,7 +19,17 @@ def _expr(s):
     return sympify(s, locals=_LOCALS)
 
 
+# Options may be written in omega, a non-real cube root of unity; values compare by its true value.
+OMEGA = Symbol("omega")
+OMEGA_VALUE = Rational(-1, 2) + sqrt(3) / 2 * I
+
+
+def _true_value(e):
+    return e.subs(OMEGA, OMEGA_VALUE) if hasattr(e, "subs") else e
+
+
 def _same_value(a, b):
+    a, b = _true_value(a), _true_value(b)
     return simplify(a - b) == 0
 
 

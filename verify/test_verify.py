@@ -153,3 +153,16 @@ class ExactAngles(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OmegaValues(unittest.TestCase):
+    """Options may be written in omega (a non-real cube root of unity); compare by its true value."""
+
+    def test_equal_forms_of_the_same_value_match(self):
+        from verify_content import _expr, _same_value
+        self.assertTrue(_same_value(_expr("omega**2"), _expr("-1 - omega")))
+        self.assertTrue(_same_value(_expr("omega**3"), _expr("1")))
+
+    def test_different_values_differ(self):
+        from verify_content import _expr, _same_value
+        self.assertFalse(_same_value(_expr("omega"), _expr("omega**2")))

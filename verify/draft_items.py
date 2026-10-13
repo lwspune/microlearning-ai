@@ -82,7 +82,9 @@ def draft(spec_path: str) -> str:
             vs = [simplify(sympify(values[m]) if isinstance(values[m], str) else values[m]) for m in it["models"]]
             for i in range(len(vs)):
                 for j in range(i + 1, len(vs)):
-                    assert simplify(vs[i] - vs[j]) != 0, f"{it['id']}: {it['models'][i]} and {it['models'][j]} give the same value {vs[i]}"
+                    from verify_content import _same_value
+
+                    assert not _same_value(vs[i], vs[j]), f"{it['id']}: {it['models'][i]} and {it['models'][j]} give the same value {vs[i]}"
 
         # Vary the correct position deterministically by item id.
         shift = int(hashlib.sha256(it["id"].encode()).hexdigest(), 16) % len(it["models"])
