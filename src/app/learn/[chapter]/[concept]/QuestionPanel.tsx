@@ -8,7 +8,8 @@ import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
 import { SolutionReveal } from "./SolutionReveal";
-import { primaryButton, secondaryButton } from "./ui";
+import { CheckIcon } from "@/components/icons";
+import { card, primaryButton, secondaryButton } from "@/components/ui";
 
 /** Questions answered in a refresher before offering the way back. */
 const REFRESHER_QUESTIONS = 2;
@@ -18,13 +19,36 @@ function StreakDots({ streak, needed }: { streak: number; needed: number }) {
     <p className="flex items-center gap-2 text-sm text-muted">
       <span className="flex gap-1" aria-hidden="true">
         {Array.from({ length: needed }, (_, i) => (
-          <span key={i} className={`h-2.5 w-2.5 rounded-full ${i < streak ? "bg-success" : "bg-border"}`} />
+          <span
+            key={i}
+            className={`h-2.5 w-6 rounded-full transition-colors duration-300 motion-reduce:transition-none ${i < streak ? "bg-success" : "bg-border"}`}
+          />
         ))}
       </span>
       <span>
         {Math.min(streak, needed)} of {needed} in a row
       </span>
     </p>
+  );
+}
+
+/** A burst of dots behind the mastery check; static (hidden) when motion is reduced. */
+function Sparks() {
+  const dots = [
+    // Kept to the band around the check mark, clear of the text below it.
+    [18, 14, "bg-accent"], [28, 30, "bg-success"], [36, 8, "bg-accent"], [64, 8, "bg-success"],
+    [72, 30, "bg-accent"], [82, 14, "bg-success"], [44, 26, "bg-success"], [56, 26, "bg-accent"],
+  ] as const;
+  return (
+    <span className="pointer-events-none absolute inset-0 hidden motion-safe:block" aria-hidden="true">
+      {dots.map(([x, y, color], i) => (
+        <span
+          key={i}
+          className={`absolute h-2 w-2 rounded-full ${color} animate-spark`}
+          style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${i * 60}ms` }}
+        />
+      ))}
+    </span>
   );
 }
 
@@ -104,12 +128,16 @@ export function QuestionPanel({
 
   if (celebrate) {
     return (
-      <div className="rounded-lg border border-border bg-success-surface p-6" aria-live="polite">
-        <h3 className="text-xl font-semibold text-success">Mastered ✓</h3>
-        <p className="mt-2">
+      <div className={`${card} relative overflow-hidden bg-success-surface p-8 text-center`} aria-live="polite">
+        <Sparks />
+        <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-success text-background shadow-lift motion-safe:animate-pop">
+          <CheckIcon className="h-8 w-8" />
+        </span>
+        <h3 className="mt-4 font-display text-3xl font-semibold text-success">Mastered ✓</h3>
+        <p className="mx-auto mt-2 max-w-md">
           You answered {progress.needed} different questions in a row correctly. {title} is mastered.
         </p>
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link href={refresher?.href ?? chapterHref} className={primaryButton}>
             {refresher ? `Back to ${refresher.title} →` : "Back to the chapter"}
           </Link>
@@ -125,38 +153,38 @@ export function QuestionPanel({
     <div>
       <div className="flex flex-wrap items-center justify-end gap-2">
         {reviewDue ? (
-          <p className="rounded-full bg-warning-surface px-3 py-1 text-sm font-medium">
+          <p className="rounded-full border border-border bg-warning-surface px-3 py-1 text-sm font-medium">
             Review · {reviewCorrect} of {progress.review.needed}
           </p>
         ) : mastered ? (
-          <p className="text-sm font-medium text-success">Mastered ✓</p>
+          <p className="inline-flex items-center gap-1.5 rounded-full bg-success-surface px-3 py-1 text-sm font-medium text-success">Mastered ✓</p>
         ) : (
           <StreakDots streak={streak} needed={progress.needed} />
         )}
       </div>
 
       <fieldset
-        className="mt-3 rounded-lg border border-border p-5"
+        className="mt-3 rounded-2xl border border-border bg-surface/50 p-5 md:p-6"
         disabled={pending || result !== null}
         data-item-id={question.itemId}
       >
         <legend className="sr-only">Choose one answer</legend>
         <RenderedRichText blocks={question.stem} />
-        <div className="mt-4 grid gap-2 md:grid-cols-2">
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
           {question.options.map((o) => {
             const isCorrect = result?.correctKey === o.key;
             const isWrongPick = result && selected === o.key && !result.correct;
             return (
               <label
                 key={o.key}
-                className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+                className={`relative flex cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3.5 shadow-card transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent motion-reduce:transition-none ${
                   isCorrect
                     ? "border-success bg-success-surface"
                     : isWrongPick
-                      ? "border-danger"
+                      ? "border-danger bg-danger-surface"
                       : selected === o.key
-                        ? "border-accent"
-                        : "border-border"
+                        ? "border-accent bg-accent-soft"
+                        : "border-border bg-card hover:border-border-strong"
                 }`}
               >
                 <input
@@ -165,9 +193,23 @@ export function QuestionPanel({
                   value={o.key}
                   checked={selected === o.key}
                   onChange={() => setSelected(o.key)}
-                  className="h-4 w-4 accent-[var(--accent)]"
+                  // Invisible but covering the card: the whole card is the hit target, focus and keyboard still work.
+                  className="absolute inset-0 cursor-pointer appearance-none rounded-xl opacity-0"
                 />
-                <span className="font-mono text-sm font-semibold">{o.label}</span>
+                <span
+                  aria-hidden="true"
+                  className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-semibold ${
+                    isCorrect
+                      ? "bg-success text-background"
+                      : isWrongPick
+                        ? "bg-danger text-background"
+                        : selected === o.key
+                          ? "bg-accent text-background"
+                          : "border border-border-strong text-muted"
+                  }`}
+                >
+                  {o.label}
+                </span>
                 <span className="min-w-0 flex-1">
                   <RenderedInlineNodes nodes={o.text} />
                 </span>
@@ -186,8 +228,9 @@ export function QuestionPanel({
           </p>
         )}
         {result && (
-          <div className={`mt-4 rounded-lg p-4 ${result.correct ? "bg-success-surface" : "bg-warning-surface"}`}>
-            <p className={`font-semibold ${result.correct ? "text-success" : ""}`}>
+          <div className={`mt-4 rounded-2xl border p-5 motion-safe:animate-rise ${result.correct ? "border-success/30 bg-success-surface" : "border-border bg-warning-surface"}`}>
+            <p className={`flex items-center gap-2 font-display text-lg font-semibold ${result.correct ? "text-success" : ""}`}>
+              {result.correct && <CheckIcon className="h-5 w-5" />}
               {result.correct ? "Correct!" : "Not quite."}
             </p>
             {result.remediation && <RenderedRichText blocks={result.remediation} className="mt-2" />}

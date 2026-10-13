@@ -125,7 +125,7 @@ function Axes({ view, f }: { view: View; f: Frame }) {
         {hasX && <line x1={0} x2={fmt(f.width)} y1={fmt(oy)} y2={fmt(oy)} />}
         {hasY && <line y1={0} y2={fmt(f.height)} x1={fmt(ox)} x2={fmt(ox)} />}
       </g>
-      <g fill="var(--muted)" fontSize={11} stroke="var(--background)" strokeWidth={3} paintOrder="stroke" strokeLinejoin="round">
+      <g fill="var(--muted)" fontSize={11} stroke="var(--figure-bg, var(--background))" strokeWidth={3} paintOrder="stroke" strokeLinejoin="round">
         {hasX &&
           xs.map((v) => (
             <text key={`tx${v}`} x={fmt(f.px([v, 0])[0])} y={fmt(oy + 14)} textAnchor="middle">
@@ -211,7 +211,7 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
     case "point": {
       const [cx, cy] = f.px(el.at);
       return el.hollow ? (
-        <circle {...motion} cx={fmt(cx)} cy={fmt(cy)} r={4.5} fill="var(--background)" stroke={color} strokeWidth={2} />
+        <circle {...motion} cx={fmt(cx)} cy={fmt(cy)} r={4.5} fill="var(--figure-bg, var(--background))" stroke={color} strokeWidth={2} />
       ) : (
         <circle {...motion} cx={fmt(cx)} cy={fmt(cy)} r={4.5} fill={color} />
       );
@@ -239,7 +239,7 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
         <g>
           {line(seg[0], seg[1], drawn(motion))}
           <polygon {...motion} points={arrowHead(f, seg[0], seg[1])} fill={color} />
-          <circle {...motion} cx={fmt(sx)} cy={fmt(sy)} r={4.5} fill="var(--background)" stroke={color} strokeWidth={2} />
+          <circle {...motion} cx={fmt(sx)} cy={fmt(sy)} r={4.5} fill="var(--figure-bg, var(--background))" stroke={color} strokeWidth={2} />
         </g>
       );
     }
@@ -278,7 +278,7 @@ function Label({ el, view, f, motion }: { el: FigureElement; view: View; f: Fram
       fontSize={LABEL_PX}
       fontWeight={500}
       fill={el.tone && el.tone !== "accent" ? TONE[el.tone] : "var(--foreground)"}
-      stroke="var(--background)"
+      stroke="var(--figure-bg, var(--background))"
       strokeWidth={4}
       paintOrder="stroke"
       strokeLinejoin="round"

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ArrowLeftIcon, LockIcon } from "@/components/icons";
+import { card, eyebrow, primaryButton } from "@/components/ui";
 import { chapters } from "@/content/chapters";
 import { currentUserId } from "@/lib/supabase/server";
 import { refresherFrom } from "@/lessons/refresher";
@@ -44,12 +46,16 @@ async function ConceptSection({
   if (!session) notFound();
   if (session.kind === "locked") {
     return (
-      <p className="rounded-lg border border-border bg-surface p-5">
-        This concept builds on earlier ones you haven&apos;t mastered yet.{" "}
-        <Link href={`/learn/${chapter}`} className="text-accent underline underline-offset-2">
+      <div className={`${card} mx-auto mt-6 max-w-lg p-8 text-center`}>
+        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-surface text-muted">
+          <LockIcon className="h-5 w-5" />
+        </span>
+        <h2 className="mt-4 font-display text-2xl font-semibold">Not unlocked yet</h2>
+        <p className="mt-2 text-muted">This concept builds on earlier ones you haven&apos;t mastered yet.</p>
+        <Link href={`/learn/${chapter}`} className={`${primaryButton} mt-6`}>
           Back to the chapter
         </Link>
-      </p>
+      </div>
     );
   }
   return (
@@ -79,13 +85,16 @@ async function ConceptContent({
 
   return (
     <>
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <Link href={`/learn/${chapter}`} className="text-sm text-accent underline-offset-2 hover:underline">
-          ← {ch.title}
-        </Link>
-        <h1 className="text-xl font-semibold">{node.title}</h1>
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
+        <div>
+          <Link href={`/learn/${chapter}`} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-foreground">
+            <ArrowLeftIcon className="h-4 w-4" /> {ch.title}
+          </Link>
+          <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight md:text-3xl">{node.title}</h1>
+        </div>
+        <p className={`${eyebrow} pb-1`}>{node.group}</p>
       </div>
-      <div className="mt-3">
+      <div className="mt-4">
         <ConceptSection chapter={chapter} concept={concept} searchParams={searchParams} />
       </div>
     </>
@@ -94,7 +103,7 @@ async function ConceptContent({
 
 export default function ConceptPage({ params, searchParams }: PageProps<"/learn/[chapter]/[concept]">) {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-4">
+    <main className="mx-auto w-full max-w-5xl px-4 py-5 sm:px-6">
       <Suspense fallback={<p className="text-muted">Loading…</p>}>
         <ConceptContent params={params} searchParams={searchParams} />
       </Suspense>

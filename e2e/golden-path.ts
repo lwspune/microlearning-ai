@@ -253,10 +253,12 @@ await (async () => {
     await page.getByRole("link", { name: "Back to the chapter" }).click();
     await page.waitForURL("**/learn/complex-numbers");
     // Next keeps the previous page mounted but hidden (React Activity), so scope to the map row.
+    // Mastered concepts show on the chapter path; "Ready for you" holds what's left to do.
     const ready2 = page.locator("section[aria-labelledby=ready]");
-    const arithmeticRow = ready2.getByRole("link", { name: /^Arithmetic/ });
+    const arithmeticRow = page.locator("section[aria-labelledby=outline]").getByRole("link", { name: /^Arithmetic/ });
     await arithmeticRow.getByText("Mastered ✓", { exact: true }).waitFor();
     check(await arithmeticRow.getByText("Mastered ✓", { exact: true }).isVisible(), "map shows Arithmetic as Mastered ✓");
+    check((await ready2.getByRole("link", { name: /^Arithmetic/ }).count()) === 0, "a mastered concept leaves Ready for you");
     check(await ready2.getByRole("link", { name: /^Conjugate/ }).isVisible(), "mastering Arithmetic unlocked Conjugate");
     await shot("11-map-after");
 
