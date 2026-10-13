@@ -276,3 +276,24 @@ All 38 live items list the key first, so a student can learn to tap A.
   would rewrite attempts later.
 - **Risk/reversibility:** (a) is UI-only and reverts in one commit.
 - **Recommendation:** (a), now, before any real students.
+
+## Content: all 30 concepts (in progress on branch `content-all`, paused 2026-10-13)
+
+- **Done, drafts (not yet published):** Algebra batch C01, C02, C03, C07,
+  C08, C09 (31 items; 69 items verified chapter-wide, 0 problems). Built with
+  `verify/draft_items.py` + `verify/build_concepts.py` (RUNBOOK section 3).
+- **Models only:** Geometry & polar batch C12, C13, C15, C16, C17, C18. Answer
+  models are committed; item specs and content text are drafted in the
+  session scratchpad but not committed.
+- **To resume batch 2:** add a `polar` display format to `draft_items.py`
+  that (a) brackets negative angles, `\cos\left(-\frac{\pi}{3}\right)`, and
+  (b) shows the C16-M1 options (sum or difference of moduli at the correct
+  angle) as `(r_1 \pm r_2)(\cos\theta + i\sin\theta)` from the inputs, not
+  from `arg()` of the value, which sympy can't simplify. Then write the
+  batch-2 content and build.
+- **Remaining:** Roots C19–C23 and Loci C24, C26–C30 (models + content).
+  C27 and C30 need a ray/half-plane check in the verifier (a locus with an
+  inequality), not only polynomial loci.
+- **Then:** your review of all new drafts on `/review` → approve → seed →
+  e2e → merge.
+- **Open question for you:** backfill item 1 (always-A answers).
