@@ -2,6 +2,8 @@ import "server-only";
 import type { Concept, GraphNode, Tier } from "@/content/types";
 import { conceptStates, type ConceptState } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
+import { buildDeck } from "@/lessons/deck";
+import { type RenderedSlide, renderDeck } from "@/lessons/renderDeck";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { RenderedBlock, RenderedInline } from "@/lib/renderedText";
 import { renderInlineText, renderRichText } from "@/lib/richText";
@@ -30,12 +32,7 @@ export type ConceptSession =
       kind: "open";
       code: string;
       title: string;
-      cards: {
-        hook: { prompt: RenderedBlock[]; reveal: RenderedBlock[] };
-        intuition: RenderedBlock[];
-        formal: RenderedBlock[];
-        worked: { prompt: RenderedBlock[]; steps: RenderedInline[][]; answer: RenderedInline[] };
-      };
+      slides: RenderedSlide[];
       question: Question;
       progress: Progress;
     };
@@ -159,23 +156,13 @@ export async function getConceptSession(chapterSlug: string, conceptSlug: string
   if (ae) throw ae;
 
   const content = body.body as Pick<Concept, "hook" | "explanation">;
-  const ex = content.explanation;
   const own = rows.find((r) => r.concept_id === concept.id);
 
   return {
     kind: "open",
     code: concept.code,
     title: concept.title,
-    cards: {
-      hook: { prompt: renderRichText(content.hook.prompt), reveal: renderRichText(content.hook.reveal) },
-      intuition: renderRichText(ex.intuition),
-      formal: renderRichText(ex.formal),
-      worked: {
-        prompt: renderRichText(ex.worked.prompt),
-        steps: ex.worked.steps.map(renderInlineText),
-        answer: renderInlineText(ex.worked.answer),
-      },
-    },
+    slides: renderDeck(buildDeck(content)),
     question: await buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct })))),
     progress: { streak: own?.streak ?? 0, needed, state },
   };
