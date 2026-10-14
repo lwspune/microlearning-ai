@@ -1,0 +1,316 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c04: Concept = {
+  id: "C04",
+  status: "approved",
+  hook: {
+    prompt: t`How many circles pass through the two points $(2, 1)$ and $(6, 1)$? And how many pass through $(2, 1)$, $(6, 1)$ and $(2, 5)$?`,
+    reveal: t`Through two points: infinitely many. Any point of their perpendicular bisector $x = 4$ is equally far from both, so it can be a centre. A third point pins the centre down: it must also lie on $y = 3$, the bisector of $(2, 1)$ and $(2, 5)$. So the centre is $(4, 3)$, and exactly one circle passes through all three: $x^2 + y^2 - 8x - 6y + 17 = 0$.`,
+  },
+  explanation: {
+    intuition: t`A circle has three unknowns: two for the centre and one for the radius. So it takes three facts to pin one down. Through two points there is a whole family of circles, their centres strung along the perpendicular bisector; a third point picks one. Whatever its wording, each condition becomes one equation in $g$, $f$ and $c$.`,
+    formal: t`**Three unknowns, three conditions.** The circle $x^2 + y^2 + 2gx + 2fy + c = 0$ has centre $(-g, -f)$ and radius $\sqrt{g^2 + f^2 - c}$. Three independent conditions fix $g$, $f$ and $c$.
+
+**Each condition is one equation**
+
+- Passes through $(x_1, y_1)$: $x_1^2 + y_1^2 + 2gx_1 + 2fy_1 + c = 0$.
+- Centre $(h, k)$: $g = -h$, $f = -k$. Centre on a line: put $(-g, -f)$ into the line.
+- Radius $r$: $g^2 + f^2 - c = r^2$. Two diameters: the centre is where they meet.
+
+**Through three points.** Substitute all three, subtract pairs to remove $c$, solve for $g$ and $f$, then find $c$. Four points are **concyclic** when the fourth lies on the circle through the other three.
+
+**Chords.** The centre lies on the perpendicular bisector of every chord, and the perpendicular from the centre cuts the chord in half. A chord of length $l$ at distance $d$ from the centre gives $r^2 = d^2 + \left(\frac{l}{2}\right)^2$. A chord is a diameter only if it passes through the centre.`,
+    worked: {
+      prompt: t`Show that the points $(5, 5)$, $(6, 4)$, $(-2, 4)$ and $(7, 1)$ are concyclic.`,
+      steps: [
+        t`Let the circle through the first three be $x^2 + y^2 + 2gx + 2fy + c = 0$: $50 + 10g + 10f + c = 0$, $52 + 12g + 8f + c = 0$, $20 - 4g + 8f + c = 0$.`,
+        t`Second minus third: $32 + 16g = 0$, so $g = -2$. Second minus first: $2 + 2g - 2f = 0$, so $f = -1$.`,
+        t`Third: $20 + 8 - 8 + c = 0$, so $c = -20$. The circle is $x^2 + y^2 - 4x - 2y - 20 = 0$, with centre $(2, 1)$ and radius $\sqrt{4 + 1 + 20} = 5$.`,
+        t`Test $(7, 1)$: $49 + 1 - 28 - 2 - 20 = 0$, so it lies on the same circle.`,
+      ],
+      answer: t`All four points lie on $x^2 + y^2 - 4x - 2y - 20 = 0$, so they are concyclic.`,
+      figure: {
+        alt: "The points (5, 5), (6, 4) and (−2, 4), then the circle through them, centred at (2, 1) with radius 5. The fourth point (7, 1) lies on the same circle.",
+        axes: "xy",
+        view: { x: [-4.5, 9.5], y: [-5, 7.5] },
+        elements: [
+          { kind: "point", at: [5, 5], label: "(5, 5)", labelAt: "ne", step: 1 },
+          { kind: "point", at: [6, 4], label: "(6, 4)", labelAt: "ne", step: 1 },
+          { kind: "point", at: [-2, 4], label: "(−2, 4)", labelAt: "nw", step: 1 },
+          { kind: "circle", centre: [2, 1], r: 5, step: 3 },
+          { kind: "point", at: [2, 1], label: "(2, 1)", labelAt: "ne", step: 3 },
+          { kind: "point", at: [7, 1], label: "(7, 1)", labelAt: "e", tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The points (2, 1) and (6, 1). Every point of their perpendicular bisector x = 4 is a possible centre: one such circle, centred at (4, 0), passes through both. Adding the point (2, 5) brings a second bisector, y = 3, which meets x = 4 at (4, 3): the one circle through all three points has centre (4, 3).",
+      axes: "xy",
+      view: { x: [-0.5, 9], y: [-2.8, 7] },
+      elements: [
+        { kind: "point", at: [2, 1], step: 1 },
+        { kind: "label", at: [1.6, 1], label: "(2, 1)", labelAt: "w", step: 1 },
+        { kind: "point", at: [6, 1], step: 1 },
+        { kind: "label", at: [6.4, 1], label: "(6, 1)", labelAt: "e", step: 1 },
+        { kind: "line", through: [[4, 0], [4, 1]], dashed: true, tone: "muted", step: 2 },
+        { kind: "label", at: [4, 6.3], label: "x = 4", labelAt: "e", tone: "muted", step: 2 },
+        { kind: "circle", centre: [4, 0], r: 2.236, tone: "muted", step: 2 },
+        { kind: "point", at: [2, 5], label: "(2, 5)", labelAt: "nw", step: 3 },
+        { kind: "line", through: [[0, 3], [1, 3]], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [8.2, 3], label: "y = 3", labelAt: "n", tone: "muted", step: 4 },
+        { kind: "circle", centre: [4, 3], r: 2.828, tone: "good", step: 4 },
+        { kind: "point", at: [4, 3], label: "(4, 3)", labelAt: "ne", tone: "good", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag three points around the plane; the perpendicular bisectors of two chords move with them, their crossing marks the centre, and the circle and its equation $x^2 + y^2 + 2gx + 2fy + c = 0$ update live.`,
+  },
+  misconceptions: [
+    {
+      id: "C04-M1",
+      mistake: t`Putting the centre $(h, k)$ into the general form as $g = h$, $f = k$, so the circle comes out centred at $(-h, -k)$`,
+      remediation: t`In $x^2 + y^2 + 2gx + 2fy + c = 0$ the centre is $(-g, -f)$. A centre $(h, k)$ gives $g = -h$ and $f = -k$: the signs in the equation are opposite to the centre's.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+    {
+      id: "C04-M2",
+      mistake: "Treating a chord as a diameter: the two given points, or the given chord, taken as the ends of a diameter",
+      remediation: "A chord is a diameter only when it passes through the centre. Find the centre from the conditions first (it lies on the chord's perpendicular bisector), then the radius.",
+      fallback: { kind: "ext", topic: "chord properties of a circle" },
+    },
+    {
+      id: "C04-M3",
+      mistake: t`Writing $r$ instead of $r^2$ on the right of $(x - h)^2 + (y - k)^2 = r^2$`,
+      remediation: t`The centre–radius form is $(x - h)^2 + (y - k)^2 = r^2$. Square the radius before you put it on the right: a radius of $5$ gives $25$.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C04-M4",
+      mistake: t`Using the whole chord where the perpendicular from the centre meets only half of it: $r^2 = d^2 + l^2$, or the centre placed at the chord's far end`,
+      remediation: t`The perpendicular from the centre cuts a chord in half. Use half the chord, $r^2 = d^2 + \left(\frac{l}{2}\right)^2$, and remember the centre sits above the chord's midpoint.`,
+      fallback: { kind: "ext", topic: "chord properties of a circle" },
+    },
+    {
+      id: "C04-M5",
+      mistake: t`Substituting a point as $x_1^2 + y_1^2 + gx_1 + fy_1 + c = 0$ (the 2s dropped), then writing the circle with $2gx + 2fy$`,
+      remediation: t`Substitute into the same equation you write down at the end: $x_1^2 + y_1^2 + 2gx_1 + 2fy_1 + c = 0$. Keep the $2$ in $2g$ and $2f$ in every condition.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+    {
+      id: "C04-M6",
+      mistake: t`Taking $c = r^2 - g^2 - f^2$ instead of $c = g^2 + f^2 - r^2$`,
+      remediation: t`From $r^2 = g^2 + f^2 - c$, the constant is $c = g^2 + f^2 - r^2$. Check by expanding $(x - h)^2 + (y - k)^2 = r^2$: the constant term is $h^2 + k^2 - r^2$.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+  ],
+  engineNotes: [
+    "C04-M2 applies only to a circle through two given points (centre on a line) or to a chord of given length; C04-M4 only to a chord of given length or chords cut off on the axes; C04-M5 only to a circle through three points.",
+    "C04-M6 gives the key when the circle passes through the origin (c = 0), C04-M3 when r = 1, and C04-M1 when the centre is the origin: draw diagnosing items away from those cases.",
+  ],
+  items: [
+    {
+      id: "C04-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/circle-11/Ex 6.2 Q3" },
+      stem: t`The equation of the circle passing through the points $(5, 7)$, $(6, 6)$ and $(2, -2)$ is:`,
+      verify: { kind: "locus", inputs: { A: "(5, 7)", B: "(6, 6)", C: "(2, -2)" }, params: { type: "three" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 4x - 6y + 8 = 0$`, correct: false, misconceptionId: "C04-M3", value: "x**2 - 4*x + y**2 - 6*y + 8" },
+        { key: "B", text: t`$x^2 + y^2 - 4x - 6y + 12 = 0$`, correct: false, misconceptionId: "C04-M6", value: "x**2 - 4*x + y**2 - 6*y + 12" },
+        { key: "C", text: t`$x^2 + y^2 - 4x - 6y - 12 = 0$`, correct: true, value: "x**2 - 4*x + y**2 - 6*y - 12" },
+        { key: "D", text: t`$x^2 + y^2 - 8x - 12y - 12 = 0$`, correct: false, misconceptionId: "C04-M5", value: "x**2 - 8*x + y**2 - 12*y - 12" },
+      ],
+      solution: {
+        steps: [
+          t`Let the circle be $x^2 + y^2 + 2gx + 2fy + c = 0$. The three points give $74 + 10g + 14f + c = 0$, $72 + 12g + 12f + c = 0$ and $8 + 4g - 4f + c = 0$.`,
+          t`First minus second: $2 - 2g + 2f = 0$, so $f = g - 1$. Second minus third: $64 + 8g + 16f = 0$, so $8 + g + 2f = 0$, giving $3g + 6 = 0$: $g = -2$, $f = -3$.`,
+          t`From the third equation, $8 - 8 + 12 + c = 0$, so $c = -12$. The circle is $x^2 + y^2 - 4x - 6y - 12 = 0$, with centre $(2, 3)$ and radius $5$.`,
+        ],
+        figure: {
+          alt: "The points (5, 7), (6, 6) and (2, −2), then the circle through them, centred at (2, 3) with radius 5.",
+          axes: "xy",
+          view: { x: [-4, 10], y: [-3.5, 9.5] },
+          elements: [
+            { kind: "point", at: [5, 7], label: "(5, 7)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [6, 6], label: "(6, 6)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [2, -2], label: "(2, −2)", labelAt: "s", step: 1 },
+            { kind: "circle", centre: [2, 3], r: 5, tone: "good", step: 3 },
+            { kind: "point", at: [2, 3], label: "(2, 3)", labelAt: "ne", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C04-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/circle-11/Misc I Q3" },
+      stem: t`A circle passes through the points $(2, 3)$ and $(4, 5)$, and its centre lies on the line $y - 4x + 3 = 0$. Its equation is:`,
+      verify: { kind: "locus", inputs: { A: "(2, 3)", B: "(4, 5)", L: "y - 4*x + 3" }, params: { type: "line" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 + 4x + 10y + 25 = 0$`, correct: false, misconceptionId: "C04-M1", value: "x**2 + 4*x + y**2 + 10*y + 25" },
+        { key: "B", text: t`$x^2 + y^2 - 6x - 8y + 23 = 0$`, correct: false, misconceptionId: "C04-M2", value: "x**2 - 6*x + y**2 - 8*y + 23" },
+        { key: "C", text: t`$x^2 + y^2 - 4x - 10y - 25 = 0$`, correct: false, misconceptionId: "C04-M6", value: "x**2 - 4*x + y**2 - 10*y - 25" },
+        { key: "D", text: t`$x^2 + y^2 - 4x - 10y + 25 = 0$`, correct: true, value: "x**2 - 4*x + y**2 - 10*y + 25" },
+      ],
+      solution: {
+        steps: [
+          t`The centre is equally far from $(2, 3)$ and $(4, 5)$, so it lies on their perpendicular bisector: through the midpoint $(3, 4)$ with slope $-1$, that is $x + y = 7$.`,
+          t`It also lies on $y = 4x - 3$: $x + 4x - 3 = 7$ gives $x = 2$, $y = 5$. The centre is $(2, 5)$.`,
+          t`$r^2 = (2 - 2)^2 + (5 - 3)^2 = 4$, so $(x - 2)^2 + (y - 5)^2 = 4$, that is $x^2 + y^2 - 4x - 10y + 25 = 0$.`,
+        ],
+        figure: {
+          alt: "The points (2, 3) and (4, 5) and the line y = 4x − 3. The dashed perpendicular bisector x + y = 7 of the two points meets the line at the centre (2, 5); the circle of radius 2 about it passes through both points.",
+          axes: "xy",
+          view: { x: [-1, 8], y: [-0.5, 9] },
+          elements: [
+            { kind: "line", through: [[1, 1], [2, 5]], tone: "muted" },
+            { kind: "label", at: [2.75, 8], label: "y = 4x − 3", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [2, 3], label: "(2, 3)", labelAt: "se" },
+            { kind: "point", at: [4, 5], label: "(4, 5)", labelAt: "e" },
+            { kind: "line", through: [[3, 4], [7, 0]], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [6, 1], label: "x + y = 7", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "point", at: [2, 5], tone: "good", step: 2 },
+            { kind: "label", at: [1.75, 4.55], label: "(2, 5)", labelAt: "sw", tone: "good", step: 2 },
+            { kind: "circle", centre: [2, 5], r: 2, tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C04-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/circle-11/Misc I Q2" },
+      stem: t`The lines $2x - 3y = 5$ and $3x - 4y = 7$ are diameters of a circle of area $154$ sq. units. Taking $\pi = \frac{22}{7}$, the equation of the circle is:`,
+      verify: { kind: "locus", inputs: { L1: "2*x - 3*y - 5", L2: "3*x - 4*y - 7", area: "154" }, params: { type: "diameters" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 2x + 2y - 5 = 0$`, correct: false, misconceptionId: "C04-M3", value: "x**2 - 2*x + y**2 + 2*y - 5" },
+        { key: "B", text: t`$x^2 + y^2 - 2x + 2y + 47 = 0$`, correct: false, misconceptionId: "C04-M6", value: "x**2 - 2*x + y**2 + 2*y + 47" },
+        { key: "C", text: t`$x^2 + y^2 - 2x + 2y - 47 = 0$`, correct: true, value: "x**2 - 2*x + y**2 + 2*y - 47" },
+        { key: "D", text: t`$x^2 + y^2 + 2x - 2y - 47 = 0$`, correct: false, misconceptionId: "C04-M1", value: "x**2 + 2*x + y**2 - 2*y - 47" },
+      ],
+      solution: {
+        steps: [
+          t`Every diameter passes through the centre, so the centre is where $d_1: 2x - 3y = 5$ and $d_2: 3x - 4y = 7$ meet. Three times the first minus twice the second gives $-y = 1$, so $y = -1$ and $x = 1$. The centre is $(1, -1)$.`,
+          t`$\pi r^2 = 154$, so $r^2 = 154 \times \frac{7}{22} = 49$ and $r = 7$.`,
+          t`$(x - 1)^2 + (y + 1)^2 = 49$, that is $x^2 + y^2 - 2x + 2y - 47 = 0$.`,
+        ],
+        figure: {
+          alt: "The diameters d1: 2x − 3y = 5 and d2: 3x − 4y = 7 cross at the centre (1, −1). A radius of length 7 runs down from it, and the circle of radius 7 is drawn about the centre.",
+          axes: "xy",
+          view: { x: [-10, 11], y: [-10, 8] },
+          elements: [
+            { kind: "line", through: [[1, -1], [4, 1]], tone: "muted" },
+            { kind: "label", at: [-3, -3.67], label: "d₁", labelAt: "nw", tone: "muted" },
+            { kind: "line", through: [[1, -1], [5, 2]], tone: "muted" },
+            { kind: "label", at: [5, 2], label: "d₂", labelAt: "nw", tone: "muted" },
+            { kind: "point", at: [1, -1], label: "(1, −1)", labelAt: "se", step: 1 },
+            { kind: "segment", from: [1, -1], to: [1, -8], label: "r = 7", labelAt: "e", step: 2 },
+            { kind: "circle", centre: [1, -1], r: 7, tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C04-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/circle-11/6.1 SolvedEx.5" },
+      stem: t`A circle has centre $(3, -4)$. The line $3x - 4y - 5 = 0$ cuts it at $A$ and $B$, where $l(AB) = 6$. The equation of the circle is:`,
+      verify: { kind: "locus", inputs: { O: "(3, -4)", L: "3*x - 4*y - 5", l: "6" }, params: { type: "chord" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 6x + 8y + 16 = 0$`, correct: false, misconceptionId: "C04-M2", value: "x**2 - 6*x + y**2 + 8*y + 16" },
+        { key: "B", text: t`$x^2 + y^2 - 6x + 8y - 27 = 0$`, correct: false, misconceptionId: "C04-M4", value: "x**2 - 6*x + y**2 + 8*y - 27" },
+        { key: "C", text: t`$x^2 + y^2 - 6x + 8y + 20 = 0$`, correct: false, misconceptionId: "C04-M3", value: "x**2 - 6*x + y**2 + 8*y + 20" },
+        { key: "D", text: t`$x^2 + y^2 - 6x + 8y = 0$`, correct: true, value: "x**2 - 6*x + y**2 + 8*y" },
+      ],
+      solution: {
+        steps: [
+          t`Let $M$ be the foot of the perpendicular from the centre $C(3, -4)$ to the line: $CM = \dfrac{|3(3) - 4(-4) - 5|}{\sqrt{3^2 + 4^2}} = \dfrac{20}{5} = 4$.`,
+          t`The perpendicular from the centre bisects the chord, so $AM = BM = 3$. In the right triangle $CMA$, $r^2 = CM^2 + AM^2 = 16 + 9 = 25$.`,
+          t`$(x - 3)^2 + (y + 4)^2 = 25$, that is $x^2 + y^2 - 6x + 8y = 0$.`,
+        ],
+        figure: {
+          alt: "The line 3x − 4y − 5 = 0 and the centre C(3, −4). The perpendicular CM to the line has length 4. The chord AB, with A at (3, 1), is cut in half at M, so AM = BM = 3, and the radius CA is 5. The circle of radius 5 about C passes through A and B.",
+          axes: "xy",
+          view: { x: [-3.5, 9], y: [-10, 2.5] },
+          elements: [
+            { kind: "line", through: [[3, 1], [-1, -2]], tone: "muted" },
+            { kind: "point", at: [3, -4], label: "C(3, −4)", labelAt: "se" },
+            { kind: "segment", from: [3, -4], to: [0.6, -0.8], dashed: true, step: 1 },
+            { kind: "point", at: [0.6, -0.8], label: "M", labelAt: "nw", step: 1 },
+            { kind: "label", at: [1.8, -2.4], label: "4", labelAt: "sw", step: 1 },
+            { kind: "segment", from: [3, 1], to: [-1.8, -2.6], step: 2 },
+            { kind: "point", at: [3, 1], label: "A(3, 1)", labelAt: "nw", step: 2 },
+            { kind: "point", at: [-1.8, -2.6], label: "B", labelAt: "nw", step: 2 },
+            { kind: "label", at: [-0.36, -1.52], label: "3", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [3, -4], to: [3, 1], label: "r = 5", labelAt: "e", step: 2 },
+            { kind: "circle", centre: [3, -4], r: 5, tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C04-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/circle-11/Misc II Q4" },
+      stem: t`A circle passes through the origin and cuts off chords of length $6$ and $8$ on the positive side of the $x$-axis and the $y$-axis respectively. Its equation is:`,
+      verify: { kind: "locus", inputs: { a: "6", b: "8" }, params: { type: "axes" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 6x - 8y + 20 = 0$`, correct: false, misconceptionId: "C04-M3", value: "x**2 - 6*x + y**2 - 8*y + 20" },
+        { key: "B", text: t`$x^2 + y^2 - 6x - 8y = 0$`, correct: true, value: "x**2 - 6*x + y**2 - 8*y" },
+        { key: "C", text: t`$x^2 + y^2 + 6x + 8y = 0$`, correct: false, misconceptionId: "C04-M1", value: "x**2 + 6*x + y**2 + 8*y" },
+        { key: "D", text: t`$x^2 + y^2 - 12x - 16y = 0$`, correct: false, misconceptionId: "C04-M4", value: "x**2 - 12*x + y**2 - 16*y" },
+      ],
+      solution: {
+        steps: [
+          t`The chords start at the origin and run along the positive axes, so they end at $(6, 0)$ and $(0, 8)$: the circle passes through $(0, 0)$, $(6, 0)$ and $(0, 8)$.`,
+          t`In $x^2 + y^2 + 2gx + 2fy + c = 0$: the origin gives $c = 0$; $(6, 0)$ gives $36 + 12g = 0$, so $g = -3$; $(0, 8)$ gives $64 + 16f = 0$, so $f = -4$.`,
+          t`The circle is $x^2 + y^2 - 6x - 8y = 0$. Its centre $(3, 4)$ sits above the middle of each chord, and its radius is $5$.`,
+        ],
+        figure: {
+          alt: "Chords of length 6 and 8 along the positive x- and y-axes, from the origin O to (6, 0) and (0, 8). The circle through O, (6, 0) and (0, 8) has centre (3, 4), above the middle of each chord, and radius 5.",
+          axes: "xy",
+          view: { x: [-2.5, 10], y: [-2.5, 10] },
+          elements: [
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw", step: 1 },
+            { kind: "segment", from: [0, 0], to: [6, 0], label: "6", labelAt: "n", step: 1 },
+            { kind: "segment", from: [0, 0], to: [0, 8], label: "8", labelAt: "e", step: 1 },
+            { kind: "point", at: [6, 0], label: "(6, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "se", step: 1 },
+            { kind: "circle", centre: [3, 4], r: 5, tone: "good", step: 3 },
+            { kind: "point", at: [3, 4], label: "(3, 4)", labelAt: "ne", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C04-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/circle-11/Misc II Q5" },
+      stem: t`The points $(9, 1)$, $(7, 9)$, $(-2, 12)$ and $(6, 10)$ are concyclic. The circle through all four of them is:`,
+      verify: { kind: "locus", inputs: { A: "(9, 1)", B: "(7, 9)", C: "(-2, 12)" }, params: { type: "three" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 6y - 76 = 0$`, correct: true, value: "x**2 + y**2 - 6*y - 76" },
+        { key: "B", text: t`$x^2 + y^2 - 12y - 76 = 0$`, correct: false, misconceptionId: "C04-M5", value: "x**2 + y**2 - 12*y - 76" },
+        { key: "C", text: t`$x^2 + y^2 - 6y + 76 = 0$`, correct: false, misconceptionId: "C04-M6", value: "x**2 + y**2 - 6*y + 76" },
+        { key: "D", text: t`$x^2 + y^2 + 6y - 76 = 0$`, correct: false, misconceptionId: "C04-M1", value: "x**2 + y**2 + 6*y - 76" },
+      ],
+      solution: {
+        steps: [
+          t`Let the circle through $(9, 1)$, $(7, 9)$ and $(-2, 12)$ be $x^2 + y^2 + 2gx + 2fy + c = 0$: $82 + 18g + 2f + c = 0$, $130 + 14g + 18f + c = 0$, $148 - 4g + 24f + c = 0$.`,
+          t`Second minus first: $48 - 4g + 16f = 0$, so $g = 4f + 12$. Third minus second: $18 - 18g + 6f = 0$, so $f = 3g - 3$. Together they give $g = 0$, $f = -3$.`,
+          t`From the first equation, $82 - 6 + c = 0$, so $c = -76$. The circle is $x^2 + y^2 - 6y - 76 = 0$.`,
+          t`Test $(6, 10)$: $36 + 100 - 60 - 76 = 0$. It lies on the same circle, so all four points are on $x^2 + y^2 - 6y - 76 = 0$.`,
+        ],
+        figure: {
+          alt: "The points (9, 1), (7, 9) and (−2, 12), then the circle through them, centred at (0, 3) with radius √85. The fourth point (6, 10) lies on the same circle.",
+          axes: "xy",
+          view: { x: [-11, 13], y: [-7.5, 14.5] },
+          elements: [
+            { kind: "point", at: [9, 1], label: "(9, 1)", labelAt: "e", step: 1 },
+            { kind: "point", at: [7, 9], label: "(7, 9)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [-2, 12], label: "(−2, 12)", labelAt: "nw", step: 1 },
+            { kind: "circle", centre: [0, 3], r: 9.22, step: 3 },
+            { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "e", step: 3 },
+            { kind: "point", at: [6, 10], tone: "good", step: 4 },
+            { kind: "label", at: [6.3, 10.6], label: "(6, 10)", labelAt: "ne", tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+  ],
+};
