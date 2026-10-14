@@ -52,6 +52,13 @@ const cnMaharashtra: Coverage = {
   status: "draft",
 };
 
+// Linear Programming coverage, drafted 2026-10-14; awaiting the owner's check. Class 12 in both
+// boards and MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it.
+const lpp = (unsure: string[]): CourseChapter => ({
+  chapter: "linear-programming",
+  coverage: { ids: range(1, 13), unsure, status: "draft" },
+});
+
 export const courses: Course[] = [
   {
     slug: "mh-board",
@@ -59,7 +66,7 @@ export const courses: Course[] = [
     short: "MH Board",
     group: "school",
     tagline: "Maharashtra State Board, HSC Science",
-    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }],
+    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }, lpp(["C10"])],
   },
   {
     slug: "cbse",
@@ -67,7 +74,7 @@ export const courses: Course[] = [
     short: "CBSE",
     group: "school",
     tagline: "CBSE Science, NCERT syllabus",
-    chapters: [{ chapter: "complex-numbers", coverage: { ids: [...CN_ALL, "C23"], unsure: ["C23"], status: "draft" } }],
+    chapters: [{ chapter: "complex-numbers", coverage: { ids: [...CN_ALL, "C23"], unsure: ["C23"], status: "draft" } }, lpp(["C12", "C13"])],
   },
   {
     slug: "mht-cet",
@@ -75,7 +82,7 @@ export const courses: Course[] = [
     short: "MHT-CET",
     group: "school",
     tagline: "Maharashtra engineering entrance",
-    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }],
+    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }, lpp(["C10"])],
   },
   {
     slug: "jee-main",
