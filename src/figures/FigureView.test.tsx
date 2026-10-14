@@ -47,6 +47,22 @@ describe("FigureView", () => {
     expect(out.match(/fig-(in|draw)/g)).toHaveLength(2); // the segment draws in, its label fades in
   });
 
+  it("draws dashed strokes with real dashes (pathLength would stretch one dash over the whole stroke)", () => {
+    const out = html({
+      figure: {
+        ...fig,
+        elements: [
+          { kind: "circle", centre: [0, 0], r: 2, dashed: true },
+          { kind: "segment", from: [0, 0], to: [3, 4], dashed: true },
+          { kind: "line", through: [[0, 0], [1, 1]], dashed: true },
+        ],
+      },
+    });
+    const dashed = out.match(/<(circle|line)[^>]*stroke-dasharray="7 6"[^>]*>/g) ?? [];
+    expect(dashed).toHaveLength(3);
+    for (const el of dashed) expect(el).not.toContain("pathLength");
+  });
+
   it("keeps labels inside the frame, even when anchored at its edge", () => {
     // 400 x 300 frame; labels anchored on the top and right edges.
     const out = html({

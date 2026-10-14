@@ -200,11 +200,12 @@ function Region({ el, id, view, f, color, motion }: { el: Extract<FigureElement,
 function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: string; view: View; f: Frame; motion: Motion }) {
   const color = TONE[el.tone ?? "accent"];
   const stroke = { stroke: color, strokeWidth: 2.5, fill: "none", strokeLinecap: "round" as const };
-  const dash = (d?: boolean) => (d ? { strokeDasharray: "7 6" } : {});
+  // Draw-in needs pathLength={1}, but that would stretch the dash pattern over the whole stroke.
+  const dash = (d?: boolean) => (d ? { strokeDasharray: "7 6" } : { pathLength: 1 });
   const line = (a: Pt, b: Pt, m: Motion, dashed?: boolean) => {
     const [x1, y1] = f.px(a);
     const [x2, y2] = f.px(b);
-    return <line {...m} {...stroke} {...dash(dashed)} pathLength={1} x1={fmt(x1)} y1={fmt(y1)} x2={fmt(x2)} y2={fmt(y2)} />;
+    return <line {...m} {...stroke} {...dash(dashed)} x1={fmt(x1)} y1={fmt(y1)} x2={fmt(x2)} y2={fmt(y2)} />;
   };
 
   switch (el.kind) {
@@ -245,7 +246,7 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
     }
     case "circle": {
       const [cx, cy] = f.px(el.centre);
-      return <circle {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} pathLength={1} cx={fmt(cx)} cy={fmt(cy)} r={fmt(el.r * f.scale)} />;
+      return <circle {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} cx={fmt(cx)} cy={fmt(cy)} r={fmt(el.r * f.scale)} />;
     }
     case "arc":
       return <path {...drawn(motion)} {...stroke} pathLength={1} d={arcPath(f, el.centre, el.r, el.from, el.to)} />;
