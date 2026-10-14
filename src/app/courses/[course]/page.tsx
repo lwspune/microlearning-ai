@@ -5,10 +5,12 @@ import { Suspense } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 import { ProgressRing } from "@/components/ProgressRing";
 import { card, eyebrow, linkCard } from "@/components/ui";
-import { courses, findCourse, GROUPS, SUBJECTS } from "@/content/courses";
-import type { SubjectId } from "@/content/types";
+import { byStandard, courses, findCourse, GROUPS, SUBJECTS } from "@/content/courses";
+import type { Standard, SubjectId } from "@/content/types";
 import { currentUserId } from "@/lib/supabase/server";
 import { type CourseChapterProgress, courseProgress } from "@/server/courses";
+
+const STANDARD_TITLE: Record<Standard, string> = { 11: "11th", 12: "12th" };
 
 export function generateStaticParams() {
   return courses.map((c) => ({ course: c.slug }));
@@ -55,15 +57,18 @@ async function Chapters({ slug }: { slug: string }) {
       <h2 id={`subject-${s}`} className="font-display text-2xl font-semibold">
         {SUBJECTS[s]}
       </h2>
-      <ul className="mt-4 grid gap-3">
-        {progress
-          .filter((p) => p.subject === s)
-          .map((ch) => (
-            <li key={ch.slug}>
-              <ChapterCard course={slug} ch={ch} />
-            </li>
-          ))}
-      </ul>
+      {byStandard(progress.filter((p) => p.subject === s)).map(({ standard, chapters }) => (
+        <div key={standard ?? "none"} className="mt-4">
+          {standard && <h3 className={`${eyebrow} mt-6`}>{STANDARD_TITLE[standard]}</h3>}
+          <ul className="mt-3 grid gap-3">
+            {chapters.map((ch) => (
+              <li key={ch.slug}>
+                <ChapterCard course={slug} ch={ch} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </section>
   ));
 }

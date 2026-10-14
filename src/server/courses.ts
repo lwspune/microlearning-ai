@@ -2,7 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { chapters } from "@/content/chapters";
 import { type Course, coveredIds } from "@/content/courses";
-import type { SubjectId } from "@/content/types";
+import type { Standard, SubjectId } from "@/content/types";
 import { getChapterMap } from "@/server/learning";
 
 /** The student's group (11th + 12th or Graduates), remembered per browser until profiles exist. */
@@ -12,7 +12,7 @@ export async function rememberedGroupValue(): Promise<string | undefined> {
   return (await cookies()).get(GROUP_COOKIE)?.value;
 }
 
-export type CourseChapterProgress = { slug: string; title: string; subject: SubjectId; total: number; mastered: number };
+export type CourseChapterProgress = { slug: string; title: string; subject: SubjectId; standard?: Standard; total: number; mastered: number };
 
 /** Each chapter of the course with the learner's progress on the concepts it covers (shared across the group). */
 export async function courseProgress(course: Course, userId: string | null): Promise<CourseChapterProgress[]> {
@@ -25,6 +25,7 @@ export async function courseProgress(course: Course, userId: string | null): Pro
         slug: chapter.slug,
         title: chapter.title,
         subject: chapter.subject,
+        standard: chapter.standard,
         total: open.length,
         mastered: open.filter((c) => c.state === "mastered").length,
       };

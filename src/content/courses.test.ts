@@ -13,6 +13,7 @@ import {
   uniqueConcepts,
   validateCatalog,
   withCourse,
+  byStandard,
 } from "./courses";
 import type { Chapter, GraphNode } from "./types";
 
@@ -21,7 +22,8 @@ function node(id: string, prereqs: string[] = []): GraphNode {
 }
 
 function chapter(slug: string, group: Chapter["group"] = "school"): Chapter {
-  return { slug, title: slug, group, subject: "maths", graph: [node("A"), node("B", ["A"]), node("C", ["B"])], concepts: [] };
+  const standard = group === "school" ? 11 : undefined;
+  return { slug, title: slug, group, subject: "maths", standard, graph: [node("A"), node("B", ["A"]), node("C", ["B"])], concepts: [] };
 }
 
 function course(slug: string, overrides: Partial<Course> = {}): Course {
@@ -33,6 +35,12 @@ const ch = chapter("ch");
 describe("validateCatalog", () => {
   it("accepts a valid catalog", () => {
     expect(validateCatalog([course("a"), course("b")], [ch])).toEqual([]);
+  });
+
+  it("needs an 11th + 12th chapter to name its standard; a Graduates chapter has none", () => {
+    expect(validateCatalog([course("a")], [{ ...ch, standard: undefined }])).toContain("a: chapter ch needs a standard (11 or 12)");
+    const grad = chapter("g", "graduate");
+    expect(validateCatalog([course("b", { group: "graduate", chapters: [{ chapter: "g" }] })], [grad])).toEqual([]);
   });
 
   it("rejects duplicate and malformed course slugs", () => {
@@ -185,5 +193,27 @@ describe("the catalog", () => {
 
   it("has Complex Numbers in every 11th + 12th course (confirmed by the owner, 2026-10-14)", () => {
     for (const c of coursesIn("school")) expect(c.chapters.map((x) => x.chapter)).toContain("complex-numbers");
+  });
+});
+
+describe("byStandard", () => {
+  const ch = (slug: string, standard?: 11 | 12) => ({ slug, standard });
+
+  it("puts 11th chapters before 12th, keeping the course's order within each", () => {
+    expect(byStandard([ch("lpp", 12), ch("cn", 11), ch("sets", 11)])).toEqual([
+      { standard: 11, chapters: [ch("cn", 11), ch("sets", 11)] },
+      { standard: 12, chapters: [ch("lpp", 12)] },
+    ]);
+  });
+
+  it("keeps chapters with no standard in one untitled group, last", () => {
+    expect(byStandard([ch("x"), ch("cn", 11)])).toEqual([
+      { standard: 11, chapters: [ch("cn", 11)] },
+      { standard: undefined, chapters: [ch("x")] },
+    ]);
+  });
+
+  it("returns nothing for no chapters", () => {
+    expect(byStandard([])).toEqual([]);
   });
 });

@@ -201,12 +201,16 @@ export type GroupId = "school" | "graduate";
 
 export type SubjectId = "maths";
 
+export type Standard = 11 | 12;
+
 export type Chapter = {
   slug: string;
   title: string;
   /** The pool this chapter's concepts belong to; courses of other groups can't use it. */
   group: GroupId;
   subject: SubjectId;
+  /** The school year it's taught in (11th or 12th); course pages group chapters by it. */
+  standard?: Standard;
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */
   concepts: Concept[];
