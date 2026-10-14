@@ -116,20 +116,25 @@ Guests are anonymous logins with no profile.
 5. **Write the content** (hook + reveal, intuition, formal with blank lines
    between slide-sized sections, worked example, visual spec, misconceptions
    with remediation and an ancestor fallback) as data, then build the files:
-   `python verify/build_concepts.py <content.py> <items.ts>`, which writes
-   `concepts/cNN-<slug>.ts` with `status: "draft"`. The hook and worked
+   `python verify/build_concepts.py <content.py> <items.ts>`. `content.py`
+   sets `CHAPTER` (the slug; the spec's `linear_programming` spelling works
+   too); the tool writes that chapter's `concepts/cNN-<slug>.ts` with
+   `status: "draft"`. The hook and worked
    example must not reuse an item. Misconception IDs have no gaps.
 5b. **Solutions and figures** (AUTHORING.md items 9–15): a 2+ step
    `solution` on every item; for a `visual` concept, figures on the idea
    slide, the worked example, and every point/locus solution, with element
    `step`s matching the steps. Write them as data (Python dicts with the
-   `Figure` keys from `types.ts`): a new concept takes `figure`,
+   `Figure` keys from `types.ts`; `axes: "xy"` for an xy-plane figure, x and y
+   with plain numbers, instead of the Argand default): a new concept takes `figure`,
    `worked["figure"]` and `solutions` in its `build_concepts.py` entry
    (it refuses a missing or unknown item id). For many similar figures, write
    a small Python helper (Phase B used `extreme`, `arg_fig`, `rot_fig`) so
    they stay consistent, then check each one close up.
-6. Register: `python verify/build_index.py` regenerates the chapter's
-   `index.ts`; the chapter test fails if any concept file isn't registered.
+6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
+   concept imports and `concepts: [...]` in the chapter's `index.ts` (its
+   title, group and subject stay as written); the chapter test fails if any
+   concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
    Look for KaTeX errors and sideways scrolling. (Punctuation touching
@@ -242,6 +247,7 @@ Guests are anonymous logins with no profile.
 | Once the homepage read a cookie it rendered partly at request time; `REVIEW_ENABLED`, set only for the build, then differed between the prerendered shell and the request render: a hydration error (#418) in production only | `next.config.ts` inlines `REVIEW_ENABLED` at build time; never read runtime-only env in a component on a partially prerendered page |
 | The e2e screenshot helper waited for every animation to finish, and the hero's loops never do: the run hung silently | `shot()` waits only for finite, time-based animations |
 | A failed sign-in emptied the email box: React resets a form after its action runs | return the typed email in the action state and use it as `defaultValue` (`LoginForm`) |
+| `build_index.py` regenerated the whole `index.ts` from a template written before chapters had `group` and `subject`, so rerunning it would have dropped them | generators replace only the part they own (`register` in `build_index.py`, `test_tooling.py`) |
 | Next's route announcer also has `role="alert"`, so an e2e `getByRole("alert")` read an empty string | scope alerts to the form: `form [role=alert]` |
 | A role check awaited in a layout tripped Next's instant-navigation validation (uncached data outside `<Suspense>`) | check the role inside each page's own `<Suspense>` (`requireAreaAt`); no session reads in layouts |
 | In `next dev` every page's payload contains the not-found text, so a curl check for it says every route is missing | check routes with `npm run smoke` against a production build |
