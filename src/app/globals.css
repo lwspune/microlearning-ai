@@ -152,3 +152,42 @@ body {
     stroke-dashoffset: 0;
   }
 }
+
+/* Lists that rise in when first seen (src/components/RevealList.tsx). The
+   hidden start applies only when the script that reveals them can run. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal="pending"] > .reveal-item {
+    opacity: 0;
+  }
+  [data-reveal="in"] > .reveal-item {
+    animation: reveal-item 0.7s cubic-bezier(0.2, 0.75, 0.15, 1) calc(var(--i) * 0.08s) backwards;
+  }
+}
+
+@keyframes reveal-item {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* A soft light follows the pointer across a card (RevealList `spotlight`). */
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--accent) 13%, transparent),
+    transparent 70%
+  );
+}
+@media (hover: hover) {
+  .spot:hover::before {
+    opacity: 1;
+  }
+}

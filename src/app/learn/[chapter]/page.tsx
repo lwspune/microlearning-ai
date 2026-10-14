@@ -34,7 +34,7 @@ export default function ChapterPage({ params }: PageProps<"/learn/[chapter]">) {
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
       <Link href="/learn" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-foreground">
-        <ArrowLeftIcon className="h-4 w-4" /> All chapters
+        <ArrowLeftIcon className="h-4 w-4" /> All courses
       </Link>
       <Suspense fallback={<MapSkeleton />}>
         <ChapterContent params={params} />
