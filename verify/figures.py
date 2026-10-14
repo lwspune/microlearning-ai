@@ -105,9 +105,10 @@ def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", note=None
     elements.append({"kind": "curve", "points": [[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], "tone": "muted"})
     for name, (c, r) in zip(names, _CIRCLES[n]):
         elements.append({"kind": "circle", "centre": list(c), "r": r, "tone": "muted"})
-        if c[1] > 3:  # upper circles: name above the outer shoulder
+        if c[1] > 3:  # upper circles: name on the outer shoulder (45 degrees), growing away from the circle
             side = -1 if c[0] < 5 else 1
-            elements.append({"kind": "label", "at": [round(c[0] + side * r * 0.75, 2), round(c[1] + r * 0.8, 2)], "label": name, "labelAt": "n"})
+            at = [round(c[0] + side * r * 0.707, 2), round(c[1] + r * 0.707, 2)]
+            elements.append({"kind": "label", "at": at, "label": name, "labelAt": "nw" if side < 0 else "ne"})
         else:  # the lower circle: name just outside its lower right
             elements.append({"kind": "label", "at": [round(c[0] + r, 2), round(c[1] - r * 0.55, 2)], "label": name, "labelAt": "e"})
     elements.append({"kind": "label", "at": [x1 - 0.5, y1 - 0.6], "label": universe, "labelAt": "n"})

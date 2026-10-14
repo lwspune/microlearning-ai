@@ -106,6 +106,15 @@ class Venn(unittest.TestCase):
         (note,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"].startswith("A Δ B")]
         self.assertEqual((note["at"], note["step"], note["tone"]), ([5.0, 6.45], 3, "good"))
 
+    def test_long_set_names_grow_outward_from_the_upper_circles(self):
+        fig = venn("Names", names=("Volleyball", "Chemistry", "Maths"))
+        names = {e["label"]: e for e in fig["elements"] if e["kind"] == "label"}
+        self.assertEqual(names["Volleyball"]["labelAt"], "nw")
+        self.assertEqual(names["Chemistry"]["labelAt"], "ne")
+        # anchored on the circle at 135 and 45 degrees, so the text starts at the edge and runs away from it
+        self.assertAlmostEqual(names["Volleyball"]["at"][0], 3.9 - 2.2 * 0.707, places=2)
+        self.assertAlmostEqual(names["Chemistry"]["at"][1], 4.3 + 2.2 * 0.707, places=2)
+
 
 class NumberLine(unittest.TestCase):
     def test_open_ends_are_hollow_and_closed_ends_filled(self):
