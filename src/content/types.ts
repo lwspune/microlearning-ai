@@ -183,9 +183,17 @@ export type Concept = {
   engineNotes?: string[];
 };
 
+/** The two audiences. Each has its own concept pool; a student stays in one. */
+export type GroupId = "school" | "graduate";
+
+export type SubjectId = "maths";
+
 export type Chapter = {
   slug: string;
   title: string;
+  /** The pool this chapter's concepts belong to; courses of other groups can't use it. */
+  group: GroupId;
+  subject: SubjectId;
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */
   concepts: Concept[];

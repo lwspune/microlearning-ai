@@ -54,7 +54,7 @@ function validChapter(): Chapter {
     ],
     items: [1, 2, 3, 4, 5].map((n) => item(`C3-Q${n}`, ["C3-M1", "C3-M2", "C3-M3"])),
   };
-  return { slug: "t", title: "T", graph: [node("C1"), node("C2", ["C1"]), node("C3", ["C2"])], concepts: [c3] };
+  return { slug: "t", title: "T", group: "school", subject: "maths", graph: [node("C1"), node("C2", ["C1"]), node("C3", ["C2"])], concepts: [c3] };
 }
 
 function errorsAfter(mutate: (ch: Chapter) => void): string[] {
