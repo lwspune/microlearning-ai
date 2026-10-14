@@ -26,7 +26,7 @@ type SeedConcept = {
     source: ItemSource;
     verify: ItemVerify;
     verified: boolean;
-    solution: Solution | null;
+    solution: Solution;
     options: { key: string; text: string; is_correct: boolean; misconception: string | null; value: string }[];
   }[];
 };
@@ -67,7 +67,7 @@ export function toSeedPayload(chapter: Chapter, verified: boolean): SeedPayload 
           source: it.source,
           verify: it.verify,
           verified,
-          solution: it.solution ?? null,
+          solution: it.solution,
           options: it.options.map((o) => ({
             key: o.key,
             text: o.text,

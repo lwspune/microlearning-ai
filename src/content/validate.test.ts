@@ -170,7 +170,7 @@ describe("validateChapter", () => {
 
   describe("solutions (AUTHORING.md 9)", () => {
     it("requires a solution on every item", () => {
-      expect(errorsAfter((ch) => delete c3(ch).items[0].solution)).toContainEqual(expect.stringMatching(/C3-Q1.*needs a step-by-step solution/));
+      expect(errorsAfter((ch) => Reflect.deleteProperty(c3(ch).items[0], "solution"))).toContainEqual(expect.stringMatching(/C3-Q1.*needs a step-by-step solution/));
     });
 
     it("requires at least two non-empty steps", () => {
@@ -287,35 +287,4 @@ describe("validateChapter", () => {
     });
   });
 
-  describe("backfill", () => {
-    it("exempts a listed concept from the solution and figure rules", () => {
-      expect(
-        errorsAfter((ch) => {
-          ch.backfillPending = ["C3"];
-          ch.graph[2].visual = true;
-          c3(ch).items.forEach((it) => delete it.solution);
-        }),
-      ).toEqual([]);
-    });
-
-    it("still checks figures that a listed concept already has", () => {
-      expect(
-        errorsAfter((ch) => {
-          ch.backfillPending = ["C3"];
-          c3(ch).items.forEach((it) => delete it.solution);
-          c3(ch).explanation.figure = figure({ alt: "" });
-        }),
-      ).toContainEqual(expect.stringMatching(/C3 idea figure.*needs alt text/));
-    });
-
-    it("flags a listed concept that already meets the rules, so the list only shrinks", () => {
-      expect(errorsAfter((ch) => (ch.backfillPending = ["C3"]))).toContainEqual(
-        expect.stringMatching(/C3 meets the solution and figure rules; remove it from backfillPending/),
-      );
-    });
-
-    it("rejects a listed concept that isn't authored", () => {
-      expect(errorsAfter((ch) => (ch.backfillPending = ["C2"]))).toContainEqual(expect.stringMatching(/backfillPending.*C2.*not an authored concept/));
-    });
-  });
 });

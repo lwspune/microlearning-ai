@@ -19,7 +19,6 @@ names = ", ".join(var for var, _ in entries)
 (ROOT / "index.ts").write_text(
     f'''import type {{ Chapter }} from "../../types.ts";
 {imports}
-import {{ backfillPending }} from "./backfill.ts";
 import {{ graph }} from "./graph.ts";
 
 export const complexNumbers: Chapter = {{
@@ -27,9 +26,9 @@ export const complexNumbers: Chapter = {{
   title: "Complex Numbers",
   graph,
   concepts: [{names}],
-  backfillPending,
 }};
 ''',
     encoding="utf-8",
+    newline="\n",
 )
 print(f"registered {len(entries)} concepts")

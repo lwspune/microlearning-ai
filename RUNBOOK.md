@@ -65,10 +65,10 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    slide, the worked example, and every point/locus solution, with element
    `step`s matching the steps. Write them as data (Python dicts with the
    `Figure` keys from `types.ts`): a new concept takes `figure`,
-   `worked["figure"]` and `solutions` in its `build_concepts.py` entry; an
-   existing one gets them with `python verify/add_solutions.py <data.py>`,
-   which inserts them in place and removes the concept from `backfill.ts`.
-   Both refuse a missing or unknown item id.
+   `worked["figure"]` and `solutions` in its `build_concepts.py` entry
+   (it refuses a missing or unknown item id). For many similar figures, write
+   a small Python helper (Phase B used `extreme`, `arg_fig`, `rot_fig`) so
+   they stay consistent, then check each one close up.
 6. Register: `python verify/build_index.py` regenerates the chapter's
    `index.ts`; the chapter test fails if any concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:

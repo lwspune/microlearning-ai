@@ -71,8 +71,7 @@ a student has used: retire it instead of removing it.
 Asked for 2026-10-14: every question teaches through an animated
 step-by-step solution, and anything that can be pictured on the Argand plane
 is. Figures are data ([types.ts](types.ts) `Figure`), drawn by
-[FigureView](../figures/FigureView.tsx). Concepts written before these rules
-are listed in `backfill.ts` until they are brought up to them.
+[FigureView](../figures/FigureView.tsx).
 
 9. **[S]** Every item has a `solution` of at least 2 non-empty steps. It is
    shown only after the learner answers, so it may state the answer. Steps

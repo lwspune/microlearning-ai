@@ -132,11 +132,6 @@ function validateConcepts(chapter: Chapter): string[] {
 function validateTeaching(chapter: Chapter): string[] {
   const errors: string[] = [];
   const nodes = new Map(chapter.graph.map((n) => [n.id, n]));
-  const authored = new Set(chapter.concepts.map((c) => c.id));
-  const pending = new Set(chapter.backfillPending ?? []);
-  for (const id of pending) {
-    if (!authored.has(id)) errors.push(`backfillPending lists ${id}, which is not an authored concept`);
-  }
 
   for (const c of chapter.concepts) {
     const node = nodes.get(c.id);
@@ -150,12 +145,7 @@ function validateTeaching(chapter: Chapter): string[] {
       }
     }
 
-    const missing = missingTeaching(c, node);
-    if (pending.has(c.id)) {
-      if (missing.length === 0) errors.push(`${c.id} meets the solution and figure rules; remove it from backfillPending`);
-    } else {
-      errors.push(...missing);
-    }
+    errors.push(...missingTeaching(c, node));
   }
   return errors;
 }

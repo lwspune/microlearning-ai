@@ -4,7 +4,7 @@ Run: python -m unittest discover -s verify -p "test_*.py"
 """
 import unittest
 
-from add_solutions import add_to_concept, drop_backfill
+from add_solutions import add_to_concept
 from build_concepts import build
 from ts_literal import figure_ts, solution_ts
 
@@ -30,7 +30,7 @@ FIG_TS = """\
       },
 """
 
-# The shape of an approved concept before backfill (trimmed C11).
+# The shape of a concept file before solutions are added (trimmed C11).
 CONCEPT = """\
 import type { Concept } from "../../../types.ts";
 
@@ -134,20 +134,6 @@ class AddToConcept(unittest.TestCase):
         once = add_to_concept(CONCEPT, self.DATA)
         with self.assertRaisesRegex(ValueError, "already"):
             add_to_concept(once, self.DATA)
-
-
-class Backfill(unittest.TestCase):
-    SRC = 'export const backfillPending: ConceptId[] = [\n  "C01",\n  "C02",\n  "C03",\n];\n'
-
-    def test_drops_the_given_concepts(self):
-        self.assertEqual(
-            drop_backfill(self.SRC, ["C02"]),
-            'export const backfillPending: ConceptId[] = [\n  "C01",\n  "C03",\n];\n',
-        )
-
-    def test_a_concept_not_pending_is_refused(self):
-        with self.assertRaisesRegex(ValueError, "C09"):
-            drop_backfill(self.SRC, ["C09"])
 
 
 class BuildConcepts(unittest.TestCase):

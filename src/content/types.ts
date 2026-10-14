@@ -152,8 +152,8 @@ export type Item = {
   stem: string;
   options: Option[];
   verify: ItemVerify;
-  /** Required by AUTHORING.md item 9 (concepts in `backfillPending` excepted). */
-  solution?: Solution;
+  /** AUTHORING.md item 9. */
+  solution: Solution;
 };
 
 export type WorkedExample = {
@@ -189,10 +189,4 @@ export type Chapter = {
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */
   concepts: Concept[];
-  /**
-   * Concepts written before the solution and figure rules (AUTHORING.md
-   * items 9–13), exempt until backfilled. Only ever shrinks: the validator
-   * flags a listed concept that already meets the rules.
-   */
-  backfillPending?: ConceptId[];
 };
