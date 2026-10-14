@@ -194,3 +194,15 @@ export function withCourse(href: string, course: string | undefined): string {
   if (!course) return href;
   return `${href}${href.includes("?") ? "&" : "?"}course=${encodeURIComponent(course)}`;
 }
+
+/** What a student can open in the course today: its chapters, and the published concepts it covers. */
+export function courseSize(course: Course, chapters: Chapter[]): { chapters: number; concepts: number } {
+  let concepts = 0;
+  for (const entry of course.chapters) {
+    const chapter = chapters.find((c) => c.slug === entry.chapter);
+    if (!chapter) continue;
+    const covered = coveredIds(course, chapter);
+    concepts += chapter.concepts.filter((c) => c.status === "approved" && covered.has(c.id)).length;
+  }
+  return { chapters: course.chapters.length, concepts };
+}

@@ -4,6 +4,7 @@ import { chapters } from "./chapters";
 import {
   type Course,
   coursesIn,
+  courseSize,
   coveredIds,
   courses,
   findCourse,
@@ -133,6 +134,22 @@ describe("lookups", () => {
     expect(findCourse("jee-main")?.title).toBe("JEE Main");
     expect(findCourse("nope")).toBeNull();
     expect(findCourse(null)).toBeNull();
+  });
+});
+
+describe("courseSize", () => {
+  const published: Chapter = {
+    ...ch,
+    concepts: (["A", "B"] as const).map((id) => ({ id, status: "approved" }) as Chapter["concepts"][number]),
+  };
+
+  it("counts the chapters and the published concepts a student can open", () => {
+    const c = course("a", { chapters: [{ chapter: "ch", coverage: { ids: ["B", "C"], status: "approved" } }] });
+    expect(courseSize(c, [published])).toEqual({ chapters: 1, concepts: 1 });
+  });
+
+  it("is zero for a course with no chapters yet", () => {
+    expect(courseSize(course("a", { chapters: [] }), [published])).toEqual({ chapters: 0, concepts: 0 });
   });
 });
 
