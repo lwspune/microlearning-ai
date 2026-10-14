@@ -6,10 +6,4 @@ import type { ConceptId } from "../../types.ts";
  * flags any that already meet the rules, so this list only shrinks.
  */
 export const backfillPending: ConceptId[] = [
-  "C25",
-  "C26",
-  "C27",
-  "C28",
-  "C29",
-  "C30",
 ];

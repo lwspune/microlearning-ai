@@ -22,6 +22,24 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         t`It points at $120^\circ$: up and to the left.`,
       ],
       answer: t`The ray from $-2$ (not including $-2$) in the direction $\dfrac{2\pi}3$.`,
+      figure: {
+        alt: "The ray from −2, not including −2, pointing at 2π/3: up and to the left.",
+        view: { x: [-4.5, 1.5], y: [-1, 3.5] },
+        elements: [
+          { kind: "label", at: [-2, 0], label: "−2", labelAt: "s", step: 1 },
+          { kind: "ray", from: [-2, 0], angle: 120, step: 2 },
+          { kind: "angle", at: [-2, 0], from: 0, to: 120, label: "2π/3", step: 2 },
+        ],
+      },
+    },
+    figure: {
+      alt: "arg(z − a) = θ: the ray from a (not including a itself) in the direction θ.",
+      view: { x: [-1, 4], y: [-1, 3] },
+      elements: [
+        { kind: "label", at: [1, 0], label: "a", labelAt: "s", step: 1 },
+        { kind: "ray", from: [1, 0], angle: 60, label: "arg(z − a) = θ", labelAt: "e", step: 2 },
+        { kind: "angle", at: [1, 0], from: 0, to: 60, label: "θ", step: 3 },
+      ],
     },
     visualSpec: t`Two fixed points $a$ and $b$ and a draggable $z$, with the angle at $z$ shown live. Points where the angle equals $\theta$ leave a trace, which builds up one arc, not the whole circle.`,
   },
@@ -78,6 +96,26 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "C", text: t`the imaginary axis`, correct: false, misconceptionId: "C27-M3", value: "4" },
         { key: "D", text: t`the upper half of the circle $|z| = 1$`, correct: true, value: "1" },
       ],
+      solution: {
+        steps: [
+          t`The angle at $z$ between the arrows to $1$ and to $-1$ is a right angle, so $z$ lies on the circle with diameter from $-1$ to $1$: $|z| = 1$.`,
+          t`Test $z = i$: $\dfrac{i - 1}{i + 1} = i$, whose argument is $\dfrac\pi2$. So the locus is the upper half (without $\pm1$).`,
+        ],
+        figure: {
+          alt: "The circle with diameter from −1 to 1. At z = i the angle between the lines to 1 and −1 is a right angle, and the argument is +π/2, so the locus is the upper half.",
+          view: { x: [-2, 2], y: [-1.5, 1.8] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 180, step: 2 },
+            { kind: "segment", from: [0, 1], to: [1, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [0, 1], to: [-1, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "angle", at: [0, 1], from: 225, to: 315, label: "π/2", step: 2 },
+            { kind: "point", at: [0, 1], label: "i", labelAt: "ne", step: 2 },
+            { kind: "point", at: [1, 0], label: "1", labelAt: "se", hollow: true },
+            { kind: "point", at: [-1, 0], label: "−1", labelAt: "sw", hollow: true },
+          ],
+        },
+      },
     },
     {
       id: "C27-Q2",
@@ -90,6 +128,26 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "C", text: t`the right half of the circle $|z| = 2$`, correct: false, misconceptionId: "C27-M2", value: "2" },
         { key: "D", text: t`the real axis`, correct: false, misconceptionId: "C27-M3", value: "4" },
       ],
+      solution: {
+        steps: [
+          t`The angle at $z$ between the arrows to $2i$ and to $-2i$ is a right angle, so $z$ lies on the circle with diameter from $-2i$ to $2i$: $|z| = 2$.`,
+          t`Test $z = -2$: $\dfrac{-2 - 2i}{-2 + 2i} = i$, whose argument is $\dfrac\pi2$. So the locus is the left half (without $\pm 2i$).`,
+        ],
+        figure: {
+          alt: "The circle with diameter from −2i to 2i. At z = −2 the angle between the lines to 2i and −2i is a right angle, and the argument is +π/2, so the locus is the left half.",
+          view: { x: [-3.2, 2.6], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 2, dashed: true, tone: "muted", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 2, from: 90, to: 270, step: 2 },
+            { kind: "segment", from: [-2, 0], to: [0, 2], dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [-2, 0], to: [0, -2], dashed: true, tone: "muted", step: 2 },
+            { kind: "angle", at: [-2, 0], from: -45, to: 45, label: "π/2", step: 2 },
+            { kind: "point", at: [-2, 0], label: "−2", labelAt: "nw", step: 2 },
+            { kind: "point", at: [0, 2], label: "2i", labelAt: "ne", hollow: true },
+            { kind: "point", at: [0, -2], label: "−2i", labelAt: "se", hollow: true },
+          ],
+        },
+      },
     },
     {
       id: "C27-Q3",
@@ -101,6 +159,21 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "B", text: t`$0$`, correct: false, misconceptionId: "C27-M4", value: "0" },
         { key: "C", text: t`$-1$`, correct: false, misconceptionId: "C27-M5", value: "-1" },
       ],
+      solution: {
+        steps: [
+          t`$\arg(z - 1)$ is the direction of the arrow from $1$ to $z$.`,
+          t`So the ray starts at $1$ (which is itself excluded) and points at angle $\dfrac\pi3$.`,
+        ],
+        figure: {
+          alt: "The ray from 1, not including 1, at angle π/3.",
+          view: { x: [-1, 3.5], y: [-1, 3] },
+          elements: [
+            { kind: "label", at: [1, 0], label: "starts at 1", labelAt: "se", step: 1 },
+            { kind: "ray", from: [1, 0], angle: 60, step: 2 },
+            { kind: "angle", at: [1, 0], from: 0, to: 60, label: "π/3", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C27-Q4",
@@ -112,6 +185,21 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "B", text: t`$- 2 i$`, correct: true, value: "-2*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C27-M4", value: "0" },
       ],
+      solution: {
+        steps: [
+          t`Write it as $\arg\big(z - (-2i)\big) = \dfrac{3\pi}4$.`,
+          t`So the ray starts at $-2i$ (excluded) and points at angle $\dfrac{3\pi}{4}$: up and to the left.`,
+        ],
+        figure: {
+          alt: "The ray from −2i, not including −2i, at angle 3π/4: up and to the left.",
+          view: { x: [-3.5, 1.5], y: [-3, 1.5] },
+          elements: [
+            { kind: "label", at: [0, -2], label: "starts at −2i", labelAt: "e", step: 1 },
+            { kind: "ray", from: [0, -2], angle: 135, step: 2 },
+            { kind: "angle", at: [0, -2], from: 0, to: 135, label: "3π/4", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C27-Q5",
@@ -124,6 +212,22 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "C", text: t`$4 + i$`, correct: false, misconceptionId: "C27-M6", value: "4+I" },
         { key: "D", text: t`$1 - i$`, correct: false, misconceptionId: "C27-M4", value: "1-I" },
       ],
+      solution: {
+        steps: [
+          t`The locus is the ray from $3$ (excluded) at angle $-\dfrac\pi4$: down and to the right.`,
+          t`Check $4 - i$: $(4 - i) - 3 = 1 - i$, whose argument is $-\dfrac\pi4$. So $4 - i$ lies on the ray.`,
+        ],
+        figure: {
+          alt: "The ray from 3, not including 3, at angle −π/4. The point 4 − i is one step right and one down from 3, so it lies on the ray.",
+          view: { x: [-0.8, 6], y: [-3, 1.5] },
+          elements: [
+            { kind: "label", at: [3, 0], label: "3", labelAt: "n" },
+            { kind: "ray", from: [3, 0], angle: -45, step: 1 },
+            { kind: "angle", at: [3, 0], from: -45, to: 0, label: "−π/4", step: 1 },
+            { kind: "point", at: [4, -1], label: "4 − i", labelAt: "ne", tone: "good", step: 2 },
+          ],
+        },
+      },
     },
   ],
 };

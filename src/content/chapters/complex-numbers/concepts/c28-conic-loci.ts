@@ -32,6 +32,30 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         t`Its major axis is $6$, along the imaginary axis, so it reaches $\pm 3i$.`,
       ],
       answer: t`An ellipse with foci $\pm 2i$, reaching $\pm 3i$.`,
+      figure: {
+        alt: "Foci 2i and −2i, 4 apart. The sum 6 is more than 4, so the locus is an ellipse along the imaginary axis, reaching 3i and −3i.",
+        view: { x: [-4, 4], y: [-3.8, 3.8] },
+        elements: [
+          { kind: "point", at: [0, 2], label: "2i", labelAt: "e", step: 1 },
+          { kind: "point", at: [0, -2], label: "−2i", labelAt: "e", step: 1 },
+          { kind: "segment", from: [0, -2], to: [0, 2], dashed: true, tone: "muted", step: 1 },
+          { kind: "label", at: [0, 1], label: "d = 4", labelAt: "e", tone: "muted", step: 1 },
+          { kind: "ellipse", centre: [0, 0], rx: 2.236, ry: 3, label: "sum = 6", labelAt: "ne", step: 2 },
+          { kind: "point", at: [0, 3], label: "3i", labelAt: "ne", tone: "good", step: 3 },
+          { kind: "point", at: [0, -3], label: "−3i", labelAt: "se", tone: "good", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "Foci −3 and 3, 6 apart. The points whose distances to them add to 10 form an ellipse; the points 4 nearer 3 than −3 (difference 4) form one branch of a hyperbola, the branch nearer 3.",
+      view: { x: [-6, 6], y: [-5.4, 4.8] },
+      elements: [
+        { kind: "point", at: [-3, 0], label: "−3", labelAt: "n", step: 1 },
+        { kind: "point", at: [3, 0], label: "3", labelAt: "n", step: 1 },
+        { kind: "ellipse", centre: [0, 0], rx: 5, ry: 4, label: "sum = 10", labelAt: "ne", step: 2 },
+        { kind: "hyperbola", centre: [0, 0], a: 2, b: 2.236, axis: "x", branch: 1, tone: "good", step: 3 },
+        { kind: "label", at: [4.82, -4.9], label: "difference = 4", labelAt: "w", tone: "good", step: 3 },
+      ],
     },
     visualSpec: t`Two draggable foci and a slider for $k$. A toggle switches between sum and difference; as $k$ passes $d$, the ellipse squashes to a segment and vanishes (or the hyperbola branch flattens to a ray).`,
   },
@@ -84,6 +108,21 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "B", text: t`a circle`, correct: false, misconceptionId: "C28-M4", value: "6" },
         { key: "C", text: t`an ellipse`, correct: true, value: "1" },
       ],
+      solution: {
+        steps: [
+          t`The foci are $3$ and $-3$, so $d = 6$.`,
+          t`$k = 10 > 6$, so it is an ellipse.`,
+        ],
+        figure: {
+          alt: "Foci 3 and −3, 6 apart. The sum 10 is more than 6, so the locus is an ellipse reaching ±5.",
+          view: { x: [-6.2, 6.2], y: [-4.8, 4.8] },
+          elements: [
+            { kind: "point", at: [-3, 0], label: "−3", labelAt: "n", step: 1 },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "n", step: 1 },
+            { kind: "ellipse", centre: [0, 0], rx: 5, ry: 4, label: "sum = 10", labelAt: "ne", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C28-Q2",
@@ -96,6 +135,21 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "C", text: t`an ellipse`, correct: false, misconceptionId: "C28-M1", value: "1" },
         { key: "D", text: t`one branch of a hyperbola`, correct: false, misconceptionId: "C28-M2", value: "2" },
       ],
+      solution: {
+        steps: [
+          t`The foci are $3$ and $-3$, so $d = 6$.`,
+          t`$k = 6 = d$: only the points on the segment between the foci have distances adding to exactly $6$. So the locus is that segment.`,
+        ],
+        figure: {
+          alt: "Foci 3 and −3, 6 apart. The sum equals the distance between them, so the locus is just the segment from −3 to 3.",
+          view: { x: [-4.5, 4.5], y: [-2, 2] },
+          elements: [
+            { kind: "point", at: [-3, 0], label: "−3", labelAt: "nw", step: 1 },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [-3, 0], to: [3, 0], label: "sum = 6", labelAt: "n", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C28-Q3",
@@ -108,6 +162,23 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "C", text: t`a circle`, correct: false, misconceptionId: "C28-M4", value: "6" },
         { key: "D", text: t`no points at all`, correct: true, value: "5" },
       ],
+      solution: {
+        steps: [
+          t`The foci are $2$ and $-2$, so $d = 4$.`,
+          t`Any point's distances to the two foci add to at least $4$, the distance between them. $k = 3 < 4$, so no point qualifies.`,
+        ],
+        figure: {
+          alt: "Foci 2 and −2, 4 apart. Every point's two distances add to at least 4, so a sum of 3 is impossible: no points.",
+          view: { x: [-3.5, 3.5], y: [-1.8, 1.8] },
+          elements: [
+            { kind: "point", at: [-2, 0], label: "−2", labelAt: "nw", step: 1 },
+            { kind: "point", at: [2, 0], label: "2", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [-2, 0], to: [2, 0], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [1, 0], label: "d = 4", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "label", at: [0, -1], label: "no points: every sum is at least 4", labelAt: "s", tone: "bad", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C28-Q4",
@@ -120,6 +191,25 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "C", text: t`an ellipse`, correct: false, misconceptionId: "C28-M2", value: "1" },
         { key: "D", text: t`a circle`, correct: false, misconceptionId: "C28-M4", value: "6" },
       ],
+      solution: {
+        steps: [
+          t`The foci are $4$ and $-4$, so $d = 8$.`,
+          t`$k = 6 < 8$, and the difference has no $|\ |$ round it, so it is **one** branch of a hyperbola.`,
+          t`$|z - 4|$ is the larger distance, so $z$ is nearer $-4$: the left branch.`,
+        ],
+        figure: {
+          alt: "Foci 4 and −4, 8 apart. The difference 6 is less than 8, so the locus is one branch of a hyperbola: the left one, nearer −4. The right branch is not included.",
+          view: { x: [-7, 7], y: [-4.5, 4.5] },
+          elements: [
+            { kind: "point", at: [-4, 0], label: "−4", labelAt: "n", step: 1 },
+            { kind: "point", at: [4, 0], label: "4", labelAt: "n", step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 2.646, axis: "x", branch: 1, dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [4.97, 3.5], label: "not this branch", labelAt: "w", tone: "muted", step: 2 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 2.646, axis: "x", branch: -1, step: 3 },
+            { kind: "label", at: [-4.97, -3.5], label: "difference = 6", labelAt: "e", step: 3 },
+          ],
+        },
+      },
     },
     {
       id: "C28-Q5",
@@ -132,6 +222,22 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "C", text: t`an ellipse`, correct: false, misconceptionId: "C28-M2", value: "1" },
         { key: "D", text: t`a ray along the real axis, starting at $3$`, correct: true, value: "4" },
       ],
+      solution: {
+        steps: [
+          t`The foci are $-3$ and $3$, so $d = 6$.`,
+          t`$k = 6 = d$: the difference reaches $6$ only on the real axis from $3$ onwards, pointing away from $-3$. So the locus is that ray, starting at $3$.`,
+        ],
+        figure: {
+          alt: "Foci −3 and 3, 6 apart. The difference equals the distance between them, so the locus is the ray along the real axis from 3 to the right.",
+          view: { x: [-4.5, 8.5], y: [-2, 2] },
+          elements: [
+            { kind: "point", at: [-3, 0], label: "−3", labelAt: "n", step: 1 },
+            { kind: "vector", from: [3, 0], to: [8.3, 0], step: 2 },
+            { kind: "label", at: [5.8, 0], label: "difference = 6", labelAt: "n", step: 2 },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "n", step: 1 },
+          ],
+        },
+      },
     },
     {
       id: "C28-Q6",
@@ -143,6 +249,24 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "B", text: t`$4$`, correct: false, misconceptionId: "C28-M5", value: "4" },
         { key: "C", text: t`$10$`, correct: false, misconceptionId: "C28-M6", value: "10" },
       ],
+      solution: {
+        steps: [
+          t`The foci are $\pm4$ and $k = 10 > 8$: an ellipse centred at $0$ with major axis $10$ along the real axis.`,
+          t`$|z|$ is greatest at the ends of the major axis, $\pm5$: the greatest value is $\dfrac{10}{2} = 5$.`,
+        ],
+        figure: {
+          alt: "The ellipse with foci ±4 and sum 10, centred at 0. Its farthest points from 0 are the ends of the major axis, ±5.",
+          view: { x: [-6.2, 6.2], y: [-3.8, 3.8] },
+          elements: [
+            { kind: "point", at: [-4, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 1 },
+            { kind: "ellipse", centre: [0, 0], rx: 5, ry: 3, step: 1 },
+            { kind: "segment", from: [0, 0], to: [5, 0], label: "|z| = 5", labelAt: "n", tone: "good", step: 2 },
+            { kind: "point", at: [5, 0], label: "5", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "point", at: [-5, 0], label: "−5", labelAt: "nw", tone: "good", step: 2 },
+          ],
+        },
+      },
     },
   ],
 };
