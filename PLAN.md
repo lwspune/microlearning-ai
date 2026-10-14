@@ -375,6 +375,7 @@ password is never stored in the repo.
   student: mastered, in progress, reviews due, accuracy, last active; search
   by name) and `/teach/students/[id]` (summary, concept by concept, recent
   mistakes); the superadmin reaches students from each academy's page.
+  **Status (2026-10-14):** built and checked; pending your review and merge.
 - **R3 (parked 2026-10-14):** classes and the teacher dashboard. Kept
   simple for now; the full plan and its open decisions are in
   [SUGGESTIONS.md](SUGGESTIONS.md).
