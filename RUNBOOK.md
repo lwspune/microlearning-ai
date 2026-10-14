@@ -245,6 +245,7 @@ Guests are anonymous logins with no profile.
 | Stopping a background `next start` task left the server running, and the next run tested the stale build on that port | before `next start`, check the port (`Get-NetTCPConnection -LocalPort 3103`) and stop the old process |
 | A long-running dev server kept serving the old stylesheet after `globals.css` changed (new utilities missing) | if a style change doesn't show, probe the computed style, then restart `npm run dev` |
 | The same stale dev server kept a new chapter's empty `index.ts` after `build_index.py` filled it ("13 concepts · 0 authored"), so its review pages 404'd | after generating content files, check the authored count on `/review`; restart `npm run dev` if it lags |
+| A CHECK constraint passes when its expression is NULL: `items_figure_shape` let a figure with no `alt` through (`jsonb_typeof(null) = 'string'` is NULL) | wrap shape checks in `coalesce(..., false)`; test each malformed shape, not just one |
 | A sympy `solve` per line pair made each LPP drafting run take ~11 s | model geometry in exact `Fraction`s (Cramer's rule); convert to sympy only at the model boundary |
 | Two classes for one property in a class string (`bg-card` from a shared card plus `bg-accent-soft`) silently picked one | shared styles have colourless shapes (`linkCardShape`); each variant adds one border and one background |
 | Hiding answer radios with `sr-only` made Playwright unable to click them | an invisible radio covering the whole card (`absolute inset-0 opacity-0`) stays clickable and focusable |

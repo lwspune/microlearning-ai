@@ -98,3 +98,6 @@ is. Figures are data ([types.ts](types.ts) `Figure`), drawn by
     real axis above it (`labelAt: "n"`), and a centre on an axis to the side
     (`"nw"`). Labels are kept inside the frame automatically, but check
     collisions on `/review` in light and dark mode.
+16. **[S]** A question may show a figure with its stem (`item.figure`, e.g.
+    "the shaded region is ..."). It is shown whole, so its elements carry no
+    `step`, and it must not give the answer away (a solution figure may).
