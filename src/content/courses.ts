@@ -68,6 +68,9 @@ export const courses: Course[] = [
     tagline: "Maharashtra State Board, HSC Science",
     // Book order: Std XI Part 1, then Part 2, then Std XII. A chapter without coverage is covered whole.
     chapters: [
+      { chapter: "angle-measurement" },
+      { chapter: "trigonometric-functions" },
+      { chapter: "compound-and-multiple-angles" },
       { chapter: "determinants-and-matrices" },
       { chapter: "complex-numbers", coverage: cnMaharashtra },
       { chapter: "sequences-and-series" },
