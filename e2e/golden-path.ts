@@ -1,6 +1,6 @@
 /**
  * Golden path, end to end in a real browser:
- * guest → chapter map (only C01 ready, or all 30 with the mastery gate off) → C01 opens → [C01 fast-forwarded] →
+ * home → group switch → JEE Main course → its chapter map → guest → chapter map (only C01 ready, or all 30 with the mastery gate off) → C01 opens → [C01 fast-forwarded] →
  * Standard form: a repeated mistake rooted outside the chapter → "worth revising" →
  * [C03 fast-forwarded] → Arithmetic slides → wrong answer (remediation) →
  * 3 different correct answers → mastered → map shows it → Conjugate: a repeated
@@ -66,8 +66,17 @@ await (async () => {
   page.on("pageerror", (e) => consoleErrors.push(String(e)));
   const shot = async (name: string) => {
     if (!SHOTS) return;
-    // Let slide transitions finish, or the capture shows a half-faded slide.
-    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
+    // Let slide transitions finish, or the capture shows a half-faded slide. Endless
+    // loops (the homepage hero) and scroll-linked effects may never finish, so wait
+    // only for finite, time-based ones.
+    await page.evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          .filter((a) => a.timeline instanceof DocumentTimeline && a.effect?.getComputedTiming().iterations !== Infinity)
+          .map((a) => a.finished),
+      ),
+    );
     await page.screenshot({ path: join(SHOTS, `${name}.png`) });
   };
   const noSideScroll = async (where: string) => {
@@ -78,12 +87,27 @@ await (async () => {
 
   try {
     await page.goto(BASE + "/");
-    await page.getByRole("link", { name: /Start learning/ }).click();
-    await page.waitForURL("**/learn/complex-numbers");
+    // Courses: the 11th + 12th group is open by default; Graduates courses are coming soon.
+    check((await page.getByRole("tab", { name: "11th + 12th", selected: true }).count()) === 1, "home: 11th + 12th courses shown first");
+    await shot("00-home");
+    await noSideScroll("home");
+    await page.getByRole("tab", { name: "Graduates" }).click();
+    const cds = page.getByRole("link", { name: /^CDS/ });
+    await cds.waitFor();
+    check(await cds.getByText("Coming soon", { exact: true }).isVisible(), "home: CDS (Graduates) is coming soon");
+    await page.getByRole("tab", { name: "11th + 12th" }).click();
+    await page.getByRole("link", { name: /^JEE Main/ }).click();
+    await page.waitForURL("**/courses/jee-main");
+    await page.getByRole("link", { name: /Complex Numbers/ }).waitFor();
+    await shot("00-course");
+    await page.getByRole("link", { name: /Complex Numbers/ }).click();
+    await page.waitForURL("**/courses/jee-main/complex-numbers");
     await page.getByText("The imaginary unit").first().waitFor();
     const ready = await page.locator("section[aria-labelledby=ready] li").allInnerTexts();
-    const soon = await page.getByText("Coming soon", { exact: true }).count();
-    const locked = await page.getByText("Locked", { exact: true }).count();
+    // Scoped to the map: the previous page (home, with its "Coming soon" courses) stays mounted but hidden.
+    const outline = page.locator("section[aria-labelledby=outline]");
+    const soon = await outline.getByText("Coming soon", { exact: true }).count();
+    const locked = await outline.getByText("Locked", { exact: true }).count();
     // A new learner starts at the root of the graph: C01, the only concept with no prerequisites.
     if (GATE) {
       check(ready.length === 1 && ready[0].includes("The imaginary unit"), `map: "Ready for you" lists only The imaginary unit (got ${ready.length})`);
@@ -101,6 +125,8 @@ await (async () => {
     await page.getByRole("button", { name: "Start as guest" }).click();
     await page.getByRole("heading", { name: "Think about this" }).waitFor();
     ok("a new guest can open the first concept");
+    check(page.url().endsWith("/learn/complex-numbers/imaginary-unit?course=jee-main"), `the course survives guest sign-in (${page.url()})`);
+    check(await page.getByRole("link", { name: "JEE Main · Complex Numbers" }).isVisible(), "the concept page leads back to the course's chapter map");
 
     // Fast-forward past C01 so the rest of the path runs on later concepts.
     const [guest] = await sql(

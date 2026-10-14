@@ -8,6 +8,7 @@
  * Usage: node scripts/smoke-routes.ts [baseUrl]   (default http://localhost:3000)
  */
 import { chapters } from "../src/content/chapters/index.ts";
+import { courses } from "../src/content/courses.ts";
 
 const base = process.argv[2] ?? "http://localhost:3000";
 
@@ -30,6 +31,11 @@ const contentRoutes = chapters.flatMap((ch) => {
   ] as [string, "ok" | "missing"][];
 });
 
+const courseRoutes = courses.flatMap((c) => [
+  [`/courses/${c.slug}`, "ok"],
+  ...c.chapters.map((e) => [`/courses/${c.slug}/${e.chapter}`, "ok"]),
+]) as [string, "ok" | "missing"][];
+
 const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/", "ok"],
   ["/manifest.webmanifest", "ok"],
@@ -40,6 +46,11 @@ const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/review/complex-numbers/not-a-concept", "missing"],
   ["/review/not-a-chapter/division", "missing"],
   ["/learn/not-a-chapter", "missing"],
+  ["/review/courses", "ok"],
+  ["/courses/not-a-course", "missing"],
+  ["/courses/cds/complex-numbers", "missing"], // a chapter outside the course
+  ["/courses/jee-main/not-a-chapter", "missing"],
+  ...courseRoutes,
   ...contentRoutes,
 ];
 
