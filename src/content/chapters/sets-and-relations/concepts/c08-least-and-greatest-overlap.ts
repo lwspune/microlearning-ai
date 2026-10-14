@@ -1,0 +1,345 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c08: Concept = {
+  id: "C08",
+  status: "approved",
+  hook: {
+    prompt: t`A class has $40$ students. $30$ have a phone and $25$ have a bicycle. Nobody says how many have both. **Could it be none? What is the least it can be, and the most?**`,
+    reveal: t`$30 + 25 = 55$, but there are only $40$ students, so at least $55 - 40 = 15$ of them are counted twice: at least $15$ have both, never none. At most, all $25$ bicycle owners also have a phone, so the most is $25$.`,
+  },
+  explanation: {
+    intuition: t`Picture two circles of fixed sizes sliding inside $U$. Slide them apart and the overlap shrinks, but only until the two circles fill $U$: then $n(A) + n(B) - n(U)$ elements have nowhere else to go and must be in both. Slide them together and the overlap grows until the smaller circle sits wholly inside the larger: then the overlap is the whole smaller set. The union moves the other way: it is largest when the overlap is least, and least when the overlap is largest.`,
+    formal: t`**Least overlap.** $n(A \cup B) = n(A) + n(B) - n(A \cap B)$ and $A \cup B \subseteq U$, so $n(A \cap B) \ge n(A) + n(B) - n(U)$. A count is never negative, so
+$$\text{least } n(A \cap B) = \max\{0,\ n(A) + n(B) - n(U)\}$$
+
+**Greatest overlap.** $A \cap B \subseteq A$ and $A \cap B \subseteq B$, so
+$$\text{greatest } n(A \cap B) = \min\{n(A),\ n(B)\}$$
+It is reached when the smaller set lies inside the larger.
+
+**The union.** Since $n(A \cup B) = n(A) + n(B) - n(A \cap B)$, the least overlap gives the greatest union and the greatest overlap gives the least union:
+- least $n(A \cup B) = \max\{n(A),\ n(B)\}$
+- greatest $n(A \cup B) = \min\{n(U),\ n(A) + n(B)\}$
+
+**Percentages.** The same rules hold with $n(U) = 100\%$.`,
+    worked: {
+      prompt: t`Of $120$ people, $85$ speak Hindi and $60$ speak English. Find the least and the greatest number who speak both languages.`,
+      steps: [
+        t`Let $A$ and $B$ be the Hindi and English speakers. $n(A \cup B) = 85 + 60 - n(A \cap B) = 145 - n(A \cap B)$.`,
+        t`$A \cup B$ lies inside the group of $120$, so $145 - n(A \cap B) \le 120$, which gives $n(A \cap B) \ge 25$.`,
+        t`$25$ is possible: $25$ speak both, $85 - 25 = 60$ Hindi only, $60 - 25 = 35$ English only and $0$ neither; $60 + 25 + 35 + 0 = 120$.`,
+        t`$A \cap B$ lies inside $A$ and inside $B$, so $n(A \cap B) \le \min\{85, 60\} = 60$. This happens when all $60$ English speakers also speak Hindi, and $120 - 85 = 35$ speak neither.`,
+      ],
+      answer: t`The least is $25$ and the greatest is $60$.`,
+      figure: {
+        alt: "A Venn diagram of Hindi (85) and English (60) speakers among 120 people. The two circles together are shaded; the least overlap is 25, leaving 60 Hindi only, 35 English only and 0 neither. The greatest overlap is 60, when the English circle lies inside the Hindi circle.",
+        axes: "none",
+        view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+        elements: [
+          { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+          { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+          { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+          { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+          { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+          { kind: "label", at: [2.2, 5.2], label: "Hindi", labelAt: "nw" },
+          { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+          { kind: "label", at: [7.8, 5.2], label: "English", labelAt: "ne" },
+          { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+          { kind: "label", at: [5, 3.5], label: "25", labelAt: "n", step: 2, tone: "good" },
+          { kind: "label", at: [2.6, 3.5], label: "60", labelAt: "n", step: 3 },
+          { kind: "label", at: [7.4, 3.5], label: "35", labelAt: "n", step: 3 },
+          { kind: "label", at: [0.9, 0.8], label: "0", labelAt: "n", step: 3 },
+          { kind: "label", at: [5, 0.1], label: "greatest: 60, English inside Hindi", labelAt: "n", step: 4, tone: "good" },
+        ],
+      },
+    },
+    figure: {
+      alt: "A Venn diagram of 40 students: the Phone circle (30) and the Bicycle circle (25). Shading both circles covers the overlap twice, since 30 + 25 = 55 is more than 40, so at least 15 must have both. With 15 in both, 15 have a phone only, 10 a bicycle only and 0 neither.",
+      axes: "none",
+      view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+      elements: [
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
+        { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+        { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+        { kind: "label", at: [2.2, 5.2], label: "Phone", labelAt: "nw" },
+        { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+        { kind: "label", at: [7.8, 5.2], label: "Bicycle", labelAt: "ne" },
+        { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+        { kind: "label", at: [5, 3.5], label: "15", labelAt: "n", step: 3, tone: "bad" },
+        { kind: "label", at: [2.6, 3.5], label: "15", labelAt: "n", step: 4 },
+        { kind: "label", at: [7.4, 3.5], label: "10", labelAt: "n", step: 4 },
+        { kind: "label", at: [0.9, 0.8], label: "0", labelAt: "n", step: 4, tone: "good" },
+        { kind: "label", at: [5, 0.1], label: "at least 30 + 25 − 40 = 15 in both", labelAt: "n", step: 3, tone: "bad" },
+      ],
+    },
+    visualSpec: t`Drag circle $B$ along a line inside $U$ with $n(A)$, $n(B)$ and $n(U)$ fixed; the four cell counts update, and the overlap stops shrinking when the outside cell reaches $0$ and stops growing when $B$ sits inside $A$.`,
+  },
+  misconceptions: [
+    {
+      id: "C08-M1",
+      mistake: "Bounding the overlap by the larger set, or the union by the smaller set",
+      remediation: t`$A \cap B$ sits inside both sets, so it is at most the smaller one: $n(A \cap B) \le \min\{n(A), n(B)\}$. $A \cup B$ contains both sets, so it is at least the larger one.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+    {
+      id: "C08-M2",
+      mistake: t`Ignoring $n(U)$: thinking the sets can always be pulled apart, so the overlap can be $0$ and the union $n(A) + n(B)$`,
+      remediation: t`Everything has to fit inside $U$, so $n(A \cup B) \le n(U)$. When $n(A) + n(B) > n(U)$, at least $n(A) + n(B) - n(U)$ elements must be in both sets.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C08-M3",
+      mistake: t`Swapping the least and the greatest: reading $n(A \cup B) \le n(U)$ as an upper bound on the overlap`,
+      remediation: t`$n(A \cap B) = n(A) + n(B) - n(A \cup B)$: the bigger the union, the smaller the overlap. So $n(A \cup B) \le n(U)$ gives the least overlap, $n(A) + n(B) - n(U)$; the overlap is greatest when the smaller set lies inside the larger.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C08-M4",
+      mistake: t`Confusing $A \cap B$ with $A \cup B$: giving the bound for the union when the overlap is asked, or the other way round`,
+      remediation: t`'Both' is $A \cap B$, the overlap; 'at least one' is $A \cup B$, everything in either circle. Check which one the question asks for before finding its least or greatest value.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+  ],
+  engineNotes: [
+    t`C08-M2 gives the key when $n(A) + n(B) \le n(U)$ (least overlap $0$, greatest union $n(A) + n(B)$); diagnose it only with $n(A) + n(B) > n(U)$.`,
+    t`C08-M1 gives the key when $n(A) = n(B)$, and C08-M3 when the larger set is all of $U$ (then the least and greatest are equal).`,
+  ],
+  items: [
+    {
+      id: "C08-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/sets-relations-11/5.1 SolvedEx.10" },
+      stem: t`In a survey of $100$ consumers, $72$ like product A and $45$ like product B. What is the least number of consumers who must like both products A and B?`,
+      verify: { kind: "value", inputs: { U: "100", A: "72", B: "45" }, params: { ask: "least_both" } },
+      options: [
+        { key: "A", text: t`$17$`, correct: true, value: "17" },
+        { key: "B", text: t`$0$`, correct: false, misconceptionId: "C08-M2", value: "0" },
+        { key: "C", text: t`$45$`, correct: false, misconceptionId: "C08-M3", value: "45" },
+        { key: "D", text: t`$72$`, correct: false, misconceptionId: "C08-M4", value: "72" },
+      ],
+      solution: {
+        steps: [
+          t`$n(A \cup B) = 72 + 45 - n(A \cap B) = 117 - n(A \cap B)$, and $A \cup B$ holds at most the $100$ consumers surveyed.`,
+          t`$117 - n(A \cap B) \le 100$, so $n(A \cap B) \ge 17$.`,
+          t`$17$ is possible: $17$ like both, $55$ only A, $28$ only B and $0$ neither; $55 + 17 + 28 = 100$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of products A (72) and B (45) among 100 consumers. Both circles together are shaded; the least overlap is 17, with 55 only A, 28 only B and 0 neither.",
+          axes: "none",
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
+            { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 3.5], label: "17", labelAt: "n", step: 2, tone: "good" },
+            { kind: "label", at: [2.6, 3.5], label: "55", labelAt: "n", step: 3 },
+            { kind: "label", at: [7.4, 3.5], label: "28", labelAt: "n", step: 3 },
+            { kind: "label", at: [0.9, 0.8], label: "0", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/sets-relations-11/5.1 SolvedEx.10" },
+      stem: t`In a group of $60$ students, $38$ like tea and $32$ like coffee. What is the greatest possible number of students who like both tea and coffee?`,
+      verify: { kind: "value", inputs: { U: "60", A: "38", B: "32" }, params: { ask: "most_both" } },
+      options: [
+        { key: "A", text: t`$38$`, correct: false, misconceptionId: "C08-M1", value: "38" },
+        { key: "B", text: t`$10$`, correct: false, misconceptionId: "C08-M3", value: "10" },
+        { key: "C", text: t`$60$`, correct: false, misconceptionId: "C08-M4", value: "60" },
+        { key: "D", text: t`$32$`, correct: true, value: "32" },
+      ],
+      solution: {
+        steps: [
+          t`Students who like both are among the $32$ who like coffee and among the $38$ who like tea, so at most $\min\{38, 32\} = 32$.`,
+          t`$32$ is possible when every coffee lover also likes tea: $32$ both, $38 - 32 = 6$ tea only, $0$ coffee only and $60 - 38 = 22$ neither.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of Tea (38) and Coffee (32) among 60 students. The Coffee circle is shaded; at most all 32 coffee lovers are in the overlap, leaving 6 tea only, 0 coffee only and 22 neither.",
+          axes: "none",
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          elements: [
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "Tea", labelAt: "nw" },
+            { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [7.8, 5.2], label: "Coffee", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 3.5], label: "32", labelAt: "n", step: 1, tone: "good" },
+            { kind: "label", at: [2.6, 3.5], label: "6", labelAt: "n", step: 2 },
+            { kind: "label", at: [7.4, 3.5], label: "0", labelAt: "n", step: 2 },
+            { kind: "label", at: [0.9, 0.8], label: "22", labelAt: "n", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q3",
+      source: { kind: "authored" },
+      stem: t`In a colony of $150$ families, $90$ families own a car and $70$ own a scooter. What is the least possible number of families that own a car or a scooter (at least one of the two)?`,
+      verify: { kind: "value", inputs: { U: "150", A: "90", B: "70" }, params: { ask: "least_union" } },
+      options: [
+        { key: "A", text: t`$70$`, correct: false, misconceptionId: "C08-M1", value: "70" },
+        { key: "B", text: t`$150$`, correct: false, misconceptionId: "C08-M3", value: "150" },
+        { key: "C", text: t`$10$`, correct: false, misconceptionId: "C08-M4", value: "10" },
+        { key: "D", text: t`$90$`, correct: true, value: "90" },
+      ],
+      solution: {
+        steps: [
+          t`Let $A$ and $B$ be the families with a car and with a scooter. $A \cup B$ contains all $90$ car owners, so $n(A \cup B) \ge 90$, the larger of $90$ and $70$.`,
+          t`$90$ is possible when every scooter owner also owns a car: $70$ both, $20$ car only, $0$ scooter only and $150 - 90 = 60$ neither.`,
+          t`Check: $n(A \cup B) = 90 + 70 - 70 = 90$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of Car (90) and Scooter (70) among 150 families. The Car circle is shaded first; with all 70 scooter owners in the overlap, 20 own a car only, 0 a scooter only and 60 neither. The union, shaded, holds 90.",
+          axes: "none",
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "Car", labelAt: "nw" },
+            { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [7.8, 5.2], label: "Scooter", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 3.5], label: "70", labelAt: "n", step: 2 },
+            { kind: "label", at: [2.6, 3.5], label: "20", labelAt: "n", step: 2 },
+            { kind: "label", at: [7.4, 3.5], label: "0", labelAt: "n", step: 2 },
+            { kind: "label", at: [0.9, 0.8], label: "60", labelAt: "n", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q4",
+      source: { kind: "authored" },
+      stem: t`A class has $50$ students. $35$ of them play chess and $28$ play carrom. What is the greatest possible number of students who play at least one of the two games?`,
+      verify: { kind: "value", inputs: { U: "50", A: "35", B: "28" }, params: { ask: "most_union" } },
+      options: [
+        { key: "A", text: t`$35$`, correct: false, misconceptionId: "C08-M3", value: "35" },
+        { key: "B", text: t`$28$`, correct: false, misconceptionId: "C08-M4", value: "28" },
+        { key: "C", text: t`$50$`, correct: true, value: "50" },
+        { key: "D", text: t`$63$`, correct: false, misconceptionId: "C08-M2", value: "63" },
+      ],
+      solution: {
+        steps: [
+          t`Let $A$ and $B$ be the chess and carrom players. $n(A \cup B) = 35 + 28 - n(A \cap B) = 63 - n(A \cap B)$: the union is largest when the overlap is least.`,
+          t`The union lies inside the class, so $n(A \cup B) \le 50$, which needs $n(A \cap B) \ge 63 - 50 = 13$.`,
+          t`$50$ is possible: $13$ play both, $22$ chess only, $15$ carrom only and $0$ neither. So all $50$ can play at least one game.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of Chess (35) and Carrom (28) among 50 students. The overlap must hold at least 13; then 22 play chess only, 15 carrom only and 0 neither, and the union, shaded, holds all 50.",
+          axes: "none",
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "Chess", labelAt: "nw" },
+            { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [7.8, 5.2], label: "Carrom", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 3.5], label: "13", labelAt: "n", step: 2, tone: "bad" },
+            { kind: "label", at: [2.6, 3.5], label: "22", labelAt: "n", step: 3 },
+            { kind: "label", at: [7.4, 3.5], label: "15", labelAt: "n", step: 3 },
+            { kind: "label", at: [0.9, 0.8], label: "0", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q5",
+      source: { kind: "authored" },
+      stem: t`In a town, $80\%$ of the families own a two-wheeler and $65\%$ own a television. What is the greatest possible percentage of families that own both a two-wheeler and a television?`,
+      verify: { kind: "value", inputs: { U: "100", A: "80", B: "65" }, params: { ask: "most_both" } },
+      options: [
+        { key: "A", text: t`$100\%$`, correct: false, misconceptionId: "C08-M4", value: "100" },
+        { key: "B", text: t`$65\%$`, correct: true, value: "65" },
+        { key: "C", text: t`$80\%$`, correct: false, misconceptionId: "C08-M1", value: "80" },
+        { key: "D", text: t`$45\%$`, correct: false, misconceptionId: "C08-M3", value: "45" },
+      ],
+      solution: {
+        steps: [
+          t`Families owning both are among the $65\%$ with a television, so at most $\min\{80\%, 65\%\} = 65\%$.`,
+          t`$65\%$ is possible when every family with a television also owns a two-wheeler: two-wheeler only $15\%$, television only $0\%$ and neither $100\% - 80\% = 20\%$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of Two-wheeler (80%) and TV (65%). The TV circle is shaded; at most all 65% are in the overlap, leaving 15% two-wheeler only, 0% TV only and 20% neither.",
+          axes: "none",
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          elements: [
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "Two-wheeler", labelAt: "nw" },
+            { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [7.8, 5.2], label: "TV", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 3.5], label: "65%", labelAt: "n", step: 1, tone: "good" },
+            { kind: "label", at: [2.6, 3.5], label: "15%", labelAt: "n", step: 2 },
+            { kind: "label", at: [7.4, 3.5], label: "0%", labelAt: "n", step: 2 },
+            { kind: "label", at: [0.9, 0.8], label: "20%", labelAt: "n", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q6",
+      source: { kind: "authored" },
+      stem: t`In an examination, $70\%$ of the students passed in English and $65\%$ passed in Mathematics. What is the least percentage of students who must have passed in both subjects?`,
+      verify: { kind: "value", inputs: { U: "100", A: "70", B: "65" }, params: { ask: "least_both" } },
+      options: [
+        { key: "A", text: t`$65\%$`, correct: false, misconceptionId: "C08-M3", value: "65" },
+        { key: "B", text: t`$70\%$`, correct: false, misconceptionId: "C08-M4", value: "70" },
+        { key: "C", text: t`$35\%$`, correct: true, value: "35" },
+        { key: "D", text: t`$0\%$`, correct: false, misconceptionId: "C08-M2", value: "0" },
+      ],
+      solution: {
+        steps: [
+          t`With $E$ and $M$ the students who passed English and Mathematics: $n(E \cup M) = 70\% + 65\% - n(E \cap M) = 135\% - n(E \cap M)$, and this can't exceed $100\%$.`,
+          t`So $n(E \cap M) \ge 135\% - 100\% = 35\%$.`,
+          t`$35\%$ is possible: $35\%$ passed both, $35\%$ English only, $30\%$ Mathematics only and $0\%$ neither.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of English (70%) and Maths (65%). Both circles together are shaded; the least overlap is 35%, with 35% English only, 30% Maths only and 0% neither.",
+          axes: "none",
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "English", labelAt: "nw" },
+            { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
+            { kind: "label", at: [7.8, 5.2], label: "Maths", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 3.5], label: "35%", labelAt: "n", step: 2, tone: "good" },
+            { kind: "label", at: [2.6, 3.5], label: "35%", labelAt: "n", step: 3 },
+            { kind: "label", at: [7.4, 3.5], label: "30%", labelAt: "n", step: 3 },
+            { kind: "label", at: [0.9, 0.8], label: "0%", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};
