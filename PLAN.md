@@ -257,6 +257,25 @@ re-learning.
 review rule · e2e: two repeated mistakes → refresher → back → mastered; a
 due concept appears in "Review today".
 
+## Teachers (2026-10-14)
+
+**Now:** teachers open the chapter in class and move between any concepts.
+`MASTERY_GATE = false` in `src/engine/unlock.ts` opens every published
+concept; the map lists all of them and each opens directly (a one-time "Start
+as guest" per browser). Set it back to `true` to restore the unlock rule.
+
+**Future ideas (discussed, not planned yet):**
+- *Present mode:* a projector view per concept (big type, one click per step,
+  answer and solution revealed by the teacher, nothing tracked).
+- *Ask the class:* a live poll on any question via QR/join code; results by
+  option, labelled with each distractor's misconception.
+- *Classes:* teacher accounts, several classes per teacher with join codes;
+  progress belongs to the student, each class dashboard shows only its
+  members (students × concepts, top misconceptions, reviews due).
+- *Per-class pacing* would replace the global `MASTERY_GATE`.
+- Open questions: phones in class? teacher sign-in (Google or email link)?
+  single teachers or schools with an admin?
+
 ## Backfill ledger
 
 ### 1. The correct answer is always option A (logged 2026-10-13, done 2026-10-13: option a)
