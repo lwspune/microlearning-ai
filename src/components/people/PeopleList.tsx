@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { card } from "@/components/ui";
 import type { Role } from "@/lib/auth/routing";
 
@@ -5,7 +6,7 @@ export type PersonRow = { id: string; fullName: string; email: string; username:
 
 const ROLE: Record<Role, string> = { student: "Student", teacher: "Teacher", academy_admin: "Academy admin", superadmin: "Superadmin" };
 
-/** An academy's people: name, what they sign in with, role. */
+/** An academy's people: name, what they sign in with, role. Students' names open their performance page. */
 export function PeopleList({ people }: { people: PersonRow[] }) {
   if (people.length === 0) return <p className={`${card} p-6 text-muted`}>No one here yet.</p>;
   return (
@@ -28,7 +29,13 @@ export function PeopleList({ people }: { people: PersonRow[] }) {
           {people.map((p) => (
             <tr key={p.id}>
               <td className="px-5 py-3">
-                <span className="font-medium">{p.fullName}</span>
+                {p.role === "student" ? (
+                  <Link href={`/teach/students/${p.id}`} className="font-medium text-accent underline-offset-4 hover:underline">
+                    {p.fullName}
+                  </Link>
+                ) : (
+                  <span className="font-medium">{p.fullName}</span>
+                )}
                 {/* Phones: the role sits under the name instead of in its own column. */}
                 <span className="block text-muted sm:hidden">{ROLE[p.role]}</span>
               </td>

@@ -30,6 +30,16 @@ async function TeachHomeContent() {
       </Link>
 
       {profile.academyId && (
+        <Link href="/teach/students" className={`${linkCard} group mt-4 flex items-center justify-between gap-4 p-6`}>
+          <span>
+            <span className="block font-display text-2xl font-semibold">Students</span>
+            <span className="mt-1 block text-muted">How each student is doing: what they&apos;ve mastered, their accuracy, and the mistakes they keep making.</span>
+          </span>
+          <ArrowRightIcon className="h-5 w-5 shrink-0 text-accent transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
+        </Link>
+      )}
+
+      {profile.academyId && (
         <Link href="/teach/people" className={`${linkCard} group mt-4 flex items-center justify-between gap-4 p-6`}>
           <span>
             <span className="block font-display text-2xl font-semibold">People</span>

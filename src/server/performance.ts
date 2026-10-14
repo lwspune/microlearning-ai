@@ -1,5 +1,5 @@
 import "server-only";
-import { type ConceptStatus, conceptStatus, type MistakeRow, rankMistakes } from "@/lib/performance";
+import { accuracyPercent, type ConceptStatus, conceptStatus, lastActiveLabel, type MistakeRow, rankMistakes } from "@/lib/performance";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createSessionClient } from "@/lib/supabase/server";
 
@@ -21,7 +21,10 @@ export type StudentSummary = {
   reviewsDue: number;
   answered: number;
   correct: number;
-  lastActive: string | null;
+  /** Whole percent, or null before any answer. */
+  accuracy: number | null;
+  /** "Today", "3 days ago", "Never"… as of this request. */
+  lastActive: string;
 };
 
 type SummaryRow = { user_id: string | null; mastered: number | null; learning: number | null; reviews_due: number | null; answered: number | null; correct: number | null; last_active: string | null };
@@ -31,7 +34,13 @@ function fail(where: string, error: { message: string }): never {
   throw error;
 }
 
-function toSummary(p: { id: string; full_name: string; email: string; username: string | null }, s: SummaryRow | undefined): StudentSummary {
+function toSummary(
+  p: { id: string; full_name: string; email: string; username: string | null },
+  s: SummaryRow | undefined,
+  now: number,
+): StudentSummary {
+  const answered = s?.answered ?? 0;
+  const correct = s?.correct ?? 0;
   return {
     id: p.id,
     fullName: p.full_name,
@@ -39,9 +48,10 @@ function toSummary(p: { id: string; full_name: string; email: string; username: 
     mastered: s?.mastered ?? 0,
     learning: s?.learning ?? 0,
     reviewsDue: s?.reviews_due ?? 0,
-    answered: s?.answered ?? 0,
-    correct: s?.correct ?? 0,
-    lastActive: s?.last_active ?? null,
+    answered,
+    correct,
+    accuracy: accuracyPercent(answered, correct),
+    lastActive: lastActiveLabel(s?.last_active ?? null, now),
   };
 }
 
@@ -62,18 +72,20 @@ export async function academyStudentSummaries(academyId: string): Promise<Studen
     .in("user_id", students.map((s) => s.id));
   if (se) fail("summary read", se);
   const byId = new Map(summaries.map((s) => [s.user_id, s]));
-  return students.map((p) => toSummary(p, byId.get(p.id)));
+  const now = Date.now();
+  return students.map((p) => toSummary(p, byId.get(p.id), now));
 }
 
 export type StudentPerformance = {
   summary: StudentSummary;
   academyId: string | null;
   chapters: { slug: string; title: string; groups: { name: string; concepts: { code: string; title: string; status: ConceptStatus }[] }[] }[];
-  mistakes: { mistake: string; concept: string; recent: number; lastAt: string }[];
+  /** `last`: "today", "3 days ago"… as of this request. */
+  mistakes: { mistake: string; concept: string; recent: number; last: string }[];
 };
 
 /** One student's performance, or null if there's no such student or the viewer may not see them. */
-export async function studentPerformance(studentId: string, now: number): Promise<StudentPerformance | null> {
+export async function studentPerformance(studentId: string): Promise<StudentPerformance | null> {
   const db = await createSessionClient();
   const { data: profile, error } = await db
     .from("profiles")
@@ -103,6 +115,7 @@ export async function studentPerformance(studentId: string, now: number): Promis
   if (concepts.error) fail("concepts read", concepts.error);
   if (misconceptions.error) fail("misconceptions read", misconceptions.error);
 
+  const now = Date.now();
   const stateOf = new Map(states.data.map((s) => [s.concept_id, { state: s.state, nextReviewAt: s.next_review_at }]));
   const conceptTitle = new Map(concepts.data.map((c) => [c.id, c.title]));
   const misconception = new Map(misconceptions.data.map((m) => [m.id, m]));
@@ -112,7 +125,7 @@ export async function studentPerformance(studentId: string, now: number): Promis
   );
 
   return {
-    summary: toSummary(profile, summary.data ?? undefined),
+    summary: toSummary(profile, summary.data ?? undefined, now),
     academyId: profile.academy_id,
     chapters: chapters.data
       .map((ch) => {
@@ -128,7 +141,12 @@ export async function studentPerformance(studentId: string, now: number): Promis
       .filter((ch) => ch.groups.length > 0),
     mistakes: ranked.map((r) => {
       const m = misconception.get(r.misconceptionId);
-      return { mistake: m?.mistake ?? "Unknown mistake", concept: (m && conceptTitle.get(m.concept_id)) ?? "", recent: r.recent, lastAt: r.lastAt };
+      return {
+        mistake: m?.mistake ?? "Unknown mistake",
+        concept: (m && conceptTitle.get(m.concept_id)) ?? "",
+        recent: r.recent,
+        last: lastActiveLabel(r.lastAt, now).toLowerCase(),
+      };
     }),
   };
 }
