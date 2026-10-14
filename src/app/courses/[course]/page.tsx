@@ -20,6 +20,18 @@ export async function generateMetadata({ params }: PageProps<"/courses/[course]"
 }
 
 function ChapterCard({ course, ch }: { course: string; ch: CourseChapterProgress }) {
+  if (ch.total === 0) {
+    // Nothing published yet: no link, since its map has nothing to open.
+    return (
+      <div className={`${card} flex items-center justify-between gap-5 p-5`}>
+        <span className="min-w-0">
+          <span className="block font-display text-xl font-semibold">{ch.title}</span>
+          <span className="mt-0.5 block text-sm text-muted">Concepts appear here as soon as each one is checked.</span>
+        </span>
+        <span className="shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-semibold">Coming soon</span>
+      </div>
+    );
+  }
   return (
     <Link href={`/courses/${course}/${ch.slug}`} className={`${linkCard} group flex items-center gap-5 p-5`}>
       <ProgressRing value={ch.mastered} max={ch.total} size={56} label={`${ch.mastered} of ${ch.total} concepts mastered`} />
