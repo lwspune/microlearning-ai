@@ -439,6 +439,7 @@ export type Database = {
           id: string
           role: Database["public"]["Enums"]["app_role"]
           stage: string | null
+          username: string | null
         }
         Insert: {
           academy_id?: string | null
@@ -449,6 +450,7 @@ export type Database = {
           id: string
           role?: Database["public"]["Enums"]["app_role"]
           stage?: string | null
+          username?: string | null
         }
         Update: {
           academy_id?: string | null
@@ -459,6 +461,7 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           stage?: string | null
+          username?: string | null
         }
         Relationships: [
           {
@@ -595,11 +598,22 @@ export type Database = {
       }
     }
     Functions: {
+      can_create_person: {
+        Args: {
+          p_academy: string
+          p_role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
       concept_ancestors: {
         Args: { p_concept: string }
         Returns: {
           id: string
         }[]
+      }
+      create_academy: {
+        Args: { p_name: string; p_slug: string }
+        Returns: string
       }
       is_valid_solution: { Args: { s: Json }; Returns: boolean }
       mark_review_due: {
