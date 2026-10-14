@@ -183,7 +183,15 @@ await (async () => {
     await page.goto(BASE + "/teach");
     await page.getByRole("heading", { name: "Sign in" }).waitFor();
     check(path() === "/login?next=%2Fteach", "a guest opening /teach is asked to sign in");
-    check(await header.getByText("Learning as a guest").isVisible().catch(() => false) || VIEWPORT.width < 640, "the header says you're learning as a guest (from sm up)");
+    // Shown from sm up; the header's account part streams in, so wait for it.
+    const guestNote =
+      VIEWPORT.width < 640 ||
+      (await header
+        .getByText("Learning as a guest")
+        .waitFor({ timeout: 10_000 })
+        .then(() => true)
+        .catch(() => false));
+    check(guestNote, "the header says you're learning as a guest (from sm up)");
 
     check(consoleErrors.length === 0, `no console errors${consoleErrors.length ? `: ${consoleErrors[0]}` : ""}`);
   } catch (e) {
