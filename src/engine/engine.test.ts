@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "@/content/chapters/complex-numbers";
 import type { GraphNode } from "@/content/types";
-import { conceptStates } from "./unlock";
+import { conceptStates, MASTERY_GATE } from "./unlock";
 import { nextItem } from "./nextItem";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
@@ -12,47 +12,66 @@ function node(id: string, prereqs: string[] = []): GraphNode {
 const chain = [node("A"), node("B", ["A"]), node("C", ["B"]), node("D", ["C"])];
 
 describe("conceptStates", () => {
+  it("is ungated for now, so teachers can open any concept (MASTERY_GATE)", () => {
+    expect(MASTERY_GATE).toBe(false);
+  });
+
+  it("with the gate off, opens every published concept whatever the learner has mastered", () => {
+    const s = conceptStates(chain, new Set(["A", "C", "D"]), new Map(), false);
+    expect([s.get("A"), s.get("C"), s.get("D")]).toEqual(["available", "available", "available"]);
+  });
+
+  it("with the gate off, still keeps progress and still hides unpublished concepts", () => {
+    const s = conceptStates(chain, new Set(["A", "B", "C"]), new Map([["A", "mastered"], ["B", "learning"]]), false);
+    expect([s.get("A"), s.get("B"), s.get("C"), s.get("D")]).toEqual(["mastered", "learning", "available", "unpublished"]);
+  });
+
+  it("defaults to MASTERY_GATE", () => {
+    const s = conceptStates(chain, new Set(["A", "C"]), new Map());
+    expect(s.get("C")).toBe(MASTERY_GATE ? "locked" : "available");
+  });
+
   it("marks concepts without published content as unpublished", () => {
-    const s = conceptStates(chain, new Set(["A"]), new Map());
+    const s = conceptStates(chain, new Set(["A"]), new Map(), true);
     expect(s.get("B")).toBe("unpublished");
   });
 
   it("opens a published concept whose published ancestors are all mastered", () => {
     const published = new Set(["A", "C"]);
-    expect(conceptStates(chain, published, new Map()).get("C")).toBe("locked");
-    expect(conceptStates(chain, published, new Map([["A", "mastered"]])).get("C")).toBe("available");
+    expect(conceptStates(chain, published, new Map(), true).get("C")).toBe("locked");
+    expect(conceptStates(chain, published, new Map([["A", "mastered"]]), true).get("C")).toBe("available");
   });
 
   it("looks through unpublished concepts to published ancestors", () => {
     // D's nearest published ancestor is A, two steps up through unpublished B and C.
     const published = new Set(["A", "D"]);
-    expect(conceptStates(chain, published, new Map()).get("D")).toBe("locked");
-    expect(conceptStates(chain, published, new Map([["A", "mastered"]])).get("D")).toBe("available");
+    expect(conceptStates(chain, published, new Map(), true).get("D")).toBe("locked");
+    expect(conceptStates(chain, published, new Map([["A", "mastered"]]), true).get("D")).toBe("available");
   });
 
   it("treats an unpublished prerequisite as known", () => {
-    expect(conceptStates(chain, new Set(["B"]), new Map()).get("B")).toBe("available");
+    expect(conceptStates(chain, new Set(["B"]), new Map(), true).get("B")).toBe("available");
   });
 
   it("keeps the learner's own progress", () => {
-    const s = conceptStates(chain, new Set(["A", "B"]), new Map([["A", "mastered"], ["B", "learning"]]));
+    const s = conceptStates(chain, new Set(["A", "B"]), new Map([["A", "mastered"], ["B", "learning"]]), true);
     expect(s.get("A")).toBe("mastered");
     expect(s.get("B")).toBe("learning");
   });
 
   it("opens all three pilot concepts for a new learner while only they are published", () => {
     const published = new Set(["C06", "C14", "C25"]);
-    const s = conceptStates(complexNumbers.graph, published, new Map());
+    const s = conceptStates(complexNumbers.graph, published, new Map(), true);
     expect([s.get("C06"), s.get("C14"), s.get("C25")]).toEqual(["available", "available", "available"]);
   });
 
   it("once C04, C05, C10 and C11 are published, new learners start at C04 and C10", () => {
     const published = new Set(["C04", "C05", "C06", "C10", "C11", "C14", "C25"]);
-    const s = conceptStates(complexNumbers.graph, published, new Map());
+    const s = conceptStates(complexNumbers.graph, published, new Map(), true);
     const open = [...published].filter((id) => s.get(id) === "available").sort();
     expect(open).toEqual(["C04", "C10"]);
     // Mastering C04 and C10 opens C05 (needs C04) and C11 (needs C10, C04) and C14 (needs C10).
-    const after = conceptStates(complexNumbers.graph, published, new Map([["C04", "mastered"], ["C10", "mastered"]]));
+    const after = conceptStates(complexNumbers.graph, published, new Map([["C04", "mastered"], ["C10", "mastered"]]), true);
     expect([...published].filter((id) => after.get(id) === "available").sort()).toEqual(["C05", "C11", "C14"]);
   });
 });

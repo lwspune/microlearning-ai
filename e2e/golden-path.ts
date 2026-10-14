@@ -1,6 +1,6 @@
 /**
  * Golden path, end to end in a real browser:
- * guest → chapter map (only C01 ready) → C01 opens → [C01 fast-forwarded] →
+ * guest → chapter map (only C01 ready, or all 30 with the mastery gate off) → C01 opens → [C01 fast-forwarded] →
  * Standard form: a repeated mistake rooted outside the chapter → "worth revising" →
  * [C03 fast-forwarded] → Arithmetic slides → wrong answer (remediation) →
  * 3 different correct answers → mastered → map shows it → Conjugate: a repeated
@@ -12,7 +12,7 @@
  *        SHOTS    directory for screenshots (optional)
  * Reads .env.local for the Supabase Management API (looks up keys, cleans up the guest).
  */
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright-core";
 
@@ -32,6 +32,10 @@ const VIEWPORTS = {
 } as const;
 const VIEWPORT = VIEWPORTS[(process.env.VIEWPORT ?? "phone") as keyof typeof VIEWPORTS] ?? VIEWPORTS.phone;
 const SHOTS = process.env.SHOTS;
+// The mastery gate's setting, read from source (Node can't resolve the app's "@/" imports).
+const gateSetting = readFileSync("src/engine/unlock.ts", "utf8").match(/export const MASTERY_GATE = (true|false);/);
+if (!gateSetting) throw new Error("can't read MASTERY_GATE from src/engine/unlock.ts");
+const GATE = gateSetting[1] === "true";
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 
 async function sql(query: string): Promise<Record<string, unknown>[]> {
@@ -81,9 +85,13 @@ await (async () => {
     const soon = await page.getByText("Coming soon", { exact: true }).count();
     const locked = await page.getByText("Locked", { exact: true }).count();
     // A new learner starts at the root of the graph: C01, the only concept with no prerequisites.
-    check(ready.length === 1 && ready[0].includes("The imaginary unit"), `map: "Ready for you" lists only The imaginary unit (got ${ready.length})`);
+    if (GATE) {
+      check(ready.length === 1 && ready[0].includes("The imaginary unit"), `map: "Ready for you" lists only The imaginary unit (got ${ready.length})`);
+    } else {
+      check(ready.length === 30, `map (gate off): "Ready for you" lists all 30 concepts (got ${ready.length})`);
+    }
     check(soon === 0, `map: nothing is coming soon (got ${soon})`);
-    check(locked === 29, `map: the other 29 concepts are locked (got ${locked})`);
+    check(locked === (GATE ? 29 : 0), `map: ${GATE ? "the other 29" : "no"} concepts are locked (got ${locked})`);
     await shot("01-map-guest");
     await noSideScroll("map");
 
@@ -259,7 +267,7 @@ await (async () => {
     await arithmeticRow.getByText("Mastered ✓", { exact: true }).waitFor();
     check(await arithmeticRow.getByText("Mastered ✓", { exact: true }).isVisible(), "map shows Arithmetic as Mastered ✓");
     check((await ready2.getByRole("link", { name: /^Arithmetic/ }).count()) === 0, "a mastered concept leaves Ready for you");
-    check(await ready2.getByRole("link", { name: /^Conjugate/ }).isVisible(), "mastering Arithmetic unlocked Conjugate");
+    check(await ready2.getByRole("link", { name: /^Conjugate/ }).isVisible(), GATE ? "mastering Arithmetic unlocked Conjugate" : "Conjugate is ready (gate off)");
     await shot("11-map-after");
 
     // Database agrees.
@@ -348,10 +356,16 @@ await (async () => {
     await page.getByRole("heading", { name: "Ready for you" }).filter({ visible: true }).waitFor();
     check((await page.locator("section[aria-labelledby=review]:visible").count()) === 0, "nothing left to review on the map");
 
-    // A forged refresher link must not open a locked concept.
-    await page.goto(BASE + "/learn/complex-numbers/division?from=argand-plane");
-    await page.getByText(/builds on earlier ones you haven.t mastered yet/).waitFor();
-    ok("forged ?from= cannot unlock Division");
+    if (GATE) {
+      // A forged refresher link must not open a locked concept.
+      await page.goto(BASE + "/learn/complex-numbers/division?from=argand-plane");
+      await page.getByText(/builds on earlier ones you haven.t mastered yet/).waitFor();
+      ok("forged ?from= cannot unlock Division");
+    } else {
+      await page.goto(BASE + "/learn/complex-numbers/division");
+      await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
+      ok("gate off: Division opens directly, prerequisites not mastered");
+    }
 
     // ---- Figures and step-by-step solutions (pilot concept: Argand plane, C10) ----
     await page.goto(BASE + "/learn/complex-numbers");
