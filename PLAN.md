@@ -348,6 +348,8 @@ password is never stored in the repo.
   the proxy guards `/teach` and `/admin`; a slim header with the area
   switcher; empty `/teach` and `/admin`; `npm run user:create`; staff always
   open every concept.
+  **Status (2026-10-14):** built and checked; pending your review and
+  merge. Your superadmin login exists (connect.lwspune@gmail.com).
 - **R2:** `create_academy()`, `can_create_person()` (superadmin: anyone;
   academy admin: teachers and students; teacher: students), staff paste a
   list, passwords shown once, an existing email is never touched.
