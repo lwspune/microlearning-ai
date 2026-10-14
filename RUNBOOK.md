@@ -159,6 +159,20 @@ Guests are anonymous logins with no profile.
    labels by hand after one look at the figure sheet: automatic placement
    (85% along the line, or the middle of its visible part) kept landing on
    another line or the axis numbers.
+5e. **Whole-concept agents (Std XI, a whole chapter at once):** one agent per
+   concept does steps 1–5d itself, from
+   [verify/agent-brief-concept.md](verify/agent-brief-concept.md) plus that
+   concept's scope, book refs (a pool, not a quota) and neighbours. Its files:
+   `verify/models/<pkg>/cNN.py` (the chapter's models package lazy-loads one
+   module per concept), its scratch `cNN_spec.py`/`cNN_content.py`, and the
+   built concept file. It checks itself with
+   `node scripts/check-concept.ts <chapter-slug> <concept-file.ts>` (validator
+   and sympy on that concept alone). At most 20 agents run at once; queue the
+   rest. Venn diagrams and number lines come from `venn()` and `number_line()`
+   in `verify/figures.py` (`note=` puts a caption top centre, clear of the
+   set names). Then read every concept through with
+   `node scripts/review-text.ts <concept-file.ts>...` (keys and distractors
+   by hand) and look at its figure sheet before registering.
 6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
    concept imports and `concepts: [...]` in the chapter's `index.ts` (its
    title, group and subject stay as written); the chapter test fails if any
@@ -195,7 +209,7 @@ Guests are anonymous logins with no profile.
 6. **Definition of done:**
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
-   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103` and `npm run e2e:performance -- http://localhost:3103`
+   - Production check (first stop anything still listening on 3103, *before* building: a leftover server keeps serving its old build, and it also writes its not-found answers for new pages into the new build's `.next/server/route-cache`, so a fresh server then returns 404 for them until you rebuild): `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103` and `npm run e2e:performance -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
      **Save it in the project:** `screenshots/<date>-<topic>/before-after.png`, raw shots in subfolders beside it (point `SHOTS` there). Never only in a temp folder. `screenshots/` is git-ignored.
    - Leave no test data behind (check `auth.users` and `attempts`).
