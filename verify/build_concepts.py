@@ -1,8 +1,9 @@
 """Assembles concept files from authored content plus drafted items.
 
 Usage: python verify/build_concepts.py <content.py> <items.ts>
-  content.py defines CONCEPTS (see below); items.ts is draft_items.py output.
-Writes src/content/chapters/complex-numbers/concepts/<file>.ts for each concept,
+  content.py defines CHAPTER (the chapter slug, e.g. "linear-programming") and
+  CONCEPTS (see below); items.ts is draft_items.py output.
+Writes src/content/chapters/<CHAPTER>/concepts/<file>.ts for each concept,
 with status "draft". Review, then run the normal checks (npm test,
 npm run content:verify) before registering the concept in index.ts.
 
@@ -24,7 +25,15 @@ from pathlib import Path
 from add_solutions import add_to_concept
 from ts_literal import t
 
-OUT = Path("src/content/chapters/complex-numbers/concepts")
+CHAPTERS = Path("src/content/chapters")
+
+
+def out_dir(content) -> Path:
+    """The concepts folder of the chapter the content names."""
+    slug = getattr(content, "CHAPTER", "").replace("_", "-")  # draft_items specs say "linear_programming"
+    assert slug, 'content.py must set CHAPTER, e.g. CHAPTER = "linear-programming"'
+    assert (CHAPTERS / slug / "graph.ts").is_file(), f"no chapter {slug} (add its graph first)"
+    return CHAPTERS / slug / "concepts"
 
 
 def q(s: str) -> str:
@@ -109,9 +118,11 @@ if __name__ == "__main__":
     spec = importlib.util.spec_from_file_location("content", sys.argv[1])
     content = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(content)
+    out = out_dir(content)
+    out.mkdir(exist_ok=True)
     items = items_by_concept(Path(sys.argv[2]).read_text(encoding="utf-8"))
     for c in content.CONCEPTS:
         assert c["id"] in items, f"no items for {c['id']}"
-        path = OUT / f"{c['file']}.ts"
+        path = out / f"{c['file']}.ts"
         path.write_text(build(c, items[c["id"]]), encoding="utf-8", newline="\n")
         print("wrote", path, f"({len(items[c['id']])} items)")
