@@ -1,4 +1,4 @@
-import type { Chapter, ConceptId, GroupId, SubjectId } from "./types.ts";
+import type { Chapter, ConceptId, GroupId, Standard, SubjectId } from "./types.ts";
 
 /**
  * The course catalog: group → course → chapters (PLAN.md "Courses").
@@ -114,6 +114,13 @@ export const courses: Course[] = [
   { slug: "capf", title: "CAPF", short: "CAPF", group: "graduate", tagline: "UPSC CAPF (AC), General Ability", chapters: [] },
 ];
 
+/** A course's chapters grouped by school year: 11th, then 12th, then any without one; course order within each. */
+export function byStandard<T extends { standard?: Standard }>(list: T[]): { standard?: Standard; chapters: T[] }[] {
+  return ([11, 12, undefined] as const)
+    .map((standard) => ({ standard, chapters: list.filter((c) => c.standard === standard) }))
+    .filter((g) => g.chapters.length > 0);
+}
+
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 /** Structural checks on the catalog; [] = valid. */
@@ -138,6 +145,9 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
       }
       if (chapter.group !== course.group) {
         errors.push(`${course.slug}: chapter ${chapter.slug} belongs to the ${chapter.group} pool, not ${course.group}`);
+      }
+      if (chapter.group === "school" && chapter.standard === undefined) {
+        errors.push(`${course.slug}: chapter ${chapter.slug} needs a standard (11 or 12)`);
       }
       if (entry.coverage) errors.push(...validateCoverage(`${course.slug}/${chapter.slug}`, entry.coverage, chapter));
     }

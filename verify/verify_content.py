@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from itertools import combinations
 
-from sympy import I, Poly, Rational, Symbol, simplify, sqrt, symbols, sympify
+from sympy import I, FiniteSet, MatrixBase, Poly, Rational, S, Set, Symbol, Tuple, simplify, sqrt, symbols, sympify
 
 X, Y = symbols("x y", real=True)
 _LOCALS = {"I": I, "x": X, "y": Y}
@@ -28,8 +28,33 @@ def _true_value(e):
     return e.subs(OMEGA, OMEGA_VALUE) if hasattr(e, "subs") else e
 
 
+def _structured(e):
+    """Python containers from sympify (`{1, 2}`, `{}`, `(1, 2)`) as sympy objects."""
+    if isinstance(e, (set, frozenset)):
+        return FiniteSet(*e)
+    if isinstance(e, dict) and not e:
+        return S.EmptySet
+    if isinstance(e, (tuple, list)):
+        return Tuple(*e)
+    return e
+
+
 def _same_value(a, b):
-    a, b = _true_value(a), _true_value(b)
+    """Numbers by value; sets as sets; matrices and tuples entry by entry."""
+    a, b = _structured(_true_value(_structured(a))), _structured(_true_value(_structured(b)))
+    if isinstance(a, Set) or isinstance(b, Set):
+        if not (isinstance(a, Set) and isinstance(b, Set)):
+            return False
+        a, b = a.simplify() if isinstance(a, FiniteSet) else a, b.simplify() if isinstance(b, FiniteSet) else b
+        return a.symmetric_difference(b) == S.EmptySet
+    if isinstance(a, MatrixBase) or isinstance(b, MatrixBase):
+        return isinstance(a, MatrixBase) and isinstance(b, MatrixBase) and a.shape == b.shape and all(
+            _same_value(x, y) for x, y in zip(a, b)
+        )
+    if isinstance(a, Tuple) or isinstance(b, Tuple):
+        return isinstance(a, Tuple) and isinstance(b, Tuple) and len(a) == len(b) and all(
+            _same_value(x, y) for x, y in zip(a, b)
+        )
     return simplify(a - b) == 0
 
 

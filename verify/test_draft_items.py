@@ -20,6 +20,21 @@ class OptionText(unittest.TestCase):
     def test_intercepts_writes_both_axis_points(self):
         self.assertEqual(option_text(15 + 20 * I, "intercepts"), "$(15, 0)$ and $(0, 20)$")
 
+    def test_tuples_print_as_plain_pairs(self):
+        from sympy import Tuple, sqrt
+
+        self.assertEqual(option_text(Tuple(1, sqrt(2)), None), r"$(1, \sqrt{2})$")
+
+    def test_sets_and_matrices_use_their_latex(self):
+        from sympy import FiniteSet, Matrix
+
+        self.assertEqual(option_text(FiniteSet(1, 2), None), r"$\left\{1, 2\right\}$")
+        self.assertEqual(option_text(Matrix([[1, 2]]), None), r"$\left[\begin{matrix}1 & 2\end{matrix}\right]$")
+
+    def test_deg_writes_a_degree_sign(self):
+        self.assertEqual(option_text(Rational(45, 2), "deg"), r"$\frac{45}{2}^\circ$")
+        self.assertEqual(option_text(120, "deg"), r"$120^\circ$")
+
     def test_quadrant_is_unchanged(self):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 

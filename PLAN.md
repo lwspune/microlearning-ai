@@ -542,3 +542,47 @@ Choices to check: C04-M4 ("a ≥ and a ≤ always contradict") is the least
 certain misconception; C03 items are "how many of these points" counts,
 because a misconception whose region contains the true one can't be caught
 by a "which point" question.
+
+## Std XI Maths, Maharashtra State Board (approved 2026-10-14)
+
+Goal: the whole Balbharati Std XI Maths book (Part 1 and Part 2, 18
+chapters) in the MH Board course, end to end, built autonomously.
+Complex Numbers already exists; the other 17 chapters are new
+(estimate ~175 concepts, ~900 items).
+
+**Sources.** The textbooks: `C:\Vilas\LWS_Pune\NDA_Subjects_Content\Subjects\Maths\State_Board\11th\Maths`
+(chapter PDFs). PYQ Vault's `mh-sb-11` exam has the whole book transcribed
+(2,941 questions, worked solutions, a book-section `subtopic` on each):
+`Question_Bank/scripts/mh-sb-11/data/<chapter>-11.questions.json`. The PDF
+text layer drops surds and fractions, so maths is read from PYQ Vault's
+LaTeX or from the page images, never from extracted text (RUNBOOK 6).
+
+**Owner's decisions (2026-10-14):**
+1. Concept graphs: **I approve them myself** (no owner checkpoint). Each is
+   locked against the book's sections and PYQ Vault's subtopics before any
+   content is written.
+2. Publishing: **I publish (seed) and merge each wave myself** once every
+   gate passes (validator, sympy verifier, my read-through, figure sheets,
+   Definition of done). The owner reviews live.
+3. Items are based on the book's own exercises, turned into 4-option
+   questions; keys are still re-derived by the verifier (the book has
+   misprints). Source: `{ kind: "pyqvault-practice", ref: "mh-sb-11/<chapter>/<book ref>" }`.
+4. Mathematical induction is **left out** (Part 2 Ch.4 is built as
+   Binomial Theorem only).
+5. The MH Board course page lists chapters in **Std XI and Std XII**
+   sections.
+6. **MH Board only** for now; the other courses' coverage of these chapters
+   is a later pass. Each new chapter covers its whole book chapter, so it
+   needs no coverage list.
+
+**Waves** (a branch each; content written one agent per concept):
+
+| Wave | Chapters |
+|---|---|
+| 0. Tooling | verifier compares sets, intervals, matrices and tuples; figure `curve` element and an axis-free mode (Venn diagrams); Std XI / XII on chapters and the course page |
+| 1. Algebra | Sets and Relations · Sequences and Series · Permutations and Combinations · Binomial Theorem · Determinants and Matrices |
+| 2. Trigonometry | Angle and its Measurement · Trigonometry I · Trigonometry II |
+| 3. Coordinate geometry | Straight Line · Circle · Conic Sections |
+| 4. Statistics and probability | Measures of Dispersion · Probability |
+| 5. Calculus | Functions · Limits · Continuity · Differentiation |
+| Extra | Complex Numbers: settle the MH Board "unsure" cells against the book |

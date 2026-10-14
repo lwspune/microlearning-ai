@@ -120,6 +120,12 @@ export type FigureElement = {
    * centre ± a along that axis; `b` is the other semi-axis.
    */
   | { kind: "hyperbola"; centre: Pt; a: number; b: number; axis: "x" | "y"; branch: 1 | -1; dashed?: boolean }
+  /**
+   * A polyline through `points`, clipped to the view: a function's graph, a
+   * parabola. The author's helper computes the points (enough to look smooth).
+   * Mark open or closed ends with `point` elements.
+   */
+  | { kind: "curve"; points: Pt[]; dashed?: boolean }
   /** Angles in degrees, anticlockwise from `from` to `to`. */
   | { kind: "arc"; centre: Pt; r: number; from: number; to: number }
   /** A small arc marking an angle at `at`, anticlockwise from `from` to `to` degrees. */
@@ -134,8 +140,11 @@ export type FigureElement = {
 export type Figure = {
   /** Read by screen readers in place of the picture: what it shows, in words. */
   alt: string;
-  /** "argand" (default): Re and Im, imaginary ticks. "xy": x and y, plain numbers. */
-  axes?: "argand" | "xy";
+  /**
+   * "argand" (default): Re and Im, imaginary ticks. "xy": x and y, plain numbers.
+   * "none": no axes or grid (Venn diagrams).
+   */
+  axes?: "argand" | "xy" | "none";
   /** The visible window: real parts from x[0] to x[1], imaginary parts from y[0] to y[1]. */
   view: { x: [number, number]; y: [number, number] };
   elements: FigureElement[];
@@ -192,12 +201,16 @@ export type GroupId = "school" | "graduate";
 
 export type SubjectId = "maths";
 
+export type Standard = 11 | 12;
+
 export type Chapter = {
   slug: string;
   title: string;
   /** The pool this chapter's concepts belong to; courses of other groups can't use it. */
   group: GroupId;
   subject: SubjectId;
+  /** The school year it's taught in (11th or 12th); course pages group chapters by it. */
+  standard?: Standard;
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */
   concepts: Concept[];

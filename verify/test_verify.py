@@ -180,3 +180,41 @@ class PredicateLoci(unittest.TestCase):
     def test_polynomial_loci_still_work(self):
         from verify_content import X, _expr, _on_locus
         self.assertTrue(_on_locus(_expr("2"), X - 2))
+
+
+class StructuredValues(unittest.TestCase):
+    """Std XI answers that aren't numbers: sets, intervals, matrices, tuples."""
+
+    def same(self, a, b):
+        from sympy import sympify
+        from verify_content import _same_value
+
+        return _same_value(sympify(a), sympify(b))
+
+    def test_sets_compare_as_sets(self):
+        self.assertTrue(self.same("{1, 2, 3}", "{3, 2, 1}"))
+        self.assertTrue(self.same("{1/2, sqrt(4)}", "{2, 1/2}"))
+        self.assertFalse(self.same("{1, 2}", "{1, 2, 3}"))
+        self.assertTrue(self.same("EmptySet", "{}"))
+        self.assertFalse(self.same("EmptySet", "{0}"))
+
+    def test_intervals_compare_by_ends_and_brackets(self):
+        self.assertTrue(self.same("Interval(1, 2)", "Interval(1, 2)"))
+        self.assertFalse(self.same("Interval(1, 2)", "Interval.open(1, 2)"))
+        self.assertTrue(self.same("Union(Interval(-oo, 1), Interval(3, oo))", "Union(Interval(3, oo), Interval(-oo, 1))"))
+        self.assertFalse(self.same("Interval(1, 2)", "{1, 2}"))
+
+    def test_matrices_compare_entrywise(self):
+        self.assertTrue(self.same("Matrix([[1, 2], [3, 4]])", "Matrix([[1, 4/2], [3, 4]])"))
+        self.assertFalse(self.same("Matrix([[1, 2], [3, 4]])", "Matrix([[1, 3], [2, 4]])"))
+        self.assertFalse(self.same("Matrix([[1, 2]])", "Matrix([[1], [2]])"))
+        self.assertFalse(self.same("Matrix([[1, 2], [3, 4]])", "10"))
+
+    def test_tuples_compare_in_order(self):
+        self.assertTrue(self.same("(1, sqrt(4))", "(1, 2)"))
+        self.assertFalse(self.same("(1, 2)", "(2, 1)"))
+        self.assertFalse(self.same("(1, 2)", "(1, 2, 3)"))
+
+    def test_numbers_still_compare_by_value(self):
+        self.assertTrue(self.same("sqrt(8)", "2*sqrt(2)"))
+        self.assertFalse(self.same("1", "{1}"))
