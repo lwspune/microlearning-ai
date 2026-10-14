@@ -2,8 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
 /**
- * Refreshes the Supabase session before /learn pages render, so Server
- * Components see a valid token (they can't write cookies themselves).
+ * Refreshes the Supabase session before pages render, so Server Components
+ * see a valid token (they can't write cookies themselves); every page's header
+ * shows who is signed in. Authorization is not decided here: the /teach and
+ * /admin layouts check the role (src/server/viewer.ts requireAreaAt), and row
+ * level security sits under that.
  * Self-contained by design: Proxy must not depend on shared app modules.
  */
 export async function proxy(request: NextRequest) {
@@ -28,5 +31,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/learn/:path*"],
+  // Every page, not static files, images or the PWA icons and manifest.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)"],
 };

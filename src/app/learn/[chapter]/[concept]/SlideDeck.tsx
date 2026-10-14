@@ -159,7 +159,7 @@ export function SlideDeck({
       ref={stageRef}
       aria-roledescription="carousel"
       aria-label={`${session.title} lesson`}
-      className={`${card} flex h-[calc(100dvh-8.5rem)] min-h-[26rem] flex-col overflow-hidden md:h-[min(calc(100dvh-10rem),48rem)]`}
+      className={`${card} flex h-[calc(100dvh-11.5rem)] min-h-[26rem] flex-col overflow-hidden md:h-[min(calc(100dvh-13rem),48rem)]`}
       onPointerDown={(e) => {
         if (e.pointerType !== "mouse") swipeStart.current = { x: e.clientX, y: e.clientY };
       }}

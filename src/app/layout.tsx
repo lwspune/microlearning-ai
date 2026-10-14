@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "katex/dist/katex.min.css";
+import { SiteHeader, SiteHeaderFallback } from "@/components/SiteHeader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,7 +37,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        <Suspense fallback={<SiteHeaderFallback />}>
+          <SiteHeader />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }
