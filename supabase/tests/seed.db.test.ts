@@ -107,6 +107,12 @@ describe("seed_chapter", () => {
     await expect(rolledBack(seed(p))).rejects.toThrow(/items_solution_shape/);
   });
 
+  it("rejects an item with no solution", async () => {
+    const p = payload();
+    (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = null;
+    await expect(rolledBack(seed(p))).rejects.toThrow(/null value in column "solution" of relation "items"/);
+  });
+
   it("rejects a solution whose steps are not text", async () => {
     const p = payload();
     (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = { steps: ["one", 2] };

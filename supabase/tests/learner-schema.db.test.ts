@@ -16,7 +16,7 @@ insert into concepts (chapter_id, code, slug, title, one_liner, grp, tier)
   select id, 'C01', 'c01', 'C01', '', 'g', 'core' from chapters where slug = 't';
 insert into misconceptions (concept_id, code, mistake, remediation, fallback_kind)
   select ${T_C01}, 'C01-M1', 'm', 'r', 'none';
-insert into items (concept_id, code, stem, source, verify) select ${T_C01}, 'C01-Q1', 's', '{}', '{}';
+insert into items (concept_id, code, stem, source, verify, solution) select ${T_C01}, 'C01-Q1', 's', '{}', '{}', '{"steps":["a","b"]}';
 insert into item_options (item_id, key, text, is_correct, misconception_id, value)
   select ${T_ITEM}, 'A', 'a', true, null, 'a'
   union all select ${T_ITEM}, 'B', 'b', false, (select id from misconceptions where concept_id = ${T_C01}), 'b';

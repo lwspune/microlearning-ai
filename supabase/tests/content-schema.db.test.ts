@@ -37,7 +37,7 @@ function itemWithOptions(options: string) {
 ${misconception("C03-M1", "C03", `'concept', ${concept("C02")}, null`)}
 ${misconception("C03-M2", "C03", `'concept', ${concept("C01")}, null`)}
 ${misconception("C03-M3", "C03", `'none', null, null`)}
-insert into items (concept_id, code, stem, source, verify) values (${concept("C03")}, 'C03-Q1', 's', '{"kind":"authored"}', '{}');
+insert into items (concept_id, code, stem, source, verify, solution) values (${concept("C03")}, 'C03-Q1', 's', '{"kind":"authored"}', '{}', '{"steps":["a","b"]}');
 insert into item_options (item_id, key, text, is_correct, misconception_id, value)
   select i.id, o.key, o.key, o.is_correct, m.id, o.key
   from items i
@@ -116,7 +116,7 @@ describe("content schema", () => {
     it("rejects an item with no options", async () => {
       await expect(
         rolledBack(
-          FIXTURE + `insert into items (concept_id, code, stem, source, verify) values (${concept("C03")}, 'C03-Q1', 's', '{}', '{}');`,
+          FIXTURE + `insert into items (concept_id, code, stem, source, verify, solution) values (${concept("C03")}, 'C03-Q1', 's', '{}', '{}', '{"steps":["a","b"]}');`,
         ),
       ).rejects.toThrow(/needs exactly one correct option/);
     });
