@@ -3,14 +3,13 @@
  * Usage: node scripts/export-content.ts <outDir>   (prints one path per chapter)
  */
 import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { chapters } from "../src/content/chapters/index.ts";
+import type { Chapter } from "../src/content/types.ts";
 
-const outDir = process.argv[2] ?? ".content";
-mkdirSync(outDir, { recursive: true });
-
-for (const chapter of chapters) {
-  const path = join(outDir, `${chapter.slug}.json`);
+/** The parts of a chapter the verifier reads. */
+export function exportChapter(chapter: Chapter) {
   const concepts = chapter.concepts.map((c) => ({
     id: c.id,
     items: c.items.map((item) => ({
@@ -24,6 +23,15 @@ for (const chapter of chapters) {
       })),
     })),
   }));
-  writeFileSync(path, JSON.stringify({ chapter: chapter.slug, concepts }, null, 2));
-  console.log(path);
+  return { chapter: chapter.slug, concepts };
+}
+
+if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
+  const outDir = process.argv[2] ?? ".content";
+  mkdirSync(outDir, { recursive: true });
+  for (const chapter of chapters) {
+    const path = join(outDir, `${chapter.slug}.json`);
+    writeFileSync(path, JSON.stringify(exportChapter(chapter), null, 2));
+    console.log(path);
+  }
 }
