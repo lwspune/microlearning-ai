@@ -173,4 +173,5 @@ def draft(spec_path: str) -> str:
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")  # figure labels use Unicode (−, ≤); Windows pipes default to cp1252
     print(draft(sys.argv[1]))
