@@ -508,7 +508,9 @@ Source: PYQ Vault MHT-CET notes (`mht-cet-maths/linear-programming`, 14
   seeding: Graphing (C01–C05); Reading figures + Optimising (C06–C11);
   Word problems (C12–C13). Seeding waits for the first approved batch.
 
-**Status (2026-10-15): the whole chapter is built as drafts.** All 13 concepts,
+**Published 2026-10-15** (approved by you): 13 concepts and the MH Board, CBSE and MHT-CET coverage are approved and seeded (71 items); smoke passes on every route. Pending your merge of `lpp`.
+
+**Status before publishing: the whole chapter was built as drafts.** All 13 concepts,
 71 items, 0 verifier problems; every figure checked in light and dark.
 New along the way (approved by you): **questions can show a figure** with
 their stem (C06, C07, C08-Q4 read a shaded region, as in the exam), with a
