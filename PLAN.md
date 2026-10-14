@@ -276,6 +276,46 @@ as guest" per browser). Set it back to `true` to restore the unlock rule.
 - Open questions: phones in class? teacher sign-in (Google or email link)?
   single teachers or schools with an admin?
 
+## Courses and the animated homepage (approved 2026-10-14, branch `courses-home`)
+
+**Structure:** group → course → subject → chapter → concept.
+- **Two groups, mutually exclusive:** *11th + 12th* (Maharashtra Board,
+  CBSE, MHT-CET, JEE Main, NDA) and *Graduates* (CDS, AFCAT, CAPF). Every
+  course belongs to exactly one group; a student picks their group once and
+  only sees its courses (a cookie now, the profile once roles exist).
+- **One concept pool per group.** A chapter belongs to one group and one
+  subject (everything so far is Maths). Each course covers a subset of its
+  group's concepts. Mastery is per concept, so a concept mastered once counts
+  in every course of the group that covers it. Pools never share concepts
+  across groups.
+- **Unique concepts** are the ones exactly one course covers, worked out from
+  the coverage data, not flagged by hand.
+- **Coverage is verified with you.** Each course's concept list is `draft`
+  until you approve it on `/review/courses` (concepts × courses grid, doubtful
+  cells marked). Until then the course shows the whole chapter; you confirmed
+  the chapter-level mapping (Complex Numbers is in all five 11th + 12th
+  courses).
+- **Routes:** `/courses/[course]` (chapters by subject, progress from the
+  shared pool), `/courses/[course]/[chapter]` (the chapter map limited to the
+  course). Concept pages stay `/learn/[chapter]/[concept]`; a validated
+  `?course=` brings the student back to the right course map.
+- **Unlock per course:** a prerequisite the course doesn't cover counts as
+  known, like an unpublished one.
+- No database change: the catalog is content in `src/content/courses.ts`;
+  courses move into the database when enrolment or classes need them.
+
+**Homepage:** the hero draws the real Complex Numbers concept graph behind
+the Argand card (prerequisite edges draw in, a light travels from C01 to the
+deepest concept), the headline rises word by word, a group switch
+(11th + 12th / Graduates) with a sliding indicator, course cards that rise in
+on scroll with a cursor spotlight, and a "How it works" line that draws as
+you scroll. CSS + SVG only, no new package; reduced motion shows the finished,
+still page.
+
+**Next (Phase 2, own branch):** roles as in CrackSSB: `student`, `teacher`,
+`academy_admin`, `superadmin`; layered areas; academies and classes; staff
+create logins; teachers replace the global `MASTERY_GATE`.
+
 ## Backfill ledger
 
 ### 1. The correct answer is always option A (logged 2026-10-13, done 2026-10-13: option a)
