@@ -21,6 +21,7 @@
     "e2e": "node e2e/golden-path.ts",
     "e2e:roles": "node e2e/roles.ts",
     "e2e:people": "node e2e/people.ts",
+    "e2e:performance": "node e2e/performance.ts",
     "user:create": "node scripts/user-create.ts"
   },
   "dependencies": {

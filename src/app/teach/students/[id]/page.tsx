@@ -75,7 +75,7 @@ async function StudentContent({ params }: { params: PageProps<"/teach/students/[
                     <RichInline text={m.mistake} />
                   </span>
                   <span className="mt-0.5 block text-sm text-muted">
-                    In {m.concept} · last {m.last}
+                    In {m.concept} · {m.last}
                   </span>
                 </span>
               </li>
