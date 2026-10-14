@@ -8,7 +8,7 @@ import { daysUntil } from "@/engine/review";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
-import { SolutionReveal } from "./SolutionReveal";
+import { SolutionPanel, SolutionToggle } from "./SolutionReveal";
 import { FigureFrame } from "@/figures/FigureFrame";
 import { FigureView } from "@/figures/FigureView";
 import { CheckIcon } from "@/components/icons";
@@ -65,6 +65,7 @@ export function QuestionPanel({
   refresher,
   initialQuestion,
   progress,
+  nextConcept,
   onReread,
 }: {
   title: string;
@@ -78,6 +79,8 @@ export function QuestionPanel({
   refresher: RefresherInfo | null;
   initialQuestion: Question;
   progress: Progress;
+  /** "Next concept" on the mastery screen; null when nothing open is left. */
+  nextConcept: { href: string; title: string } | null;
   onReread: () => void;
 }) {
   const [question, setQuestion] = useState<Question>(initialQuestion);
@@ -93,6 +96,8 @@ export function QuestionPanel({
   const [reviewOutcome, setReviewOutcome] = useState<{ passed: boolean; inDays: number } | null>(null);
   const [pending, startTransition] = useTransition();
   const groupId = useId();
+  const solutionId = useId();
+  const [solutionOpen, setSolutionOpen] = useState(false);
   const feedbackRef = useRef<HTMLDivElement>(null);
 
   // On small screens the feedback and Next button can sit below the fold of the slide.
@@ -133,6 +138,7 @@ export function QuestionPanel({
     setQuestion(result.next);
     setSelected(null);
     setResult(null);
+    setSolutionOpen(false);
     setCelebrate(false);
   }
 
@@ -148,7 +154,12 @@ export function QuestionPanel({
           You answered {progress.needed} different questions in a row correctly. {title} is mastered.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Link href={refresher?.href ?? mapHref} className={primaryButton}>
+          {nextConcept && !refresher && (
+            <Link href={nextConcept.href} className={primaryButton}>
+              Next concept: {nextConcept.title} →
+            </Link>
+          )}
+          <Link href={refresher?.href ?? mapHref} className={nextConcept && !refresher ? secondaryButton : primaryButton}>
             {refresher ? `Back to ${refresher.title} →` : "Back to the chapter"}
           </Link>
           <button type="button" className={secondaryButton} onClick={nextQuestion}>
@@ -308,9 +319,10 @@ export function QuestionPanel({
         <button type="button" className={secondaryButton} onClick={onReread}>
           Read the explanation again
         </button>
+        {result?.solution && <SolutionToggle open={solutionOpen} panelId={solutionId} onToggle={() => setSolutionOpen((o) => !o)} />}
       </div>
       {/* Below the buttons, so opening it never pushes "Next question" out of reach. */}
-      {result?.solution && <SolutionReveal key={question.itemId} solution={result.solution} />}
+      {result?.solution && solutionOpen && <SolutionPanel key={question.itemId} solution={result.solution} panelId={solutionId} />}
     </div>
   );
 }
