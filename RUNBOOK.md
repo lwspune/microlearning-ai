@@ -71,6 +71,19 @@ Guests are anonymous logins with no profile.
    own profile; staff their academy's people; the superadmin everyone. Nobody
    signed in writes `profiles` or `academies`.
 4. Staff always open every concept (`gateFor`); students follow `MASTERY_GATE`.
+5. **Academies and people (in the app):** the superadmin creates academies on
+   `/admin` and adds anyone on an academy's page; staff add people on
+   `/teach/people`. The database decides who may create whom
+   (`can_create_person`, `create_academy`), called **as the signed-in user**
+   before any service-role write (`src/server/people.ts`). Passwords are
+   generated and shown once; an existing login is never touched.
+6. **Usernames** (students without email): the login is
+   `<username>@students.microlearning.invalid`, enforced by the database
+   (`profiles_username_login`); the sign-in box takes an email or a username.
+   Password resets are a later feature (PLAN.md).
+7. The advisor warns that `create_academy` and `can_create_person` are
+   security-definer functions signed-in users can run: intended, they are the
+   API and check the caller themselves.
 
 ## 3. Adding a concept (the content loop)
 
@@ -142,7 +155,7 @@ Guests are anonymous logins with no profile.
 6. **Definition of done:**
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
-   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103`
+   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
    - Leave no test data behind (check `auth.users` and `attempts`).
 7. Show the user, then **merge** (`git merge --ff-only`) and delete the branch.
