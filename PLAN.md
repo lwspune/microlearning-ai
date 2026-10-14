@@ -313,10 +313,10 @@ are in `backfill.ts`.
 (`verify/add_solutions.py`, `build_concepts.py` emits figures and
 solutions). Batches 1–3 (Algebra, Geometry & polar, Roots): approved and
 seeded. Batch 4, Loci C25–C30 (with new `ellipse` and `hyperbola` figure
-elements): written, pending your review on `/review`. `backfill.ts` is gone
-and `Item.solution` is required. After approval: seed batch 4, then push
-migration `20261014160000_item_solution_required` (NOT NULL) and run
-`npm run test:db` and `npm run db:types`.
+elements): approved and seeded. `backfill.ts` is gone, `Item.solution` is
+required, and `items.solution` is NOT NULL (migration
+`20261014160000_item_solution_required`, applied). Merge checks passed;
+pending your go-ahead to merge.
 
 ## Premium look and feel (branch `premium-ui`, 2026-10-14)
 
