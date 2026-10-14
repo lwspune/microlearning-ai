@@ -81,7 +81,14 @@ Guests are anonymous logins with no profile.
    `<username>@students.microlearning.invalid`, enforced by the database
    (`profiles_username_login`); the sign-in box takes an email or a username.
    Password resets are a later feature (PLAN.md).
-7. The advisor warns that `create_academy` and `can_create_person` are
+7. **Student performance** (`/teach/students`): staff read learner data under
+   row level security (`private.can_view_person`: own academy's students; the
+   superadmin everyone). Summaries come from the `security_invoker` views
+   `learner_summary` and `learner_mistakes`; read them as the viewer
+   (`src/server/performance.ts`), never with the service role. Clock-based
+   labels ("3 days ago") are made in server functions, not in a component
+   (React's purity lint forbids `Date.now()` in render).
+8. The advisor warns that `create_academy` and `can_create_person` are
    security-definer functions signed-in users can run: intended, they are the
    API and check the caller themselves.
 
@@ -155,7 +162,7 @@ Guests are anonymous logins with no profile.
 6. **Definition of done:**
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
-   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103`
+   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103` and `npm run e2e:performance -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
      **Save it in the project:** `screenshots/<date>-<topic>/before-after.png`, raw shots in subfolders beside it (point `SHOTS` there). Never only in a temp folder. `screenshots/` is git-ignored.
    - Leave no test data behind (check `auth.users` and `attempts`).
