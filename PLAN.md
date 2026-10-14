@@ -483,3 +483,27 @@ cards, feedback panels), solutions, mastery moment, guest and locked screens.
 Behaviour change: mastered concepts leave "Ready for you" and show on the path.
 Not restyled: the internal /review pages (they inherit the new tokens).
 
+
+## Chapter 2: Linear Programming (approved 2026-10-14, branch `lpp`)
+
+Source: PYQ Vault MHT-CET notes (`mht-cet-maths/linear-programming`, 14
+`cetlpp-*` concepts with traps). Graph approved as proposed: 13 concepts,
+15 edges, in four groups (`src/content/chapters/linear-programming/graph.ts`).
+
+| Group | Concepts |
+|---|---|
+| Graphing | C01 line from intercepts · C02 half-plane test · C03 feasible region · C04 bounded/unbounded/empty · C05 corner points |
+| Reading figures | C06 ≥ or ≤ from the shading · C07 the system behind a figure |
+| Optimising | C08 corner-point method · C09 minimum, negatives, max − min · C10 optimum over an unbounded region (NCERT) · C11 infinitely many optima |
+| Word problems | C12 formulating an LPP · C13 solving end to end |
+
+- **Step 1 (done):** graph + chapter test; registered; draft coverage in
+  MH Board, CBSE and MHT-CET (unsure: C10 for MH Board and MHT-CET; C12–C13
+  for CBSE, whose rationalised syllabus may have dropped the LPP types). Not
+  in JEE Main (dropped in 2024) or NDA. You check it on `/review/courses`.
+- **Step 2:** an x/y axis option on `Figure` (Argand stays the default);
+  `build_concepts.py` and `build_index.py` take the chapter;
+  `verify/models/linear_programming.py` keys by exact corner enumeration.
+- **Step 3:** content in three batches, each reviewed on `/review` before
+  seeding: Graphing (C01–C05); Reading figures + Optimising (C06–C11);
+  Word problems (C12–C13). Seeding waits for the first approved batch.
