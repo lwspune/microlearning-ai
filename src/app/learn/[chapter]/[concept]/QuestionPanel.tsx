@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { RenderedInlineNodes, RenderedRichText } from "@/components/RenderedRichText";
+import { withCourse } from "@/content/courses";
 import { daysUntil } from "@/engine/review";
 import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
@@ -56,6 +57,8 @@ function Sparks() {
 export function QuestionPanel({
   title,
   chapterHref,
+  mapHref,
+  course,
   conceptSlug,
   refresher,
   initialQuestion,
@@ -63,7 +66,12 @@ export function QuestionPanel({
   onReread,
 }: {
   title: string;
+  /** Base of concept links: /learn/<chapter>. */
   chapterHref: string;
+  /** Where "Back to the chapter" goes: the chapter map, or the course's view of it. */
+  mapHref: string;
+  /** The course the learner came from, kept on refresher links. */
+  course?: string;
   conceptSlug: string;
   refresher: RefresherInfo | null;
   initialQuestion: Question;
@@ -138,7 +146,7 @@ export function QuestionPanel({
           You answered {progress.needed} different questions in a row correctly. {title} is mastered.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Link href={refresher?.href ?? chapterHref} className={primaryButton}>
+          <Link href={refresher?.href ?? mapHref} className={primaryButton}>
             {refresher ? `Back to ${refresher.title} →` : "Back to the chapter"}
           </Link>
           <button type="button" className={secondaryButton} onClick={nextQuestion}>
@@ -246,7 +254,7 @@ export function QuestionPanel({
                 <p>This mistake has come up twice, which usually means a gap in an earlier idea.</p>
                 {result.route.kind === "refresher" ? (
                   <Link
-                    href={`${chapterHref}/${result.route.conceptSlug}?from=${conceptSlug}`}
+                    href={withCourse(`${chapterHref}/${result.route.conceptSlug}?from=${conceptSlug}`, course)}
                     className={`mt-3 inline-block ${primaryButton}`}
                   >
                     Quick refresher: {result.route.title} →
@@ -272,7 +280,7 @@ export function QuestionPanel({
           </>
         ) : result && result.review.done && !refresher ? (
           <>
-            <Link href={chapterHref} className={primaryButton}>
+            <Link href={mapHref} className={primaryButton}>
               Back to the chapter
             </Link>
             <button type="button" className={secondaryButton} onClick={nextQuestion}>

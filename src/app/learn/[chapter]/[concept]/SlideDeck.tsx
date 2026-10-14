@@ -83,11 +83,15 @@ export type RefresherInfo = { title: string; href: string };
 
 export function SlideDeck({
   chapterHref,
+  mapHref,
+  course,
   conceptSlug,
   session,
   refresher,
 }: {
   chapterHref: string;
+  mapHref: string;
+  course?: string;
   conceptSlug: string;
   session: Open;
   /** Set when the learner was sent here to fix a gap in a later concept. */
@@ -222,6 +226,8 @@ export function SlideDeck({
           <QuestionPanel
             title={session.title}
             chapterHref={chapterHref}
+            mapHref={mapHref}
+            course={course}
             conceptSlug={conceptSlug}
             refresher={refresher}
             initialQuestion={session.question}

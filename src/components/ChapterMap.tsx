@@ -4,6 +4,8 @@ import { ArrowRightIcon, CheckIcon, LockIcon, RefreshIcon } from "@/components/i
 import { ProgressRing } from "@/components/ProgressRing";
 import { RenderedInlineNodes } from "@/components/RenderedRichText";
 import { card, eyebrow, linkCard, linkCardShape } from "@/components/ui";
+import { withCourse } from "@/content/courses";
+import type { ConceptId } from "@/content/types";
 import type { ConceptState } from "@/engine/unlock";
 import { currentUserId } from "@/lib/supabase/server";
 import { getChapterMap, type MapConcept } from "@/server/learning";
@@ -55,7 +57,7 @@ function StateLabel({ c }: { c: MapConcept }) {
   return <span className={`shrink-0 text-sm font-medium ${tone}`}>{STATE_LABEL[c.state]}</span>;
 }
 
-function PathRow({ slug, c }: { slug: string; c: MapConcept }) {
+function PathRow({ href, c }: { href: string; c: MapConcept }) {
   const body = (
     <span className="flex items-start justify-between gap-4">
       <span className="min-w-0">
@@ -71,7 +73,7 @@ function PathRow({ slug, c }: { slug: string; c: MapConcept }) {
     <li className="relative pl-6">
       <PathNode state={c.state} />
       {isOpen(c.state) ? (
-        <Link href={`/learn/${slug}/${c.slug}`} className="block rounded-xl px-3 py-3 transition-colors hover:bg-card">
+        <Link href={href} className="block rounded-xl px-3 py-3 transition-colors hover:bg-card">
           {body}
         </Link>
       ) : (
@@ -82,9 +84,9 @@ function PathRow({ slug, c }: { slug: string; c: MapConcept }) {
 }
 
 /** The next thing to do, given pride of place. */
-function FeaturedCard({ slug, c }: { slug: string; c: MapConcept }) {
+function FeaturedCard({ href, c }: { href: string; c: MapConcept }) {
   return (
-    <Link href={`/learn/${slug}/${c.slug}`} className={`${linkCardShape} group border-accent/30 bg-accent-soft p-6 hover:border-accent/60`}>
+    <Link href={href} className={`${linkCardShape} group border-accent/30 bg-accent-soft p-6 hover:border-accent/60`}>
       <span className="block">
         <span className={eyebrow}>{c.state === "learning" ? "Continue where you left off" : "Up next"}</span>
         <span className="mt-2 block font-display text-2xl font-semibold">{c.title}</span>
@@ -99,9 +101,9 @@ function FeaturedCard({ slug, c }: { slug: string; c: MapConcept }) {
   );
 }
 
-function ConceptCard({ slug, c }: { slug: string; c: MapConcept }) {
+function ConceptCard({ href, c }: { href: string; c: MapConcept }) {
   return (
-    <Link href={`/learn/${slug}/${c.slug}`} className={`${linkCard} h-full p-4`}>
+    <Link href={href} className={`${linkCard} h-full p-4`}>
       <span className="flex items-start justify-between gap-3">
         <span className="font-medium">{c.title}</span>
         <StateLabel c={c} />
@@ -113,9 +115,11 @@ function ConceptCard({ slug, c }: { slug: string; c: MapConcept }) {
   );
 }
 
-export async function ChapterMapSection({ slug }: { slug: string }) {
-  const map = await getChapterMap(slug, await currentUserId());
+/** `course`: show only the concepts that course covers, and keep the course on every link. */
+export async function ChapterMapSection({ slug, course }: { slug: string; course?: { slug: string; scope: Set<ConceptId> } }) {
+  const map = await getChapterMap(slug, await currentUserId(), course?.scope);
   if (!map) notFound();
+  const hrefOf = (c: MapConcept) => withCourse(`/learn/${slug}/${c.slug}`, course?.slug);
   const all = map.groups.flatMap((g) => g.concepts);
   const due = all.filter((c) => isOpen(c.state) && c.due);
   // In progress first, then new ones, in chapter order.
@@ -164,7 +168,7 @@ export async function ChapterMapSection({ slug }: { slug: string }) {
               {due.map((c) => (
                 <li key={c.code}>
                   <Link
-                    href={`/learn/${slug}/${c.slug}`}
+                    href={hrefOf(c)}
                     className={`${linkCardShape} flex items-center justify-between gap-3 border-border bg-warning-surface p-4 hover:border-border-strong`}
                   >
                     <span className="font-medium">{c.title}</span>
@@ -188,7 +192,7 @@ export async function ChapterMapSection({ slug }: { slug: string }) {
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {toDo.map((c, i) => (
                 <li key={c.code} className={i === 0 ? "sm:col-span-2" : undefined}>
-                  {i === 0 ? <FeaturedCard slug={slug} c={c} /> : <ConceptCard slug={slug} c={c} />}
+                  {i === 0 ? <FeaturedCard href={hrefOf(c)} c={c} /> : <ConceptCard href={hrefOf(c)} c={c} />}
                 </li>
               ))}
             </ul>
@@ -212,7 +216,7 @@ export async function ChapterMapSection({ slug }: { slug: string }) {
                 </h3>
                 <ol className="mt-3 ml-3 border-l-2 border-border">
                   {g.concepts.map((c) => (
-                    <PathRow key={c.code} slug={slug} c={c} />
+                    <PathRow key={c.code} href={hrefOf(c)} c={c} />
                   ))}
                 </ol>
               </div>

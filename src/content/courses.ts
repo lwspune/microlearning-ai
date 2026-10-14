@@ -188,3 +188,9 @@ export function uniqueConcepts(chapter: Chapter, list: Course[] = courses, opts:
   }
   return unique;
 }
+
+/** `href` with `course=<slug>` added, so the student finds their way back to the course. */
+export function withCourse(href: string, course: string | undefined): string {
+  if (!course) return href;
+  return `${href}${href.includes("?") ? "&" : "?"}course=${encodeURIComponent(course)}`;
+}

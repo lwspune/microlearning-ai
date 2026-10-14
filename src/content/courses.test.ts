@@ -11,6 +11,7 @@ import {
   parseGroup,
   uniqueConcepts,
   validateCatalog,
+  withCourse,
 } from "./courses";
 import type { Chapter, GraphNode } from "./types";
 
@@ -132,6 +133,17 @@ describe("lookups", () => {
     expect(findCourse("jee-main")?.title).toBe("JEE Main");
     expect(findCourse("nope")).toBeNull();
     expect(findCourse(null)).toBeNull();
+  });
+});
+
+describe("withCourse", () => {
+  it("adds the course to a link, keeping any query it already has", () => {
+    expect(withCourse("/learn/ch/a", "jee-main")).toBe("/learn/ch/a?course=jee-main");
+    expect(withCourse("/learn/ch/a?from=b", "jee-main")).toBe("/learn/ch/a?from=b&course=jee-main");
+  });
+
+  it("leaves the link alone without a course", () => {
+    expect(withCourse("/learn/ch/a", undefined)).toBe("/learn/ch/a");
   });
 });
 

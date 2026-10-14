@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import { ArrowLeftIcon, LockIcon } from "@/components/icons";
 import { card, eyebrow, primaryButton } from "@/components/ui";
 import { chapters } from "@/content/chapters";
+import { type Course, coveredIds, findCourse, withCourse } from "@/content/courses";
+import type { Chapter } from "@/content/types";
 import { currentUserId } from "@/lib/supabase/server";
 import { refresherFrom } from "@/lessons/refresher";
 import { getConceptSession } from "@/server/learning";
@@ -25,6 +27,12 @@ export async function generateMetadata({ params }: PageProps<"/learn/[chapter]/[
   return { title: node?.title ?? "Learn" };
 }
 
+/** The course the learner came from (`?course=`), if it's real and includes this chapter. */
+function courseFrom(value: string | string[] | undefined, ch: Chapter): Course | null {
+  const course = findCourse(typeof value === "string" ? value : null);
+  return course?.chapters.some((c) => c.chapter === ch.slug) ? course : null;
+}
+
 async function ConceptSection({
   chapter,
   concept,
@@ -35,14 +43,19 @@ async function ConceptSection({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const sp = await searchParams;
+  const ch = chapters.find((c) => c.slug === chapter)!;
+  const course = courseFrom(sp.course, ch);
   const userId = await currentUserId();
   if (!userId) {
-    return <GuestStart next={`/learn/${chapter}/${concept}`} error={sp.error === "signin"} />;
+    return <GuestStart next={withCourse(`/learn/${chapter}/${concept}`, course?.slug)} error={sp.error === "signin"} />;
   }
 
-  const ch = chapters.find((c) => c.slug === chapter)!;
+  const mapHref = course ? `/courses/${course.slug}/${chapter}` : `/learn/${chapter}`;
   const refresher = typeof sp.from === "string" ? refresherFrom(ch, concept, sp.from) : null;
-  const session = await getConceptSession(chapter, concept, userId, { allowLocked: refresher !== null });
+  const session = await getConceptSession(chapter, concept, userId, {
+    allowLocked: refresher !== null,
+    scope: course ? coveredIds(course, ch) : undefined,
+  });
   if (!session) notFound();
   if (session.kind === "locked") {
     return (
@@ -52,7 +65,7 @@ async function ConceptSection({
         </span>
         <h2 className="mt-4 font-display text-2xl font-semibold">Not unlocked yet</h2>
         <p className="mt-2 text-muted">This concept builds on earlier ones you haven&apos;t mastered yet.</p>
-        <Link href={`/learn/${chapter}`} className={`${primaryButton} mt-6`}>
+        <Link href={mapHref} className={`${primaryButton} mt-6`}>
           Back to the chapter
         </Link>
       </div>
@@ -63,9 +76,11 @@ async function ConceptSection({
       // Next keeps visited pages alive (React Activity); a refresher must not inherit the old slide position.
       key={refresher ? `refresher:${refresher.fromSlug}` : "lesson"}
       chapterHref={`/learn/${chapter}`}
+      mapHref={mapHref}
+      course={course?.slug}
       conceptSlug={concept}
       session={session}
-      refresher={refresher && { title: refresher.fromTitle, href: `/learn/${chapter}/${refresher.fromSlug}` }}
+      refresher={refresher && { title: refresher.fromTitle, href: withCourse(`/learn/${chapter}/${refresher.fromSlug}`, course?.slug) }}
     />
   );
 }
@@ -82,13 +97,17 @@ async function ConceptContent({
   const node = ch?.graph.find((n) => n.slug === concept);
   const published = ch?.concepts.some((c) => c.id === node?.id && c.status === "approved");
   if (!ch || !node || !published) notFound();
+  const course = courseFrom((await searchParams).course, ch);
 
   return (
     <>
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
         <div>
-          <Link href={`/learn/${chapter}`} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-foreground">
-            <ArrowLeftIcon className="h-4 w-4" /> {ch.title}
+          <Link
+            href={course ? `/courses/${course.slug}/${chapter}` : `/learn/${chapter}`}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-foreground"
+          >
+            <ArrowLeftIcon className="h-4 w-4" /> {course ? `${course.short} · ${ch.title}` : ch.title}
           </Link>
           <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight md:text-3xl">{node.title}</h1>
         </div>

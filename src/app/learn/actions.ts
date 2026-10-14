@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { safeLearnPath } from "@/lib/safeNext";
 import { createSessionClient, currentUserId } from "@/lib/supabase/server";
 import type { RenderedBlock } from "@/lib/renderedText";
 import { renderRichText } from "@/lib/richText";
@@ -11,17 +12,16 @@ export type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const OPTION_KEY = /^[A-D]$/;
-const LEARN_PATH = /^\/learn(\/[a-z0-9-]+){0,2}$/;
 
 /** Signs the visitor in as a guest (anonymous user), then returns to `next`. */
 export async function startAsGuest(formData: FormData): Promise<void> {
   const next = String(formData.get("next") ?? "");
-  const target = LEARN_PATH.test(next) ? next : "/learn";
+  const target = safeLearnPath(next);
   const supabase = await createSessionClient();
   const { error } = await supabase.auth.signInAnonymously();
   if (error) {
     console.error("startAsGuest: anonymous sign-in failed", error.message);
-    redirect(`${target}?error=signin`);
+    redirect(`${target}${target.includes("?") ? "&" : "?"}error=signin`);
   }
   redirect(target);
 }
