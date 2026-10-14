@@ -74,7 +74,8 @@ await (async () => {
         document
           .getAnimations()
           .filter((a) => a.timeline instanceof DocumentTimeline && a.effect?.getComputedTiming().iterations !== Infinity)
-          .map((a) => a.finished),
+          // A cancelled animation rejects `finished`; it's done either way.
+          .map((a) => a.finished.catch(() => undefined)),
       ),
     );
     await page.screenshot({ path: join(SHOTS, `${name}.png`) });
