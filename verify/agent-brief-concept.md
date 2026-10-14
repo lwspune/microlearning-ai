@@ -94,6 +94,7 @@ CONCEPTS = [dict(
 )]
 ```
 - Text is KaTeX: `$…$` inline, `$$…$$` display, `**bold**`. Raw strings (`r"..."`). No backticks, no `${`.
+- **Write every file with the Write tool**, never through a shell heredoc or `echo`: the shell strips or mangles backslashes (`\times` loses its `\t`, `\\` becomes `\`), and the validator rejects the control characters this leaves.
 - Write for a Class 11 Maharashtra Board student: short sentences, the book's notation (e.g. $t_n$, $S_n$,
   ${}^nC_r$ written as `$^nC_r$`: a `$` followed by `{` is a template-literal interpolation), no fluff. Match c08's density: intuition ~3–5 sentences, formal ~3–5 short sections.
 - The hook and worked example must not reuse any item's numbers (rule 5). Solutions never mention option letters.
