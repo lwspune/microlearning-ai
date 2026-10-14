@@ -138,6 +138,16 @@ class AddToConcept(unittest.TestCase):
         once = add_to_concept(CONCEPT, self.DATA)
         with self.assertRaisesRegex(ValueError, "already"):
             add_to_concept(once, self.DATA)
+        for only in ({"worked_figure": FIG}, {"figure": FIG}):
+            built = add_to_concept(CONCEPT, {**only, "solutions": self.DATA["solutions"]})
+            with self.assertRaisesRegex(ValueError, "already"):
+                add_to_concept(built.replace("solution: {", "solved: {"), {"solutions": self.DATA["solutions"]})
+
+    def test_a_question_figure_is_not_mistaken_for_a_built_concept(self):
+        with_stem_figure = CONCEPT.replace("      stem: t`First?`,\n", "      stem: t`First?`,\n" + figure_ts(FIG, 6), 1)
+        self.assertNotEqual(with_stem_figure, CONCEPT)
+        out = add_to_concept(with_stem_figure, self.DATA)
+        self.assertEqual(out.count("solution: {"), 2)
 
 
 class BuildConcepts(unittest.TestCase):
