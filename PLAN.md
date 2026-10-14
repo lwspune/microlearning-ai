@@ -434,6 +434,19 @@ gate can come back on for students.
 - **Done:** turned on after R2 merged, approved by the owner (branch
   `mastery-gate-on`). Students unlock concepts by mastery; staff open all.
 
+### 4. Every question has 4 options (asked 2026-10-15, done 2026-10-15)
+135 of 230 questions had 3 options, so the answer never sat at D.
+- **Done (owner's option a):** a 4th option on every one, each from a
+  modelled mistake: new misconceptions per concept (conceptual where one
+  fits, otherwise a modelled slip with fallback none), written by 10 agents
+  in parallel, each proven by the verifier before merging. Duplicates were
+  folded where the mistake was the same (C22); kept apart where it wasn't
+  (C30). New options have the key D, so past attempts are unaffected. The
+  validator and `draft_items.py` now require 4 options.
+- Weakest new distractors (worth a look on /review): C08 maximum items get 0
+  (the origin's value), C05-Q4's "1 corner", C04's "Can't tell without the
+  objective function" on every C04 item.
+
 ## Content: all 30 concepts (published 2026-10-14)
 
 - All 30 Complex Numbers concepts are approved and seeded: 159 items, 0
