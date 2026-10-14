@@ -24,5 +24,26 @@ class OptionText(unittest.TestCase):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
 
+class ItemFigure(unittest.TestCase):
+    def test_a_question_figure_follows_the_stem(self):
+        import tempfile, textwrap, os
+        from draft_items import draft
+        from ts_literal import figure_ts
+
+        fig = {"alt": "A shaded region.", "axes": "xy", "view": {"x": [-1, 5], "y": [-1, 5]}, "elements": []}
+        spec = textwrap.dedent(f"""
+            CHAPTER = "linear_programming"
+            ITEMS = [dict(id="C01-Q1", stem="Where?", inputs={{}}, params={{"line": "3*x + 2*y = 12", "ask": "x"}},
+                          fmt="point", models=["key", "C01-M1", "C01-M2"], figure={fig!r})]
+        """)
+        with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False) as f:
+            f.write(spec)
+        try:
+            out = draft(f.name)
+        finally:
+            os.unlink(f.name)
+        self.assertIn("      stem: t`Where?`,\n" + figure_ts(fig, 6) + "      verify:", out)
+
+
 if __name__ == "__main__":
     unittest.main()

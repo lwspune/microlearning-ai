@@ -17,6 +17,7 @@ A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
     text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
     fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant
     value={"key": "x-2"},               # optional per-model value overrides (loci/points)
+    figure={...},                       # optional: a Figure dict shown with the stem (no steps)
     source='{ kind: "authored" }',      # optional, TypeScript literal
   )
 The correct option's letter varies with the item id, so it isn't always A.
@@ -28,6 +29,8 @@ import sys
 from pathlib import Path
 
 from sympy import I, latex, simplify, symbols, sympify, expand
+
+from ts_literal import figure_ts
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -161,7 +164,8 @@ def draft(spec_path: str) -> str:
             f'      id: "{it["id"]}",\n'
             f'      source: {it.get("source", "{ kind: \"authored\" }")},\n'
             f"      stem: {_ts_string(it['stem'])},\n"
-            f"      verify: {{ {', '.join(verify)} }},\n"
+            + (figure_ts(it["figure"], 6) if it.get("figure") else "")
+            + f"      verify: {{ {', '.join(verify)} }},\n"
             "      options: [\n" + "\n".join(lines) + "\n      ],\n"
             "    },"
         )
