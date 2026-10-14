@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generatePassword, loginEmail, MAX_PEOPLE, parsePeopleLines, USERNAME_DOMAIN } from "./people";
+import { generatePassword, loginEmail, MAX_PEOPLE, parsePeopleLines, slugify, USERNAME_DOMAIN } from "./people";
 
 describe("loginEmail", () => {
   it("keeps an email (lower-cased) and turns a username into its login email", () => {
@@ -55,5 +55,18 @@ describe("generatePassword", () => {
   it("doesn't repeat", () => {
     const seen = new Set(Array.from({ length: 500 }, generatePassword));
     expect(seen.size).toBe(500);
+  });
+});
+
+describe("slugify (an academy's suggested short name)", () => {
+  it("lower-cases words and joins them with hyphens", () => {
+    expect(slugify("LWS Pune")).toBe("lws-pune");
+    expect(slugify("  APJ  Academy, Nashik! ")).toBe("apj-academy-nashik");
+    expect(slugify("Shree Ganesh (Main) — Kothrud")).toBe("shree-ganesh-main-kothrud");
+  });
+
+  it("is empty when nothing usable is left, and at most 80 characters", () => {
+    expect(slugify("—!!")).toBe("");
+    expect(slugify("a".repeat(100)).length).toBe(80);
   });
 });

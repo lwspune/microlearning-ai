@@ -93,3 +93,13 @@ export function generatePassword(): string {
   }
   return [chars.slice(0, 4), chars.slice(4, 8), chars.slice(8)].map((g) => g.join("")).join("-");
 }
+
+/** A short name from a name: lowercase words joined by hyphens, at most 80 characters (academies.slug). */
+export function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80)
+    .replace(/-+$/, "");
+}
