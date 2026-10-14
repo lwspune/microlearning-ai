@@ -350,12 +350,24 @@ password is never stored in the repo.
   open every concept.
   **Status (2026-10-14):** built and checked; pending your review and
   merge. Your superadmin login exists (connect.lwspune@gmail.com).
-- **R2:** `create_academy()`, `can_create_person()` (superadmin: anyone;
-  academy admin: teachers and students; teacher: students), staff paste a
-  list, passwords shown once, an existing email is never touched.
+- **R2 (branch `roles-r2`, approved 2026-10-14):** `create_academy()`
+  (superadmin only) and `can_create_person()` (superadmin: anyone; academy
+  admin: teachers and students in their academy; teacher: students in their
+  academy), checked as the signed-in user before any service-role write.
+  Staff paste a list (one person per line: name, then an email **or a
+  username**); passwords are generated, shown once, never stored; an existing
+  login is never touched. **Usernames** (students often have no email): the
+  login is `<username>@students.microlearning.invalid` behind the scenes
+  (the database enforces the match), unique across the platform, and the
+  sign-in box takes "email or username". Screens: `/admin` (create and list
+  academies; each academy's page adds and lists its people, any role),
+  `/teach/people` (your academy's people; add the roles you may create).
+  Decided: **no guardian-consent tracking** (students come through their
+  academies); **password resets later**.
 - **R3:** classes (per course) and the teacher dashboard: students ×
   concepts, top misconceptions, reviews due.
-- **Later:** self sign-up; Google sign-in.
+- **Later:** self sign-up; Google sign-in; staff reset a student's
+  password (own academy only, new one shown once).
 
 ## Backfill ledger
 
