@@ -100,7 +100,7 @@ await (async () => {
   };
   const header = page.getByRole("navigation", { name: "Account" });
   const signInAs = async (email: string, password: string) => {
-    await page.getByLabel("Email").fill(email);
+    await page.getByLabel("Email or username").fill(email);
     await page.getByLabel("Password").fill(password);
     await page.getByRole("button", { name: "Sign in" }).click();
   };
@@ -137,7 +137,7 @@ await (async () => {
     await signInAs(NO_PROFILE.email, NO_PROFILE.password);
     await page.locator("form [role=alert]").getByText("This login isn't set up yet. Ask your academy.").waitFor();
     ok("a login without a profile is refused");
-    check((await page.getByLabel("Email").inputValue()) === NO_PROFILE.email, "the email stays filled in after a failed sign-in");
+    check((await page.getByLabel("Email or username").inputValue()) === NO_PROFILE.email, "the email stays filled in after a failed sign-in");
 
     // A wrong password gets the same words as an unknown email.
     await page.getByLabel("Password").fill("not-the-password");

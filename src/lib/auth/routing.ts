@@ -4,6 +4,8 @@
  * each role belongs and what a `?next=` may name.
  */
 
+import { loginEmail, parseLogin } from "@/lib/people";
+
 export type Role = "student" | "teacher" | "academy_admin" | "superadmin";
 export type Area = "student" | "teach" | "admin";
 
@@ -63,15 +65,17 @@ export function safeNext(next: string | null, role: Role): string | null {
   return url.pathname + url.search;
 }
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
 export type Credentials = { ok: true; email: string; password: string } | { ok: false; error: string };
 
-/** Fail fast: nothing malformed reaches the auth server. The password is passed through exactly as typed. */
+/**
+ * Fail fast: nothing malformed reaches the auth server. The "email" field takes
+ * an email or a username (signed in with its login email). The password is
+ * passed through exactly as typed.
+ */
 export function parseCredentials(form: FormData): Credentials {
-  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const login = parseLogin(String(form.get("email") ?? ""));
   const password = String(form.get("password") ?? "");
-  if (!EMAIL.test(email) || email.length > 254) return { ok: false, error: "Enter the email your academy gave you." };
+  if ("error" in login) return { ok: false, error: "Enter your email or username." };
   if (password.length === 0 || password.length > 200) return { ok: false, error: "Enter your password." };
-  return { ok: true, email, password };
+  return { ok: true, email: loginEmail(login), password };
 }

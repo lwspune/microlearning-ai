@@ -103,9 +103,18 @@ describe("parseCredentials: checked before the auth server is asked", () => {
     });
   });
 
-  it("refuses a missing or malformed email", () => {
-    expect(parseCredentials(form({ password: "x" })).ok).toBe(false);
-    expect(parseCredentials(form({ email: "nope", password: "x" })).ok).toBe(false);
+  it("accepts a username, signing in with its login email", () => {
+    expect(parseCredentials(form({ email: " Aarav.K ", password: "secret-pass" }))).toEqual({
+      ok: true,
+      email: "aarav.k@students.microlearning.invalid",
+      password: "secret-pass",
+    });
+  });
+
+  it("refuses a missing or malformed email or username", () => {
+    expect(parseCredentials(form({ password: "x" }))).toEqual({ ok: false, error: "Enter your email or username." });
+    expect(parseCredentials(form({ email: "a@b", password: "x" })).ok).toBe(false);
+    expect(parseCredentials(form({ email: "two words", password: "x" })).ok).toBe(false);
   });
 
   it("refuses an empty or absurdly long password, and never trims it", () => {

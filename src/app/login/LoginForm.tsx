@@ -15,14 +15,15 @@ export function LoginForm({ next }: { next: string | null }) {
       {next && <input type="hidden" name="next" value={next} />}
       <div>
         <label htmlFor="email" className="block text-sm font-semibold">
-          Email
+          Email or username
         </label>
         <input
           id="email"
           name="email"
-          type="email"
+          type="text"
           autoComplete="username"
-          inputMode="email"
+          autoCapitalize="none"
+          spellCheck={false}
           required
           defaultValue={state.email}
           className={input}
