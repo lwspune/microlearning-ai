@@ -86,6 +86,12 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C01-M5", value: "4" },
         { key: "D", text: t`$- 4 i$`, correct: false, misconceptionId: "C01-M6", value: "-4*I" },
       ],
+      solution: {
+        steps: [
+          t`The minus sign becomes the $i$: $\sqrt{-16} = i\sqrt{16}$.`,
+          t`$\sqrt{16} = 4$, so $\sqrt{-16} = 4i$, the principal root (plus sign).`,
+        ],
+      },
     },
     {
       id: "C01-Q2",
@@ -97,6 +103,13 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "B", text: t`$-6$`, correct: true, value: "-6" },
         { key: "C", text: t`$6$`, correct: false, misconceptionId: "C01-M1", value: "6" },
       ],
+      solution: {
+        steps: [
+          t`Both numbers are negative, so convert each root first: $\sqrt{-4} = 2i$ and $\sqrt{-9} = 3i$.`,
+          t`Multiply: $(2i)(3i) = 6i^2$.`,
+          t`Use $i^2 = -1$: the product is $-6$, not $\sqrt{36} = 6$.`,
+        ],
+      },
     },
     {
       id: "C01-Q3",
@@ -108,6 +121,12 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "B", text: t`$16 i$`, correct: false, misconceptionId: "C01-M4", value: "16*I" },
         { key: "C", text: t`$-16$`, correct: true, value: "-16" },
       ],
+      solution: {
+        steps: [
+          t`Square every factor: $(4i)^2 = 4^2 \cdot i^2 = 16i^2$.`,
+          t`Use $i^2 = -1$: $(4i)^2 = -16$.`,
+        ],
+      },
     },
     {
       id: "C01-Q4",
@@ -120,6 +139,12 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "C", text: t`$8$`, correct: false, misconceptionId: "C01-M5", value: "8" },
         { key: "D", text: t`$- 8 i$`, correct: false, misconceptionId: "C01-M6", value: "-8*I" },
       ],
+      solution: {
+        steps: [
+          t`Convert each root: $\sqrt{-25} = 5i$ and $\sqrt{-9} = 3i$.`,
+          t`Add like terms: $5i + 3i = 8i$.`,
+        ],
+      },
     },
     {
       id: "C01-Q5",
@@ -131,6 +156,13 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "B", text: t`$-4$`, correct: true, value: "-4" },
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C01-M1", value: "4" },
       ],
+      solution: {
+        steps: [
+          t`Both numbers are negative, so convert each root first: $\sqrt{-2} = i\sqrt2$ and $\sqrt{-8} = i\sqrt8$.`,
+          t`Multiply: $i^2\sqrt{16} = 4i^2$.`,
+          t`Use $i^2 = -1$: the product is $-4$.`,
+        ],
+      },
     },
     {
       id: "C01-Q6",
@@ -143,6 +175,12 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "C", text: t`$6 i$`, correct: true, value: "6*I" },
         { key: "D", text: t`$-6$`, correct: false, misconceptionId: "C01-M3", value: "-6" },
       ],
+      solution: {
+        steps: [
+          t`Only $-3$ is negative, so convert that root: $\sqrt{-3} = i\sqrt3$.`,
+          t`Multiply: $i\sqrt3 \cdot \sqrt{12} = i\sqrt{36} = 6i$.`,
+        ],
+      },
     },
   ],
 };

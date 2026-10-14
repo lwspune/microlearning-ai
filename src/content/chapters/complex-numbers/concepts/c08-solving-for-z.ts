@@ -60,6 +60,13 @@ Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
         { key: "C", text: t`$- \frac{1}{5} - 10 i$`, correct: false, misconceptionId: "C08-M2", value: "-1/5 - 10*I" },
         { key: "D", text: t`$2 - i$`, correct: false, misconceptionId: "C08-M3", value: "2 - I" },
       ],
+      solution: {
+        steps: [
+          t`Substitute $z = x + iy$: $2(x + iy) + 3(x - iy) = 5x - iy$.`,
+          t`Equate parts: $5x = 10$ and $-y = -1$.`,
+          t`So $x = 2$, $y = 1$, and $z = 2 + i$.`,
+        ],
+      },
     },
     {
       id: "C08-Q2",
@@ -72,6 +79,13 @@ Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
         { key: "C", text: t`$-3 - 2 i$`, correct: false, misconceptionId: "C08-M3", value: "-3 - 2*I" },
         { key: "D", text: t`$-3 + 2 i$`, correct: true, value: "-3 + 2*I" },
       ],
+      solution: {
+        steps: [
+          t`Substitute $z = x + iy$: $(x + iy) - 2(x - iy) = -x + 3iy$.`,
+          t`Equate parts: $-x = 3$ and $3y = 6$.`,
+          t`So $x = -3$, $y = 2$, and $z = -3 + 2i$.`,
+        ],
+      },
     },
     {
       id: "C08-Q3",
@@ -84,6 +98,13 @@ Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
         { key: "C", text: t`$3 - 2 i$`, correct: false, misconceptionId: "C08-M3", value: "3 - 2*I" },
         { key: "D", text: t`$3 + 2 i$`, correct: true, value: "3 + 2*I" },
       ],
+      solution: {
+        steps: [
+          t`Substitute $z = x + iy$: $(x + iy) + 2(x - iy) = 3x - iy$.`,
+          t`Equate parts: $3x = 9$ and $-y = -2$.`,
+          t`So $x = 3$, $y = 2$, and $z = 3 + 2i$.`,
+        ],
+      },
     },
     {
       id: "C08-Q4",
@@ -96,6 +117,14 @@ Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
         { key: "C", text: t`$3 + 2 i$`, correct: true, value: "3 + 2*I" },
         { key: "D", text: t`$\frac{7}{5} + \frac{6 i}{5}$`, correct: false, misconceptionId: "C08-M1", value: "7/5 + 6*I/5" },
       ],
+      solution: {
+        steps: [
+          t`Substitute: $2(x + iy) - i(x - iy) = 2x + 2iy - ix + i^2 y = (2x - y) + i(2y - x)$.`,
+          t`Equate parts: $2x - y = 4$ and $2y - x = 1$.`,
+          t`From the second, $x = 2y - 1$. Then $2(2y - 1) - y = 4$ gives $y = 2$, so $x = 3$.`,
+          t`So $z = 3 + 2i$.`,
+        ],
+      },
     },
     {
       id: "C08-Q5",
@@ -108,6 +137,13 @@ Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
         { key: "C", text: t`$2 + i$`, correct: false, misconceptionId: "C08-M1", value: "2 + I" },
         { key: "D", text: t`$1 + 4 i$`, correct: false, misconceptionId: "C08-M2", value: "1 + 4*I" },
       ],
+      solution: {
+        steps: [
+          t`Substitute $z = x + iy$: $3(x + iy) + (x - iy) = 4x + 2iy$.`,
+          t`Equate parts: $4x = 8$ and $2y = 4$.`,
+          t`So $x = 2$, $y = 2$, and $z = 2 + 2i$.`,
+        ],
+      },
     },
   ],
 };

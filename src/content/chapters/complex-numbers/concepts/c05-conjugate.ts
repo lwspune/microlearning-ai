@@ -24,6 +24,26 @@ export const c05: Concept = {
         t`Product: $(1 - 6i)(1 + 6i) = 1 - 36i^2 = 1 + 36 = 37$.`,
       ],
       answer: t`$z + \bar z = 2$ and $z\bar z = 37$.`,
+      figure: {
+        alt: "z = 1 − 6i and its mirror image across the real axis, z̄ = 1 + 6i. Their sum, 2, lies on the real axis.",
+        view: { x: [-4, 6], y: [-7, 7] },
+        elements: [
+          { kind: "point", at: [1, -6], label: "z = 1 − 6i", labelAt: "e" },
+          { kind: "segment", from: [1, -6], to: [1, 6], dashed: true, tone: "muted", step: 1 },
+          { kind: "point", at: [1, 6], label: "z̄ = 1 + 6i", labelAt: "e", step: 1 },
+          { kind: "point", at: [2, 0], label: "z + z̄ = 2", labelAt: "ne", tone: "good", step: 2 },
+        ],
+      },
+    },
+    figure: {
+      alt: "z = 3 + 2i and its conjugate 3 − 2i are mirror images across the real axis. Their sum, 6, lies on the real axis.",
+      view: { x: [-1, 7.5], y: [-3, 3] },
+      elements: [
+        { kind: "point", at: [3, 2], label: "z = 3 + 2i", labelAt: "ne", step: 1 },
+        { kind: "segment", from: [3, 2], to: [3, -2], dashed: true, tone: "muted", step: 2 },
+        { kind: "point", at: [3, -2], label: "z̄ = 3 − 2i", labelAt: "se", step: 2 },
+        { kind: "point", at: [6, 0], label: "z + z̄ = 6", labelAt: "n", tone: "good", step: 3 },
+      ],
     },
     visualSpec: t`A draggable point $z$ with its mirror image $\bar z$ across the real axis. Live readouts show $z + \bar z$ and $z\bar z$; both stay on the real axis wherever $z$ is dragged.`,
   },
@@ -71,6 +91,13 @@ export const c05: Concept = {
         { key: "C", text: t`$-29$`, correct: false, misconceptionId: "C05-M1", value: "-29" },
         { key: "D", text: t`$-21 + 20i$`, correct: false, misconceptionId: "C05-M2", value: "-21+20*I" },
       ],
+      solution: {
+        steps: [
+          t`Conjugate: $\bar z = 5 + 2i$.`,
+          t`Multiply: $(5 - 2i)(5 + 2i) = 25 - 4i^2$.`,
+          t`Use $i^2 = -1$: $25 + 4 = 29$.`,
+        ],
+      },
     },
     {
       id: "C05-Q2",
@@ -83,6 +110,12 @@ export const c05: Concept = {
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C05-M1", value: "4" },
         { key: "D", text: t`$4 + 14i$`, correct: false, misconceptionId: "C05-M2", value: "4+14*I" },
       ],
+      solution: {
+        steps: [
+          t`Conjugate: $\bar z = 2 - 7i$.`,
+          t`Subtract both parts: $(2 - 2) + \big(7 - (-7)\big)i = 14i$. Keep the $i$.`,
+        ],
+      },
     },
     {
       id: "C05-Q3",
@@ -95,6 +128,12 @@ export const c05: Concept = {
         { key: "C", text: t`$-5 + 5i$`, correct: false, misconceptionId: "C05-M1", value: "-5+5*I" },
         { key: "D", text: t`$-5 - 5i$`, correct: false, misconceptionId: "C05-M2", value: "-5-5*I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply first: $(1 + 2i)(3 - i) = 3 - i + 6i - 2i^2 = 5 + 5i$.`,
+          t`Conjugate the result, flipping the sign of the imaginary part: $5 - 5i$.`,
+        ],
+      },
     },
     {
       id: "C05-Q4",
@@ -107,6 +146,13 @@ export const c05: Concept = {
         { key: "C", text: t`$-10$`, correct: false, misconceptionId: "C05-M1", value: "-10" },
         { key: "D", text: t`$8 + 6i$`, correct: false, misconceptionId: "C05-M2", value: "8+6*I" },
       ],
+      solution: {
+        steps: [
+          t`Conjugate: $\bar z = -1 - 3i$.`,
+          t`Multiply: $(-1 + 3i)(-1 - 3i) = 1 - 9i^2$.`,
+          t`Use $i^2 = -1$: $1 + 9 = 10$.`,
+        ],
+      },
     },
     {
       id: "C05-Q5",
@@ -119,6 +165,12 @@ export const c05: Concept = {
         { key: "C", text: t`$-9 - 2i$`, correct: false, misconceptionId: "C05-M1", value: "-9-2*I" },
         { key: "D", text: t`$-9 + 2i$`, correct: false, misconceptionId: "C05-M2", value: "-9+2*I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply first: $(2 - i)(4 + i) = 8 + 2i - 4i - i^2 = 9 - 2i$.`,
+          t`Conjugate the result: $9 + 2i$.`,
+        ],
+      },
     },
     {
       id: "C05-Q6",
@@ -131,6 +183,12 @@ export const c05: Concept = {
         { key: "C", text: t`$8$`, correct: false, misconceptionId: "C05-M1", value: "8" },
         { key: "D", text: t`$8 - 2i$`, correct: false, misconceptionId: "C05-M2", value: "8-2*I" },
       ],
+      solution: {
+        steps: [
+          t`Conjugate: $\bar z = 4 + i$.`,
+          t`Subtract both parts: $(4 - 4) + (-1 - 1)i = -2i$. Keep the $i$.`,
+        ],
+      },
     },
   ],
 };

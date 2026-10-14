@@ -70,6 +70,14 @@ Special case: the reciprocal is $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$. The deno
         { key: "C", text: t`$1 + 5i$`, correct: false, misconceptionId: "C06-M2", value: "1+5*I" },
         { key: "D", text: t`$\dfrac{5 + 5i}{2}$`, correct: false, misconceptionId: "C06-M4", value: "(5+5*I)/2" },
       ],
+      solution: {
+        steps: [
+          t`Multiply top and bottom by the conjugate of the bottom, $1 + i$.`,
+          t`Bottom: $(1 - i)(1 + i) = 1 + 1 = 2$.`,
+          t`Top: $(3 + 2i)(1 + i) = 3 + 3i + 2i + 2i^2 = 1 + 5i$.`,
+          t`So the answer is $\dfrac{1 + 5i}{2} = \dfrac12 + \dfrac52 i$.`,
+        ],
+      },
     },
     {
       id: "C06-Q2",
@@ -82,6 +90,13 @@ Special case: the reciprocal is $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$. The deno
         { key: "C", text: t`$\dfrac{10 - 5i}{3}$`, correct: false, misconceptionId: "C06-M3", value: "(10-5*I)/3" },
         { key: "D", text: t`$2 + i$`, correct: false, misconceptionId: "C06-M5", value: "2+I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply top and bottom by $2 - i$, the conjugate of the bottom.`,
+          t`Bottom: $(2 + i)(2 - i) = 4 + 1 = 5$.`,
+          t`Top: $5(2 - i) = 10 - 5i$, so the answer is $\dfrac{10 - 5i}{5} = 2 - i$.`,
+        ],
+      },
     },
     {
       id: "C06-Q3",
@@ -94,6 +109,13 @@ Special case: the reciprocal is $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$. The deno
         { key: "C", text: t`$2i$`, correct: false, misconceptionId: "C06-M2", value: "2*I" },
         { key: "D", text: t`$1 + i$`, correct: false, misconceptionId: "C06-M4", value: "1+I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply top and bottom by $1 + i$, the conjugate of the bottom.`,
+          t`Bottom: $(1 - i)(1 + i) = 2$.`,
+          t`Top: $(1 + i)^2 = 1 + 2i + i^2 = 2i$, so the answer is $\dfrac{2i}{2} = i$.`,
+        ],
+      },
     },
     {
       id: "C06-Q4",
@@ -106,6 +128,14 @@ Special case: the reciprocal is $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$. The deno
         { key: "C", text: t`$\dfrac{6}{7}$`, correct: false, misconceptionId: "C06-M3", value: "6/7" },
         { key: "D", text: t`$\dfrac{2}{3}$`, correct: false, misconceptionId: "C06-M1", value: "2/3" },
       ],
+      solution: {
+        steps: [
+          t`Multiply top and bottom by $3 + 4i$, the conjugate of the bottom.`,
+          t`Bottom: $9 + 16 = 25$.`,
+          t`Top: $(2 + 3i)(3 + 4i) = 6 + 8i + 9i + 12i^2 = -6 + 17i$.`,
+          t`Split: $-\dfrac{6}{25} + \dfrac{17}{25}i$, so the real part is $-\dfrac{6}{25}$.`,
+        ],
+      },
     },
     {
       id: "C06-Q5",
@@ -118,6 +148,14 @@ Special case: the reciprocal is $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$. The deno
         { key: "C", text: t`$-\dfrac{1}{25}$`, correct: false, misconceptionId: "C06-M4", value: "-1/25" },
         { key: "D", text: t`$\dfrac{9}{7}$`, correct: false, misconceptionId: "C06-M3", value: "9/7" },
       ],
+      solution: {
+        steps: [
+          t`Multiply top and bottom by $3 - 4i$, the conjugate of the bottom.`,
+          t`Bottom: $9 + 16 = 25$.`,
+          t`Top: $(2 - i)(3 - 4i) = 6 - 8i - 3i + 4i^2 = 2 - 11i$.`,
+          t`So $a = \dfrac{2}{25}$ and $b = -\dfrac{11}{25}$, and $a + b = -\dfrac{9}{25}$.`,
+        ],
+      },
     },
   ],
 };

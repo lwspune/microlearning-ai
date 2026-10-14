@@ -24,6 +24,28 @@ export const c04: Concept = {
         t`Subtract both parts: $(11 - 1) + i(10 - 2) = 10 + 8i$.`,
       ],
       answer: t`$10 + 8i$`,
+      figure: {
+        alt: "The product 11 + 10i as a point; subtracting 1 + 2i moves it one unit left and two down, to 10 + 8i.",
+        view: { x: [-1, 14], y: [-1, 12] },
+        elements: [
+          { kind: "vector", to: [11, 10], tone: "muted", step: 2 },
+          { kind: "point", at: [11, 10], label: "11 + 10i", labelAt: "e", step: 2 },
+          { kind: "vector", from: [11, 10], to: [10, 8], step: 3 },
+          { kind: "label", at: [10.5, 9], label: "− (1 + 2i)", labelAt: "e", tone: "muted", step: 3 },
+          { kind: "point", at: [10, 8], label: "10 + 8i", labelAt: "se", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "Adding 2 + i and 1 + 3i: the real parts add to 3 and the imaginary parts to 4, so the sum 3 + 4i is the far corner of the parallelogram the two arrows make.",
+      view: { x: [-1, 5], y: [-1, 5] },
+      elements: [
+        { kind: "vector", to: [2, 1], label: "2 + i", labelAt: "se", tone: "muted", step: 1 },
+        { kind: "vector", to: [1, 3], label: "1 + 3i", labelAt: "nw", tone: "muted", step: 2 },
+        { kind: "segment", from: [2, 1], to: [3, 4], dashed: true, tone: "muted", step: 3 },
+        { kind: "segment", from: [1, 3], to: [3, 4], dashed: true, tone: "muted", step: 3 },
+        { kind: "vector", to: [3, 4], label: "3 + 4i", labelAt: "ne", step: 4 },
+      ],
     },
     visualSpec: t`Two sliders set $z_1$ and $z_2$. The product's four partial terms ($ac$, $iad$, $ibc$, $i^2bd$) appear as tiles; the $i^2bd$ tile visibly flips its sign and slides across into the real part.`,
   },
@@ -71,6 +93,13 @@ export const c04: Concept = {
         { key: "C", text: t`$2 - 3i$`, correct: false, misconceptionId: "C04-M2", value: "2-3*I" },
         { key: "D", text: t`$2 + i$`, correct: false, misconceptionId: "C04-M4", value: "2+I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply out all four terms: $2 - 2i + 3i - 3i^2$.`,
+          t`Use $i^2 = -1$: $-3i^2 = +3$.`,
+          t`Collect: $(2 + 3) + (-2 + 3)i = 5 + i$.`,
+        ],
+      },
     },
     {
       id: "C04-Q2",
@@ -83,6 +112,13 @@ export const c04: Concept = {
         { key: "C", text: t`$13 + 12i$`, correct: false, misconceptionId: "C04-M1", value: "13+12*I" },
         { key: "D", text: t`$9 + 12i$`, correct: false, misconceptionId: "C04-M4", value: "9+12*I" },
       ],
+      solution: {
+        steps: [
+          t`Expand like $(x + y)^2$: $9 + 12i + 4i^2$.`,
+          t`Use $i^2 = -1$: $4i^2 = -4$.`,
+          t`Collect: $(9 - 4) + 12i = 5 + 12i$.`,
+        ],
+      },
     },
     {
       id: "C04-Q3",
@@ -95,6 +131,13 @@ export const c04: Concept = {
         { key: "C", text: t`$7 + 2i$`, correct: false, misconceptionId: "C04-M1", value: "7+2*I" },
         { key: "D", text: t`$4 + 2i$`, correct: false, misconceptionId: "C04-M4", value: "4+2*I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply first: $(2 - 3i)(1 + i) = 2 + 2i - 3i - 3i^2$.`,
+          t`Use $i^2 = -1$: the product is $5 - i$.`,
+          t`Subtract both parts: $(6 - 5) + \big(1 - (-1)\big)i = 1 + 2i$.`,
+        ],
+      },
     },
     {
       id: "C04-Q4",
@@ -107,6 +150,13 @@ export const c04: Concept = {
         { key: "C", text: t`$3 + 2i$`, correct: false, misconceptionId: "C04-M2", value: "3+2*I" },
         { key: "D", text: t`$3 + 7i$`, correct: false, misconceptionId: "C04-M4", value: "3+7*I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply out all four terms: $3 + i + 6i + 2i^2$.`,
+          t`Use $i^2 = -1$: $2i^2 = -2$.`,
+          t`Collect: $(3 - 2) + 7i = 1 + 7i$.`,
+        ],
+      },
     },
     {
       id: "C04-Q5",
@@ -119,6 +169,13 @@ export const c04: Concept = {
         { key: "C", text: t`$5 - 4i$`, correct: false, misconceptionId: "C04-M1", value: "5-4*I" },
         { key: "D", text: t`$1 - 4i$`, correct: false, misconceptionId: "C04-M4", value: "1-4*I" },
       ],
+      solution: {
+        steps: [
+          t`Expand like $(x - y)^2$: $1 - 4i + 4i^2$.`,
+          t`Use $i^2 = -1$: $4i^2 = -4$.`,
+          t`Collect: $(1 - 4) - 4i = -3 - 4i$.`,
+        ],
+      },
     },
     {
       id: "C04-Q6",
@@ -131,6 +188,13 @@ export const c04: Concept = {
         { key: "C", text: t`$2 - 3i$`, correct: false, misconceptionId: "C04-M1", value: "2-3*I" },
         { key: "D", text: t`$1 - 3i$`, correct: false, misconceptionId: "C04-M4", value: "1-3*I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply first: $(1 + i)(2 - i) = 2 - i + 2i - i^2$.`,
+          t`Use $i^2 = -1$: the product is $3 + i$.`,
+          t`Subtract both parts: $(3 - 3) + (-2 - 1)i = -3i$.`,
+        ],
+      },
     },
   ],
 };

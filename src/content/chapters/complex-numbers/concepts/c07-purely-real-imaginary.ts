@@ -57,6 +57,12 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "B", text: t`$-2$`, correct: false, misconceptionId: "C07-M1", value: "-2" },
         { key: "C", text: t`$-3$`, correct: false, misconceptionId: "C07-M3", value: "-3" },
       ],
+      solution: {
+        steps: [
+          t`Purely imaginary means the real part is zero: $x - 3 = 0$, so $x = 3$.`,
+          t`Check the imaginary part isn't zero too: $3 + 2 = 5$, so the number is $5i$.`,
+        ],
+      },
     },
     {
       id: "C07-Q2",
@@ -68,6 +74,12 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "B", text: t`$- \frac{1}{2}$`, correct: false, misconceptionId: "C07-M1", value: "-1/2" },
         { key: "C", text: t`$-4$`, correct: false, misconceptionId: "C07-M3", value: "-4" },
       ],
+      solution: {
+        steps: [
+          t`Purely real means the imaginary part is zero: $x - 4 = 0$.`,
+          t`So $x = 4$, and the number is $2(4) + 1 = 9$.`,
+        ],
+      },
     },
     {
       id: "C07-Q3",
@@ -79,6 +91,13 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "B", text: t`$-1$`, correct: true, value: "-1" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C07-M1", value: "1" },
       ],
+      solution: {
+        steps: [
+          t`Rationalise: $\dfrac{(x + i)(1 - i)}{(1 + i)(1 - i)} = \dfrac{(x + 1) + (1 - x)i}{2}$.`,
+          t`Purely imaginary means the real part is zero: $x + 1 = 0$, so $x = -1$.`,
+          t`Check: the number is then $\dfrac{2i}{2} = i$, which isn't zero.`,
+        ],
+      },
     },
     {
       id: "C07-Q4",
@@ -91,6 +110,12 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C07-M2", value: "0" },
         { key: "D", text: t`$- \frac{8}{3}$`, correct: false, misconceptionId: "C07-M3", value: "-8/3" },
       ],
+      solution: {
+        steps: [
+          t`Rationalise: $\dfrac{(2 + xi)(3 - 4i)}{25} = \dfrac{(6 + 4x) + (3x - 8)i}{25}$.`,
+          t`Purely real means the imaginary part is zero: $3x - 8 = 0$, so $x = \dfrac83$.`,
+        ],
+      },
     },
     {
       id: "C07-Q5",
@@ -102,6 +127,12 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "B", text: t`$-6$`, correct: false, misconceptionId: "C07-M1", value: "-6" },
         { key: "C", text: t`$- \frac{3}{2}$`, correct: false, misconceptionId: "C07-M3", value: "-3/2" },
       ],
+      solution: {
+        steps: [
+          t`Multiply out: $(x + 3i)(2 + i) = 2x + xi + 6i + 3i^2 = (2x - 3) + (x + 6)i$.`,
+          t`Purely imaginary means the real part is zero: $2x - 3 = 0$, so $x = \dfrac32$.`,
+        ],
+      },
     },
   ],
 };

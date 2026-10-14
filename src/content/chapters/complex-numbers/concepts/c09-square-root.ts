@@ -52,6 +52,13 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "B", text: t`$\pm(3 - 2 i)$`, correct: false, misconceptionId: "C09-M2", value: "3 - 2*I" },
         { key: "C", text: t`$\pm(3 + 2 i)$`, correct: true, value: "3 + 2*I" },
       ],
+      solution: {
+        steps: [
+          t`Set $x^2 - y^2 = 5$ and $2xy = 12$, so $xy = 6$.`,
+          t`Try whole numbers with $xy = 6$: $x = 3$, $y = 2$ gives $9 - 4 = 5$.`,
+          t`$b > 0$, so $x$ and $y$ share a sign: the roots are $\pm(3 + 2i)$.`,
+        ],
+      },
     },
     {
       id: "C09-Q2",
@@ -63,6 +70,13 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "B", text: t`$\pm(1 - 2 i)$`, correct: true, value: "1 - 2*I" },
         { key: "C", text: t`$\pm(2 - \sqrt{3} i)$`, correct: false, misconceptionId: "C09-M1", value: "2 - sqrt(3)*I" },
       ],
+      solution: {
+        steps: [
+          t`Set $x^2 - y^2 = -3$ and $2xy = -4$, so $xy = -2$.`,
+          t`Try $x = 1$, $y = -2$: $1 - 4 = -3$. It works.`,
+          t`$b < 0$, so $x$ and $y$ have opposite signs: the roots are $\pm(1 - 2i)$.`,
+        ],
+      },
     },
     {
       id: "C09-Q3",
@@ -74,6 +88,13 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "B", text: t`$\pm(2 + 2 i)$`, correct: true, value: "2 + 2*I" },
         { key: "C", text: t`$\pm 2\sqrt{2}\,i$`, correct: false, misconceptionId: "C09-M1", value: "2*sqrt(2)*I" },
       ],
+      solution: {
+        steps: [
+          t`Here $a = 0$ and $b = 8$: $x^2 - y^2 = 0$ and $2xy = 8$, so $xy = 4$.`,
+          t`$x^2 = y^2$ and $xy > 0$, so $x = y$. Then $x^2 = 4$, so $x = 2$.`,
+          t`The roots are $\pm(2 + 2i)$. Check: $(2 + 2i)^2 = 4 + 8i + 4i^2 = 8i$.`,
+        ],
+      },
     },
     {
       id: "C09-Q4",
@@ -85,6 +106,13 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "B", text: t`$\pm(1 + 4 i)$`, correct: true, value: "1 + 4*I" },
         { key: "C", text: t`$\pm(2\sqrt{2} + \sqrt{15})\,i$`, correct: false, misconceptionId: "C09-M1", value: "I*(2*sqrt(2) + sqrt(15))" },
       ],
+      solution: {
+        steps: [
+          t`Set $x^2 - y^2 = -15$ and $2xy = 8$, so $xy = 4$.`,
+          t`Try $x = 1$, $y = 4$: $1 - 16 = -15$. It works.`,
+          t`$b > 0$, so $x$ and $y$ share a sign: the roots are $\pm(1 + 4i)$.`,
+        ],
+      },
     },
     {
       id: "C09-Q5",
@@ -96,6 +124,13 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "B", text: t`$\pm(4 + 3 i)$`, correct: false, misconceptionId: "C09-M2", value: "4 + 3*I" },
         { key: "C", text: t`$\pm(4 - 3 i)$`, correct: true, value: "4 - 3*I" },
       ],
+      solution: {
+        steps: [
+          t`Set $x^2 - y^2 = 7$ and $2xy = -24$, so $xy = -12$.`,
+          t`Try $x = 4$, $y = -3$: $16 - 9 = 7$. It works.`,
+          t`$b < 0$, so $x$ and $y$ have opposite signs: the roots are $\pm(4 - 3i)$.`,
+        ],
+      },
     },
   ],
 };

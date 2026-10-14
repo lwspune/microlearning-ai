@@ -70,6 +70,12 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
         { key: "C", text: t`$-4$`, correct: true, value: "-4" },
         { key: "D", text: t`$- 4 i$`, correct: false, misconceptionId: "C03-M1", value: "-4*I" },
       ],
+      solution: {
+        steps: [
+          t`The imaginary part is the coefficient of $i$, sign included, without the $i$.`,
+          t`In $3 - 4i$ that coefficient is $-4$, so $\operatorname{Im}(3 - 4i) = -4$.`,
+        ],
+      },
     },
     {
       id: "C03-Q2",
@@ -82,6 +88,12 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
         { key: "C", text: t`$-4$`, correct: true, value: "-4" },
         { key: "D", text: t`$- 4 i$`, correct: false, misconceptionId: "C03-M1", value: "-4*I" },
       ],
+      solution: {
+        steps: [
+          t`Bring it to standard form first: $i(-4 - i) = -4i - i^2 = 1 - 4i$.`,
+          t`The coefficient of $i$ is $-4$, so the imaginary part is $-4$.`,
+        ],
+      },
     },
     {
       id: "C03-Q3",
@@ -94,6 +106,12 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
         { key: "C", text: t`$x = 3,\ y = -2$`, correct: false, misconceptionId: "C03-M3", value: "3 - 2*I" },
         { key: "D", text: t`$x = 3,\ y = 4$`, correct: true, value: "3 + 4*I" },
       ],
+      solution: {
+        steps: [
+          t`Equate real parts: $x + 2 = 5$, so $x = 3$.`,
+          t`Equate imaginary parts: $y - 1 = 3$, so $y = 4$.`,
+        ],
+      },
     },
     {
       id: "C03-Q4",
@@ -106,6 +124,12 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
         { key: "C", text: t`$x = 3,\ y = -2$`, correct: true, value: "3 - 2*I" },
         { key: "D", text: t`$x = - \frac{3}{2},\ y = 1$`, correct: false, misconceptionId: "C03-M4", value: "-3/2 + I" },
       ],
+      solution: {
+        steps: [
+          t`Equate real parts: $2x - 1 = 5$, so $2x = 6$ and $x = 3$.`,
+          t`Equate imaginary parts: $3y + 2 = -4$, so $3y = -6$ and $y = -2$.`,
+        ],
+      },
     },
     {
       id: "C03-Q5",
@@ -118,6 +142,12 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C03-M2", value: "0" },
         { key: "D", text: t`$6$`, correct: false, misconceptionId: "C03-M3", value: "6" },
       ],
+      solution: {
+        steps: [
+          t`Write it in standard form: $-6i = 0 + (-6)i$.`,
+          t`The coefficient of $i$ is $-6$, so $\operatorname{Im}(-6i) = -6$. The real part is $0$.`,
+        ],
+      },
     },
   ],
 };

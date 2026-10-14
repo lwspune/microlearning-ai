@@ -27,6 +27,31 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         t`$i^{58} = i^2 = -1$.`,
       ],
       answer: t`$-1$`,
+      figure: {
+        alt: "58 is 14 full turns plus 2 quarter turns, so i⁵⁸ lands where i² does, at −1.",
+        view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+        elements: [
+          { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+          { kind: "point", at: [1, 0], tone: "muted" },
+          { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 180, label: "2 quarter turns", labelAt: "ne", step: 1 },
+          { kind: "point", at: [-1, 0], label: "i⁵⁸ = −1", labelAt: "nw", step: 2 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The powers of i on a circle around the origin: each extra factor of i is a quarter turn anticlockwise, from 1 to i, −1, −i and back to 1.",
+      view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+      elements: [
+        { kind: "point", at: [1, 0], tone: "muted" },
+        { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 90, step: 1 },
+        { kind: "point", at: [0, 1], label: "i¹ = i", labelAt: "ne", step: 1 },
+        { kind: "arc", centre: [0, 0], r: 1, from: 90, to: 180, step: 2 },
+        { kind: "point", at: [-1, 0], label: "i² = −1", labelAt: "nw", step: 2 },
+        { kind: "arc", centre: [0, 0], r: 1, from: 180, to: 270, step: 3 },
+        { kind: "point", at: [0, -1], label: "i³ = −i", labelAt: "se", step: 3 },
+        { kind: "arc", centre: [0, 0], r: 1, from: 270, to: 360, step: 4 },
+        { kind: "point", at: [1, 0], label: "i⁴ = 1", labelAt: "ne", step: 4 },
+      ],
     },
     visualSpec: t`A clock with four positions ($1$, $i$, $-1$, $-i$) and a hand that steps once for each factor of $i$. Typing an exponent spins the hand that many steps, showing that only the remainder matters.`,
   },
@@ -68,6 +93,22 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C02-M2", value: "1" },
         { key: "D", text: t`$-1$`, correct: false, misconceptionId: "C02-M3", value: "-1" },
       ],
+      solution: {
+        steps: [
+          t`Divide by 4: $43 = 4 \times 10 + 3$, so $r = 3$.`,
+          t`$i^{43} = i^3 = i^2 \cdot i = -i$.`,
+        ],
+        figure: {
+          alt: "The four powers of i on a circle a quarter turn apart. 43 has remainder 3, so it is 3 quarter turns round from 1 and lands at −i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "point", at: [1, 0], tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 270, label: "3 quarter turns", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, -1], label: "i⁴³ = −i", labelAt: "se", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C02-Q2",
@@ -80,6 +121,22 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         { key: "C", text: t`$-1$`, correct: false, misconceptionId: "C02-M3", value: "-1" },
         { key: "D", text: t`$- i$`, correct: true, value: "-I" },
       ],
+      solution: {
+        steps: [
+          t`Find the remainder between 0 and 3: $-1 = 4 \times (-1) + 3$, so $r = 3$.`,
+          t`$i^{-1} = i^3 = -i$. Check: $i \cdot (-i) = -i^2 = 1$.`,
+        ],
+        figure: {
+          alt: "The four powers of i on a circle a quarter turn apart. −1 has remainder 3, so it is 3 quarter turns round from 1 and lands at −i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "point", at: [1, 0], tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 270, label: "3 quarter turns", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, -1], label: "i⁻¹ = −i", labelAt: "se", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C02-Q3",
@@ -91,6 +148,22 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         { key: "B", text: t`$-1$`, correct: false, misconceptionId: "C02-M2", value: "-1" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C02-M3", value: "1" },
       ],
+      solution: {
+        steps: [
+          t`Divide by 4: $37 = 4 \times 9 + 1$, so $r = 1$.`,
+          t`$i^{37} = i^1 = i$.`,
+        ],
+        figure: {
+          alt: "The four powers of i on a circle a quarter turn apart. 37 has remainder 1, so it is 1 quarter turn round from 1 and lands at i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "point", at: [1, 0], tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 90, label: "1 quarter turn", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 1], label: "i³⁷ = i", labelAt: "ne", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C02-Q4",
@@ -103,6 +176,22 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         { key: "C", text: t`$- i$`, correct: false, misconceptionId: "C02-M4", value: "-I" },
         { key: "D", text: t`$-1$`, correct: false, misconceptionId: "C02-M2", value: "-1" },
       ],
+      solution: {
+        steps: [
+          t`Find the remainder between 0 and 3: $-3 = 4 \times (-1) + 1$, so $r = 1$.`,
+          t`$i^{-3} = i^1 = i$. Check: $i^3 \cdot i = i^4 = 1$.`,
+        ],
+        figure: {
+          alt: "The four powers of i on a circle a quarter turn apart. −3 has remainder 1, so it is 1 quarter turn round from 1 and lands at i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "point", at: [1, 0], tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 90, label: "1 quarter turn", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 1], label: "i⁻³ = i", labelAt: "ne", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C02-Q5",
@@ -115,6 +204,22 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         { key: "C", text: t`$i$`, correct: false, misconceptionId: "C02-M1", value: "I" },
         { key: "D", text: t`$1$`, correct: false, misconceptionId: "C02-M2", value: "1" },
       ],
+      solution: {
+        steps: [
+          t`Divide by 4: $99 = 4 \times 24 + 3$, so $r = 3$.`,
+          t`$i^{99} = i^3 = -i$.`,
+        ],
+        figure: {
+          alt: "The four powers of i on a circle a quarter turn apart. 99 has remainder 3, so it is 3 quarter turns round from 1 and lands at −i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "point", at: [1, 0], tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 270, label: "3 quarter turns", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, -1], label: "i⁹⁹ = −i", labelAt: "se", step: 2 },
+          ],
+        },
+      },
     },
   ],
 };
