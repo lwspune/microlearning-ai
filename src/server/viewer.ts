@@ -1,6 +1,7 @@
 import "server-only";
+import { redirect } from "next/navigation";
 import { cache } from "react";
-import type { Role } from "@/lib/auth/routing";
+import { homeFor, pathAllowedFor, type Role } from "@/lib/auth/routing";
 import { createSessionClient } from "@/lib/supabase/server";
 
 export type Profile = { role: Role; fullName: string; academyId: string | null; stage: "school" | "graduate" | null };
@@ -39,3 +40,14 @@ export const currentViewer = cache(async (): Promise<Viewer> => {
     },
   };
 });
+
+/**
+ * A named viewer allowed at `pathname`, or a redirect: to sign in (keeping
+ * where they were going), or to their own area if this one is above their role.
+ */
+export async function requireAreaAt(pathname: string): Promise<{ userId: string; profile: Profile }> {
+  const viewer = await currentViewer();
+  if (!viewer?.profile) redirect(`/login?next=${encodeURIComponent(pathname)}`);
+  if (!pathAllowedFor(pathname, viewer.profile.role)) redirect(homeFor(viewer.profile.role));
+  return { userId: viewer.userId, profile: viewer.profile };
+}
