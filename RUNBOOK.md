@@ -29,9 +29,31 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    **before** writing any concept: it's the riskiest decision.
 2. Pin it with a chapter test (node and edge counts, transitive reduction);
    copy `chapters/complex-numbers/complex-numbers.test.ts`.
-3. Register the chapter in `src/content/chapters/index.ts`.
+3. Register the chapter in `src/content/chapters/index.ts`, with its `group`
+   (`school` = 11th + 12th, `graduate` = Graduates) and `subject`. The group
+   is the concept pool: only that group's courses can use the chapter.
 4. Create `verify/models/<chapter_with_underscores>.py` with a `MODELS` dict.
-5. Then add concepts (section 3).
+5. **Add it to its courses** (section 2a).
+6. Then add concepts (section 3).
+
+## 2a. Courses and coverage
+
+Catalog: `src/content/courses.ts` (groups, courses, which concepts each
+course covers). `src/content/courses.test.ts` validates it on every `npm test`.
+
+1. **Adding a course:** one entry in `courses` (slug, title, short name,
+   group, tagline). With no chapters it shows as "Coming soon".
+2. **Adding a chapter to a course:** `{ chapter, coverage }`, where
+   `coverage.ids` lists the concepts the course covers and `unsure` marks the
+   doubtful ones. Leave `coverage` out only when the course covers the whole
+   chapter.
+3. **Coverage is verified with the owner.** Write it as `status: "draft"`;
+   the owner reviews it on `/review/courses` (concepts × courses grid). Only
+   after they approve, set `status: "approved"`: from then on students see
+   just those concepts. Until then they see the whole chapter.
+4. Concepts covered by exactly one course are unique to it; the grid shows
+   them ("only JEE Main"). Mastery is per concept, so it is shared by every
+   course in the group.
 
 ## 3. Adding a concept (the content loop)
 
@@ -117,6 +139,11 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
   in `src/components/icons.tsx` (decorative, always beside visible text).
 - Headings use `font-display`. Motion uses `motion-safe:` / `fig-in`, so it
   is skipped under reduced motion.
+- Decorative motion (homepage) lives in `globals.css` under
+  `prefers-reduced-motion: no-preference`, animates only transform, opacity
+  and stroke offsets, and starts from a finished page: a hidden starting
+  state applies only under `@media (scripting: enabled)` (`RevealList`), and
+  scroll-linked effects sit inside `@supports (animation-timeline: view())`.
 - Keep the accessible names the e2e relies on ("Next →", "← Back",
   "Check answer", "Mastered ✓", "Not quite."…) when restyling.
 - Figures inside a card are wrapped in `FigureFrame`, which sets
@@ -173,6 +200,8 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Dashed lines rendered solid: `pathLength={1}` (for draw-in) scales the dash array to the whole stroke, and no pilot figure used `dashed` | `pathLength` only on solid strokes; `FigureView.test.tsx` checks dashed elements |
 | A DB test expected `column "solution"` but the Management API returns the error JSON-escaped (`\"solution\"`); seed fixtures built as payload objects were missed by a search for `insert into items` | match error codes and words, not quotes (`/23502: null value in column \W*solution/`); after a schema change, search fixtures for the column in both SQL and payload form |
 | Python's `write_text` writes CRLF on Windows, so generated files differed from the repo's LF (git normalises on commit, but the working copy and diffs don't) | generators pass `newline="\n"`; one-off edit scripts use `read_bytes`/`write_bytes` |
+| Git Bash rewrote a `/` argument into `C:/Program Files/Git/`; with `MSYS_NO_PATHCONV=1`, a `/c/Users/...` output path then went to a new `C:\c\Users\...` folder | pass Windows paths (`C:\...`) to Node scripts and set `MSYS_NO_PATHCONV=1` for URL-path arguments |
+| In `next dev` every page's payload contains the not-found text, so a curl check for it says every route is missing | check routes with `npm run smoke` against a production build |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 
 ## 7. Fine-tuning knobs
@@ -187,6 +216,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Next-question choice | `src/engine/nextItem.ts` | tested |
 | Unlock rule | `src/engine/unlock.ts` | tested; unpublished prerequisites count as known |
 | Mastery gate (off for teacher review, 2026-10-14) | `MASTERY_GATE` in `src/engine/unlock.ts` | `false` opens every published concept; `true` restores the unlock rule. The e2e reads it and checks whichever applies |
+| Course coverage | `coverage.status` in `src/content/courses.ts` | `draft` until the owner approves on `/review/courses` (section 2a) |
+| Homepage hero motion | `LAYER_DELAY`, `COMET_START`, `COMET_CYCLE`, `COMET_RUN` in `src/components/home/ConceptGraphBackdrop.tsx` | `COMET_RUN` must match the 80% stop in `@keyframes cg-comet` |
+| Remembered group | `ml_group` cookie (`src/server/courses.ts`) | moves to the profile with roles (PLAN.md Phase 2) |
 | Min items per concept (5) | `MIN_ITEMS` in `src/content/validate.ts` | |
 | Colour tokens | `src/app/globals.css` | `src/app/tokens.test.ts` computes AA contrast for every pair the UI uses; add a pair with any new text/background combination |
 | Button, card, eyebrow styles | `src/components/ui.ts` | one border colour and one background per class string (variants use `linkCardShape`) |
