@@ -7,7 +7,8 @@ import { card, eyebrow, primaryButton } from "@/components/ui";
 import { chapters } from "@/content/chapters";
 import { type Course, coveredIds, findCourse, withCourse } from "@/content/courses";
 import type { Chapter } from "@/content/types";
-import { currentUserId } from "@/lib/supabase/server";
+import { gateFor } from "@/engine/unlock";
+import { currentViewer } from "@/server/viewer";
 import { refresherFrom } from "@/lessons/refresher";
 import { getConceptSession } from "@/server/learning";
 import { GuestStart } from "../../GuestStart";
@@ -45,7 +46,8 @@ async function ConceptSection({
   const sp = await searchParams;
   const ch = chapters.find((c) => c.slug === chapter)!;
   const course = courseFrom(sp.course, ch);
-  const userId = await currentUserId();
+  const viewer = await currentViewer();
+  const userId = viewer?.userId;
   if (!userId) {
     return <GuestStart next={withCourse(`/learn/${chapter}/${concept}`, course?.slug)} error={sp.error === "signin"} />;
   }
@@ -55,6 +57,7 @@ async function ConceptSection({
   const session = await getConceptSession(chapter, concept, userId, {
     allowLocked: refresher !== null,
     scope: course ? coveredIds(course, ch) : undefined,
+    gate: gateFor(viewer.profile?.role ?? null),
   });
   if (!session) notFound();
   if (session.kind === "locked") {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "@/content/chapters/complex-numbers";
 import type { GraphNode } from "@/content/types";
-import { conceptStates, inScope, MASTERY_GATE } from "./unlock";
+import { conceptStates, gateFor, inScope, MASTERY_GATE } from "./unlock";
 import { nextItem } from "./nextItem";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
@@ -10,6 +10,17 @@ function node(id: string, prereqs: string[] = []): GraphNode {
 
 // A ← B ← C ← D  (D needs C needs B needs A)
 const chain = [node("A"), node("B", ["A"]), node("C", ["B"]), node("D", ["C"])];
+
+describe("gateFor", () => {
+  it("never gates staff: teachers and above open every concept", () => {
+    for (const role of ["teacher", "academy_admin", "superadmin"] as const) expect(gateFor(role)).toBe(false);
+  });
+
+  it("gates students and guests by MASTERY_GATE", () => {
+    expect(gateFor("student")).toBe(MASTERY_GATE);
+    expect(gateFor(null)).toBe(MASTERY_GATE);
+  });
+});
 
 describe("inScope", () => {
   it("keeps only the published concepts a course covers", () => {

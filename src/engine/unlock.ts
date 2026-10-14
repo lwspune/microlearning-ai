@@ -1,5 +1,6 @@
 import type { ConceptId, GraphNode } from "@/content/types";
 import { ancestorsOf } from "@/content/validate";
+import type { Role } from "@/lib/auth/routing";
 
 export type ConceptState = "unpublished" | "locked" | "available" | "learning" | "mastered";
 
@@ -45,4 +46,12 @@ export function conceptStates(
  */
 export function inScope(published: Set<ConceptId>, scope?: Set<ConceptId>): Set<ConceptId> {
   return scope ? new Set([...published].filter((id) => scope.has(id))) : published;
+}
+
+/**
+ * Whether this viewer waits on prerequisites. Staff (teachers and above) open
+ * every concept to teach it; students and guests (no role) follow MASTERY_GATE.
+ */
+export function gateFor(role: Role | null): boolean {
+  return role === null || role === "student" ? MASTERY_GATE : false;
 }

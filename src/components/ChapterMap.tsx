@@ -6,8 +6,8 @@ import { RenderedInlineNodes } from "@/components/RenderedRichText";
 import { card, eyebrow, linkCard, linkCardShape } from "@/components/ui";
 import { withCourse } from "@/content/courses";
 import type { ConceptId } from "@/content/types";
-import type { ConceptState } from "@/engine/unlock";
-import { currentUserId } from "@/lib/supabase/server";
+import { type ConceptState, gateFor } from "@/engine/unlock";
+import { currentViewer } from "@/server/viewer";
 import { getChapterMap, type MapConcept } from "@/server/learning";
 
 /** A chapter's concepts for one learner: progress, review due, what's next, and the whole path. */
@@ -117,7 +117,8 @@ function ConceptCard({ href, c }: { href: string; c: MapConcept }) {
 
 /** `course`: show only the concepts that course covers, and keep the course on every link. */
 export async function ChapterMapSection({ slug, course }: { slug: string; course?: { slug: string; scope: Set<ConceptId> } }) {
-  const map = await getChapterMap(slug, await currentUserId(), course?.scope);
+  const viewer = await currentViewer();
+  const map = await getChapterMap(slug, viewer?.userId ?? null, course?.scope, gateFor(viewer?.profile?.role ?? null));
   if (!map) notFound();
   const hrefOf = (c: MapConcept) => withCourse(`/learn/${slug}/${c.slug}`, course?.slug);
   const all = map.groups.flatMap((g) => g.concepts);

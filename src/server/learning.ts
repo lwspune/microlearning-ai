@@ -106,13 +106,21 @@ async function learnerStates(userId: string | null, conceptIds: string[], codeBy
   return { states, rows: data };
 }
 
-/** `scope`: a course's concepts. The map then shows only those, unlocked within the course. */
-export async function getChapterMap(chapterSlug: string, userId: string | null, scope?: Set<ConceptId>): Promise<ChapterMap | null> {
+/**
+ * `scope`: a course's concepts. The map then shows only those, unlocked within the course.
+ * `gate`: whether this viewer waits on prerequisites (`gateFor`; staff never do).
+ */
+export async function getChapterMap(
+  chapterSlug: string,
+  userId: string | null,
+  scope?: Set<ConceptId>,
+  gate?: boolean,
+): Promise<ChapterMap | null> {
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
   const { chapter, concepts, graph, published, codeById } = loaded;
   const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
-  const computed = conceptStates(graph, inScope(published, scope), states);
+  const computed = conceptStates(graph, inScope(published, scope), states, gate);
   const idByCode = new Map(concepts.map((c) => [c.code, c.id]));
   const now = Date.now();
   const dueCodes = new Set(
@@ -160,7 +168,7 @@ export async function getConceptSession(
   chapterSlug: string,
   conceptSlug: string,
   userId: string,
-  options: { allowLocked?: boolean; scope?: Set<ConceptId> } = {},
+  options: { allowLocked?: boolean; scope?: Set<ConceptId>; gate?: boolean } = {},
 ): Promise<ConceptSession | null> {
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
@@ -171,7 +179,7 @@ export async function getConceptSession(
   const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
   // A concept outside the course (reached by a refresher) unlocks as in the whole chapter.
   const scope = options.scope?.has(concept.code) ? options.scope : undefined;
-  const state = conceptStates(graph, inScope(published, scope), states).get(concept.code)!;
+  const state = conceptStates(graph, inScope(published, scope), states, options.gate).get(concept.code)!;
   if (state === "locked" && !options.allowLocked) return { kind: "locked" };
 
   const db = createAdminClient();
