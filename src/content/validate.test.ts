@@ -172,6 +172,21 @@ describe("validateChapter", () => {
     });
   });
 
+  describe("text", () => {
+    it("rejects control characters, which a mangled escape leaves behind (\\t in \\times becomes a tab)", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = "$2 \times 3$";
+        c3(ch).items[0].solution!.steps[0] = "\frac{1}{2}";
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.reveal: control character U\+0009/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 items\.0\.solution\.steps\.0: control character U\+000C/));
+    });
+
+    it("allows newlines, which separate slide sections", () => {
+      expect(errorsAfter((ch) => (c3(ch).explanation.formal = "One.\n\nTwo."))).toEqual([]);
+    });
+  });
+
   describe("solutions (AUTHORING.md 9)", () => {
     it("requires a solution on every item", () => {
       expect(errorsAfter((ch) => Reflect.deleteProperty(c3(ch).items[0], "solution"))).toContainEqual(expect.stringMatching(/C3-Q1.*needs a step-by-step solution/));

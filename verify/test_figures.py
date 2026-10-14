@@ -115,6 +115,10 @@ class NumberLine(unittest.TestCase):
         self.assertEqual(arrow["from"], [2, 0])
         self.assertGreater(arrow["to"][0], 6)
 
+    def test_the_view_has_no_float_noise(self):
+        fig = number_line("(2, 5]", -1, 5.2, parts=[("(", 2, 5, "]")])
+        self.assertEqual(fig["view"]["x"], [-2.1, 6.3])
+
     def test_ends_are_labelled_with_a_true_minus_sign(self):
         fig = number_line("[-3, 4]", -5, 6, parts=[("[", -3, 4, "]")])
         labels = sorted(e["label"] for e in fig["elements"] if e["kind"] == "label")

@@ -126,12 +126,12 @@ def number_line(alt, lo, hi, parts=(), ticks=None, **extra):
     """
     oo = float("inf")
     pad = 0.9
-    elements = [{"kind": "segment", "from": [lo - pad, 0], "to": [hi + pad, 0], "tone": "muted"}]
+    elements = [{"kind": "segment", "from": [_round(lo - pad), 0], "to": [_round(hi + pad), 0], "tone": "muted"}]
     ends = set()
     for left, a, b, right in parts:
         a_inf, b_inf = a in (-oo, "-oo"), b in (oo, "oo")
-        start = [lo - pad, 0] if a_inf else [a, 0]
-        stop = [hi + pad, 0] if b_inf else [b, 0]
+        start = [_round(lo - pad), 0] if a_inf else [a, 0]
+        stop = [_round(hi + pad), 0] if b_inf else [b, 0]
         if b_inf:
             elements.append({"kind": "vector", "from": start, "to": stop, **extra})
         elif a_inf:
@@ -147,4 +147,5 @@ def number_line(alt, lo, hi, parts=(), ticks=None, **extra):
     for t in sorted(ends if ticks is None else ticks):
         text = str(t).replace("-", "−")
         elements.append({"kind": "label", "at": [t, 0], "label": text, "labelAt": "s", "tone": "muted"})
-    return {"alt": alt, "axes": "none", "view": {"x": [lo - pad - 0.2, hi + pad + 0.2], "y": [-1, 1]}, "elements": elements}
+    view_x = [_round(lo - pad - 0.2), _round(hi + pad + 0.2)]
+    return {"alt": alt, "axes": "none", "view": {"x": view_x, "y": [-1, 1]}, "elements": elements}
