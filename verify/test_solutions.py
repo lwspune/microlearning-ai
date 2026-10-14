@@ -75,6 +75,10 @@ class Literals(unittest.TestCase):
     def test_figure_matches_the_pilot_format(self):
         self.assertEqual(figure_ts(FIG, 6), FIG_TS)
 
+    def test_an_xy_figure_says_so_after_its_alt_text(self):
+        out = figure_ts({**FIG, "axes": "xy"}, 6)
+        self.assertEqual(out, FIG_TS.replace('path.",\n', 'path.",\n        axes: "xy",\n', 1))
+
     def test_solution_steps_are_template_literals(self):
         self.assertEqual(
             solution_ts({"steps": [r"Subtract: $\sqrt{4}$.", "So $2$."]}, 6),

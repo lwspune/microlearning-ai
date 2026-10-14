@@ -104,6 +104,22 @@ describe("FigureView", () => {
     }
   });
 
+  it("labels Argand axes Re and Im, with imaginary ticks, by default", () => {
+    const out = html({ figure: fig });
+    expect(out).toContain(">Re<");
+    expect(out).toContain(">Im<");
+    expect(out).toContain(">2i<");
+  });
+
+  it("labels xy axes x and y, with plain numbers on both", () => {
+    const out = html({ figure: { ...fig, axes: "xy" } });
+    expect(out).toContain(">x<");
+    expect(out).toContain(">y<");
+    expect(out).toContain(">2<");
+    expect(out).not.toContain(">Re<");
+    expect(out).not.toContain(">2i<");
+  });
+
   it("in sequence mode, delays each step's elements in turn", () => {
     const out = html({ figure: fig, stagger: 1 });
     expect(out).toContain("animation-delay:1s");
