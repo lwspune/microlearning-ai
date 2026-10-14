@@ -53,9 +53,12 @@ const TEACHER_USER = `e2e-t-${run}`;
 const STUDENT_USERS = [`e2e-s1-${run}`, `e2e-s2-${run}`];
 let superId: string | null = null;
 
-/** Reads the one-time password for `login` from the results table. */
+/** Reads the one-time password for `login` from the results (cards on phones, a table from sm up). */
 async function passwordFor(page: Page, login: string): Promise<string> {
-  const row = page.getByRole("status").getByRole("row").filter({ hasText: login });
+  const results = page.getByRole("status");
+  const card = results.locator("li:visible").filter({ hasText: login });
+  if (await card.count()) return (await card.locator("dd").nth(1).innerText()).trim();
+  const row = results.getByRole("row").filter({ hasText: login });
   return (await row.locator("td").nth(2).innerText()).trim();
 }
 

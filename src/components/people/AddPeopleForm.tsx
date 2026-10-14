@@ -24,8 +24,22 @@ function Results({ state }: { state: Extract<AddPeopleState, { kind: "done" }> }
           <p className="mt-2 rounded-xl bg-warning-surface px-4 py-3 font-medium">
             Copy or print these passwords now. They&apos;re shown only once and can&apos;t be looked up later.
           </p>
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-[28rem] text-left text-sm">
+          {/* Phones: one card per login, so the password is never scrolled out of view. */}
+          <ul className="mt-4 divide-y divide-border sm:hidden">
+            {state.created.map((p) => (
+              <li key={p.login} className="py-3 text-sm">
+                <p className="font-medium">{p.fullName}</p>
+                <dl className="mt-1 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+                  <dt className="text-muted">Signs in with</dt>
+                  <dd className="font-mono break-all">{p.login}</dd>
+                  <dt className="text-muted">Password</dt>
+                  <dd className="font-mono">{p.password}</dd>
+                </dl>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 hidden overflow-x-auto sm:block">
+            <table className="w-full text-left text-sm">
               <thead className="text-muted">
                 <tr>
                   <th scope="col" className="py-2 pr-4 font-semibold">

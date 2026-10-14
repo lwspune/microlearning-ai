@@ -10,7 +10,7 @@ export function PeopleList({ people }: { people: PersonRow[] }) {
   if (people.length === 0) return <p className={`${card} p-6 text-muted`}>No one here yet.</p>;
   return (
     <div className={`${card} overflow-x-auto`}>
-      <table className="w-full min-w-[28rem] text-left text-sm">
+      <table className="w-full text-left text-sm">
         <thead className="bg-surface text-muted">
           <tr>
             <th scope="col" className="px-5 py-3 font-semibold">
@@ -19,7 +19,7 @@ export function PeopleList({ people }: { people: PersonRow[] }) {
             <th scope="col" className="px-5 py-3 font-semibold">
               Signs in with
             </th>
-            <th scope="col" className="px-5 py-3 font-semibold">
+            <th scope="col" className="hidden px-5 py-3 font-semibold sm:table-cell">
               Role
             </th>
           </tr>
@@ -27,9 +27,13 @@ export function PeopleList({ people }: { people: PersonRow[] }) {
         <tbody className="divide-y divide-border">
           {people.map((p) => (
             <tr key={p.id}>
-              <td className="px-5 py-3 font-medium">{p.fullName}</td>
-              <td className="px-5 py-3 font-mono">{p.username ?? p.email}</td>
-              <td className="px-5 py-3 text-muted">{ROLE[p.role]}</td>
+              <td className="px-5 py-3">
+                <span className="font-medium">{p.fullName}</span>
+                {/* Phones: the role sits under the name instead of in its own column. */}
+                <span className="block text-muted sm:hidden">{ROLE[p.role]}</span>
+              </td>
+              <td className="px-5 py-3 font-mono break-all">{p.username ?? p.email}</td>
+              <td className="hidden px-5 py-3 text-muted sm:table-cell">{ROLE[p.role]}</td>
             </tr>
           ))}
         </tbody>
