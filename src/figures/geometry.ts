@@ -180,3 +180,22 @@ export function ticks(lo: number, hi: number): number[] {
   }
   return [];
 }
+
+/**
+ * Points along one branch of a hyperbola, from below (or left of) the view to
+ * beyond it, so the frame clips the ends. Opening along x:
+ * (cx + branch·a·cosh t, cy + b·sinh t); along y, the same with the axes swapped.
+ */
+export function hyperbolaPoints(view: View, centre: Pt, a: number, b: number, axis: "x" | "y", branch: 1 | -1, samples = 96): Pt[] {
+  const [cx, cy] = centre;
+  const reach = Math.max(...[...view.x, ...view.y].map((v, i) => Math.abs(v - (i < 2 ? cx : cy))));
+  const tMax = Math.asinh((reach * 1.5) / b) + 0.1;
+  const out: Pt[] = [];
+  for (let i = 0; i <= samples; i++) {
+    const t = -tMax + (2 * tMax * i) / samples;
+    const along = branch * a * Math.cosh(t);
+    const across = b * Math.sinh(t);
+    out.push(axis === "x" ? [cx + along, cy + across] : [cx + across, cy + along]);
+  }
+  return out;
+}

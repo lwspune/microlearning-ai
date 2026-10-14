@@ -112,6 +112,14 @@ export type FigureElement = {
   /** Starts at `from` (excluded) in the direction `angle`, in degrees. */
   | { kind: "ray"; from: Pt; angle: number }
   | { kind: "circle"; centre: Pt; r: number; dashed?: boolean }
+  /** Axis-aligned: `rx` along the real axis, `ry` along the imaginary axis. */
+  | { kind: "ellipse"; centre: Pt; rx: number; ry: number; dashed?: boolean }
+  /**
+   * One branch of a hyperbola, clipped to the view. `axis` is the direction
+   * it opens along; `branch` picks the side (+1: right or up). Vertices at
+   * centre ± a along that axis; `b` is the other semi-axis.
+   */
+  | { kind: "hyperbola"; centre: Pt; a: number; b: number; axis: "x" | "y"; branch: 1 | -1; dashed?: boolean }
   /** Angles in degrees, anticlockwise from `from` to `to`. */
   | { kind: "arc"; centre: Pt; r: number; from: number; to: number }
   /** A small arc marking an angle at `at`, anticlockwise from `from` to `to` degrees. */

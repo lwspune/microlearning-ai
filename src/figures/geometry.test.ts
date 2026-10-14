@@ -1,9 +1,37 @@
 import { describe, expect, it } from "vitest";
-import { arcPath, clipLine, clipRay, frameFor, halfPlanePolygon, sectorPath, ticks } from "./geometry";
+import { arcPath, clipLine, clipRay, frameFor, halfPlanePolygon, hyperbolaPoints, sectorPath, ticks } from "./geometry";
 
 const view = { x: [-4, 4] as [number, number], y: [-2, 2] as [number, number] };
 
 const close = (a: number[], b: number[]) => a.forEach((v, i) => expect(v).toBeCloseTo(b[i], 6));
+
+describe("hyperbolaPoints", () => {
+  const big = { x: [-10, 10] as [number, number], y: [-6, 6] as [number, number] };
+
+  it("lies on one branch of the hyperbola", () => {
+    const pts = hyperbolaPoints(big, [1, 0], 3, 2, "x", -1);
+    for (const [x, y] of pts) {
+      expect(((x - 1) / 3) ** 2 - (y / 2) ** 2).toBeCloseTo(1, 6);
+      expect(x).toBeLessThanOrEqual(1 - 3 + 1e-9); // the left branch, through the vertex -2
+    }
+    expect(pts.some(([x, y]) => Math.abs(x + 2) < 1e-9 && Math.abs(y) < 1e-9)).toBe(true);
+  });
+
+  it("runs past the view at both ends, so the frame clips it", () => {
+    const pts = hyperbolaPoints(big, [0, 0], 3, 2, "x", 1);
+    expect(pts[0][1]).toBeLessThan(-6);
+    expect(pts.at(-1)![1]).toBeGreaterThan(6);
+  });
+
+  it("opens up or down for a branch on the imaginary axis", () => {
+    const pts = hyperbolaPoints(big, [0, 0], 2, 1, "y", 1);
+    expect(pts.length).toBeGreaterThan(10);
+    for (const [x, y] of pts) {
+      expect((y / 2) ** 2 - x ** 2).toBeCloseTo(1, 6);
+      expect(y).toBeGreaterThanOrEqual(2 - 1e-9);
+    }
+  });
+});
 
 describe("frameFor", () => {
   it("keeps equal scale on both axes", () => {

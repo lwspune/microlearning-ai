@@ -8,6 +8,7 @@ import {
   fmt,
   frameFor,
   halfPlanePolygon,
+  hyperbolaPoints,
   outsideDiscPath,
   polygonPath,
   sectorPath,
@@ -95,6 +96,10 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
     }
     case "circle":
       return polar(el.centre, el.r, 45);
+    case "ellipse":
+      return [el.centre[0] + el.rx * Math.SQRT1_2, el.centre[1] + el.ry * Math.SQRT1_2];
+    case "hyperbola":
+      return el.axis === "x" ? [el.centre[0] + el.branch * el.a, el.centre[1]] : [el.centre[0], el.centre[1] + el.branch * el.a];
     case "arc":
       return polar(el.centre, el.r, (el.from + el.to) / 2);
     case "angle":
@@ -247,6 +252,18 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
     case "circle": {
       const [cx, cy] = f.px(el.centre);
       return <circle {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} cx={fmt(cx)} cy={fmt(cy)} r={fmt(el.r * f.scale)} />;
+    }
+    case "ellipse": {
+      const [cx, cy] = f.px(el.centre);
+      return (
+        <ellipse {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} cx={fmt(cx)} cy={fmt(cy)} rx={fmt(el.rx * f.scale)} ry={fmt(el.ry * f.scale)} />
+      );
+    }
+    case "hyperbola": {
+      const d = hyperbolaPoints(view, el.centre, el.a, el.b, el.axis, el.branch)
+        .map((p, i) => `${i === 0 ? "M" : "L"} ${f.px(p).map(fmt).join(" ")}`)
+        .join(" ");
+      return <path {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} strokeLinejoin="round" d={d} />;
     }
     case "arc":
       return <path {...drawn(motion)} {...stroke} pathLength={1} d={arcPath(f, el.centre, el.r, el.from, el.to)} />;

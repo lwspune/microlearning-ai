@@ -234,6 +234,12 @@ function elementProblems(el: FigureElement): string[] {
     case "arc":
       if (!finitePts(el.centre) || !finite(el.r)) return ["coordinates must be finite numbers"];
       return el.r > 0 ? [] : ["radius must be positive"];
+    case "ellipse":
+      if (!finitePts(el.centre) || !finite(el.rx, el.ry)) return ["coordinates must be finite numbers"];
+      return el.rx > 0 && el.ry > 0 ? [] : ["semi-axes must be positive"];
+    case "hyperbola":
+      if (!finitePts(el.centre) || !finite(el.a, el.b)) return ["coordinates must be finite numbers"];
+      return el.a > 0 && el.b > 0 ? [] : ["semi-axes must be positive"];
     case "angle":
       return finitePts(el.at) && finite(el.from, el.to) ? [] : ["coordinates must be finite numbers"];
     case "region":

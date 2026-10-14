@@ -248,6 +248,24 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*finite/));
     });
 
+    it("rejects a non-positive ellipse or hyperbola size", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            elements: [
+              { kind: "ellipse", centre: [0, 0], rx: 3, ry: 0 },
+              { kind: "hyperbola", centre: [0, 0], a: -1, b: 2, axis: "x", branch: 1 },
+              { kind: "ellipse", centre: [0, 0], rx: 5, ry: 4 },
+              { kind: "hyperbola", centre: [0, 0], a: 3, b: Number.POSITIVE_INFINITY, axis: "y", branch: -1 },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*positive/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*positive/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 3/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 4.*finite/));
+    });
+
     it("rejects LaTeX in a label (labels are plain text)", () => {
       expect(
         errorsAfter((ch) => (c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "$z$" }] }))),

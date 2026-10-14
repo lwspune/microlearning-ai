@@ -63,6 +63,24 @@ describe("FigureView", () => {
     for (const el of dashed) expect(el).not.toContain("pathLength");
   });
 
+  it("draws an ellipse to scale and a hyperbola branch as a path", () => {
+    const out = html({
+      figure: {
+        ...fig,
+        elements: [
+          { kind: "ellipse", centre: [0, 0], rx: 4, ry: 3, label: "sum = 8" },
+          { kind: "hyperbola", centre: [0, 0], a: 1, b: 1, axis: "x", branch: 1, dashed: true },
+        ],
+      },
+    });
+    // 50px per unit; the centre is at (150, 250).
+    expect(out).toMatch(/<ellipse[^>]*cx="150" cy="250" rx="200" ry="150"/);
+    expect(out).toContain("sum = 8");
+    const path = out.match(/<path[^>]*stroke-dasharray="7 6"[^>]*d="M ([\d. LM-]+)"/);
+    expect(path).not.toBeNull();
+    expect(path![0]).not.toContain("pathLength");
+  });
+
   it("keeps labels inside the frame, even when anchored at its edge", () => {
     // 400 x 300 frame; labels anchored on the top and right edges.
     const out = html({
