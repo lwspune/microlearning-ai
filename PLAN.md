@@ -280,6 +280,21 @@ All 38 live items list the key first, so a student can learn to tap A.
   and item (seed `userId:itemId`, so the order is stable on reload);
   `buildQuestion` sends options in display order with a positional `label`.
 
+### 2. Punctuation wraps away from inline maths (logged 2026-10-14, done 2026-10-14: option a)
+On a phone, a full stop or comma right after `$…$` could wrap onto its own
+line ("so $d = 6$" then "." alone; C02's intuition started a line with ". The
+cycle"). Seen in the Phase B learner screenshots.
+- **Scope:** every rendered text with math followed by punctuation, across
+  all 30 concepts.
+- **Blast radius:** one function, `renderInline` in `src/lib/richText.ts`,
+  used by every learner and review page. No content or database change.
+- **Options:** (a) glue touching punctuation to the math in a `nowrap` span
+  in the renderer, test-first; (b) move punctuation inside `$…$` in ~1,000
+  strings.
+- **Risk/reversibility:** (a) is a few tested lines; reverts in one commit.
+- **Done:** (a), approved. `.,;:!?)]` after and `([` before are kept with the
+  math (`richText.test.ts`, `RenderedRichText.test.tsx`).
+
 ## Content: all 30 concepts (published 2026-10-14)
 
 - All 30 Complex Numbers concepts are approved and seeded: 159 items, 0
