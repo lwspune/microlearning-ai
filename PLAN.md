@@ -312,6 +312,13 @@ on scroll with a cursor spotlight, and a "How it works" line that draws as
 you scroll. CSS + SVG only, no new package; reduced motion shows the finished,
 still page.
 
+**Status (2026-10-14, branch `courses-home`):** built; pending your review
+and merge. Catalog + validator (`src/content/courses.ts`), course pages,
+the remembered group switch, the animated homepage, `/review/courses`.
+Complex Numbers coverage is drafted for all five 11th + 12th courses
+(doubtful cells marked) and **awaits your check**; until you approve a
+course's list, its students see the whole chapter.
+
 **Next (Phase 2, own branch):** roles as in CrackSSB: `student`, `teacher`,
 `academy_admin`, `superadmin`; layered areas; academies and classes; staff
 create logins; teachers replace the global `MASTERY_GATE`.
