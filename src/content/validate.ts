@@ -11,7 +11,23 @@ export const OPTIONS = 4;
  * separately by the sympy verifier. Returns one message per problem; [] = valid.
  */
 export function validateChapter(chapter: Chapter): string[] {
-  return [...validateGraph(chapter.graph), ...validateConcepts(chapter), ...validateTeaching(chapter)];
+  return [...validateGraph(chapter.graph), ...validateConcepts(chapter), ...validateTeaching(chapter), ...chapter.concepts.flatMap(validateText)];
+}
+
+/** Control characters other than newlines: what a mangled escape leaves (the `\t` of `\times` becomes a tab). */
+const CONTROL = /[\u0000-\u0009\u000b-\u001f\u007f]/;
+
+function validateText(c: Concept): string[] {
+  const errors: string[] = [];
+  const walk = (v: unknown, path: string) => {
+    if (typeof v === "string") {
+      const m = CONTROL.exec(v);
+      if (m) errors.push(`${c.id} ${path}: control character U+${m[0].charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")}`);
+    } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}.${i}`));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, path ? `${path}.${k}` : k);
+  };
+  walk(c, "");
+  return errors;
 }
 
 function validateGraph(graph: GraphNode[]): string[] {

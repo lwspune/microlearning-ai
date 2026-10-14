@@ -586,3 +586,10 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
 | 4. Statistics and probability | Measures of Dispersion · Probability |
 | 5. Calculus | Functions · Limits · Continuity · Differentiation |
 | Extra | Complex Numbers: settle the MH Board "unsure" cells against the book |
+
+**Status:**
+- Wave 0 done (branch `std11-algebra`).
+- Wave 1 done 2026-10-15: 65 concepts, 380 items (Sets and Relations 16 ·
+  Sequences and Series 14 · Permutations and Combinations 14 · Binomial
+  Theorem 9 · Determinants and Matrices 12), every key and distractor
+  verified, read through and figure-checked; published and merged.
