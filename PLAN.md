@@ -365,8 +365,9 @@ password is never stored in the repo.
   Decided: **no guardian-consent tracking** (students come through their
   academies); **password resets later**.
   **Status (2026-10-14):** built and checked; pending your review and merge.
-- **R3:** classes (per course) and the teacher dashboard: students ×
-  concepts, top misconceptions, reviews due.
+- **R3 (parked 2026-10-14):** classes and the teacher dashboard. Kept
+  simple for now; the full plan and its open decisions are in
+  [SUGGESTIONS.md](SUGGESTIONS.md).
 - **Later:** self sign-up; Google sign-in; staff reset a student's
   password (own academy only, new one shown once).
 
