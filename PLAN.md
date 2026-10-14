@@ -319,9 +319,41 @@ Complex Numbers coverage is drafted for all five 11th + 12th courses
 (doubtful cells marked) and **awaits your check**; until you approve a
 course's list, its students see the whole chapter.
 
-**Next (Phase 2, own branch):** roles as in CrackSSB: `student`, `teacher`,
-`academy_admin`, `superadmin`; layered areas; academies and classes; staff
-create logins; teachers replace the global `MASTERY_GATE`.
+## Phase 2: roles (approved 2026-10-14)
+
+CrackSSB's model (its DECISIONS.md D23, D25; UI.md §2), adapted. Four roles
+in the database, three areas in the app, layered: a role reaches its own area
+and every area below it. Reaching an area never widens whose rows you read;
+row level security decides that.
+
+| Role | Lands on | Also opens |
+|---|---|---|
+| `student` (guest or named) | `/`, `/learn` | |
+| `teacher` | `/teach` | student area |
+| `academy_admin` | `/teach` (+ Manage) | student area |
+| `superadmin` | `/admin` | `/teach` for a picked academy, student area |
+
+Decisions: named accounts sign in with **email + password**, created by
+staff (Google later). **No self sign-up now**; planned for later, so nothing
+in R1 may block it (a guest could later link an email and get a profile).
+Guests stay anonymous students with no profile. The global `MASTERY_GATE`
+stays off until teachers have logins (Backfill ledger 3). The first
+superadmin is the owner's account, created with `npm run user:create`; the
+password is never stored in the repo.
+
+- **R1 (branch `roles-r1`):** `academies` + `profiles` (role, academy, name,
+  email, stage) with DB-enforced rules (staff need an academy, a superadmin
+  has none, no profile for an anonymous login) and read-only RLS through
+  `private` helpers; `/login` + sign-out; `routing.ts` ported from CrackSSB;
+  the proxy guards `/teach` and `/admin`; a slim header with the area
+  switcher; empty `/teach` and `/admin`; `npm run user:create`; staff always
+  open every concept.
+- **R2:** `create_academy()`, `can_create_person()` (superadmin: anyone;
+  academy admin: teachers and students; teacher: students), staff paste a
+  list, passwords shown once, an existing email is never touched.
+- **R3:** classes (per course) and the teacher dashboard: students ×
+  concepts, top misconceptions, reviews due.
+- **Later:** self sign-up; Google sign-in.
 
 ## Backfill ledger
 
@@ -360,6 +392,18 @@ cycle"). Seen in the Phase B learner screenshots.
 - **Risk/reversibility:** (a) is a few tested lines; reverts in one commit.
 - **Done:** (a), approved. `.,;:!?)]` after and `([` before are kept with the
   math (`richText.test.ts`, `RenderedRichText.test.tsx`).
+
+### 3. The mastery gate is off for everyone (logged 2026-10-14, deferred by the owner)
+`MASTERY_GATE = false` opens every concept to every learner so teachers can
+use the chapter in class. With roles, staff always open everything, so the
+gate can come back on for students.
+- **Scope:** `MASTERY_GATE` in `src/engine/unlock.ts`; every student's map.
+- **Blast radius:** students would see locked concepts again; teachers who
+  still use guest mode in class would too.
+- **Does it really apply:** yes, once teachers sign in as teachers.
+- **Risk/reversibility:** one constant; reverts in one commit.
+- **Recommendation / decision:** keep it off until teachers have logins
+  (R2), then turn it on. Owner agreed 2026-10-14.
 
 ## Content: all 30 concepts (published 2026-10-14)
 
