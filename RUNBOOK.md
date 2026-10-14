@@ -131,6 +131,14 @@ Guests are anonymous logins with no profile.
    (it refuses a missing or unknown item id). For many similar figures, write
    a small Python helper (Phase B used `extreme`, `arg_fig`, `rot_fig`) so
    they stay consistent, then check each one close up.
+5c. **Parallel batches (faster, same gates):** once the models and the item
+   spec are fixed and drafted, one agent per concept writes its content,
+   solutions and figures as a Python `CONCEPT` dict, from
+   [verify/agent-brief.md](verify/agent-brief.md) plus that concept's design
+   (hook, worked example, misconceptions with fallbacks, solution notes). A
+   small combiner sets `CHAPTER` and `CONCEPTS` for `build_concepts.py`. Read
+   every agent's output before building: they catch real design flaws
+   (C05-M2's wording) but also place labels on lines.
 6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
    concept imports and `concepts: [...]` in the chapter's `index.ts` (its
    title, group and subject stay as written); the chapter test fails if any
@@ -141,7 +149,7 @@ Guests are anonymous logins with no profile.
    inline math is kept on its line by the renderer, `renderInline`.) Check every figure in light and dark mode:
    each "After step n" frame, labels clear of axis numbers and of each other.
    A per-figure contact sheet beats a full-page screenshot (figures are too
-   small to judge at full-page scale).
+   small to judge at full-page scale): `node scripts/figure-sheet.mjs <outDir> <chapter> <slug>...`.
 8. **Review:** the user approves on `/review`. Then set `status: "approved"`,
    commit, run `npm run content:seed`.
 9. **Remember the unlock consequence:** publishing a prerequisite *locks*
@@ -236,6 +244,8 @@ Guests are anonymous logins with no profile.
 | Labels on a segment along the real axis, placed below it, sat on the axis numbers | AUTHORING.md item 15; axis numbers get a background halo; labels are clamped into the frame (`FigureView.test.tsx`) |
 | Stopping a background `next start` task left the server running, and the next run tested the stale build on that port | before `next start`, check the port (`Get-NetTCPConnection -LocalPort 3103`) and stop the old process |
 | A long-running dev server kept serving the old stylesheet after `globals.css` changed (new utilities missing) | if a style change doesn't show, probe the computed style, then restart `npm run dev` |
+| The same stale dev server kept a new chapter's empty `index.ts` after `build_index.py` filled it ("13 concepts · 0 authored"), so its review pages 404'd | after generating content files, check the authored count on `/review`; restart `npm run dev` if it lags |
+| A sympy `solve` per line pair made each LPP drafting run take ~11 s | model geometry in exact `Fraction`s (Cramer's rule); convert to sympy only at the model boundary |
 | Two classes for one property in a class string (`bg-card` from a shared card plus `bg-accent-soft`) silently picked one | shared styles have colourless shapes (`linkCardShape`); each variant adds one border and one background |
 | Hiding answer radios with `sr-only` made Playwright unable to click them | an invisible radio covering the whole card (`absolute inset-0 opacity-0`) stays clickable and focusable |
 | A test fixture looked items up by code (`C03-Q1`) and collided with real content once it was published | scope fixture lookups to the fixture's own chapter |
