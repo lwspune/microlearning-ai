@@ -122,7 +122,13 @@ await (async () => {
       await page.getByRole("heading", { name: "Sign in" }).waitFor();
       check(path() === `/login?next=${encodeURIComponent(area)}`, `signed out: ${area} asks to sign in (${path()})`);
     }
-    check(await header.getByRole("link", { name: "Sign in" }).isVisible(), "signed out: the header offers Sign in");
+    // The header's account part streams in after the shell, so wait for it.
+    const signInLink = await header
+      .getByRole("link", { name: "Sign in" })
+      .waitFor({ timeout: 10_000 })
+      .then(() => true)
+      .catch(() => false);
+    check(signInLink, "signed out: the header offers Sign in");
     await shot("r01-login");
     await noSideScroll("login");
 

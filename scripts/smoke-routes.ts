@@ -36,7 +36,8 @@ const courseRoutes = courses.flatMap((c) => [
   ...c.chapters.map((e) => [`/courses/${c.slug}/${e.chapter}`, "ok"]),
 ]) as [string, "ok" | "missing"][];
 
-const routes: [path: string, expect: "ok" | "missing"][] = [
+/** `marker`: text an ok page must contain; required for pages that are noindex on purpose. */
+const routes: [path: string, expect: "ok" | "missing", marker?: string][] = [
   ["/", "ok"],
   ["/manifest.webmanifest", "ok"],
   ["/icon/192", "ok"],
@@ -47,7 +48,8 @@ const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/review/not-a-chapter/division", "missing"],
   ["/learn/not-a-chapter", "missing"],
   ["/review/courses", "ok"],
-  ["/login", "ok"],
+  // Deliberately noindex, so it must prove itself by its own content (see below).
+  ["/login", "ok", "Your academy creates your login."],
   ["/courses/not-a-course", "missing"],
   ["/courses/cds/complex-numbers", "missing"], // a chapter outside the course
   ["/courses/jee-main/not-a-chapter", "missing"],
@@ -59,13 +61,15 @@ const NOT_FOUND_TEXT = "This page could not be found";
 const NOINDEX = /<meta name="robots" content="noindex"/;
 
 let failed = 0;
-for (const [path, expect] of routes) {
+for (const [path, expect, marker] of routes) {
   const res = await fetch(base + path, { redirect: "manual" });
   const body = await res.text();
   const isNotFoundPage = body.includes(NOT_FOUND_TEXT) && NOINDEX.test(body);
+  // Every page's payload carries the not-found text, so a noindex page can't be
+  // told apart from a missing one by that alone: it is checked by its marker.
   const ok =
     expect === "ok"
-      ? res.status === 200 && !isNotFoundPage
+      ? res.status === 200 && (marker ? body.includes(marker) : !isNotFoundPage)
       : (res.status === 404 || res.status === 200) && isNotFoundPage;
   if (!ok) failed++;
   console.log(`${ok ? "ok  " : "FAIL"} ${res.status} ${expect.padEnd(7)} ${path}${expect === "missing" && !isNotFoundPage ? " (no not-found page + noindex)" : ""}`);
