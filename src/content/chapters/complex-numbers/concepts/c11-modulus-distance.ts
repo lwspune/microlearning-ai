@@ -22,6 +22,27 @@ export const c11: Concept = {
         t`Take the modulus: $\sqrt{5^2 + 12^2} = \sqrt{169} = 13$.`,
       ],
       answer: t`$13$`,
+      figure: {
+        alt: "6 + 2i and 1 − 10i are 5 apart across and 12 apart up and down, so the straight line between them is 13 long.",
+        view: { x: [-2, 9], y: [-11.5, 3.5] },
+        elements: [
+          { kind: "point", at: [6, 2], label: "6 + 2i", labelAt: "e" },
+          { kind: "point", at: [1, -10], label: "1 − 10i", labelAt: "e" },
+          { kind: "segment", from: [1, 2], to: [6, 2], label: "5", labelAt: "n", tone: "muted", step: 1 },
+          { kind: "segment", from: [1, -10], to: [1, 2], label: "12", labelAt: "w", tone: "muted", step: 1 },
+          { kind: "segment", from: [1, -10], to: [6, 2], label: "13", labelAt: "e", step: 2 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The point 3 + 4i makes a right triangle with legs 3 and 4. Its distance from the origin, the hypotenuse, is |z| = 5.",
+      view: { x: [-1, 5], y: [-1, 5] },
+      elements: [
+        { kind: "point", at: [3, 4], label: "3 + 4i", labelAt: "ne" },
+        { kind: "segment", from: [0, 0], to: [3, 0], label: "3", labelAt: "n", tone: "muted", step: 1 },
+        { kind: "segment", from: [3, 0], to: [3, 4], label: "4", labelAt: "e", tone: "muted", step: 2 },
+        { kind: "segment", from: [0, 0], to: [3, 4], label: "|z| = 5", labelAt: "nw", step: 3 },
+      ],
     },
     visualSpec: t`Two draggable points with the segment between them and a right triangle beneath it. The legs show the real and imaginary differences, and the hypotenuse is labelled $|z_1 - z_2|$, updating live.`,
   },
@@ -69,6 +90,12 @@ export const c11: Concept = {
         { key: "C", text: t`$\sqrt{119}$`, correct: false, misconceptionId: "C11-M2", value: "sqrt(119)" },
         { key: "D", text: t`$169$`, correct: false, misconceptionId: "C11-M3", value: "169" },
       ],
+      solution: {
+        steps: [
+          t`Square both parts and add: $12^2 + 5^2 = 144 + 25 = 169$.`,
+          t`Take the square root: $\sqrt{169} = 13$.`,
+        ],
+      },
     },
     {
       id: "C11-Q2",
@@ -81,6 +108,12 @@ export const c11: Concept = {
         { key: "C", text: t`$2\sqrt7$`, correct: false, misconceptionId: "C11-M2", value: "2*sqrt(7)" },
         { key: "D", text: t`$100$`, correct: false, misconceptionId: "C11-M3", value: "100" },
       ],
+      solution: {
+        steps: [
+          t`Square both parts and add: $(-8)^2 + (-6)^2 = 64 + 36 = 100$. Squares are never negative.`,
+          t`Take the square root: $\sqrt{100} = 10$.`,
+        ],
+      },
     },
     {
       id: "C11-Q3",
@@ -93,6 +126,23 @@ export const c11: Concept = {
         { key: "C", text: t`$2\sqrt{13} - \sqrt5$`, correct: false, misconceptionId: "C11-M5", value: "2*sqrt(13)-sqrt(5)" },
         { key: "D", text: t`$7$`, correct: false, misconceptionId: "C11-M1", value: "7" },
       ],
+      solution: {
+        steps: [
+          t`Subtract: $(4 + 6i) - (1 + 2i) = 3 + 4i$.`,
+          t`Take the modulus: $\sqrt{3^2 + 4^2} = \sqrt{25} = 5$.`,
+        ],
+        figure: {
+          alt: "1 + 2i and 4 + 6i are 3 apart across and 4 apart up, so the distance between them is 5.",
+          view: { x: [-1, 6], y: [-1, 7] },
+          elements: [
+            { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "s" },
+            { kind: "point", at: [4, 6], label: "4 + 6i", labelAt: "ne" },
+            { kind: "segment", from: [1, 2], to: [4, 2], label: "3", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "segment", from: [4, 2], to: [4, 6], label: "4", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "segment", from: [1, 2], to: [4, 6], label: "5", labelAt: "nw", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C11-Q4",
@@ -105,6 +155,23 @@ export const c11: Concept = {
         { key: "C", text: t`$25$`, correct: false, misconceptionId: "C11-M3", value: "25" },
         { key: "D", text: t`$\sqrt{10} - \sqrt5$`, correct: false, misconceptionId: "C11-M5", value: "sqrt(10)-sqrt(5)" },
       ],
+      solution: {
+        steps: [
+          t`Subtract: $(1 - 3i) - (-2 + i) = 3 - 4i$.`,
+          t`Take the modulus: $\sqrt{3^2 + (-4)^2} = \sqrt{25} = 5$.`,
+        ],
+        figure: {
+          alt: "−2 + i and 1 − 3i are 3 apart across and 4 apart up and down, so the distance between them is 5.",
+          view: { x: [-3.5, 2.5], y: [-4, 2.2] },
+          elements: [
+            { kind: "point", at: [-2, 1], label: "−2 + i", labelAt: "nw" },
+            { kind: "point", at: [1, -3], label: "1 − 3i", labelAt: "e" },
+            { kind: "segment", from: [-2, 1], to: [-2, -3], label: "4", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "segment", from: [-2, -3], to: [1, -3], label: "3", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "segment", from: [-2, 1], to: [1, -3], label: "5", labelAt: "ne", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C11-Q5",
@@ -117,6 +184,12 @@ export const c11: Concept = {
         { key: "C", text: t`$\sqrt{527}$`, correct: false, misconceptionId: "C11-M2", value: "sqrt(527)" },
         { key: "D", text: t`$625$`, correct: false, misconceptionId: "C11-M3", value: "625" },
       ],
+      solution: {
+        steps: [
+          t`Square both parts and add: $24^2 + (-7)^2 = 576 + 49 = 625$.`,
+          t`Take the square root: $\sqrt{625} = 25$.`,
+        ],
+      },
     },
   ],
 };

@@ -25,6 +25,25 @@ None of this works for sums: $\lvert z_1 + z_2 \rvert$ is usually less than $\lv
         t`Multiply: $5\sqrt5\cdot\sqrt2 = 5\sqrt{10}$.`,
       ],
       answer: t`$5\sqrt{10}$`,
+      figure: {
+        alt: "2 + i has length √5 and 1 − i has length √2. (2 + i)³ = 2 + 11i has length 5√5, and the whole product, 13 + 9i, has length 5√10.",
+        view: { x: [-1, 15], y: [-2.5, 12.5] },
+        elements: [
+          { kind: "vector", to: [2, 1], label: "√5", labelAt: "e", tone: "muted", step: 1 },
+          { kind: "vector", to: [1, -1], label: "√2", labelAt: "se", tone: "muted", step: 1 },
+          { kind: "vector", to: [2, 11], label: "(2 + i)³: 5√5", labelAt: "e", tone: "muted", step: 2 },
+          { kind: "vector", to: [13, 9], label: "product: 5√10", labelAt: "nw", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "1 + i has length √2 and 2i has length 2. Their product, −2 + 2i, has length 2√2: the lengths multiply.",
+      view: { x: [-3.2, 2.2], y: [-0.8, 3.2] },
+      elements: [
+        { kind: "vector", to: [1, 1], label: "|1 + i| = √2", labelAt: "se", tone: "muted", step: 1 },
+        { kind: "vector", to: [0, 2], label: "|2i| = 2", labelAt: "e", tone: "muted", step: 2 },
+        { kind: "vector", to: [-2, 2], label: "|(1 + i)·2i| = 2√2", labelAt: "n", step: 3 },
+      ],
     },
     visualSpec: t`Two arrows $z_1$ and $z_2$ with their lengths shown. Their product appears as a third arrow whose length is the product of the two lengths; dragging either arrow updates all three.`,
   },
@@ -71,6 +90,13 @@ None of this works for sums: $\lvert z_1 + z_2 \rvert$ is usually less than $\lv
         { key: "B", text: t`$\sqrt{5} + 25$`, correct: false, misconceptionId: "C12-M2", value: "sqrt(5) + 25" },
         { key: "C", text: t`$10 \sqrt{5}$`, correct: false, misconceptionId: "C12-M3", value: "10*sqrt(5)" },
       ],
+      solution: {
+        steps: [
+          t`Take the modulus of each piece: $\lvert 3 + 4i \rvert = 5$ and $\lvert 1 - 2i \rvert = \sqrt5$.`,
+          t`A power raises the modulus: $\lvert (3 + 4i)^2 \rvert = 5^2 = 25$.`,
+          t`Multiply: $25\sqrt5$.`,
+        ],
+      },
     },
     {
       id: "C12-Q2",
@@ -82,6 +108,13 @@ None of this works for sums: $\lvert z_1 + z_2 \rvert$ is usually less than $\lv
         { key: "B", text: t`$20$`, correct: true, value: "20" },
         { key: "C", text: t`$9$`, correct: false, misconceptionId: "C12-M2", value: "9" },
       ],
+      solution: {
+        steps: [
+          t`Take the modulus of each piece: $\lvert 1 + i \rvert = \sqrt2$ and $\lvert 3 + 4i \rvert = 5$.`,
+          t`A power raises the modulus: $\lvert (1 + i)^4 \rvert = (\sqrt2)^4 = 4$.`,
+          t`Multiply: $4 \times 5 = 20$.`,
+        ],
+      },
     },
     {
       id: "C12-Q3",
@@ -93,6 +126,13 @@ None of this works for sums: $\lvert z_1 + z_2 \rvert$ is usually less than $\lv
         { key: "B", text: t`$3$`, correct: false, misconceptionId: "C12-M3", value: "3" },
         { key: "C", text: t`$4 \sqrt{5}$`, correct: false, misconceptionId: "C12-M4", value: "4*sqrt(5)" },
       ],
+      solution: {
+        steps: [
+          t`Take the modulus of each piece: $\lvert 2 - i \rvert = \sqrt5$ and $\lvert 1 + 2i \rvert = \sqrt5$.`,
+          t`A power raises the modulus: $\lvert (2 - i)^3 \rvert = (\sqrt5)^3 = 5\sqrt5$.`,
+          t`Divide: $\dfrac{5\sqrt5}{\sqrt5} = 5$.`,
+        ],
+      },
     },
     {
       id: "C12-Q4",
@@ -104,6 +144,13 @@ None of this works for sums: $\lvert z_1 + z_2 \rvert$ is usually less than $\lv
         { key: "B", text: t`$-250$`, correct: false, misconceptionId: "C12-M5", value: "-250" },
         { key: "C", text: t`$250$`, correct: true, value: "250" },
       ],
+      solution: {
+        steps: [
+          t`A real factor contributes its size: $\lvert -2 \rvert = 2$.`,
+          t`A power raises the modulus: $\lvert z^3 \rvert = 5^3 = 125$.`,
+          t`Multiply: $2 \times 125 = 250$. A modulus is never negative.`,
+        ],
+      },
     },
     {
       id: "C12-Q5",
@@ -115,6 +162,13 @@ None of this works for sums: $\lvert z_1 + z_2 \rvert$ is usually less than $\lv
         { key: "B", text: t`$18$`, correct: false, misconceptionId: "C12-M3", value: "18" },
         { key: "C", text: t`$36$`, correct: true, value: "36" },
       ],
+      solution: {
+        steps: [
+          t`A power raises the modulus: $\lvert z^3 \rvert = 3^3 = 27$.`,
+          t`$z\bar z = \lvert z \rvert^2 = 9$.`,
+          t`Add: $27 + 9 = 36$. Adding is fine here: these are two real numbers.`,
+        ],
+      },
     },
   ],
 };

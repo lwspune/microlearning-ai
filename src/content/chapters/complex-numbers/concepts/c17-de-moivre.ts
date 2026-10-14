@@ -24,6 +24,26 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         t`$\cos\dfrac{5\pi}3 = \dfrac12$ and $\sin\dfrac{5\pi}3 = -\dfrac{\sqrt3}2$, so the result is $32\left(\dfrac12 - \dfrac{\sqrt3}2 i\right)$.`,
       ],
       answer: t`$16 - 16\sqrt3\,i$`,
+      figure: {
+        alt: "1 + √3i has length 2 at angle π/3. Its fifth power points at angle 5 × π/3 = 5π/3, a sixth of a turn short of a full turn, with length 2⁵ = 32.",
+        view: { x: [-2, 2.5], y: [-2.2, 2.4] },
+        elements: [
+          { kind: "vector", to: [1, 1.732], label: "1 + √3i", labelAt: "ne", step: 1 },
+          { kind: "angle", at: [0, 0], from: 0, to: 60, label: "π/3", tone: "muted", step: 1 },
+          { kind: "angle", at: [0, 0], from: 0, to: 300, label: "5π/3", step: 2 },
+          { kind: "segment", from: [0, 0], to: [1.2, -2.078], dashed: true, tone: "muted", step: 2 },
+          { kind: "label", at: [1.15, -1.6], label: "z⁵ is 32 along here", labelAt: "e", tone: "muted", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "z has length 1.2 at angle π/6. Each power multiplies the length by 1.2 and adds π/6 to the angle: z² is at π/3 and z³ at π/2.",
+      view: { x: [-1, 2.2], y: [-0.5, 2.3] },
+      elements: [
+        { kind: "vector", to: [1.039, 0.6], label: "z", labelAt: "e", tone: "muted", step: 1 },
+        { kind: "vector", to: [0.72, 1.247], label: "z²", labelAt: "ne", tone: "muted", step: 2 },
+        { kind: "vector", to: [0, 1.728], label: "z³", labelAt: "e", step: 3 },
+      ],
     },
     visualSpec: t`An arrow $z$ and its powers $z^2, z^3, \ldots$ drawn as a spiral: each step turns by $\theta$ and stretches by $r$. A slider changes $n$.`,
   },
@@ -64,6 +84,13 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "B", text: t`$8 \sqrt{2}$`, correct: false, misconceptionId: "C17-M3", value: "8*sqrt(2)" },
         { key: "C", text: t`$16$`, correct: true, value: "16" },
       ],
+      solution: {
+        steps: [
+          t`Polar form: $1 + i = \sqrt2\left(\cos\dfrac\pi4 + i\sin\dfrac\pi4\right)$.`,
+          t`De Moivre: $(\sqrt2)^8\left(\cos\dfrac{8\pi}4 + i\sin\dfrac{8\pi}4\right) = 16(\cos 2\pi + i\sin 2\pi)$.`,
+          t`$\cos 2\pi = 1$ and $\sin 2\pi = 0$, so the result is $16$.`,
+        ],
+      },
     },
     {
       id: "C17-Q2",
@@ -75,6 +102,13 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "B", text: t`$-1$`, correct: true, value: "-1" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C17-M2", value: "1" },
       ],
+      solution: {
+        steps: [
+          t`Rewrite in De Moivre's form: $\sin\dfrac\pi6 + i\cos\dfrac\pi6 = \cos\dfrac\pi3 + i\sin\dfrac\pi3$.`,
+          t`De Moivre: $\left(\cos\dfrac\pi3 + i\sin\dfrac\pi3\right)^3 = \cos\pi + i\sin\pi$.`,
+          t`$\cos\pi = -1$ and $\sin\pi = 0$, so the result is $-1$.`,
+        ],
+      },
     },
     {
       id: "C17-Q3",
@@ -86,6 +120,13 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "B", text: t`$-2$`, correct: false, misconceptionId: "C17-M1", value: "-2" },
         { key: "C", text: t`$-12$`, correct: false, misconceptionId: "C17-M3", value: "-12" },
       ],
+      solution: {
+        steps: [
+          t`Polar form: $\sqrt3 + i = 2\left(\cos\dfrac\pi6 + i\sin\dfrac\pi6\right)$.`,
+          t`De Moivre: $2^6\left(\cos\dfrac{6\pi}6 + i\sin\dfrac{6\pi}6\right) = 64(\cos\pi + i\sin\pi)$.`,
+          t`$\cos\pi = -1$ and $\sin\pi = 0$, so the result is $-64$.`,
+        ],
+      },
     },
     {
       id: "C17-Q4",
@@ -97,6 +138,13 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "B", text: t`$- \sqrt{2}$`, correct: false, misconceptionId: "C17-M1", value: "-sqrt(2)" },
         { key: "C", text: t`$- 4 \sqrt{2}$`, correct: false, misconceptionId: "C17-M3", value: "-4*sqrt(2)" },
       ],
+      solution: {
+        steps: [
+          t`Polar form: $1 - i = \sqrt2\left(\cos\left(-\dfrac\pi4\right) + i\sin\left(-\dfrac\pi4\right)\right)$.`,
+          t`De Moivre: $(\sqrt2)^4\big(\cos(-\pi) + i\sin(-\pi)\big) = 4\big(\cos(-\pi) + i\sin(-\pi)\big)$.`,
+          t`$\cos(-\pi) = -1$ and $\sin(-\pi) = 0$, so the result is $-4$.`,
+        ],
+      },
     },
     {
       id: "C17-Q5",
@@ -108,6 +156,13 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "B", text: t`$- \frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: false, misconceptionId: "C17-M4", value: "-1/2 + sqrt(3)*I/2" },
         { key: "C", text: t`$\frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: true, value: "1/2 + sqrt(3)*I/2" },
       ],
+      solution: {
+        steps: [
+          t`Rewrite in De Moivre's form: $\sin\dfrac\pi3 + i\cos\dfrac\pi3 = \cos\dfrac\pi6 + i\sin\dfrac\pi6$.`,
+          t`De Moivre: $\left(\cos\dfrac\pi6 + i\sin\dfrac\pi6\right)^2 = \cos\dfrac\pi3 + i\sin\dfrac\pi3$.`,
+          t`So the result is $\dfrac12 + \dfrac{\sqrt3}{2}i$.`,
+        ],
+      },
     },
     {
       id: "C17-Q6",
@@ -119,6 +174,13 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "B", text: t`$\sqrt{2} \left(-1 + i\right)$`, correct: false, misconceptionId: "C17-M1", value: "sqrt(2)*(-1 + I)" },
         { key: "C", text: t`$3 \sqrt{2} \left(-1 + i\right)$`, correct: false, misconceptionId: "C17-M3", value: "3*sqrt(2)*(-1 + I)" },
       ],
+      solution: {
+        steps: [
+          t`De Moivre: cube the modulus and triple the angle: $2^3\left(\cos\dfrac{3\pi}4 + i\sin\dfrac{3\pi}4\right)$.`,
+          t`$\cos\dfrac{3\pi}4 = -\dfrac{\sqrt2}2$ and $\sin\dfrac{3\pi}4 = \dfrac{\sqrt2}2$.`,
+          t`So the result is $8 \cdot \dfrac{\sqrt2}{2}(-1 + i) = 4\sqrt2(-1 + i)$.`,
+        ],
+      },
     },
   ],
 };

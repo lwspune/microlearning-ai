@@ -24,6 +24,29 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         t`So the quotient is $2\left(\cos\dfrac\pi2 + i\sin\dfrac\pi2\right) = 2i$.`,
       ],
       answer: t`$2i$`,
+      figure: {
+        alt: "The top number has length 6 at angle 2π/3 and the bottom has length 3 at angle π/6. The quotient has length 6 ÷ 3 = 2, at the angle between them, π/2: it is 2i.",
+        view: { x: [-4, 4], y: [-1, 6.3] },
+        elements: [
+          { kind: "vector", to: [-3, 5.196], tone: "muted" },
+          { kind: "label", at: [-1.5, 2.598], label: "top: length 6", labelAt: "w", tone: "muted" },
+          { kind: "vector", to: [2.598, 1.5], tone: "muted" },
+          { kind: "label", at: [1.299, 0.75], label: "bottom: length 3", labelAt: "se", tone: "muted" },
+          { kind: "angle", at: [0, 0], from: 30, to: 120, label: "π/2", step: 2 },
+          { kind: "vector", to: [0, 2], label: "2i", labelAt: "e", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "z₁ has length 2 at angle π/6, and z₂ has length 1.5 at angle π/3. Their product has length 2 × 1.5 = 3 at angle π/6 + π/3 = π/2: it is 3i.",
+      view: { x: [-1.5, 3.2], y: [-0.6, 3.6] },
+      elements: [
+        { kind: "vector", to: [1.732, 1], label: "z₁", labelAt: "e", tone: "muted", step: 1 },
+        { kind: "angle", at: [0, 0], from: 0, to: 30, label: "π/6", tone: "muted", step: 1 },
+        { kind: "vector", to: [0.75, 1.299], label: "z₂", labelAt: "nw", tone: "muted", step: 2 },
+        { kind: "angle", at: [0, 0], from: 30, to: 90, label: "+ π/3", step: 3 },
+        { kind: "vector", to: [0, 3], label: "z₁z₂ = 3i", labelAt: "e", step: 3 },
+      ],
     },
     visualSpec: t`Two arrows $z_1$ and $z_2$ with their angles. Their product appears as a third arrow whose angle is the sum and whose length is the product; a toggle switches to the quotient.`,
   },
@@ -64,6 +87,13 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "B", text: t`$6\left(\cos \frac{\pi}{6} + i\sin \frac{\pi}{6}\right)$`, correct: false, misconceptionId: "C16-M2", value: "3*sqrt(3) + 3*I" },
         { key: "C", text: t`$6\left(\cos \frac{\pi}{2} + i\sin \frac{\pi}{2}\right)$`, correct: true, value: "6*I" },
       ],
+      solution: {
+        steps: [
+          t`Multiply the moduli: $2 \times 3 = 6$.`,
+          t`Add the arguments: $\dfrac\pi3 + \dfrac\pi6 = \dfrac\pi2$.`,
+          t`So the product is $6\left(\cos\dfrac\pi2 + i\sin\dfrac\pi2\right)$, which is $6i$.`,
+        ],
+      },
     },
     {
       id: "C16-Q2",
@@ -76,6 +106,13 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "C", text: t`$4\left(\cos \left(- \frac{5 \pi}{6}\right) + i\sin \left(- \frac{5 \pi}{6}\right)\right)$`, correct: false, misconceptionId: "C16-M2", value: "-2*sqrt(3) - 2*I" },
         { key: "D", text: t`$4\left(\cos \left(- \frac{\pi}{2}\right) + i\sin \left(- \frac{\pi}{2}\right)\right)$`, correct: false, misconceptionId: "C16-M3", value: "-4*I" },
       ],
+      solution: {
+        steps: [
+          t`Divide the moduli: $\dfrac82 = 4$.`,
+          t`Subtract the arguments, top minus bottom: $\dfrac{5\pi}6 - \dfrac\pi3 = \dfrac\pi2$.`,
+          t`So the quotient is $4\left(\cos\dfrac\pi2 + i\sin\dfrac\pi2\right)$, which is $4i$.`,
+        ],
+      },
     },
     {
       id: "C16-Q3",
@@ -87,6 +124,13 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "B", text: t`$2 \sqrt{2}\left(\cos \frac{\pi}{12} + i\sin \frac{\pi}{12}\right)$`, correct: false, misconceptionId: "C16-M2", value: "1 - I + sqrt(3)*(1 + I)" },
         { key: "C", text: t`$2 \sqrt{2}\left(\cos \frac{5 \pi}{12} + i\sin \frac{5 \pi}{12}\right)$`, correct: true, value: "-1 + I + sqrt(3)*(1 + I)" },
       ],
+      solution: {
+        steps: [
+          t`Polar forms: $1 + i = \sqrt2\left(\cos\dfrac\pi4 + i\sin\dfrac\pi4\right)$ and $\sqrt3 + i = 2\left(\cos\dfrac\pi6 + i\sin\dfrac\pi6\right)$.`,
+          t`Multiply the moduli: $\sqrt2 \times 2 = 2\sqrt2$.`,
+          t`Add the arguments: $\dfrac\pi4 + \dfrac\pi6 = \dfrac{5\pi}{12}$, so the product is $2\sqrt2\left(\cos\dfrac{5\pi}{12} + i\sin\dfrac{5\pi}{12}\right)$.`,
+        ],
+      },
     },
     {
       id: "C16-Q4",
@@ -99,6 +143,13 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "C", text: t`$\sqrt{2}\left(\cos \frac{7 \pi}{12} + i\sin \frac{7 \pi}{12}\right)$`, correct: false, misconceptionId: "C16-M2", value: "(1 - I)*(-sqrt(3) + I)/2" },
         { key: "D", text: t`$\sqrt{2}\left(\cos \left(- \frac{\pi}{12}\right) + i\sin \left(- \frac{\pi}{12}\right)\right)$`, correct: false, misconceptionId: "C16-M3", value: "(1 - I)*(sqrt(3) + I)/2" },
       ],
+      solution: {
+        steps: [
+          t`Polar forms: $1 + \sqrt3\,i = 2\left(\cos\dfrac\pi3 + i\sin\dfrac\pi3\right)$ and $1 + i = \sqrt2\left(\cos\dfrac\pi4 + i\sin\dfrac\pi4\right)$.`,
+          t`Divide the moduli: $\dfrac{2}{\sqrt2} = \sqrt2$.`,
+          t`Subtract the arguments, top minus bottom: $\dfrac\pi3 - \dfrac\pi4 = \dfrac\pi{12}$, so the quotient is $\sqrt2\left(\cos\dfrac\pi{12} + i\sin\dfrac\pi{12}\right)$.`,
+        ],
+      },
     },
     {
       id: "C16-Q5",
@@ -110,6 +161,21 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "B", text: t`$- \frac{3 \pi}{4}$`, correct: true, value: "-3*pi/4" },
         { key: "C", text: t`$\frac{\pi}{4}$`, correct: false, misconceptionId: "C16-M2", value: "pi/4" },
       ],
+      solution: {
+        steps: [
+          t`Add the arguments: $\dfrac{3\pi}4 + \dfrac\pi2 = \dfrac{5\pi}4$.`,
+          t`$\dfrac{5\pi}4$ is outside $(-\pi, \pi]$, so subtract $2\pi$: $\dfrac{5\pi}4 - 2\pi = -\dfrac{3\pi}4$.`,
+        ],
+        figure: {
+          alt: "An angle of 5π/4 anticlockwise ends in the same direction as −3π/4 clockwise. The principal argument is −3π/4.",
+          view: { x: [-1.8, 1.8], y: [-1.6, 1.6] },
+          elements: [
+            { kind: "vector", to: [-0.849, -0.849], step: 1 },
+            { kind: "angle", at: [0, 0], from: 0, to: 225, label: "5π/4", tone: "muted", step: 1 },
+            { kind: "angle", at: [0, 0], from: -135, to: 0, label: "−3π/4", step: 2 },
+          ],
+        },
+      },
     },
   ],
 };
