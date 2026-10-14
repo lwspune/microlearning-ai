@@ -18,7 +18,7 @@ import {
 } from "./geometry";
 
 /**
- * An Argand-plane figure as SVG. Plain markup with no browser APIs, so it renders
+ * A figure on the Argand plane, the xy-plane or a bare frame (Venn diagrams) as SVG. Plain markup with no browser APIs, so it renders
  * on the server and in client components alike.
  *
  * Steps (see FigureElement.step):
@@ -102,6 +102,8 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
       return el.axis === "x" ? [el.centre[0] + el.branch * el.a, el.centre[1]] : [el.centre[0], el.centre[1] + el.branch * el.a];
     case "arc":
       return polar(el.centre, el.r, (el.from + el.to) / 2);
+    case "curve":
+      return el.points.findLast(([x, y]) => x >= view.x[0] && x <= view.x[1] && y >= view.y[0] && y <= view.y[1]) ?? null;
     case "angle":
       return polar(el.at, (ANGLE_MARK_PX * 1.5) / f.scale, (el.from + el.to) / 2);
     case "region":
@@ -268,6 +270,10 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
     }
     case "arc":
       return <path {...drawn(motion)} {...stroke} pathLength={1} d={arcPath(f, el.centre, el.r, el.from, el.to)} />;
+    case "curve": {
+      const d = el.points.map((p, i) => `${i === 0 ? "M" : "L"} ${f.px(p).map(fmt).join(" ")}`).join(" ");
+      return <path {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} strokeLinejoin="round" d={d} />;
+    }
     case "angle":
       return <path {...drawn(motion)} {...stroke} strokeWidth={1.75} pathLength={1} d={arcPath(f, el.at, ANGLE_MARK_PX / f.scale, el.from, el.to)} />;
     case "label":
@@ -330,7 +336,7 @@ export function FigureView(props: Props) {
       {regions.map(({ el, i, motion }) => (
         <ElementView key={i} el={el} id={`${id}-r${i}`} view={figure.view} f={f} motion={motion} />
       ))}
-      <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />
+      {figure.axes !== "none" && <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />}
       {others.map(({ el, i, motion }) => (
         <ElementView key={i} el={el} id={`${id}-e${i}`} view={figure.view} f={f} motion={motion} />
       ))}

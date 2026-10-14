@@ -81,6 +81,30 @@ describe("FigureView", () => {
     expect(path![0]).not.toContain("pathLength");
   });
 
+  it("draws a curve as one path through its points, labelled at its last visible point", () => {
+    const out = html({
+      figure: {
+        ...fig,
+        elements: [{ kind: "curve", points: [[0, 0], [1, 1], [2, 4], [3, 9]], label: "y = x²" }],
+      },
+    });
+    // 50px per unit from (-3, 5): (0,0) → (150, 250), (1,1) → (200, 200), (2,4) → (250, 50).
+    expect(out).toMatch(/<path[^>]*d="M 150 250 L 200 200 L 250 50 L 300 -200"/);
+    // (3, 9) is above the view, so the label sits at (2, 4), its last visible point.
+    const label = out.match(/<text x="([\d.]+)" y="([\d.]+)"[^>]*>y = x²<\/text>/);
+    expect(label).not.toBeNull();
+    expect(+label![1]).toBeGreaterThan(250);
+    expect(+label![1]).toBeLessThan(270);
+  });
+
+  it("draws no axes or grid when axes is none (Venn diagrams)", () => {
+    const out = html({ figure: { ...fig, axes: "none" } });
+    expect(out).not.toContain(">Re<");
+    expect(out).not.toContain(">x<");
+    expect(out).not.toContain('stroke="var(--border)"');
+    expect(out).toContain("3 + 4i");
+  });
+
   it("keeps labels inside the frame, even when anchored at its edge", () => {
     // 400 x 300 frame; labels anchored on the top and right edges.
     const out = html({

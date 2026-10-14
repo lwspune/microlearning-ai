@@ -244,6 +244,9 @@ function elementProblems(el: FigureElement): string[] {
       return el.a > 0 && el.b > 0 ? [] : ["semi-axes must be positive"];
     case "angle":
       return finitePts(el.at) && finite(el.from, el.to) ? [] : ["coordinates must be finite numbers"];
+    case "curve":
+      if (el.points.length < 2) return ["a curve needs at least two points"];
+      return finitePts(...el.points) ? [] : ["coordinates must be finite numbers"];
     case "region":
       if (el.within.length === 0) return ["a region needs at least one shape"];
       return el.within.flatMap(shapeProblems);

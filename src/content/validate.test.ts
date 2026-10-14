@@ -280,6 +280,22 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 4.*finite/));
     });
 
+    it("rejects a curve with fewer than two points or a non-finite one", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            elements: [
+              { kind: "curve", points: [[0, 0]] },
+              { kind: "curve", points: [[0, 0], [1, Number.NaN]] },
+              { kind: "curve", points: [[0, 0], [1, 1], [2, 4]] },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*at least two points/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*finite/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 3/));
+    });
+
     it("rejects LaTeX in a label (labels are plain text)", () => {
       expect(
         errorsAfter((ch) => (c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "$z$" }] }))),
