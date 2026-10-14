@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Minimise $Z = 2x + 3y$ subject to $x + y \ge 3$, $x \le 6$, $y \le 4$, $x, y \ge 0$. **Is the minimum $0$, at the origin?**`,
     reveal: t`No: $(0, 0)$ breaks $x + y \ge 3$, so it is not in the region and $Z = 0$ is never reached. Evaluate $Z$ at the corners instead: $(3, 0)$ gives $6$, $(0, 3)$ gives $9$, $(6, 0)$ and $(0, 4)$ give $12$, $(6, 4)$ gives $24$. The minimum is $6$, at $(3, 0)$.`,

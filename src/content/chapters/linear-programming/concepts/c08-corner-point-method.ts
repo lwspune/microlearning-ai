@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$Z = 2x + 3y$ over the region $3x + y \le 12$, $x + 3y \le 12$, $x, y \ge 0$. **Could the maximum be somewhere inside the region?**`,
     reveal: t`No. From any inside point, step right: $Z$ goes up. So an inside point is never the best, and you keep improving until you hit the boundary. Along an edge $Z$ changes steadily, so the best point is at an end of the edge: a corner. Here the corners give $0$, $8$, $15$ and $12$, so the maximum is $15$, at $(3, 3)$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The lines $x + y = 8$ and $y = 3$ cross at $(5, 3)$. **Is that a corner of the region $x + y \le 8$, $y \le 3$, $x \le 4$, $x, y \ge 0$?**`,
     reveal: t`No: $x = 5$ breaks $x \le 4$, so $(5, 3)$ is outside the region. A crossing is a corner only if it satisfies every constraint. Here $x + y = 8$ never even touches the region: its corners are $(0, 0)$, $(4, 0)$, $(4, 3)$ and $(0, 3)$.`,

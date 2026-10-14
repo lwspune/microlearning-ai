@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shaded region is bounded by the lines $2x + 3y = 6$, $x - 2y = 4$ and $x + y = 7$. **To write its system, do you need to test every line?**`,
     reveal: t`Yes, every line needs its own sign, but one point inside the shading settles them all at once. At $(2, 2)$: $2x + 3y = 10 \ge 6$, $x - 2y = -2 \le 4$, $x + y = 4 \le 7$. So the system is $2x + 3y \ge 6$, $x - 2y \le 4$, $x + y \le 7$, $x, y \ge 0$.`,

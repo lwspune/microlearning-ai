@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The region $x + y \ge 5$, $x, y \ge 0$. **Is there a largest $x$ in it?**`,
     reveal: t`No. $(100, 0)$, $(1000, 0)$, … are all in it. The region runs off to infinity: it is **unbounded**.`,

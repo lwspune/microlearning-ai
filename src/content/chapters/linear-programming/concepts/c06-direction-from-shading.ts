@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The shaded half-plane lies **above** the line $x - y = 1$. Shading above means $\ge$, so is it $x - y \ge 1$?`,
     reveal: t`No. The origin is shaded, and there $0 - 0 = 0 < 1$. So the shading is $x - y \le 1$. Because of the $-y$, moving up makes $x - y$ smaller, so above is the $\le$ side here.`,

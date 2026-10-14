@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The line $x + y = 5$ splits the plane in two. **Which half is $x + y \le 5$?**`,
     reveal: t`Try the origin: $0 + 0 \le 5$ is true. So it is the half containing the origin, plus the line itself.`,

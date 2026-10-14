@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bakery makes cakes and pastries. A cake uses $3$ eggs and a pastry $1$; there are $30$ eggs. Profit is ₹$50$ per cake and ₹$20$ per pastry. **What are $x$ and $y$?**`,
     reveal: t`Name the decision variables first: $x$ = number of cakes, $y$ = number of pastries. Everything else is written in them: eggs give $3x + y \le 30$, and profit is $Z = 50x + 20y$.`,

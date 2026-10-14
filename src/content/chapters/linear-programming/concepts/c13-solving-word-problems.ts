@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c13: Concept = {
   id: "C13",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A word problem with two products and two limits. **Where does the best plan lie?**`,
     reveal: t`At a corner of the feasible region, and often at the one where **both limits are used up exactly**. A plan that leaves spare time or material can usually be pushed further.`,

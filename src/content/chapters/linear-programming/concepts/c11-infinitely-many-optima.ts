@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Maximise $Z = 2x + y$ over $2x + y \le 8$, $x \le 3$, $y \le 4$, $x, y \ge 0$. The corners $(3, 2)$ and $(2, 4)$ both give the largest value, $Z = 8$. **How many points of the region give the maximum?**`,
     reveal: t`Infinitely many. Both corners lie on the edge $2x + y = 8$, and $Z = 2x + y$ equals $8$ at **every** point of that edge, such as $(2.5, 3)$. The whole segment between the two corners is optimal, not just its ends.`,

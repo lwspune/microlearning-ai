@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shop makes $x$ chairs and $y$ tables a day. **Can $x$ be $-2$?**`,
     reveal: t`No: you can't make $-2$ chairs. That's why every LPP includes $x \ge 0$ and $y \ge 0$, which keep you in the first quadrant.`,

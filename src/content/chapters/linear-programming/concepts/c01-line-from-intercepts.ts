@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`To draw $2x + 5y = 20$ you need just two points. **Which two are quickest to find?**`,
     reveal: t`Where it crosses the axes. Put $y = 0$: $2x = 20$, so $(10, 0)$. Put $x = 0$: $5y = 20$, so $(0, 4)$. Join them.`,

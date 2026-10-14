@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Maximise $Z = x + y$ over $x + y \ge 3$, $x, y \ge 0$. The corners $(3, 0)$ and $(0, 3)$ both give $Z = 3$. **Is $3$ the maximum?**`,
     reveal: t`No. $(100, 0)$ is in the region and gives $Z = 100$. The region runs off and $Z$ grows without limit: there is **no maximum**. But $3$ **is** the minimum, since every point has $x + y \ge 3$.`,

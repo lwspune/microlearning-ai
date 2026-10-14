@@ -52,11 +52,11 @@ const cnMaharashtra: Coverage = {
   status: "draft",
 };
 
-// Linear Programming coverage, drafted 2026-10-14; awaiting the owner's check. Class 12 in both
-// boards and MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it.
+// Linear Programming coverage, approved by the owner 2026-10-15. Class 12 in both boards and
+// MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it.
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
-  coverage: { ids: range(1, 13), unsure, status: "draft" },
+  coverage: { ids: range(1, 13), unsure, status: "approved" },
 });
 
 export const courses: Course[] = [
