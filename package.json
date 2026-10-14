@@ -18,7 +18,8 @@
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --linked --schema public > src/db/types.ts",
     "content:seed": "node scripts/seed-content.ts",
-    "e2e": "node e2e/golden-path.ts"
+    "e2e": "node e2e/golden-path.ts",
+    "user:create": "node scripts/user-create.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
