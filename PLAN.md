@@ -309,6 +309,13 @@ worked slides; "See the solution" after answering; review pages show figures
 per step. Pilot: C10 Argand plane and C24 circle locus. The other 28 concepts
 are in `backfill.ts`.
 
+**Phase B status (branch `phase-b-content`):** tooling done
+(`verify/add_solutions.py`, `build_concepts.py` emits figures and
+solutions). Batch 1, Algebra C01–C09: written, pending your review on
+`/review`. Then batch 2 Geometry & polar (C11–C18), batch 3 Roots
+(C19–C23), batch 4 Loci (C25–C30, after the ellipse and hyperbola
+elements). Seed (`npm run content:seed`) after each approved batch.
+
 ## Premium look and feel (branch `premium-ui`, 2026-10-14)
 
 "Calm editorial" direction, chosen by you: warm paper and ink palette, deep
