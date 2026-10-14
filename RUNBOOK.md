@@ -63,11 +63,12 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 5b. **Solutions and figures** (AUTHORING.md items 9–15): a 2+ step
    `solution` on every item; for a `visual` concept, figures on the idea
    slide, the worked example, and every point/locus solution, with element
-   `step`s matching the steps. `build_concepts.py` doesn't write these yet:
-   the C10/C24 pilot inserted them with a script
-   (`pilot_figures.py` pattern: insert the TS literal after each item's
-   options). Teach `build_concepts.py` to emit them before Phase B.
-   Then remove the concept from `backfill.ts`.
+   `step`s matching the steps. Write them as data (Python dicts with the
+   `Figure` keys from `types.ts`): a new concept takes `figure`,
+   `worked["figure"]` and `solutions` in its `build_concepts.py` entry; an
+   existing one gets them with `python verify/add_solutions.py <data.py>`,
+   which inserts them in place and removes the concept from `backfill.ts`.
+   Both refuse a missing or unknown item id.
 6. Register: `python verify/build_index.py` regenerates the chapter's
    `index.ts`; the chapter test fails if any concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
@@ -169,6 +170,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | Hiding answer radios with `sr-only` made Playwright unable to click them | an invisible radio covering the whole card (`absolute inset-0 opacity-0`) stays clickable and focusable |
 | A test fixture looked items up by code (`C03-Q1`) and collided with real content once it was published | scope fixture lookups to the fixture's own chapter |
 | `npm run x \| tail` reports `tail`'s exit code and can cut off the pass/fail summary, so a check looked "done" without its result | grep for the summary line (`Tests `, `items checked`) and read `${PIPESTATUS[0]}` before reporting a gate as passed |
+| Python's `write_text` writes CRLF on Windows, so generated files differed from the repo's LF (git normalises on commit, but the working copy and diffs don't) | generators pass `newline="\n"`; one-off edit scripts use `read_bytes`/`write_bytes` |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 
 ## 7. Fine-tuning knobs

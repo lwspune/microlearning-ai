@@ -11,19 +11,20 @@ Each CONCEPTS entry:
        hook=(prompt, reveal), intuition=..., formal=..., visual=...,
        worked=dict(prompt=..., steps=[...], answer=...),
        misconceptions=[(id, mistake, remediation, fallback)],   # fallback: ("concept", "C01") | ("ext", "topic") | ("none",)
-       engine_notes=[...])                                         # optional
+       engine_notes=[...],                                         # optional
+       figure=..., solutions={"C01-Q1": dict(steps=[...], figure=...)})
+  figure (idea slide), worked["figure"] and each solution's figure are
+  optional; solutions, when given, must cover every item (AUTHORING.md 9-15).
 """
 import importlib.util
 import re
 import sys
 from pathlib import Path
 
+from add_solutions import add_to_concept
+from ts_literal import t
+
 OUT = Path("src/content/chapters/complex-numbers/concepts")
-
-
-def t(s: str) -> str:
-    assert "`" not in s and "${" not in s, f"can't embed {s[:40]!r} in a template literal"
-    return f"t`{s}`"
 
 
 def q(s: str) -> str:
@@ -63,7 +64,7 @@ def build(c: dict, items: list[str]) -> str:
     notes = ""
     if c.get("engine_notes"):
         notes = "  engineNotes: [\n" + "\n".join(f"    {q(n)}," for n in c["engine_notes"]) + "\n  ],\n"
-    return f"""import type {{ Concept }} from "../../../types.ts";
+    out = f"""import type {{ Concept }} from "../../../types.ts";
 
 const t = String.raw;
 
@@ -94,6 +95,14 @@ export const {c["var"]}: Concept = {{
   ],
 }};
 """
+    if not c.get("solutions"):
+        assert not c.get("figure") and not c["worked"].get("figure"), "figures come with solutions"
+        return out
+    return add_to_concept(out, {
+        "figure": c.get("figure"),
+        "worked_figure": c["worked"].get("figure"),
+        "solutions": c["solutions"],
+    })
 
 
 if __name__ == "__main__":
@@ -104,5 +113,5 @@ if __name__ == "__main__":
     for c in content.CONCEPTS:
         assert c["id"] in items, f"no items for {c['id']}"
         path = OUT / f"{c['file']}.ts"
-        path.write_text(build(c, items[c["id"]]), encoding="utf-8")
+        path.write_text(build(c, items[c["id"]]), encoding="utf-8", newline="\n")
         print("wrote", path, f"({len(items[c['id']])} items)")
