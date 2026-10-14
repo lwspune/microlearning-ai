@@ -5,11 +5,12 @@ import type { Role } from "@/lib/auth/routing";
 export type ConceptState = "unpublished" | "locked" | "available" | "learning" | "mastered";
 
 /**
- * Whether a concept waits for its prerequisites to be mastered. Off while
- * teachers review the chapters, so any published concept opens directly;
- * mastery, review and refresher routing still run. Set to true to restore.
+ * Whether a student's concept waits for its prerequisites to be mastered.
+ * Staff never wait (`gateFor`): teachers sign in and open any concept to teach
+ * it. Set to false to open every concept to everyone (it was, 2026-10-14,
+ * while teachers reviewed the chapters as guests).
  */
-export const MASTERY_GATE = false;
+export const MASTERY_GATE = true;
 
 /**
  * Each concept's state for one learner. With the gate on, a published concept

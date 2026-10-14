@@ -33,8 +33,13 @@ describe("inScope", () => {
 });
 
 describe("conceptStates", () => {
-  it("is ungated for now, so teachers can open any concept (MASTERY_GATE)", () => {
-    expect(MASTERY_GATE).toBe(false);
+  it("gates students again now that teachers sign in and open everything themselves (MASTERY_GATE)", () => {
+    expect(MASTERY_GATE).toBe(true);
+  });
+
+  it("students wait on prerequisites; teachers don't", () => {
+    expect(gateFor("student")).toBe(true);
+    expect(gateFor("teacher")).toBe(false);
   });
 
   it("with the gate off, opens every published concept whatever the learner has mastered", () => {
