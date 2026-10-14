@@ -98,7 +98,7 @@ async function StudentContent({ params }: { params: PageProps<"/teach/students/[
                   {g.concepts.map((c) => {
                     const s = STATUS[c.status];
                     return (
-                      <li key={c.code} className={`${card} flex items-center justify-between gap-3 px-4 py-3`}>
+                      <li key={c.code} className={`${card} flex min-w-0 items-center justify-between gap-3 px-4 py-3`}>
                         <span className="min-w-0 truncate">{c.title}</span>
                         <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${s.className}`}>
                           <span aria-hidden="true">{s.mark} </span>
