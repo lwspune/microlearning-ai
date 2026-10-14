@@ -85,6 +85,13 @@ Divide **both** parts by $2a$.
         { key: "C", text: t`$-2 \pm 3 i$`, correct: false, misconceptionId: "C19-M3", value: "-2 + 3*I" },
         { key: "D", text: t`$2 \pm 3 i$`, correct: true, value: "2 + 3*I" },
       ],
+      solution: {
+        steps: [
+          t`$D = 16 - 52 = -36$, so $\sqrt{-D} = 6$.`,
+          t`$x = \dfrac{4 \pm 6i}{2}$.`,
+          t`Divide both parts by 2: $x = 2 \pm 3i$.`,
+        ],
+      },
     },
     {
       id: "C19-Q2",
@@ -97,6 +104,13 @@ Divide **both** parts by $2a$.
         { key: "C", text: t`$- \frac{1}{2} \pm 6 i$`, correct: false, misconceptionId: "C19-M2", value: "-1/2 + 6*I" },
         { key: "D", text: t`$\frac{1}{2} \pm \frac{3 i}{2}$`, correct: false, misconceptionId: "C19-M3", value: "1/2 + 3*I/2" },
       ],
+      solution: {
+        steps: [
+          t`$D = 4 - 40 = -36$, so $\sqrt{-D} = 6$.`,
+          t`$x = \dfrac{-2 \pm 6i}{4}$.`,
+          t`Divide both parts by 4: $x = -\dfrac12 \pm \dfrac32 i$.`,
+        ],
+      },
     },
     {
       id: "C19-Q3",
@@ -108,6 +122,12 @@ Divide **both** parts by $2a$.
         { key: "B", text: t`$-3 + 2 i$`, correct: false, misconceptionId: "C19-M4", value: "-3 + 2*I" },
         { key: "C", text: t`$-3 - 2 i$`, correct: false, misconceptionId: "C19-M5", value: "-3 - 2*I" },
       ],
+      solution: {
+        steps: [
+          t`The coefficients $p$ and $q$ are real, so complex roots come in conjugate pairs.`,
+          t`The conjugate of $3 - 2i$ is $3 + 2i$: flip only the sign of the imaginary part.`,
+        ],
+      },
     },
     {
       id: "C19-Q4",
@@ -119,6 +139,12 @@ Divide **both** parts by $2a$.
         { key: "B", text: t`$-25$`, correct: false, misconceptionId: "C19-M7", value: "-25" },
         { key: "C", text: t`$25$`, correct: true, value: "25" },
       ],
+      solution: {
+        steps: [
+          t`For $ax^2 + bx + c = 0$, the product of the roots is $\dfrac ca$.`,
+          t`Here $a = 1$ and $c = 25$, so $\alpha\beta = 25$.`,
+        ],
+      },
     },
     {
       id: "C19-Q5",
@@ -130,6 +156,12 @@ Divide **both** parts by $2a$.
         { key: "B", text: t`$\frac{3}{2}$`, correct: true, value: "3/2" },
         { key: "C", text: t`$\frac{7}{2}$`, correct: false, misconceptionId: "C19-M6", value: "7/2" },
       ],
+      solution: {
+        steps: [
+          t`For $ax^2 + bx + c = 0$, the sum of the roots is $-\dfrac ba$.`,
+          t`Here $a = 2$ and $b = -3$, so the sum is $-\dfrac{-3}{2} = \dfrac32$.`,
+        ],
+      },
     },
   ],
 };

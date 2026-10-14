@@ -69,6 +69,13 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "B", text: t`$-5 - 8 i$`, correct: false, misconceptionId: "C23-M1", value: "-5 - 8*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C23-M2", value: "0" },
       ],
+      solution: {
+        steps: [
+          t`$x = 1 + i$ satisfies $t^2 - 2t + 2 = 0$ (sum of the roots $2$, product $1 + 1 = 2$).`,
+          t`Factor out the quadratic: $x^4 - 2x^3 + 2x^2 + 3 = x^2(x^2 - 2x + 2) + 3$.`,
+          t`The bracket is $0$, so the value is $3$.`,
+        ],
+      },
     },
     {
       id: "C23-Q2",
@@ -80,6 +87,13 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "B", text: t`$2$`, correct: false, misconceptionId: "C23-M5", value: "2" },
         { key: "C", text: t`$-2$`, correct: true, value: "-2" },
       ],
+      solution: {
+        steps: [
+          t`From $x^2 - x + 1 = 0$: $\alpha + \beta = 1$ and $\alpha\beta = 1$.`,
+          t`$\alpha^3 + \beta^3 = (\alpha + \beta)^3 - 3\alpha\beta(\alpha + \beta)$.`,
+          t`So $\alpha^3 + \beta^3 = 1 - 3 = -2$.`,
+        ],
+      },
     },
     {
       id: "C23-Q3",
@@ -91,6 +105,13 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "B", text: t`$-17 - 32 i$`, correct: false, misconceptionId: "C23-M1", value: "-17 - 32*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C23-M2", value: "0" },
       ],
+      solution: {
+        steps: [
+          t`$x = 2 - i$ satisfies $t^2 - 4t + 5 = 0$ (sum of the roots $4$, product $4 + 1 = 5$).`,
+          t`Factor out the quadratic: $x^3 - 4x^2 + 5x + 7 = x(x^2 - 4x + 5) + 7$.`,
+          t`The bracket is $0$, so the value is $7$.`,
+        ],
+      },
     },
     {
       id: "C23-Q4",
@@ -102,6 +123,12 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "B", text: t`$3$`, correct: false, misconceptionId: "C23-M4", value: "3" },
         { key: "C", text: t`$-1$`, correct: true, value: "-1" },
       ],
+      solution: {
+        steps: [
+          t`From $x^2 + x + 1 = 0$: $\alpha + \beta = -1$ and $\alpha\beta = 1$.`,
+          t`$\alpha^2 + \beta^2 = (\alpha + \beta)^2 - 2\alpha\beta = 1 - 2 = -1$.`,
+        ],
+      },
     },
     {
       id: "C23-Q5",
@@ -113,6 +140,12 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "B", text: t`$9 + 4 i$`, correct: false, misconceptionId: "C23-M1", value: "9 + 4*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C23-M2", value: "0" },
       ],
+      solution: {
+        steps: [
+          t`$x = 1 - i$ satisfies $t^2 - 2t + 2 = 0$ (sum of the roots $2$, product $1 + 1 = 2$).`,
+          t`So $x^2 - 2x + 7 = (x^2 - 2x + 2) + 5 = 0 + 5 = 5$.`,
+        ],
+      },
     },
   ],
 };

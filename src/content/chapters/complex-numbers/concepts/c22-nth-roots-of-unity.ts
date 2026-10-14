@@ -23,6 +23,41 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         t`$(-1)^6 = 1$.`,
       ],
       answer: t`$1$`,
+      figure: {
+        alt: "The five fifth roots of unity. Apart from 1, they form two mirror-image pairs across the real axis, and each pair multiplies to 1, so the product of all five is 1, as (−1)⁶ = 1 says.",
+        view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+        elements: [
+          { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+          { kind: "point", at: [1, 0], label: "1", labelAt: "ne", step: 1 },
+          { kind: "point", at: [0.309, 0.951], step: 1 },
+          { kind: "point", at: [-0.809, 0.588], step: 1 },
+          { kind: "point", at: [-0.809, -0.588], step: 1 },
+          { kind: "point", at: [0.309, -0.951], step: 1 },
+          { kind: "segment", from: [0.309, 0.951], to: [0.309, -0.951], dashed: true, tone: "muted", step: 2 },
+          { kind: "segment", from: [-0.809, 0.588], to: [-0.809, -0.588], dashed: true, tone: "muted", step: 2 },
+          { kind: "label", at: [0.309, 0.951], label: "pairs multiply to 1", labelAt: "ne", tone: "muted", step: 2 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The sixth roots of unity: six points equally spaced round the unit circle, a sixth of a turn apart, starting at 1. They form a regular hexagon centred on the origin, so they balance out and add to 0.",
+      view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+      elements: [
+        { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+        { kind: "point", at: [1, 0], label: "1", labelAt: "ne", step: 1 },
+        { kind: "angle", at: [0, 0], from: 0, to: 60, label: "2π/6", step: 2 },
+        { kind: "point", at: [0.5, 0.866], label: "α", labelAt: "ne", step: 2 },
+        { kind: "point", at: [-0.5, 0.866], label: "α²", labelAt: "nw", step: 3 },
+        { kind: "point", at: [-1, 0], label: "α³", labelAt: "nw", step: 3 },
+        { kind: "point", at: [-0.5, -0.866], label: "α⁴", labelAt: "sw", step: 3 },
+        { kind: "point", at: [0.5, -0.866], label: "α⁵", labelAt: "se", step: 3 },
+        { kind: "segment", from: [1, 0], to: [0.5, 0.866], dashed: true, tone: "muted", step: 4 },
+        { kind: "segment", from: [0.5, 0.866], to: [-0.5, 0.866], dashed: true, tone: "muted", step: 4 },
+        { kind: "segment", from: [-0.5, 0.866], to: [-1, 0], dashed: true, tone: "muted", step: 4 },
+        { kind: "segment", from: [-1, 0], to: [-0.5, -0.866], dashed: true, tone: "muted", step: 4 },
+        { kind: "segment", from: [-0.5, -0.866], to: [0.5, -0.866], dashed: true, tone: "muted", step: 4 },
+        { kind: "segment", from: [0.5, -0.866], to: [1, 0], dashed: true, tone: "muted", step: 4 },
+      ],
     },
     visualSpec: t`A slider for $n$ redraws the $n$ roots round the unit circle as a regular polygon, with arrows from the origin that visibly cancel to a zero sum.`,
   },
@@ -81,6 +116,12 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "B", text: t`$0$`, correct: false, misconceptionId: "C22-M1", value: "0" },
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C22-M5", value: "4" },
       ],
+      solution: {
+        steps: [
+          t`The five roots add to $0$: $1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4 = 0$.`,
+          t`Take away the root $1$: $\alpha + \alpha^2 + \alpha^3 + \alpha^4 = -1$.`,
+        ],
+      },
     },
     {
       id: "C22-Q2",
@@ -92,6 +133,12 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C22-M3", value: "1" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C22-M6", value: "0" },
       ],
+      solution: {
+        steps: [
+          t`The product of all $n$ roots is $(-1)^{n+1}$.`,
+          t`With $n = 6$: $(-1)^7 = -1$.`,
+        ],
+      },
     },
     {
       id: "C22-Q3",
@@ -103,6 +150,12 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "B", text: t`$5$`, correct: false, misconceptionId: "C22-M5", value: "5" },
         { key: "C", text: t`$-1$`, correct: true, value: "-1" },
       ],
+      solution: {
+        steps: [
+          t`The six roots add to $0$.`,
+          t`Take away the root $1$: the other five add to $-1$.`,
+        ],
+      },
     },
     {
       id: "C22-Q4",
@@ -114,6 +167,27 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "B", text: t`$i$`, correct: false, misconceptionId: "C22-M7", value: "I" },
         { key: "C", text: t`$\frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: true, value: "1/2 + sqrt(3)*I/2" },
       ],
+      solution: {
+        steps: [
+          t`The sixth roots are a sixth of a turn apart, so the first after $1$ has argument $\dfrac{2\pi}{6} = \dfrac\pi3$.`,
+          t`$\cos\dfrac\pi3 + i\sin\dfrac\pi3 = \dfrac12 + \dfrac{\sqrt3}{2}i$.`,
+        ],
+        figure: {
+          alt: "The sixth roots of unity on the unit circle. The first one after 1 is a sixth of a turn round, at angle π/3: the point 1/2 + (√3/2)i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "point", at: [1, 0], tone: "muted" },
+            { kind: "point", at: [0.5, 0.866], tone: "muted" },
+            { kind: "point", at: [-0.5, 0.866], tone: "muted" },
+            { kind: "point", at: [-1, 0], tone: "muted" },
+            { kind: "point", at: [-0.5, -0.866], tone: "muted" },
+            { kind: "point", at: [0.5, -0.866], tone: "muted" },
+            { kind: "angle", at: [0, 0], from: 0, to: 60, label: "π/3", step: 1 },
+            { kind: "point", at: [0.5, 0.866], label: "1/2 + (√3/2)i", labelAt: "ne", step: 2 },
+          ],
+        },
+      },
     },
     {
       id: "C22-Q5",
@@ -125,6 +199,29 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "B", text: t`$\pm 2,\ \pm 2i$`, correct: true, value: "2*I" },
         { key: "C", text: t`$\pm\sqrt2 \pm \sqrt2\,i$`, correct: false, misconceptionId: "C22-M2", value: "sqrt(2)*(1 + I)" },
       ],
+      solution: {
+        steps: [
+          t`The real fourth root of $16$ is $2$.`,
+          t`The fourth roots of unity are $\pm1$ and $\pm i$.`,
+          t`Scale them by $2$: the roots are $\pm2$ and $\pm2i$.`,
+        ],
+        figure: {
+          alt: "The fourth roots of unity, ±1 and ±i, scaled by 2 to the circle of radius 2: the roots of z⁴ = 16 are ±2 and ±2i.",
+          view: { x: [-3.2, 3.2], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted", step: 2 },
+            { kind: "point", at: [1, 0], tone: "muted", step: 2 },
+            { kind: "point", at: [0, 1], tone: "muted", step: 2 },
+            { kind: "point", at: [-1, 0], tone: "muted", step: 2 },
+            { kind: "point", at: [0, -1], tone: "muted", step: 2 },
+            { kind: "circle", centre: [0, 0], r: 2, tone: "muted", step: 3 },
+            { kind: "point", at: [2, 0], label: "2", labelAt: "ne", step: 3 },
+            { kind: "point", at: [0, 2], label: "2i", labelAt: "ne", step: 3 },
+            { kind: "point", at: [-2, 0], label: "−2", labelAt: "nw", step: 3 },
+            { kind: "point", at: [0, -2], label: "−2i", labelAt: "se", step: 3 },
+          ],
+        },
+      },
     },
   ],
 };

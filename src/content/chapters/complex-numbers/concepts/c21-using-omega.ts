@@ -71,6 +71,12 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C21-M1", value: "1" },
         { key: "C", text: t`$2$`, correct: false, misconceptionId: "C21-M3", value: "2" },
       ],
+      solution: {
+        steps: [
+          t`From $1 + \omega + \omega^2 = 0$: $1 + \omega^2 = -\omega$.`,
+          t`Cube: $(-\omega)^3 = -\omega^3 = -1$.`,
+        ],
+      },
     },
     {
       id: "C21-Q2",
@@ -82,6 +88,13 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C21-M2", value: "1" },
         { key: "C", text: t`$16 \omega$`, correct: true, value: "16*omega" },
       ],
+      solution: {
+        steps: [
+          t`Group: $(1 + \omega^2) - \omega = -\omega - \omega = -2\omega$.`,
+          t`Raise to the 4th power: $(-2\omega)^4 = 16\omega^4$.`,
+          t`$\omega^4 = \omega^3 \cdot \omega = \omega$, so the result is $16\omega$.`,
+        ],
+      },
     },
     {
       id: "C21-Q3",
@@ -93,6 +106,12 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "B", text: t`$117649$`, correct: false, misconceptionId: "C21-M1", value: "117649" },
         { key: "C", text: t`$15753$`, correct: false, misconceptionId: "C21-M3", value: "15753" },
       ],
+      solution: {
+        steps: [
+          t`Group: $2(1 + \omega^2) + 5\omega = -2\omega + 5\omega = 3\omega$.`,
+          t`Raise to the 6th power: $(3\omega)^6 = 729\,\omega^6 = 729$, since $\omega^6 = (\omega^3)^2 = 1$.`,
+        ],
+      },
     },
     {
       id: "C21-Q4",
@@ -105,6 +124,12 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "C", text: t`$6 \omega + 3$`, correct: false, misconceptionId: "C21-M2", value: "6*omega + 3" },
         { key: "D", text: t`$15$`, correct: false, misconceptionId: "C21-M3", value: "15" },
       ],
+      solution: {
+        steps: [
+          t`Group: $2(1 + \omega^2) - \omega = -2\omega - \omega = -3\omega$.`,
+          t`Cube: $(-3\omega)^3 = -27\omega^3 = -27$.`,
+        ],
+      },
     },
     {
       id: "C21-Q5",
@@ -116,6 +141,12 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "B", text: t`$2,\ \omega,\ \omega^2$`, correct: false, misconceptionId: "C21-M4", value: "omega" },
         { key: "C", text: t`$-2,\ -2\omega,\ -2\omega^2$`, correct: false, misconceptionId: "C21-M5", value: "-2*omega**2" },
       ],
+      solution: {
+        steps: [
+          t`The real cube root of $8$ is $2$.`,
+          t`Scale all three cube roots of unity by $2$: the roots are $2$, $2\omega$ and $2\omega^2$.`,
+        ],
+      },
     },
     {
       id: "C21-Q6",
@@ -127,6 +158,12 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "B", text: t`$-3,\ -3\omega,\ -3\omega^2$`, correct: true, value: "-3*omega**2" },
         { key: "C", text: t`$-3,\ \omega,\ \omega^2$`, correct: false, misconceptionId: "C21-M4", value: "omega" },
       ],
+      solution: {
+        steps: [
+          t`The real cube root of $-27$ is $-3$.`,
+          t`Scale all three cube roots of unity by $-3$: the roots are $-3$, $-3\omega$ and $-3\omega^2$.`,
+        ],
+      },
     },
   ],
 };
