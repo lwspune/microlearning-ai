@@ -25,7 +25,7 @@ You may create or overwrite exactly these files, nothing else:
   Read the maths from these rows, never from a PDF's text layer (it drops surds and fractions).
 
 ## 1. Design the misconceptions (before anything else)
-3 to 4 misconceptions, each a **rule you can code** (inputs → the wrong answer a student with that idea gets):
+3 to 6 misconceptions, each a **rule you can code** (inputs → the wrong answer a student with that idea gets):
 a real conceptual error first (the textbook's own warnings and the classic exam traps), then common slips
 (dropped sign, wrong formula variant) only where no conceptual one fits. Each needs:
 - `mistake` (for the author: what the student believes), `remediation` (shown to the student: 1–2 sentences,
@@ -33,6 +33,11 @@ a real conceptual error first (the textbook's own warnings and the classic exam 
   `("ext", "<topic>")` for a gap outside the chapter (e.g. "factorising quadratics"), or `("none",)` for a slip.
 - Check that each pair of models gives **different** answers on the inputs you plan to use, and that none of
   them gives the key. If two always agree, drop one.
+- **Don't distort the questions to fit the models.** If the book's natural questions (a positive ratio, an
+  upward parabola, a plain A ∩ B) can't get three distinct wrong answers from your misconceptions, add a
+  modelled mistake that fits them (a 5th or 6th, often a common slip) rather than rewriting every item the same
+  way (all negative ratios, every quadratic flipped). Spread the keys too: no single answer (like
+  "symmetric only") should be the key on most items, or a student learns to pick it.
 
 ## 2. Models: `verify/models/<pkg>/cNN.py`
 ```python
