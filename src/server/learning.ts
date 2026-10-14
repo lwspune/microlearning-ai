@@ -1,6 +1,6 @@
 import "server-only";
-import type { Concept, Figure, GraphNode, Solution, Tier } from "@/content/types";
-import { conceptStates, type ConceptState } from "@/engine/unlock";
+import type { Concept, ConceptId, Figure, GraphNode, Solution, Tier } from "@/content/types";
+import { conceptStates, type ConceptState, inScope } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
 import { displayOrder } from "@/engine/optionOrder";
 import { isReviewDue } from "@/engine/review";
@@ -106,21 +106,23 @@ async function learnerStates(userId: string | null, conceptIds: string[], codeBy
   return { states, rows: data };
 }
 
-export async function getChapterMap(chapterSlug: string, userId: string | null): Promise<ChapterMap | null> {
+/** `scope`: a course's concepts. The map then shows only those, unlocked within the course. */
+export async function getChapterMap(chapterSlug: string, userId: string | null, scope?: Set<ConceptId>): Promise<ChapterMap | null> {
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
   const { chapter, concepts, graph, published, codeById } = loaded;
   const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
-  const computed = conceptStates(graph, published, states);
+  const computed = conceptStates(graph, inScope(published, scope), states);
   const idByCode = new Map(concepts.map((c) => [c.code, c.id]));
   const now = Date.now();
   const dueCodes = new Set(
     rows.filter((r) => isReviewDue(r.state, r.next_review_at, now)).map((r) => codeById.get(r.concept_id)!),
   );
 
-  const groups = [...new Set(graph.map((n) => n.group))].map((name) => ({
+  const shown = scope ? graph.filter((n) => scope.has(n.id)) : graph;
+  const groups = [...new Set(shown.map((n) => n.group))].map((name) => ({
     name,
-    concepts: graph
+    concepts: shown
       .filter((n) => n.group === name)
       .map((n) => ({
         code: n.id,
@@ -158,7 +160,7 @@ export async function getConceptSession(
   chapterSlug: string,
   conceptSlug: string,
   userId: string,
-  options: { allowLocked?: boolean } = {},
+  options: { allowLocked?: boolean; scope?: Set<ConceptId> } = {},
 ): Promise<ConceptSession | null> {
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
@@ -167,7 +169,9 @@ export async function getConceptSession(
   if (!concept) return null;
 
   const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
-  const state = conceptStates(graph, published, states).get(concept.code)!;
+  // A concept outside the course (reached by a refresher) unlocks as in the whole chapter.
+  const scope = options.scope?.has(concept.code) ? options.scope : undefined;
+  const state = conceptStates(graph, inScope(published, scope), states).get(concept.code)!;
   if (state === "locked" && !options.allowLocked) return { kind: "locked" };
 
   const db = createAdminClient();

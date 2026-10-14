@@ -37,3 +37,12 @@ export function conceptStates(
   }
   return states;
 }
+
+/**
+ * The published concepts inside a course's scope. Passed to conceptStates in
+ * place of `published`, a prerequisite the course doesn't cover counts as
+ * known, like an unpublished one. No scope: the whole chapter.
+ */
+export function inScope(published: Set<ConceptId>, scope?: Set<ConceptId>): Set<ConceptId> {
+  return scope ? new Set([...published].filter((id) => scope.has(id))) : published;
+}

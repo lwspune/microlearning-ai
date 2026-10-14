@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "@/content/chapters/complex-numbers";
 import type { GraphNode } from "@/content/types";
-import { conceptStates, MASTERY_GATE } from "./unlock";
+import { conceptStates, inScope, MASTERY_GATE } from "./unlock";
 import { nextItem } from "./nextItem";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
@@ -10,6 +10,16 @@ function node(id: string, prereqs: string[] = []): GraphNode {
 
 // A ← B ← C ← D  (D needs C needs B needs A)
 const chain = [node("A"), node("B", ["A"]), node("C", ["B"]), node("D", ["C"])];
+
+describe("inScope", () => {
+  it("keeps only the published concepts a course covers", () => {
+    expect(inScope(new Set(["A", "B", "C"]), new Set(["A", "C", "D"]))).toEqual(new Set(["A", "C"]));
+  });
+
+  it("is everything published when there is no course", () => {
+    expect(inScope(new Set(["A", "B"]))).toEqual(new Set(["A", "B"]));
+  });
+});
 
 describe("conceptStates", () => {
   it("is ungated for now, so teachers can open any concept (MASTERY_GATE)", () => {
