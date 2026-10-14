@@ -103,8 +103,38 @@ export function renderMath(tex: string, display: boolean): string {
   return katex.renderToString(tex, { displayMode: display, throwOnError: false, trust: false, strict: "ignore" });
 }
 
+const CLOSING = /^[.,;:!?)\]]+/;
+const OPENING = /[([]+$/;
+
+/**
+ * Renders math, and moves punctuation that touches it (a full stop after, a
+ * bracket before) onto the math node, so the two wrap as one: a phone line
+ * never starts with a stranded ".".
+ */
 function renderInline(nodes: Inline[]): RenderedInline[] {
-  return nodes.map((n) => (n.type === "math" ? { type: "math", html: renderMath(n.tex, false), bold: n.bold } : n));
+  const out: RenderedInline[] = nodes.map((n) =>
+    n.type === "math" ? { type: "math", html: renderMath(n.tex, false), bold: n.bold, before: "", after: "" } : { ...n },
+  );
+  out.forEach((n, i) => {
+    if (n.type !== "math") return;
+    const prev = out[i - 1];
+    const next = out[i + 1];
+    if (prev?.type === "text") {
+      const m = prev.text.match(OPENING);
+      if (m) {
+        n.before = m[0];
+        prev.text = prev.text.slice(0, -m[0].length);
+      }
+    }
+    if (next?.type === "text") {
+      const m = next.text.match(CLOSING);
+      if (m) {
+        n.after = m[0];
+        next.text = next.text.slice(m[0].length);
+      }
+    }
+  });
+  return out.filter((n) => n.type === "math" || n.text !== "");
 }
 
 /** Parses and pre-renders math on the server; the result is safe to send to the client. */

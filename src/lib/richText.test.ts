@@ -99,6 +99,35 @@ describe("renderRichText", () => {
     expect(blocks[1]).toMatchObject({ type: "list" });
   });
 
+  describe("keeps punctuation with the math it touches, so a line can't start with it", () => {
+    const inline = (src: string) => {
+      const [p] = renderRichText(src);
+      return p.type === "paragraph" ? p.inline.map((n) => (n.type === "math" ? { m: n.before + "|" + n.after } : n.text)) : [];
+    };
+
+    it("moves closing punctuation after math onto the math", () => {
+      expect(inline("so $d = 6$. Next")).toEqual(["so ", { m: "|." }, " Next"]);
+      expect(inline("$a$, $b$; and $c$?!")).toEqual([{ m: "|," }, " ", { m: "|;" }, " and ", { m: "|?!" }]);
+    });
+
+    it("moves an opening bracket before math onto the math", () => {
+      expect(inline("roots ($x$) here")).toEqual(["roots ", { m: "(|)" }, " here"]);
+    });
+
+    it("drops a text segment that was only punctuation", () => {
+      expect(inline("$x$.")).toEqual([{ m: "|." }]);
+    });
+
+    it("leaves punctuation alone when a space separates it from the math", () => {
+      expect(inline("$x$ . ( $y$")).toEqual([{ m: "|" }, " . ( ", { m: "|" }]);
+    });
+
+    it("works in list items too", () => {
+      const [l] = renderRichText("- $x$.");
+      expect(l.type === "list" && l.items[0][0]).toMatchObject({ type: "math", after: "." });
+    });
+  });
+
   it("produces plain data that survives JSON (safe to pass to client components)", () => {
     const blocks = renderRichText("$x$ and **y**");
     expect(JSON.parse(JSON.stringify(blocks))).toEqual(blocks);

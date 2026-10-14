@@ -8,7 +8,15 @@ export function RenderedInlineNodes({ nodes }: { nodes: RenderedInline[] }) {
   return nodes.map((n, i) => {
     if (n.type === "math") {
       const math = <span dangerouslySetInnerHTML={{ __html: n.html }} />;
-      return n.bold ? <strong key={i}>{math}</strong> : <span key={i}>{math}</span>;
+      const inner = n.bold ? <strong>{math}</strong> : <span>{math}</span>;
+      if (!n.before && !n.after) return <span key={i}>{inner}</span>;
+      return (
+        <span key={i} className="whitespace-nowrap">
+          {n.before}
+          {inner}
+          {n.after}
+        </span>
+      );
     }
     let el: React.ReactNode = n.text;
     if (n.italic) el = <em>{el}</em>;

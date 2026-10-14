@@ -73,8 +73,8 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    `index.ts`; the chapter test fails if any concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
-   Look for KaTeX errors, sideways scrolling, and brackets stranded at line
-   ends (move them inside `$…$`). Check every figure in light and dark mode:
+   Look for KaTeX errors and sideways scrolling. (Punctuation touching
+   inline math is kept on its line by the renderer, `renderInline`.) Check every figure in light and dark mode:
    each "After step n" frame, labels clear of axis numbers and of each other.
    A per-figure contact sheet beats a full-page screenshot (figures are too
    small to judge at full-page scale).
