@@ -47,6 +47,7 @@ const TEXT_PAIRS: [string, string][] = [
   ["background", "danger"], // wrong answer chip
   ["success", "success-surface"],
   ["success", "card"],
+  ["success", "background"], // ✓ on the course coverage grid
   ["danger", "danger-surface"],
   ["danger", "card"],
 ];

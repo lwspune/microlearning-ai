@@ -13,6 +13,9 @@ export default function ReviewIndex() {
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8">
       <p className="text-sm font-medium text-muted">Content review</p>
+      <Link href="/review/courses" className="mt-2 inline-block font-medium text-accent underline underline-offset-4">
+        Course coverage: which concepts each course covers →
+      </Link>
       {chapters.map((chapter) => {
         const authored = new Set(chapter.concepts.map((c) => c.id));
         const groups = [...new Set(chapter.graph.map((n) => n.group))];
