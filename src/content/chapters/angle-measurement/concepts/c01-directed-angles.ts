@@ -1,0 +1,314 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c01: Concept = {
+  id: "C01",
+  status: "approved",
+  hook: {
+    prompt: t`One spoke of a wheel is turned $750^\circ$ anticlockwise. On an identical wheel, the same spoke is turned $330^\circ$ clockwise. **Do the two spokes end up pointing the same way?**`,
+    reveal: t`Yes. $750^\circ = 2 \times 360^\circ + 30^\circ$, and two full turns change nothing, so the first spoke ends at $30^\circ$. Clockwise is negative: $-330^\circ$, and $-330^\circ + 360^\circ = 30^\circ$. Both end at $30^\circ$: the angles are **co-terminal**.`,
+  },
+  explanation: {
+    intuition: t`An angle here is a turn: a ray starts on the **initial arm** and rotates about $O$ to the **terminal arm**. The direction matters, so the angle gets a sign: anticlockwise is positive, clockwise is negative. A turn can go past a full circle: $400^\circ$ is one full turn and $40^\circ$ more. A full turn brings the arm back where it began, so angles that differ by $360^\circ$, or any multiple of it, end on the same arm and lie in the same quadrant.`,
+    formal: t`**Directed angle.** A ray turns about $O$ from the initial arm $OA$ to the terminal arm $OB$. Anticlockwise turns are positive; clockwise turns are negative: $-60^\circ$ means $60^\circ$ clockwise.
+
+**Standard position.** Vertex at the origin, initial arm along the positive $x$-axis. The angle lies in the quadrant that holds its terminal arm:
+
+$$\begin{array}{c|c} 0^\circ < \theta < 90^\circ & \text{Quadrant I} \\ 90^\circ < \theta < 180^\circ & \text{Quadrant II} \\ 180^\circ < \theta < 270^\circ & \text{Quadrant III} \\ 270^\circ < \theta < 360^\circ & \text{Quadrant IV} \end{array}$$
+
+An arm on an axis ($0^\circ$, $90^\circ$, $180^\circ$, $270^\circ$, ...) lies in no quadrant: it is a quadrantal angle.
+
+**Co-terminal angles** have the same initial and terminal arms. They differ by whole turns: $\theta$ and $\theta + n \times 360^\circ$, $n \in Z$. $210^\circ$ and $-150^\circ$ differ by $360^\circ$: co-terminal. $100^\circ$ and $280^\circ$ differ by $180^\circ$: opposite arms, not co-terminal.
+
+**Large or negative angles.** Add or subtract $360^\circ$ as many times as needed to land between $0^\circ$ and $360^\circ$: $400^\circ - 360^\circ = 40^\circ$, $-200^\circ + 360^\circ = 160^\circ$. That is the smallest positive co-terminal angle, and its quadrant is the angle's quadrant.`,
+    worked: {
+      prompt: t`Find the smallest positive angle co-terminal with $-820^\circ$, and the quadrant of $-820^\circ$.`,
+      steps: [
+        t`$-820^\circ$ is negative, so the arm turns clockwise: two full turns ($720^\circ$) and $100^\circ$ more.`,
+        t`Add whole turns until the angle is positive: $-820^\circ + 3 \times 360^\circ = -820^\circ + 1080^\circ = 260^\circ$.`,
+        t`$180^\circ < 260^\circ < 270^\circ$, so the terminal arm lies in Quadrant III.`,
+      ],
+      answer: t`The smallest positive co-terminal angle is $260^\circ$, and $-820^\circ$ lies in Quadrant III.`,
+      figure: {
+        alt: "The angle −820° in standard position: the arm turns clockwise two full turns and 100° more, stopping at 260°. Adding three full turns gives 260°, between 180° and 270°, so the terminal arm lies in Quadrant III.",
+        axes: "none",
+        view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+        elements: [
+          { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+          { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+          { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+          { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+          { kind: "point", at: [0, 0], label: "O", labelAt: "se", tone: "muted" },
+          { kind: "label", at: [1.9, 1.9], label: "I", labelAt: "n", tone: "muted" },
+          { kind: "label", at: [-1.9, 1.9], label: "II", labelAt: "n", tone: "muted" },
+          { kind: "label", at: [-1.9, -1.9], label: "III", labelAt: "n", tone: "muted" },
+          { kind: "label", at: [1.9, -1.9], label: "IV", labelAt: "n", tone: "muted" },
+          { kind: "curve", points: [[0.6, 0], [0.603, -0.064], [0.598, -0.128], [0.587, -0.192], [0.569, -0.255], [0.544, -0.316], [0.513, -0.375], [0.475, -0.431], [0.431, -0.483], [0.381, -0.53], [0.326, -0.572], [0.267, -0.609], [0.203, -0.639], [0.136, -0.663], [0.066, -0.679], [-0.005, -0.688], [-0.078, -0.69], [-0.152, -0.683], [-0.224, -0.669], [-0.296, -0.647], [-0.365, -0.618], [-0.432, -0.581], [-0.494, -0.537], [-0.552, -0.486], [-0.605, -0.428], [-0.652, -0.365], [-0.692, -0.297], [-0.725, -0.224], [-0.75, -0.148], [-0.767, -0.069], [-0.776, 0.012], [-0.777, 0.094], [-0.768, 0.177], [-0.751, 0.258], [-0.725, 0.338], [-0.691, 0.415], [-0.648, 0.489], [-0.597, 0.559], [-0.539, 0.623], [-0.474, 0.681], [-0.403, 0.732], [-0.326, 0.775], [-0.244, 0.811], [-0.159, 0.838], [-0.07, 0.856], [0.02, 0.864], [0.111, 0.863], [0.203, 0.853], [0.293, 0.832], [0.382, 0.802], [0.467, 0.763], [0.548, 0.714], [0.624, 0.657], [0.694, 0.591], [0.757, 0.519], [0.813, 0.439], [0.86, 0.353], [0.898, 0.263], [0.926, 0.168], [0.944, 0.07], [0.952, -0.029], [0.95, -0.13], [0.937, -0.23], [0.913, -0.33], [0.879, -0.426], [0.834, -0.519], [0.779, -0.608], [0.715, -0.69], [0.643, -0.766], [0.562, -0.834], [0.474, -0.894], [0.38, -0.944], [0.28, -0.984], [0.176, -1.014], [0.069, -1.033], [-0.04, -1.04], [-0.15, -1.036], [-0.259, -1.02], [-0.367, -0.993], [-0.472, -0.954], [-0.573, -0.904], [-0.668, -0.844], [-0.757, -0.773], [-0.839, -0.693], [-0.912, -0.604], [-0.976, -0.508], [-1.029, -0.405], [-1.072, -0.296], [-1.103, -0.183], [-1.122, -0.066], [-1.128, 0.052], [-1.122, 0.171], [-1.104, 0.29], [-1.073, 0.406], [-1.029, 0.519], [-0.974, 0.628], [-0.907, 0.73], [-0.83, 0.826], [-0.742, 0.913], [-0.645, 0.991], [-0.541, 1.058], [-0.429, 1.115], [-0.311, 1.159], [-0.188, 1.191], [-0.062, 1.21], [0.066, 1.216], [0.194, 1.208], [0.321, 1.187], [0.446, 1.152], [0.567, 1.104], [0.683, 1.043], [0.793, 0.97], [0.895, 0.886], [0.987, 0.79], [1.07, 0.685], [1.141, 0.572], [1.2, 0.451], [1.247, 0.324], [1.28, 0.192], [1.299, 0.057], [1.303, -0.08], [1.294, -0.218], [1.269, -0.354], [1.23, -0.488], [1.178, -0.617], [1.111, -0.74], [1.032, -0.857], [0.94, -0.965], [0.837, -1.063], [0.724, -1.15], [0.602, -1.225], [0.472, -1.287], [0.336, -1.335], [0.194, -1.369], [0.05, -1.387], [-0.097, -1.391], [-0.243, -1.379]], step: 1 },
+          { kind: "label", at: [0.1, 1.55], label: "−820°, clockwise", labelAt: "e", step: 1 },
+          { kind: "vector", to: [-0.382, -2.167], step: 1 },
+          { kind: "arc", centre: [0, 0], r: 0.45, from: 0, to: 260, step: 2, tone: "good" },
+          { kind: "label", at: [-0.382, -2.167], label: "260°", labelAt: "w", tone: "good", step: 2 },
+          { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 180, to: 270 }], tone: "good", step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "Axes with the quadrants I to IV. An arm turns 30° anticlockwise from the positive x-axis. A second turn goes one full turn and 30° more, 390°, and ends on the same arm. A third turns 330° clockwise, −330°, and also ends there: 30°, 390° and −330° are co-terminal, all in Quadrant I.",
+      axes: "none",
+      view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+      elements: [
+        { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+        { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+        { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+        { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+        { kind: "label", at: [1.9, 1.9], label: "I", labelAt: "n", tone: "muted" },
+        { kind: "label", at: [-1.9, 1.9], label: "II", labelAt: "n", tone: "muted" },
+        { kind: "label", at: [-1.9, -1.9], label: "III", labelAt: "n", tone: "muted" },
+        { kind: "label", at: [1.9, -1.9], label: "IV", labelAt: "n", tone: "muted" },
+        { kind: "arc", centre: [0, 0], r: 0.45, from: 0, to: 30, step: 1 },
+        { kind: "label", at: [1.663, 0.353], label: "30°", labelAt: "e", step: 1 },
+        { kind: "vector", to: [1.905, 1.1], step: 1 },
+        { kind: "curve", points: [[0.6, 0], [0.603, 0.063], [0.599, 0.127], [0.588, 0.191], [0.571, 0.254], [0.546, 0.315], [0.515, 0.374], [0.478, 0.43], [0.434, 0.482], [0.385, 0.53], [0.331, 0.573], [0.272, 0.61], [0.208, 0.641], [0.141, 0.665], [0.072, 0.682], [0, 0.692], [-0.073, 0.695], [-0.146, 0.689], [-0.22, 0.676], [-0.292, 0.655], [-0.362, 0.626], [-0.429, 0.59], [-0.492, 0.546], [-0.551, 0.496], [-0.605, 0.439], [-0.653, 0.377], [-0.694, 0.309], [-0.729, 0.237], [-0.755, 0.161], [-0.774, 0.081], [-0.785, 0], [-0.786, -0.083], [-0.78, -0.166], [-0.764, -0.248], [-0.739, -0.329], [-0.706, -0.408], [-0.665, -0.483], [-0.615, -0.554], [-0.558, -0.62], [-0.494, -0.68], [-0.423, -0.733], [-0.347, -0.779], [-0.265, -0.816], [-0.18, -0.846], [-0.091, -0.866], [0, -0.877], [0.092, -0.878], [0.185, -0.87], [0.277, -0.852], [0.367, -0.824], [0.454, -0.786], [0.537, -0.739], [0.616, -0.684], [0.688, -0.62], [0.754, -0.548], [0.813, -0.469], [0.863, -0.384], [0.904, -0.294], [0.936, -0.199], [0.958, -0.101], [0.969, 0], [0.97, 0.102], [0.96, 0.204], [0.939, 0.305], [0.908, 0.404], [0.866, 0.5]], step: 2, tone: "good" },
+        { kind: "label", at: [-0.9, 1.2], label: "390° = 360° + 30°", labelAt: "nw", tone: "good", step: 2 },
+        { kind: "curve", points: [[1.35, 0], [1.343, -0.141], [1.32, -0.281], [1.284, -0.417], [1.233, -0.549], [1.169, -0.675], [1.092, -0.794], [1.003, -0.903], [0.903, -1.003], [0.794, -1.092], [0.675, -1.169], [0.549, -1.233], [0.417, -1.284], [0.281, -1.32], [0.141, -1.343], [0, -1.35], [-0.141, -1.343], [-0.281, -1.32], [-0.417, -1.284], [-0.549, -1.233], [-0.675, -1.169], [-0.794, -1.092], [-0.903, -1.003], [-1.003, -0.903], [-1.092, -0.794], [-1.169, -0.675], [-1.233, -0.549], [-1.284, -0.417], [-1.32, -0.281], [-1.343, -0.141], [-1.35, 0], [-1.343, 0.141], [-1.32, 0.281], [-1.284, 0.417], [-1.233, 0.549], [-1.169, 0.675], [-1.092, 0.794], [-1.003, 0.903], [-0.903, 1.003], [-0.794, 1.092], [-0.675, 1.169], [-0.549, 1.233], [-0.417, 1.284], [-0.281, 1.32], [-0.141, 1.343], [0, 1.35], [0.141, 1.343], [0.281, 1.32], [0.417, 1.284], [0.549, 1.233], [0.675, 1.169], [0.794, 1.092], [0.903, 1.003], [1.003, 0.903], [1.092, 0.794], [1.169, 0.675]], step: 3, tone: "bad" },
+        { kind: "label", at: [0.675, -1.169], label: "−330°, clockwise", labelAt: "se", tone: "bad", step: 3 },
+        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 0, to: 90 }], tone: "good", step: 4 },
+        { kind: "label", at: [0.3, 2.45], label: "same arm: co-terminal", labelAt: "e", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag the terminal arm round and round, either way; a counter shows the directed angle, its smallest positive co-terminal angle and the quadrant the arm is in.`,
+  },
+  misconceptions: [
+    {
+      id: "C01-M1",
+      mistake: "Drops the minus sign: turns a negative angle anticlockwise (-140 read as 140), or reads an angle that is a short of a whole number of turns (945 = 1080 - 135) as a instead of -a",
+      remediation: t`A minus sign means clockwise: $-\alpha$ ends on a different arm from $\alpha$, its mirror image in the $x$-axis. Turn the right way, or add $360^\circ$ to a negative angle until it is positive.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M2",
+      mistake: "Thinks a half turn brings the arm back: removes multiples of 180 instead of 360",
+      remediation: t`Only a full turn, $360^\circ$, brings the arm back to where it was; half a turn, $180^\circ$, points it the opposite way. Add or subtract multiples of $360^\circ$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M3",
+      mistake: "Starts the turn from the positive y-axis (as on a clock) instead of the positive x-axis",
+      remediation: t`In standard position the initial arm lies along the positive $x$-axis, not up the $y$-axis as on a clock face. Start every turn from there.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M4",
+      mistake: "Takes co-terminal to mean exactly one turn apart: removes 360 only once",
+      remediation: t`Co-terminal angles differ by any whole number of turns: $360^\circ$, $720^\circ$, $1080^\circ$, and so on. Keep taking off $360^\circ$ until the angle lies between $0^\circ$ and $360^\circ$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M5",
+      mistake: "Names the quadrant by the number of whole right angles in the reduced angle (k right angles and a bit: 'Quadrant k'), forgetting the part left over",
+      remediation: t`$k$ whole right angles bring the arm to an axis; the part left over carries it into the next quadrant. So $k$ right angles and a bit more is quadrant $k + 1$: between $180^\circ$ and $270^\circ$ is Quadrant III.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  engineNotes: [
+    t`C01-M1 gives the key on a positive angle whose remainder after whole turns is under $180^\circ$; diagnose it with negative angles or remainders over $180^\circ$.`,
+    t`C01-M2 gives the key whenever the remainder after whole turns is under $180^\circ$ (Quadrants I and II); diagnose it with angles ending in Quadrant III or IV.`,
+    "C01-M3 and C01-M5 apply only to quadrant questions, C01-M4 only to co-terminal angles of 720 degrees or more. C01-M5 cannot be detected in Quadrant I.",
+  ],
+  items: [
+    {
+      id: "C01-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/angle-measurement-11/Ex 1.1 Q1B(i)" },
+      stem: t`An angle of $-140^\circ$ is drawn in standard position. Its terminal arm lies in:`,
+      verify: { kind: "value", inputs: { t: "-140" }, params: { ask: "quadrant" } },
+      options: [
+        { key: "A", text: t`Quadrant III`, correct: true, value: "quadrant_III" },
+        { key: "B", text: t`Quadrant II`, correct: false, misconceptionId: "C01-M1", value: "quadrant_II" },
+        { key: "C", text: t`Quadrant I`, correct: false, misconceptionId: "C01-M2", value: "quadrant_I" },
+        { key: "D", text: t`Quadrant IV`, correct: false, misconceptionId: "C01-M3", value: "quadrant_IV" },
+      ],
+      solution: {
+        steps: [
+          t`$-140^\circ$ is negative, so the arm turns $140^\circ$ **clockwise** from the positive $x$-axis.`,
+          t`Clockwise, $-90^\circ$ is the negative $y$-axis and $-180^\circ$ is the negative $x$-axis. $-140^\circ$ stops between them.`,
+          t`Check: $-140^\circ + 360^\circ = 220^\circ$, between $180^\circ$ and $270^\circ$. The terminal arm lies in **Quadrant III**.`,
+        ],
+        figure: {
+          alt: "The angle −140°: the arm turns 140° clockwise from the positive x-axis, past −90° on the negative y-axis, and stops before −180° on the negative x-axis. It is co-terminal with 220°, in Quadrant III.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+            { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+            { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+            { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted" },
+            { kind: "label", at: [1.9, 1.9], label: "I", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.9, 1.9], label: "II", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.9, -1.9], label: "III", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [1.9, -1.9], label: "IV", labelAt: "n", tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 0.45, from: -140, to: 0, step: 1, label: "−140°", labelAt: "se" },
+            { kind: "vector", to: [-1.685, -1.414], step: 1 },
+            { kind: "label", at: [0, -2.4], label: "−90°", labelAt: "e", step: 2 },
+            { kind: "label", at: [-2.4, 0], label: "−180°", labelAt: "n", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 180, to: 270 }], tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/angle-measurement-11/Ex 1.1 Q1B(v)" },
+      stem: t`The smallest positive angle co-terminal with $945^\circ$ is:`,
+      verify: { kind: "value", inputs: { t: "945" }, params: { ask: "coterminal" } },
+      options: [
+        { key: "A", text: t`$225^\circ$`, correct: true, value: "225" },
+        { key: "B", text: t`$135^\circ$`, correct: false, misconceptionId: "C01-M1", value: "135" },
+        { key: "C", text: t`$45^\circ$`, correct: false, misconceptionId: "C01-M2", value: "45" },
+        { key: "D", text: t`$585^\circ$`, correct: false, misconceptionId: "C01-M4", value: "585" },
+      ],
+      solution: {
+        steps: [
+          t`Co-terminal angles differ by whole turns of $360^\circ$. $945 = 2 \times 360 + 225$: two full turns and $225^\circ$ more.`,
+          t`Take off both turns: $945^\circ - 720^\circ = 225^\circ$. Taking off only one leaves $585^\circ$, still more than a full turn.`,
+          t`$225^\circ$ lies between $0^\circ$ and $360^\circ$, so the smallest positive co-terminal angle is $225^\circ$.`,
+        ],
+        figure: {
+          alt: "The angle 945°: the arm turns anticlockwise two full turns and 225° more. The same arm is reached by turning 225° once, between 180° and 270°.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+            { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+            { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+            { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "se", tone: "muted" },
+            { kind: "curve", points: [[0.6, 0], [0.602, 0.063], [0.597, 0.127], [0.585, 0.191], [0.566, 0.253], [0.541, 0.314], [0.509, 0.372], [0.471, 0.426], [0.427, 0.477], [0.378, 0.524], [0.324, 0.565], [0.265, 0.6], [0.202, 0.63], [0.136, 0.652], [0.067, 0.668], [-0.003, 0.676], [-0.075, 0.677], [-0.147, 0.671], [-0.218, 0.657], [-0.287, 0.635], [-0.355, 0.606], [-0.42, 0.569], [-0.48, 0.526], [-0.537, 0.476], [-0.588, 0.42], [-0.633, 0.358], [-0.672, 0.292], [-0.704, 0.222], [-0.728, 0.148], [-0.744, 0.071], [-0.753, -0.008], [-0.753, -0.087], [-0.745, -0.167], [-0.728, -0.245], [-0.703, -0.322], [-0.669, -0.397], [-0.628, -0.468], [-0.579, -0.535], [-0.524, -0.596], [-0.461, -0.652], [-0.393, -0.701], [-0.319, -0.743], [-0.241, -0.778], [-0.159, -0.804], [-0.074, -0.821], [0.012, -0.829], [0.1, -0.828], [0.187, -0.818], [0.274, -0.799], [0.358, -0.77], [0.44, -0.733], [0.517, -0.687], [0.59, -0.633], [0.657, -0.571], [0.717, -0.502], [0.77, -0.426], [0.815, -0.345], [0.852, -0.259], [0.879, -0.169], [0.897, -0.077], [0.906, 0.018], [0.904, 0.114], [0.892, 0.209], [0.87, 0.303], [0.838, 0.395], [0.796, 0.483], [0.745, 0.567], [0.685, 0.645], [0.617, 0.718], [0.541, 0.783], [0.459, 0.839], [0.37, 0.888], [0.277, 0.926], [0.179, 0.955], [0.078, 0.974], [-0.025, 0.982], [-0.128, 0.979], [-0.231, 0.965], [-0.333, 0.94], [-0.432, 0.905], [-0.527, 0.859], [-0.617, 0.803], [-0.701, 0.737], [-0.779, 0.663], [-0.848, 0.581], [-0.909, 0.491], [-0.96, 0.395], [-1.001, 0.293], [-1.031, 0.188], [-1.051, 0.079], [-1.058, -0.032], [-1.054, -0.143], [-1.038, -0.254], [-1.011, -0.363], [-0.971, -0.47], [-0.921, -0.572], [-0.86, -0.668], [-0.789, -0.758], [-0.709, -0.841], [-0.619, -0.914], [-0.522, -0.979], [-0.419, -1.033], [-0.31, -1.076], [-0.196, -1.108], [-0.079, -1.127], [0.04, -1.134], [0.159, -1.129], [0.278, -1.111], [0.395, -1.081], [0.508, -1.038], [0.617, -0.983], [0.72, -0.917], [0.815, -0.84], [0.903, -0.753], [0.981, -0.657], [1.049, -0.553], [1.106, -0.442], [1.151, -0.325], [1.184, -0.203], [1.204, -0.078], [1.21, 0.048], [1.204, 0.176], [1.184, 0.302], [1.15, 0.427], [1.104, 0.547], [1.045, 0.663], [0.973, 0.772], [0.891, 0.873], [0.797, 0.965], [0.695, 1.048], [0.583, 1.12], [0.464, 1.179], [0.34, 1.226], [0.21, 1.26], [0.077, 1.28], [-0.058, 1.287], [-0.193, 1.278], [-0.328, 1.256], [-0.459, 1.22], [-0.587, 1.169], [-0.709, 1.106], [-0.824, 1.029], [-0.931, 0.941], [-1.029, 0.841], [-1.115, 0.731], [-1.19, 0.613], [-1.253, 0.486], [-1.302, 0.354], [-1.337, 0.216], [-1.357, 0.075], [-1.363, -0.068], [-1.353, -0.212], [-1.328, -0.354], [-1.289, -0.493], [-1.234, -0.627], [-1.166, -0.756], [-1.084, -0.877], [-0.99, -0.99]], step: 1 },
+            { kind: "label", at: [0.1, 1.55], label: "945°", labelAt: "e", step: 1 },
+            { kind: "vector", to: [-1.556, -1.556], step: 1 },
+            { kind: "arc", centre: [0, 0], r: 0.45, from: 0, to: 225, step: 2, tone: "good" },
+            { kind: "label", at: [-1.556, -1.556], label: "945° − 720° = 225°", labelAt: "e", tone: "good", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/angle-measurement-11/Ex 1.1 Q1B(vii)" },
+      stem: t`An angle of $-80^\circ$ is drawn in standard position. Its terminal arm lies in:`,
+      verify: { kind: "value", inputs: { t: "-80" }, params: { ask: "quadrant" } },
+      options: [
+        { key: "A", text: t`Quadrant II`, correct: false, misconceptionId: "C01-M2", value: "quadrant_II" },
+        { key: "B", text: t`Quadrant III`, correct: false, misconceptionId: "C01-M5", value: "quadrant_III" },
+        { key: "C", text: t`Quadrant IV`, correct: true, value: "quadrant_IV" },
+        { key: "D", text: t`Quadrant I`, correct: false, misconceptionId: "C01-M1", value: "quadrant_I" },
+      ],
+      solution: {
+        steps: [
+          t`$-80^\circ$ is negative, so the arm turns $80^\circ$ **clockwise** from the positive $x$-axis.`,
+          t`That is less than the $90^\circ$ to the negative $y$-axis, so the arm stops below the positive $x$-axis.`,
+          t`Check: $-80^\circ + 360^\circ = 280^\circ$, between $270^\circ$ and $360^\circ$. The terminal arm lies in **Quadrant IV**.`,
+        ],
+        figure: {
+          alt: "The angle −80°: the arm turns 80° clockwise from the positive x-axis and stops just short of the negative y-axis, in Quadrant IV. It is co-terminal with 280°.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+            { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+            { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+            { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+            { kind: "label", at: [1.9, 1.9], label: "I", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.9, 1.9], label: "II", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.9, -1.9], label: "III", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [1.9, -1.9], label: "IV", labelAt: "n", tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 0.45, from: -80, to: 0, step: 1, label: "−80°", labelAt: "e" },
+            { kind: "vector", to: [0.382, -2.167], step: 1 },
+            { kind: "label", at: [0, -2.4], label: "−90°", labelAt: "w", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 270, to: 360 }], tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/angle-measurement-11/Ex 1.1 Q1B(ii)" },
+      stem: t`An angle of $250^\circ$ is drawn in standard position. Its terminal arm lies in:`,
+      verify: { kind: "value", inputs: { t: "250" }, params: { ask: "quadrant" } },
+      options: [
+        { key: "A", text: t`Quadrant III`, correct: true, value: "quadrant_III" },
+        { key: "B", text: t`Quadrant I`, correct: false, misconceptionId: "C01-M2", value: "quadrant_I" },
+        { key: "C", text: t`Quadrant IV`, correct: false, misconceptionId: "C01-M3", value: "quadrant_IV" },
+        { key: "D", text: t`Quadrant II`, correct: false, misconceptionId: "C01-M5", value: "quadrant_II" },
+      ],
+      solution: {
+        steps: [
+          t`$250^\circ$ is positive, so the arm turns **anticlockwise** from the positive $x$-axis.`,
+          t`$250^\circ = 180^\circ + 70^\circ$: past the negative $x$-axis at $180^\circ$, short of the negative $y$-axis at $270^\circ$.`,
+          t`Between $180^\circ$ and $270^\circ$ is **Quadrant III**.`,
+        ],
+        figure: {
+          alt: "The angle 250°: the arm turns anticlockwise past 180° on the negative x-axis and stops 70° further on, before 270° on the negative y-axis, in Quadrant III.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+            { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+            { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+            { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "se", tone: "muted" },
+            { kind: "label", at: [1.9, 1.9], label: "I", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.9, 1.9], label: "II", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.9, -1.9], label: "III", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [1.9, -1.9], label: "IV", labelAt: "n", tone: "muted" },
+            { kind: "arc", centre: [0, 0], r: 0.45, from: 0, to: 250, step: 1, label: "250°", labelAt: "nw" },
+            { kind: "vector", to: [-0.752, -2.067], step: 1 },
+            { kind: "label", at: [-2.4, 0], label: "180°", labelAt: "n", step: 2 },
+            { kind: "label", at: [0, -2.4], label: "270°", labelAt: "e", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 180, to: 270 }], tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q5",
+      source: { kind: "authored" },
+      stem: t`The smallest positive angle co-terminal with $1050^\circ$ is:`,
+      verify: { kind: "value", inputs: { t: "1050" }, params: { ask: "coterminal" } },
+      options: [
+        { key: "A", text: t`$330^\circ$`, correct: true, value: "330" },
+        { key: "B", text: t`$30^\circ$`, correct: false, misconceptionId: "C01-M1", value: "30" },
+        { key: "C", text: t`$150^\circ$`, correct: false, misconceptionId: "C01-M2", value: "150" },
+        { key: "D", text: t`$690^\circ$`, correct: false, misconceptionId: "C01-M4", value: "690" },
+      ],
+      solution: {
+        steps: [
+          t`$1050 = 2 \times 360 + 330$: two full turns and $330^\circ$ more.`,
+          t`Take off both turns: $1050^\circ - 720^\circ = 330^\circ$, which lies between $0^\circ$ and $360^\circ$.`,
+          t`So the smallest positive co-terminal angle is $330^\circ$. It is $30^\circ$ short of three turns, $1050^\circ = 1080^\circ - 30^\circ$: co-terminal with $-30^\circ$, not with $30^\circ$.`,
+        ],
+        figure: {
+          alt: "The angle 1050°: the arm turns anticlockwise two full turns and 330° more, ending 30° below the positive x-axis, in Quadrant IV: the same arm as 330° and as −30°.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "segment", from: [-2.6, 0], to: [2.6, 0], tone: "muted" },
+            { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+            { kind: "segment", from: [0, -2.6], to: [0, 2.6], tone: "muted" },
+            { kind: "label", at: [0, 2.6], label: "y", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+            { kind: "curve", points: [[0.6, 0], [0.601, 0.063], [0.596, 0.127], [0.584, 0.19], [0.565, 0.251], [0.539, 0.311], [0.508, 0.369], [0.47, 0.423], [0.426, 0.473], [0.377, 0.519], [0.323, 0.559], [0.264, 0.594], [0.202, 0.623], [0.137, 0.645], [0.069, 0.66], [0, 0.669], [-0.07, 0.669], [-0.141, 0.663], [-0.211, 0.649], [-0.279, 0.627], [-0.346, 0.599], [-0.409, 0.563], [-0.469, 0.521], [-0.524, 0.472], [-0.574, 0.417], [-0.619, 0.357], [-0.657, 0.292], [-0.688, 0.224], [-0.712, 0.151], [-0.729, 0.077], [-0.737, 0], [-0.738, -0.078], [-0.73, -0.155], [-0.714, -0.232], [-0.69, -0.307], [-0.658, -0.38], [-0.619, -0.449], [-0.572, -0.515], [-0.518, -0.575], [-0.457, -0.63], [-0.391, -0.678], [-0.32, -0.719], [-0.245, -0.753], [-0.166, -0.779], [-0.084, -0.797], [0, -0.806], [0.085, -0.806], [0.169, -0.797], [0.253, -0.779], [0.335, -0.753], [0.414, -0.718], [0.49, -0.674], [0.561, -0.623], [0.626, -0.564], [0.685, -0.498], [0.737, -0.426], [0.782, -0.348], [0.818, -0.266], [0.846, -0.18], [0.865, -0.091], [0.874, 0], [0.874, 0.092], [0.864, 0.184], [0.845, 0.274], [0.815, 0.363], [0.777, 0.449], [0.73, 0.53], [0.674, 0.606], [0.609, 0.677], [0.538, 0.741], [0.46, 0.797], [0.376, 0.845], [0.287, 0.884], [0.194, 0.913], [0.098, 0.933], [0, 0.943], [-0.099, 0.942], [-0.198, 0.931], [-0.296, 0.91], [-0.391, 0.878], [-0.483, 0.836], [-0.57, 0.785], [-0.652, 0.724], [-0.728, 0.655], [-0.796, 0.578], [-0.856, 0.494], [-0.907, 0.404], [-0.949, 0.308], [-0.98, 0.208], [-1.001, 0.105], [-1.011, 0], [-1.01, -0.106], [-0.998, -0.212], [-0.975, -0.317], [-0.941, -0.419], [-0.896, -0.517], [-0.84, -0.611], [-0.775, -0.698], [-0.701, -0.779], [-0.619, -0.852], [-0.529, -0.916], [-0.432, -0.97], [-0.33, -1.014], [-0.223, -1.047], [-0.112, -1.07], [0, -1.08], [0.113, -1.079], [0.226, -1.065], [0.338, -1.04], [0.447, -1.003], [0.551, -0.955], [0.651, -0.896], [0.744, -0.826], [0.83, -0.747], [0.907, -0.659], [0.975, -0.563], [1.033, -0.46], [1.079, -0.351], [1.115, -0.237], [1.138, -0.12], [1.149, 0], [1.147, 0.121], [1.132, 0.241], [1.105, 0.359], [1.066, 0.475], [1.014, 0.586], [0.951, 0.691], [0.877, 0.79], [0.793, 0.881], [0.699, 0.962], [0.597, 1.034], [0.488, 1.095], [0.372, 1.145], [0.251, 1.182], [0.127, 1.206], [0, 1.217], [-0.128, 1.215], [-0.255, 1.199], [-0.38, 1.171], [-0.502, 1.129], [-0.62, 1.074], [-0.732, 1.007], [-0.836, 0.928], [-0.932, 0.839], [-1.018, 0.74], [-1.094, 0.631], [-1.158, 0.516], [-1.21, 0.393], [-1.249, 0.265], [-1.274, 0.134], [-1.286, 0], [-1.283, -0.135], [-1.267, -0.269], [-1.236, -0.402], [-1.191, -0.53], [-1.133, -0.654], [-1.062, -0.772], [-0.979, -0.882], [-0.885, -0.983], [-0.78, -1.073], [-0.666, -1.153], [-0.543, -1.22], [-0.414, -1.275], [-0.28, -1.316], [-0.141, -1.342], [0, -1.354], [0.142, -1.351], [0.283, -1.334], [0.423, -1.301], [0.558, -1.254], [0.689, -1.193], [0.812, -1.118], [0.928, -1.03], [1.034, -0.931], [1.129, -0.82], [1.212, -0.7]], step: 1 },
+            { kind: "label", at: [0.1, 1.55], label: "1050°", labelAt: "e", step: 1 },
+            { kind: "vector", to: [1.905, -1.1], step: 1 },
+            { kind: "arc", centre: [0, 0], r: 0.45, from: 0, to: 330, step: 2, tone: "good" },
+            { kind: "label", at: [1.905, -1.1], label: "330°", labelAt: "e", tone: "good", step: 2 },
+            { kind: "label", at: [0.3, -2.3], label: "also −30°, not 30°", labelAt: "e", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};
