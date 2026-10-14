@@ -78,7 +78,7 @@ def venn_cells(n):
     return list(_CELL_AT[n])
 
 
-def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", **extra):
+def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", note=None, **extra):
     """A Venn diagram figure for 2 or 3 sets inside a universal rectangle.
 
     shade: a function of one bool per set (in A?, in B?, ...) -> True for the cells to shade,
@@ -86,6 +86,8 @@ def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", **extra):
       Or a list of layers, each (function, {"step": 2, "tone": "good"}), drawn in order.
     counts: {cell tuple: "12"} labels written inside cells (n(...) for counting problems), or
       {cell: ("12", {"step": 2, "tone": "bad"})} to reveal or colour a count.
+    note: a caption ("A Δ B = {1, 3}") or (caption, {"step": 3, "tone": "good"}), placed top centre, above the
+      circles and clear of the set names. Put any extra text here, never by hand near a circle.
     """
     n = len(names)
     assert n in _CIRCLES, "2 or 3 sets"
@@ -109,6 +111,9 @@ def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", **extra):
         else:  # the lower circle: name just outside its lower right
             elements.append({"kind": "label", "at": [round(c[0] + r, 2), round(c[1] - r * 0.55, 2)], "label": name, "labelAt": "e"})
     elements.append({"kind": "label", "at": [x1 - 0.5, y1 - 0.6], "label": universe, "labelAt": "n"})
+    if note:
+        text, opts = note if isinstance(note, tuple) else (note, {})
+        elements.append({"kind": "label", "at": [5.0, 6.45], "label": text, "labelAt": "n", **opts})
     for cell, text in (counts or {}).items():
         text, opts = text if isinstance(text, tuple) else (text, {})
         elements.append({"kind": "label", "at": list(_CELL_AT[n][cell]), "label": str(text), "labelAt": "n", **opts})

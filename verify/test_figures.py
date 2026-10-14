@@ -101,6 +101,11 @@ class Venn(unittest.TestCase):
         (label,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"] == "7"]
         self.assertEqual((label["step"], label["tone"], label["at"]), (2, "bad", [5.0, 3.5]))
 
+    def test_a_note_sits_top_centre_above_the_circles(self):
+        fig = venn("Note", note=("A Δ B = {1, 3}", {"step": 3, "tone": "good"}))
+        (note,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"].startswith("A Δ B")]
+        self.assertEqual((note["at"], note["step"], note["tone"]), ([5.0, 6.45], 3, "good"))
+
 
 class NumberLine(unittest.TestCase):
     def test_open_ends_are_hollow_and_closed_ends_filled(self):
