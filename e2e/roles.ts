@@ -9,7 +9,7 @@
  * Env:   BROWSER, SCHEME (light | dark), VIEWPORT (phone | tablet | desktop), SHOTS: as in golden-path.ts
  * Reads .env.local; creates a test academy and logins with the service role and deletes them at the end.
  */
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
@@ -167,6 +167,13 @@ await (async () => {
     ok("the switcher takes a teacher to the student area");
     await shot("r03-learn-as-teacher");
 
+    // Staff are never gated: every concept is open to a teacher, whatever they've mastered.
+    await page.goto(BASE + "/learn/complex-numbers");
+    const outline = page.locator("section[aria-labelledby=outline]");
+    await outline.getByText("The imaginary unit").waitFor();
+    const lockedForTeacher = await outline.getByText("Locked", { exact: true }).count();
+    check(lockedForTeacher === 0, `a teacher's chapter map has nothing locked (got ${lockedForTeacher})`);
+
     await header.getByRole("button", { name: "Sign out" }).click();
     await page.waitForURL(BASE + "/");
     await header.getByRole("link", { name: "Sign in" }).waitFor();
@@ -180,6 +187,13 @@ await (async () => {
       `select id from auth.users where is_anonymous and created_at > now() - interval '2 minutes' order by created_at desc limit 1`,
     );
     if (guest) created.push(String(guest.id));
+    // A guest is a student: with the mastery gate on, everything after C01 starts locked.
+    const gate = /export const MASTERY_GATE = true;/.test(readFileSync("src/engine/unlock.ts", "utf8"));
+    await page.goto(BASE + "/learn/complex-numbers");
+    const guestOutline = page.locator("section[aria-labelledby=outline]");
+    await guestOutline.getByText("The imaginary unit").waitFor();
+    const lockedForGuest = await guestOutline.getByText("Locked", { exact: true }).count();
+    check(lockedForGuest === (gate ? 29 : 0), `a guest's chapter map has ${gate ? 29 : 0} locked (got ${lockedForGuest})`);
     await page.goto(BASE + "/teach");
     await page.getByRole("heading", { name: "Sign in" }).waitFor();
     check(path() === "/login?next=%2Fteach", "a guest opening /teach is asked to sign in");
