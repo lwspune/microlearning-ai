@@ -24,6 +24,25 @@ class OptionText(unittest.TestCase):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
 
+class FourOptions(unittest.TestCase):
+    def test_an_item_needs_four_models(self):
+        import tempfile, textwrap, os
+        from draft_items import draft
+
+        spec = textwrap.dedent("""
+            CHAPTER = "linear_programming"
+            ITEMS = [dict(id="C01-Q1", stem="Where?", inputs={}, params={"line": "3*x + 2*y = 12", "ask": "x"},
+                          fmt="point", models=["key", "C01-M1", "C01-M2"])]
+        """)
+        with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False) as f:
+            f.write(spec)
+        try:
+            with self.assertRaisesRegex(AssertionError, "4 options"):
+                draft(f.name)
+        finally:
+            os.unlink(f.name)
+
+
 class ItemFigure(unittest.TestCase):
     def test_a_question_figure_follows_the_stem(self):
         import tempfile, textwrap, os
@@ -33,8 +52,9 @@ class ItemFigure(unittest.TestCase):
         fig = {"alt": "A shaded region.", "axes": "xy", "view": {"x": [-1, 5], "y": [-1, 5]}, "elements": []}
         spec = textwrap.dedent(f"""
             CHAPTER = "linear_programming"
-            ITEMS = [dict(id="C01-Q1", stem="Where?", inputs={{}}, params={{"line": "3*x + 2*y = 12", "ask": "x"}},
-                          fmt="point", models=["key", "C01-M1", "C01-M2"], figure={fig!r})]
+            ITEMS = [dict(id="C03-Q1", stem="Where?", inputs={{}},
+                          params={{"cons": ["x + y >= 4", "x <= 5", "y <= 5"], "pts": ["3+I*(3)", "2+I*(4)", "5+I*(2)", "-1+I*(5)"]}},
+                          models=["key", "C03-M1", "C03-M2", "C03-M3"], figure={fig!r})]
         """)
         with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False) as f:
             f.write(spec)

@@ -137,6 +137,10 @@ describe("validateChapter", () => {
       expect(errorsAfter((ch) => (c3(ch).items[1].id = "C3-Q1"))).toContainEqual(expect.stringMatching(/duplicate item id C3-Q1/));
     });
 
+    it("requires exactly four options, A to D", () => {
+      expect(errorsAfter((ch) => c3(ch).items[0].options.pop())).toContainEqual(expect.stringMatching(/C3-Q1: needs 4 options \(A to D\), has 3/));
+    });
+
     it("requires exactly one correct option", () => {
       expect(errorsAfter((ch) => (c3(ch).items[0].options[1].correct = true))).toContainEqual(
         expect.stringMatching(/C3-Q1.*exactly one correct option/),
