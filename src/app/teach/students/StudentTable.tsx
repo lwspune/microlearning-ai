@@ -70,7 +70,7 @@ export function StudentTable({ students }: { students: StudentRow[] }) {
                   <Link href={`/teach/students/${s.id}`} className="font-medium text-accent underline-offset-4 hover:underline">
                     {s.fullName}
                   </Link>
-                  <span className="block font-mono text-xs text-muted">{s.login}</span>
+                  <span className="block font-mono text-xs break-all text-muted">{s.login}</span>
                   {/* Phones: the hidden columns, in one line. */}
                   <span className="block text-xs text-muted md:hidden">
                     {s.learning} in progress · {s.reviewsDue} due<span className="sm:hidden"> · {s.lastActive}</span>
