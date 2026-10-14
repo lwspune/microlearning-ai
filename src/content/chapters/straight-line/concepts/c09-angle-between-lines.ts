@@ -1,0 +1,310 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c09: Concept = {
+  id: "C09",
+  status: "approved",
+  hook: {
+    prompt: t`Lines with slopes $0$ and $1$ meet at one angle; lines with slopes $1$ and $2$ meet at another. In both pairs the slopes differ by $1$. **Are the two angles equal?**`,
+    reveal: t`No. Slopes $0$ and $1$ mean inclinations $0^\circ$ and $45^\circ$, so those lines meet at $45^\circ$. For slopes $1$ and $2$, $\tan\theta = \frac{2 - 1}{1 + 2 \cdot 1} = \frac{1}{3}$, so $\theta \approx 18.4^\circ$. The angle depends on $\frac{m_1 - m_2}{1 + m_1 m_2}$, not on $m_1 - m_2$ alone.`,
+  },
+  explanation: {
+    intuition: t`Each line's slope is the tan of its inclination. Where two lines cross, the angle between them is the difference of their inclinations, so its tan comes from the $\tan(A - B)$ formula. But crossing lines make two angles, $\theta$ and $180^\circ - \theta$, and their tans differ only in sign. The modulus in the formula picks the acute one.`,
+    formal: t`**The formula.** Lines with slopes $m_1$ and $m_2$ (neither vertical) make an acute angle $\theta$ with
+$$\tan\theta = \left|\frac{m_1 - m_2}{1 + m_1 m_2}\right|$$
+
+**Where it comes from.** With inclinations $\theta_1$ and $\theta_2$, the angle between the lines is $\theta_1 - \theta_2$ or its supplement, and $\tan(\theta_1 - \theta_2) = \frac{\tan\theta_1 - \tan\theta_2}{1 + \tan\theta_1 \tan\theta_2}$. Put $\tan\theta_1 = m_1$, $\tan\theta_2 = m_2$. The denominator has a **plus** sign.
+
+**Why the modulus.** $\tan(180^\circ - \theta) = -\tan\theta$. A negative fraction is the tan of the obtuse angle; its modulus gives the acute angle. If $1 + m_1 m_2 = 0$ the lines are perpendicular, and if $m_1 = m_2$ they are parallel.
+
+**Lines in general form.** Read each slope as $-\frac{a}{b}$ before you use the formula.
+
+**Slope from the angle.** Given $\theta$ and $m_1$, solve $\left|\frac{m_1 - m}{1 + m_1 m}\right| = \tan\theta$. The fraction is $+\tan\theta$ **or** $-\tan\theta$: two slopes, so two lines.`,
+    worked: {
+      prompt: t`Find the acute angle between the lines $x - 2y + 3 = 0$ and $3x + y - 5 = 0$.`,
+      steps: [
+        t`Slopes, as $-\frac{a}{b}$: $m_1 = -\frac{1}{-2} = \frac{1}{2}$ and $m_2 = -\frac{3}{1} = -3$.`,
+        t`$\frac{m_1 - m_2}{1 + m_1 m_2} = \frac{\frac{1}{2} + 3}{1 - \frac{3}{2}} = \frac{\frac{7}{2}}{-\frac{1}{2}} = -7$.`,
+        t`The fraction is negative, so $-7$ is the tan of the obtuse angle between the lines. The modulus gives the acute angle: $\tan\theta = 7$.`,
+        t`$\theta = \tan^{-1} 7$, about $81.9^\circ$.`,
+      ],
+      answer: t`$\theta = \tan^{-1} 7$`,
+      figure: {
+        alt: "The lines x − 2y + 3 = 0, of slope 1/2, and 3x + y − 5 = 0, of slope −3, meet at P(1, 2). The obtuse angle between them, whose tan is −7, is marked in red; the acute angle θ, with tan θ = 7, is marked in green.",
+        axes: "xy",
+        view: { x: [-3.5, 4.5], y: [-1.5, 5] },
+        elements: [
+          { kind: "line", through: [[1, 2], [2, 2.5]], tone: "muted" },
+          { kind: "line", through: [[1, 2], [2, -1]], tone: "muted" },
+          { kind: "point", at: [1, 2] },
+          { kind: "label", at: [1.2, 1.95], label: "P(1, 2)", labelAt: "se" },
+          { kind: "label", at: [3, 3], label: "m₁ = 1/2", labelAt: "se", step: 1 },
+          { kind: "label", at: [0.2, 4.4], label: "m₂ = −3", labelAt: "e", step: 1 },
+          { kind: "angle", at: [1, 2], from: 108.435, to: 206.565, tone: "bad", step: 3 },
+          { kind: "label", at: [-3.2, 2.7], label: "obtuse: tan = −7", labelAt: "e", tone: "bad", step: 3 },
+          { kind: "angle", at: [1, 2], from: 26.565, to: 108.435, label: "θ", labelAt: "ne", tone: "good", step: 3 },
+          { kind: "label", at: [1.8, 3.9], label: "θ = tan⁻¹ 7", labelAt: "e", tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "Two lines cross the x-axis at A(2, 0) and B(5, 0) and meet at P(6, 4). The first line makes inclination θ₁ with the x-axis at A, the second makes the larger inclination θ₂ at B. At P the lines make the angle θ = θ₂ − θ₁ and, beside it, the angle 180° − θ.",
+      axes: "xy",
+      view: { x: [-0.5, 8], y: [-1.5, 5.5] },
+      elements: [
+        { kind: "line", through: [[2, 0], [6, 4]], step: 1 },
+        { kind: "point", at: [2, 0], label: "A(2, 0)", labelAt: "nw", step: 1 },
+        { kind: "angle", at: [2, 0], from: 0, to: 45, label: "θ₁", labelAt: "e", step: 1 },
+        { kind: "line", through: [[5, 0], [6, 4]], step: 2 },
+        { kind: "point", at: [5, 0], label: "B(5, 0)", labelAt: "nw", step: 2 },
+        { kind: "angle", at: [5, 0], from: 0, to: 75.964, label: "θ₂", labelAt: "e", step: 2 },
+        { kind: "point", at: [6, 4], label: "P(6, 4)", labelAt: "se", step: 3 },
+        { kind: "angle", at: [6, 4], from: 225, to: 255.964, tone: "good", step: 3 },
+        { kind: "label", at: [5.45, 2.8], label: "θ", labelAt: "s", tone: "good", step: 3 },
+        { kind: "label", at: [0.4, 5], label: "θ = θ₂ − θ₁", labelAt: "e", tone: "good", step: 3 },
+        { kind: "angle", at: [6, 4], from: 75.964, to: 225, label: "180° − θ", labelAt: "nw", tone: "muted", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag either line to turn it about the crossing point; the two angles there, $\theta$ and $180^\circ - \theta$, update live, with the fraction $\frac{m_1 - m_2}{1 + m_1 m_2}$ and its modulus shown beside them.`,
+  },
+  misconceptions: [
+    {
+      id: "C09-M1",
+      mistake: t`Drops the modulus: takes $\frac{m_1 - m_2}{1 + m_1 m_2}$ as it stands, so a negative value gives the obtuse angle, and solving for a slope keeps only one case`,
+      remediation: t`Crossing lines make two angles, $\theta$ and $180^\circ - \theta$, whose tans differ only in sign. Take the modulus for the acute angle, and when you solve $|\ldots| = \tan\theta$, use both the $+$ and $-$ cases: there are two lines.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C09-M2",
+      mistake: t`Uses $1 - m_1 m_2$ in the denominator`,
+      remediation: t`The formula comes from $\tan(\theta_1 - \theta_2) = \frac{\tan\theta_1 - \tan\theta_2}{1 + \tan\theta_1 \tan\theta_2}$, so the denominator is $1 + m_1 m_2$, with a plus sign.`,
+      fallback: { kind: "ext", topic: "tan(A − B) formula" },
+    },
+    {
+      id: "C09-M3",
+      mistake: t`Reads the slope of $ax + by + c = 0$ as $\frac{a}{b}$, losing the minus sign`,
+      remediation: t`Make $y$ the subject: $by = -ax - c$, so the slope of $ax + by + c = 0$ is $-\frac{a}{b}$. Check its sign before you put it in the formula.`,
+      fallback: { kind: "concept", id: "C07" },
+    },
+    {
+      id: "C09-M4",
+      mistake: t`Mixes up the standard angles: $\tan\theta = \frac{1}{\sqrt{3}}$ read as $60^\circ$ (or $\sqrt{3}$ as $30^\circ$)`,
+      remediation: t`$\tan 30^\circ = \frac{1}{\sqrt{3}}$ and $\tan 60^\circ = \sqrt{3}$. A smaller tan means a smaller acute angle.`,
+      fallback: { kind: "ext", topic: "values at standard angles" },
+    },
+    {
+      id: "C09-M5",
+      mistake: t`Drops the denominator: $\tan\theta = |m_1 - m_2|$, as if slopes subtract like angles`,
+      remediation: t`A slope is the tan of an inclination, not the angle itself, and $\tan(\theta_1 - \theta_2)$ is not $\tan\theta_1 - \tan\theta_2$. Divide $m_1 - m_2$ by $1 + m_1 m_2$.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+  ],
+  engineNotes: [
+    t`C09-M1 gives the key on an angle or tan question when $\frac{m_1 - m_2}{1 + m_1 m_2} > 0$ (lines in the order the stem lists them); diagnose it with a pair where the fraction is negative, or with a slope or line question.`,
+    "C09-M3 can't be detected when both lines are in general form: misreading both slopes reflects the picture and leaves the angle unchanged. It shows only when one line is in general form and the other's slope is given or unknown.",
+    t`C09-M4 applies only when the answer is $30^\circ$ or $60^\circ$.`,
+  ],
+  items: [
+    {
+      id: "C09-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/5.2.4 SolvedEx.1" },
+      stem: t`The acute angle between lines having slopes $3$ and $-2$ is:`,
+      verify: { kind: "value", inputs: { m1: "3", m2: "-2" }, params: { ask: "angle" } },
+      options: [
+        { key: "A", text: t`$\tan^{-1}\frac{5}{7}$`, correct: false, misconceptionId: "C09-M2", value: "180*atan(5/7)/pi" },
+        { key: "B", text: t`$\tan^{-1} 5$`, correct: false, misconceptionId: "C09-M5", value: "180*atan(5)/pi" },
+        { key: "C", text: t`$45^\circ$`, correct: true, value: "45" },
+        { key: "D", text: t`$135^\circ$`, correct: false, misconceptionId: "C09-M1", value: "135" },
+      ],
+      solution: {
+        steps: [
+          t`$m_1 = 3$, $m_2 = -2$: $\frac{m_1 - m_2}{1 + m_1 m_2} = \frac{3 - (-2)}{1 + (3)(-2)} = \frac{5}{-5} = -1$.`,
+          t`The fraction is negative: $-1 = \tan 135^\circ$, the obtuse angle between the lines.`,
+          t`The modulus gives the acute angle: $\tan\theta = |-1| = 1$, so $\theta = 45^\circ$.`,
+        ],
+        figure: {
+          alt: "Lines of slope 3 and −2 drawn through one point. The obtuse angle between them, 135°, is marked in red; the acute angle, 45°, in green.",
+          axes: "xy",
+          view: { x: [-1, 5], y: [-2.5, 4.5] },
+          elements: [
+            { kind: "line", through: [[2, 1], [3, 4]], tone: "muted" },
+            { kind: "line", through: [[2, 1], [3, -1]], tone: "muted" },
+            { kind: "label", at: [2.9, 3.7], label: "m₁ = 3", labelAt: "e" },
+            { kind: "label", at: [0.9, 3.2], label: "m₂ = −2", labelAt: "e" },
+            { kind: "angle", at: [2, 1], from: 116.565, to: 251.565, label: "135°", labelAt: "w", tone: "bad", step: 2 },
+            { kind: "angle", at: [2, 1], from: 71.565, to: 116.565, label: "45°", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc I Q8" },
+      stem: t`The acute angle between the lines $\sqrt{3}x - y - 2 = 0$ and $x - \sqrt{3}y + 1 = 0$ is:`,
+      verify: { kind: "value", inputs: { a1: "sqrt(3)", b1: "-1", a2: "1", b2: "-sqrt(3)" }, params: { ask: "angle" } },
+      options: [
+        { key: "A", text: t`$30^\circ$`, correct: true, value: "30" },
+        { key: "B", text: t`$60^\circ$`, correct: false, misconceptionId: "C09-M4", value: "60" },
+        { key: "C", text: t`$90^\circ$`, correct: false, misconceptionId: "C09-M2", value: "90" },
+        { key: "D", text: t`$\tan^{-1}\frac{2}{\sqrt{3}}$`, correct: false, misconceptionId: "C09-M5", value: "180*atan(2*sqrt(3)/3)/pi" },
+      ],
+      solution: {
+        steps: [
+          t`Slopes, as $-\frac{a}{b}$: $m_1 = -\frac{\sqrt{3}}{-1} = \sqrt{3}$ and $m_2 = -\frac{1}{-\sqrt{3}} = \frac{1}{\sqrt{3}}$.`,
+          t`$\tan\theta = \left|\frac{\sqrt{3} - \frac{1}{\sqrt{3}}}{1 + \sqrt{3} \cdot \frac{1}{\sqrt{3}}}\right| = \frac{\frac{2}{\sqrt{3}}}{2} = \frac{1}{\sqrt{3}}$.`,
+          t`$\tan 30^\circ = \frac{1}{\sqrt{3}}$, so $\theta = 30^\circ$. Check: the inclinations are $60^\circ$ and $30^\circ$.`,
+        ],
+        figure: {
+          alt: "The lines √3x − y − 2 = 0, of slope √3 (inclination 60°), and x − √3y + 1 = 0, of slope 1/√3 (inclination 30°), crossing. The acute angle θ between them is 30°.",
+          axes: "xy",
+          view: { x: [-1.5, 6], y: [-2.5, 4.5] },
+          elements: [
+            { kind: "line", through: [[0, -2], [2, 1.464]], tone: "muted" },
+            { kind: "line", through: [[-1, 0], [2, 1.732]], tone: "muted" },
+            { kind: "label", at: [0.3, -1.48], label: "m₁ = √3", labelAt: "se", step: 1 },
+            { kind: "label", at: [4, 2.887], label: "m₂ = 1/√3", labelAt: "se", step: 1 },
+            { kind: "angle", at: [2.232, 1.866], from: 30, to: 60, label: "θ", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [3.2, -1.5], label: "θ = 30°", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/5.4 SolvedEx.2(b)" },
+      stem: t`If $\theta$ is the acute angle between the lines $y = 2x + 3$ and $y = 3x + 7$, then $\tan\theta$ is:`,
+      verify: { kind: "value", inputs: { m1: "2", m2: "3" }, params: { ask: "tan" } },
+      options: [
+        { key: "A", text: t`$-\frac{1}{7}$`, correct: false, misconceptionId: "C09-M1", value: "-1/7" },
+        { key: "B", text: t`$\frac{1}{5}$`, correct: false, misconceptionId: "C09-M2", value: "1/5" },
+        { key: "C", text: t`$1$`, correct: false, misconceptionId: "C09-M5", value: "1" },
+        { key: "D", text: t`$\frac{1}{7}$`, correct: true, value: "1/7" },
+      ],
+      solution: {
+        steps: [
+          t`From $y = mx + c$: $m_1 = 2$ and $m_2 = 3$.`,
+          t`$\frac{m_1 - m_2}{1 + m_1 m_2} = \frac{2 - 3}{1 + 6} = -\frac{1}{7}$.`,
+          t`Take the modulus for the acute angle: $\tan\theta = \frac{1}{7}$.`,
+        ],
+        figure: {
+          alt: "The lines y = 2x + 3 and y = 3x + 7 meet at P(−4, −5) at a small acute angle θ, with tan θ = 1/7.",
+          axes: "xy",
+          view: { x: [-7, 3], y: [-8, 9] },
+          elements: [
+            { kind: "line", through: [[-4, -5], [-3, -3]], tone: "muted" },
+            { kind: "line", through: [[-4, -5], [-3, -2]], tone: "muted" },
+            { kind: "label", at: [0.5, 4], label: "y = 2x + 3", labelAt: "e", step: 1 },
+            { kind: "label", at: [-1.333, 3], label: "y = 3x + 7", labelAt: "w", step: 1 },
+            { kind: "point", at: [-4, -5], label: "P(−4, −5)", labelAt: "se" },
+            { kind: "angle", at: [-4, -5], from: 63.435, to: 71.565, label: "tan θ = 1/7", labelAt: "se", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/5.2.4 SolvedEx.2" },
+      stem: t`The angle between two lines is $45^\circ$ and the slope of one of them is $\frac{1}{2}$. The slope of the other line is:`,
+      verify: { kind: "value", inputs: { m1: "1/2", t: "45" }, params: { ask: "slopes" } },
+      options: [
+        { key: "A", text: t`$3$ or $-\frac{1}{3}$`, correct: true, value: "{-1/3, 3}" },
+        { key: "B", text: t`$-\frac{1}{3}$ only`, correct: false, misconceptionId: "C09-M1", value: "{-1/3}" },
+        { key: "C", text: t`$1$ or $-1$`, correct: false, misconceptionId: "C09-M2", value: "{-1, 1}" },
+        { key: "D", text: t`$\frac{3}{2}$ or $-\frac{1}{2}$`, correct: false, misconceptionId: "C09-M5", value: "{-1/2, 3/2}" },
+      ],
+      solution: {
+        steps: [
+          t`Let $m$ be the other slope: $\tan 45^\circ = 1 = \left|\frac{\frac{1}{2} - m}{1 + \frac{1}{2}m}\right| = \left|\frac{1 - 2m}{2 + m}\right|$.`,
+          t`$\frac{1 - 2m}{2 + m} = 1$ gives $1 - 2m = 2 + m$, so $m = -\frac{1}{3}$. $\frac{1 - 2m}{2 + m} = -1$ gives $1 - 2m = -2 - m$, so $m = 3$.`,
+          t`Both cases work: the other line has slope $3$ or $-\frac{1}{3}$.`,
+        ],
+        figure: {
+          alt: "A line of slope 1/2 and, through the same point, the two lines at 45° to it: slope 3 on one side and slope −1/3 on the other.",
+          axes: "xy",
+          view: { x: [-1.5, 5.5], y: [-1, 5] },
+          elements: [
+            { kind: "line", through: [[2, 2], [3, 2.5]], tone: "muted" },
+            { kind: "label", at: [3.5, 2.75], label: "m = 1/2", labelAt: "se", tone: "muted" },
+            { kind: "line", through: [[2, 2], [3, 5]], tone: "good", step: 2 },
+            { kind: "label", at: [2.8, 4.4], label: "m = 3", labelAt: "e", tone: "good", step: 2 },
+            { kind: "line", through: [[2, 2], [3, 1.667]], tone: "good", step: 2 },
+            { kind: "label", at: [4.2, 1.267], label: "m = −1/3", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "angle", at: [2, 2], from: 26.565, to: 71.565, label: "45°", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "angle", at: [2, 2], from: -18.435, to: 26.565, label: "45°", labelAt: "e", tone: "good", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/5.4 SolvedEx.5" },
+      stem: t`The lines through the origin that make an angle of $45^\circ$ with the line $3x - y = 6$ are:`,
+      verify: { kind: "locus", inputs: { a1: "3", b1: "-1", t: "45", x0: "0", y0: "0" }, params: { ask: "lines" } },
+      options: [
+        { key: "A", text: t`$x - y = 0$ and $x + y = 0$`, correct: false, misconceptionId: "C09-M2", value: "-x**2 + y**2" },
+        { key: "B", text: t`$x + 2y = 0$ and $2x - y = 0$`, correct: false, misconceptionId: "C09-M3", value: "-x**2 - 3*x*y/2 + y**2" },
+        { key: "C", text: t`$2x + y = 0$ and $x - 2y = 0$`, correct: true, value: "-x**2 + 3*x*y/2 + y**2" },
+        { key: "D", text: t`$x - 2y = 0$ only`, correct: false, misconceptionId: "C09-M1", value: "-x/2 + y" },
+      ],
+      solution: {
+        steps: [
+          t`The slope of $3x - y = 6$ is $3$. For a required line of slope $m$: $\tan 45^\circ = 1 = \left|\frac{m - 3}{1 + 3m}\right|$.`,
+          t`$m - 3 = 1 + 3m$ gives $m = -2$; $m - 3 = -(1 + 3m)$ gives $m = \frac{1}{2}$.`,
+          t`Through the origin: $y = -2x$ and $y = \frac{1}{2}x$, that is $2x + y = 0$ and $x - 2y = 0$.`,
+        ],
+        figure: {
+          alt: "The line 3x − y = 6 and the two lines through the origin at 45° to it: 2x + y = 0 and x − 2y = 0. Each meets 3x − y = 6 at an angle of 45°.",
+          axes: "xy",
+          view: { x: [-3.5, 5.5], y: [-3.5, 5] },
+          elements: [
+            { kind: "line", through: [[2, 0], [3, 3]], tone: "muted" },
+            { kind: "label", at: [3.3, 3.9], label: "3x − y = 6", labelAt: "e", tone: "muted" },
+            { kind: "line", through: [[0, 0], [-1, 2]], tone: "good", step: 3 },
+            { kind: "label", at: [-1.5, 3], label: "2x + y = 0", labelAt: "w", tone: "good", step: 3 },
+            { kind: "line", through: [[0, 0], [2, 1]], tone: "good", step: 3 },
+            { kind: "label", at: [-3, -1.5], label: "x − 2y = 0", labelAt: "se", tone: "good", step: 3 },
+            { kind: "angle", at: [1.2, -2.4], from: 71.565, to: 116.565, label: "45°", labelAt: "n", tone: "good", step: 3 },
+            { kind: "angle", at: [2.4, 1.2], from: 26.565, to: 71.565, label: "45°", labelAt: "ne", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc II Q20" },
+      stem: t`Two lines through $M(2, 3)$ meet at an angle of $45^\circ$. One of them has slope $2$. The other line is:`,
+      verify: { kind: "locus", inputs: { m1: "2", t: "45", x0: "2", y0: "3" }, params: { ask: "lines" } },
+      options: [
+        { key: "A", text: t`$x - y + 1 = 0$ or $3x - y - 3 = 0$`, correct: false, misconceptionId: "C09-M5", value: "3*x**2 - 4*x*y + y**2 + 2*y - 3" },
+        { key: "B", text: t`$3x + y - 9 = 0$ or $x - 3y + 7 = 0$`, correct: true, value: "-x**2 + 8*x*y/3 - 4*x + y**2 - 34*y/3 + 21" },
+        { key: "C", text: t`$x - 3y + 7 = 0$ only`, correct: false, misconceptionId: "C09-M1", value: "-x/3 + y - 7/3" },
+        { key: "D", text: t`$x - y + 1 = 0$ or $x + y - 5 = 0$`, correct: false, misconceptionId: "C09-M2", value: "-x**2 + 4*x + y**2 - 6*y + 5" },
+      ],
+      solution: {
+        steps: [
+          t`Let $m$ be the other slope: $\tan 45^\circ = 1 = \left|\frac{2 - m}{1 + 2m}\right|$.`,
+          t`$2 - m = 1 + 2m$ gives $m = \frac{1}{3}$; $2 - m = -(1 + 2m)$ gives $m = -3$.`,
+          t`Through $M(2, 3)$: $y - 3 = \frac{1}{3}(x - 2)$, that is $x - 3y + 7 = 0$, or $y - 3 = -3(x - 2)$, that is $3x + y - 9 = 0$.`,
+        ],
+        figure: {
+          alt: "The line of slope 2 through M(2, 3) and the two lines through M at 45° to it: x − 3y + 7 = 0 (slope 1/3) and 3x + y − 9 = 0 (slope −3).",
+          axes: "xy",
+          view: { x: [-1.5, 5.5], y: [-1, 6] },
+          elements: [
+            { kind: "line", through: [[2, 3], [3, 5]], tone: "muted" },
+            { kind: "label", at: [3.2, 5.4], label: "m = 2", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [2, 3] },
+            { kind: "label", at: [1.5, 3.2], label: "M(2, 3)", labelAt: "w" },
+            { kind: "line", through: [[2, 3], [3, 3.333]], tone: "good", step: 3 },
+            { kind: "label", at: [5, 4], label: "x − 3y + 7 = 0", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "line", through: [[2, 3], [3, 0]], tone: "good", step: 3 },
+            { kind: "label", at: [2.7, 0.9], label: "3x + y − 9 = 0", labelAt: "e", tone: "good", step: 3 },
+            { kind: "angle", at: [2, 3], from: 18.435, to: 63.435, label: "45°", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "angle", at: [2, 3], from: 63.435, to: 108.435, label: "45°", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};
