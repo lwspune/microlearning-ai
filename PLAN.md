@@ -311,11 +311,12 @@ are in `backfill.ts`.
 
 **Phase B status (branch `phase-b-content`):** tooling done
 (`verify/add_solutions.py`, `build_concepts.py` emits figures and
-solutions). Batch 1, Algebra C01–C09: approved and seeded. Batch 2
-Geometry & polar (C11–C18) and batch 3 Roots (C19–C23): written,
-pending your review on `/review`. Next: batch 4 Loci (C25–C30, after the
-ellipse and hyperbola elements). Seed (`npm run content:seed`) after each
-approved batch.
+solutions). Batches 1–3 (Algebra, Geometry & polar, Roots): approved and
+seeded. Batch 4, Loci C25–C30 (with new `ellipse` and `hyperbola` figure
+elements): written, pending your review on `/review`. `backfill.ts` is gone
+and `Item.solution` is required. After approval: seed batch 4, then push
+migration `20261014160000_item_solution_required` (NOT NULL) and run
+`npm run test:db` and `npm run db:types`.
 
 ## Premium look and feel (branch `premium-ui`, 2026-10-14)
 
