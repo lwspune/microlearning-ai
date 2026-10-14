@@ -8,6 +8,7 @@ function payload() {
   const items = [1, 2, 3, 4, 5, 6].map((n) => ({
     code: `C01-Q${n}`,
     stem: "s",
+    solution: { steps: ["a", "b"] },
     source: { kind: "authored" },
     verify: {},
     verified: true,

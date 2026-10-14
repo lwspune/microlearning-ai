@@ -8,6 +8,7 @@ function payload(status: "approved" | "draft" = "approved", verified = true) {
   const items = ["C01-Q1", "C01-Q2", "C01-Q3", "C01-Q4"].map((code) => ({
     code,
     stem: "s",
+    solution: { steps: ["a", "b"] },
     source: { kind: "authored" },
     verify: {},
     verified,

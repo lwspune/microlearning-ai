@@ -110,7 +110,7 @@ describe("seed_chapter", () => {
   it("rejects an item with no solution", async () => {
     const p = payload();
     (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = null;
-    await expect(rolledBack(seed(p))).rejects.toThrow(/null value in column "solution" of relation "items"/);
+    await expect(rolledBack(seed(p))).rejects.toThrow(/23502: null value in column \W*solution\W* of relation \W*items/);
   });
 
   it("rejects a solution whose steps are not text", async () => {

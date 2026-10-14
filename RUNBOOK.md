@@ -171,6 +171,7 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 | A test fixture looked items up by code (`C03-Q1`) and collided with real content once it was published | scope fixture lookups to the fixture's own chapter |
 | `npm run x \| tail` reports `tail`'s exit code and can cut off the pass/fail summary, so a check looked "done" without its result | grep for the summary line (`Tests `, `items checked`) and read `${PIPESTATUS[0]}` before reporting a gate as passed |
 | Dashed lines rendered solid: `pathLength={1}` (for draw-in) scales the dash array to the whole stroke, and no pilot figure used `dashed` | `pathLength` only on solid strokes; `FigureView.test.tsx` checks dashed elements |
+| A DB test expected `column "solution"` but the Management API returns the error JSON-escaped (`\"solution\"`); seed fixtures built as payload objects were missed by a search for `insert into items` | match error codes and words, not quotes (`/23502: null value in column \W*solution/`); after a schema change, search fixtures for the column in both SQL and payload form |
 | Python's `write_text` writes CRLF on Windows, so generated files differed from the repo's LF (git normalises on commit, but the working copy and diffs don't) | generators pass `newline="\n"`; one-off edit scripts use `read_bytes`/`write_bytes` |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 

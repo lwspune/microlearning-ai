@@ -252,7 +252,7 @@ export type Database = {
           code: string
           concept_id: string
           id: string
-          solution: Json | null
+          solution: Json
           source: Json
           stem: string
           verified: boolean
@@ -262,7 +262,7 @@ export type Database = {
           code: string
           concept_id: string
           id?: string
-          solution?: Json | null
+          solution: Json
           source: Json
           stem: string
           verified?: boolean
@@ -272,7 +272,7 @@ export type Database = {
           code?: string
           concept_id?: string
           id?: string
-          solution?: Json | null
+          solution?: Json
           source?: Json
           stem?: string
           verified?: boolean
