@@ -55,6 +55,23 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
    them ("only JEE Main"). Mastery is per concept, so it is shared by every
    course in the group.
 
+## 2b. Accounts and roles
+
+Roles: `student`, `teacher`, `academy_admin`, `superadmin` (PLAN.md Phase 2).
+Guests are anonymous logins with no profile.
+
+1. **Make a login:** `npm run user:create -- --email a@b.co --name "Name" --role teacher --academy <slug>`.
+   The password comes from `USER_PASSWORD` or is typed when asked; never pass it
+   as an argument. An email that already has an account is never touched.
+2. **Who may open what** is `src/lib/auth/routing.ts` (tested): each role
+   reaches its own area and every one below. A page in `/teach` or `/admin`
+   calls `requireAreaAt(path)` (`src/server/viewer.ts`) **inside its own
+   `<Suspense>`**; never read the session in a layout.
+3. **Who may read what** is row level security (`supabase/tests/roles.db.test.ts`):
+   own profile; staff their academy's people; the superadmin everyone. Nobody
+   signed in writes `profiles` or `academies`.
+4. Staff always open every concept (`gateFor`); students follow `MASTERY_GATE`.
+
 ## 3. Adding a concept (the content loop)
 
 1. **Read the sources.** The PYQ Vault notes for the concept
@@ -125,7 +142,7 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
 6. **Definition of done:**
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
-   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103` and `npm run e2e -- http://localhost:3103`
+   - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
    - Leave no test data behind (check `auth.users` and `attempts`).
 7. Show the user, then **merge** (`git merge --ff-only`) and delete the branch.
@@ -203,6 +220,9 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
 | Git Bash rewrote a `/` argument into `C:/Program Files/Git/`; with `MSYS_NO_PATHCONV=1`, a `/c/Users/...` output path then went to a new `C:\c\Users\...` folder | pass Windows paths (`C:\...`) to Node scripts and set `MSYS_NO_PATHCONV=1` for URL-path arguments |
 | Once the homepage read a cookie it rendered partly at request time; `REVIEW_ENABLED`, set only for the build, then differed between the prerendered shell and the request render: a hydration error (#418) in production only | `next.config.ts` inlines `REVIEW_ENABLED` at build time; never read runtime-only env in a component on a partially prerendered page |
 | The e2e screenshot helper waited for every animation to finish, and the hero's loops never do: the run hung silently | `shot()` waits only for finite, time-based animations |
+| A failed sign-in emptied the email box: React resets a form after its action runs | return the typed email in the action state and use it as `defaultValue` (`LoginForm`) |
+| Next's route announcer also has `role="alert"`, so an e2e `getByRole("alert")` read an empty string | scope alerts to the form: `form [role=alert]` |
+| A role check awaited in a layout tripped Next's instant-navigation validation (uncached data outside `<Suspense>`) | check the role inside each page's own `<Suspense>` (`requireAreaAt`); no session reads in layouts |
 | In `next dev` every page's payload contains the not-found text, so a curl check for it says every route is missing | check routes with `npm run smoke` against a production build |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
 

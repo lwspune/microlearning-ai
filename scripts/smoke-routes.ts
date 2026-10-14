@@ -47,6 +47,7 @@ const routes: [path: string, expect: "ok" | "missing"][] = [
   ["/review/not-a-chapter/division", "missing"],
   ["/learn/not-a-chapter", "missing"],
   ["/review/courses", "ok"],
+  ["/login", "ok"],
   ["/courses/not-a-course", "missing"],
   ["/courses/cds/complex-numbers", "missing"], // a chapter outside the course
   ["/courses/jee-main/not-a-chapter", "missing"],
