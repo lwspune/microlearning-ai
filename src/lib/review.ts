@@ -2,8 +2,8 @@ import { chapters } from "@/content/chapters";
 
 /**
  * The review pages expose answer keys, so they are off in production unless
- * REVIEW_ENABLED=true is set explicitly. The pages are prerendered, so the
- * flag must be present at BUILD time; setting it only at `next start` has no effect.
+ * REVIEW_ENABLED=true is set explicitly. next.config.ts inlines the flag at
+ * BUILD time; setting it only at `next start` has no effect.
  */
 export function reviewEnabled(): boolean {
   return process.env.NODE_ENV !== "production" || process.env.REVIEW_ENABLED === "true";
