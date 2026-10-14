@@ -140,6 +140,14 @@ function validateTeaching(chapter: Chapter): string[] {
     if (ex.figure) errors.push(...validateFigure(ex.figure, `${c.id} idea figure`));
     if (ex.worked.figure) errors.push(...validateFigure(ex.worked.figure, `${c.id} worked figure`, ex.worked.steps.length));
     for (const item of c.items) {
+      if (item.figure) {
+        errors.push(...validateFigure(item.figure, `${item.id} figure`));
+        item.figure.elements.forEach((el, i) => {
+          if (el.step !== undefined) {
+            errors.push(`${item.id} figure element ${i + 1} (${el.kind}): a question's figure is shown whole, so its elements have no step`);
+          }
+        });
+      }
       if (item.solution?.figure) {
         errors.push(...validateFigure(item.solution.figure, `${item.id} solution figure`, item.solution.steps.length));
       }

@@ -152,6 +152,8 @@ export type Item = {
   id: string; // "C06-Q1"
   source: ItemSource;
   stem: string;
+  /** Shown with the stem, whole (no steps): "the shaded region is ...". */
+  figure?: Figure;
   options: Option[];
   verify: ItemVerify;
   /** AUTHORING.md item 9. */

@@ -39,6 +39,16 @@ describe("toSeedPayload", () => {
     items.forEach((it, i) => expect(it.solution).toEqual(c10.items[i].solution));
   });
 
+  it("sends a question's figure, or null when it has none", () => {
+    const fig = { alt: "a region", view: { x: [-1, 5] as [number, number], y: [-1, 5] as [number, number] }, elements: [] };
+    const c10 = complexNumbers.concepts.find((c) => c.id === "C10")!;
+    const withFigure = { ...c10, items: c10.items.map((it, i) => (i === 0 ? { ...it, figure: fig } : it)) };
+    const chapter = { ...complexNumbers, concepts: complexNumbers.concepts.map((c) => (c.id === "C10" ? withFigure : c)) };
+    const items = toSeedPayload(chapter, true).concepts.find((c) => c.code === "C10")!.items;
+    expect(items[0].figure).toEqual(fig);
+    expect(items[1].figure).toBeNull();
+  });
+
   it("marks items verified only when told the verifier passed", () => {
     expect(byCode("C06").items.every((i) => i.verified)).toBe(true);
     expect(toSeedPayload(complexNumbers, false).concepts.flatMap((c) => c.items).some((i) => i.verified)).toBe(false);

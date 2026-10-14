@@ -234,6 +234,16 @@ describe("validateChapter", () => {
       ).toContainEqual(expect.stringMatching(/C3-Q1 solution figure element 1.*step 5.*1 to 2/));
     });
 
+    it("checks a question's own figure, which is shown whole (no steps)", () => {
+      expect(errorsAfter((ch) => (c3(ch).items[0].figure = figure()))).toEqual([]);
+      expect(errorsAfter((ch) => (c3(ch).items[0].figure = figure({ alt: "" })))).toContainEqual(
+        expect.stringMatching(/C3-Q1 figure.*needs alt text/),
+      );
+      expect(errorsAfter((ch) => (c3(ch).items[0].figure = figure({ elements: [{ kind: "point", at: [0, 0], step: 1 }] })))).toContainEqual(
+        expect.stringMatching(/C3-Q1 figure element 1.*a question's figure is shown whole, so its elements have no step/),
+      );
+    });
+
     it("rejects a non-positive radius and non-finite coordinates", () => {
       const errors = errorsAfter(
         (ch) =>
