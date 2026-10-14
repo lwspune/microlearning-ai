@@ -365,6 +365,16 @@ password is never stored in the repo.
   Decided: **no guardian-consent tracking** (students come through their
   academies); **password resets later**.
   **Status (2026-10-14):** built and checked; pending your review and merge.
+- **Student performance (branch `student-performance`, approved
+  2026-10-14):** staff see students' progress without classes. Teachers and
+  academy admins see any student in their own academy; the superadmin sees
+  everyone (the academy boundary stays). A read policy on
+  `learner_concept_state` and `attempts` (`private.can_view_person`) plus two
+  `security_invoker` views (`learner_summary`, `learner_mistakes`) do the
+  aggregating under row level security. Screens: `/teach/students` (every
+  student: mastered, in progress, reviews due, accuracy, last active; search
+  by name) and `/teach/students/[id]` (summary, concept by concept, recent
+  mistakes); the superadmin reaches students from each academy's page.
 - **R3 (parked 2026-10-14):** classes and the teacher dashboard. Kept
   simple for now; the full plan and its open decisions are in
   [SUGGESTIONS.md](SUGGESTIONS.md).

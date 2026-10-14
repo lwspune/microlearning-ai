@@ -16,7 +16,8 @@ Planned after roles R1–R2; the owner chose to keep things simple for now.
   `create_class(name, course)`, `add_class_members(class, students)`,
   `remove_class_member(class, student)`. Staff act only in their own
   academy; the superadmin in any.
-- **Staff read their academy's students' learner data.** Today
+- **Staff read their academy's students' learner data** (taken up
+  2026-10-14 by "Student performance" in PLAN.md; classes can build on it). Today
   `learner_concept_state` and `attempts` are readable only by their owner.
   A new read policy (via `private.can_view_person`) lets staff read their
   own academy's students, and no one else's. It widens who sees student
