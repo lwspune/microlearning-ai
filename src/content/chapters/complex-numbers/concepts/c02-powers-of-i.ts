@@ -80,6 +80,12 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
       remediation: t`$i^{-n} = \dfrac{1}{i^n}$, which is usually different from $i^n$. Find the remainder of $-n$ on division by 4 (between 0 and 3).`,
       fallback: { kind: "ext", topic: "negative exponents" },
     },
+    {
+      id: "C02-M5",
+      mistake: t`$i^4 = -1$`,
+      remediation: t`$i^4 = (i^2)^2 = (-1)^2 = 1$, so each full block of four powers is $1$ and only the remainder matters.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
   ],
   items: [
     {
@@ -147,6 +153,7 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         { key: "A", text: t`$i$`, correct: true, value: "I" },
         { key: "B", text: t`$-1$`, correct: false, misconceptionId: "C02-M2", value: "-1" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C02-M3", value: "1" },
+        { key: "D", text: t`$- i$`, correct: false, misconceptionId: "C02-M5", value: "-I" },
       ],
       solution: {
         steps: [

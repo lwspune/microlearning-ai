@@ -96,6 +96,18 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
       remediation: t`The sum $k$ is the whole major axis; from the centre the ellipse reaches $\frac k2$.`,
       fallback: { kind: "ext", topic: "conics" },
     },
+    {
+      id: "C28-M7",
+      mistake: "Comparing the constant with the focal distance the wrong way round",
+      remediation: t`A sum $|z - a| + |z - b| = k$ needs $k \ge |a - b|$, since by the triangle inequality the two distances add up to at least $|a - b|$. A bigger $k$ gives an ellipse; a smaller one gives no points.`,
+      fallback: { kind: "ext", topic: "conics" },
+    },
+    {
+      id: "C28-M8",
+      mistake: t`Giving the semi-minor axis as the greatest $|z|$`,
+      remediation: t`$\sqrt{\left(\frac k2\right)^2 - c^2}$ is the semi-minor axis: the least $|z|$, on the imaginary axis. The greatest $|z|$ is at the ends of the major axis: $\frac k2$.`,
+      fallback: { kind: "ext", topic: "conics" },
+    },
   ],
   items: [
     {
@@ -107,6 +119,7 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "A", text: t`one branch of a hyperbola`, correct: false, misconceptionId: "C28-M2", value: "2" },
         { key: "B", text: t`a circle`, correct: false, misconceptionId: "C28-M4", value: "6" },
         { key: "C", text: t`an ellipse`, correct: true, value: "1" },
+        { key: "D", text: "no points at all", correct: false, misconceptionId: "C28-M7", value: "5" },
       ],
       solution: {
         steps: [
@@ -248,6 +261,7 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
         { key: "A", text: t`$5$`, correct: true, value: "5" },
         { key: "B", text: t`$4$`, correct: false, misconceptionId: "C28-M5", value: "4" },
         { key: "C", text: t`$10$`, correct: false, misconceptionId: "C28-M6", value: "10" },
+        { key: "D", text: t`$3$`, correct: false, misconceptionId: "C28-M8", value: "3" },
       ],
       solution: {
         steps: [

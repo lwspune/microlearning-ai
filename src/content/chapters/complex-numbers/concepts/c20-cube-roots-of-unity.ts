@@ -191,6 +191,7 @@ Note that $\omega^2 = \bar\omega$, but $\omega^2 \ne -\omega$.`,
         { key: "A", text: t`$1$`, correct: false, misconceptionId: "C20-M5", value: "1" },
         { key: "B", text: t`$2$`, correct: false, misconceptionId: "C20-M3", value: "2" },
         { key: "C", text: t`$3$`, correct: true, value: "3" },
+        { key: "D", text: t`$1 - \omega^{2}$`, correct: false, misconceptionId: "C20-M4", value: "1 - omega**2" },
       ],
       solution: {
         steps: [

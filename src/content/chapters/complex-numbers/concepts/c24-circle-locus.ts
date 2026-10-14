@@ -89,6 +89,12 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
       remediation: t`$z + \bar z = (x + iy) + (x - iy) = 2x$.`,
       fallback: { kind: "ext", topic: "conjugate identities" },
     },
+    {
+      id: "C24-M7",
+      mistake: t`Taking $R$ as the diameter, not the radius`,
+      remediation: t`$|z - a| = R$ is every point at distance $R$ from $a$: $R$ is the radius, and $R^2$ goes on the right.`,
+      fallback: { kind: "ext", topic: "circle equation" },
+    },
   ],
   items: [
     {
@@ -184,6 +190,7 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         { key: "A", text: t`$\left(x - 3\right)^2 + y^2 = 4$`, correct: false, misconceptionId: "C24-M1", value: "x**2 - 6*x + y**2 + 5" },
         { key: "B", text: t`$\left(x + 3\right)^2 + y^2 = 2$`, correct: false, misconceptionId: "C24-M2", value: "x**2 + 6*x + y**2 + 7" },
         { key: "C", text: t`$\left(x + 3\right)^2 + y^2 = 4$`, correct: true, value: "x**2 + 6*x + y**2 + 5" },
+        { key: "D", text: t`$\left(x + 3\right)^2 + y^2 = 1$`, correct: false, misconceptionId: "C24-M7", value: "x**2 + 6*x + y**2 + 8" },
       ],
       solution: {
         steps: [

@@ -118,6 +118,8 @@ def draft(spec_path: str) -> str:
 
     out = []
     for it in spec.ITEMS:
+        n = len(it["models"])
+        assert n == 4, f"{it['id']}: needs 4 options (the key and 3 modelled mistakes), has {n}"
         cid = it["id"].split("-")[0]
         cm = models[cid]
         inputs = {k: sympify(v, locals={"I": I}) for k, v in it["inputs"].items()}

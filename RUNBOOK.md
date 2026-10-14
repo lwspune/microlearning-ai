@@ -113,8 +113,11 @@ Guests are anonymous logins with no profile.
    from its value (so text and value can't disagree), varies the correct
    letter, and refuses duplicate options. Use `text=`/`value=` overrides
    only for non-numeric options (loci, phrases) and `fmt=` for pairs (`x =, y =`),
-   ± roots and quadrants. Where only two real misconceptions apply, an item
-   may have 3 options; never invent a distractor.
+   ± roots and quadrants. **Every item has exactly 4 options** (the key and 3
+   modelled mistakes; the validator and `draft_items.py` enforce it). Where
+   no third conceptual mistake fits, model a common slip (a dropped sign,
+   dividing by the wrong number) with fallback `none`; never an unmodelled
+   number.
 5. **Write the content** (hook + reveal, intuition, formal with blank lines
    between slide-sized sections, worked example, visual spec, misconceptions
    with remediation and an ancestor fallback) as data, then build the files:

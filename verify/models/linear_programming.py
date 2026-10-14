@@ -184,7 +184,8 @@ C01 = {k: _c01(k) for k in ["key", "C01-M1", "C01-M2", "C01-M3"]}
 # ---------- C02 The half-plane test ----------
 # Codes: 1 the line and the side containing P; 2 the line and the other side;
 # 3 P's side without the line; 4 the other side without the line;
-# 5 "the side containing the origin" (said of a line through the origin).
+# 5 "the side containing the origin" (said of a line through the origin);
+# 6 only the line itself (C02-M4, the inequality read as an equation).
 def _c02(kind):
     def model(v, p):
         s = p["cons"][0]
@@ -549,8 +550,6 @@ def _c11(kind):
     def model(v, p):
         cons, z, goal, ask = p["cons"], p["z"], p["goal"], p["ask"]
         best = optimal_corners(cons, z, goal)
-        pz, qz = zfun(z)
-        parallel = any(lin(s)[0] * qz == lin(s)[1] * pz for s in cons)
         if ask == "count":
             if kind == "key":
                 return INFINITELY_MANY if len(best) > 1 else Rational(1)
@@ -558,10 +557,6 @@ def _c11(kind):
                 return Rational(1)
             if kind == "C11-M2":  # only the tied corners themselves
                 return Rational(len(best))
-            if kind == "C11-M3":  # parallel to any constraint line means infinitely many
-                if not parallel:
-                    raise ValueError("Z is parallel to no constraint")
-                return INFINITELY_MANY
             raise ValueError(kind)
         if kind == "key":
             return SEGMENT if len(best) > 1 else as_sym(best[0])
@@ -573,20 +568,11 @@ def _c11(kind):
             if len(best) < 2:
                 raise ValueError("no tie")
             return TWOPOINTS
-        if kind == "C11-M3":
-            if not parallel:
-                raise ValueError("Z is parallel to no constraint")
-            return SEGMENT
-        if kind == "C11-M4":  # judges by size: the largest corner for a maximum, the smallest for a minimum
-            cs = corners(cons)
-            pick = max if goal == "max" else min
-            size = pick(d[0] + d[1] for d in cs)
-            return as_sym(_unique([c for c in cs if c[0] + c[1] == size], "the extreme corner"))
         raise ValueError(kind)
     return model
 
 
-C11 = {k: _c11(k) for k in ["key", "C11-M1", "C11-M2", "C11-M3", "C11-M4"]}
+C11 = {k: _c11(k) for k in ["key", "C11-M1", "C11-M2"]}
 
 
 # ---------- C12 Formulating an LPP ----------
@@ -660,3 +646,225 @@ MODELS = {
     "C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07,
     "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13,
 }
+
+
+# ---------- 4th options: fourth_lpp_a ----------
+# ---- C01 ----
+def _c01_m4(v, p):
+    # Takes the constant c as both intercepts, as if every line were x + y = c.
+    if p.get("ask", "x") == "equation":
+        raise ValueError("an intercept item only")
+    _, _, c = con(p["line"].replace("=", "<="))
+    return {"x": c, "y": I * c, "both": c + I * c}[p["ask"]]
+
+
+def _c01_m5(v, p):
+    # Line through (0, q) with slope q/p instead of -q/p: y = (q/p) x + q.
+    if p.get("ask") != "equation":
+        raise ValueError("an equation item only")
+    a, b = v["p"], v["q"]
+    return b * x / a - y + b
+
+
+C01["C01-M4"] = _c01_m4
+C01["C01-M5"] = _c01_m5
+
+
+# ---- C02 ----
+# New code 6: the boundary line only, neither side.
+def _c02_m4(v, p):
+    s = p["cons"][0]
+    ref = sympify(p.get("ref", "0"), locals=_LOCALS)
+    f, _, c = con(s)
+    assert f.subs({x: re(ref), y: im(ref)}) != c, "the test point must not be on the line"
+    return 6
+
+
+C02["C02-M4"] = _c02_m4
+
+
+# ---- C03 ----
+def _c03_m4(v, p):
+    # Counts a point if it satisfies any one listed constraint (union, not overlap).
+    cons, points = p["cons"], pts(p)
+    return sum(any(holds(s, q) for s in cons) for q in points)
+
+
+C03["C03-M4"] = _c03_m4
+
+
+# ---------- 4th options: fourth_lpp_b ----------
+# ---- C04 ----
+# New code 4: "Can't tell without the objective function".
+def _c04_m5(v, p):
+    # Mixes up the region with the optimum: thinks whether the region is bounded
+    # depends on the objective (as "an unbounded LPP" does), so never classifies it.
+    classify(p["cons"])  # the region itself is well defined
+    return 4
+
+
+C04["C04-M5"] = _c04_m5
+
+
+# ---- C05 ----
+def _c05_m4(v, p):
+    # Assumes the origin is always a corner (the converse of leaving it out).
+    cons = p["cons"]
+    if (0, 0) in corners(cons):
+        raise ValueError("the origin really is a corner")
+    if p["ask"] == "count":
+        return len(corners(cons)) + 1
+    return as_sym((Fraction(0), Fraction(0)))
+
+
+def _c05_m5(v, p):
+    # Completes the rectangle: pairs the region's largest x with its largest y.
+    if p["ask"] != "missing":
+        raise ValueError("a missing-corner item only")
+    cs = corners(p["cons"])
+    q = (max(c[0] for c in cs), max(c[1] for c in cs))
+    if feasible(p["cons"], q):
+        raise ValueError("that point is in the region")
+    return as_sym(q)
+
+
+def _c05_m6(v, p):
+    # Pairs only the constraint lines with each other, forgetting x = 0 and y = 0
+    # are boundary lines too; keeps the crossings that satisfy every constraint.
+    if p["ask"] != "count":
+        raise ValueError("a count item only")
+    cons = p["cons"]
+    return len([q for q in intersections(cons, nonneg=False) if feasible(cons, q)])
+
+
+C05["C05-M4"] = _c05_m4
+C05["C05-M5"] = _c05_m5
+C05["C05-M6"] = _c05_m6
+
+
+# ---------- 4th options: fourth_lpp_c ----------
+# ---- C06-M3: drops the minus sign of the negative intercept, then tests the origin correctly ----
+def c06_m3_ineq(p, q, side):
+    if p > 0 and q > 0:
+        raise ValueError("no negative intercept to drop")
+    a, b, c = written_line(abs(p), abs(q))
+    return a, b, _origin_op(c, side), c
+
+
+def _c06_m3(v, p):
+    return region_value(*c06_m3_ineq(int(p["p"]), int(p["q"]), p["side"]))
+
+
+C06["C06-M3"] = _c06_m3
+
+
+# ---- C07-M3: takes the shading as the excluded side, so every sign of the true system is reversed ----
+def c07_reversed(cons):
+    out = []
+    for s in cons:
+        f, op, c = con(s)
+        out.append(f"{f} {'>=' if op == '<=' else '<='} {c}")
+    return out
+
+
+def _c07_m3(v, p):
+    # value = the option's place in params["cands"]. The reversed system is not one of the item's
+    # three candidates, so it stands as candidate len(cands) + 1 (= 4): the system that would be
+    # appended to cands. If it is ever appended, the same model finds it there and gives its index.
+    cands = p["cands"]
+    want = frozenset(_norm(s) for s in c07_reversed(p["cons"]))
+    hits = [i for i, t in enumerate(cands) if _system(t) == want]
+    if len(hits) > 1:
+        raise ValueError("C07-M3's system appears twice among the candidates")
+    if want == frozenset(_norm(s) for s in p["cons"]):
+        raise ValueError("C07-M3's system is the key's")
+    return Rational((hits[0] if hits else len(cands)) + 1)
+
+
+C07["C07-M3"] = _c07_m3
+
+
+# ---------- 4th options: fourth_lpp_d ----------
+# Runs inside verify/models/linear_programming.py's namespace.
+def _c08_m3(v, p):
+    # Reads the wrong end of the corner table: the smallest Z for a maximum, the largest for a minimum.
+    cons, z, goal = p["cons"], p["z"], p["goal"]
+    pts = corners(cons)
+    other = "min" if goal == "max" else "max"
+    best = _best(z, pts, other)
+    if p.get("ask") == "point":
+        return as_sym(_unique([c for c in pts if zval(z, c) == best], "the opposite extreme"))
+    return _q(best)
+C08["C08-M3"] = _c08_m3
+
+
+def _c09_m4(v, p):
+    # Reads the wrong end of the corner table: the smallest Z for a maximum, the largest for a minimum.
+    cons, z, ask = p["cons"], p["z"], p["ask"]
+    if ask not in ("max", "min"):
+        raise ValueError("asks for a single extreme only")
+    return _q(_best(z, corners(cons), "min" if ask == "max" else "max"))
+C09["C09-M4"] = _c09_m4
+
+
+def _c09_m5(v, p):
+    # Adds the maximum and the minimum instead of subtracting.
+    cons, z, ask = p["cons"], p["z"], p["ask"]
+    if ask != "range":
+        raise ValueError("not a max - min item")
+    cs = corners(cons)
+    return _q(_best(z, cs, "max") + _best(z, cs, "min"))
+C09["C09-M5"] = _c09_m5
+
+
+# ---------- 4th options: fourth_lpp_e ----------
+# Runs inside verify/models/linear_programming.py's module namespace.
+
+def _c10_m4(v, p):
+    """Swaps the candidates: the smallest corner value for a maximum, the largest for a minimum."""
+    other = "min" if p["goal"] == "max" else "max"
+    return _q(_best(p["z"], corners(p["cons"]), other))
+
+
+C10["C10-M4"] = _c10_m4
+
+
+def _c11_m3(v, p):
+    """A tie means there is no optimum: no point gives it (count), Z has no max/min (where)."""
+    cons, z, goal = p["cons"], p["z"], p["goal"]
+    if len(optimal_corners(cons, z, goal)) < 2:
+        raise ValueError("no tie")
+    if p["ask"] == "count":
+        return Rational(0)
+    return NOMAX if goal == "max" else NOMIN
+
+
+# Replaces the unused C11-M3 model ("parallel to any constraint"), which no concept file or item ever listed.
+C11["C11-M3"] = _c11_m3
+
+
+# ---------- 4th options: fourth_lpp_f ----------
+def _c12_m5(v, p):
+    # Counts the items instead of weighting them: every per-unit figure taken as 1
+    # (x + y <= cap for a resource limit, Z = x + y for the objective).
+    if p["ask"] == "objective":
+        if Fraction(p["p"]) == 1 and Fraction(p["q"]) == 1:
+            raise ValueError("the figures are already 1")
+        sign = 1 if p["goal"] == "max" else -1
+        return sign * (x + y)
+    a, b = Fraction(p["a"]), Fraction(p["b"]) / Fraction(p.get("bscale", "1"))
+    if a == 1 and b == 1:
+        raise ValueError("the figures are already 1")
+    return _scaled(1, 1, p["op"], Fraction(p["cap"]))
+C12["C12-M5"] = _c12_m5
+
+
+def _c13_m4(v, p):
+    # Reads the wrong end of the corner table: the largest Z at the corners given as the minimum,
+    # the smallest as the maximum.
+    cs = corners(p["cons"])
+    other = "min" if p["goal"] == "max" else "max"
+    if _best(p["z"], cs, other) == _best(p["z"], cs, p["goal"]):
+        raise ValueError("every corner gives the same Z")
+    return _q(_best(p["z"], cs, other))
+C13["C13-M4"] = _c13_m4

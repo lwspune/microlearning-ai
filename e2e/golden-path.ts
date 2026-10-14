@@ -283,6 +283,9 @@ await (async () => {
     }
     await page.getByRole("heading", { name: "Mastered ✓" }).waitFor();
     ok("mastered after 3 different correct answers in a row");
+    const nextConcept = page.getByRole("link", { name: /^Next concept: .+ →$/ });
+    check(await nextConcept.isVisible(), "the Mastered screen offers the next concept");
+    check(/\/learn\/complex-numbers\/[a-z-]+/.test((await nextConcept.getAttribute("href")) ?? ""), "next concept links into the chapter");
     await shot("10-mastered");
 
     await page.getByRole("link", { name: "Back to the chapter" }).click();
@@ -418,6 +421,11 @@ await (async () => {
     await pick((await optionsWithRoutes()).find((o) => o.is_correct)!.key);
     // The toggle's name flips to "Hide the solution" once open.
     const solutionToggle = page.getByRole("button", { name: /^(See|Hide) the solution$/ }).filter({ visible: true });
+    const reread = page.getByRole("button", { name: "Read the explanation again" }).filter({ visible: true });
+    check(
+      await solutionToggle.evaluate((el, other) => el.parentElement === other?.parentElement, await reread.elementHandle()),
+      "the solution button sits in the row with the other answer buttons",
+    );
     check((await solutionToggle.getAttribute("aria-expanded")) === "false", "solution starts closed");
     await solutionToggle.click();
     check((await solutionToggle.getAttribute("aria-expanded")) === "true", "solution toggle reports it is open");

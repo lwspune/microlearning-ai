@@ -9,6 +9,7 @@ import { FigureView } from "@/figures/FigureView";
 import type { RenderedSlide } from "@/lessons/renderDeck";
 import type { ConceptSession } from "@/server/learning";
 import { QuestionPanel } from "./QuestionPanel";
+import { withCourse } from "@/content/courses";
 import { card, primaryButton, secondaryButton } from "@/components/ui";
 
 type Open = Extract<ConceptSession, { kind: "open" }>;
@@ -232,6 +233,7 @@ export function SlideDeck({
             refresher={refresher}
             initialQuestion={session.question}
             progress={session.progress}
+            nextConcept={session.nextConcept && { href: withCourse(`${chapterHref}/${session.nextConcept.slug}`, course), title: session.nextConcept.title }}
             onReread={() => go(0)}
           />
         </div>

@@ -74,6 +74,18 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
       remediation: t`$\operatorname{Re} = 0$ makes the number purely imaginary; $\operatorname{Im} = 0$ makes it purely real. Use the part the question names.`,
       fallback: { kind: "concept", id: "C07" },
     },
+    {
+      id: "C26-M5",
+      mistake: t`Putting $k$ on the wrong modulus`,
+      remediation: t`In $|z - a| = k|z - b|$ the factor $k$ multiplies the distance from $b$. Squaring gives $|z - a|^2 = k^2|z - b|^2$, not $k^2|z - a|^2 = |z - b|^2$.`,
+      fallback: { kind: "concept", id: "C24" },
+    },
+    {
+      id: "C26-M6",
+      mistake: t`Multiplying by $z - b$ instead of its conjugate`,
+      remediation: t`Only $\overline{z - b}$ makes the bottom real: $(z - b)\overline{(z - b)} = |z - b|^2$. Multiplying by $z - b$ leaves a complex bottom, so the part of the top tells you nothing.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
   ],
   items: [
     {
@@ -85,6 +97,7 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
         { key: "A", text: t`$\left(x + 2\right)^2 + y^2 = 4$`, correct: true, value: "-3*x**2 - 12*x - 3*y**2" },
         { key: "B", text: t`$x = \frac{1}{2}$`, correct: false, misconceptionId: "C26-M1", value: "3 - 6*x" },
         { key: "C", text: t`$\left(x + 4\right)^2 + y^2 = 18$`, correct: false, misconceptionId: "C26-M3", value: "-x**2 - 8*x - y**2 + 2" },
+        { key: "D", text: t`$\left(x - 3\right)^2 + y^2 = 4$`, correct: false, misconceptionId: "C26-M5", value: "x**2 - 6*x + y**2 + 5" },
       ],
       solution: {
         steps: [
@@ -113,6 +126,7 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
         { key: "A", text: t`$x = 1$`, correct: false, misconceptionId: "C26-M2", value: "x - 1" },
         { key: "B", text: t`$y = 0$`, correct: false, misconceptionId: "C26-M4", value: "2*y" },
         { key: "C", text: t`$x^2 + y^2 = 1$`, correct: true, value: "x**2 + y**2 - 1" },
+        { key: "D", text: t`$x^2 - y^2 = 1$`, correct: false, misconceptionId: "C26-M6", value: "x**2 - y**2 - 1" },
       ],
       solution: {
         steps: [
@@ -140,6 +154,7 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
         { key: "A", text: t`$x^2 + y^2 = 1$`, correct: false, misconceptionId: "C26-M4", value: "x**2 + y**2 - 1" },
         { key: "B", text: t`$x = 0$`, correct: true, value: "-2*x" },
         { key: "C", text: t`$y = 1$`, correct: false, misconceptionId: "C26-M2", value: "y - 1" },
+        { key: "D", text: t`$xy = 0$`, correct: false, misconceptionId: "C26-M6", value: "2*x*y" },
       ],
       solution: {
         steps: [
@@ -167,6 +182,7 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
         { key: "A", text: t`$\left(x - \frac{5}{4}\right)^2 + y^2 = \frac{9}{16}$`, correct: true, value: "-8*x**2 + 20*x - 8*y**2 - 8" },
         { key: "B", text: t`$x = 0$`, correct: false, misconceptionId: "C26-M1", value: "4*x" },
         { key: "C", text: t`$\left(x - 2\right)^2 + y^2 = 3$`, correct: false, misconceptionId: "C26-M3", value: "-2*x**2 + 8*x - 2*y**2 - 2" },
+        { key: "D", text: t`$\left(x + \frac{5}{4}\right)^2 + y^2 = \frac{9}{16}$`, correct: false, misconceptionId: "C26-M5", value: "x**2 + 5*x/2 + y**2 + 1" },
       ],
       solution: {
         steps: [
@@ -195,6 +211,7 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
         { key: "A", text: t`$x = 2$`, correct: false, misconceptionId: "C26-M2", value: "x - 2" },
         { key: "B", text: t`$y = 2 - x$`, correct: false, misconceptionId: "C26-M4", value: "2*x + 2*y - 4" },
         { key: "C", text: t`$\left(x - 1\right)^2 + \left(y - 1\right)^2 = 2$`, correct: true, value: "x**2 - 2*x + y**2 - 2*y" },
+        { key: "D", text: t`$\left(x - 1\right)^2 = \left(y - 1\right)^2$`, correct: false, misconceptionId: "C26-M6", value: "x**2 - 2*x - y**2 + 2*y" },
       ],
       solution: {
         steps: [

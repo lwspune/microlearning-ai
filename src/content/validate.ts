@@ -3,6 +3,9 @@ import type { Chapter, Concept, ConceptId, Figure, FigureElement, GraphNode, Ite
 /** Minimum items per authored concept, so mastery and review never repeat an item too soon. */
 export const MIN_ITEMS = 5;
 
+/** Options per item (owner's rule, 2026-10-15): four, so a guess is right a quarter of the time and D is a real position. */
+export const OPTIONS = 4;
+
 /**
  * Structural checks on a chapter (AUTHORING.md). Answer correctness is checked
  * separately by the sympy verifier. Returns one message per problem; [] = valid.
@@ -101,6 +104,7 @@ function validateConcepts(chapter: Chapter): string[] {
       if (itemIds.has(item.id)) errors.push(`duplicate item id ${item.id}`);
       itemIds.add(item.id);
 
+      if (item.options.length !== OPTIONS) errors.push(`${item.id}: needs ${OPTIONS} options (A to D), has ${item.options.length}`);
       const correct = item.options.filter((o) => o.correct).length;
       if (correct !== 1) errors.push(`${item.id}: needs exactly one correct option, found ${correct}`);
 

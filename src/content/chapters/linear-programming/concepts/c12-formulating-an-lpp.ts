@@ -63,6 +63,12 @@ Each row becomes one constraint. The figure in A's column goes with $x$.
       remediation: "Profit is something you want more of, so maximise it. Cost is something you want less of, so minimise it.",
       fallback: { kind: "none" },
     },
+    {
+      id: "C12-M5",
+      mistake: "Counting the items instead of what each one uses or earns",
+      remediation: t`A limit on hours caps the total hours, not the number of items: if a chair takes $2$ hours and a table $3$, the time is $2x + 3y$, not $x + y$. The same goes for $Z$: multiply each amount by its profit or cost per unit.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
     "C12-M1 (swapped figures) gives the key when both products have the same figure (a = b, or p = q); draw diagnosing items with different figures.",
@@ -77,6 +83,7 @@ Each row becomes one constraint. The figure in A's column goes with $x$.
         { key: "A", text: t`$2x + 3y \le 60$`, correct: true, value: "-x/30 - y/20 + 1" },
         { key: "B", text: t`$3x + 2y \le 60$`, correct: false, misconceptionId: "C12-M1", value: "-x/20 - y/30 + 1" },
         { key: "C", text: t`$2x + 3y \ge 60$`, correct: false, misconceptionId: "C12-M2", value: "x/30 + y/20 - 1" },
+        { key: "D", text: t`$x + y \le 60$`, correct: false, misconceptionId: "C12-M5", value: "-x/60 - y/60 + 1" },
       ],
       solution: {
         steps: [
@@ -95,6 +102,7 @@ Each row becomes one constraint. The figure in A's column goes with $x$.
         { key: "A", text: t`$4x + 6y \le 24$`, correct: false, misconceptionId: "C12-M2", value: "-x/6 - y/4 + 1" },
         { key: "B", text: t`$4x + 6y \ge 24$`, correct: true, value: "x/6 + y/4 - 1" },
         { key: "C", text: t`$6x + 4y \ge 24$`, correct: false, misconceptionId: "C12-M1", value: "x/4 + y/6 - 1" },
+        { key: "D", text: t`$x + y \ge 24$`, correct: false, misconceptionId: "C12-M5", value: "x/24 + y/24 - 1" },
       ],
       solution: {
         steps: [
@@ -132,6 +140,7 @@ Each row becomes one constraint. The figure in A's column goes with $x$.
         { key: "A", text: t`$3x + 8y \le 48$`, correct: false, misconceptionId: "C12-M1", value: "-x/16 - y/6 + 1" },
         { key: "B", text: t`$2x + 45y \le 12$`, correct: false, misconceptionId: "C12-M3", value: "-x/6 - 15*y/4 + 1" },
         { key: "C", text: t`$8x + 3y \le 48$`, correct: true, value: "-x/6 - y/16 + 1" },
+        { key: "D", text: t`$8x + 3y \ge 48$`, correct: false, misconceptionId: "C12-M2", value: "x/6 + y/16 - 1" },
       ],
       solution: {
         steps: [
@@ -150,6 +159,7 @@ Each row becomes one constraint. The figure in A's column goes with $x$.
         { key: "A", text: t`Maximise $Z = 60x + 40y$`, correct: false, misconceptionId: "C12-M1", value: "60*x + 40*y" },
         { key: "B", text: t`Minimise $Z = 40x + 60y$`, correct: false, misconceptionId: "C12-M4", value: "-40*x - 60*y" },
         { key: "C", text: t`Maximise $Z = 40x + 60y$`, correct: true, value: "40*x + 60*y" },
+        { key: "D", text: t`Maximise $Z = x + y$`, correct: false, misconceptionId: "C12-M5", value: "x + y" },
       ],
       solution: {
         steps: [
@@ -167,6 +177,7 @@ Each row becomes one constraint. The figure in A's column goes with $x$.
         { key: "A", text: t`Minimise $Z = 5x + 8y$`, correct: true, value: "-5*x - 8*y" },
         { key: "B", text: t`Minimise $Z = 8x + 5y$`, correct: false, misconceptionId: "C12-M1", value: "-8*x - 5*y" },
         { key: "C", text: t`Maximise $Z = 5x + 8y$`, correct: false, misconceptionId: "C12-M4", value: "5*x + 8*y" },
+        { key: "D", text: t`Minimise $Z = x + y$`, correct: false, misconceptionId: "C12-M5", value: "-x - y" },
       ],
       solution: {
         steps: [

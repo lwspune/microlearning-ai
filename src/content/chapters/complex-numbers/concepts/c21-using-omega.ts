@@ -59,6 +59,18 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
       remediation: t`Check the sign: the real cube root of $8$ is $2$, and of $-27$ is $-3$.`,
       fallback: { kind: "concept", id: "C20" },
     },
+    {
+      id: "C21-M6",
+      mistake: t`Treating the power as a multiple: $(c\omega)^n = nc\,\omega^n$`,
+      remediation: t`A power multiplies the term by itself: $(c\omega)^n = c^n\omega^n$, so $(2\omega)^4 = 16\,\omega^4$, not $8\,\omega^4$.`,
+      fallback: { kind: "ext", topic: "laws of indices" },
+    },
+    {
+      id: "C21-M7",
+      mistake: t`Taking the cube root of $k$ as $\frac{k}{3}$`,
+      remediation: t`The real cube root $c$ satisfies $c^3 = k$: the cube root of $64$ is $4$, not $\frac{64}{3}$.`,
+      fallback: { kind: "ext", topic: "cube roots" },
+    },
   ],
   items: [
     {
@@ -70,6 +82,7 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "A", text: t`$-1$`, correct: true, value: "-1" },
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C21-M1", value: "1" },
         { key: "C", text: t`$2$`, correct: false, misconceptionId: "C21-M3", value: "2" },
+        { key: "D", text: t`$-3$`, correct: false, misconceptionId: "C21-M6", value: "-3" },
       ],
       solution: {
         steps: [
@@ -87,6 +100,7 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "A", text: t`$0$`, correct: false, misconceptionId: "C21-M1", value: "0" },
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C21-M2", value: "1" },
         { key: "C", text: t`$16 \omega$`, correct: true, value: "16*omega" },
+        { key: "D", text: t`$-8 \omega$`, correct: false, misconceptionId: "C21-M6", value: "-8*omega" },
       ],
       solution: {
         steps: [
@@ -105,6 +119,7 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "A", text: t`$729$`, correct: true, value: "729" },
         { key: "B", text: t`$117649$`, correct: false, misconceptionId: "C21-M1", value: "117649" },
         { key: "C", text: t`$15753$`, correct: false, misconceptionId: "C21-M3", value: "15753" },
+        { key: "D", text: t`$18$`, correct: false, misconceptionId: "C21-M6", value: "18" },
       ],
       solution: {
         steps: [
@@ -140,6 +155,7 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "A", text: t`$2,\ 2\omega,\ 2\omega^2$`, correct: true, value: "2*omega" },
         { key: "B", text: t`$2,\ \omega,\ \omega^2$`, correct: false, misconceptionId: "C21-M4", value: "omega" },
         { key: "C", text: t`$-2,\ -2\omega,\ -2\omega^2$`, correct: false, misconceptionId: "C21-M5", value: "-2*omega**2" },
+        { key: "D", text: t`$\frac{8}{3},\ \frac{8}{3}\omega,\ \frac{8}{3}\omega^2$`, correct: false, misconceptionId: "C21-M7", value: "8*omega/3" },
       ],
       solution: {
         steps: [
@@ -157,6 +173,7 @@ A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
         { key: "A", text: t`$3,\ 3\omega,\ 3\omega^2$`, correct: false, misconceptionId: "C21-M5", value: "3*omega" },
         { key: "B", text: t`$-3,\ -3\omega,\ -3\omega^2$`, correct: true, value: "-3*omega**2" },
         { key: "C", text: t`$-3,\ \omega,\ \omega^2$`, correct: false, misconceptionId: "C21-M4", value: "omega" },
+        { key: "D", text: t`$-9,\ -9\omega,\ -9\omega^2$`, correct: false, misconceptionId: "C21-M7", value: "-9*omega**2" },
       ],
       solution: {
         steps: [

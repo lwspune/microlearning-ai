@@ -100,6 +100,18 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
       remediation: t`$Z = 5x - 2y$ loses value as $y$ grows. Keep the sign when you substitute: at $(1, 3)$, $Z = 5 - 6 = -1$, not $11$.`,
       fallback: { kind: "none" },
     },
+    {
+      id: "C09-M4",
+      mistake: "Taking the wrong end of the table: the smallest value as the maximum, or the largest as the minimum",
+      remediation: t`The maximum is the largest value of $Z$ in the corner table and the minimum is the smallest, even when some values are negative: $-8 < 0$. Check which one the question asks for.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
+    {
+      id: "C09-M5",
+      mistake: "Adding the maximum and the minimum instead of subtracting",
+      remediation: t`Max minus min means $Z_{\max} - Z_{\min}$: with max $20$ and min $2$ it is $20 - 2 = 18$, not $22$.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
     "C09-M2 is modelled as judging corners by x + y: the largest-sum corner taken as the maximum, the smallest-sum corner as the minimum.",
@@ -115,6 +127,7 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
         { key: "A", text: t`$0$`, correct: false, misconceptionId: "C09-M1", value: "0" },
         { key: "B", text: t`$6$`, correct: false, misconceptionId: "C09-M2", value: "6" },
         { key: "C", text: t`$4$`, correct: true, value: "4" },
+        { key: "D", text: t`$13$`, correct: false, misconceptionId: "C09-M4", value: "13" },
       ],
       solution: {
         steps: [
@@ -153,6 +166,7 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
         { key: "A", text: t`$26$`, correct: false, misconceptionId: "C09-M3", value: "26" },
         { key: "B", text: t`$20$`, correct: true, value: "20" },
         { key: "C", text: t`$14$`, correct: false, misconceptionId: "C09-M2", value: "14" },
+        { key: "D", text: t`$-8$`, correct: false, misconceptionId: "C09-M4", value: "-8" },
       ],
       solution: {
         steps: [
@@ -192,6 +206,7 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
         { key: "A", text: t`$1$`, correct: false, misconceptionId: "C09-M3", value: "1" },
         { key: "B", text: t`$-9$`, correct: true, value: "-9" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C09-M1", value: "0" },
+        { key: "D", text: t`$5$`, correct: false, misconceptionId: "C09-M4", value: "5" },
       ],
       solution: {
         steps: [
@@ -232,6 +247,7 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
         { key: "A", text: t`$14$`, correct: false, misconceptionId: "C09-M2", value: "14" },
         { key: "B", text: t`$18$`, correct: true, value: "18" },
         { key: "C", text: t`$20$`, correct: false, misconceptionId: "C09-M1", value: "20" },
+        { key: "D", text: t`$22$`, correct: false, misconceptionId: "C09-M5", value: "22" },
       ],
       solution: {
         steps: [
@@ -274,6 +290,7 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
         { key: "A", text: t`$\frac{7}{2}$`, correct: false, misconceptionId: "C09-M2", value: "7/2" },
         { key: "B", text: t`$\frac{17}{2}$`, correct: false, misconceptionId: "C09-M3", value: "17/2" },
         { key: "C", text: t`$6$`, correct: true, value: "6" },
+        { key: "D", text: t`$-4$`, correct: false, misconceptionId: "C09-M4", value: "-4" },
       ],
       solution: {
         steps: [

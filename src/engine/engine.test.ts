@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "@/content/chapters/complex-numbers";
 import type { GraphNode } from "@/content/types";
-import { conceptStates, gateFor, inScope, MASTERY_GATE } from "./unlock";
+import { conceptStates, gateFor, inScope, MASTERY_GATE, nextConceptAfter } from "./unlock";
 import { nextItem } from "./nextItem";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
@@ -19,6 +19,31 @@ describe("gateFor", () => {
   it("gates students and guests by MASTERY_GATE", () => {
     expect(gateFor("student")).toBe(MASTERY_GATE);
     expect(gateFor(null)).toBe(MASTERY_GATE);
+  });
+});
+
+describe("nextConceptAfter", () => {
+  const all = new Set(["A", "B", "C", "D"]);
+
+  it("is the concept that mastering this one opens", () => {
+    expect(nextConceptAfter(chain, all, new Map(), "A", true)).toBe("B");
+  });
+
+  it("prefers a concept already in progress, then new ones in chapter order", () => {
+    const fan = [node("A"), node("B", ["A"]), node("C", ["A"]), node("D")];
+    expect(nextConceptAfter(fan, all, new Map([["C", "learning"]]), "A", true)).toBe("C");
+    expect(nextConceptAfter(fan, all, new Map(), "A", true)).toBe("B");
+  });
+
+  it("never offers the concept just mastered, and is null when nothing open remains", () => {
+    expect(nextConceptAfter(chain, all, new Map([["A", "mastered"], ["B", "mastered"], ["C", "mastered"]]), "D", true)).toBeNull();
+    expect(nextConceptAfter([node("A")], new Set(["A"]), new Map(), "A", true)).toBeNull();
+  });
+
+  it("skips unpublished and still-locked concepts", () => {
+    expect(nextConceptAfter(chain, new Set(["A", "C"]), new Map(), "A", true)).toBe("C");
+    const twoRoots = [node("A"), node("B"), node("C", ["A", "B"])];
+    expect(nextConceptAfter(twoRoots, new Set(["A", "B", "C"]), new Map(), "A", true)).toBe("B");
   });
 });
 

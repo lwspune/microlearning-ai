@@ -90,6 +90,12 @@ export const c13: Concept = {
       remediation: t`The corners on the axes are plans that make just one product. The mixed plan, where both limits are used up and the two lines cross, is often the best. Work out $Z$ at **every** corner, the crossing included.`,
       fallback: { kind: "concept", id: "C08" },
     },
+    {
+      id: "C13-M4",
+      mistake: "Taking the wrong end of the corner table",
+      remediation: t`For a cost, the answer is the **smallest** $Z$ in the corner table; for a profit, the **largest**. Decide which one the problem asks for before you read the table, and give that end.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
   ],
   engineNotes: [
     "C13-M2 is tagged only on the maximising items (C13-Q1, C13-Q3, C13-Q4). In the minimising items (C13-Q2, C13-Q5), dropping a 'needs at least' constraint leaves an unbounded region, and the model gives no value there.",
@@ -145,6 +151,7 @@ export const c13: Concept = {
         { key: "A", text: t`$150$`, correct: false, misconceptionId: "C13-M1", value: "150" },
         { key: "B", text: t`$240$`, correct: false, misconceptionId: "C13-M3", value: "240" },
         { key: "C", text: t`$200$`, correct: true, value: "200" },
+        { key: "D", text: t`$400$`, correct: false, misconceptionId: "C13-M4", value: "400" },
       ],
       solution: {
         steps: [
@@ -263,6 +270,7 @@ export const c13: Concept = {
         { key: "A", text: t`$390$`, correct: true, value: "390" },
         { key: "B", text: t`$300$`, correct: false, misconceptionId: "C13-M1", value: "300" },
         { key: "C", text: t`$600$`, correct: false, misconceptionId: "C13-M3", value: "600" },
+        { key: "D", text: t`$750$`, correct: false, misconceptionId: "C13-M4", value: "750" },
       ],
       solution: {
         steps: [

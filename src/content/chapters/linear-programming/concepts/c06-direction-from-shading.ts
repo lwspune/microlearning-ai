@@ -68,6 +68,12 @@ export const c06: Concept = {
       remediation: t`The line through $(p, 0)$ and $(0, q)$ is $\frac{x}{p} + \frac{y}{q} = 1$: $p$ goes under $x$. Check: $(p, 0)$ must satisfy your line.`,
       fallback: { kind: "concept", id: "C01" },
     },
+    {
+      id: "C06-M3",
+      mistake: "Dropping the minus sign of a negative intercept when writing the line",
+      remediation: t`A line through $(4, 0)$ and $(0, -2)$ is $\frac{x}{4} + \frac{y}{-2} = 1$, not $\frac{x}{4} + \frac{y}{2} = 1$. Keep the sign under $y$, then check that both given points satisfy your line.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
   ],
   items: [
     {
@@ -90,6 +96,7 @@ export const c06: Concept = {
         { key: "A", text: t`$x - 2y \ge 4$`, correct: false, misconceptionId: "C06-M1", value: "x - 2*y - 4" },
         { key: "B", text: t`$2x - y \ge -4$`, correct: false, misconceptionId: "C06-M2", value: "2*x - y + 4" },
         { key: "C", text: t`$x - 2y \le 4$`, correct: true, value: "-x + 2*y + 4" },
+        { key: "D", text: t`$x + 2y \le 4$`, correct: false, misconceptionId: "C06-M3", value: "-x - 2*y + 4" },
       ],
       solution: {
         steps: [
@@ -132,6 +139,7 @@ export const c06: Concept = {
         { key: "A", text: t`$x - y \le -3$`, correct: false, misconceptionId: "C06-M1", value: "-x + y - 3" },
         { key: "B", text: t`$x - y \le 3$`, correct: false, misconceptionId: "C06-M2", value: "-x + y + 3" },
         { key: "C", text: t`$x - y \ge -3$`, correct: true, value: "x - y + 3" },
+        { key: "D", text: t`$x + y \le 3$`, correct: false, misconceptionId: "C06-M3", value: "-x - y + 3" },
       ],
       solution: {
         steps: [
@@ -174,6 +182,7 @@ export const c06: Concept = {
         { key: "A", text: t`$2x - y \ge 4$`, correct: true, value: "2*x - y - 4" },
         { key: "B", text: t`$2x - y \le 4$`, correct: false, misconceptionId: "C06-M1", value: "-2*x + y + 4" },
         { key: "C", text: t`$x - 2y \le -4$`, correct: false, misconceptionId: "C06-M2", value: "-x + 2*y - 4" },
+        { key: "D", text: t`$2x + y \ge 4$`, correct: false, misconceptionId: "C06-M3", value: "2*x + y - 4" },
       ],
       solution: {
         steps: [
@@ -217,6 +226,7 @@ export const c06: Concept = {
         { key: "A", text: t`$x - 2y \le -2$`, correct: true, value: "-x + 2*y - 2" },
         { key: "B", text: t`$x - 2y \ge -2$`, correct: false, misconceptionId: "C06-M1", value: "x - 2*y + 2" },
         { key: "C", text: t`$2x - y \ge 2$`, correct: false, misconceptionId: "C06-M2", value: "2*x - y - 2" },
+        { key: "D", text: t`$x + 2y \ge 2$`, correct: false, misconceptionId: "C06-M3", value: "x + 2*y - 2" },
       ],
       solution: {
         steps: [
@@ -260,6 +270,7 @@ export const c06: Concept = {
         { key: "A", text: t`$2x - y \le -6$`, correct: false, misconceptionId: "C06-M2", value: "-2*x + y - 6" },
         { key: "B", text: t`$x - 2y \ge 6$`, correct: true, value: "x - 2*y - 6" },
         { key: "C", text: t`$x - 2y \le 6$`, correct: false, misconceptionId: "C06-M1", value: "-x + 2*y + 6" },
+        { key: "D", text: t`$x + 2y \ge 6$`, correct: false, misconceptionId: "C06-M3", value: "x + 2*y - 6" },
       ],
       solution: {
         steps: [
@@ -303,6 +314,7 @@ export const c06: Concept = {
         { key: "A", text: t`$x - 3y \le 3$`, correct: true, value: "-x + 3*y + 3" },
         { key: "B", text: t`$x - 3y \ge 3$`, correct: false, misconceptionId: "C06-M1", value: "x - 3*y - 3" },
         { key: "C", text: t`$3x - y \ge -3$`, correct: false, misconceptionId: "C06-M2", value: "3*x - y + 3" },
+        { key: "D", text: t`$x + 3y \le 3$`, correct: false, misconceptionId: "C06-M3", value: "-x - 3*y + 3" },
       ],
       solution: {
         steps: [

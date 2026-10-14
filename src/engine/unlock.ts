@@ -41,6 +41,23 @@ export function conceptStates(
 }
 
 /**
+ * Where to go once `current` is mastered: a concept already in progress first,
+ * then a newly open one, in chapter order (the chapter map's "Up next").
+ * Null when nothing open is left.
+ */
+export function nextConceptAfter(
+  graph: GraphNode[],
+  published: Set<ConceptId>,
+  learner: Map<ConceptId, "learning" | "mastered">,
+  current: ConceptId,
+  gate: boolean = MASTERY_GATE,
+): ConceptId | null {
+  const states = conceptStates(graph, published, new Map([...learner, [current, "mastered"]]), gate);
+  const pick = (want: ConceptState) => graph.find((n) => n.id !== current && states.get(n.id) === want)?.id;
+  return pick("learning") ?? pick("available") ?? null;
+}
+
+/**
  * The published concepts inside a course's scope. Passed to conceptStates in
  * place of `published`, a prerequisite the course doesn't cover counts as
  * known, like an unpublished one. No scope: the whole chapter.

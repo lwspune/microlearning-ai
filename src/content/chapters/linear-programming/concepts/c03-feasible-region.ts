@@ -81,6 +81,12 @@ With $\le$ and $\ge$, the boundary lines belong to the region.
       remediation: t`With $\le$ and $\ge$, the boundary is part of the region: a point on the line satisfies the constraint with equality.`,
       fallback: { kind: "concept", id: "C02" },
     },
+    {
+      id: "C03-M4",
+      mistake: "Counting points that satisfy any one constraint instead of all of them",
+      remediation: t`The feasible region is the overlap: a point is in it only if it satisfies every constraint at once, including $x, y \ge 0$. One failed constraint puts it outside.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
     "Keeping the origin's side (C03-M2) gives the key when every constraint is ≤ with a non-negative right side (C03-Q5). Diagnose it with an item that has a ≥ constraint.",
@@ -248,6 +254,7 @@ With $\le$ and $\ge$, the boundary lines belong to the region.
         { key: "A", text: t`$2$`, correct: true, value: "2" },
         { key: "B", text: t`$3$`, correct: false, misconceptionId: "C03-M1", value: "3" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C03-M3", value: "1" },
+        { key: "D", text: t`$5$`, correct: false, misconceptionId: "C03-M4", value: "5" },
       ],
       solution: {
         steps: [

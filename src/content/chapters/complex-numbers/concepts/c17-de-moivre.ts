@@ -72,6 +72,18 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
       remediation: t`The parts are swapped, so the angle is $\frac\pi2 - \theta$, not $\theta$.`,
       fallback: { kind: "concept", id: "C15" },
     },
+    {
+      id: "C17-M5",
+      mistake: t`Raising the modulus to the power $n$ but leaving the angle as $\theta$`,
+      remediation: t`Each factor adds another $\theta$, so $n$ factors turn by $n\theta$: $z^n = r^n(\cos n\theta + i\sin n\theta)$.`,
+      fallback: { kind: "concept", id: "C16" },
+    },
+    {
+      id: "C17-M6",
+      mistake: t`Raising each term to the power: $(\sin\theta + i\cos\theta)^n = \sin^n\theta + i\cos^n\theta$`,
+      remediation: t`A power of a sum is not the sum of the powers. Rewrite as $\cos\left(\frac\pi2 - \theta\right) + i\sin\left(\frac\pi2 - \theta\right)$, then use De Moivre.`,
+      fallback: { kind: "ext", topic: "binomial expansion" },
+    },
   ],
   items: [
     {
@@ -83,6 +95,7 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "A", text: t`$\sqrt{2}$`, correct: false, misconceptionId: "C17-M1", value: "sqrt(2)" },
         { key: "B", text: t`$8 \sqrt{2}$`, correct: false, misconceptionId: "C17-M3", value: "8*sqrt(2)" },
         { key: "C", text: t`$16$`, correct: true, value: "16" },
+        { key: "D", text: t`$8 \sqrt{2} \left(1 + i\right)$`, correct: false, misconceptionId: "C17-M5", value: "8*sqrt(2)*(1 + I)" },
       ],
       solution: {
         steps: [
@@ -101,6 +114,7 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "A", text: t`$i$`, correct: false, misconceptionId: "C17-M4", value: "I" },
         { key: "B", text: t`$-1$`, correct: true, value: "-1" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C17-M2", value: "1" },
+        { key: "D", text: t`$\frac{1}{8} + \frac{3 \sqrt{3} i}{8}$`, correct: false, misconceptionId: "C17-M6", value: "1/8 + 3*sqrt(3)*I/8" },
       ],
       solution: {
         steps: [
@@ -119,6 +133,7 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "A", text: t`$-64$`, correct: true, value: "-64" },
         { key: "B", text: t`$-2$`, correct: false, misconceptionId: "C17-M1", value: "-2" },
         { key: "C", text: t`$-12$`, correct: false, misconceptionId: "C17-M3", value: "-12" },
+        { key: "D", text: t`$32 \sqrt{3} + 32 i$`, correct: false, misconceptionId: "C17-M5", value: "32*sqrt(3) + 32*I" },
       ],
       solution: {
         steps: [
@@ -137,6 +152,7 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "A", text: t`$-4$`, correct: true, value: "-4" },
         { key: "B", text: t`$- \sqrt{2}$`, correct: false, misconceptionId: "C17-M1", value: "-sqrt(2)" },
         { key: "C", text: t`$- 4 \sqrt{2}$`, correct: false, misconceptionId: "C17-M3", value: "-4*sqrt(2)" },
+        { key: "D", text: t`$2 \sqrt{2} \left(1 - i\right)$`, correct: false, misconceptionId: "C17-M5", value: "2*sqrt(2)*(1 - I)" },
       ],
       solution: {
         steps: [
@@ -155,6 +171,7 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "A", text: t`$\frac{\sqrt{3}}{2} - \frac{i}{2}$`, correct: false, misconceptionId: "C17-M2", value: "sqrt(3)/2 - I/2" },
         { key: "B", text: t`$- \frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: false, misconceptionId: "C17-M4", value: "-1/2 + sqrt(3)*I/2" },
         { key: "C", text: t`$\frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: true, value: "1/2 + sqrt(3)*I/2" },
+        { key: "D", text: t`$\frac{3}{4} + \frac{i}{4}$`, correct: false, misconceptionId: "C17-M6", value: "3/4 + I/4" },
       ],
       solution: {
         steps: [
@@ -173,6 +190,7 @@ It applies only to the form $\cos\theta + i\sin\theta$. Rewrite $\sin\theta + i\
         { key: "A", text: t`$4 \sqrt{2} \left(-1 + i\right)$`, correct: true, value: "4*sqrt(2)*(-1 + I)" },
         { key: "B", text: t`$\sqrt{2} \left(-1 + i\right)$`, correct: false, misconceptionId: "C17-M1", value: "sqrt(2)*(-1 + I)" },
         { key: "C", text: t`$3 \sqrt{2} \left(-1 + i\right)$`, correct: false, misconceptionId: "C17-M3", value: "3*sqrt(2)*(-1 + I)" },
+        { key: "D", text: t`$4 \sqrt{2} \left(1 + i\right)$`, correct: false, misconceptionId: "C17-M5", value: "4*sqrt(2)*(1 + I)" },
       ],
       solution: {
         steps: [

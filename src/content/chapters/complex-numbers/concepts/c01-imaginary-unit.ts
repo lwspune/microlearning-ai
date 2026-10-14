@@ -70,6 +70,18 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
       remediation: t`These roots can't be combined directly. Convert each to $i\sqrt{\ }$ form, then multiply: the two $i$'s give $i^2 = -1$.`,
       fallback: { kind: "none" },
     },
+    {
+      id: "C01-M8",
+      mistake: t`Squaring the $i$ but not the number: $(ki)^2 = k i^2$`,
+      remediation: t`A power applies to every factor: $(ki)^2 = k^2 i^2 = -k^2$.`,
+      fallback: { kind: "ext", topic: "powers of a product" },
+    },
+    {
+      id: "C01-M9",
+      mistake: t`Dropping the roots after taking out $i$: $\sqrt{-a}\,\sqrt{-b} = i^2 ab$`,
+      remediation: t`Only the minus comes out as $i$; the roots stay: $\sqrt{-a}\,\sqrt{-b} = (i\sqrt a)(i\sqrt b) = -\sqrt{ab}$.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
     "C01-M1 only shows when BOTH numbers under the roots are negative; with one negative, sqrt(a)sqrt(b) = sqrt(ab) is true, so those items can't detect it.",
@@ -102,6 +114,7 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "A", text: t`$6 i$`, correct: false, misconceptionId: "C01-M7", value: "6*I" },
         { key: "B", text: t`$-6$`, correct: true, value: "-6" },
         { key: "C", text: t`$6$`, correct: false, misconceptionId: "C01-M1", value: "6" },
+        { key: "D", text: t`$-36$`, correct: false, misconceptionId: "C01-M9", value: "-36" },
       ],
       solution: {
         steps: [
@@ -120,6 +133,7 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "A", text: t`$16$`, correct: false, misconceptionId: "C01-M2", value: "16" },
         { key: "B", text: t`$16 i$`, correct: false, misconceptionId: "C01-M4", value: "16*I" },
         { key: "C", text: t`$-16$`, correct: true, value: "-16" },
+        { key: "D", text: t`$-4$`, correct: false, misconceptionId: "C01-M8", value: "-4" },
       ],
       solution: {
         steps: [
@@ -155,6 +169,7 @@ Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
         { key: "A", text: t`$4 i$`, correct: false, misconceptionId: "C01-M7", value: "4*I" },
         { key: "B", text: t`$-4$`, correct: true, value: "-4" },
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C01-M1", value: "4" },
+        { key: "D", text: t`$-16$`, correct: false, misconceptionId: "C01-M9", value: "-16" },
       ],
       solution: {
         steps: [

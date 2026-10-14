@@ -88,6 +88,12 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
       remediation: t`A crossing or intercept that breaks another constraint lies outside the region, so it is not a candidate. Check every point against all the constraints before you evaluate $Z$ there.`,
       fallback: { kind: "concept", id: "C05" },
     },
+    {
+      id: "C08-M3",
+      mistake: "Taking the wrong end of the table: the smallest value as the maximum, or the largest as the minimum",
+      remediation: t`The maximum is the largest value of $Z$ in the corner table and the minimum is the smallest. Read the question again for which one it asks before you pick from the table.`,
+      fallback: { kind: "none" },
+    },
   ],
   items: [
     {
@@ -99,6 +105,7 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
         { key: "A", text: t`$20$`, correct: false, misconceptionId: "C08-M1", value: "20" },
         { key: "B", text: t`$32$`, correct: false, misconceptionId: "C08-M2", value: "32" },
         { key: "C", text: t`$23$`, correct: true, value: "23" },
+        { key: "D", text: t`$0$`, correct: false, misconceptionId: "C08-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -140,6 +147,7 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
         { key: "A", text: t`$26$`, correct: true, value: "26" },
         { key: "B", text: t`$25$`, correct: false, misconceptionId: "C08-M1", value: "25" },
         { key: "C", text: t`$30$`, correct: false, misconceptionId: "C08-M2", value: "30" },
+        { key: "D", text: t`$0$`, correct: false, misconceptionId: "C08-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -183,6 +191,7 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
         { key: "A", text: t`$14$`, correct: true, value: "14" },
         { key: "B", text: t`$12$`, correct: false, misconceptionId: "C08-M1", value: "12" },
         { key: "C", text: t`$18$`, correct: false, misconceptionId: "C08-M2", value: "18" },
+        { key: "D", text: t`$0$`, correct: false, misconceptionId: "C08-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -229,6 +238,7 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
         { key: "A", text: t`$(3, 4)$`, correct: true, value: "3 + 4*I" },
         { key: "B", text: t`$(5, 0)$`, correct: false, misconceptionId: "C08-M1", value: "5" },
         { key: "C", text: t`$(15, 0)$`, correct: false, misconceptionId: "C08-M2", value: "15" },
+        { key: "D", text: t`$(0, 0)$`, correct: false, misconceptionId: "C08-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -281,6 +291,7 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
         { key: "A", text: t`$8$`, correct: false, misconceptionId: "C08-M1", value: "8" },
         { key: "B", text: t`$6$`, correct: false, misconceptionId: "C08-M2", value: "6" },
         { key: "C", text: t`$7$`, correct: true, value: "7" },
+        { key: "D", text: t`$20$`, correct: false, misconceptionId: "C08-M3", value: "20" },
       ],
       solution: {
         steps: [
@@ -323,6 +334,7 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
         { key: "A", text: t`$9$`, correct: true, value: "9" },
         { key: "B", text: t`$12$`, correct: false, misconceptionId: "C08-M1", value: "12" },
         { key: "C", text: t`$6$`, correct: false, misconceptionId: "C08-M2", value: "6" },
+        { key: "D", text: t`$27$`, correct: false, misconceptionId: "C08-M3", value: "27" },
       ],
       solution: {
         steps: [

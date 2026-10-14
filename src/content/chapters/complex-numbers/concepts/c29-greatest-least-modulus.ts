@@ -73,6 +73,18 @@ Always check that the extreme point is allowed by the region.`,
       remediation: t`$|p + qi| = \sqrt{p^2 + q^2}$, the straight-line distance.`,
       fallback: { kind: "concept", id: "C11" },
     },
+    {
+      id: "C29-M4",
+      mistake: "Forgetting the radius: giving the distance to the centre",
+      remediation: t`$z$ moves on the circle, not at its centre. Along the line through the centre, the far point is $d + r$ away and the near point $d - r$.`,
+      fallback: { kind: "concept", id: "C13" },
+    },
+    {
+      id: "C29-M5",
+      mistake: "Taking the least value on a disc as 0 even when the point is outside it",
+      remediation: t`The least value is $0$ only if the point is inside the disc. If it is outside, the nearest point of the disc is on its edge: $d - r$.`,
+      fallback: { kind: "concept", id: "C24" },
+    },
   ],
   items: [
     {
@@ -84,6 +96,7 @@ Always check that the extreme point is allowed by the region.`,
         { key: "A", text: t`$3$`, correct: false, misconceptionId: "C29-M1", value: "3" },
         { key: "B", text: t`$9$`, correct: false, misconceptionId: "C29-M3", value: "9" },
         { key: "C", text: t`$7$`, correct: true, value: "7" },
+        { key: "D", text: t`$5$`, correct: false, misconceptionId: "C29-M4", value: "5" },
       ],
       solution: {
         steps: [
@@ -113,6 +126,7 @@ Always check that the extreme point is allowed by the region.`,
         { key: "A", text: t`$3$`, correct: true, value: "3" },
         { key: "B", text: t`$7$`, correct: false, misconceptionId: "C29-M1", value: "7" },
         { key: "C", text: t`$5$`, correct: false, misconceptionId: "C29-M3", value: "5" },
+        { key: "D", text: t`$0$`, correct: false, misconceptionId: "C29-M5", value: "0" },
       ],
       solution: {
         steps: [
@@ -143,6 +157,7 @@ Always check that the extreme point is allowed by the region.`,
         { key: "A", text: t`$\sqrt2 - 3$`, correct: false, misconceptionId: "C29-M2", value: "-3 + sqrt(2)" },
         { key: "B", text: t`$\sqrt{2} + 3$`, correct: false, misconceptionId: "C29-M1", value: "sqrt(2) + 3" },
         { key: "C", text: t`$0$`, correct: true, value: "0" },
+        { key: "D", text: t`$\sqrt{2}$`, correct: false, misconceptionId: "C29-M4", value: "sqrt(2)" },
       ],
       solution: {
         steps: [
@@ -171,6 +186,7 @@ Always check that the extreme point is allowed by the region.`,
         { key: "A", text: t`$8$`, correct: false, misconceptionId: "C29-M3", value: "8" },
         { key: "B", text: t`$6$`, correct: true, value: "6" },
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C29-M1", value: "4" },
+        { key: "D", text: t`$5$`, correct: false, misconceptionId: "C29-M4", value: "5" },
       ],
       solution: {
         steps: [
@@ -201,6 +217,7 @@ Always check that the extreme point is allowed by the region.`,
         { key: "A", text: t`$\sqrt{34} - 3$`, correct: true, value: "-3 + sqrt(34)" },
         { key: "B", text: t`$3 + \sqrt{34}$`, correct: false, misconceptionId: "C29-M1", value: "3 + sqrt(34)" },
         { key: "C", text: t`$5$`, correct: false, misconceptionId: "C29-M3", value: "5" },
+        { key: "D", text: t`$\sqrt{34}$`, correct: false, misconceptionId: "C29-M4", value: "sqrt(34)" },
       ],
       solution: {
         steps: [
