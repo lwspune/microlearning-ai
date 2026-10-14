@@ -593,3 +593,6 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
   Sequences and Series 14 · Permutations and Combinations 14 · Binomial
   Theorem 9 · Determinants and Matrices 12), every key and distractor
   verified, read through and figure-checked; published and merged.
+- Wave 2 done 2026-10-15: 27 concepts, 159 items (Angle and its Measurement
+  7 · Trigonometric Functions 10 · Compound and Multiple Angles 10), same
+  gates; published and merged.
