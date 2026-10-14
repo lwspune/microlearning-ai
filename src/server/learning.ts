@@ -33,6 +33,8 @@ export type ChapterMap = { slug: string; title: string; groups: { name: string; 
 export type Question = {
   itemId: string;
   stem: RenderedBlock[];
+  /** Shown whole with the stem ("the shaded region is ..."). */
+  figure: Figure | null;
   /** In display order. `key` is the stored key, sent back for grading; `label` is the letter shown. */
   options: { key: string; label: string; text: RenderedInline[] }[];
 };
@@ -148,7 +150,7 @@ export async function getChapterMap(
 async function buildQuestion(itemId: string, userId: string): Promise<Question> {
   const db = createAdminClient();
   const [{ data: item, error: ie }, { data: options, error: oe }] = await Promise.all([
-    db.from("published_items").select("id, stem").eq("id", itemId).single(),
+    db.from("published_items").select("id, stem, figure").eq("id", itemId).single(),
     // Key and text only: correctness and misconception tags stay on the server.
     db.from("published_item_options").select("key, text").eq("item_id", itemId).order("key"),
   ]);
@@ -157,6 +159,7 @@ async function buildQuestion(itemId: string, userId: string): Promise<Question> 
   return {
     itemId: item.id!,
     stem: renderRichText(item.stem!),
+    figure: (item.figure as Figure | null) ?? null,
     options: displayOrder(
       options.map((o) => ({ key: o.key!, text: renderInlineText(o.text!) })),
       `${userId}:${item.id}`,

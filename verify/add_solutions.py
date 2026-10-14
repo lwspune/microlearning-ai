@@ -13,8 +13,14 @@ WORKED_END = "\n    },\n    visualSpec:"
 OPTIONS_END = "\n      ],\n"
 
 
+def already_built(src: str) -> bool:
+    """Solutions, the idea figure or the worked figure are in. A question's own figure (in items) doesn't count."""
+    explanation = src.split("\n  items: [", 1)[0]
+    return "solution: {" in src or "figure: {" in explanation
+
+
 def add_to_concept(src: str, data: dict) -> str:
-    if "solution: {" in src or "figure: {" in src:
+    if already_built(src):
         raise ValueError("this concept already has solutions or figures")
 
     items = [(m.group(1), m.end()) for m in re.finditer(r'(?m)^      id: "(C\d+-Q\d+)",$', src)]

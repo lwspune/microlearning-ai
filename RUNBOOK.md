@@ -33,7 +33,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    (`school` = 11th + 12th, `graduate` = Graduates) and `subject`. The group
    is the concept pool: only that group's courses can use the chapter.
 4. Create `verify/models/<chapter_with_underscores>.py` with a `MODELS` dict.
-5. **Add it to its courses** (section 2a).
+5. **Add it to its courses** (section 2a). Its course card says "Coming
+   soon" until a concept is published, and its routes 404 until it is
+   seeded: publish (section 3, step 8) before merging.
 6. Then add concepts (section 3).
 
 ## 2a. Courses and coverage
@@ -116,27 +118,45 @@ Guests are anonymous logins with no profile.
 5. **Write the content** (hook + reveal, intuition, formal with blank lines
    between slide-sized sections, worked example, visual spec, misconceptions
    with remediation and an ancestor fallback) as data, then build the files:
-   `python verify/build_concepts.py <content.py> <items.ts>`, which writes
-   `concepts/cNN-<slug>.ts` with `status: "draft"`. The hook and worked
+   `python verify/build_concepts.py <content.py> <items.ts>`. `content.py`
+   sets `CHAPTER` (the slug; the spec's `linear_programming` spelling works
+   too); the tool writes that chapter's `concepts/cNN-<slug>.ts` with
+   `status: "draft"`. The hook and worked
    example must not reuse an item. Misconception IDs have no gaps.
 5b. **Solutions and figures** (AUTHORING.md items 9–15): a 2+ step
    `solution` on every item; for a `visual` concept, figures on the idea
    slide, the worked example, and every point/locus solution, with element
    `step`s matching the steps. Write them as data (Python dicts with the
-   `Figure` keys from `types.ts`): a new concept takes `figure`,
+   `Figure` keys from `types.ts`; `axes: "xy"` for an xy-plane figure, x and y
+   with plain numbers, instead of the Argand default): a new concept takes `figure`,
    `worked["figure"]` and `solutions` in its `build_concepts.py` entry
    (it refuses a missing or unknown item id). For many similar figures, write
    a small Python helper (Phase B used `extreme`, `arg_fig`, `rot_fig`) so
    they stay consistent, then check each one close up.
-6. Register: `python verify/build_index.py` regenerates the chapter's
-   `index.ts`; the chapter test fails if any concept file isn't registered.
+5c. **Parallel batches (faster, same gates):** once the models and the item
+   spec are fixed and drafted, one agent per concept writes its content,
+   solutions and figures as a Python `CONCEPT` dict, from
+   [verify/agent-brief.md](verify/agent-brief.md) plus that concept's design
+   (hook, worked example, misconceptions with fallbacks, solution notes). A
+   small combiner sets `CHAPTER` and `CONCEPTS` for `build_concepts.py`. Read
+   every agent's output before building: they catch real design flaws
+   (C05-M2's wording) but also place labels on lines.
+5d. **Question figures** (`figure=` in a `draft_items` spec): the picture the
+   question is about, shown whole. For lines that rise to the right, place
+   labels by hand after one look at the figure sheet: automatic placement
+   (85% along the line, or the middle of its visible part) kept landing on
+   another line or the axis numbers.
+6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
+   concept imports and `concepts: [...]` in the chapter's `index.ts` (its
+   title, group and subject stay as written); the chapter test fails if any
+   concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
    Look for KaTeX errors and sideways scrolling. (Punctuation touching
    inline math is kept on its line by the renderer, `renderInline`.) Check every figure in light and dark mode:
    each "After step n" frame, labels clear of axis numbers and of each other.
    A per-figure contact sheet beats a full-page screenshot (figures are too
-   small to judge at full-page scale).
+   small to judge at full-page scale): `node scripts/figure-sheet.mjs <outDir> <chapter> <slug>...`.
 8. **Review:** the user approves on `/review`. Then set `status: "approved"`,
    commit, run `npm run content:seed`.
 9. **Remember the unlock consequence:** publishing a prerequisite *locks*
@@ -231,6 +251,9 @@ Guests are anonymous logins with no profile.
 | Labels on a segment along the real axis, placed below it, sat on the axis numbers | AUTHORING.md item 15; axis numbers get a background halo; labels are clamped into the frame (`FigureView.test.tsx`) |
 | Stopping a background `next start` task left the server running, and the next run tested the stale build on that port | before `next start`, check the port (`Get-NetTCPConnection -LocalPort 3103`) and stop the old process |
 | A long-running dev server kept serving the old stylesheet after `globals.css` changed (new utilities missing) | if a style change doesn't show, probe the computed style, then restart `npm run dev` |
+| The same stale dev server kept a new chapter's empty `index.ts` after `build_index.py` filled it ("13 concepts · 0 authored"), so its review pages 404'd | after generating content files, check the authored count on `/review`; restart `npm run dev` if it lags |
+| A CHECK constraint passes when its expression is NULL: `items_figure_shape` let a figure with no `alt` through (`jsonb_typeof(null) = 'string'` is NULL) | wrap shape checks in `coalesce(..., false)`; test each malformed shape, not just one |
+| A sympy `solve` per line pair made each LPP drafting run take ~11 s | model geometry in exact `Fraction`s (Cramer's rule); convert to sympy only at the model boundary |
 | Two classes for one property in a class string (`bg-card` from a shared card plus `bg-accent-soft`) silently picked one | shared styles have colourless shapes (`linkCardShape`); each variant adds one border and one background |
 | Hiding answer radios with `sr-only` made Playwright unable to click them | an invisible radio covering the whole card (`absolute inset-0 opacity-0`) stays clickable and focusable |
 | A test fixture looked items up by code (`C03-Q1`) and collided with real content once it was published | scope fixture lookups to the fixture's own chapter |
@@ -242,6 +265,7 @@ Guests are anonymous logins with no profile.
 | Once the homepage read a cookie it rendered partly at request time; `REVIEW_ENABLED`, set only for the build, then differed between the prerendered shell and the request render: a hydration error (#418) in production only | `next.config.ts` inlines `REVIEW_ENABLED` at build time; never read runtime-only env in a component on a partially prerendered page |
 | The e2e screenshot helper waited for every animation to finish, and the hero's loops never do: the run hung silently | `shot()` waits only for finite, time-based animations |
 | A failed sign-in emptied the email box: React resets a form after its action runs | return the typed email in the action state and use it as `defaultValue` (`LoginForm`) |
+| `build_index.py` regenerated the whole `index.ts` from a template written before chapters had `group` and `subject`, so rerunning it would have dropped them | generators replace only the part they own (`register` in `build_index.py`, `test_tooling.py`) |
 | Next's route announcer also has `role="alert"`, so an e2e `getByRole("alert")` read an empty string | scope alerts to the form: `form [role=alert]` |
 | A role check awaited in a layout tripped Next's instant-navigation validation (uncached data outside `<Suspense>`) | check the role inside each page's own `<Suspense>` (`requireAreaAt`); no session reads in layouts |
 | In `next dev` every page's payload contains the not-found text, so a curl check for it says every route is missing | check routes with `npm run smoke` against a production build |

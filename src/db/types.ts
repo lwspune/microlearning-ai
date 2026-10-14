@@ -272,6 +272,7 @@ export type Database = {
         Row: {
           code: string
           concept_id: string
+          figure: Json | null
           id: string
           solution: Json
           source: Json
@@ -282,6 +283,7 @@ export type Database = {
         Insert: {
           code: string
           concept_id: string
+          figure?: Json | null
           id?: string
           solution: Json
           source: Json
@@ -292,6 +294,7 @@ export type Database = {
         Update: {
           code?: string
           concept_id?: string
+          figure?: Json | null
           id?: string
           solution?: Json
           source?: Json
@@ -602,6 +605,7 @@ export type Database = {
         Row: {
           code: string | null
           concept_id: string | null
+          figure: Json | null
           id: string | null
           solution: Json | null
           source: Json | null

@@ -130,10 +130,12 @@ export type FigureElement = {
   | { kind: "region"; within: Shape[] }
 );
 
-/** An Argand-plane figure, drawn with axes. Equal scale on both axes. */
+/** A figure on the Argand plane or the xy-plane, drawn with axes. Equal scale on both axes. */
 export type Figure = {
   /** Read by screen readers in place of the picture: what it shows, in words. */
   alt: string;
+  /** "argand" (default): Re and Im, imaginary ticks. "xy": x and y, plain numbers. */
+  axes?: "argand" | "xy";
   /** The visible window: real parts from x[0] to x[1], imaginary parts from y[0] to y[1]. */
   view: { x: [number, number]; y: [number, number] };
   elements: FigureElement[];
@@ -150,6 +152,8 @@ export type Item = {
   id: string; // "C06-Q1"
   source: ItemSource;
   stem: string;
+  /** Shown with the stem, whole (no steps): "the shaded region is ...". */
+  figure?: Figure;
   options: Option[];
   verify: ItemVerify;
   /** AUTHORING.md item 9. */

@@ -1,0 +1,306 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c09: Concept = {
+  id: "C09",
+  status: "approved",
+  hook: {
+    prompt: t`Minimise $Z = 2x + 3y$ subject to $x + y \ge 3$, $x \le 6$, $y \le 4$, $x, y \ge 0$. **Is the minimum $0$, at the origin?**`,
+    reveal: t`No: $(0, 0)$ breaks $x + y \ge 3$, so it is not in the region and $Z = 0$ is never reached. Evaluate $Z$ at the corners instead: $(3, 0)$ gives $6$, $(0, 3)$ gives $9$, $(6, 0)$ and $(0, 4)$ give $12$, $(6, 4)$ gives $24$. The minimum is $6$, at $(3, 0)$.`,
+  },
+  explanation: {
+    intuition: t`One corner table answers both questions: its largest value is the maximum, its smallest the minimum. Read the values, not the picture. The origin counts only if it is in the region, and a negative coefficient makes $Z$ fall as that variable grows, so the corner farthest out need not win.`,
+    formal: t`**Minimum on a bounded region**
+
+Find the corners, evaluate $Z$ at each, and take the **smallest** value. The maximum is the largest value in the same table.
+
+**The origin**
+
+$(0, 0)$ is a candidate only if it is a corner, i.e. it satisfies every constraint. A $\ge$ constraint such as $x + y \ge 3$ cuts it off.
+
+**Negative coefficients**
+
+In $Z = ax - by$ with $a, b > 0$, each unit of $y$ **lowers** $Z$ by $b$. So the corner with the biggest coordinates is not always the maximum. Keep every sign when you substitute.
+
+**Max minus min**
+
+Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative, subtracting it adds: $12 - (-3) = 15$.`,
+    worked: {
+      prompt: t`Find the maximum and the minimum of $Z = 3x - 2y$ subject to $x + y \le 6$, $y \le 4$, $x \ge 1$, $x, y \ge 0$, and the maximum minus the minimum.`,
+      steps: [
+        t`The origin breaks $x \ge 1$. The corners: $x = 1$ meets the $x$-axis at $(1, 0)$ and $y = 4$ at $(1, 4)$; $y = 4$ meets $x + y = 6$ at $(2, 4)$; $x + y = 6$ meets the $x$-axis at $(6, 0)$.`,
+        t`$Z = 3x - 2y$, keeping the minus: $(1, 0)$ gives $3$, $(6, 0)$ gives $18$, $(2, 4)$ gives $6 - 8 = -2$, $(1, 4)$ gives $3 - 8 = -5$.`,
+        t`Largest: $18$ at $(6, 0)$. Smallest: $-5$ at $(1, 4)$. So max $-$ min $= 18 - (-5) = 23$.`,
+      ],
+      answer: t`Maximum $18$ at $(6, 0)$, minimum $-5$ at $(1, 4)$; max $-$ min $= 23$.`,
+      figure: {
+        alt: "The region x + y ≤ 6, y ≤ 4, x ≥ 1 in the first quadrant, shaded, with corners (1, 0), (6, 0), (2, 4) and (1, 4); the origin is hollow, outside the region. Z = 3x − 2y is 3, 18, −2 and −5 at the corners; the maximum 18 at (6, 0) and the minimum −5 at (1, 4) are highlighted.",
+        axes: "xy",
+        view: { x: [-0.82, 8.2], y: [-0.82, 5.4] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 6], [-1, 7]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[1, 0], [1, -1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[1, 0], [1, 1]], tone: "muted" },
+          { kind: "label", at: [1, 2.4], label: "x = 1", labelAt: "e", tone: "muted" },
+          { kind: "line", through: [[0, 6], [-1, 7]], tone: "muted" },
+          { kind: "label", at: [4.2, 1.8], label: "x + y = 6", labelAt: "ne", tone: "muted" },
+          { kind: "point", at: [0, 0], tone: "bad", hollow: true, step: 1 },
+          { kind: "point", at: [1, 0], tone: "muted", step: 1 },
+          { kind: "point", at: [6, 0], tone: "muted", step: 1 },
+          { kind: "point", at: [2, 4], tone: "muted", step: 1 },
+          { kind: "point", at: [1, 4], tone: "muted", step: 1 },
+          { kind: "label", at: [1, 0], label: "(1, 0): Z = 3", labelAt: "ne", step: 2 },
+          { kind: "label", at: [6, 0], label: "(6, 0): Z = 18", labelAt: "ne", step: 2 },
+          { kind: "label", at: [2, 4], label: "(2, 4): Z = −2", labelAt: "e", step: 2 },
+          { kind: "label", at: [1, 4], label: "(1, 4): Z = −5", labelAt: "n", step: 2 },
+          { kind: "point", at: [6, 0], step: 3 },
+          { kind: "point", at: [1, 4], step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The region x + y ≥ 3, x ≤ 6, y ≤ 4 in the first quadrant, shaded. The origin is hollow and red: it breaks x + y ≥ 3. Z = 2x + 3y is 6 at (3, 0), 12 at (6, 0), 24 at (6, 4), 12 at (0, 4) and 9 at (0, 3); the minimum, 6 at (3, 0), is highlighted.",
+      axes: "xy",
+      view: { x: [-0.86, 8.6], y: [-0.86, 5.4] },
+      elements: [
+        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [1, 2]] }, { kind: "halfPlane", through: [[6, 0], [6, 1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+        { kind: "line", through: [[0, 3], [-1, 4]], tone: "muted", step: 1 },
+        { kind: "point", at: [0, 0], label: "(0, 0) not feasible", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
+        { kind: "point", at: [3, 0], tone: "muted", step: 3 },
+        { kind: "point", at: [6, 0], tone: "muted", step: 3 },
+        { kind: "point", at: [6, 4], tone: "muted", step: 3 },
+        { kind: "point", at: [0, 4], tone: "muted", step: 3 },
+        { kind: "point", at: [0, 3], tone: "muted", step: 3 },
+        { kind: "label", at: [3, 0], label: "(3, 0): Z = 6", labelAt: "ne", step: 3 },
+        { kind: "label", at: [6, 0], label: "(6, 0): Z = 12", labelAt: "ne", step: 3 },
+        { kind: "label", at: [6, 4], label: "(6, 4): Z = 24", labelAt: "ne", step: 3 },
+        { kind: "label", at: [0, 4], label: "(0, 4): Z = 12", labelAt: "ne", step: 3 },
+        { kind: "label", at: [0, 3], label: "(0, 3): Z = 9", labelAt: "e", step: 3 },
+        { kind: "point", at: [3, 0], step: 4 },
+      ],
+    },
+    visualSpec: t`Drag the coefficients of $Z$ through positive and negative values; each corner shows its $Z$ value, the largest glows as the maximum and the smallest as the minimum, and the origin is crossed out when it is not in the region.`,
+  },
+  misconceptions: [
+    {
+      id: "C09-M1",
+      mistake: "Assuming the minimum is at the origin",
+      remediation: t`The origin is a candidate only if it is a corner of the region. Check it against every constraint: a $\ge$ constraint such as $x + y \ge 3$ cuts it off. Then take the smallest value of $Z$ over the actual corners.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
+    {
+      id: "C09-M2",
+      mistake: t`Judging by the corner's size instead of evaluating $Z$`,
+      remediation: t`The corner with the largest coordinates is not always the maximum, and the corner nearest the origin is not always the minimum. Evaluate $Z$ at every corner and compare the values.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
+    {
+      id: "C09-M3",
+      mistake: t`Dropping a minus sign in $Z$`,
+      remediation: t`$Z = 5x - 2y$ loses value as $y$ grows. Keep the sign when you substitute: at $(1, 3)$, $Z = 5 - 6 = -1$, not $11$.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  engineNotes: [
+    "C09-M2 is modelled as judging corners by x + y: the largest-sum corner taken as the maximum, the smallest-sum corner as the minimum.",
+    "C09-M1 is detectable only when the origin is outside the region (C09-Q1, C09-Q3, C09-Q4); its model refuses when the origin really is the minimum, and it does not apply to max-only items.",
+  ],
+  items: [
+    {
+      id: "C09-Q1",
+      source: { kind: "authored" },
+      stem: t`The minimum of $Z = x + 3y$ subject to $x + 2y \ge 4$, $x \le 4$, $y \le 3$, $x, y \ge 0$ is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y >= 4", "x <= 4", "y <= 3"], z: "x + 3*y", ask: "min" } },
+      options: [
+        { key: "A", text: t`$0$`, correct: false, misconceptionId: "C09-M1", value: "0" },
+        { key: "B", text: t`$6$`, correct: false, misconceptionId: "C09-M2", value: "6" },
+        { key: "C", text: t`$4$`, correct: true, value: "4" },
+      ],
+      solution: {
+        steps: [
+          t`The origin breaks $x + 2y \ge 4$, so it is not in the region. The corners are $(4, 0)$, $(0, 2)$, $(4, 3)$ and $(0, 3)$.`,
+          t`$Z = x + 3y$: $(4, 0)$ gives $4$, $(0, 2)$ gives $6$, $(4, 3)$ gives $13$, $(0, 3)$ gives $9$.`,
+          t`The smallest value is $4$, at $(4, 0)$, not at $(0, 2)$, the corner nearest the origin: each unit of $y$ costs $3$. The minimum is $4$.`,
+        ],
+        figure: {
+          alt: "The region x + 2y ≥ 4, x ≤ 4, y ≤ 3 in the first quadrant, shaded; the origin is hollow, outside it. Z = x + 3y is 4 at (4, 0), 6 at (0, 2), 13 at (4, 3) and 9 at (0, 3); the minimum 4 at (4, 0) is highlighted.",
+          axes: "xy",
+          view: { x: [-0.6599999999999999, 6.6], y: [-0.6599999999999999, 4.2] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [2, 1]] }, { kind: "halfPlane", through: [[4, 0], [4, 1]] }, { kind: "halfPlane", through: [[0, 3], [-1, 3]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 2], [-2, 3]], tone: "muted" },
+            { kind: "label", at: [2.4, 0.8], label: "x + 2y = 4", labelAt: "sw", tone: "muted" },
+            { kind: "point", at: [0, 0], tone: "bad", hollow: true, step: 1 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 2], tone: "muted", step: 1 },
+            { kind: "point", at: [4, 3], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 3], tone: "muted", step: 1 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = 4", labelAt: "ne", step: 2 },
+            { kind: "label", at: [0, 2], label: "(0, 2): Z = 6", labelAt: "e", step: 2 },
+            { kind: "label", at: [4, 3], label: "(4, 3): Z = 13", labelAt: "ne", step: 2 },
+            { kind: "label", at: [0, 3], label: "(0, 3): Z = 9", labelAt: "ne", step: 2 },
+            { kind: "point", at: [4, 0], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q2",
+      source: { kind: "authored" },
+      stem: t`The maximum of $Z = 5x - 2y$ subject to $x + 2y \le 10$, $x \le 4$, $y \le 4$, $x, y \ge 0$ is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y <= 10", "x <= 4", "y <= 4"], z: "5*x - 2*y", ask: "max" } },
+      options: [
+        { key: "A", text: t`$26$`, correct: false, misconceptionId: "C09-M3", value: "26" },
+        { key: "B", text: t`$20$`, correct: true, value: "20" },
+        { key: "C", text: t`$14$`, correct: false, misconceptionId: "C09-M2", value: "14" },
+      ],
+      solution: {
+        steps: [
+          t`The corners are $(0, 0)$, $(4, 0)$, $(4, 3)$ where $x = 4$ meets $x + 2y = 10$, $(2, 4)$ where $y = 4$ meets it, and $(0, 4)$.`,
+          t`$Z = 5x - 2y$, keeping the minus: $0$, $20$, $20 - 6 = 14$, $10 - 8 = 2$ and $-8$.`,
+          t`The largest value is $20$, at $(4, 0)$. The far corner $(4, 3)$ gives only $14$: each unit of $y$ takes away $2$. The maximum is $20$.`,
+        ],
+        figure: {
+          alt: "The region x + 2y ≤ 10, x ≤ 4, y ≤ 4 in the first quadrant, shaded. Z = 5x − 2y is 0 at (0, 0), 20 at (4, 0), 14 at (4, 3), 2 at (2, 4) and −8 at (0, 4); the maximum 20 at (4, 0) is highlighted.",
+          axes: "xy",
+          view: { x: [-0.86, 8.6], y: [-0.86, 5.2] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [-2, 6]] }, { kind: "halfPlane", through: [[4, 0], [4, 1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 5], [-2, 6]], tone: "muted" },
+            { kind: "label", at: [7, 1.5], label: "x + 2y = 10", labelAt: "ne", tone: "muted" },
+            { kind: "point", at: [0, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [4, 3], tone: "muted", step: 1 },
+            { kind: "point", at: [2, 4], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 4], tone: "muted", step: 1 },
+            { kind: "label", at: [0, 0], label: "(0, 0): Z = 0", labelAt: "ne", step: 2 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = 20", labelAt: "ne", step: 2 },
+            { kind: "label", at: [4, 3], label: "(4, 3): Z = 14", labelAt: "e", step: 2 },
+            { kind: "label", at: [2, 4], label: "(2, 4): Z = 2", labelAt: "e", step: 2 },
+            { kind: "label", at: [0, 4], label: "(0, 4): Z = −8", labelAt: "n", step: 2 },
+            { kind: "point", at: [4, 0], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q3",
+      source: { kind: "authored" },
+      stem: t`The minimum of $Z = x - 3y$ subject to $x + y \ge 1$, $x + y \le 5$, $y \le 3$, $x, y \ge 0$ is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + y >= 1", "x + y <= 5", "y <= 3"], z: "x - 3*y", ask: "min" } },
+      options: [
+        { key: "A", text: t`$1$`, correct: false, misconceptionId: "C09-M3", value: "1" },
+        { key: "B", text: t`$-9$`, correct: true, value: "-9" },
+        { key: "C", text: t`$0$`, correct: false, misconceptionId: "C09-M1", value: "0" },
+      ],
+      solution: {
+        steps: [
+          t`The origin breaks $x + y \ge 1$, so it is not in the region. The corners are $(1, 0)$, $(5, 0)$, $(2, 3)$, $(0, 3)$ and $(0, 1)$.`,
+          t`$Z = x - 3y$, keeping the minus: $1$, $5$, $2 - 9 = -7$, $-9$ and $-3$.`,
+          t`The smallest value is $-9$, at $(0, 3)$: with $-3y$ in $Z$, a large $y$ pulls $Z$ down. The minimum is $-9$.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 1, x + y ≤ 5, y ≤ 3 in the first quadrant, shaded; the origin is hollow, outside it. Z = x − 3y is 1 at (1, 0), 5 at (5, 0), −7 at (2, 3), −9 at (0, 3) and −3 at (0, 1); the minimum −9 at (0, 3) is highlighted.",
+          axes: "xy",
+          view: { x: [-0.72, 7.2], y: [-0.72, 4.2] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 1], [1, 0]] }, { kind: "halfPlane", through: [[0, 5], [-1, 6]] }, { kind: "halfPlane", through: [[0, 3], [-1, 3]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 5], [-1, 6]], tone: "muted" },
+            { kind: "label", at: [3.6, 1.4], label: "x + y = 5", labelAt: "ne", tone: "muted" },
+            { kind: "point", at: [0, 0], tone: "bad", hollow: true, step: 1 },
+            { kind: "point", at: [1, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [5, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [2, 3], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 3], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 1], tone: "muted", step: 1 },
+            { kind: "label", at: [1, 0], label: "(1, 0): Z = 1", labelAt: "ne", step: 2 },
+            { kind: "label", at: [5, 0], label: "(5, 0): Z = 5", labelAt: "ne", step: 2 },
+            { kind: "label", at: [2, 3], label: "(2, 3): Z = −7", labelAt: "e", step: 2 },
+            { kind: "label", at: [0, 3], label: "(0, 3): Z = −9", labelAt: "n", step: 2 },
+            { kind: "label", at: [0, 1], label: "(0, 1): Z = −3", labelAt: "e", step: 2 },
+            { kind: "point", at: [0, 3], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q4",
+      source: { kind: "authored" },
+      stem: t`The maximum minus the minimum of $Z = 4x + y$ subject to $x + 2y \ge 4$, $2x + y \le 10$, $y \le 4$, $x, y \ge 0$ is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y >= 4", "2*x + y <= 10", "y <= 4"], z: "4*x + y", ask: "range" } },
+      options: [
+        { key: "A", text: t`$14$`, correct: false, misconceptionId: "C09-M2", value: "14" },
+        { key: "B", text: t`$18$`, correct: true, value: "18" },
+        { key: "C", text: t`$20$`, correct: false, misconceptionId: "C09-M1", value: "20" },
+      ],
+      solution: {
+        steps: [
+          t`The origin breaks $x + 2y \ge 4$, so it is not in the region. The corners are $(0, 2)$, $(4, 0)$, $(5, 0)$, $(3, 4)$ and $(0, 4)$.`,
+          t`$Z = 4x + y$: $2$, $16$, $20$, $16$ and $4$.`,
+          t`The maximum is $20$ at $(5, 0)$ and the minimum is $2$ at $(0, 2)$, both from the same table.`,
+          t`Maximum minus minimum $= 20 - 2 = 18$.`,
+        ],
+        figure: {
+          alt: "The region x + 2y ≥ 4, 2x + y ≤ 10, y ≤ 4 in the first quadrant, shaded; the origin is hollow, outside it. Z = 4x + y is 2 at (0, 2), 16 at (4, 0), 20 at (5, 0), 16 at (3, 4) and 4 at (0, 4); the maximum 20 at (5, 0) and the minimum 2 at (0, 2) are highlighted.",
+          axes: "xy",
+          view: { x: [-0.76, 7.6], y: [-0.76, 5.2] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [2, 1]] }, { kind: "halfPlane", through: [[0, 10], [-1, 12]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 10], [-1, 12]], tone: "muted" },
+            { kind: "label", at: [3.5, 3], label: "2x + y = 10", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [0, 0], tone: "bad", hollow: true, step: 1 },
+            { kind: "point", at: [0, 2], tone: "muted", step: 1 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [5, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [3, 4], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 4], tone: "muted", step: 1 },
+            { kind: "label", at: [0, 2], label: "(0, 2): Z = 2", labelAt: "e", step: 2 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = 16", labelAt: "nw", step: 2 },
+            { kind: "label", at: [5, 0], label: "(5, 0): Z = 20", labelAt: "ne", step: 2 },
+            { kind: "label", at: [3, 4], label: "(3, 4): Z = 16", labelAt: "ne", step: 2 },
+            { kind: "label", at: [0, 4], label: "(0, 4): Z = 4", labelAt: "n", step: 2 },
+            { kind: "point", at: [5, 0], step: 3 },
+            { kind: "point", at: [0, 2], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C09-Q5",
+      source: { kind: "authored" },
+      stem: t`The maximum of $Z = -x + 2y$ subject to $2x + y \le 8$, $y \le 3$, $x, y \ge 0$ is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x + y <= 8", "y <= 3"], z: "-x + 2*y", ask: "max" } },
+      options: [
+        { key: "A", text: t`$\frac{7}{2}$`, correct: false, misconceptionId: "C09-M2", value: "7/2" },
+        { key: "B", text: t`$\frac{17}{2}$`, correct: false, misconceptionId: "C09-M3", value: "17/2" },
+        { key: "C", text: t`$6$`, correct: true, value: "6" },
+      ],
+      solution: {
+        steps: [
+          t`The corners are $(0, 0)$, $(4, 0)$, $(\frac52, 3)$ where $y = 3$ meets $2x + y = 8$, and $(0, 3)$.`,
+          t`$Z = -x + 2y$, keeping the minus: $0$, $-4$, $-\frac52 + 6 = \frac72$ and $6$.`,
+          t`The largest value is $6$, at $(0, 3)$. The far corner $(\frac52, 3)$ gives less: the $-x$ term takes away $\frac52$. The maximum is $6$.`,
+        ],
+        figure: {
+          alt: "The region 2x + y ≤ 8, y ≤ 3 in the first quadrant, shaded. Z = −x + 2y is 0 at (0, 0), −4 at (4, 0), 7/2 at (5/2, 3) and 6 at (0, 3); the maximum 6 at (0, 3) is highlighted.",
+          axes: "xy",
+          view: { x: [-0.62, 6.2], y: [-0.62, 4.2] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[0, 3], [-1, 3]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 8], [-1, 10]], tone: "muted" },
+            { kind: "label", at: [3.5, 1], label: "2x + y = 8", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [0, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 1 },
+            { kind: "point", at: [2.5, 3], tone: "muted", step: 1 },
+            { kind: "point", at: [0, 3], tone: "muted", step: 1 },
+            { kind: "label", at: [0, 0], label: "(0, 0): Z = 0", labelAt: "ne", step: 2 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = −4", labelAt: "ne", step: 2 },
+            { kind: "label", at: [2.5, 3], label: "(5/2, 3): Z = 7/2", labelAt: "ne", step: 2 },
+            { kind: "label", at: [0, 3], label: "(0, 3): Z = 6", labelAt: "n", step: 2 },
+            { kind: "point", at: [0, 3], step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};

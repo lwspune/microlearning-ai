@@ -101,6 +101,28 @@ describe("seed_chapter", () => {
     ]);
   });
 
+  it("stores a question's figure, readable through the published view; questions without one have null", async () => {
+    const figure = { alt: "a shaded region", axes: "xy", view: { x: [-1, 5], y: [-1, 5] }, elements: [] };
+    const p = payload();
+    (p.concepts[1] as { items: { figure?: unknown }[] }).items[0].figure = figure;
+    const rows = await rolledBackSelect(
+      seed(p),
+      `select i.code, i.figure from published_items i join concepts c on c.id = i.concept_id where c.chapter_id = ${T} order by i.code;`,
+    );
+    expect(rows).toEqual([
+      { code: "C02-Q1", figure },
+      { code: "C02-Q2", figure: null },
+    ]);
+  });
+
+  it("rejects a question figure without alt text or elements", async () => {
+    for (const figure of [{ elements: [] }, { alt: "x" }, { alt: "", elements: [] }, ["not", "an", "object"]]) {
+      const p = payload();
+      (p.concepts[1] as { items: { figure?: unknown }[] }).items[0].figure = figure;
+      await expect(rolledBack(seed(p))).rejects.toThrow(/items_figure_shape/);
+    }
+  });
+
   it("rejects a solution with fewer than two steps", async () => {
     const p = payload();
     (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = { steps: ["only one"] };

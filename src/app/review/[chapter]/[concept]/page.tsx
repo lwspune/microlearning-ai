@@ -160,6 +160,11 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
                 <span>{sourceLabel(item.source)}</span>
               </p>
               <RichText text={item.stem} className="mt-2" />
+              {item.figure && (
+                <div className="mt-3">
+                  <ReviewFigure figure={item.figure} caption="With the question" />
+                </div>
+              )}
               <ul className="mt-3 space-y-2">
                 {item.options.map((o) => (
                   <li

@@ -483,3 +483,49 @@ cards, feedback panels), solutions, mastery moment, guest and locked screens.
 Behaviour change: mastered concepts leave "Ready for you" and show on the path.
 Not restyled: the internal /review pages (they inherit the new tokens).
 
+
+## Chapter 2: Linear Programming (approved 2026-10-14, branch `lpp`)
+
+Source: PYQ Vault MHT-CET notes (`mht-cet-maths/linear-programming`, 14
+`cetlpp-*` concepts with traps). Graph approved as proposed: 13 concepts,
+15 edges, in four groups (`src/content/chapters/linear-programming/graph.ts`).
+
+| Group | Concepts |
+|---|---|
+| Graphing | C01 line from intercepts · C02 half-plane test · C03 feasible region · C04 bounded/unbounded/empty · C05 corner points |
+| Reading figures | C06 ≥ or ≤ from the shading · C07 the system behind a figure |
+| Optimising | C08 corner-point method · C09 minimum, negatives, max − min · C10 optimum over an unbounded region (NCERT) · C11 infinitely many optima |
+| Word problems | C12 formulating an LPP · C13 solving end to end |
+
+- **Step 1 (done):** graph + chapter test; registered; draft coverage in
+  MH Board, CBSE and MHT-CET (unsure: C10 for MH Board and MHT-CET; C12–C13
+  for CBSE, whose rationalised syllabus may have dropped the LPP types). Not
+  in JEE Main (dropped in 2024) or NDA. You check it on `/review/courses`.
+- **Step 2:** an x/y axis option on `Figure` (Argand stays the default);
+  `build_concepts.py` and `build_index.py` take the chapter;
+  `verify/models/linear_programming.py` keys by exact corner enumeration.
+- **Step 3:** content in three batches, each reviewed on `/review` before
+  seeding: Graphing (C01–C05); Reading figures + Optimising (C06–C11);
+  Word problems (C12–C13). Seeding waits for the first approved batch.
+
+**Published 2026-10-15** (approved by you): 13 concepts and the MH Board, CBSE and MHT-CET coverage are approved and seeded (71 items); smoke passes on every route. Pending your merge of `lpp`.
+
+**Status before publishing: the whole chapter was built as drafts.** All 13 concepts,
+71 items, 0 verifier problems; every figure checked in light and dark.
+New along the way (approved by you): **questions can show a figure** with
+their stem (C06, C07, C08-Q4 read a shaded region, as in the exam), with a
+migration adding `items.figure` (applied). A chapter with nothing published
+shows "Coming soon" on its course page instead of linking to an empty map.
+**To publish:** your review on `/review/linear-programming/...`, then set the
+13 concepts and the three course coverages you agree with to `approved`
+and run `npm run content:seed`. Until it is seeded, the four LPP chapter
+routes 404 (`npm run smoke` flags them), so publish before merging.
+
+Earlier: batch 1 (C01–C05, 28 items) built
+as drafts, 0 verifier problems, every figure checked in light and dark.
+Pending your review on `/review/linear-programming/...`. Written with one
+agent per concept (RUNBOOK 3, step 5c), at your request, to go faster.
+Choices to check: C04-M4 ("a ≥ and a ≤ always contradict") is the least
+certain misconception; C03 items are "how many of these points" counts,
+because a misconception whose region contains the true one can't be caught
+by a "which point" question.

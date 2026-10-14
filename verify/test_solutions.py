@@ -75,6 +75,10 @@ class Literals(unittest.TestCase):
     def test_figure_matches_the_pilot_format(self):
         self.assertEqual(figure_ts(FIG, 6), FIG_TS)
 
+    def test_an_xy_figure_says_so_after_its_alt_text(self):
+        out = figure_ts({**FIG, "axes": "xy"}, 6)
+        self.assertEqual(out, FIG_TS.replace('path.",\n', 'path.",\n        axes: "xy",\n', 1))
+
     def test_solution_steps_are_template_literals(self):
         self.assertEqual(
             solution_ts({"steps": [r"Subtract: $\sqrt{4}$.", "So $2$."]}, 6),
@@ -134,6 +138,16 @@ class AddToConcept(unittest.TestCase):
         once = add_to_concept(CONCEPT, self.DATA)
         with self.assertRaisesRegex(ValueError, "already"):
             add_to_concept(once, self.DATA)
+        for only in ({"worked_figure": FIG}, {"figure": FIG}):
+            built = add_to_concept(CONCEPT, {**only, "solutions": self.DATA["solutions"]})
+            with self.assertRaisesRegex(ValueError, "already"):
+                add_to_concept(built.replace("solution: {", "solved: {"), {"solutions": self.DATA["solutions"]})
+
+    def test_a_question_figure_is_not_mistaken_for_a_built_concept(self):
+        with_stem_figure = CONCEPT.replace("      stem: t`First?`,\n", "      stem: t`First?`,\n" + figure_ts(FIG, 6), 1)
+        self.assertNotEqual(with_stem_figure, CONCEPT)
+        out = add_to_concept(with_stem_figure, self.DATA)
+        self.assertEqual(out.count("solution: {"), 2)
 
 
 class BuildConcepts(unittest.TestCase):

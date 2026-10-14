@@ -109,13 +109,14 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
   }
 }
 
-function Axes({ view, f }: { view: View; f: Frame }) {
+function Axes({ view, f, xy }: { view: View; f: Frame; xy: boolean }) {
   const xs = ticks(...view.x);
   const ys = ticks(...view.y);
   const hasX = view.y[0] < 0 && view.y[1] > 0;
   const hasY = view.x[0] < 0 && view.x[1] > 0;
   const [ox, oy] = f.px([hasY ? 0 : view.x[0], hasX ? 0 : view.y[0]]);
-  const imLabel = (v: number) => (v === 1 ? "i" : v === -1 ? "−i" : `${v < 0 ? "−" : ""}${Math.abs(v)}i`);
+  const num = (v: number) => `${v < 0 ? "−" : ""}${Math.abs(v)}`;
+  const yLabel = (v: number) => (xy ? num(v) : v === 1 ? "i" : v === -1 ? "−i" : `${num(v)}i`);
   return (
     <g aria-hidden="true">
       <g stroke="var(--border)" strokeWidth={1}>
@@ -134,23 +135,23 @@ function Axes({ view, f }: { view: View; f: Frame }) {
         {hasX &&
           xs.map((v) => (
             <text key={`tx${v}`} x={fmt(f.px([v, 0])[0])} y={fmt(oy + 14)} textAnchor="middle">
-              {v < 0 ? `−${-v}` : v}
+              {num(v)}
             </text>
           ))}
         {hasY &&
           ys.map((v) => (
             <text key={`ty${v}`} x={fmt(ox - 5)} y={fmt(f.px([0, v])[1] + 4)} textAnchor="end">
-              {imLabel(v)}
+              {yLabel(v)}
             </text>
           ))}
         {hasX && (
           <text x={fmt(f.width - 4)} y={fmt(oy - 6)} textAnchor="end" fontStyle="italic">
-            Re
+            {xy ? "x" : "Re"}
           </text>
         )}
         {hasY && (
           <text x={fmt(ox + 6)} y={12} fontStyle="italic">
-            Im
+            {xy ? "y" : "Im"}
           </text>
         )}
       </g>
@@ -329,7 +330,7 @@ export function FigureView(props: Props) {
       {regions.map(({ el, i, motion }) => (
         <ElementView key={i} el={el} id={`${id}-r${i}`} view={figure.view} f={f} motion={motion} />
       ))}
-      <Axes view={figure.view} f={f} />
+      <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />
       {others.map(({ el, i, motion }) => (
         <ElementView key={i} el={el} id={`${id}-e${i}`} view={figure.view} f={f} motion={motion} />
       ))}

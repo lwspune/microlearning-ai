@@ -1,4 +1,4 @@
-import type { Chapter, Concept, Fallback, ItemSource, ItemVerify, Solution, Tier } from "./types.ts";
+import type { Chapter, Concept, Fallback, Figure, ItemSource, ItemVerify, Solution, Tier } from "./types.ts";
 
 /** The JSON shape `seed_chapter(p jsonb)` expects (supabase/migrations/*_seed_chapter.sql). */
 export type SeedPayload = {
@@ -27,6 +27,7 @@ type SeedConcept = {
     verify: ItemVerify;
     verified: boolean;
     solution: Solution;
+    figure: Figure | null;
     options: { key: string; text: string; is_correct: boolean; misconception: string | null; value: string }[];
   }[];
 };
@@ -68,6 +69,7 @@ export function toSeedPayload(chapter: Chapter, verified: boolean): SeedPayload 
           verify: it.verify,
           verified,
           solution: it.solution,
+          figure: it.figure ?? null,
           options: it.options.map((o) => ({
             key: o.key,
             text: o.text,

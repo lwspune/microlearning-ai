@@ -1,0 +1,296 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c13: Concept = {
+  id: "C13",
+  status: "approved",
+  hook: {
+    prompt: t`A word problem with two products and two limits. **Where does the best plan lie?**`,
+    reveal: t`At a corner of the feasible region, and often at the one where **both limits are used up exactly**. A plan that leaves spare time or material can usually be pushed further.`,
+  },
+  explanation: {
+    intuition: t`A word problem is the whole chapter in one pass. Turn the words into an LPP, draw the region, find its corners, work out $Z$ at each, and give the answer in the problem's own words: how many of each, and the profit or cost in ₹.`,
+    formal: t`**The five steps**
+
+1. **Variables.** Let $x$ and $y$ be the amounts of the two products, and say what each one counts.
+2. **Objective.** Write $Z$ from the profit or cost per unit, and say whether to maximise or minimise it.
+3. **Constraints.** One for every limit or requirement in the problem, plus $x, y \ge 0$.
+
+4. **Region and corners.** Draw each boundary line, shade the feasible region and find its corners.
+5. **Evaluate and answer.** Work out $Z$ at every corner and pick the best. Answer with units: ₹… by making … of one product and … of the other.
+
+**Check.** Every limit in the words must be a constraint. The best plan is often the mixed one where two lines cross, so never skip that corner.`,
+    worked: {
+      prompt: t`A bakery makes $x$ batches of cakes and $y$ batches of pastries a week. A batch of cakes needs $3$ hours of oven time and $1$ kg of flour; a batch of pastries needs $2$ hours and $4$ kg. There are $36$ oven hours and $32$ kg of flour. The profit is ₹$500$ per batch of cakes and ₹$400$ per batch of pastries. How many of each give the most profit?`,
+      steps: [
+        t`Oven: $3x + 2y \le 36$. Flour: $x + 4y \le 32$. Also $x, y \ge 0$. Maximise $Z = 500x + 400y$.`,
+        t`Corners: $(0, 0)$, $(12, 0)$, $(0, 8)$, and where the lines cross: put $x = 32 - 4y$ into $3x + 2y = 36$ to get $96 - 10y = 36$, so $y = 6$ and $x = 8$.`,
+        t`$Z$ at the corners: $0$, $500(12) = 6000$, $400(8) = 3200$, and $500(8) + 400(6) = 6400$.`,
+        t`The best is $(8, 6)$, the mixed plan where the oven time and the flour are both used up.`,
+      ],
+      answer: t`Make $8$ batches of cakes and $6$ of pastries, for the maximum profit of ₹$6400$.`,
+      figure: {
+        alt: "The region 3x + 2y ≤ 36, x + 4y ≤ 32 in the first quadrant, shaded, with corners (0, 0), (12, 0), (8, 6) and (0, 8). Z = 500x + 400y is 0, 6000, 6400 and 3200 there; the best corner (8, 6) is highlighted.",
+        axes: "xy",
+        view: { x: [-1.45, 14.5], y: [-1.45, 11] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 18], [-2, 21]] }, { kind: "halfPlane", through: [[0, 8], [-4, 9]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+          { kind: "line", through: [[0, 18], [-2, 21]], tone: "muted", step: 1 },
+          { kind: "label", at: [5.4, 10], label: "3x + 2y = 36", labelAt: "e", tone: "muted", step: 1 },
+          { kind: "line", through: [[0, 8], [-4, 9]], tone: "muted", step: 1 },
+          { kind: "label", at: [14.4, 3.9], label: "x + 4y = 32", labelAt: "s", tone: "muted", step: 1 },
+          { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+          { kind: "point", at: [12, 0], label: "(12, 0)", labelAt: "ne", step: 2 },
+          { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "ne", step: 2 },
+          { kind: "point", at: [8, 6], label: "(8, 6)", labelAt: "ne", step: 2 },
+          { kind: "label", at: [10.4, 1.2], label: "Z = 6000", labelAt: "w", step: 3 },
+          { kind: "label", at: [0.4, 7], label: "Z = 3200", labelAt: "e", step: 3 },
+          { kind: "label", at: [7.6, 5.2], label: "Z = 6400", labelAt: "w", step: 3 },
+          { kind: "point", at: [8, 6], tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The bakery's region 3x + 2y ≤ 36, x + 4y ≤ 32 in the first quadrant, shaded, with corners (0, 0), (12, 0), (8, 6) and (0, 8). The dashed line 500x + 400y = 6400 touches the region only at (8, 6), where both limits are used up: the best plan.",
+      axes: "xy",
+      view: { x: [-1.45, 14.5], y: [-1.45, 11] },
+      elements: [
+        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 18], [-2, 21]] }, { kind: "halfPlane", through: [[0, 8], [-4, 9]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+        { kind: "line", through: [[0, 18], [-2, 21]], tone: "muted", step: 1 },
+        { kind: "label", at: [5.4, 10], label: "oven", labelAt: "e", tone: "muted", step: 1 },
+        { kind: "line", through: [[0, 8], [-4, 9]], tone: "muted", step: 1 },
+        { kind: "label", at: [14.4, 3.9], label: "flour", labelAt: "s", tone: "muted", step: 1 },
+        { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+        { kind: "point", at: [12, 0], label: "(12, 0)", labelAt: "ne", step: 2 },
+        { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "ne", step: 2 },
+        { kind: "line", through: [[0, 16], [-400, 516]], tone: "good", dashed: true, step: 3 },
+        { kind: "label", at: [4, 10.4], label: "Z = 6400", labelAt: "w", tone: "good", step: 3 },
+        { kind: "point", at: [8, 6], label: "(8, 6) best", labelAt: "ne", tone: "good", step: 3 },
+      ],
+    },
+    visualSpec: t`Drag the profit per unit of each product; the Z line slides out across a fixed two-limit region, and the best corner lights up with its plan and its profit in ₹.`,
+  },
+  misconceptions: [
+    {
+      id: "C13-M1",
+      mistake: "Swapping a product's figures in a constraint",
+      remediation: t`Each constraint is one resource. In it, the coefficient of $x$ is what **one unit of the first product** uses, and the coefficient of $y$ is what one unit of the second uses. Put the data in a table, products across and limits down, and read each row.`,
+      fallback: { kind: "concept", id: "C12" },
+    },
+    {
+      id: "C13-M2",
+      mistake: "Leaving out one of the constraints",
+      remediation: "Every limit in the problem is a constraint. Dropping one enlarges the region and inflates the answer: the best corner you find may break the limit you left out. Count the limits in the words and the constraints you wrote; they must match.",
+      fallback: { kind: "concept", id: "C12" },
+    },
+    {
+      id: "C13-M3",
+      mistake: "Checking only plans that make one product (the corners on the axes)",
+      remediation: t`The corners on the axes are plans that make just one product. The mixed plan, where both limits are used up and the two lines cross, is often the best. Work out $Z$ at **every** corner, the crossing included.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
+  ],
+  engineNotes: [
+    "C13-M2 is tagged only on the maximising items (C13-Q1, C13-Q3, C13-Q4). In the minimising items (C13-Q2, C13-Q5), dropping a 'needs at least' constraint leaves an unbounded region, and the model gives no value there.",
+    "In C13-Q4 the axis corner (0, 92/5) is not a whole number of machines; the C13-M3 distractor uses it as the corner method does, and the true optimum (8, 12) is whole.",
+  ],
+  items: [
+    {
+      id: "C13-Q1",
+      source: { kind: "authored" },
+      stem: t`A carpenter makes $x$ chairs and $y$ tables. A chair takes $2$ hours and a table $4$ hours, with $40$ hours available, and there is room for at most $15$ pieces. The profit is ₹$300$ per chair and ₹$500$ per table. The maximum profit is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x + 4*y <= 40", "x + y <= 15"], z: "300*x + 500*y", goal: "max" } },
+      options: [
+        { key: "A", text: t`$5500$`, correct: true, value: "5500" },
+        { key: "B", text: t`$7500$`, correct: false, misconceptionId: "C13-M1", value: "7500" },
+        { key: "C", text: t`$6000$`, correct: false, misconceptionId: "C13-M2", value: "6000" },
+        { key: "D", text: t`$5000$`, correct: false, misconceptionId: "C13-M3", value: "5000" },
+      ],
+      solution: {
+        steps: [
+          t`Hours: $2x + 4y \le 40$. Room: $x + y \le 15$. Also $x, y \ge 0$. Maximise $Z = 300x + 500y$.`,
+          t`Corners: $(0, 0)$, $(15, 0)$, $(0, 10)$, and where the lines cross: halve the first to $x + 2y = 20$ and subtract $x + y = 15$, so $y = 5$ and $x = 10$.`,
+          t`$Z$ at the corners: $0$, $300(15) = 4500$, $500(10) = 5000$, and $300(10) + 500(5) = 5500$.`,
+          t`The maximum profit is ₹$5500$, by making $10$ chairs and $5$ tables.`,
+        ],
+        figure: {
+          alt: "The region 2x + 4y ≤ 40, x + y ≤ 15 in the first quadrant, shaded, with corners (0, 0), (15, 0), (10, 5) and (0, 10). Z = 300x + 500y is 0, 4500, 5500 and 5000 there; the best corner (10, 5) is highlighted.",
+          axes: "xy",
+          view: { x: [-1.7, 17], y: [-1.7, 12.5] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 10], [-4, 12]] }, { kind: "halfPlane", through: [[0, 15], [-1, 16]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "line", through: [[0, 10], [-4, 12]], tone: "muted", step: 1 },
+            { kind: "label", at: [12.4, 4.1], label: "2x + 4y = 40", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 15], [-1, 16]], tone: "muted", step: 1 },
+            { kind: "label", at: [3.4, 11.8], label: "x + y = 15", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [15, 0], label: "(15, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [0, 10], label: "(0, 10)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [10, 5], label: "(10, 5)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [13.4, 1.2], label: "Z = 4500", labelAt: "w", step: 3 },
+            { kind: "label", at: [0.4, 8.6], label: "Z = 5000", labelAt: "e", step: 3 },
+            { kind: "label", at: [9.6, 4.2], label: "Z = 5500", labelAt: "w", step: 3 },
+            { kind: "point", at: [10, 5], tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C13-Q2",
+      source: { kind: "authored" },
+      stem: t`Food P has $2$ units of iron and $1$ unit of calcium per kg; food Q has $1$ unit of iron and $2$ units of calcium per kg. A diet needs at least $8$ units of iron and $10$ units of calcium. P costs ₹$40$ per kg and Q ₹$30$ per kg. The minimum cost is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x + y >= 8", "x + 2*y >= 10"], z: "40*x + 30*y", goal: "min" } },
+      options: [
+        { key: "A", text: t`$150$`, correct: false, misconceptionId: "C13-M1", value: "150" },
+        { key: "B", text: t`$240$`, correct: false, misconceptionId: "C13-M3", value: "240" },
+        { key: "C", text: t`$200$`, correct: true, value: "200" },
+      ],
+      solution: {
+        steps: [
+          t`With $x$ kg of P and $y$ kg of Q. Iron: $2x + y \ge 8$. Calcium: $x + 2y \ge 10$. Also $x, y \ge 0$. Minimise $Z = 40x + 30y$.`,
+          t`The region is unbounded, with corners $(0, 8)$, $(10, 0)$, and where the lines cross: put $y = 8 - 2x$ into $x + 2y = 10$ to get $16 - 3x = 10$, so $x = 2$ and $y = 4$.`,
+          t`$Z$ at the corners: $30(8) = 240$, $40(10) = 400$, and $40(2) + 30(4) = 200$. Further out $Z$ only grows, so the least of these is the minimum.`,
+          t`The minimum cost is ₹$200$, with $2$ kg of P and $4$ kg of Q.`,
+        ],
+        figure: {
+          alt: "The unbounded region 2x + y ≥ 8, x + 2y ≥ 10 in the first quadrant, shaded, with corners (0, 8), (2, 4) and (10, 0). Z = 40x + 30y is 240, 200 and 400 there; the best corner (2, 4) is highlighted.",
+          axes: "xy",
+          view: { x: [-1.2, 12], y: [-1.2, 10] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [1, 6]] }, { kind: "halfPlane", through: [[0, 5], [2, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "line", through: [[0, 8], [-1, 10]], tone: "muted", step: 1 },
+            { kind: "label", at: [3.4, 1.2], label: "2x + y = 8", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 5], [-2, 6]], tone: "muted", step: 1 },
+            { kind: "label", at: [7.2, 1.4], label: "x + 2y = 10", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "e", step: 2 },
+            { kind: "point", at: [10, 0], label: "(10, 0)", labelAt: "n", step: 2 },
+            { kind: "point", at: [2, 4], label: "(2, 4)", labelAt: "sw", step: 2 },
+            { kind: "label", at: [0.4, 7.2], label: "Z = 240", labelAt: "e", step: 3 },
+            { kind: "label", at: [10, 1.1], label: "Z = 400", labelAt: "n", step: 3 },
+            { kind: "label", at: [2.4, 4.4], label: "Z = 200", labelAt: "e", step: 3 },
+            { kind: "point", at: [2, 4], tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C13-Q3",
+      source: { kind: "authored" },
+      stem: t`Product A needs $1$ hour on machine M and $3$ hours on machine N; product B needs $2$ hours on M and $1$ hour on N. M is free for $8$ hours and N for $9$ hours. The profit is ₹$20$ per A and ₹$30$ per B. The maximum profit is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y <= 8", "3*x + y <= 9"], z: "20*x + 30*y", goal: "max" } },
+      options: [
+        { key: "A", text: t`$120$`, correct: false, misconceptionId: "C13-M3", value: "120" },
+        { key: "B", text: t`$130$`, correct: true, value: "130" },
+        { key: "C", text: t`$240$`, correct: false, misconceptionId: "C13-M1", value: "240" },
+        { key: "D", text: t`$160$`, correct: false, misconceptionId: "C13-M2", value: "160" },
+      ],
+      solution: {
+        steps: [
+          t`With $x$ of A and $y$ of B. Machine M: $x + 2y \le 8$. Machine N: $3x + y \le 9$. Also $x, y \ge 0$. Maximise $Z = 20x + 30y$.`,
+          t`Corners: $(0, 0)$, $(3, 0)$, $(0, 4)$, and where the lines cross: put $y = 9 - 3x$ into $x + 2y = 8$ to get $18 - 5x = 8$, so $x = 2$ and $y = 3$.`,
+          t`$Z$ at the corners: $0$, $20(3) = 60$, $30(4) = 120$, and $20(2) + 30(3) = 130$.`,
+          t`The maximum profit is ₹$130$, by making $2$ of A and $3$ of B.`,
+        ],
+        figure: {
+          alt: "The region x + 2y ≤ 8, 3x + y ≤ 9 in the first quadrant, shaded, with corners (0, 0), (3, 0), (2, 3) and (0, 4). Z = 20x + 30y is 0, 60, 130 and 120 there; the best corner (2, 3) is highlighted.",
+          axes: "xy",
+          view: { x: [-0.85, 8.5], y: [-0.85, 7] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 4], [-2, 5]] }, { kind: "halfPlane", through: [[0, 9], [-1, 12]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "line", through: [[0, 4], [-2, 5]], tone: "muted", step: 1 },
+            { kind: "label", at: [6.4, 1.2], label: "x + 2y = 8", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 9], [-1, 12]], tone: "muted", step: 1 },
+            { kind: "label", at: [1.1, 6], label: "3x + y = 9", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [2, 3], label: "(2, 3)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [2.8, 0.9], label: "Z = 60", labelAt: "w", step: 3 },
+            { kind: "label", at: [0.2, 3.4], label: "Z = 120", labelAt: "e", step: 3 },
+            { kind: "label", at: [1.8, 2.5], label: "Z = 130", labelAt: "w", step: 3 },
+            { kind: "point", at: [2, 3], tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C13-Q4",
+      source: { kind: "authored" },
+      stem: t`A dealer has ₹$46{,}000$ and room for $20$ items. A fan costs ₹$2{,}000$ and a sewing machine ₹$2{,}500$. The profit is ₹$250$ per fan and ₹$300$ per sewing machine. The maximum profit is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2000*x + 2500*y <= 46000", "x + y <= 20"], z: "250*x + 300*y", goal: "max" } },
+      options: [
+        { key: "A", text: t`$6000$`, correct: false, misconceptionId: "C13-M1", value: "6000" },
+        { key: "B", text: t`$5750$`, correct: false, misconceptionId: "C13-M2", value: "5750" },
+        { key: "C", text: t`$5520$`, correct: false, misconceptionId: "C13-M3", value: "5520" },
+        { key: "D", text: t`$5600$`, correct: true, value: "5600" },
+      ],
+      solution: {
+        steps: [
+          t`Money: $2000x + 2500y \le 46000$, that is $4x + 5y \le 92$. Room: $x + y \le 20$. Also $x, y \ge 0$. Maximise $Z = 250x + 300y$.`,
+          t`Corners: $(0, 0)$, $(20, 0)$, $(0, \frac{92}{5})$, and where the lines cross: $4x + 5(20 - x) = 92$ gives $x = 8$, so $y = 12$.`,
+          t`$Z$ at the corners: $0$, $250(20) = 5000$, $300 \cdot \frac{92}{5} = 5520$, and $250(8) + 300(12) = 5600$.`,
+          t`The maximum profit is ₹$5600$, by buying $8$ fans and $12$ sewing machines.`,
+        ],
+        figure: {
+          alt: "The region 4x + 5y ≤ 92 (the money), x + y ≤ 20 in the first quadrant, shaded, with corners (0, 0), (20, 0), (8, 12) and (0, 18.4). Z = 250x + 300y is 0, 5000, 5600 and 5520 there; the best corner (8, 12) is highlighted.",
+          axes: "xy",
+          view: { x: [-2.4, 24], y: [-2.4, 21] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 18.4], [-2500, 2018.4]] }, { kind: "halfPlane", through: [[0, 20], [-1, 21]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "line", through: [[0, 18.4], [-5, 22.4]], tone: "muted", step: 1 },
+            { kind: "label", at: [16, 6.4], label: "4x + 5y = 92", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 20], [-1, 21]], tone: "muted", step: 1 },
+            { kind: "label", at: [14.2, 6.2], label: "x + y = 20", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [20, 0], label: "(20, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [0, 18.4], label: "(0, 18.4)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [8, 12], label: "(8, 12)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [17.6, 1.8], label: "Z = 5000", labelAt: "w", step: 3 },
+            { kind: "label", at: [0.6, 16.4], label: "Z = 5520", labelAt: "e", step: 3 },
+            { kind: "label", at: [7.4, 10.8], label: "Z = 5600", labelAt: "w", step: 3 },
+            { kind: "point", at: [8, 12], tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C13-Q5",
+      source: { kind: "authored" },
+      stem: t`Fertiliser F1 has $1$ kg of nitrogen and $3$ kg of phosphate per bag; F2 has $2$ kg of nitrogen and $1$ kg of phosphate per bag. A farmer needs at least $10$ kg of nitrogen and $15$ kg of phosphate. F1 costs ₹$60$ a bag and F2 ₹$50$. The minimum cost is:`,
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y >= 10", "3*x + y >= 15"], z: "60*x + 50*y", goal: "min" } },
+      options: [
+        { key: "A", text: t`$390$`, correct: true, value: "390" },
+        { key: "B", text: t`$300$`, correct: false, misconceptionId: "C13-M1", value: "300" },
+        { key: "C", text: t`$600$`, correct: false, misconceptionId: "C13-M3", value: "600" },
+      ],
+      solution: {
+        steps: [
+          t`With $x$ bags of F1 and $y$ of F2. Nitrogen: $x + 2y \ge 10$. Phosphate: $3x + y \ge 15$. Also $x, y \ge 0$. Minimise $Z = 60x + 50y$.`,
+          t`The region is unbounded, with corners $(10, 0)$, $(0, 15)$, and where the lines cross: put $x = 10 - 2y$ into $3x + y = 15$ to get $30 - 5y = 15$, so $y = 3$ and $x = 4$.`,
+          t`$Z$ at the corners: $60(10) = 600$, $50(15) = 750$, and $60(4) + 50(3) = 390$. Further out $Z$ only grows, so the least of these is the minimum.`,
+          t`The minimum cost is ₹$390$, with $4$ bags of F1 and $3$ bags of F2.`,
+        ],
+        figure: {
+          alt: "The unbounded region x + 2y ≥ 10, 3x + y ≥ 15 in the first quadrant, shaded, with corners (0, 15), (4, 3) and (10, 0). Z = 60x + 50y is 750, 390 and 600 there; the best corner (4, 3) is highlighted.",
+          axes: "xy",
+          view: { x: [-1.7, 12.5], y: [-1.7, 17] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [2, 4]] }, { kind: "halfPlane", through: [[0, 15], [1, 12]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "line", through: [[0, 5], [-2, 6]], tone: "muted", step: 1 },
+            { kind: "label", at: [0.15, 2.4], label: "x + 2y = 10", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 15], [-1, 18]], tone: "muted", step: 1 },
+            { kind: "label", at: [1.6, 11], label: "3x + y = 15", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 15], label: "(0, 15)", labelAt: "e", step: 2 },
+            { kind: "point", at: [10, 0], label: "(10, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [4, 3], label: "(4, 3)", labelAt: "sw", step: 2 },
+            { kind: "label", at: [0.4, 13.6], label: "Z = 750", labelAt: "e", step: 3 },
+            { kind: "label", at: [10, 1.3], label: "Z = 600", labelAt: "n", step: 3 },
+            { kind: "label", at: [4.4, 3.2], label: "Z = 390", labelAt: "e", step: 3 },
+            { kind: "point", at: [4, 3], tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+  ],
+};

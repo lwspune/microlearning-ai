@@ -9,6 +9,8 @@ import type { Progress, Question } from "@/server/learning";
 import { type AnswerResult, submitAnswer } from "../../actions";
 import type { RefresherInfo } from "./SlideDeck";
 import { SolutionReveal } from "./SolutionReveal";
+import { FigureFrame } from "@/figures/FigureFrame";
+import { FigureView } from "@/figures/FigureView";
 import { CheckIcon } from "@/components/icons";
 import { card, primaryButton, secondaryButton } from "@/components/ui";
 
@@ -178,6 +180,13 @@ export function QuestionPanel({
       >
         <legend className="sr-only">Choose one answer</legend>
         <RenderedRichText blocks={question.stem} />
+        {question.figure && (
+          <div className="mt-4">
+            <FigureFrame>
+              <FigureView figure={question.figure} className="h-auto w-full" />
+            </FigureFrame>
+          </div>
+        )}
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           {question.options.map((o) => {
             const isCorrect = result?.correctKey === o.key;
