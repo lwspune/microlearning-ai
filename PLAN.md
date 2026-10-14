@@ -508,7 +508,18 @@ Source: PYQ Vault MHT-CET notes (`mht-cet-maths/linear-programming`, 14
   seeding: Graphing (C01–C05); Reading figures + Optimising (C06–C11);
   Word problems (C12–C13). Seeding waits for the first approved batch.
 
-**Status (2026-10-14):** steps 1–2 done; batch 1 (C01–C05, 28 items) built
+**Status (2026-10-15): the whole chapter is built as drafts.** All 13 concepts,
+71 items, 0 verifier problems; every figure checked in light and dark.
+New along the way (approved by you): **questions can show a figure** with
+their stem (C06, C07, C08-Q4 read a shaded region, as in the exam), with a
+migration adding `items.figure` (applied). A chapter with nothing published
+shows "Coming soon" on its course page instead of linking to an empty map.
+**To publish:** your review on `/review/linear-programming/...`, then set the
+13 concepts and the three course coverages you agree with to `approved`
+and run `npm run content:seed`. Until it is seeded, the four LPP chapter
+routes 404 (`npm run smoke` flags them), so publish before merging.
+
+Earlier: batch 1 (C01–C05, 28 items) built
 as drafts, 0 verifier problems, every figure checked in light and dark.
 Pending your review on `/review/linear-programming/...`. Written with one
 agent per concept (RUNBOOK 3, step 5c), at your request, to go faster.

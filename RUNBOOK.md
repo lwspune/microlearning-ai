@@ -33,7 +33,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    (`school` = 11th + 12th, `graduate` = Graduates) and `subject`. The group
    is the concept pool: only that group's courses can use the chapter.
 4. Create `verify/models/<chapter_with_underscores>.py` with a `MODELS` dict.
-5. **Add it to its courses** (section 2a).
+5. **Add it to its courses** (section 2a). Its course card says "Coming
+   soon" until a concept is published, and its routes 404 until it is
+   seeded: publish (section 3, step 8) before merging.
 6. Then add concepts (section 3).
 
 ## 2a. Courses and coverage
@@ -139,6 +141,11 @@ Guests are anonymous logins with no profile.
    small combiner sets `CHAPTER` and `CONCEPTS` for `build_concepts.py`. Read
    every agent's output before building: they catch real design flaws
    (C05-M2's wording) but also place labels on lines.
+5d. **Question figures** (`figure=` in a `draft_items` spec): the picture the
+   question is about, shown whole. For lines that rise to the right, place
+   labels by hand after one look at the figure sheet: automatic placement
+   (85% along the line, or the middle of its visible part) kept landing on
+   another line or the axis numbers.
 6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
    concept imports and `concepts: [...]` in the chapter's `index.ts` (its
    title, group and subject stay as written); the chapter test fails if any
