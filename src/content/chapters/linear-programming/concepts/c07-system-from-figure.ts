@@ -1,0 +1,343 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c07: Concept = {
+  id: "C07",
+  status: "draft",
+  hook: {
+    prompt: t`A shaded region is bounded by the lines $2x + 3y = 6$, $x - 2y = 4$ and $x + y = 7$. **To write its system, do you need to test every line?**`,
+    reveal: t`Yes, every line needs its own sign, but one point inside the shading settles them all at once. At $(2, 2)$: $2x + 3y = 10 \ge 6$, $x - 2y = -2 \le 4$, $x + y = 4 \le 7$. So the system is $2x + 3y \ge 6$, $x - 2y \le 4$, $x + y \le 7$, $x, y \ge 0$.`,
+  },
+  explanation: {
+    intuition: t`Each boundary line needs its own sign, and one point gives you all of them. Pick a point clearly inside the shading and substitute it into each line's expression. Bigger than the line's constant means $\ge$; smaller means $\le$. With options, strike out every one that disagrees, one line at a time.`,
+    formal: t`**Reading the system off a figure**
+
+1. Pick one point clearly inside the shading, not on any line.
+2. For each line $ax + by = c$, work out $ax + by$ at that point.
+3. More than $c$: the constraint is $ax + by \ge c$. Less than $c$: $ax + by \le c$.
+4. Add $x, y \ge 0$. With options, strike out any that disagrees, line by line.
+
+**Don't trust above and below.** Above a line means $\ge$ only when the coefficient of $y$ is positive. Above $x - 2y = 4$, a larger $y$ makes $x - 2y$ smaller, so the shading above it is $x - 2y \le 4$.
+
+**Don't assume the origin.** The origin is often outside the region, or on one of its lines, so it can't tell you the signs. A point you can see inside the shading always can.`,
+    worked: {
+      prompt: t`The shaded triangle, with corners $(0, 1)$, $(4, 1)$ and $(2, 3)$, is bounded by the lines $x + y = 5$, $x - y = -1$ and $y = 1$. Write the system of constraints it is the feasible region of.`,
+      steps: [
+        t`Take $(2, 2)$: it is clearly inside the shading. (The origin is not: it lies below $y = 1$.)`,
+        t`$x + y$: $2 + 2 = 4 \le 5$, so $x + y \le 5$.`,
+        t`$x - y$: $2 - 2 = 0 \ge -1$, so $x - y \ge -1$, even though the shading lies below that line.`,
+        t`$y = 2 \ge 1$, so $y \ge 1$. Add $x, y \ge 0$.`,
+      ],
+      answer: t`$x + y \le 5$, $x - y \ge -1$, $y \ge 1$, $x, y \ge 0$.`,
+      figure: {
+        alt: "The triangle with corners (0, 1), (4, 1) and (2, 3), shaded, bounded by the lines x + y = 5, x − y = −1 and y = 1. The test point (2, 2) lies inside it. Each line is highlighted in turn as its sign is read off.",
+        axes: "xy",
+        view: { x: [-0.64, 6.4], y: [-0.64, 5.6] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [-1, 6]] }, { kind: "halfPlane", through: [[0, 1], [-1, 0]] }, { kind: "halfPlane", through: [[0, 1], [1, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[0, 5], [-1, 6]], tone: "muted" },
+          { kind: "label", at: [3.5, 1.5], label: "x + y = 5", labelAt: "ne", tone: "muted" },
+          { kind: "line", through: [[0, 1], [1, 2]], tone: "muted" },
+          { kind: "label", at: [3.5, 4.5], label: "x − y = −1", labelAt: "se", tone: "muted" },
+          { kind: "line", through: [[0, 1], [-1, 1]], tone: "muted" },
+          { kind: "label", at: [5.6, 1], label: "y = 1", labelAt: "n", tone: "muted" },
+          { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "s", tone: "good", step: 1 },
+          { kind: "line", through: [[0, 5], [-1, 6]], step: 2 },
+          { kind: "line", through: [[0, 1], [1, 2]], step: 3 },
+          { kind: "line", through: [[0, 1], [-1, 1]], step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "A shaded five-sided region in the first quadrant, bounded by the lines 2x + 3y = 6, x − 2y = 4 and x + y = 7 and the axes. The test point (2, 2) lies inside it and settles the sign of every line.",
+      axes: "xy",
+      view: { x: [-0.8, 8], y: [-0.8, 7.8] },
+      elements: [
+        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [3, 0]] }, { kind: "halfPlane", through: [[0, -2], [2, -1]] }, { kind: "halfPlane", through: [[0, 7], [-1, 8]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+        { kind: "line", through: [[0, 2], [-3, 4]], tone: "muted", step: 1 },
+        { kind: "label", at: [2.4, 0.4], label: "2x + 3y = 6", labelAt: "ne", tone: "muted", step: 1 },
+        { kind: "line", through: [[0, -2], [2, -1]], tone: "muted", step: 1 },
+        { kind: "label", at: [7, 1.5], label: "x − 2y = 4", labelAt: "se", tone: "muted", step: 1 },
+        { kind: "line", through: [[0, 7], [-1, 8]], tone: "muted", step: 1 },
+        { kind: "label", at: [4.5, 2.5], label: "x + y = 7", labelAt: "ne", tone: "muted", step: 1 },
+        { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 2 },
+      ],
+    },
+    visualSpec: t`Drag a test point around the shaded region; each labelled line shows its expression's value at the point and the sign it gives, and options that disagree are struck out line by line.`,
+  },
+  misconceptions: [
+    {
+      id: "C07-M1",
+      mistake: t`Reading 'above the line' as $\ge$ when the coefficient of $y$ is negative`,
+      remediation: t`Above means $\ge$ only when $y$ has a positive coefficient. Above $x - 4y = 4$, a larger $y$ makes $x - 4y$ smaller, so it is $x - 4y \le 4$. Don't convert above or below by reflex: substitute a point inside the shading and read the sign.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C07-M2",
+      mistake: "Assuming the region contains the origin, so every line keeps the origin's side",
+      remediation: "Look first: is the origin shaded? Often it isn't, and then every line it decides comes out reversed. Test a point you can see inside the shading instead.",
+      fallback: { kind: "concept", id: "C03" },
+    },
+  ],
+  engineNotes: [
+    "No item's region contains the origin (C07-Q5 has it on the line 2x − y = 0), so C07-M2 always flips at least one sign. Every item has a line with a negative y-coefficient for C07-M1.",
+  ],
+  items: [
+    {
+      id: "C07-Q1",
+      source: { kind: "authored" },
+      stem: t`Which system of constraints, with $x, y \ge 0$, has the shaded region as its feasible region?`,
+      figure: {
+        alt: "A shaded region in the first quadrant bounded by the labelled lines.",
+        axes: "xy",
+        view: { x: [-0.6, 7], y: [-0.6, 5] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [1, 1]] }, { kind: "halfPlane", through: [[0, -2], [1, -1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[0, 2], [-1, 3]], tone: "muted" },
+          { kind: "label", at: [1.25, 1.25], label: "x + y = 2", labelAt: "ne", tone: "muted" },
+          { kind: "line", through: [[0, -2], [1, -1]], tone: "muted" },
+          { kind: "label", at: [5.2, 2.6], label: "x − y = 2", labelAt: "se", tone: "muted" },
+          { kind: "line", through: [[0, 4], [-1, 4]], tone: "muted" },
+          { kind: "label", at: [2.1, 4], label: "y = 4", labelAt: "n", tone: "muted" },
+        ],
+      },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + y >= 2", "x - y <= 2", "y <= 4"], cands: ["x + y >= 2; x - y <= 2; y <= 4", "x + y >= 2; x - y >= 2; y <= 4", "x + y <= 2; x - y <= 2; y <= 4"] } },
+      options: [
+        { key: "A", text: t`$x + y \ge 2$, $x - y \le 2$, $y \le 4$`, correct: true, value: "1" },
+        { key: "B", text: t`$x + y \ge 2$, $x - y \ge 2$, $y \le 4$`, correct: false, misconceptionId: "C07-M1", value: "2" },
+        { key: "C", text: t`$x + y \le 2$, $x - y \le 2$, $y \le 4$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+      ],
+      solution: {
+        steps: [
+          t`Take $(2, 2)$: it is clearly inside the shading.`,
+          t`$x + y$: $2 + 2 = 4 \ge 2$, so $x + y \ge 2$; the origin gives $0 < 2$, so the shading is on the side away from it. $y = 2 \le 4$, so $y \le 4$.`,
+          t`$x - y$: $2 - 2 = 0 \le 2$, so $x - y \le 2$, though the shading lies above that line. The system is $x + y \ge 2$, $x - y \le 2$, $y \le 4$, $x, y \ge 0$.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 2, x − y ≤ 2, y ≤ 4 in the first quadrant, shaded, with the test point (2, 2) inside it. The origin is hollow: it lies outside, below x + y = 2.",
+          axes: "xy",
+          view: { x: [-0.7, 7], y: [-0.7, 5] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [1, 1]] }, { kind: "halfPlane", through: [[0, -2], [1, -1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 2], [-1, 3]], tone: "muted" },
+            { kind: "label", at: [1.4, 0.6], label: "x + y = 2", labelAt: "ne", tone: "muted" },
+            { kind: "line", through: [[0, -2], [1, -1]], tone: "muted" },
+            { kind: "label", at: [5, 3], label: "x − y = 2", labelAt: "se", tone: "muted" },
+            { kind: "line", through: [[0, 4], [-1, 4]], tone: "muted" },
+            { kind: "label", at: [3, 4], label: "y = 4", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 1 },
+            { kind: "line", through: [[0, 2], [-1, 3]], step: 2 },
+            { kind: "line", through: [[0, 4], [-1, 4]], step: 2 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
+            { kind: "line", through: [[0, -2], [1, -1]], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q2",
+      source: { kind: "authored" },
+      stem: t`Which system of constraints, with $x, y \ge 0$, has the shaded region as its feasible region?`,
+      figure: {
+        alt: "A shaded region in the first quadrant bounded by the labelled lines.",
+        axes: "xy",
+        view: { x: [-0.6, 6.5], y: [-0.6, 8.5] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[0, -1], [2, 0]] }, { kind: "halfPlane", through: [[0, 1], [1, 0]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[0, 8], [-1, 10]], tone: "muted" },
+          { kind: "label", at: [2.31, 4.16], label: "2x + y = 8", labelAt: "ne", tone: "muted" },
+          { kind: "line", through: [[0, -1], [2, 0]], tone: "muted" },
+          { kind: "label", at: [5, 1], label: "x − 2y = 2", labelAt: "se", tone: "muted" },
+          { kind: "line", through: [[0, 1], [-1, 2]], tone: "muted" },
+          { kind: "label", at: [0.75, 0.75], label: "x + y = 1", labelAt: "ne", tone: "muted" },
+        ],
+      },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x + y <= 8", "x - 2*y <= 2", "x + y >= 1"], cands: ["2*x + y <= 8; x - 2*y <= 2; x + y >= 1", "2*x + y <= 8; x - 2*y >= 2; x + y >= 1", "2*x + y <= 8; x - 2*y <= 2; x + y <= 1"] } },
+      options: [
+        { key: "A", text: t`$2x + y \le 8$, $x - 2y \le 2$, $x + y \ge 1$`, correct: true, value: "1" },
+        { key: "B", text: t`$2x + y \le 8$, $x - 2y \ge 2$, $x + y \ge 1$`, correct: false, misconceptionId: "C07-M1", value: "2" },
+        { key: "C", text: t`$2x + y \le 8$, $x - 2y \le 2$, $x + y \le 1$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+      ],
+      solution: {
+        steps: [
+          t`Take $(1, 2)$: it is clearly inside the shading.`,
+          t`$2x + y$: $2 + 2 = 4 \le 8$, so $2x + y \le 8$. $x + y$: $1 + 2 = 3 \ge 1$, so $x + y \ge 1$; the origin gives $0 < 1$, so the shading is on the side away from it.`,
+          t`$x - 2y$: $1 - 4 = -3 \le 2$, so $x - 2y \le 2$, though the shading lies above that line. The system is $2x + y \le 8$, $x - 2y \le 2$, $x + y \ge 1$, $x, y \ge 0$.`,
+        ],
+        figure: {
+          alt: "The region 2x + y ≤ 8, x − 2y ≤ 2, x + y ≥ 1 in the first quadrant, shaded, with the test point (1, 2) inside it. The origin is hollow: it lies outside, below x + y = 1.",
+          axes: "xy",
+          view: { x: [-0.85, 6], y: [-0.85, 8.5] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[0, -1], [2, 0]] }, { kind: "halfPlane", through: [[0, 1], [1, 0]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 8], [-1, 10]], tone: "muted" },
+            { kind: "label", at: [2.5, 3], label: "2x + y = 8", labelAt: "ne", tone: "muted" },
+            { kind: "line", through: [[0, -1], [2, 0]], tone: "muted" },
+            { kind: "label", at: [4.4, 1.2], label: "x − 2y = 2", labelAt: "se", tone: "muted" },
+            { kind: "line", through: [[0, 1], [-1, 2]], tone: "muted" },
+            { kind: "label", at: [0.5, 0.5], label: "x + y = 1", labelAt: "ne", tone: "muted" },
+            { kind: "point", at: [1, 2], label: "(1, 2)", labelAt: "ne", tone: "good", step: 1 },
+            { kind: "line", through: [[0, 8], [-1, 10]], step: 2 },
+            { kind: "line", through: [[0, 1], [-1, 2]], step: 2 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
+            { kind: "line", through: [[0, -1], [2, 0]], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q3",
+      source: { kind: "authored" },
+      stem: t`Which system of constraints, with $x, y \ge 0$, has the shaded region as its feasible region?`,
+      figure: {
+        alt: "A shaded region in the first quadrant bounded by the labelled lines.",
+        axes: "xy",
+        view: { x: [-0.6, 5], y: [-0.6, 6.5] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [2, 1]] }, { kind: "halfPlane", through: [[0, 2], [-1, 1]] }, { kind: "halfPlane", through: [[4, 0], [4, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[0, 2], [-2, 3]], tone: "muted" },
+          { kind: "label", at: [2.16, 1.31], label: "x + 2y = 4", labelAt: "ne", tone: "muted" },
+          { kind: "line", through: [[0, 2], [1, 3]], tone: "muted" },
+          { kind: "label", at: [2, 4.6], label: "x − y = −2", labelAt: "w", tone: "muted" },
+          { kind: "line", through: [[4, 0], [4, 1]], tone: "muted" },
+          { kind: "label", at: [4, 3.9], label: "x = 4", labelAt: "e", tone: "muted" },
+        ],
+      },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y >= 4", "x - y >= -2", "x <= 4"], cands: ["x + 2*y >= 4; x - y >= -2; x <= 4", "x + 2*y >= 4; x - y <= -2; x <= 4", "x + 2*y <= 4; x - y >= -2; x <= 4"] } },
+      options: [
+        { key: "A", text: t`$x + 2y \le 4$, $x - y \ge -2$, $x \le 4$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+        { key: "B", text: t`$x + 2y \ge 4$, $x - y \ge -2$, $x \le 4$`, correct: true, value: "1" },
+        { key: "C", text: t`$x + 2y \ge 4$, $x - y \le -2$, $x \le 4$`, correct: false, misconceptionId: "C07-M1", value: "2" },
+      ],
+      solution: {
+        steps: [
+          t`Take $(3, 3)$: it is clearly inside the shading.`,
+          t`$x + 2y$: $3 + 6 = 9 \ge 4$, so $x + 2y \ge 4$; the origin gives $0 < 4$, so the shading is on the side away from it. $x = 3 \le 4$, so $x \le 4$.`,
+          t`$x - y$: $3 - 3 = 0 \ge -2$, so $x - y \ge -2$, though the shading lies below that line. The system is $x + 2y \ge 4$, $x - y \ge -2$, $x \le 4$, $x, y \ge 0$.`,
+        ],
+        figure: {
+          alt: "The triangle x + 2y ≥ 4, x − y ≥ −2, x ≤ 4, shaded, with corners (4, 0), (4, 6) and (0, 2), and the test point (3, 3) inside it. The origin is hollow: it lies outside, below x + 2y = 4.",
+          axes: "xy",
+          view: { x: [-0.65, 5], y: [-0.65, 6.5] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [2, 1]] }, { kind: "halfPlane", through: [[0, 2], [-1, 1]] }, { kind: "halfPlane", through: [[4, 0], [4, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 2], [-2, 3]], tone: "muted" },
+            { kind: "label", at: [2, 1], label: "x + 2y = 4", labelAt: "sw", tone: "muted" },
+            { kind: "line", through: [[0, 2], [1, 3]], tone: "muted" },
+            { kind: "label", at: [2, 4], label: "x − y = −2", labelAt: "nw", tone: "muted" },
+            { kind: "line", through: [[4, 0], [4, 1]], tone: "muted" },
+            { kind: "label", at: [4, 1.5], label: "x = 4", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [3, 3], label: "(3, 3)", labelAt: "w", tone: "good", step: 1 },
+            { kind: "line", through: [[0, 2], [-2, 3]], step: 2 },
+            { kind: "line", through: [[4, 0], [4, 1]], step: 2 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
+            { kind: "line", through: [[0, 2], [1, 3]], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q4",
+      source: { kind: "authored" },
+      stem: t`Which system of constraints, with $x, y \ge 0$, has the shaded region as its feasible region?`,
+      figure: {
+        alt: "A shaded region in the first quadrant bounded by the labelled lines.",
+        axes: "xy",
+        view: { x: [-0.6, 6], y: [-0.6, 6.5] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 6], [-2, 9]] }, { kind: "halfPlane", through: [[0, -1], [-1, -2]] }, { kind: "halfPlane", through: [[0, 2], [1, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[0, 6], [-2, 9]], tone: "muted" },
+          { kind: "label", at: [2.29, 3.19], label: "3x + 2y = 12", labelAt: "ne", tone: "muted" },
+          { kind: "line", through: [[0, -1], [1, 0]], tone: "muted" },
+          { kind: "label", at: [4.4, 2.6], label: "x − y = 1", labelAt: "se", tone: "muted" },
+          { kind: "line", through: [[0, 2], [-1, 3]], tone: "muted" },
+          { kind: "label", at: [1.25, 1.25], label: "x + y = 2", labelAt: "ne", tone: "muted" },
+        ],
+      },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["3*x + 2*y <= 12", "x - y >= 1", "x + y >= 2"], cands: ["3*x + 2*y <= 12; x - y >= 1; x + y >= 2", "3*x + 2*y <= 12; x - y <= 1; x + y >= 2", "3*x + 2*y <= 12; x - y <= 1; x + y <= 2"] } },
+      options: [
+        { key: "A", text: t`$3x + 2y \le 12$, $x - y \ge 1$, $x + y \ge 2$`, correct: true, value: "1" },
+        { key: "B", text: t`$3x + 2y \le 12$, $x - y \le 1$, $x + y \ge 2$`, correct: false, misconceptionId: "C07-M1", value: "2" },
+        { key: "C", text: t`$3x + 2y \le 12$, $x - y \le 1$, $x + y \le 2$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+      ],
+      solution: {
+        steps: [
+          t`The shading is a thin strip, so read the point off the figure: $(2.5, 0.5)$ is clearly inside it.`,
+          t`$3x + 2y$: $7.5 + 1 = 8.5 \le 12$, so $3x + 2y \le 12$. $x + y$: $2.5 + 0.5 = 3 \ge 2$, so $x + y \ge 2$; the origin gives $0 < 2$, so the shading is on the side away from it.`,
+          t`$x - y$: $2.5 - 0.5 = 2 \ge 1$, so $x - y \ge 1$, though the shading lies below that line (and away from the origin). The system is $3x + 2y \le 12$, $x - y \ge 1$, $x + y \ge 2$, $x, y \ge 0$.`,
+        ],
+        figure: {
+          alt: "The region 3x + 2y ≤ 12, x − y ≥ 1, x + y ≥ 2, a thin four-sided strip with corners (2, 0), (4, 0), (2.8, 1.8) and (1.5, 0.5), shaded, with the test point (2.5, 0.5) inside it. The origin is hollow: it lies outside.",
+          axes: "xy",
+          view: { x: [-0.65, 5], y: [-0.65, 6.5] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 6], [-2, 9]] }, { kind: "halfPlane", through: [[0, -1], [-1, -2]] }, { kind: "halfPlane", through: [[0, 2], [1, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 6], [-2, 9]], tone: "muted" },
+            { kind: "label", at: [1, 4.5], label: "3x + 2y = 12", labelAt: "ne", tone: "muted" },
+            { kind: "line", through: [[0, -1], [1, 0]], tone: "muted" },
+            { kind: "label", at: [4.5, 3.5], label: "x − y = 1", labelAt: "nw", tone: "muted" },
+            { kind: "line", through: [[0, 2], [-1, 3]], tone: "muted" },
+            { kind: "label", at: [0.8, 1.2], label: "x + y = 2", labelAt: "ne", tone: "muted" },
+            { kind: "point", at: [2.5, 0.5], label: "(2.5, 0.5)", labelAt: "s", tone: "good", step: 1 },
+            { kind: "line", through: [[0, 6], [-2, 9]], step: 2 },
+            { kind: "line", through: [[0, 2], [-1, 3]], step: 2 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
+            { kind: "line", through: [[0, -1], [1, 0]], step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q5",
+      source: { kind: "authored" },
+      stem: t`Which system of constraints, with $x, y \ge 0$, has the shaded region as its feasible region?`,
+      figure: {
+        alt: "A shaded region in the first quadrant bounded by the labelled lines.",
+        axes: "xy",
+        view: { x: [-0.6, 7], y: [-0.6, 6.5] },
+        elements: [
+          { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [-1, -2]] }, { kind: "halfPlane", through: [[0, 6], [-1, 7]] }, { kind: "halfPlane", through: [[0, 1], [1, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+          { kind: "line", through: [[0, 0], [1, 2]], tone: "muted" },
+          { kind: "label", at: [3, 5.4], label: "2x − y = 0", labelAt: "e", tone: "muted" },
+          { kind: "line", through: [[0, 6], [-1, 7]], tone: "muted" },
+          { kind: "label", at: [4.3, 2], label: "x + y = 6", labelAt: "ne", tone: "muted" },
+          { kind: "line", through: [[0, 1], [-1, 1]], tone: "muted" },
+          { kind: "label", at: [2.1, 1], label: "y = 1", labelAt: "n", tone: "muted" },
+        ],
+      },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x - y >= 0", "x + y <= 6", "y >= 1"], cands: ["2*x - y >= 0; x + y <= 6; y >= 1", "2*x - y <= 0; x + y <= 6; y >= 1", "2*x - y >= 0; x + y <= 6; y <= 1"] } },
+      options: [
+        { key: "A", text: t`$2x - y \ge 0$, $x + y \le 6$, $y \ge 1$`, correct: true, value: "1" },
+        { key: "B", text: t`$2x - y \le 0$, $x + y \le 6$, $y \ge 1$`, correct: false, misconceptionId: "C07-M1", value: "2" },
+        { key: "C", text: t`$2x - y \ge 0$, $x + y \le 6$, $y \le 1$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+      ],
+      solution: {
+        steps: [
+          t`Take $(2, 2)$: it is clearly inside the shading. The origin lies on $2x - y = 0$, so it can't decide that line.`,
+          t`$x + y$: $2 + 2 = 4 \le 6$, so $x + y \le 6$. $y = 2 \ge 1$, so $y \ge 1$; the origin gives $0 < 1$, so the shading is on the side away from it.`,
+          t`$2x - y$: $4 - 2 = 2 \ge 0$, so $2x - y \ge 0$, though the shading lies below that line. The system is $2x - y \ge 0$, $x + y \le 6$, $y \ge 1$, $x, y \ge 0$.`,
+        ],
+        figure: {
+          alt: "The triangle 2x − y ≥ 0, x + y ≤ 6, y ≥ 1, shaded, with corners (0.5, 1), (5, 1) and (2, 4), and the test point (2, 2) inside it. The origin is hollow: it lies on 2x − y = 0, below y = 1.",
+          axes: "xy",
+          view: { x: [-0.7, 7], y: [-0.7, 6.5] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [-1, -2]] }, { kind: "halfPlane", through: [[0, 6], [-1, 7]] }, { kind: "halfPlane", through: [[0, 1], [1, 1]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[0, 0], [1, 2]], tone: "muted" },
+            { kind: "label", at: [2.5, 5], label: "2x − y = 0", labelAt: "nw", tone: "muted" },
+            { kind: "line", through: [[0, 6], [-1, 7]], tone: "muted" },
+            { kind: "label", at: [3.5, 2.5], label: "x + y = 6", labelAt: "ne", tone: "muted" },
+            { kind: "line", through: [[0, 1], [-1, 1]], tone: "muted" },
+            { kind: "label", at: [6, 1], label: "y = 1", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "e", tone: "good", step: 1 },
+            { kind: "line", through: [[0, 6], [-1, 7]], step: 2 },
+            { kind: "line", through: [[0, 1], [-1, 1]], step: 2 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
+            { kind: "line", through: [[0, 0], [1, 2]], step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};
