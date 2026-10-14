@@ -66,7 +66,16 @@ export const courses: Course[] = [
     short: "MH Board",
     group: "school",
     tagline: "Maharashtra State Board, HSC Science",
-    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }, lpp(["C10"])],
+    // Book order: Std XI Part 1, then Part 2, then Std XII. A chapter without coverage is covered whole.
+    chapters: [
+      { chapter: "determinants-and-matrices" },
+      { chapter: "complex-numbers", coverage: cnMaharashtra },
+      { chapter: "sequences-and-series" },
+      { chapter: "permutations-and-combinations" },
+      { chapter: "binomial-theorem" },
+      { chapter: "sets-and-relations" },
+      lpp(["C10"]),
+    ],
   },
   {
     slug: "cbse",
