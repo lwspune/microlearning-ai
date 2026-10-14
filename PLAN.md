@@ -364,6 +364,7 @@ password is never stored in the repo.
   `/teach/people` (your academy's people; add the roles you may create).
   Decided: **no guardian-consent tracking** (students come through their
   academies); **password resets later**.
+  **Status (2026-10-14):** built and checked; pending your review and merge.
 - **R3:** classes (per course) and the teacher dashboard: students ×
   concepts, top misconceptions, reviews due.
 - **Later:** self sign-up; Google sign-in; staff reset a student's
