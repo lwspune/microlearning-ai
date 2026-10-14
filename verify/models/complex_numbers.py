@@ -1101,3 +1101,403 @@ C30 = {k: _c30(k) for k in ["key", "C30-M1", "C30-M2", "C30-M3", "C30-M4", "C30-
 
 
 MODELS = {"C01": C01, "C02": C02, "C03": C03, "C04": C04, "C05": C05, "C06": C06, "C07": C07, "C08": C08, "C09": C09, "C10": C10, "C11": C11, "C12": C12, "C13": C13, "C14": C14, "C15": C15, "C16": C16, "C17": C17, "C18": C18, "C19": C19, "C20": C20, "C21": C21, "C22": C22, "C23": C23, "C24": C24, "C25": C25, "C26": C26, "C27": C27, "C28": C28, "C29": C29, "C30": C30}
+
+
+# ---------- 4th options: fourth_cn_a ----------
+# ---- C01 ----
+def _c01_m8(v, p):  # squares the i but not the number: (ki)^2 = k i^2
+    if p["op"] != "isq":
+        raise ValueError("C01-M8 is about (ki)^2")
+    return -v["k"]
+
+
+def _c01_m9(v, p):  # writes each root as i*sqrt, then drops the roots: i^2 * a * b
+    if p["op"] != "sqrt_prod":
+        raise ValueError("C01-M9 is about a product of roots")
+    def unrooted(a):
+        return I * (-a) if a < 0 else a
+    return expand(unrooted(v["a"]) * unrooted(v["b"]))
+
+
+C01["C01-M8"] = _c01_m8
+C01["C01-M9"] = _c01_m9
+
+
+# ---- C02 ----
+def _c02_m5(v, p):  # i^4 = -1: each block of four powers taken as -1
+    n = int(v["n"])
+    return Integer(-1) ** (n // 4) * I ** (n % 4)
+
+
+C02["C02-M5"] = _c02_m5
+
+
+# ---- C07 ----
+def _c07_part(p):
+    num = sympify(p["num"], locals={"x": _xr, "I": I})
+    den = sympify(p.get("den", "1"), locals={"x": _xr, "I": I})
+    top = expand(num * den.conjugate())
+    re_t, im_t = _parts_in_x(top)
+    part = im_t if p["want"] == "real" else re_t
+    return part, expand(den * den.conjugate()), den
+
+
+def _c07_m4(v, p):  # solves a x + b = 0 as x = -a / b
+    part, _, _ = _c07_part(p)
+    a, b = part.diff(_xr), part.subs(_xr, 0)
+    if b == 0:
+        raise ValueError("no constant term")
+    return -a / b
+
+
+def _c07_m5(v, p):  # (a x + b) / D split as a x + b / D: divides only the constant term
+    part, d, den = _c07_part(p)
+    if den == 1:
+        raise ValueError("C07-M5 needs a quotient")
+    a, b = part.diff(_xr), part.subs(_xr, 0)
+    return -b / (d * a)
+
+
+C07["C07-M4"] = _c07_m4
+C07["C07-M5"] = _c07_m5
+
+
+# ---- C09 ----
+def _c09_m3(v, p):  # mixes up x^2 = (|z| + a)/2 and y^2 = (|z| - a)/2
+    z = v["z"]
+    a, b = z.as_real_imag()
+    m = Abs(z)
+    xr, yr = sqrt((m - a) / 2), sqrt((m + a) / 2)
+    if b < 0:
+        yr = -yr
+    return _normalise_root(xr + I * yr)
+
+
+def _c09_m4(v, p):  # forgets the 2 in 2xy = b, so solves (x + iy)^2 = a + 2bi
+    a, b = v["z"].as_real_imag()
+    m = Abs(a + 2 * b * I)
+    xr, yr = sqrt((m + a) / 2), sqrt((m - a) / 2)
+    if b < 0:
+        yr = -yr
+    return _normalise_root(xr + I * yr)
+
+
+C09["C09-M3"] = _c09_m3
+C09["C09-M4"] = _c09_m4
+
+
+# ---- C12 ----
+def _c12_m6(v, p):  # applies the power to every factor
+    op = p["op"]
+    if op == "prod_pow":
+        return (Abs(v["z1"]) * Abs(v["z2"])) ** v["n"]
+    if op == "quot_pow":
+        return (Abs(v["z1"]) / Abs(v["z2"])) ** v["n"]
+    if op == "scale_pow":
+        return (Abs(v["k"]) * v["r"]) ** v["n"]
+    raise ValueError("C12-M6 needs a product or quotient under a power")
+
+
+def _c12_m7(v, p):  # r^n + r^2 = r^(n + 2): adds exponents across a sum
+    if p["op"] != "pow_plus_zzbar":
+        raise ValueError("C12-M7 needs a sum of powers")
+    return v["r"] ** (v["n"] + 2)
+
+
+C12["C12-M6"] = _c12_m6
+C12["C12-M7"] = _c12_m7
+
+
+# ---- C13 ----
+def _c13_m4(v, p):  # |z + c|^2 = |z|^2 + |c|^2, cross term dropped: one fixed value
+    return sqrt(v["r"] ** 2 + Abs(v["c"]) ** 2)
+
+
+C13["C13-M4"] = _c13_m4
+
+
+# ---------- 4th options: fourth_cn_b ----------
+# ---- C15-M5: the reference angle used as theta, quadrant signs ignored ----
+def _c15_m5(v, p):
+    op = p["op"]
+    if op == "to_polar":  # theta = tan^-1|y/x| (pi/2 on the imaginary axis), always in [0, pi/2]
+        z = v["z"]
+        x0, y0 = re(z), im(z)
+        alpha = pi / 2 if x0 == 0 else atan(Abs(y0 / x0))
+        return _cis(Abs(z), alpha)
+    if op == "from_polar":  # cos and sin of the reference angle: both taken positive
+        r, th = v["r"], v["theta"]
+        return expand(r * (Abs(cos(th)) + I * Abs(sin(th))))
+    raise ValueError(op)
+C15["C15-M5"] = _c15_m5
+
+
+# ---- C16-M5: multiplying by z2 treated as a pure rotation (|z2| not applied) ----
+def _c16_m5(v, p):
+    op = p["op"]
+    if op not in ("prod", "quot"):
+        raise ValueError(op)
+    z1, z2 = v["z1"], v["z2"]
+    t = arg(z1) + arg(z2) if op == "prod" else arg(z1) - arg(z2)
+    return _cis(Abs(z1), t)
+C16["C16-M5"] = _c16_m5
+
+
+# ---- C16-M6: wraps by measuring the clockwise angle but drops its minus sign ----
+def _c16_m6(v, p):
+    if p["op"] != "argsum":
+        raise ValueError(p["op"])
+    s = v["t1"] + v["t2"]
+    if s > pi:
+        return 2 * pi - s
+    if s <= -pi:
+        return -(2 * pi + s)
+    raise ValueError("C16-M6 needs a sum outside (-pi, pi]")
+C16["C16-M6"] = _c16_m6
+
+
+# ---- C17-M5: raises the modulus but leaves the angle at theta ----
+def _c17_m5(v, p):
+    if p["op"] != "pow":
+        raise ValueError(p["op"])
+    z, n = v["z"], v["n"]
+    return expand(_cis(Abs(z) ** n, arg(z)))
+C17["C17-M5"] = _c17_m5
+
+
+# ---- C17-M6: (sin t + i cos t)^n = sin^n t + i cos^n t (power taken term by term) ----
+def _c17_m6(v, p):
+    if p["op"] != "sinpow":
+        raise ValueError(p["op"])
+    th, n = v["theta"], v["n"]
+    return expand(sin(th) ** n + I * cos(th) ** n)
+C17["C17-M6"] = _c17_m6
+
+
+# ---- C18-M4: swaps the point and the centre (turns c about z) ----
+def _c18_m4(v, p):
+    z, c, a = v["z"], v["c"], v["alpha"]
+    if z == c:
+        raise ValueError("C18-M4 needs z != c")
+    return expand((c - z) * _cis(1, a) + z)
+C18["C18-M4"] = _c18_m4
+
+
+# ---- C19-M8: the conjugate confused with the reciprocal ----
+def _c19_m8(v, p):
+    if p["op"] != "other_root":
+        raise ValueError(p["op"])
+    return expand(1 / v["z"], complex=True)
+C19["C19-M8"] = _c19_m8
+
+
+# ---- C19-M9: Vieta without dividing by a: sum = -b, product = c ----
+def _c19_m9(v, p):
+    if p["op"] != "vieta":
+        raise ValueError(p["op"])
+    a, b, c = v["a"], v["b"], v["c"]
+    if a == 1:
+        raise ValueError("C19-M9 needs a != 1")
+    return -b if p["want"] == "sum" else c
+C19["C19-M9"] = _c19_m9
+
+
+# ---- C19-M10: multiplies the roots p +/- iq as p^2 - q^2 (i dropped) ----
+def _c19_m10(v, p):
+    if p["op"] != "vieta" or p["want"] != "product":
+        raise ValueError("C19-M10 is for the product of the roots")
+    a, b, c = v["a"], v["b"], v["c"]
+    if b**2 - 4 * a * c >= 0:
+        raise ValueError("C19-M10 needs complex roots")
+    pr, q = -b / (2 * a), sqrt(4 * a * c - b**2) / (2 * a)
+    return pr**2 - q**2
+C19["C19-M10"] = _c19_m10
+
+
+# ---------- 4th options: fourth_cn_c ----------
+# ---- C21 ----
+def _c21_m6(v, p):  # (c omega)^n taken as n * c * omega^n: the power treated as a multiple
+    if p["op"] != "binpow":
+        raise ValueError("C21-M6 is about powers of a bracket")
+    pp, q, n = v["p"], v["q"], int(v["n"])
+    c = q - pp  # the bracket, correctly grouped, is (q - p) omega
+    return _omega_form(_rewrite_powers(n * c * OMEGA**n, _mod3))
+C21["C21-M6"] = _c21_m6
+
+
+def _c21_m7(v, p):  # "cube root" of k taken as k / 3
+    if p["op"] != "cube_roots":
+        raise ValueError("C21-M7 is about the roots of z^3 = k")
+    c = v["k"] / 3
+    roots = [c, c * OMEGA, c * OMEGA**2]
+    return next(r for r in roots if im(expand(r.subs(OMEGA, OMEGA_VALUE))) > 0)
+C21["C21-M7"] = _c21_m7
+
+
+# ---- C22 ----
+def _c22_m8(v, p):  # removes the root 1 with the wrong sign: 0 + 1
+    if p["op"] != "sum_powers":
+        raise ValueError("C22-M8 is about the sum of the roots other than 1")
+    return Integer(1)
+C22["C22-M8"] = _c22_m8
+
+
+def _c22_m9(v, p):  # adds the arguments k*pi/n (spacing pi/n) to get the product's argument
+    if p["op"] != "product_all":
+        raise ValueError("C22-M9 is about the product of the roots")
+    n = v["n"]
+    return _cis(1, sum(pi * k / n for k in range(int(n))))
+_c22_m2_before = C22["C22-M2"]
+def _c22_m2_wide(v, p):  # C22-M2 on the items C22-M9 was written for
+    try:
+        return _c22_m2_before(v, p)
+    except ValueError:
+        return _c22_m9(v, p)
+C22["C22-M2"] = _c22_m2_wide
+
+
+def _c22_m10(v, p):  # takes omega as the first root whatever n is
+    if p["op"] != "first_root":
+        raise ValueError("C22-M10 is about the first root")
+    return OMEGA_VALUE
+C22["C22-M9"] = _c22_m10
+
+
+def _c22_m11(v, p):  # radius sqrt(k) instead of the nth root of k
+    if p["op"] != "roots_of":
+        raise ValueError("C22-M11 is about the roots of z^n = k")
+    return _cis(sqrt(v["k"]), 2 * pi / v["n"])
+C22["C22-M10"] = _c22_m11
+
+
+# ---- C23 ----
+_j = Symbol("j")
+
+
+def _c23_m6(v, p):  # works with i^2 = +1
+    if p["op"] != "poly_at":
+        raise ValueError("C23-M6 is about evaluating at a complex x")
+    xv = v["x"]
+    poly = sympify(p["poly"], locals={"t": _t})
+    e = expand(poly.subs(_t, re(xv) + _j * im(xv)))
+    out = 0
+    for term in e.as_ordered_terms() if e.is_Add else [e]:
+        coeff, k = term.as_coeff_exponent(_j)
+        out += coeff * (1 if int(k) % 2 == 0 else I)
+    return expand(out)
+C23["C23-M6"] = _c23_m6
+
+
+def _c23_m7(v, p):  # alpha^n + beta^n taken as n (alpha + beta)
+    if p["op"] != "power_sum":
+        raise ValueError("C23-M7 is about power sums")
+    return int(v["n"]) * (-v["b"])
+C23["C23-M7"] = _c23_m7
+
+
+# ---- C24 ----
+def _c24_m7(v, p):  # takes R / |k| as the diameter, so the radius is half of it
+    if p["op"] != "circle":
+        raise ValueError("C24-M7 is about |kz - w| = R")
+    k, w, R = v["k"], v["w"], v["R"]
+    return _circle(w / k, (R / Abs(k) / 2) ** 2)
+C24["C24-M7"] = _c24_m7
+
+
+# ---------- 4th options: fourth_cn_d ----------
+# ---- C26 ----
+def _c26_m5(v, p):  # puts k on the other modulus: k^2 |z - a|^2 = |z - b|^2
+    if p["op"] != "apollonius":
+        raise ValueError("C26-M5 is about ratios of distances")
+    a, b, k = v["a"], v["b"], v["k"]
+    return expand(k**2 * _dist2(a) - _dist2(b))
+
+
+def _c26_m6(v, p):  # multiplies by z - b instead of its conjugate: takes the part of (z - a)(z - b)
+    if p["op"] != "quotient_part":
+        raise ValueError("C26-M6 is about the part of a quotient")
+    a, b = v["a"], v["b"]
+    z = x + I * y
+    prod = expand((z - a) * (z - b))
+    re_, im_ = prod.as_real_imag()
+    return expand(re_ if p["part"] == "re" else im_)
+
+
+C26["C26-M5"] = _c26_m5
+C26["C26-M6"] = _c26_m6
+
+
+# ---- C27 ----
+def _c27_m7(v, p):  # plots the start point with the axes swapped: p + qi at (q, p)
+    if p["op"] != "ray_start":
+        raise ValueError("C27-M7 is about the start of a ray")
+    a = v["a"]
+    return im(a) + I * re(a)
+
+
+C27["C27-M7"] = _c27_m7
+
+
+# ---- C28 ----
+def _c28_m7(v, p):  # compares k with the focal distance the wrong way round
+    if p["op"] != "classify":
+        raise ValueError("C28-M7 is about classifying")
+    a, b, k = v["a"], v["b"], v["k"]
+    d = Abs(a - b)
+    if p["sign"] == "+":
+        return Integer(1 if k < d else 3 if k == d else 5)
+    return Integer(2 if k > d else 4 if k == d else 5)
+
+
+def _c28_m8(v, p):  # gives the semi-minor axis sqrt((k/2)^2 - (d/2)^2), the least |z|
+    if p["op"] != "max_mod":
+        raise ValueError("C28-M8 is about the greatest |z|")
+    a, b, k = v["a"], v["b"], v["k"]
+    d = Abs(a - b)
+    return sqrt((k / 2) ** 2 - (d / 2) ** 2)
+
+
+C28["C28-M7"] = _c28_m7
+C28["C28-M8"] = _c28_m8
+
+
+# ---- C29 ----
+def _c29_m4(v, p):  # ignores the radius: gives the distance from c to the centre
+    return Abs(v["a"] - v["c"])
+
+
+def _c29_m5(v, p):  # least value on a disc is always 0, even when the point is outside
+    if p["want"] != "min" or p.get("region", "circle") != "disc":
+        raise ValueError("C29-M5 is about the least value on a disc")
+    return Integer(0)
+
+
+C29["C29-M4"] = _c29_m4
+C29["C29-M5"] = _c29_m5
+
+
+# ---- C30 ----
+def _c30_m8(v, p):  # uses the diameter in place of the radius
+    if p["op"] != "area":
+        raise ValueError("C30-M8 is about areas")
+    r, f = v["r"], v["f"]
+    return pi * (2 * r) ** 2 * f
+
+
+def _c30_m9(v, p):  # misreads the sign of the first point: |z - a| as the distance from -a
+    if p["op"] != "closer":
+        raise ValueError("C30-M9 is about |z - a| < |z - b|")
+    a, b = v["a"], v["b"]
+    return lambda pt: simplify(Abs(pt + a) - Abs(pt - b)) < 0
+
+
+def _c30_m10(v, p):  # reads every inequality symbol backwards: |z - a| >= r and Im z <= 0
+    if p["op"] != "disc_half":
+        raise ValueError("C30-M10 is about a disc and a half-plane")
+    a, r = v["a"], v["r"]
+    return lambda pt: simplify(Abs(pt - a) - r) >= 0 and im(pt) <= 0
+
+
+C30["C30-M8"] = _c30_m8
+C30["C30-M9"] = _c30_m9
+C30["C30-M10"] = _c30_m10
