@@ -250,7 +250,7 @@ Guests are anonymous logins with no profile.
 | Refresher questions before "Back" (2) | `REFRESHER_QUESTIONS` in `QuestionPanel.tsx` | |
 | Next-question choice | `src/engine/nextItem.ts` | tested |
 | Unlock rule | `src/engine/unlock.ts` | tested; unpublished prerequisites count as known |
-| Mastery gate (off for teacher review, 2026-10-14) | `MASTERY_GATE` in `src/engine/unlock.ts` | `false` opens every published concept; `true` restores the unlock rule. The e2e reads it and checks whichever applies |
+| Mastery gate (on for students since R2; staff never gated) | `MASTERY_GATE` in `src/engine/unlock.ts`, `gateFor` | `false` opens every published concept to everyone; `true` is the unlock rule for students and guests. The e2e reads it and checks whichever applies |
 | Course coverage | `coverage.status` in `src/content/courses.ts` | `draft` until the owner approves on `/review/courses` (section 2a) |
 | Homepage hero motion | `LAYER_DELAY`, `COMET_START`, `COMET_CYCLE`, `COMET_RUN` in `src/components/home/ConceptGraphBackdrop.tsx` | `COMET_RUN` must match the 80% stop in `@keyframes cg-comet` |
 | Remembered group | `ml_group` cookie (`src/server/courses.ts`) | moves to the profile with roles (PLAN.md Phase 2) |

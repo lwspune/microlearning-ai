@@ -259,10 +259,10 @@ due concept appears in "Review today".
 
 ## Teachers (2026-10-14)
 
-**Now:** teachers open the chapter in class and move between any concepts.
-`MASTERY_GATE = false` in `src/engine/unlock.ts` opens every published
-concept; the map lists all of them and each opens directly (a one-time "Start
-as guest" per browser). Set it back to `true` to restore the unlock rule.
+**Now (since 2026-10-14, roles R2):** teachers sign in and open any concept
+(`gateFor`: staff never wait on prerequisites); students follow the unlock
+rule again (`MASTERY_GATE = true`). Before that, the gate was off for
+everyone so teachers could use the chapter as guests.
 
 **Future ideas (discussed, not planned yet):**
 - *Present mode:* a projector view per concept (big type, one click per step,
@@ -337,7 +337,7 @@ Decisions: named accounts sign in with **email + password**, created by
 staff (Google later). **No self sign-up now**; planned for later, so nothing
 in R1 may block it (a guest could later link an email and get a profile).
 Guests stay anonymous students with no profile. The global `MASTERY_GATE`
-stays off until teachers have logins (Backfill ledger 3). The first
+stayed off until teachers had logins (Backfill ledger 3; on since R2). The first
 superadmin is the owner's account, created with `npm run user:create`; the
 password is never stored in the repo.
 
@@ -408,7 +408,7 @@ cycle"). Seen in the Phase B learner screenshots.
 - **Done:** (a), approved. `.,;:!?)]` after and `([` before are kept with the
   math (`richText.test.ts`, `RenderedRichText.test.tsx`).
 
-### 3. The mastery gate is off for everyone (logged 2026-10-14, deferred by the owner)
+### 3. The mastery gate is off for everyone (logged 2026-10-14, done 2026-10-14)
 `MASTERY_GATE = false` opens every concept to every learner so teachers can
 use the chapter in class. With roles, staff always open everything, so the
 gate can come back on for students.
@@ -419,6 +419,8 @@ gate can come back on for students.
 - **Risk/reversibility:** one constant; reverts in one commit.
 - **Recommendation / decision:** keep it off until teachers have logins
   (R2), then turn it on. Owner agreed 2026-10-14.
+- **Done:** turned on after R2 merged, approved by the owner (branch
+  `mastery-gate-on`). Students unlock concepts by mastery; staff open all.
 
 ## Content: all 30 concepts (published 2026-10-14)
 
