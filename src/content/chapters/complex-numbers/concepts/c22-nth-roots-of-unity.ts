@@ -104,6 +104,24 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
       remediation: t`Those are the fourth roots. The $n$th roots are $n$ points spaced $\dfrac{2\pi}n$ apart.`,
       fallback: { kind: "concept", id: "C17" },
     },
+    {
+      id: "C22-M8",
+      mistake: t`Removing the root $1$ with the wrong sign: $0 + 1 = 1$`,
+      remediation: t`All $n$ roots add to $0$, so the others add to $0 - 1 = -1$.`,
+      fallback: { kind: "concept", id: "C20" },
+    },
+    {
+      id: "C22-M9",
+      mistake: t`Taking $\omega$ as the first root whatever $n$ is`,
+      remediation: t`$\omega$ is a third of a turn, the first cube root. The first $n$th root is $\dfrac{2\pi}n$ round: a fifth of a turn for $n = 5$.`,
+      fallback: { kind: "concept", id: "C17" },
+    },
+    {
+      id: "C22-M10",
+      mistake: t`Taking $\sqrt k$ instead of $\sqrt[n]k$ as the radius`,
+      remediation: t`Each root has $|z|^n = k$, so $|z| = \sqrt[n]k$: for $z^4 = 81$ the radius is $3$, not $9$.`,
+      fallback: { kind: "concept", id: "C17" },
+    },
   ],
   items: [
     {
@@ -115,6 +133,7 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "A", text: t`$-1$`, correct: true, value: "-1" },
         { key: "B", text: t`$0$`, correct: false, misconceptionId: "C22-M1", value: "0" },
         { key: "C", text: t`$4$`, correct: false, misconceptionId: "C22-M5", value: "4" },
+        { key: "D", text: t`$1$`, correct: false, misconceptionId: "C22-M8", value: "1" },
       ],
       solution: {
         steps: [
@@ -132,6 +151,7 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "A", text: t`$-1$`, correct: true, value: "-1" },
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C22-M3", value: "1" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C22-M6", value: "0" },
+        { key: "D", text: t`$i$`, correct: false, misconceptionId: "C22-M2", value: "I" },
       ],
       solution: {
         steps: [
@@ -149,6 +169,7 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "A", text: t`$0$`, correct: false, misconceptionId: "C22-M1", value: "0" },
         { key: "B", text: t`$5$`, correct: false, misconceptionId: "C22-M5", value: "5" },
         { key: "C", text: t`$-1$`, correct: true, value: "-1" },
+        { key: "D", text: t`$1$`, correct: false, misconceptionId: "C22-M8", value: "1" },
       ],
       solution: {
         steps: [
@@ -166,6 +187,7 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "A", text: t`$\frac{\sqrt{3}}{2} + \frac{i}{2}$`, correct: false, misconceptionId: "C22-M2", value: "sqrt(3)/2 + I/2" },
         { key: "B", text: t`$i$`, correct: false, misconceptionId: "C22-M7", value: "I" },
         { key: "C", text: t`$\frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: true, value: "1/2 + sqrt(3)*I/2" },
+        { key: "D", text: t`$-\frac{1}{2} + \frac{\sqrt{3} i}{2}$`, correct: false, misconceptionId: "C22-M9", value: "-1/2 + sqrt(3)*I/2" },
       ],
       solution: {
         steps: [
@@ -198,6 +220,7 @@ The roots of $z^n = k$ (with $k > 0$) are $\sqrt[n]k$ times the roots of unity.`
         { key: "A", text: t`$\pm 1,\ \pm i$`, correct: false, misconceptionId: "C22-M4", value: "I" },
         { key: "B", text: t`$\pm 2,\ \pm 2i$`, correct: true, value: "2*I" },
         { key: "C", text: t`$\pm\sqrt2 \pm \sqrt2\,i$`, correct: false, misconceptionId: "C22-M2", value: "sqrt(2)*(1 + I)" },
+        { key: "D", text: t`$\pm 4,\ \pm 4i$`, correct: false, misconceptionId: "C22-M10", value: "4*I" },
       ],
       solution: {
         steps: [

@@ -74,6 +74,12 @@ export const c02: Concept = {
       remediation: t`The origin gives $0 \le 0$, true whichever side you mean. Test a point off the line, such as $(1, 0)$.`,
       fallback: { kind: "none" },
     },
+    {
+      id: "C02-M4",
+      mistake: t`Treating $\le$ or $\ge$ as $=$: graphing only the boundary line`,
+      remediation: t`The line $ax + by = c$ is only the boundary. The inequality adds every point on one side of it: test a point off the line to find which side.`,
+      fallback: { kind: "ext", topic: "linear inequalities" },
+    },
   ],
   engineNotes: [
     "C02-M3 only shows on lines through the origin (C02-Q3, C02-Q5); for any other line the origin is a valid test point.",
@@ -88,6 +94,7 @@ export const c02: Concept = {
         { key: "A", text: t`The side away from the origin, without the line`, correct: false, misconceptionId: "C02-M2", value: "4" },
         { key: "B", text: t`The line and the side away from the origin`, correct: true, value: "2" },
         { key: "C", text: t`The line and the side containing the origin`, correct: false, misconceptionId: "C02-M1", value: "1" },
+        { key: "D", text: t`Only the line $3x + 2y = 12$`, correct: false, misconceptionId: "C02-M4", value: "6" },
       ],
       solution: {
         steps: [
@@ -119,6 +126,7 @@ export const c02: Concept = {
         { key: "A", text: t`The line and the side containing the origin`, correct: true, value: "1" },
         { key: "B", text: t`The line and the side away from the origin`, correct: false, misconceptionId: "C02-M1", value: "2" },
         { key: "C", text: t`The side containing the origin, without the line`, correct: false, misconceptionId: "C02-M2", value: "3" },
+        { key: "D", text: t`Only the line $x + 4y = 8$`, correct: false, misconceptionId: "C02-M4", value: "6" },
       ],
       solution: {
         steps: [
@@ -182,6 +190,7 @@ export const c02: Concept = {
         { key: "A", text: t`The line and the side away from the origin`, correct: false, misconceptionId: "C02-M1", value: "2" },
         { key: "B", text: t`The side containing the origin, without the line`, correct: false, misconceptionId: "C02-M2", value: "3" },
         { key: "C", text: t`The line and the side containing the origin`, correct: true, value: "1" },
+        { key: "D", text: t`Only the line $x - y = 2$`, correct: false, misconceptionId: "C02-M4", value: "6" },
       ],
       solution: {
         steps: [
@@ -213,6 +222,7 @@ export const c02: Concept = {
         { key: "A", text: t`The line and the side containing $(0, 1)$`, correct: false, misconceptionId: "C02-M1", value: "2" },
         { key: "B", text: t`The side containing the origin`, correct: false, misconceptionId: "C02-M3", value: "5" },
         { key: "C", text: t`The line and the side containing $(1, 0)$`, correct: true, value: "1" },
+        { key: "D", text: t`The side containing $(1, 0)$, without the line`, correct: false, misconceptionId: "C02-M2", value: "3" },
       ],
       solution: {
         steps: [
@@ -245,6 +255,7 @@ export const c02: Concept = {
         { key: "A", text: t`The line and the side containing the origin`, correct: false, misconceptionId: "C02-M1", value: "1" },
         { key: "B", text: t`The side away from the origin, without the line`, correct: false, misconceptionId: "C02-M2", value: "4" },
         { key: "C", text: t`The line and the side away from the origin`, correct: true, value: "2" },
+        { key: "D", text: t`Only the line $2x + 5y = 10$`, correct: false, misconceptionId: "C02-M4", value: "6" },
       ],
       solution: {
         steps: [

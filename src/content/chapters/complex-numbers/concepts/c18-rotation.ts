@@ -70,6 +70,12 @@ A positive $\alpha$ turns anticlockwise. $e^{i\pi/2} = i$ is a quarter-turn and 
       remediation: t`After rotating $z - c$, add $c$: $z' = c + (z - c)\,e^{i\alpha}$.`,
       fallback: { kind: "concept", id: "C04" },
     },
+    {
+      id: "C18-M4",
+      mistake: "Swapping the point and the centre: turning the centre about the point",
+      remediation: t`The centre stays fixed. Rotate the arrow from the centre to the point, $z - c$, then add $c$: $z' = c + (z - c)\,e^{i\alpha}$.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
     "C18-M2 can't be detected on a half-turn (alpha = pi): both directions land on the same point (C18-Q3).",
@@ -146,6 +152,7 @@ A positive $\alpha$ turns anticlockwise. $e^{i\pi/2} = i$ is a quarter-turn and 
         { key: "A", text: t`$2 - i$`, correct: false, misconceptionId: "C18-M3", value: "2 - I" },
         { key: "B", text: t`$5 - i$`, correct: true, value: "5 - I" },
         { key: "C", text: t`$-1 - i$`, correct: false, misconceptionId: "C18-M1", value: "-1 - I" },
+        { key: "D", text: t`$-1 + 2 i$`, correct: false, misconceptionId: "C18-M4", value: "-1 + 2*I" },
       ],
       solution: {
         steps: [

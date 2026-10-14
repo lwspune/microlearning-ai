@@ -91,6 +91,24 @@ export const c30: Concept = {
       remediation: t`$\operatorname{Im} z \ge 0$ means on or above the real axis.`,
       fallback: { kind: "concept", id: "C10" },
     },
+    {
+      id: "C30-M8",
+      mistake: "Using the diameter in place of the radius",
+      remediation: t`In $|z - a| \le r$ the number $r$ is already the radius, so the area is $\pi r^2$, not $\pi(2r)^2$.`,
+      fallback: { kind: "ext", topic: "area of a circle" },
+    },
+    {
+      id: "C30-M9",
+      mistake: t`Reading $|z - a|$ as the distance from $-a$`,
+      remediation: t`$|z - a|$ is the distance from $a$ itself: $|z - 1|$ is measured from $1$, not from $-1$.`,
+      fallback: { kind: "concept", id: "C25" },
+    },
+    {
+      id: "C30-M10",
+      mistake: "Reading every inequality sign backwards",
+      remediation: t`$\le$ means less than or equal: $|z - a| \le r$ is inside the circle, and $\operatorname{Im} z \ge 0$ is on or above the real axis.`,
+      fallback: { kind: "ext", topic: "inequalities" },
+    },
   ],
   engineNotes: [
     "'Ignoring a condition' (C30-M3) can't be tested by which-point items, because its region contains the correct one. Area items test it (C30-Q2, C30-Q3).",
@@ -105,6 +123,7 @@ export const c30: Concept = {
         { key: "A", text: t`$3 \pi$`, correct: false, misconceptionId: "C30-M2", value: "3*pi" },
         { key: "B", text: t`$6 \pi$`, correct: false, misconceptionId: "C30-M4", value: "6*pi" },
         { key: "C", text: t`$9 \pi$`, correct: true, value: "9*pi" },
+        { key: "D", text: t`$36 \pi$`, correct: false, misconceptionId: "C30-M8", value: "36*pi" },
       ],
       solution: {
         steps: [
@@ -132,6 +151,7 @@ export const c30: Concept = {
         { key: "A", text: t`$2 \pi$`, correct: true, value: "2*pi" },
         { key: "B", text: t`$4 \pi$`, correct: false, misconceptionId: "C30-M3", value: "4*pi" },
         { key: "C", text: t`$\pi$`, correct: false, misconceptionId: "C30-M2", value: "pi" },
+        { key: "D", text: t`$8 \pi$`, correct: false, misconceptionId: "C30-M8", value: "8*pi" },
       ],
       solution: {
         steps: [
@@ -187,6 +207,7 @@ export const c30: Concept = {
         { key: "A", text: t`$-1 - i$`, correct: false, misconceptionId: "C30-M1", value: "-1-I" },
         { key: "B", text: t`$2 - 2 i$`, correct: false, misconceptionId: "C30-M5", value: "2-2*I" },
         { key: "C", text: t`$1 + i$`, correct: true, value: "1+I" },
+        { key: "D", text: t`$-1 + i$`, correct: false, misconceptionId: "C30-M9", value: "-1+I" },
       ],
       solution: {
         steps: [
@@ -217,6 +238,7 @@ export const c30: Concept = {
         { key: "A", text: t`$1 + \frac{i}{2}$`, correct: true, value: "1+I/2" },
         { key: "B", text: t`$1 - \frac{i}{2}$`, correct: false, misconceptionId: "C30-M7", value: "1-I/2" },
         { key: "C", text: t`$3 i$`, correct: false, misconceptionId: "C30-M6", value: "3*I" },
+        { key: "D", text: t`$1 - 2 i$`, correct: false, misconceptionId: "C30-M10", value: "1-2*I" },
       ],
       solution: {
         steps: [

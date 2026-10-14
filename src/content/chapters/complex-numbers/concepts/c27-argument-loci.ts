@@ -80,6 +80,12 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
       remediation: t`Negative angles turn clockwise: $-\frac\pi4$ points down and to the right.`,
       fallback: { kind: "concept", id: "C14" },
     },
+    {
+      id: "C27-M7",
+      mistake: "Placing the start point on the wrong axis",
+      remediation: t`$p + qi$ sits at $(p, q)$: real part across, imaginary part up. So $-2i$ is on the imaginary axis and $1$ is on the real axis.`,
+      fallback: { kind: "concept", id: "C10" },
+    },
   ],
   engineNotes: [
     "A which-point item can't separate 'ray' from 'whole line': the correct point lies on both. Ray items test the start point and direction instead.",
@@ -158,6 +164,7 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "A", text: t`$1$`, correct: true, value: "1" },
         { key: "B", text: t`$0$`, correct: false, misconceptionId: "C27-M4", value: "0" },
         { key: "C", text: t`$-1$`, correct: false, misconceptionId: "C27-M5", value: "-1" },
+        { key: "D", text: t`$i$`, correct: false, misconceptionId: "C27-M7", value: "I" },
       ],
       solution: {
         steps: [
@@ -184,6 +191,7 @@ To pick the half, test one point. For $\arg\left(\dfrac{z - 2}{z + 2}\right) = -
         { key: "A", text: t`$2 i$`, correct: false, misconceptionId: "C27-M5", value: "2*I" },
         { key: "B", text: t`$- 2 i$`, correct: true, value: "-2*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C27-M4", value: "0" },
+        { key: "D", text: t`$-2$`, correct: false, misconceptionId: "C27-M7", value: "-2" },
       ],
       solution: {
         steps: [

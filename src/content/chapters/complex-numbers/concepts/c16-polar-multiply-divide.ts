@@ -75,6 +75,18 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
       remediation: t`Add or subtract $2\pi$ to bring it into $(-\pi, \pi]$: $\dfrac{5\pi}4 - 2\pi = -\dfrac{3\pi}4$.`,
       fallback: { kind: "concept", id: "C14" },
     },
+    {
+      id: "C16-M5",
+      mistake: t`Treating multiplication by $z_2$ as a pure rotation: turning by $\arg z_2$ but not scaling by $\lvert z_2 \rvert$`,
+      remediation: t`Multiplying by $z_2$ turns by $\arg z_2$ **and** stretches by $\lvert z_2 \rvert$: the moduli multiply, $r_1 r_2$.`,
+      fallback: { kind: "concept", id: "C15" },
+    },
+    {
+      id: "C16-M6",
+      mistake: "Bringing an angle into range by measuring it clockwise but dropping the minus sign",
+      remediation: t`An angle measured clockwise is negative: $\dfrac{5\pi}4$ is $\dfrac{3\pi}4$ clockwise, so the principal argument is $-\dfrac{3\pi}4$.`,
+      fallback: { kind: "concept", id: "C14" },
+    },
   ],
   items: [
     {
@@ -86,6 +98,7 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "A", text: t`$5\left(\cos \frac{\pi}{2} + i\sin \frac{\pi}{2}\right)$`, correct: false, misconceptionId: "C16-M1", value: "5*I" },
         { key: "B", text: t`$6\left(\cos \frac{\pi}{6} + i\sin \frac{\pi}{6}\right)$`, correct: false, misconceptionId: "C16-M2", value: "3*sqrt(3) + 3*I" },
         { key: "C", text: t`$6\left(\cos \frac{\pi}{2} + i\sin \frac{\pi}{2}\right)$`, correct: true, value: "6*I" },
+        { key: "D", text: t`$2\left(\cos \frac{\pi}{2} + i\sin \frac{\pi}{2}\right)$`, correct: false, misconceptionId: "C16-M5", value: "2*I" },
       ],
       solution: {
         steps: [
@@ -123,6 +136,7 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "A", text: t`$\left(\sqrt{2} + 2\right)\left(\cos \frac{5 \pi}{12} + i\sin \frac{5 \pi}{12}\right)$`, correct: false, misconceptionId: "C16-M1", value: "(1 - I)*(-sqrt(2) - 1 + sqrt(3)*I + sqrt(6)*I)/2" },
         { key: "B", text: t`$2 \sqrt{2}\left(\cos \frac{\pi}{12} + i\sin \frac{\pi}{12}\right)$`, correct: false, misconceptionId: "C16-M2", value: "1 - I + sqrt(3)*(1 + I)" },
         { key: "C", text: t`$2 \sqrt{2}\left(\cos \frac{5 \pi}{12} + i\sin \frac{5 \pi}{12}\right)$`, correct: true, value: "-1 + I + sqrt(3)*(1 + I)" },
+        { key: "D", text: t`$\sqrt{2}\left(\cos \frac{5 \pi}{12} + i\sin \frac{5 \pi}{12}\right)$`, correct: false, misconceptionId: "C16-M5", value: "(-1 + I + sqrt(3)*(1 + I))/2" },
       ],
       solution: {
         steps: [
@@ -160,6 +174,7 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
         { key: "A", text: t`$\frac{5 \pi}{4}$`, correct: false, misconceptionId: "C16-M4", value: "5*pi/4" },
         { key: "B", text: t`$- \frac{3 \pi}{4}$`, correct: true, value: "-3*pi/4" },
         { key: "C", text: t`$\frac{\pi}{4}$`, correct: false, misconceptionId: "C16-M2", value: "pi/4" },
+        { key: "D", text: t`$\frac{3 \pi}{4}$`, correct: false, misconceptionId: "C16-M6", value: "3*pi/4" },
       ],
       solution: {
         steps: [

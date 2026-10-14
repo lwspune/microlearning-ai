@@ -79,6 +79,12 @@ export const c07: Concept = {
       remediation: "Look first: is the origin shaded? Often it isn't, and then every line it decides comes out reversed. Test a point you can see inside the shading instead.",
       fallback: { kind: "concept", id: "C03" },
     },
+    {
+      id: "C07-M3",
+      mistake: "Taking the shaded part as the excluded side, so every sign comes out reversed",
+      remediation: "Here the shading is the feasible region: the points that satisfy every constraint. A point inside the shading must make each inequality true, so the sign it gives for each line is the sign of the system.",
+      fallback: { kind: "concept", id: "C03" },
+    },
   ],
   engineNotes: [
     "No item's region contains the origin (C07-Q5 has it on the line 2x − y = 0), so C07-M2 always flips at least one sign. Every item has a line with a negative y-coefficient for C07-M1.",
@@ -102,11 +108,12 @@ export const c07: Concept = {
           { kind: "label", at: [2.1, 4], label: "y = 4", labelAt: "n", tone: "muted" },
         ],
       },
-      verify: { kind: "value", inputs: {  }, params: { cons: ["x + y >= 2", "x - y <= 2", "y <= 4"], cands: ["x + y >= 2; x - y <= 2; y <= 4", "x + y >= 2; x - y >= 2; y <= 4", "x + y <= 2; x - y <= 2; y <= 4"] } },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + y >= 2", "x - y <= 2", "y <= 4"], cands: ["x + y >= 2; x - y <= 2; y <= 4", "x + y >= 2; x - y >= 2; y <= 4", "x + y <= 2; x - y <= 2; y <= 4", "x + y <= 2; x - y >= 2; y >= 4"] } },
       options: [
         { key: "A", text: t`$x + y \ge 2$, $x - y \le 2$, $y \le 4$`, correct: true, value: "1" },
         { key: "B", text: t`$x + y \ge 2$, $x - y \ge 2$, $y \le 4$`, correct: false, misconceptionId: "C07-M1", value: "2" },
         { key: "C", text: t`$x + y \le 2$, $x - y \le 2$, $y \le 4$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+        { key: "D", text: t`$x + y \le 2$, $x - y \ge 2$, $y \ge 4$`, correct: false, misconceptionId: "C07-M3", value: "4" },
       ],
       solution: {
         steps: [
@@ -153,11 +160,12 @@ export const c07: Concept = {
           { kind: "label", at: [0.75, 0.75], label: "x + y = 1", labelAt: "ne", tone: "muted" },
         ],
       },
-      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x + y <= 8", "x - 2*y <= 2", "x + y >= 1"], cands: ["2*x + y <= 8; x - 2*y <= 2; x + y >= 1", "2*x + y <= 8; x - 2*y >= 2; x + y >= 1", "2*x + y <= 8; x - 2*y <= 2; x + y <= 1"] } },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x + y <= 8", "x - 2*y <= 2", "x + y >= 1"], cands: ["2*x + y <= 8; x - 2*y <= 2; x + y >= 1", "2*x + y <= 8; x - 2*y >= 2; x + y >= 1", "2*x + y <= 8; x - 2*y <= 2; x + y <= 1", "2*x + y >= 8; x - 2*y >= 2; x + y <= 1"] } },
       options: [
         { key: "A", text: t`$2x + y \le 8$, $x - 2y \le 2$, $x + y \ge 1$`, correct: true, value: "1" },
         { key: "B", text: t`$2x + y \le 8$, $x - 2y \ge 2$, $x + y \ge 1$`, correct: false, misconceptionId: "C07-M1", value: "2" },
         { key: "C", text: t`$2x + y \le 8$, $x - 2y \le 2$, $x + y \le 1$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+        { key: "D", text: t`$2x + y \ge 8$, $x - 2y \ge 2$, $x + y \le 1$`, correct: false, misconceptionId: "C07-M3", value: "4" },
       ],
       solution: {
         steps: [
@@ -204,11 +212,12 @@ export const c07: Concept = {
           { kind: "label", at: [4, 3.9], label: "x = 4", labelAt: "e", tone: "muted" },
         ],
       },
-      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y >= 4", "x - y >= -2", "x <= 4"], cands: ["x + 2*y >= 4; x - y >= -2; x <= 4", "x + 2*y >= 4; x - y <= -2; x <= 4", "x + 2*y <= 4; x - y >= -2; x <= 4"] } },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["x + 2*y >= 4", "x - y >= -2", "x <= 4"], cands: ["x + 2*y >= 4; x - y >= -2; x <= 4", "x + 2*y >= 4; x - y <= -2; x <= 4", "x + 2*y <= 4; x - y >= -2; x <= 4", "x + 2*y <= 4; x - y <= -2; x >= 4"] } },
       options: [
         { key: "A", text: t`$x + 2y \le 4$, $x - y \ge -2$, $x \le 4$`, correct: false, misconceptionId: "C07-M2", value: "3" },
         { key: "B", text: t`$x + 2y \ge 4$, $x - y \ge -2$, $x \le 4$`, correct: true, value: "1" },
         { key: "C", text: t`$x + 2y \ge 4$, $x - y \le -2$, $x \le 4$`, correct: false, misconceptionId: "C07-M1", value: "2" },
+        { key: "D", text: t`$x + 2y \le 4$, $x - y \le -2$, $x \ge 4$`, correct: false, misconceptionId: "C07-M3", value: "4" },
       ],
       solution: {
         steps: [
@@ -255,11 +264,12 @@ export const c07: Concept = {
           { kind: "label", at: [1.25, 1.25], label: "x + y = 2", labelAt: "ne", tone: "muted" },
         ],
       },
-      verify: { kind: "value", inputs: {  }, params: { cons: ["3*x + 2*y <= 12", "x - y >= 1", "x + y >= 2"], cands: ["3*x + 2*y <= 12; x - y >= 1; x + y >= 2", "3*x + 2*y <= 12; x - y <= 1; x + y >= 2", "3*x + 2*y <= 12; x - y <= 1; x + y <= 2"] } },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["3*x + 2*y <= 12", "x - y >= 1", "x + y >= 2"], cands: ["3*x + 2*y <= 12; x - y >= 1; x + y >= 2", "3*x + 2*y <= 12; x - y <= 1; x + y >= 2", "3*x + 2*y <= 12; x - y <= 1; x + y <= 2", "3*x + 2*y >= 12; x - y <= 1; x + y <= 2"] } },
       options: [
         { key: "A", text: t`$3x + 2y \le 12$, $x - y \ge 1$, $x + y \ge 2$`, correct: true, value: "1" },
         { key: "B", text: t`$3x + 2y \le 12$, $x - y \le 1$, $x + y \ge 2$`, correct: false, misconceptionId: "C07-M1", value: "2" },
         { key: "C", text: t`$3x + 2y \le 12$, $x - y \le 1$, $x + y \le 2$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+        { key: "D", text: t`$3x + 2y \ge 12$, $x - y \le 1$, $x + y \le 2$`, correct: false, misconceptionId: "C07-M3", value: "4" },
       ],
       solution: {
         steps: [
@@ -306,11 +316,12 @@ export const c07: Concept = {
           { kind: "label", at: [2.1, 1], label: "y = 1", labelAt: "n", tone: "muted" },
         ],
       },
-      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x - y >= 0", "x + y <= 6", "y >= 1"], cands: ["2*x - y >= 0; x + y <= 6; y >= 1", "2*x - y <= 0; x + y <= 6; y >= 1", "2*x - y >= 0; x + y <= 6; y <= 1"] } },
+      verify: { kind: "value", inputs: {  }, params: { cons: ["2*x - y >= 0", "x + y <= 6", "y >= 1"], cands: ["2*x - y >= 0; x + y <= 6; y >= 1", "2*x - y <= 0; x + y <= 6; y >= 1", "2*x - y >= 0; x + y <= 6; y <= 1", "2*x - y <= 0; x + y >= 6; y <= 1"] } },
       options: [
         { key: "A", text: t`$2x - y \ge 0$, $x + y \le 6$, $y \ge 1$`, correct: true, value: "1" },
         { key: "B", text: t`$2x - y \le 0$, $x + y \le 6$, $y \ge 1$`, correct: false, misconceptionId: "C07-M1", value: "2" },
         { key: "C", text: t`$2x - y \ge 0$, $x + y \le 6$, $y \le 1$`, correct: false, misconceptionId: "C07-M2", value: "3" },
+        { key: "D", text: t`$2x - y \le 0$, $x + y \ge 6$, $y \le 1$`, correct: false, misconceptionId: "C07-M3", value: "4" },
       ],
       solution: {
         steps: [

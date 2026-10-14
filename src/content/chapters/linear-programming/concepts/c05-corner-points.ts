@@ -85,6 +85,24 @@ export const c05: Concept = {
       remediation: t`$x = 0$ and $y = 0$ are boundary lines too. When the origin satisfies every constraint, it is a corner.`,
       fallback: { kind: "concept", id: "C03" },
     },
+    {
+      id: "C05-M4",
+      mistake: "Assuming the origin is always a corner",
+      remediation: t`The origin is a corner only when it satisfies every constraint. A constraint such as $x + y \ge 1$ rules it out: test $(0, 0)$ before listing it.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+    {
+      id: "C05-M5",
+      mistake: t`Pairing the largest $x$ with the largest $y$, as if the region were a rectangle`,
+      remediation: "The region's furthest point to the right and its highest point are usually different corners. A corner is where two boundary lines meet, and it must satisfy every constraint: test the point before you keep it.",
+      fallback: { kind: "concept", id: "C03" },
+    },
+    {
+      id: "C05-M6",
+      mistake: "Pairing only the constraint lines, forgetting the axes",
+      remediation: t`$x = 0$ and $y = 0$ are boundary lines too. Pair each constraint line with both axes as well: most corners of a first-quadrant region lie on an axis.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
   ],
   engineNotes: [
     "Leaving out the origin (C05-M3) is tested only by the count items (C05-Q4, C05-Q5); the missing-corner items give the origin, or (C05-Q1) exclude it with x + y ≥ 1.",
@@ -99,6 +117,7 @@ export const c05: Concept = {
         { key: "A", text: t`$(2, 1)$`, correct: true, value: "2 + I" },
         { key: "B", text: t`$(2, 2)$`, correct: false, misconceptionId: "C05-M1", value: "2 + 2*I" },
         { key: "C", text: t`$(0, 4)$`, correct: false, misconceptionId: "C05-M2", value: "4*I" },
+        { key: "D", text: t`$(0, 0)$`, correct: false, misconceptionId: "C05-M4", value: "0" },
       ],
       solution: {
         steps: [
@@ -133,6 +152,7 @@ export const c05: Concept = {
         { key: "A", text: t`$(10, 0)$`, correct: false, misconceptionId: "C05-M2", value: "10" },
         { key: "B", text: t`$(4, 2)$`, correct: true, value: "4 + 2*I" },
         { key: "C", text: t`$(4, 3)$`, correct: false, misconceptionId: "C05-M1", value: "4 + 3*I" },
+        { key: "D", text: t`$(4, 5)$`, correct: false, misconceptionId: "C05-M5", value: "4 + 5*I" },
       ],
       solution: {
         steps: [
@@ -168,6 +188,7 @@ export const c05: Concept = {
         { key: "A", text: t`$(\frac{5}{2}, 3)$`, correct: false, misconceptionId: "C05-M1", value: "5/2 + 3*I" },
         { key: "B", text: t`$(0, 8)$`, correct: false, misconceptionId: "C05-M2", value: "8*I" },
         { key: "C", text: t`$(3, 2)$`, correct: true, value: "3 + 2*I" },
+        { key: "D", text: t`$(4, 3)$`, correct: false, misconceptionId: "C05-M5", value: "4 + 3*I" },
       ],
       solution: {
         steps: [
@@ -203,6 +224,7 @@ export const c05: Concept = {
         { key: "A", text: t`$3$`, correct: false, misconceptionId: "C05-M3", value: "3" },
         { key: "B", text: t`$4$`, correct: true, value: "4" },
         { key: "C", text: t`$5$`, correct: false, misconceptionId: "C05-M1", value: "5" },
+        { key: "D", text: t`$1$`, correct: false, misconceptionId: "C05-M6", value: "1" },
       ],
       solution: {
         steps: [
@@ -236,6 +258,7 @@ export const c05: Concept = {
         { key: "A", text: t`$8$`, correct: false, misconceptionId: "C05-M1", value: "8" },
         { key: "B", text: t`$4$`, correct: false, misconceptionId: "C05-M3", value: "4" },
         { key: "C", text: t`$5$`, correct: true, value: "5" },
+        { key: "D", text: t`$2$`, correct: false, misconceptionId: "C05-M6", value: "2" },
       ],
       solution: {
         steps: [

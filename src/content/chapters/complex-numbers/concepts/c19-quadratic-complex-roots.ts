@@ -72,6 +72,24 @@ Divide **both** parts by $2a$.
       remediation: t`Sum $= -\dfrac ba$ (note the minus), product $= +\dfrac ca$.`,
       fallback: { kind: "ext", topic: "sum and product of roots" },
     },
+    {
+      id: "C19-M8",
+      mistake: t`Confusing the conjugate $\bar z$ with the reciprocal $\dfrac1z$`,
+      remediation: t`The conjugate only flips the sign of the imaginary part: $\overline{3 - 2i} = 3 + 2i$. The reciprocal $\dfrac1z = \dfrac{\bar z}{\lvert z \rvert^2}$ is a different number unless $\lvert z \rvert = 1$.`,
+      fallback: { kind: "concept", id: "C05" },
+    },
+    {
+      id: "C19-M9",
+      mistake: t`Forgetting to divide by $a$: sum $= -b$, product $= c$`,
+      remediation: t`Divide by the leading coefficient: sum $= -\dfrac ba$, product $= \dfrac ca$.`,
+      fallback: { kind: "ext", topic: "sum and product of roots" },
+    },
+    {
+      id: "C19-M10",
+      mistake: t`Dropping the $i$ when multiplying the roots: $(p + iq)(p - iq) = p^2 - q^2$`,
+      remediation: t`$(p + iq)(p - iq) = p^2 - i^2q^2 = p^2 + q^2$, since $i^2 = -1$. Or simply: product $= \dfrac ca$.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
   ],
   items: [
     {
@@ -121,6 +139,7 @@ Divide **both** parts by $2a$.
         { key: "A", text: t`$3 + 2 i$`, correct: true, value: "3 + 2*I" },
         { key: "B", text: t`$-3 + 2 i$`, correct: false, misconceptionId: "C19-M4", value: "-3 + 2*I" },
         { key: "C", text: t`$-3 - 2 i$`, correct: false, misconceptionId: "C19-M5", value: "-3 - 2*I" },
+        { key: "D", text: t`$\frac{3}{13} + \frac{2 i}{13}$`, correct: false, misconceptionId: "C19-M8", value: "3/13 + 2*I/13" },
       ],
       solution: {
         steps: [
@@ -138,6 +157,7 @@ Divide **both** parts by $2a$.
         { key: "A", text: t`$6$`, correct: false, misconceptionId: "C19-M6", value: "6" },
         { key: "B", text: t`$-25$`, correct: false, misconceptionId: "C19-M7", value: "-25" },
         { key: "C", text: t`$25$`, correct: true, value: "25" },
+        { key: "D", text: t`$-7$`, correct: false, misconceptionId: "C19-M10", value: "-7" },
       ],
       solution: {
         steps: [
@@ -155,6 +175,7 @@ Divide **both** parts by $2a$.
         { key: "A", text: t`$- \frac{3}{2}$`, correct: false, misconceptionId: "C19-M7", value: "-3/2" },
         { key: "B", text: t`$\frac{3}{2}$`, correct: true, value: "3/2" },
         { key: "C", text: t`$\frac{7}{2}$`, correct: false, misconceptionId: "C19-M6", value: "7/2" },
+        { key: "D", text: t`$3$`, correct: false, misconceptionId: "C19-M9", value: "3" },
       ],
       solution: {
         steps: [

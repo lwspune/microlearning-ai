@@ -70,6 +70,12 @@ Going back: $x = r\cos\theta$ and $y = r\sin\theta$. The cosine goes with the re
       remediation: t`$r(\cos\theta + i\sin\theta) = r\cos\theta + i\,r\sin\theta$: $r$ multiplies both parts.`,
       fallback: { kind: "concept", id: "C04" },
     },
+    {
+      id: "C15-M5",
+      mistake: t`Using the reference angle as $\theta$ and ignoring the signs the quadrant gives`,
+      remediation: t`The reference angle only gives the size of the turn. The quadrant sets the signs: $-3i$ points down, so $\theta = -\dfrac\pi2$, and in quadrant II $\cos\theta < 0$.`,
+      fallback: { kind: "concept", id: "C14" },
+    },
   ],
   items: [
     {
@@ -137,6 +143,7 @@ Going back: $x = r\cos\theta$ and $y = r\sin\theta$. The cosine goes with the re
         { key: "A", text: t`$3\left(\cos \pi + i\sin \pi\right)$`, correct: false, misconceptionId: "C15-M3", value: "-3" },
         { key: "B", text: t`$3\left(\cos \left(- \frac{\pi}{2}\right) + i\sin \left(- \frac{\pi}{2}\right)\right)$`, correct: true, value: "-3*I" },
         { key: "C", text: t`$9\left(\cos \left(- \frac{\pi}{2}\right) + i\sin \left(- \frac{\pi}{2}\right)\right)$`, correct: false, misconceptionId: "C15-M2", value: "-9*I" },
+        { key: "D", text: t`$3\left(\cos \frac{\pi}{2} + i\sin \frac{\pi}{2}\right)$`, correct: false, misconceptionId: "C15-M5", value: "3*I" },
       ],
       solution: {
         steps: [
@@ -192,6 +199,7 @@ Going back: $x = r\cos\theta$ and $y = r\sin\theta$. The cosine goes with the re
         { key: "A", text: t`$-2 + 2 \sqrt{3} i$`, correct: true, value: "-2 + 2*sqrt(3)*I" },
         { key: "B", text: t`$2 \sqrt{3} - 2 i$`, correct: false, misconceptionId: "C15-M3", value: "2*sqrt(3) - 2*I" },
         { key: "C", text: t`$-2 + \frac{\sqrt{3} i}{2}$`, correct: false, misconceptionId: "C15-M4", value: "-2 + sqrt(3)*I/2" },
+        { key: "D", text: t`$2 + 2 \sqrt{3} i$`, correct: false, misconceptionId: "C15-M5", value: "2 + 2*sqrt(3)*I" },
       ],
       solution: {
         steps: [
@@ -221,6 +229,7 @@ Going back: $x = r\cos\theta$ and $y = r\sin\theta$. The cosine goes with the re
         { key: "A", text: t`$3 \sqrt{3} - 3 i$`, correct: true, value: "3*sqrt(3) - 3*I" },
         { key: "B", text: t`$-3 + 3 \sqrt{3} i$`, correct: false, misconceptionId: "C15-M3", value: "-3 + 3*sqrt(3)*I" },
         { key: "C", text: t`$3 \sqrt{3} - \frac{i}{2}$`, correct: false, misconceptionId: "C15-M4", value: "3*sqrt(3) - I/2" },
+        { key: "D", text: t`$3 \sqrt{3} + 3 i$`, correct: false, misconceptionId: "C15-M5", value: "3*sqrt(3) + 3*I" },
       ],
       solution: {
         steps: [

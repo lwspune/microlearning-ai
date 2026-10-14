@@ -71,6 +71,12 @@ Both values are reached, at the two points of the circle in line with $0$ and $-
       remediation: t`$\lvert a + ib \rvert = \sqrt{a^2 + b^2}$, the straight-line distance, not $\lvert a \rvert + \lvert b \rvert$.`,
       fallback: { kind: "concept", id: "C11" },
     },
+    {
+      id: "C13-M4",
+      mistake: t`Dropping the cross term: $\lvert z + c \rvert^2 = \lvert z \rvert^2 + \lvert c \rvert^2$`,
+      remediation: t`$\lvert z + c \rvert^2 = \lvert z \rvert^2 + \lvert c \rvert^2 + 2\,\mathrm{Re}(z\bar c)$, and the last term changes as $z$ moves. The extremes lie on the line through $0$ and $-c$: $r + \lvert c \rvert$ and $\big\lvert r - \lvert c \rvert \big\rvert$.`,
+      fallback: { kind: "ext", topic: "squaring a sum" },
+    },
   ],
   engineNotes: [
     "C13-M2 only differs from the key when r > |c| (C13-Q3, C13-Q6).",
@@ -85,6 +91,7 @@ Both values are reached, at the two points of the circle in line with $0$ and $-
         { key: "A", text: t`$3$`, correct: false, misconceptionId: "C13-M1", value: "3" },
         { key: "B", text: t`$9$`, correct: false, misconceptionId: "C13-M3", value: "9" },
         { key: "C", text: t`$7$`, correct: true, value: "7" },
+        { key: "D", text: t`$\sqrt{29}$`, correct: false, misconceptionId: "C13-M4", value: "sqrt(29)" },
       ],
       solution: {
         steps: [
@@ -113,6 +120,7 @@ Both values are reached, at the two points of the circle in line with $0$ and $-
         { key: "A", text: t`$14$`, correct: false, misconceptionId: "C13-M1", value: "14" },
         { key: "B", text: t`$10$`, correct: false, misconceptionId: "C13-M3", value: "10" },
         { key: "C", text: t`$6$`, correct: true, value: "6" },
+        { key: "D", text: t`$2 \sqrt{29}$`, correct: false, misconceptionId: "C13-M4", value: "2*sqrt(29)" },
       ],
       solution: {
         steps: [
@@ -171,6 +179,7 @@ Both values are reached, at the two points of the circle in line with $0$ and $-
         { key: "A", text: t`$16$`, correct: true, value: "16" },
         { key: "B", text: t`$10$`, correct: false, misconceptionId: "C13-M1", value: "10" },
         { key: "C", text: t`$20$`, correct: false, misconceptionId: "C13-M3", value: "20" },
+        { key: "D", text: t`$\sqrt{178}$`, correct: false, misconceptionId: "C13-M4", value: "sqrt(178)" },
       ],
       solution: {
         steps: [
@@ -199,6 +208,7 @@ Both values are reached, at the two points of the circle in line with $0$ and $-
         { key: "A", text: t`$-1 + \sqrt{2}$`, correct: true, value: "-1 + sqrt(2)" },
         { key: "B", text: t`$1 + \sqrt{2}$`, correct: false, misconceptionId: "C13-M1", value: "1 + sqrt(2)" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C13-M3", value: "1" },
+        { key: "D", text: t`$\sqrt{3}$`, correct: false, misconceptionId: "C13-M4", value: "sqrt(3)" },
       ],
       solution: {
         steps: [

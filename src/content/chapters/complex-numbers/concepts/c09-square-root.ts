@@ -40,6 +40,18 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
       remediation: t`The sign of $b$ decides the signs: $b < 0$ means $x$ and $y$ have opposite signs.`,
       fallback: { kind: "concept", id: "C04" },
     },
+    {
+      id: "C09-M3",
+      mistake: t`Mixing up $x^2$ and $y^2$: taking $x^2 = \dfrac{\lvert z \rvert - a}{2}$`,
+      remediation: t`Adding $x^2 - y^2 = a$ and $x^2 + y^2 = \lvert z \rvert$ gives $x^2 = \dfrac{\lvert z \rvert + a}{2}$. Square your answer to check it gives back $z$.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
+    {
+      id: "C09-M4",
+      mistake: t`Forgetting the 2 in $(x + iy)^2 = x^2 - y^2 + 2xyi$: writing $xy = b$`,
+      remediation: t`The imaginary part of $(x + iy)^2$ is $2xy$, so solve $2xy = b$.`,
+      fallback: { kind: "ext", topic: "squaring a binomial" },
+    },
   ],
   items: [
     {
@@ -51,6 +63,7 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "A", text: t`$\pm(\sqrt{5} + 2 \sqrt{3} i)$`, correct: false, misconceptionId: "C09-M1", value: "sqrt(5) + 2*sqrt(3)*I" },
         { key: "B", text: t`$\pm(3 - 2 i)$`, correct: false, misconceptionId: "C09-M2", value: "3 - 2*I" },
         { key: "C", text: t`$\pm(3 + 2 i)$`, correct: true, value: "3 + 2*I" },
+        { key: "D", text: t`$\pm(2 + 3 i)$`, correct: false, misconceptionId: "C09-M3", value: "2 + 3*I" },
       ],
       solution: {
         steps: [
@@ -69,6 +82,7 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "A", text: t`$\pm(1 + 2 i)$`, correct: false, misconceptionId: "C09-M2", value: "1 + 2*I" },
         { key: "B", text: t`$\pm(1 - 2 i)$`, correct: true, value: "1 - 2*I" },
         { key: "C", text: t`$\pm(2 - \sqrt{3} i)$`, correct: false, misconceptionId: "C09-M1", value: "2 - sqrt(3)*I" },
+        { key: "D", text: t`$\pm(2 - i)$`, correct: false, misconceptionId: "C09-M3", value: "2 - I" },
       ],
       solution: {
         steps: [
@@ -87,6 +101,7 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "A", text: t`$\pm(2 - 2 i)$`, correct: false, misconceptionId: "C09-M2", value: "2 - 2*I" },
         { key: "B", text: t`$\pm(2 + 2 i)$`, correct: true, value: "2 + 2*I" },
         { key: "C", text: t`$\pm 2\sqrt{2}\,i$`, correct: false, misconceptionId: "C09-M1", value: "2*sqrt(2)*I" },
+        { key: "D", text: t`$\pm(2\sqrt{2} + 2\sqrt{2}\,i)$`, correct: false, misconceptionId: "C09-M4", value: "2*sqrt(2) + 2*sqrt(2)*I" },
       ],
       solution: {
         steps: [
@@ -105,6 +120,7 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "A", text: t`$\pm(1 - 4 i)$`, correct: false, misconceptionId: "C09-M2", value: "1 - 4*I" },
         { key: "B", text: t`$\pm(1 + 4 i)$`, correct: true, value: "1 + 4*I" },
         { key: "C", text: t`$\pm(2\sqrt{2} + \sqrt{15})\,i$`, correct: false, misconceptionId: "C09-M1", value: "I*(2*sqrt(2) + sqrt(15))" },
+        { key: "D", text: t`$\pm(4 + i)$`, correct: false, misconceptionId: "C09-M3", value: "4 + I" },
       ],
       solution: {
         steps: [
@@ -123,6 +139,7 @@ The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sq
         { key: "A", text: t`$\pm(2\sqrt{6} - \sqrt{7})$`, correct: false, misconceptionId: "C09-M1", value: "-sqrt(7) + 2*sqrt(6)" },
         { key: "B", text: t`$\pm(4 + 3 i)$`, correct: false, misconceptionId: "C09-M2", value: "4 + 3*I" },
         { key: "C", text: t`$\pm(4 - 3 i)$`, correct: true, value: "4 - 3*I" },
+        { key: "D", text: t`$\pm(3 - 4 i)$`, correct: false, misconceptionId: "C09-M3", value: "3 - 4*I" },
       ],
       solution: {
         steps: [

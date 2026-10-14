@@ -73,6 +73,18 @@ export const c01: Concept = {
       remediation: t`The line through $(p, 0)$ and $(0, q)$ is $\dfrac{x}{p} + \dfrac{y}{q} = 1$: the intercepts divide. Check: $(p, 0)$ gives $\dfrac{p}{p} = 1$.`,
       fallback: { kind: "ext", topic: "straight lines" },
     },
+    {
+      id: "C01-M4",
+      mistake: t`Taking the constant $c$ as both intercepts, as for $x + y = c$`,
+      remediation: t`Only when both coefficients are $1$ does the line cross at $c$. For $3x + 2y = 12$, put $y = 0$: $3x = 12$, so $x = 4$, not $12$. Divide $c$ by the coefficient.`,
+      fallback: { kind: "ext", topic: "straight lines" },
+    },
+    {
+      id: "C01-M5",
+      mistake: t`Losing the minus sign in the slope $-\dfrac{q}{p}$`,
+      remediation: t`From $(p, 0)$ to $(0, q)$ the line falls as $x$ grows, so its slope is $-\dfrac{q}{p}$. Check your equation at both intercepts: $(p, 0)$ must satisfy it too.`,
+      fallback: { kind: "ext", topic: "straight lines" },
+    },
   ],
   engineNotes: [
     "C01-M1 (swapped intercepts) gives the key when the two coefficients are equal; draw diagnosing items with a ≠ b.",
@@ -88,6 +100,7 @@ export const c01: Concept = {
         { key: "A", text: t`$(4, 0)$`, correct: true, value: "4" },
         { key: "B", text: t`$(6, 0)$`, correct: false, misconceptionId: "C01-M1", value: "6" },
         { key: "C", text: t`$(3, 0)$`, correct: false, misconceptionId: "C01-M2", value: "3" },
+        { key: "D", text: t`$(12, 0)$`, correct: false, misconceptionId: "C01-M4", value: "12" },
       ],
       solution: {
         steps: [
@@ -115,6 +128,7 @@ export const c01: Concept = {
         { key: "A", text: t`$(0, 2)$`, correct: false, misconceptionId: "C01-M2", value: "2*I" },
         { key: "B", text: t`$(0, 10)$`, correct: true, value: "10*I" },
         { key: "C", text: t`$(0, 4)$`, correct: false, misconceptionId: "C01-M1", value: "4*I" },
+        { key: "D", text: t`$(0, 20)$`, correct: false, misconceptionId: "C01-M4", value: "20*I" },
       ],
       solution: {
         steps: [
@@ -142,6 +156,7 @@ export const c01: Concept = {
         { key: "A", text: t`$3x + 2y = 12$`, correct: false, misconceptionId: "C01-M1", value: "3*x + 2*y - 12" },
         { key: "B", text: t`$6x + 4y = 1$`, correct: false, misconceptionId: "C01-M3", value: "6*x + 4*y - 1" },
         { key: "C", text: t`$2x + 3y = 12$`, correct: true, value: "2*x + 3*y - 12" },
+        { key: "D", text: t`$2x - 3y = -12$`, correct: false, misconceptionId: "C01-M5", value: "2*x - 3*y + 12" },
       ],
       solution: {
         steps: [
@@ -173,6 +188,7 @@ export const c01: Concept = {
         { key: "A", text: t`$(20, 0)$ and $(0, 15)$`, correct: false, misconceptionId: "C01-M1", value: "20 + 15*I" },
         { key: "B", text: t`$(4, 0)$ and $(0, 3)$`, correct: false, misconceptionId: "C01-M2", value: "4 + 3*I" },
         { key: "C", text: t`$(15, 0)$ and $(0, 20)$`, correct: true, value: "15 + 20*I" },
+        { key: "D", text: t`$(60, 0)$ and $(0, 60)$`, correct: false, misconceptionId: "C01-M4", value: "60 + 60*I" },
       ],
       solution: {
         steps: [
@@ -202,6 +218,7 @@ export const c01: Concept = {
         { key: "A", text: t`$(\frac{1}{5}, 0)$`, correct: false, misconceptionId: "C01-M2", value: "1/5" },
         { key: "B", text: t`$(5, 0)$`, correct: true, value: "5" },
         { key: "C", text: t`$(2, 0)$`, correct: false, misconceptionId: "C01-M1", value: "2" },
+        { key: "D", text: t`$(1, 0)$`, correct: false, misconceptionId: "C01-M4", value: "1" },
       ],
       solution: {
         steps: [
@@ -229,6 +246,7 @@ export const c01: Concept = {
         { key: "A", text: t`$8x + 3y = 1$`, correct: false, misconceptionId: "C01-M3", value: "8*x + 3*y - 1" },
         { key: "B", text: t`$3x + 8y = 24$`, correct: true, value: "3*x + 8*y - 24" },
         { key: "C", text: t`$8x + 3y = 24$`, correct: false, misconceptionId: "C01-M1", value: "8*x + 3*y - 24" },
+        { key: "D", text: t`$3x - 8y = -24$`, correct: false, misconceptionId: "C01-M5", value: "3*x - 8*y + 24" },
       ],
       solution: {
         steps: [

@@ -57,6 +57,18 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
       remediation: t`The roots of $x^2 - x + 1 = 0$ satisfy $\alpha^3 = -1$, not $1$: multiply by $x + 1$ to get $x^3 + 1 = 0$.`,
       fallback: { kind: "concept", id: "C19" },
     },
+    {
+      id: "C23-M6",
+      mistake: t`Working with $i^2 = 1$`,
+      remediation: t`$i^2 = -1$: so $(2 + i)^2 = 4 + 4i - 1 = 3 + 4i$.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C23-M7",
+      mistake: t`Treating the power as a multiple: $\alpha^n + \beta^n = n(\alpha + \beta)$`,
+      remediation: t`A power is not a multiple. Use $\alpha^2 + \beta^2 = (\alpha + \beta)^2 - 2\alpha\beta$ and build up from there.`,
+      fallback: { kind: "ext", topic: "laws of indices" },
+    },
   ],
   items: [
     {
@@ -68,6 +80,7 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "A", text: t`$3$`, correct: true, value: "3" },
         { key: "B", text: t`$-5 - 8 i$`, correct: false, misconceptionId: "C23-M1", value: "-5 - 8*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C23-M2", value: "0" },
+        { key: "D", text: t`$7 + 4 i$`, correct: false, misconceptionId: "C23-M6", value: "7 + 4*I" },
       ],
       solution: {
         steps: [
@@ -86,6 +99,7 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "A", text: t`$1$`, correct: false, misconceptionId: "C23-M3", value: "1" },
         { key: "B", text: t`$2$`, correct: false, misconceptionId: "C23-M5", value: "2" },
         { key: "C", text: t`$-2$`, correct: true, value: "-2" },
+        { key: "D", text: t`$3$`, correct: false, misconceptionId: "C23-M7", value: "3" },
       ],
       solution: {
         steps: [
@@ -104,6 +118,7 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "A", text: t`$7$`, correct: true, value: "7" },
         { key: "B", text: t`$-17 - 32 i$`, correct: false, misconceptionId: "C23-M1", value: "-17 - 32*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C23-M2", value: "0" },
+        { key: "D", text: t`$11 - 2 i$`, correct: false, misconceptionId: "C23-M6", value: "11 - 2*I" },
       ],
       solution: {
         steps: [
@@ -122,6 +137,7 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "A", text: t`$1$`, correct: false, misconceptionId: "C23-M3", value: "1" },
         { key: "B", text: t`$3$`, correct: false, misconceptionId: "C23-M4", value: "3" },
         { key: "C", text: t`$-1$`, correct: true, value: "-1" },
+        { key: "D", text: t`$-2$`, correct: false, misconceptionId: "C23-M7", value: "-2" },
       ],
       solution: {
         steps: [
@@ -139,6 +155,7 @@ Write the polynomial as (quadratic) × (something) + remainder. The quadratic is
         { key: "A", text: t`$5$`, correct: true, value: "5" },
         { key: "B", text: t`$9 + 4 i$`, correct: false, misconceptionId: "C23-M1", value: "9 + 4*I" },
         { key: "C", text: t`$0$`, correct: false, misconceptionId: "C23-M2", value: "0" },
+        { key: "D", text: t`$7$`, correct: false, misconceptionId: "C23-M6", value: "7" },
       ],
       solution: {
         steps: [

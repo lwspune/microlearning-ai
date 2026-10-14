@@ -83,6 +83,12 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
       remediation: t`Every point between them gives the same $Z$, so there are infinitely many.`,
       fallback: { kind: "concept", id: "C08" },
     },
+    {
+      id: "C11-M3",
+      mistake: "Thinking a tie at two corners means there is no optimum",
+      remediation: t`A tie does not cancel the optimum. $Z$ still reaches its best value, at both corners and at every point between them: the optimum is not unique, but it exists.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
   ],
   engineNotes: [
     "In the 'where' items (C11-Q4, C11-Q5) the C11-M1 option names the tied corner nearer the x-axis.",
@@ -97,6 +103,7 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
         { key: "A", text: t`Exactly two`, correct: false, misconceptionId: "C11-M2", value: "2" },
         { key: "B", text: t`Infinitely many`, correct: true, value: "infinitely_many" },
         { key: "C", text: t`Exactly one`, correct: false, misconceptionId: "C11-M1", value: "1" },
+        { key: "D", text: "None: the tie means there is no maximum", correct: false, misconceptionId: "C11-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -130,6 +137,7 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
         { key: "A", text: t`Infinitely many`, correct: true, value: "infinitely_many" },
         { key: "B", text: t`Exactly one`, correct: false, misconceptionId: "C11-M1", value: "1" },
         { key: "C", text: t`Exactly two`, correct: false, misconceptionId: "C11-M2", value: "2" },
+        { key: "D", text: "None: the tie means there is no maximum", correct: false, misconceptionId: "C11-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -162,6 +170,7 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
         { key: "A", text: t`Exactly one`, correct: false, misconceptionId: "C11-M1", value: "1" },
         { key: "B", text: t`Exactly two`, correct: false, misconceptionId: "C11-M2", value: "2" },
         { key: "C", text: t`Infinitely many`, correct: true, value: "infinitely_many" },
+        { key: "D", text: "None: the tie means there is no minimum", correct: false, misconceptionId: "C11-M3", value: "0" },
       ],
       solution: {
         steps: [
@@ -195,6 +204,7 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
         { key: "A", text: t`Only at the two points $(4, 2)$ and $(0, 4)$`, correct: false, misconceptionId: "C11-M2", value: "twopoints" },
         { key: "B", text: t`At every point of the segment joining $(4, 2)$ and $(0, 4)$`, correct: true, value: "segment" },
         { key: "C", text: t`Only at $(4, 2)$`, correct: false, misconceptionId: "C11-M1", value: "4 + 2*I" },
+        { key: "D", text: t`Nowhere: the tie means $Z$ has no maximum`, correct: false, misconceptionId: "C11-M3", value: "nomax" },
       ],
       solution: {
         steps: [
@@ -229,6 +239,7 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
         { key: "A", text: t`At every point of the segment joining $(4, 0)$ and $(3, 3)$`, correct: true, value: "segment" },
         { key: "B", text: t`Only at $(4, 0)$`, correct: false, misconceptionId: "C11-M1", value: "4" },
         { key: "C", text: t`Only at the two points $(4, 0)$ and $(3, 3)$`, correct: false, misconceptionId: "C11-M2", value: "twopoints" },
+        { key: "D", text: t`Nowhere: the tie means $Z$ has no maximum`, correct: false, misconceptionId: "C11-M3", value: "nomax" },
       ],
       solution: {
         steps: [

@@ -88,6 +88,12 @@ An unbounded region has more points, not none. It can still have a minimum (or a
       remediation: "Unbounded means more points, not none. The corners themselves are feasible points.",
       fallback: { kind: "concept", id: "C04" },
     },
+    {
+      id: "C10-M4",
+      mistake: "Mixing up the candidates: the smallest corner value for a maximum, the largest for a minimum",
+      remediation: t`For a maximum the candidate is the largest corner value $M$, then check $Z > M$. For a minimum it is the smallest, $m$, then check $Z < m$. The other extreme is never the answer.`,
+      fallback: { kind: "concept", id: "C08" },
+    },
   ],
   engineNotes: [
     "C10-M1 gives the key whenever the optimum exists, so it is diagnosed only on items with no optimum (Q1, Q4, Q5).",
@@ -103,6 +109,7 @@ An unbounded region has more points, not none. It can still have a minimum (or a
         { key: "A", text: t`$24$`, correct: false, misconceptionId: "C10-M1", value: "24" },
         { key: "B", text: t`The LPP has no feasible solution`, correct: false, misconceptionId: "C10-M3", value: "empty" },
         { key: "C", text: t`There is no maximum: $Z$ grows without limit on the region`, correct: true, value: "nomax" },
+        { key: "D", text: t`$16$`, correct: false, misconceptionId: "C10-M4", value: "16" },
       ],
       solution: {
         steps: [
@@ -141,6 +148,7 @@ An unbounded region has more points, not none. It can still have a minimum (or a
         { key: "A", text: t`$16$`, correct: true, value: "16" },
         { key: "B", text: t`There is no minimum: $Z$ falls without limit on the region`, correct: false, misconceptionId: "C10-M2", value: "nomin" },
         { key: "C", text: t`The LPP has no feasible solution`, correct: false, misconceptionId: "C10-M3", value: "empty" },
+        { key: "D", text: t`$24$`, correct: false, misconceptionId: "C10-M4", value: "24" },
       ],
       solution: {
         steps: [
@@ -177,6 +185,7 @@ An unbounded region has more points, not none. It can still have a minimum (or a
         { key: "A", text: t`$7$`, correct: true, value: "7" },
         { key: "B", text: t`There is no minimum: $Z$ falls without limit on the region`, correct: false, misconceptionId: "C10-M2", value: "nomin" },
         { key: "C", text: t`The LPP has no feasible solution`, correct: false, misconceptionId: "C10-M3", value: "empty" },
+        { key: "D", text: t`$10$`, correct: false, misconceptionId: "C10-M4", value: "10" },
       ],
       solution: {
         steps: [
@@ -213,6 +222,7 @@ An unbounded region has more points, not none. It can still have a minimum (or a
         { key: "A", text: t`The LPP has no feasible solution`, correct: false, misconceptionId: "C10-M3", value: "empty" },
         { key: "B", text: t`There is no maximum: $Z$ grows without limit on the region`, correct: true, value: "nomax" },
         { key: "C", text: t`$10$`, correct: false, misconceptionId: "C10-M1", value: "10" },
+        { key: "D", text: t`$7$`, correct: false, misconceptionId: "C10-M4", value: "7" },
       ],
       solution: {
         steps: [
@@ -250,6 +260,7 @@ An unbounded region has more points, not none. It can still have a minimum (or a
         { key: "A", text: t`The LPP has no feasible solution`, correct: false, misconceptionId: "C10-M3", value: "empty" },
         { key: "B", text: t`There is no minimum: $Z$ falls without limit on the region`, correct: true, value: "nomin" },
         { key: "C", text: t`$-4$`, correct: false, misconceptionId: "C10-M1", value: "-4" },
+        { key: "D", text: t`$2$`, correct: false, misconceptionId: "C10-M4", value: "2" },
       ],
       solution: {
         steps: [

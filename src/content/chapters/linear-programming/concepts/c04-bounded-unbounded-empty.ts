@@ -82,6 +82,12 @@ export const c04: Concept = {
       remediation: "Opposite signs keep opposite sides of different lines, and those sides usually overlap. Test a point.",
       fallback: { kind: "concept", id: "C02" },
     },
+    {
+      id: "C04-M5",
+      mistake: "Thinking whether the region is bounded depends on the objective function",
+      remediation: "Bounded, unbounded or empty describes the region, and the constraints alone fix it. The objective comes later: it decides whether an optimum exists and where, not the shape of the region.",
+      fallback: { kind: "concept", id: "C03" },
+    },
   ],
   items: [
     {
@@ -93,6 +99,7 @@ export const c04: Concept = {
         { key: "A", text: t`Bounded`, correct: false, misconceptionId: "C04-M2", value: "1" },
         { key: "B", text: t`Empty: no point satisfies them all`, correct: true, value: "3" },
         { key: "C", text: t`Unbounded`, correct: false, misconceptionId: "C04-M1", value: "2" },
+        { key: "D", text: "Can't tell without the objective function", correct: false, misconceptionId: "C04-M5", value: "4" },
       ],
       solution: {
         steps: [
@@ -125,6 +132,7 @@ export const c04: Concept = {
         { key: "A", text: t`Empty: no point satisfies them all`, correct: false, misconceptionId: "C04-M3", value: "3" },
         { key: "B", text: t`Unbounded`, correct: true, value: "2" },
         { key: "C", text: t`Bounded`, correct: false, misconceptionId: "C04-M1", value: "1" },
+        { key: "D", text: "Can't tell without the objective function", correct: false, misconceptionId: "C04-M5", value: "4" },
       ],
       solution: {
         steps: [
@@ -157,6 +165,7 @@ export const c04: Concept = {
         { key: "A", text: t`Unbounded`, correct: false, misconceptionId: "C04-M1", value: "2" },
         { key: "B", text: t`Empty: no point satisfies them all`, correct: false, misconceptionId: "C04-M4", value: "3" },
         { key: "C", text: t`Bounded`, correct: true, value: "1" },
+        { key: "D", text: "Can't tell without the objective function", correct: false, misconceptionId: "C04-M5", value: "4" },
       ],
       solution: {
         steps: [
@@ -190,6 +199,7 @@ export const c04: Concept = {
         { key: "A", text: t`Unbounded`, correct: false, misconceptionId: "C04-M1", value: "2" },
         { key: "B", text: t`Bounded`, correct: false, misconceptionId: "C04-M2", value: "1" },
         { key: "C", text: t`Empty: no point satisfies them all`, correct: true, value: "3" },
+        { key: "D", text: "Can't tell without the objective function", correct: false, misconceptionId: "C04-M5", value: "4" },
       ],
       solution: {
         steps: [
@@ -222,6 +232,7 @@ export const c04: Concept = {
         { key: "A", text: t`Unbounded`, correct: true, value: "2" },
         { key: "B", text: t`Bounded`, correct: false, misconceptionId: "C04-M2", value: "1" },
         { key: "C", text: t`Empty: no point satisfies them all`, correct: false, misconceptionId: "C04-M3", value: "3" },
+        { key: "D", text: "Can't tell without the objective function", correct: false, misconceptionId: "C04-M5", value: "4" },
       ],
       solution: {
         steps: [
@@ -254,6 +265,7 @@ export const c04: Concept = {
         { key: "A", text: t`Empty: no point satisfies them all`, correct: false, misconceptionId: "C04-M4", value: "3" },
         { key: "B", text: t`Bounded`, correct: true, value: "1" },
         { key: "C", text: t`Unbounded`, correct: false, misconceptionId: "C04-M1", value: "2" },
+        { key: "D", text: "Can't tell without the objective function", correct: false, misconceptionId: "C04-M5", value: "4" },
       ],
       solution: {
         steps: [

@@ -45,6 +45,18 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
       remediation: t`Move $b$ across with its sign changed: $x = -\dfrac ba$.`,
       fallback: { kind: "ext", topic: "solving linear equations" },
     },
+    {
+      id: "C07-M4",
+      mistake: t`Solving $ax + b = 0$ as $x = -\dfrac ab$`,
+      remediation: t`Subtract $b$, then divide by $a$: $x = -\dfrac ba$. Substitute back to check the part is zero.`,
+      fallback: { kind: "ext", topic: "solving linear equations" },
+    },
+    {
+      id: "C07-M5",
+      mistake: t`Dividing only one term by the denominator: $\dfrac{x + 1}{2} = x + \dfrac12$`,
+      remediation: t`The fraction bar divides the whole numerator: $\dfrac{x + 1}{2} = \dfrac x2 + \dfrac12$. A fraction is zero exactly when its numerator is.`,
+      fallback: { kind: "ext", topic: "fractions" },
+    },
   ],
   items: [
     {
@@ -56,6 +68,7 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "A", text: t`$3$`, correct: true, value: "3" },
         { key: "B", text: t`$-2$`, correct: false, misconceptionId: "C07-M1", value: "-2" },
         { key: "C", text: t`$-3$`, correct: false, misconceptionId: "C07-M3", value: "-3" },
+        { key: "D", text: t`$\frac{1}{3}$`, correct: false, misconceptionId: "C07-M4", value: "1/3" },
       ],
       solution: {
         steps: [
@@ -73,6 +86,7 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "A", text: t`$4$`, correct: true, value: "4" },
         { key: "B", text: t`$- \frac{1}{2}$`, correct: false, misconceptionId: "C07-M1", value: "-1/2" },
         { key: "C", text: t`$-4$`, correct: false, misconceptionId: "C07-M3", value: "-4" },
+        { key: "D", text: t`$\frac{1}{4}$`, correct: false, misconceptionId: "C07-M4", value: "1/4" },
       ],
       solution: {
         steps: [
@@ -90,6 +104,7 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "A", text: t`$0$`, correct: false, misconceptionId: "C07-M2", value: "0" },
         { key: "B", text: t`$-1$`, correct: true, value: "-1" },
         { key: "C", text: t`$1$`, correct: false, misconceptionId: "C07-M1", value: "1" },
+        { key: "D", text: t`$- \frac{1}{2}$`, correct: false, misconceptionId: "C07-M5", value: "-1/2" },
       ],
       solution: {
         steps: [
@@ -126,6 +141,7 @@ For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply t
         { key: "A", text: t`$\frac{3}{2}$`, correct: true, value: "3/2" },
         { key: "B", text: t`$-6$`, correct: false, misconceptionId: "C07-M1", value: "-6" },
         { key: "C", text: t`$- \frac{3}{2}$`, correct: false, misconceptionId: "C07-M3", value: "-3/2" },
+        { key: "D", text: t`$\frac{2}{3}$`, correct: false, misconceptionId: "C07-M4", value: "2/3" },
       ],
       solution: {
         steps: [
