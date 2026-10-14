@@ -15,7 +15,7 @@ A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
     ask=None,                           # optional projection, an expression in z
     models=["key", "C02-M1", "C02-M2", "C02-M3"],  # key first, then one per distractor
     text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
-    fmt="pair",                         # optional: pair (x = .., y = ..) | pm (±(..)) | quadrant
+    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant
     value={"key": "x-2"},               # optional per-model value overrides (loci/points)
     source='{ kind: "authored" }',      # optional, TypeScript literal
   )
@@ -81,6 +81,32 @@ def polar_text(val) -> str:
     return f"${radius}\\left({trig}\\right)$"
 
 
+def option_text(val, fmt) -> str:
+    """An option's text, written from its value so the two can't disagree."""
+    if fmt == "pair":  # a complex value standing for the pair (x, y)
+        r, i = val.as_real_imag()
+        return f"$x = {latex(r)},\\ y = {latex(i)}$"
+    if fmt == "point":  # a complex value standing for the point (x, y)
+        r, i = simplify(val).as_real_imag()
+        return f"$({latex(r)}, {latex(i)})$"
+    if fmt == "intercepts":  # x-intercept + i * y-intercept: the points (a, 0) and (0, b)
+        r, i = simplify(val).as_real_imag()
+        return f"$({latex(r)}, 0)$ and $(0, {latex(i)})$"
+    if fmt == "pm":  # a +/- pair of roots, given by one member
+        return f"$\\pm({latex(val)})$"
+    if fmt == "conjpair":  # a conjugate pair a ± bi, given by one member
+        r, i = val.as_real_imag()
+        part = latex(simplify(abs(i)) * I)
+        return f"$\\pm {part}$" if r == 0 else f"${latex(r)} \\pm {part}$"
+    if fmt == "polar":  # r(cos θ + i sin θ)
+        return polar_text(val)
+    if fmt == "cartesian":  # a locus polynomial in x, y
+        return cartesian_text(val)
+    if fmt == "quadrant":
+        return f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
+    return f"${latex(val)}$"
+
+
 def draft(spec_path: str) -> str:
     spec_mod = importlib.util.spec_from_file_location("spec", spec_path)
     spec = importlib.util.module_from_spec(spec_mod)
@@ -117,25 +143,7 @@ def draft(spec_path: str) -> str:
             v = values[m]
             value_str = v if isinstance(v, str) else str(simplify(v))
             val = simplify(sympify(value_str, locals={"I": I, "x": _XR, "y": _YR}))
-            fmt = it.get("fmt")
-            if fmt == "pair":  # a complex value standing for the pair (x, y)
-                r, i = val.as_real_imag()
-                auto = f"$x = {latex(r)},\\ y = {latex(i)}$"
-            elif fmt == "pm":  # a +/- pair of roots, given by one member
-                auto = f"$\\pm({latex(val)})$"
-            elif fmt == "conjpair":  # a conjugate pair a ± bi, given by one member
-                r, i = val.as_real_imag()
-                part = latex(simplify(abs(i)) * I)
-                auto = f"$\\pm {part}$" if r == 0 else f"${latex(r)} \\pm {part}$"
-            elif fmt == "polar":  # r(cos θ + i sin θ)
-                auto = polar_text(val)
-            elif fmt == "cartesian":  # a locus polynomial in x, y
-                auto = cartesian_text(val)
-            elif fmt == "quadrant":
-                auto = f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
-            else:
-                auto = f"${latex(val)}$"
-            text = it.get("text", {}).get(m) or auto
+            text = it.get("text", {}).get(m) or option_text(val, it.get("fmt"))
             correct = m == "key"
             tag = "" if correct else f', misconceptionId: "{m}"'
             lines.append(
