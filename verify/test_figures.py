@@ -4,7 +4,7 @@ Run: python -m unittest discover -s verify -p "test_*.py"
 """
 import unittest
 
-from figures import graph
+from figures import graph, number_line, venn, venn_cells
 
 VIEW = {"x": [-4, 4], "y": [-3, 5]}
 
@@ -39,6 +39,76 @@ class Graph(unittest.TestCase):
     def test_points_are_rounded_for_compact_content(self):
         (c,) = graph("sin(x)", 0, 3, VIEW, n=7)
         self.assertTrue(all(len(str(v).split(".")[-1]) <= 3 for p in c["points"] for v in p))
+
+
+def left_of(shape, pt):
+    (x1, y1), (x2, y2) = shape["through"]
+    return (x2 - x1) * (pt[1] - y1) - (y2 - y1) * (pt[0] - x1) > 0
+
+
+def inside(region, pt):
+    """Whether a region element covers the point (discs, outside discs, half-planes)."""
+    for sh in region["within"]:
+        if sh["kind"] == "halfPlane" and not left_of(sh, pt):
+            return False
+        if sh["kind"] in ("disc", "outsideDisc"):
+            (cx, cy), r = sh["centre"], sh["r"]
+            d2 = (pt[0] - cx) ** 2 + (pt[1] - cy) ** 2
+            if (d2 < r * r) != (sh["kind"] == "disc"):
+                return False
+    return True
+
+
+class Venn(unittest.TestCase):
+    def shaded(self, fig, pt):
+        return any(inside(e, pt) for e in fig["elements"] if e["kind"] == "region")
+
+    def test_it_is_a_bare_frame(self):
+        self.assertEqual(venn("A and B", shade=lambda a, b: a)["axes"], "none")
+
+    def test_a_minus_b_shades_only_the_part_of_a_outside_b(self):
+        fig = venn("A minus B", shade=lambda a, b: a and not b)
+        self.assertTrue(self.shaded(fig, (2.6, 3.5)))   # only A
+        self.assertFalse(self.shaded(fig, (5.0, 3.5)))  # A and B
+        self.assertFalse(self.shaded(fig, (7.4, 3.5)))  # only B
+        self.assertFalse(self.shaded(fig, (0.9, 0.8)))  # neither
+
+    def test_the_complement_stays_inside_the_universal_set(self):
+        fig = venn("Neither", shade=lambda a, b: not a and not b)
+        self.assertTrue(self.shaded(fig, (0.9, 0.8)))
+        self.assertFalse(self.shaded(fig, (5.0, 3.5)))
+        self.assertFalse(self.shaded(fig, (-0.2, 3.0)))  # outside U
+
+    def test_three_sets_have_eight_cells_each_at_its_own_label_point(self):
+        fig = venn("Three sets", names=("A", "B", "C"), shade=lambda a, b, c: a and b and c)
+        self.assertEqual(len(venn_cells(3)), 8)
+        self.assertTrue(self.shaded(fig, (5.0, 3.8)))
+        self.assertFalse(self.shaded(fig, (5.0, 5.4)))  # A and B only
+
+    def test_counts_are_labels_in_their_cells(self):
+        fig = venn("Counts", counts={(True, True): 12, (False, False): 3})
+        texts = {e["label"]: e["at"] for e in fig["elements"] if e["kind"] == "label"}
+        self.assertEqual(texts["12"], [5.0, 3.5])
+        self.assertIn("3", texts)
+
+
+class NumberLine(unittest.TestCase):
+    def test_open_ends_are_hollow_and_closed_ends_filled(self):
+        fig = number_line("[-3, 4)", -5, 6, parts=[("[", -3, 4, ")")])
+        pts = {tuple(e["at"]): e.get("hollow", False) for e in fig["elements"] if e["kind"] == "point"}
+        self.assertEqual(pts, {(-3, 0): False, (4, 0): True})
+        self.assertEqual(fig["axes"], "none")
+
+    def test_an_infinite_end_runs_off_the_line_with_an_arrow(self):
+        fig = number_line("(2, oo)", -1, 6, parts=[("(", 2, "oo", ")")])
+        (arrow,) = [e for e in fig["elements"] if e["kind"] == "vector"]
+        self.assertEqual(arrow["from"], [2, 0])
+        self.assertGreater(arrow["to"][0], 6)
+
+    def test_ends_are_labelled_with_a_true_minus_sign(self):
+        fig = number_line("[-3, 4]", -5, 6, parts=[("[", -3, 4, "]")])
+        labels = sorted(e["label"] for e in fig["elements"] if e["kind"] == "label")
+        self.assertEqual(labels, ["4", "−3"])
 
 
 if __name__ == "__main__":
