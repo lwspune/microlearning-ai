@@ -1,6 +1,6 @@
 import "server-only";
 import type { Concept, ConceptId, Figure, GraphNode, Solution, Tier } from "@/content/types";
-import { conceptStates, type ConceptState, inScope } from "@/engine/unlock";
+import { conceptStates, type ConceptState, inScope, nextConceptAfter } from "@/engine/unlock";
 import { nextItem } from "@/engine/nextItem";
 import { displayOrder } from "@/engine/optionOrder";
 import { isReviewDue } from "@/engine/review";
@@ -56,6 +56,8 @@ export type ConceptSession =
       slides: RenderedSlide[];
       question: Question;
       progress: Progress;
+      /** Where "Next concept" goes once this one is mastered; null when nothing open is left. */
+      nextConcept: { slug: string; title: string } | null;
     };
 
 async function loadGraph(chapterSlug: string) {
@@ -182,7 +184,8 @@ export async function getConceptSession(
   const { states, rows } = await learnerStates(userId, concepts.map((c) => c.id), codeById);
   // A concept outside the course (reached by a refresher) unlocks as in the whole chapter.
   const scope = options.scope?.has(concept.code) ? options.scope : undefined;
-  const state = conceptStates(graph, inScope(published, scope), states, options.gate).get(concept.code)!;
+  const open = inScope(published, scope);
+  const state = conceptStates(graph, open, states, options.gate).get(concept.code)!;
   if (state === "locked" && !options.allowLocked) return { kind: "locked" };
 
   const db = createAdminClient();
@@ -216,6 +219,11 @@ export async function getConceptSession(
     title: concept.title,
     slides: renderDeck(buildDeck(content)),
     question: await buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))), userId),
+    nextConcept: (() => {
+      const code = nextConceptAfter(graph, open, states, concept.code, options.gate);
+      const next = code ? concepts.find((c) => c.code === code) : undefined;
+      return next ? { slug: next.slug, title: next.title } : null;
+    })(),
     progress: {
       streak: own?.streak ?? 0,
       needed,
