@@ -55,3 +55,11 @@ export function RefreshIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function ArrowDownIcon({ className }: IconProps) {
+  return (
+    <svg {...base(className)}>
+      <path d="M10 4v12M5 11l5 5 5-5" />
+    </svg>
+  );
+}

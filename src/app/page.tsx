@@ -1,7 +1,13 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowRightIcon } from "@/components/icons";
-import { card, eyebrow, linkCardShape, primaryButton } from "@/components/ui";
-import { chapters } from "@/content/chapters";
+import { Suspense } from "react";
+import { CoursePicker, CoursePickerFallback } from "@/components/courses/CoursePicker";
+import { ConceptGraphBackdrop } from "@/components/home/ConceptGraphBackdrop";
+import { RiseWords } from "@/components/home/RiseWords";
+import { ArrowDownIcon } from "@/components/icons";
+import { RevealList } from "@/components/RevealList";
+import { card, eyebrow, primaryButton } from "@/components/ui";
+import { complexNumbers } from "@/content/chapters/complex-numbers";
 import type { Figure } from "@/content/types";
 import { FigureFrame } from "@/figures/FigureFrame";
 import { FigureView } from "@/figures/FigureView";
@@ -27,74 +33,90 @@ const STEPS = [
   { title: "Fix the root", body: "Repeat a mistake and you're sent back to the idea it comes from. Spaced reviews keep it fresh." },
 ];
 
+const after = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
+
 export default function Home() {
-  const live = chapters.map((ch) => ({ ...ch, ready: ch.concepts.filter((c) => c.status === "approved").length }));
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:px-6 md:py-20">
-      <section className="grid items-center gap-10 md:grid-cols-[1.1fr_1fr] md:gap-14">
-        <div>
-          <p className={eyebrow}>MicroLearning AI</p>
-          <h1 className="mt-3 font-display text-5xl leading-[1.05] font-semibold tracking-tight text-balance md:text-6xl">
-            Hard chapters, one clear idea at a time.
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted">
-            Learn a complex chapter one connected concept at a time: explanation, questions, and help that goes back to
-            exactly the idea you missed.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link href="/learn/complex-numbers" className={`${primaryButton} px-6 py-3.5 text-lg`}>
-              Start learning: Complex Numbers <ArrowRightIcon className="h-5 w-5" />
-            </Link>
-            <span className="text-sm text-muted">Free · no sign-up</span>
+    <main className="flex-1 overflow-x-clip">
+      <section className="relative isolate">
+        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-4 pt-14 pb-16 sm:px-6 md:grid-cols-[1.1fr_1fr] md:gap-14 md:pt-24 md:pb-28">
+          <div>
+            <p className={`${eyebrow} hero-in`} style={after(0)}>
+              MicroLearning AI
+            </p>
+            <h1 className="mt-3 font-display text-5xl leading-[1.05] font-semibold tracking-tight text-balance md:text-6xl">
+              <RiseWords text="Hard chapters, [one clear idea] at a time." />
+            </h1>
+            <p className="hero-in mt-5 max-w-xl text-lg text-muted" style={after(0.75)}>
+              Learn a complex chapter one connected concept at a time: explanation, questions, and help that goes back to
+              exactly the idea you missed.
+            </p>
+            <div className="hero-in mt-8 flex flex-wrap items-center gap-x-5 gap-y-3" style={after(0.9)}>
+              <Link href="#courses" className={`${primaryButton} px-6 py-3.5 text-lg`}>
+                Choose your course <ArrowDownIcon className="h-5 w-5" />
+              </Link>
+              <span className="text-sm text-muted">Free · no sign-up</span>
+            </div>
+          </div>
+          <div className="relative">
+            {/* The chapter's concept graph spreads out from behind the card. */}
+            <ConceptGraphBackdrop
+              graph={complexNumbers.graph}
+              className="hero-graph absolute top-1/2 left-1/2 -z-10 h-auto w-[260%] max-w-none -translate-x-1/2 -translate-y-1/2 md:w-[235%]"
+            />
+            <div className="hero-in" style={after(0.45)}>
+              <FigureFrame glass>
+                <FigureView figure={HERO} stagger={0.7} className="h-auto w-full" />
+              </FigureFrame>
+            </div>
           </div>
         </div>
-        <FigureFrame>
-          <FigureView figure={HERO} stagger={0.7} className="h-auto w-full" />
-        </FigureFrame>
       </section>
 
-      <section aria-labelledby="how" className="mt-20 md:mt-28">
-        <h2 id="how" className="font-display text-3xl font-semibold tracking-tight">
-          How it works
-        </h2>
-        <ol className="mt-6 grid gap-4 md:grid-cols-3">
-          {STEPS.map((s, i) => (
-            <li key={s.title} className={`${card} p-6`}>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-accent-soft font-semibold text-accent" aria-hidden="true">
-                {i + 1}
-              </span>
-              <h3 className="mt-4 font-display text-xl font-semibold">{s.title}</h3>
-              <p className="mt-2 text-muted">{s.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <div className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6 md:pb-24">
+        <section id="courses" aria-labelledby="courses-title" className="scroll-mt-6">
+          <h2 id="courses-title" className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
+            Choose your course
+          </h2>
+          <p className="mt-2 max-w-2xl text-muted">
+            Courses at the same stage share their concepts: master an idea once and it counts in every course that needs it.
+          </p>
+          <div className="mt-6">
+            <Suspense fallback={<CoursePickerFallback />}>
+              <CoursePicker />
+            </Suspense>
+          </div>
+        </section>
 
-      <section aria-labelledby="chapters" className="mt-20 md:mt-28">
-        <h2 id="chapters" className="font-display text-3xl font-semibold tracking-tight">
-          Chapters
-        </h2>
-        <ul className="mt-6 grid gap-4 md:grid-cols-2">
-          {live.map((ch) => (
-            <li key={ch.slug}>
-              <Link href={`/learn/${ch.slug}`} className={`${linkCardShape} group border-border bg-card p-6 hover:border-border-strong`}>
-                <span className={eyebrow}>Class 11–12 · JEE · NDA · MHT-CET</span>
-                <span className="mt-2 block font-display text-2xl font-semibold">{ch.title}</span>
-                <span className="mt-1 block text-muted">{ch.ready} concepts, from i² = −1 to loci and regions</span>
-                <span className="mt-4 inline-flex items-center gap-2 font-medium text-accent">
-                  Open chapter <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section aria-labelledby="how" className="mt-20 md:mt-28">
+          <h2 id="how" className="font-display text-3xl font-semibold tracking-tight">
+            How it works
+          </h2>
+          <div className="relative mt-6">
+            <span aria-hidden="true" className="how-line" />
+            <RevealList ordered className="grid gap-4 md:grid-cols-3">
+              {STEPS.map((s, i) => (
+                <li key={s.title} className={`${card} reveal-item p-6`} style={{ "--i": i } as CSSProperties}>
+                  <span
+                    className="relative z-[2] grid h-9 w-9 place-items-center rounded-full bg-accent-soft font-semibold text-accent ring-4 ring-card"
+                    aria-hidden="true"
+                  >
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-4 font-display text-xl font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-muted">{s.body}</p>
+                </li>
+              ))}
+            </RevealList>
+          </div>
+        </section>
 
-      {reviewEnabled() && (
-        <Link href="/review" className="mt-12 inline-block text-sm font-medium text-accent underline underline-offset-4">
-          Open content review
-        </Link>
-      )}
+        {reviewEnabled() && (
+          <Link href="/review" className="mt-12 inline-block text-sm font-medium text-accent underline underline-offset-4">
+            Open content review
+          </Link>
+        )}
+      </div>
     </main>
   );
 }
