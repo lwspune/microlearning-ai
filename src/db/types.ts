@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      academies: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       attempts: {
         Row: {
           correct: boolean
@@ -408,6 +429,54 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          academy_id: string | null
+          created_at: string
+          created_by: string | null
+          email: string
+          full_name: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          stage: string | null
+        }
+        Insert: {
+          academy_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          email: string
+          full_name: string
+          id: string
+          role?: Database["public"]["Enums"]["app_role"]
+          stage?: string | null
+        }
+        Update: {
+          academy_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          stage?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_academy_id_fkey"
+            columns: ["academy_id"]
+            isOneToOne: false
+            referencedRelation: "academies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       published_concepts: {
@@ -547,7 +616,7 @@ export type Database = {
       seed_chapter: { Args: { p: Json }; Returns: Json }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "teacher" | "academy_admin" | "superadmin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -674,6 +743,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "teacher", "academy_admin", "superadmin"],
+    },
   },
 } as const
