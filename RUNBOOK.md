@@ -31,7 +31,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    copy `chapters/complex-numbers/complex-numbers.test.ts`.
 3. Register the chapter in `src/content/chapters/index.ts`, with its `group`
    (`school` = 11th + 12th, `graduate` = Graduates) and `subject`. The group
-   is the concept pool: only that group's courses can use the chapter.
+   is the concept pool: only that group's courses can use the chapter. A
+   `school` chapter also names its `standard` (11 or 12): course pages list
+   chapters under 11th and 12th, and the catalog check refuses a missing one.
 4. Create `verify/models/<chapter_with_underscores>.py` with a `MODELS` dict.
 5. **Add it to its courses** (section 2a). Its course card says "Coming
    soon" until a concept is published, and its routes 404 until it is
@@ -113,7 +115,11 @@ Guests are anonymous logins with no profile.
    from its value (so text and value can't disagree), varies the correct
    letter, and refuses duplicate options. Use `text=`/`value=` overrides
    only for non-numeric options (loci, phrases) and `fmt=` for pairs (`x =, y =`),
-   ± roots and quadrants. **Every item has exactly 4 options** (the key and 3
+   ± roots, quadrants and `deg` (an angle in degrees). Values may also be sets
+   (`{1, 2}`, `EmptySet`), intervals (`Interval.Ropen(1, 2)`, `Union(...)`),
+   matrices (`Matrix([[1, 2], [3, 4]])`) or tuples; the verifier compares each
+   as what it is, and the drafter writes their LaTeX. Named answers ("one-one",
+   "bounded") are sympy symbols with a `text=` override. **Every item has exactly 4 options** (the key and 3
    modelled mistakes; the validator and `draft_items.py` enforce it). Where
    no third conceptual mistake fits, model a common slip (a dropped sign,
    dividing by the wrong number) with fallback `none`; never an unmodelled
@@ -131,7 +137,11 @@ Guests are anonymous logins with no profile.
    slide, the worked example, and every point/locus solution, with element
    `step`s matching the steps. Write them as data (Python dicts with the
    `Figure` keys from `types.ts`; `axes: "xy"` for an xy-plane figure, x and y
-   with plain numbers, instead of the Argand default): a new concept takes `figure`,
+   with plain numbers, instead of the Argand default; `axes: "none"` for a bare
+   frame such as a Venn diagram, built from `region`s of discs and half-planes).
+   Function graphs, parabolas and other curves are `curve` elements made by
+   `graph()` in `verify/figures.py` (it samples y = f(x) and splits at poles and
+   gaps; mark open or closed ends with `point` elements). A new concept takes `figure`,
    `worked["figure"]` and `solutions` in its `build_concepts.py` entry
    (it refuses a missing or unknown item id). For many similar figures, write
    a small Python helper (Phase B used `extreme`, `arg_fig`, `rot_fig`) so
