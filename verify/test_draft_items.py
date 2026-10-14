@@ -35,6 +35,9 @@ class OptionText(unittest.TestCase):
         self.assertEqual(option_text(Rational(45, 2), "deg"), r"$\frac{45}{2}^\circ$")
         self.assertEqual(option_text(120, "deg"), r"$120^\circ$")
 
+    def test_pct_writes_a_percent_sign(self):
+        self.assertEqual(option_text(60, "pct"), r"$60\%$")
+
     def test_quadrant_is_unchanged(self):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 

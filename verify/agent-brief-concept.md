@@ -58,10 +58,14 @@ ITEMS = [dict(id="CNN-Q1", stem=r"...", inputs={"a": "3"}, params={...}, models=
 - **5 or 6 items**, each with exactly 4 options: the key and 3 modelled mistakes. Every misconception appears on
   at least one item.
 - Build items from the book's questions (its exercises, solved examples and MCQs), turned into one-answer MCQs,
-  with the book ref as `source`. Change the numbers when a book question would make two models agree. A stem
+  with the book ref as `source`. The refs in your prompt are a **pool to choose from**, not a list to cover: use
+  the questions where three of your misconceptions give three different wrong answers, and show the rest in the
+  worked example or solutions. Vary the question types so every misconception is caught somewhere. Change the numbers when a book question would make two models agree. A stem
   stands alone: give every set, value and condition the question needs (book sub-parts often omit them).
 - Options: let `draft_items.py` write the text from the value. Overrides: `text={...}` for named answers,
-  `fmt="deg"` for degrees, `fmt="point"` for (x, y) given as x + I*y.
+  `fmt="deg"` for degrees, `fmt="pct"` for percentages, `fmt="point"` for (x, y) given as x + I*y.
+- Percentages: when the question asks for a percentage, the value is the number (`60`) and `fmt="pct"` shows
+  `60%`; when it asks "how many", convert to a count first. Never mix the two in one item.
 - Draft: `python verify/draft_items.py <scratch>/cNN_spec.py > <scratch>/cNN_items.ts` (run from the repo root).
   It refuses duplicate options; fix the inputs, not the check.
 
@@ -89,7 +93,8 @@ CONCEPTS = [dict(
   ${}^nC_r$ written as `$^nC_r$`: a `$` followed by `{` is a template-literal interpolation), no fluff. Match c08's density: intuition ~3–5 sentences, formal ~3–5 short sections.
 - The hook and worked example must not reuse any item's numbers (rule 5). Solutions never mention option letters.
 - Figures (only if your prompt says the concept is visual): labels are plain Unicode (`A ∩ B`, `x ≤ 3`, `−2`),
-  element `step`s match the step they illustrate; idea-slide steps are animation order.
+  element `step`s match the step they illustrate; idea-slide steps are animation order. Each step's figure adds
+  only what that step's text talks about (AUTHORING.md rule 14): a count label appears at the step that computes it.
 
 ## 5. Build and check (repeat until clean)
 From the repo root:

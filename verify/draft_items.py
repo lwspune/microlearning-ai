@@ -15,7 +15,7 @@ A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
     ask=None,                           # optional projection, an expression in z
     models=["key", "C02-M1", "C02-M2", "C02-M3"],  # key first, then one per distractor
     text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
-    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°)
+    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°) | pct (..%)
     value={"key": "x-2"},               # optional per-model value overrides (loci/points)
     figure={...},                       # optional: a Figure dict shown with the stem (no steps)
     source='{ kind: "authored" }',      # optional, TypeScript literal
@@ -107,6 +107,8 @@ def option_text(val, fmt) -> str:
         return cartesian_text(val)
     if fmt == "quadrant":
         return f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
+    if fmt == "pct":  # a percentage
+        return f"${latex(val)}\\%$"
     if fmt == "deg":  # an angle in degrees
         return f"${latex(val)}^\\circ$"
     if isinstance(val, Tuple):

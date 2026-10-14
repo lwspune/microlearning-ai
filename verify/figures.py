@@ -82,21 +82,24 @@ def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", **extra):
     """A Venn diagram figure for 2 or 3 sets inside a universal rectangle.
 
     shade: a function of one bool per set (in A?, in B?, ...) -> True for the cells to shade,
-      e.g. `lambda a, b: a and not b` for A − B. `extra` keys (step, tone) go on the shading.
-    counts: {cell tuple: "12"} labels written inside cells (n(...) for counting problems).
+      e.g. `lambda a, b: a and not b` for A − B; `extra` keys (step, tone) go on that shading.
+      Or a list of layers, each (function, {"step": 2, "tone": "good"}), drawn in order.
+    counts: {cell tuple: "12"} labels written inside cells (n(...) for counting problems), or
+      {cell: ("12", {"step": 2, "tone": "bad"})} to reveal or colour a count.
     """
     n = len(names)
     assert n in _CIRCLES, "2 or 3 sets"
     x0, x1, y0, y1 = _U
     elements = []
-    if shade:
+    layers = shade if isinstance(shade, (list, tuple)) else [(shade, extra)] if shade else []
+    for pick, opts in layers:
         for cell in venn_cells(n):
-            if shade(*cell):
+            if pick(*cell):
                 within = [
                     {"kind": "disc" if inside else "outsideDisc", "centre": list(c), "r": r}
                     for inside, (c, r) in zip(cell, _CIRCLES[n])
                 ] + _u_shapes()
-                elements.append({"kind": "region", "within": within, **extra})
+                elements.append({"kind": "region", "within": within, **opts})
     elements.append({"kind": "curve", "points": [[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], "tone": "muted"})
     for name, (c, r) in zip(names, _CIRCLES[n]):
         elements.append({"kind": "circle", "centre": list(c), "r": r, "tone": "muted"})
@@ -107,7 +110,8 @@ def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", **extra):
             elements.append({"kind": "label", "at": [round(c[0] + r, 2), round(c[1] - r * 0.55, 2)], "label": name, "labelAt": "e"})
     elements.append({"kind": "label", "at": [x1 - 0.5, y1 - 0.6], "label": universe, "labelAt": "n"})
     for cell, text in (counts or {}).items():
-        elements.append({"kind": "label", "at": list(_CELL_AT[n][cell]), "label": str(text), "labelAt": "n"})
+        text, opts = text if isinstance(text, tuple) else (text, {})
+        elements.append({"kind": "label", "at": list(_CELL_AT[n][cell]), "label": str(text), "labelAt": "n", **opts})
     return {"alt": alt, "axes": "none", "view": {"x": [x0 - 0.3, x1 + 0.3], "y": [y0 - 0.3, y1 + 0.3]}, "elements": elements}
 
 

@@ -91,6 +91,16 @@ class Venn(unittest.TestCase):
         self.assertEqual(texts["12"], [5.0, 3.5])
         self.assertIn("3", texts)
 
+    def test_shading_can_come_in_layers_each_with_its_own_step_and_tone(self):
+        fig = venn("Layers", shade=[(lambda a, b: a, {"step": 1}), (lambda a, b: b and not a, {"step": 2, "tone": "good"})])
+        regions = [e for e in fig["elements"] if e["kind"] == "region"]
+        self.assertEqual(sorted((e["step"], e.get("tone")) for e in regions), [(1, None), (1, None), (2, "good")])
+
+    def test_a_count_can_carry_a_step_and_tone(self):
+        fig = venn("Counts", counts={(True, True): ("7", {"step": 2, "tone": "bad"})})
+        (label,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"] == "7"]
+        self.assertEqual((label["step"], label["tone"], label["at"]), (2, "bad", [5.0, 3.5]))
+
 
 class NumberLine(unittest.TestCase):
     def test_open_ends_are_hollow_and_closed_ends_filled(self):
