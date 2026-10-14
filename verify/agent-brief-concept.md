@@ -69,6 +69,12 @@ ITEMS = [dict(id="CNN-Q1", stem=r"...", inputs={"a": "3"}, params={...}, models=
   stands alone: give every set, value and condition the question needs (book sub-parts often omit them).
 - Options: let `draft_items.py` write the text from the value. Overrides: `text={...}` for named answers,
   `fmt="deg"` for degrees, `fmt="pct"` for percentages, `fmt="point"` for (x, y) given as x + I*y.
+- Identities ("Prove that L = R") become "L equals" (or "L simplifies to") with R as the key; each model applies
+  its wrong rule to L. Values are sympy expressions in a `Symbol("x")`, and the verifier accepts a match when
+  `simplify(a - b) == 0`, so check each model against the key in sympy before relying on it. Give expression
+  options `text=` in the book's notation (`$\cot 2x$`, `$\operatorname{cosec}^2\theta$`): sympy's own LaTeX
+  writes `\cot{\left(2 x \right)}`. Angles given in degrees go into sympy as radians (`pi/12` for $15^\circ$);
+  an answer in degrees uses `fmt="deg"`.
 - Percentages: when the question asks for a percentage, the value is the number (`60`) and `fmt="pct"` shows
   `60%`; when it asks "how many", convert to a count first. Never mix the two in one item.
 - Draft: `python verify/draft_items.py <scratch>/cNN_spec.py > <scratch>/cNN_items.ts` (run from the repo root).
