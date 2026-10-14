@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/components/icons";
 import { card, eyebrow } from "@/components/ui";
 import { createSessionClient } from "@/lib/supabase/server";
 import { requireAreaAt } from "@/server/viewer";
+import { CreateAcademyForm } from "./CreateAcademyForm";
 
 export const metadata: Metadata = { title: "Admin" };
 
@@ -25,17 +28,28 @@ async function AdminHomeContent() {
         <h2 id="academies" className="font-display text-2xl font-semibold">
           Academies
         </h2>
-        {academies.length === 0 ? (
-          <div className={`${card} mt-4 p-6`}>
-            <p className="font-medium">No academies yet.</p>
-            <p className="mt-1 text-muted">Creating academies and their teachers comes next.</p>
+        <div className={`${card} mt-4 p-6`}>
+          <h3 className="font-semibold">New academy</h3>
+          <div className="mt-3">
+            <CreateAcademyForm />
           </div>
+        </div>
+        {academies.length === 0 ? (
+          <p className="mt-4 text-muted">No academies yet.</p>
         ) : (
           <ul className={`${card} mt-4 divide-y divide-border`}>
             {academies.map((a) => (
-              <li key={a.id} className="flex items-baseline justify-between gap-3 px-6 py-4">
-                <span className="font-medium">{a.name}</span>
-                <span className="font-mono text-sm text-muted">{a.slug}</span>
+              <li key={a.id}>
+                <Link
+                  href={`/admin/academies/${a.slug}`}
+                  className="group flex items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-surface"
+                >
+                  <span className="font-medium">{a.name}</span>
+                  <span className="flex items-center gap-3 font-mono text-sm text-muted">
+                    {a.slug}
+                    <ArrowRightIcon className="h-4 w-4 text-accent transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>

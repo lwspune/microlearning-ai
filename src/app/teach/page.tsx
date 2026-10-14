@@ -9,7 +9,6 @@ export const metadata: Metadata = { title: "Teach" };
 
 const SOON = [
   { title: "Your classes", body: "Each class follows a course. See who has mastered what, the mistakes the class keeps making, and reviews due." },
-  { title: "Add students", body: "Paste a list of names and emails to create logins for your class." },
 ];
 
 async function TeachHomeContent() {
@@ -29,6 +28,18 @@ async function TeachHomeContent() {
         </span>
         <ArrowRightIcon className="h-5 w-5 shrink-0 text-accent transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
       </Link>
+
+      {profile.academyId && (
+        <Link href="/teach/people" className={`${linkCard} group mt-4 flex items-center justify-between gap-4 p-6`}>
+          <span>
+            <span className="block font-display text-2xl font-semibold">People</span>
+            <span className="mt-1 block text-muted">
+              {profile.role === "academy_admin" ? "Add teachers and students" : "Add students"} and see everyone in your academy.
+            </span>
+          </span>
+          <ArrowRightIcon className="h-5 w-5 shrink-0 text-accent transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
+        </Link>
+      )}
 
       <h2 className="mt-12 font-display text-2xl font-semibold">Coming next</h2>
       <ul className="mt-4 grid gap-4 md:grid-cols-2">
