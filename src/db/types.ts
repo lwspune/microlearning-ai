@@ -482,6 +482,36 @@ export type Database = {
       }
     }
     Views: {
+      learner_mistakes: {
+        Row: {
+          last_at: string | null
+          misconception_id: string | null
+          recent: number | null
+          total: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attempts_misconception_id_fkey"
+            columns: ["misconception_id"]
+            isOneToOne: false
+            referencedRelation: "misconceptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learner_summary: {
+        Row: {
+          answered: number | null
+          correct: number | null
+          last_active: string | null
+          learning: number | null
+          mastered: number | null
+          reviews_due: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
       published_concepts: {
         Row: {
           body: Json | null
