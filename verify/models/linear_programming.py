@@ -518,6 +518,8 @@ C09 = {k: _c09(k) for k in ["key", "C09-M1", "C09-M2", "C09-M3"]}
 
 NOMAX, NOMIN, EMPTY = Symbol("nomax"), Symbol("nomin"), Symbol("empty")
 SEGMENT, TWOPOINTS = Symbol("segment"), Symbol("twopoints")
+# "Infinitely many" as a name, not oo: the verifier compares by subtracting, and oo - oo is undefined.
+INFINITELY_MANY = Symbol("infinitely_many")
 
 
 # ---------- C10 Optimum over an unbounded region ----------
@@ -551,7 +553,7 @@ def _c11(kind):
         parallel = any(lin(s)[0] * qz == lin(s)[1] * pz for s in cons)
         if ask == "count":
             if kind == "key":
-                return sympify("oo") if len(best) > 1 else Rational(1)
+                return INFINITELY_MANY if len(best) > 1 else Rational(1)
             if kind == "C11-M1":  # stops at the first optimal corner
                 return Rational(1)
             if kind == "C11-M2":  # only the tied corners themselves
@@ -559,7 +561,7 @@ def _c11(kind):
             if kind == "C11-M3":  # parallel to any constraint line means infinitely many
                 if not parallel:
                     raise ValueError("Z is parallel to no constraint")
-                return sympify("oo")
+                return INFINITELY_MANY
             raise ValueError(kind)
         if kind == "key":
             return SEGMENT if len(best) > 1 else as_sym(best[0])
