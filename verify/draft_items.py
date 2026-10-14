@@ -15,7 +15,7 @@ A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
     ask=None,                           # optional projection, an expression in z
     models=["key", "C02-M1", "C02-M2", "C02-M3"],  # key first, then one per distractor
     text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
-    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant
+    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°)
     value={"key": "x-2"},               # optional per-model value overrides (loci/points)
     figure={...},                       # optional: a Figure dict shown with the stem (no steps)
     source='{ kind: "authored" }',      # optional, TypeScript literal
@@ -28,7 +28,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from sympy import I, latex, simplify, symbols, sympify, expand
+from sympy import I, Tuple, latex, simplify, symbols, sympify, expand
 
 from ts_literal import figure_ts
 
@@ -107,6 +107,10 @@ def option_text(val, fmt) -> str:
         return cartesian_text(val)
     if fmt == "quadrant":
         return f"Quadrant {['I', 'II', 'III', 'IV'][int(val) - 1]}"
+    if fmt == "deg":  # an angle in degrees
+        return f"${latex(val)}^\\circ$"
+    if isinstance(val, Tuple):
+        return "$(" + ", ".join(latex(v) for v in val) + ")$"
     return f"${latex(val)}$"
 
 
