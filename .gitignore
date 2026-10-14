@@ -35,3 +35,6 @@ Thumbs.db
 
 # exported content (content:verify)
 .content/
+
+# Screenshot sheets for review (RUNBOOK section 4): kept locally, not in git.
+/screenshots/

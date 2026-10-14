@@ -157,6 +157,7 @@ Guests are anonymous logins with no profile.
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
    - Production check: `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103`
    - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
+     **Save it in the project:** `screenshots/<date>-<topic>/before-after.png`, raw shots in subfolders beside it (point `SHOTS` there). Never only in a temp folder. `screenshots/` is git-ignored.
    - Leave no test data behind (check `auth.users` and `attempts`).
 7. Show the user, then **merge** (`git merge --ff-only`) and delete the branch.
 
