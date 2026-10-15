@@ -1,6 +1,18 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The minute marks on a one-degree ruler from x = 0 to x = 6 (a tenth per minute), labelled every 10′. */
+function minuteTicks(step: number): FigureElement[] {
+  const marks: FigureElement[] = [];
+  for (let m = 1; m < 60; m++) {
+    marks.push({ kind: "segment", from: [m / 10, 0], to: [m / 10, m % 10 === 0 ? 0.3 : 0.15], tone: "muted", step });
+  }
+  for (let m = 0; m <= 60; m += 10) {
+    marks.push({ kind: "label", at: [m / 10, 0], label: `${m}′`, labelAt: "s", tone: "muted", step });
+  }
+  return marks;
+}
 
 export const c02: Concept = {
   id: "C02",
@@ -10,26 +22,39 @@ export const c02: Concept = {
     reveal: t`No. A degree has 60 minutes, not 10 or 100, so $0.7^\circ = 0.7 \times 60 = 42'$. The angle is $183^\circ 42'$. Minutes and seconds count in sixties, like a clock.`,
   },
   explanation: {
-    intuition: t`A degree splits up the way an hour does. One degree is 60 minutes ($60'$), and one minute is 60 seconds ($60''$). So $1.5^\circ$ is $1^\circ 30'$, just as 1.5 hours is 1 hour 30 minutes, not 1 hour 50 minutes. To go down a unit, multiply by 60; to go up a unit, divide by 60.`,
-    formal: t`**The units**
-
-$1^\circ = 60'$ and $1' = 60''$, so $1^\circ = 3600''$.
-
-**Decimal degrees to degrees, minutes and seconds**
+    intuition: t`A **degree**, $1^\circ$, is $\frac{1}{360}$ of a full turn. To measure finer than that, a degree is split into 60 equal parts called **minutes**, and each minute into 60 equal parts called **seconds**. One minute is written $1'$ and one second $1''$: so $1^\circ = 60'$ and $1' = 60''$. An hour splits up the same way. So $1.5^\circ$ is $1^\circ 30'$, just as 1.5 hours is 1 hour 30 minutes, not 1 hour 50 minutes. To change to a smaller unit, multiply by 60; to change to a larger unit, divide by 60.`,
+    formal: [
+      {
+        body: t`**Degrees, minutes and seconds.** An angle written $a^\circ\, b'\, c''$ is in **degrees, minutes and seconds** (D°M′S″ for short): $a$ degrees, $b$ minutes and $c$ seconds. So $35^\circ 12' 40''$ is 35 degrees, 12 minutes and 40 seconds. Sixty of one unit make one of the next, so $b$ and $c$ are each less than 60. A degree is $60'$, and each of those is $60''$, so $1^\circ = 60 \times 60'' = 3600''$.`,
+      },
+      {
+        body: t`**Decimal degrees to D°M′S″.** An angle in **decimal degrees** is written as a decimal of a degree, such as $12.75^\circ$. To write it in D°M′S″:
 
 - **1.** Keep the whole degrees.
 - **2.** Multiply the decimal part by 60. The whole number is the minutes.
 - **3.** Multiply the part of a minute left over by 60. That is the seconds.
 
-**Degrees, minutes and seconds to degrees**
+So $12.75^\circ = 12^\circ + (0.75 \times 60)'$, which is $12^\circ 45'$, not $12^\circ 75'$.`,
+      },
+      {
+        body: t`**D°M′S″ to decimal degrees.** To write $a^\circ\, b'\, c''$ in decimal degrees, turn the minutes and seconds into degrees and add them on. A minute is $\frac{1}{60}$ of a degree and a second is $\frac{1}{3600}$ of a degree, so
 
 $$a^\circ\, b'\, c'' = \left(a + \frac{b}{60} + \frac{c}{3600}\right)^\circ$$
 
-For example, $65^\circ 30' = \left(65 + \frac{30}{60}\right)^\circ = 65.5^\circ$, not $65.3^\circ$.
+For example, $65^\circ 30' = \left(65 + \frac{30}{60}\right)^\circ$, which is $65.5^\circ$, not $65.3^\circ$.`,
+      },
+      {
+        body: t`**Seconds to D°M′S″.** To write a number of seconds in D°M′S″, divide by 60 twice and keep the remainders:
 
-**Negative angles**
+- **1.** Divide the seconds by 60. The quotient is the minutes; the remainder is the seconds.
+- **2.** Divide those minutes by 60. The quotient is the degrees; the remainder is the minutes.
 
-The minus sign belongs to the whole angle: $-a^\circ\, b'\, c''$ means $-(a^\circ\, b'\, c'')$. Convert the angle without its sign, then put the minus in front.`,
+For example, $5000 \div 60 = 83$ remainder $20$, so $5000'' = 83' 20''$. Then $83 \div 60 = 1$ remainder $23$, so $5000'' = 1^\circ 23' 20''$.`,
+      },
+      {
+        body: t`**Negative angles.** A **negative angle**, such as $-10^\circ 30'$, is measured clockwise, the way a clock's hands go. Its minus sign belongs to the whole angle: $-a^\circ\, b'\, c''$ means $-(a^\circ\, b'\, c'')$. Convert the angle without its sign, then put the minus in front. So $-10^\circ 30' = -(10^\circ 30')$, which is $-10.5^\circ$, not $-9.5^\circ$. The other way, $-12.5^\circ$ is $-12^\circ 30'$, not $-13^\circ 30'$.`,
+      },
+    ],
     worked: {
       prompt: t`Express $74.87^\circ$ in degrees, minutes and seconds.`,
       steps: [
@@ -38,6 +63,24 @@ The minus sign belongs to the whole angle: $-a^\circ\, b'\, c''$ means $-(a^\cir
         t`Seconds: $0.2' = (0.2 \times 60)'' = 12''$.`,
       ],
       answer: t`$74.87^\circ = 74^\circ 52' 12''$.`,
+    },
+    figure: {
+      alt: "One degree, from 1° to 2°, drawn as a ruler split into 60 minutes and marked every 10′: 1° = 60′. Halfway along, at the 30′ mark, is 1.5°, which is 1°30′. The 50′ mark, 1°50′, is not 1.5°.",
+      axes: "none",
+      view: { x: [-0.6, 6.6], y: [-1.1, 1] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [6, 0], step: 1 },
+        { kind: "segment", from: [0, 0], to: [0, 0.4], step: 1 },
+        { kind: "label", at: [0, 0.4], label: "1°", labelAt: "n", step: 1 },
+        { kind: "segment", from: [6, 0], to: [6, 0.4], step: 1 },
+        { kind: "label", at: [6, 0.4], label: "2°", labelAt: "n", step: 1 },
+        ...minuteTicks(2),
+        { kind: "label", at: [3, -0.45], label: "1° = 60′", labelAt: "s", step: 2 },
+        { kind: "point", at: [3, 0], tone: "good", step: 3 },
+        { kind: "label", at: [3, 0.4], label: "1.5° = 1°30′", labelAt: "n", tone: "good", step: 3 },
+        { kind: "point", at: [5, 0], tone: "bad", step: 4 },
+        { kind: "label", at: [5, -0.45], label: "1°50′ is not 1.5°", labelAt: "s", tone: "bad", step: 4 },
+      ],
     },
     visualSpec: t`A one-degree strip split into 60 minute ticks, each of which zooms into 60 second ticks; drag a pointer along it to see the reading as a decimal of a degree and as $a^\circ\, b'\, c''$ side by side.`,
   },
