@@ -183,6 +183,20 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 items\.0\.solution\.steps\.0: control character U\+000C/));
     });
 
+    it("rejects a matrix row break written with one backslash, which KaTeX draws as a space (\\\\ mangled to \\)", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = String.raw`$\begin{vmatrix} 1 & 2 \ 3 & 4 \end{vmatrix}$`;
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.reveal: matrix row break needs \\\\, not \\/));
+    });
+
+    it("accepts a matrix whose rows are broken with \\\\", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = String.raw`$\begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix} = -2$, and $a\ b$ is a space`;
+      });
+      expect(errors).toEqual([]);
+    });
+
     it("allows newlines, which separate slide sections", () => {
       const errors = errorsAfter((ch) => {
         c3(ch).status = "approved"; // a draft must use points (item 20); older concepts keep text

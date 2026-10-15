@@ -18,12 +18,19 @@ export function validateChapter(chapter: Chapter): string[] {
 /** Control characters other than newlines: what a mangled escape leaves (the `\t` of `\times` becomes a tab). */
 const CONTROL = /[\u0000-\u0009\u000b-\u001f\u007f]/;
 
+/** A matrix body, and a row break mangled from `\\` to `\ `, which KaTeX draws as a space: one long row. */
+const MATRIX = /\\begin\{([vbpB]?matrix)\}([\s\S]*?)\\end\{\1\}/g;
+const SINGLE_BREAK = /(?<!\\)\\ /;
+
 function validateText(c: Concept): string[] {
   const errors: string[] = [];
   const walk = (v: unknown, path: string) => {
     if (typeof v === "string") {
       const m = CONTROL.exec(v);
       if (m) errors.push(`${c.id} ${path}: control character U+${m[0].charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")}`);
+      for (const [, , body] of v.matchAll(MATRIX)) {
+        if (SINGLE_BREAK.test(body)) errors.push(`${c.id} ${path}: matrix row break needs \\\\, not \\`);
+      }
     } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}.${i}`));
     else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, path ? `${path}.${k}` : k);
   };
