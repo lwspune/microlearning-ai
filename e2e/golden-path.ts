@@ -157,21 +157,21 @@ await (async () => {
       )) as { key: string; is_correct: boolean; code: string | null; fallback_kind: string | null; fallback_code: string | null; fallback_status: string | null }[];
     };
     const pick = async (key: string) => {
-      await page.locator(`fieldset[data-item-id]:visible input[type=radio][value=${key}]`).check();
-      await page.getByRole("button", { name: "Check answer" }).click();
+      // Tapping an option answers it: there is no separate Check button.
+      await page.locator(`fieldset[data-item-id]:visible button[data-key=${key}]`).click();
       // Visible only: the hidden, still-mounted previous lesson may show old feedback.
       await page.getByText(/Correct!|Not quite\.|Mastered ✓/).filter({ visible: true }).first().waitFor();
     };
     const nextQ = async () => {
       await page.getByRole("button", { name: /Next question|Keep trying here/ }).click();
-      await page.getByRole("button", { name: "Check answer" }).waitFor();
+      await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     };
     const toQuestions = async () => {
       await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
       while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
         await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
       }
-      await page.getByRole("button", { name: "Check answer" }).waitFor();
+      await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     };
 
     // ---- M3a: a repeated mistake whose root is an outside topic → "worth revising" ----
@@ -245,8 +245,7 @@ await (async () => {
       return { itemId: itemId!, correct: String(row.key) };
     };
     const answer = async (key: string) => {
-      await page.locator(`input[type=radio][value=${key}]`).check();
-      await page.getByRole("button", { name: "Check answer" }).click();
+      await page.locator(`button[data-key=${key}]`).click();
       // The answer that masters the concept goes straight to the Mastered screen.
       await page.getByText(/Correct!|Not quite\.|Mastered ✓/).first().waitFor();
     };
@@ -254,10 +253,8 @@ await (async () => {
     // 1. A wrong answer, chosen with the keyboard.
     const q1 = await keyFor();
     const wrong = ["A", "B", "C", "D"].find((k) => k !== q1.correct);
-    await page.locator(`input[type=radio][value=${wrong}]`).focus();
-    await page.keyboard.press("Space");
+    await page.locator(`button[data-key=${wrong}]`).focus();
     await shot("07-question");
-    await page.getByRole("button", { name: "Check answer" }).focus();
     await page.keyboard.press("Enter");
     await page.getByText("Not quite.").waitFor();
     const [u] = await sql(`select user_id from attempts where item_id = '${q1.itemId}' order by id desc limit 1`);
@@ -274,7 +271,7 @@ await (async () => {
     const seen = new Set([q1.itemId]);
     for (let i = 1; i <= 3; i++) {
       await page.getByRole("button", { name: "Next question" }).click();
-      await page.getByRole("button", { name: "Check answer" }).waitFor();
+      await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
       const q = await keyFor();
       check(!seen.has(q.itemId) || i === 1, `question ${i + 1} is a different item`);
       seen.add(q.itemId);
@@ -339,7 +336,7 @@ await (async () => {
     }
     for (let i = 0; i < 2; i++) {
       if (i > 0) await nextQ();
-      else await page.getByRole("button", { name: "Check answer" }).waitFor();
+      else await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
       await pick((await optionsWithRoutes()).find((o) => o.is_correct)!.key);
     }
     const backLink = page.locator("fieldset[data-item-id]:visible").locator("..").getByRole("link", { name: "Back to Conjugate →" });
@@ -416,7 +413,7 @@ await (async () => {
     while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
       await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
     }
-    await page.getByRole("button", { name: "Check answer" }).waitFor();
+    await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     check((await page.getByRole("button", { name: "See the solution" }).count()) === 0, "no solution before answering");
     await pick((await optionsWithRoutes()).find((o) => o.is_correct)!.key);
     // The toggle's name flips to "Hide the solution" once open.

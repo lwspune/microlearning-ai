@@ -95,7 +95,6 @@ export function QuestionPanel({
   const [reviewCorrect, setReviewCorrect] = useState(progress.review.correct);
   const [reviewOutcome, setReviewOutcome] = useState<{ passed: boolean; inDays: number } | null>(null);
   const [pending, startTransition] = useTransition();
-  const groupId = useId();
   const solutionId = useId();
   const [solutionOpen, setSolutionOpen] = useState(false);
   const feedbackRef = useRef<HTMLDivElement>(null);
@@ -105,11 +104,13 @@ export function QuestionPanel({
     if (result) feedbackRef.current?.scrollIntoView({ block: "nearest" });
   }, [result]);
 
-  function check() {
-    if (!selected) return;
+  /** Tapping an option answers it: there is no separate Check step. */
+  function answer(key: string) {
+    if (pending || result) return;
+    setSelected(key);
     setError(null);
     startTransition(async () => {
-      const res = await submitAnswer(question.itemId, selected);
+      const res = await submitAnswer(question.itemId, key);
       if (!res.ok) {
         setError(res.error);
         return;
@@ -189,7 +190,7 @@ export function QuestionPanel({
         disabled={pending || result !== null}
         data-item-id={question.itemId}
       >
-        <legend className="sr-only">Choose one answer</legend>
+        <legend className="sr-only">Tap an answer</legend>
         <RenderedRichText blocks={question.stem} />
         {question.figure && (
           <div className="mt-4">
@@ -202,10 +203,15 @@ export function QuestionPanel({
           {question.options.map((o) => {
             const isCorrect = result?.correctKey === o.key;
             const isWrongPick = result && selected === o.key && !result.correct;
+            const isChecking = pending && selected === o.key;
             return (
-              <label
+              <button
+                type="button"
                 key={o.key}
-                className={`relative flex cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3.5 shadow-card transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent motion-reduce:transition-none ${
+                data-key={o.key}
+                onClick={() => answer(o.key)}
+                aria-busy={isChecking || undefined}
+                className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3.5 text-left shadow-card transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-default motion-reduce:transition-none ${
                   isCorrect
                     ? "border-success bg-success-surface"
                     : isWrongPick
@@ -215,15 +221,6 @@ export function QuestionPanel({
                         : "border-border bg-card hover:border-border-strong"
                 }`}
               >
-                <input
-                  type="radio"
-                  name={groupId}
-                  value={o.key}
-                  checked={selected === o.key}
-                  onChange={() => setSelected(o.key)}
-                  // Invisible but covering the card: the whole card is the hit target, focus and keyboard still work.
-                  className="absolute inset-0 cursor-pointer appearance-none rounded-xl opacity-0"
-                />
                 <span
                   aria-hidden="true"
                   className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-semibold ${
@@ -243,7 +240,8 @@ export function QuestionPanel({
                 </span>
                 {isCorrect && <span className="text-sm font-semibold text-success">✓ Correct answer</span>}
                 {isWrongPick && <span className="text-sm font-semibold text-danger">✗ Your answer</span>}
-              </label>
+                {isChecking && <span className="text-sm font-medium text-accent">Checking…</span>}
+              </button>
             );
           })}
         </div>
@@ -311,11 +309,7 @@ export function QuestionPanel({
           <button type="button" className={result.route ? secondaryButton : primaryButton} onClick={nextQuestion}>
             {result.route ? "Keep trying here" : "Next question"}
           </button>
-        ) : (
-          <button type="button" className={primaryButton} onClick={check} disabled={!selected || pending}>
-            {pending ? "Checking…" : "Check answer"}
-          </button>
-        )}
+        ) : null}
         <button type="button" className={secondaryButton} onClick={onReread}>
           Read the explanation again
         </button>
