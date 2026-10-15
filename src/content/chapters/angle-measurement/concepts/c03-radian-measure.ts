@@ -10,10 +10,25 @@ export const c03: Concept = {
     reveal: t`Less. A straight chord equal to the radius makes $60^\circ$ (it forms an equilateral triangle with the two radii), and the arc between those two points is longer than the chord. The arc equal to the radius makes $1^c = \left(\frac{180}{\pi}\right)^\circ \approx 57.3^\circ$: one **radian**.`,
   },
   explanation: {
-    intuition: t`Degrees split a full turn into $360$ equal parts. **Radians** measure a turn with the circle itself. A circle's **radius** $r$ is the distance from its centre $O$ to its rim, and an **arc** is a piece of the rim. Turn an arm of length $r$ about $O$, from $OA$ to $OB$: its tip runs along the arc $AB$. When that arc is exactly as long as the radius, the arm has turned **one radian**, written $1^c$.`,
+    intuition: [
+      t`Degrees split a full turn into $360$ equal parts.`,
+      t`**Radians** measure a turn with the circle itself.`,
+      t`A circle's **radius** $r$ is the distance from its centre $O$ to its rim.`,
+      t`Turn an arm of length $r$ about $O$, from $OA$ to $OB$.`,
+      t`Its tip runs along the **arc** $AB$, a piece of the rim.`,
+      t`When arc $AB$ is as long as the radius, the arm has turned **one radian**, written $1^c$.`,
+    ],
     formal: [
       {
-        body: t`**Same in every circle.** One radian is the same angle in every circle, big or small. In a circle twice as big, the radius is $2r$, and the arc as long as that radius is $2r$ long: twice as long too. The arms do not move, so the angle at the centre is still $1^c$.`,
+        title: "Same in every circle",
+        points: [
+          t`One radian is the same angle in every circle, big or small.`,
+          t`Take a circle of radius $r$, and one twice as big, of radius $2r$.`,
+          t`Turn an arm through $1^c$ about their centre $O$.`,
+          t`On the small circle, it cuts off an arc $r$ long.`,
+          t`On the big circle, it cuts off an arc $2r$ long: twice as long.`,
+          t`The arms do not move, so the angle at the centre is still $1^c$.`,
+        ],
         figure: {
           alt: "Two circles about O, drawn as quarter circles: an inner one of radius r and an outer one of radius 2r. One arm turns 1 radian from the initial arm. On the inner circle it cuts off an arc of length r; on the outer circle an arc of length 2r. The angle at O is 1 radian in both.",
           axes: "none",
@@ -22,22 +37,26 @@ export const c03: Concept = {
             { kind: "arc", centre: [0, 0], r: 1.2, from: 0, to: 90, tone: "muted" },
             { kind: "arc", centre: [0, 0], r: 2.4, from: 0, to: 90, tone: "muted" },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-            { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good", step: 1 },
-            { kind: "point", at: [1.2, 0], tone: "muted", step: 1 },
-            { kind: "label", at: [0.6, 0], label: "r", labelAt: "s", tone: "good", step: 1 },
-            { kind: "label", at: [1.8, 0], label: "r", labelAt: "s", tone: "good", step: 1 },
-            { kind: "turn", r: 2.4, to: 57.296, label: "1ᶜ", labelAt: "ne", step: 2 },
-            { kind: "arc", centre: [0, 0], r: 1.2, from: 0, to: 57.296, label: "arc = r", labelAt: "e", tone: "good", step: 3 },
-            { kind: "arc", centre: [0, 0], r: 2.4, from: 0, to: 57.296, label: "arc = 2r", labelAt: "e", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good", step: 2 },
+            { kind: "point", at: [1.2, 0], tone: "muted", step: 2 },
+            { kind: "label", at: [0.6, 0], label: "r", labelAt: "s", tone: "good", step: 2 },
+            { kind: "label", at: [1.8, 0], label: "r", labelAt: "s", tone: "good", step: 2 },
+            { kind: "turn", r: 2.4, to: 57.296, label: "1ᶜ", labelAt: "ne", step: 3 },
+            { kind: "arc", centre: [0, 0], r: 1.2, from: 0, to: 57.296, label: "arc = r", labelAt: "e", tone: "good", step: 4 },
+            { kind: "arc", centre: [0, 0], r: 2.4, from: 0, to: 57.296, label: "arc = 2r", labelAt: "e", tone: "good", step: 5 },
           ],
         },
       },
       {
-        body: t`**The key fact.** Half a turn is $\pi$ radians:
-
-$$\pi^c = 180^\circ$$
-
-Here $\pi$ is the number $3.14159\ldots$: the rim of a circle, all the way round, is $2\pi r$ long. Half a turn sweeps half the rim, an arc $\pi r$ long. That arc holds $\pi$ radii, a little over three, so half a turn is $\pi^c$. A full turn is $2\pi^c = 360^\circ$, not $\pi^c$.`,
+        title: "The key fact",
+        points: [
+          t`A circle's rim, all the way round, is $2\pi r$ long, where $\pi$ is the number $3.14159\ldots$.`,
+          t`Turn an arm half a turn, $180^\circ$, from the initial arm.`,
+          t`Half a turn sweeps half the rim, an arc $\pi r$ long.`,
+          t`That arc holds $\pi$ radii, a little over three.`,
+          t`So half a turn is $\pi$ radians: $\pi^c = 180^\circ$, the key fact.`,
+          t`A full turn is $2\pi^c = 360^\circ$, not $\pi^c$.`,
+        ],
         figure: {
           alt: "A circle with centre O. An arm turns half a turn, 180°, anticlockwise from the initial arm. The upper half of the rim it sweeps is an arc πr long. Marks at 1, 2 and 3 radians show that a little over three radii fit along it: half a turn is π radians, which is 180°.",
           axes: "none",
@@ -45,7 +64,7 @@ Here $\pi$ is the number $3.14159\ldots$: the rim of a circle, all the way round
           elements: [
             { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
             { kind: "point", at: [0, 0], label: "O", labelAt: "se", tone: "muted" },
-            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
+            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 2 },
             { kind: "turn", r: 2, to: 180, label: "180°", labelAt: "s", step: 2 },
             { kind: "arc", centre: [0, 0], r: 2, from: 0, to: 180, label: "arc = πr", labelAt: "n", tone: "good", step: 3 },
             { kind: "point", at: [1.081, 1.683], label: "1ᶜ", labelAt: "ne", step: 4 },
@@ -56,11 +75,14 @@ Here $\pi$ is the number $3.14159\ldots$: the rim of a circle, all the way round
         },
       },
       {
-        body: t`**Degrees to radians.** To change degrees into radians, multiply by $\frac{\pi}{180}$. It comes from the key fact: divide $\pi^c = 180^\circ$ by $180$ to get $1^\circ = \left(\frac{\pi}{180}\right)^c$. So
-
-$$\theta^\circ = \left(\theta \times \frac{\pi}{180}\right)^c$$
-
-For example, $70^\circ = \left(70 \times \frac{\pi}{180}\right)^c$ $= \left(\frac{7\pi}{18}\right)^c$.`,
+        title: "Degrees to radians",
+        points: [
+          t`To change degrees into radians, multiply by $\frac{\pi}{180}$.`,
+          t`Divide the key fact, $\pi^c = 180^\circ$, by $180$: $1^\circ = \left(\frac{\pi}{180}\right)^c$.`,
+          t`So $\theta^\circ = \left(\theta \times \frac{\pi}{180}\right)^c$.`,
+          t`For example, take an angle of $70^\circ$.`,
+          t`Then $70^\circ = \left(70 \times \frac{\pi}{180}\right)^c = \left(\frac{7\pi}{18}\right)^c$.`,
+        ],
         figure: {
           alt: "A circle with centre O. An arm turns 70° anticlockwise from the initial arm. In radians the same angle is 7π/18.",
           axes: "none",
@@ -68,18 +90,22 @@ For example, $70^\circ = \left(70 \times \frac{\pi}{180}\right)^c$ $= \left(\fra
           elements: [
             { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
-            { kind: "turn", r: 2, to: 70, label: "70°", labelAt: "ne", step: 2 },
-            { kind: "label", at: [0, -0.7], label: "70° = (7π/18)ᶜ", labelAt: "s", step: 3 },
+            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 4 },
+            { kind: "turn", r: 2, to: 70, label: "70°", labelAt: "ne", step: 4 },
+            { kind: "label", at: [0, -0.7], label: "70° = (7π/18)ᶜ", labelAt: "s", step: 5 },
           ],
         },
       },
       {
-        body: t`**Radians to degrees.** To change radians into degrees, multiply by $\frac{180}{\pi}$. Divide the key fact by $\pi$ to get one radian in degrees:
-
-$$1^c = \left(\frac{180}{\pi}\right)^\circ \approx 57^\circ 17' 45''$$
-
-So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$. To check a factor, try it on the key fact: it must turn $180^\circ$ into $\pi^c$, or $\pi^c$ into $180^\circ$.`,
+        title: "Radians to degrees",
+        points: [
+          t`To change radians into degrees, multiply by $\frac{180}{\pi}$.`,
+          t`Divide the key fact, $\pi^c = 180^\circ$, by $\pi$ to find one radian in degrees.`,
+          t`That gives $1^c = \left(\frac{180}{\pi}\right)^\circ \approx 57^\circ 17' 45''$.`,
+          t`So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$.`,
+          t`To check a factor, try it on the key fact.`,
+          t`It must turn $180^\circ$ into $\pi^c$, or $\pi^c$ into $180^\circ$.`,
+        ],
         figure: {
           alt: "A circle with centre O. An arm turns 1 radian anticlockwise from the initial arm, cutting off an arc as long as the radius. One radian is 180/π degrees, about 57°17′45″.",
           axes: "none",
@@ -87,15 +113,22 @@ So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$. To check a fac
           elements: [
             { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
+            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 2 },
             { kind: "turn", r: 2, to: 57.296, label: "1ᶜ", labelAt: "ne", step: 2 },
             { kind: "arc", centre: [0, 0], r: 2, from: 0, to: 57.296, label: "arc = r", labelAt: "e", tone: "good", step: 3 },
-            { kind: "label", at: [0, -0.7], label: "1ᶜ = (180/π)° ≈ 57°17′45″", labelAt: "s", step: 4 },
+            { kind: "label", at: [0, -0.7], label: "1ᶜ = (180/π)° ≈ 57°17′45″", labelAt: "s", step: 3 },
           ],
         },
       },
       {
-        body: t`**Negative angles.** A **negative angle** is a clockwise turn, and changing the unit does not change the direction: the minus sign stays. So $-90^\circ = -\left(\frac{\pi}{2}\right)^c$, and $\left(-\frac{\pi}{18}\right)^c = -10^\circ$.`,
+        title: "Negative angles",
+        points: [
+          t`A **negative angle** is a clockwise turn.`,
+          t`Changing the unit does not change the direction, so the minus sign stays.`,
+          t`Anticlockwise, $90^\circ = \left(\frac{\pi}{2}\right)^c$.`,
+          t`Clockwise, $-90^\circ = -\left(\frac{\pi}{2}\right)^c$.`,
+          t`In the same way, $\left(-\frac{\pi}{18}\right)^c = -10^\circ$.`,
+        ],
         figure: {
           alt: "From the initial arm, one arm turns 90° anticlockwise, upwards, labelled 90° = (π/2)ᶜ; another turns 90° clockwise, downwards, labelled −90° = −(π/2)ᶜ. The minus sign stays in both units.",
           axes: "none",
@@ -103,13 +136,21 @@ So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$. To check a fac
           elements: [
             { kind: "point", at: [0, 0], label: "O", labelAt: "w", tone: "muted" },
             { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm", labelAt: "s", tone: "good" },
-            { kind: "turn", r: 2.4, to: 90, label: "90° = (π/2)ᶜ", labelAt: "e", step: 1 },
-            { kind: "turn", r: 2.4, to: -90, label: "−90° = −(π/2)ᶜ", labelAt: "e", tone: "bad", step: 2 },
+            { kind: "turn", r: 2.4, to: 90, label: "90° = (π/2)ᶜ", labelAt: "e", step: 3 },
+            { kind: "turn", r: 2.4, to: -90, label: "−90° = −(π/2)ᶜ", labelAt: "e", tone: "bad", step: 4 },
           ],
         },
       },
       {
-        body: t`**Minutes first.** An angle in degrees and minutes, $D^\circ M'$, must become a single number of degrees before it is converted. A minute is $\frac{1}{60}$ of a degree, so $M' = \left(\frac{M}{60}\right)^\circ$. For example, $40^\circ 15' = \left(40\frac{15}{60}\right)^\circ$ $= 40.25^\circ$, not $40.15^\circ$. Then multiply by $\frac{\pi}{180}$ as usual.`,
+        title: "Minutes first",
+        points: [
+          t`An angle in degrees and minutes, $D^\circ M'$, must become one number of degrees before it is converted.`,
+          t`A minute is $\frac{1}{60}$ of a degree, so $M' = \left(\frac{M}{60}\right)^\circ$.`,
+          t`For example, take an angle of $40^\circ 15'$.`,
+          t`Its minutes are $15' = \left(\frac{15}{60}\right)^\circ = 0.25^\circ$.`,
+          t`So $40^\circ 15' = \left(40\frac{15}{60}\right)^\circ = 40.25^\circ$, not $40.15^\circ$.`,
+          t`Then multiply by $\frac{\pi}{180}$ as usual.`,
+        ],
         figure: {
           alt: "A circle with centre O. An arm turns 40°15′ anticlockwise from the initial arm. The 15 minutes are 15/60 of a degree, so the angle is 40.25°, not 40.15°.",
           axes: "none",
@@ -117,15 +158,22 @@ So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$. To check a fac
           elements: [
             { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
-            { kind: "turn", r: 2, to: 40.25, label: "40°15′", labelAt: "ne", step: 2 },
-            { kind: "label", at: [0, -0.7], label: "15′ = (15/60)° = 0.25°", labelAt: "s", step: 3 },
-            { kind: "label", at: [0, -1.2], label: "40°15′ = 40.25°", labelAt: "s", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 3 },
+            { kind: "turn", r: 2, to: 40.25, label: "40°15′", labelAt: "ne", step: 3 },
+            { kind: "label", at: [0, -0.7], label: "15′ = (15/60)° = 0.25°", labelAt: "s", step: 4 },
+            { kind: "label", at: [0, -1.2], label: "40°15′ = 40.25°", labelAt: "s", tone: "good", step: 5 },
           ],
         },
       },
       {
-        body: t`**No π in sight.** A radian measure without $\pi$, such as $3^c$, is still in radians: an arc of three radii, not $3^\circ$. Convert it the same way, multiplying by $\frac{180}{\pi}$: $3^c = \left(\frac{540}{\pi}\right)^\circ$. When the question says so, use $\pi = \frac{22}{7}$: $\frac{540 \times 7}{22} = \frac{1890}{11}$, so $3^c \approx 171.8^\circ$.`,
+        title: "No π in sight",
+        points: [
+          t`A radian measure without $\pi$, such as $3^c$, is still in radians.`,
+          t`It is an arc of three radii, not $3^\circ$.`,
+          t`Convert it the same way, multiplying by $\frac{180}{\pi}$: $3^c = \left(\frac{540}{\pi}\right)^\circ$.`,
+          t`When the question says so, use $\pi = \frac{22}{7}$.`,
+          t`Then $\frac{540 \times 7}{22} = \frac{1890}{11}$, so $3^c \approx 171.8^\circ$.`,
+        ],
         figure: {
           alt: "A circle with centre O. An arm turns 3 radians anticlockwise from the initial arm, stopping just short of half a turn. The rim it sweeps is marked in three arcs, each as long as the radius r. 3 radians is 540/π degrees.",
           axes: "none",
@@ -134,11 +182,11 @@ So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$. To check a fac
             { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
             { kind: "point", at: [0, 0], label: "O", labelAt: "se", tone: "muted" },
             { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
-            { kind: "turn", r: 2, to: 171.887, label: "3ᶜ", labelAt: "w", step: 2 },
-            { kind: "arc", centre: [0, 0], r: 2, from: 0, to: 57.296, label: "r", labelAt: "ne", tone: "good", step: 3 },
-            { kind: "arc", centre: [0, 0], r: 2, from: 57.296, to: 114.592, label: "r", labelAt: "n", step: 3 },
-            { kind: "arc", centre: [0, 0], r: 2, from: 114.592, to: 171.887, label: "r", labelAt: "nw", tone: "good", step: 3 },
-            { kind: "label", at: [0, -0.7], label: "3ᶜ = (540/π)°", labelAt: "s", step: 4 },
+            { kind: "turn", r: 2, to: 171.887, label: "3ᶜ", labelAt: "w", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 2, from: 0, to: 57.296, label: "r", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "arc", centre: [0, 0], r: 2, from: 57.296, to: 114.592, label: "r", labelAt: "n", step: 2 },
+            { kind: "arc", centre: [0, 0], r: 2, from: 114.592, to: 171.887, label: "r", labelAt: "nw", tone: "good", step: 2 },
+            { kind: "label", at: [0, -0.7], label: "3ᶜ = (540/π)°", labelAt: "s", step: 3 },
           ],
         },
       },
@@ -172,12 +220,12 @@ So $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$. To check a fac
       elements: [
         { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
         { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-        { kind: "segment", from: [0, 0], to: [2, 0], label: "r", labelAt: "s", tone: "good", step: 1 },
-        { kind: "label", at: [2, 0], label: "A", labelAt: "se", tone: "good", step: 1 },
-        { kind: "turn", r: 2, to: 57.296, label: "B", labelAt: "ne", step: 2 },
-        { kind: "arc", centre: [0, 0], r: 2, from: 0, to: 57.296, label: "arc AB = r", labelAt: "e", tone: "good", step: 3 },
-        { kind: "label", at: [0.54, 0.841], label: "r", labelAt: "nw", step: 3 },
-        { kind: "label", at: [0.746, 0.408], label: "1ᶜ", labelAt: "e", step: 4 },
+        { kind: "segment", from: [0, 0], to: [2, 0], label: "r", labelAt: "s", tone: "good", step: 3 },
+        { kind: "label", at: [2, 0], label: "A", labelAt: "se", tone: "good", step: 4 },
+        { kind: "turn", r: 2, to: 57.296, label: "B", labelAt: "ne", step: 4 },
+        { kind: "label", at: [0.54, 0.841], label: "r", labelAt: "nw", step: 4 },
+        { kind: "arc", centre: [0, 0], r: 2, from: 0, to: 57.296, label: "arc AB = r", labelAt: "e", tone: "good", step: 5 },
+        { kind: "label", at: [0.746, 0.408], label: "1ᶜ", labelAt: "e", step: 6 },
       ],
     },
     visualSpec: t`Drag the terminal arm round the circle; the arc it sweeps is counted in radii, and a readout shows the angle in degrees and in radians (as a multiple of $\pi$ and as a decimal) side by side.`,

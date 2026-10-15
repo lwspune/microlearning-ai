@@ -10,12 +10,25 @@ export const c05: Concept = {
     reveal: t`$s = r\theta$ only works with $\theta$ in **radians**. $120^\circ = \frac{2\pi}{3}$, so $s = 30 \times \frac{2\pi}{3} = 20\pi \approx 62.8$ cm. That makes sense: it is a third of the whole circle, whose circumference is $60\pi \approx 188$ cm.`,
   },
   explanation: {
-    intuition: t`A **circle** is every point at the same distance from a fixed point, its **centre** $O$. That distance is the **radius**, $r$. Turn a radius about $O$ and its tip traces an **arc**, a piece of the circle. The arc **subtends** the angle the radius turned through: the angle at the centre. One **radian** is the angle whose arc is exactly one radius long. So $\theta$ radians cut off $\theta$ radius-lengths of arc.`,
+    intuition: [
+      t`A **circle** is every point at the same distance, the **radius** $r$, from a fixed point, its **centre** $O$.`,
+      t`Turn the radius about $O$, and its tip traces an **arc**, a piece of the circle.`,
+      t`The arc **subtends** the angle the radius turned through: the angle at the centre.`,
+      t`One **radian** is the angle whose arc is exactly one radius long.`,
+      t`Turn on to $2.5$ radians: the tip traces one more radius-length of arc, then half of one.`,
+      t`So $\theta$ radians cut off $\theta$ radius-lengths of arc.`,
+    ],
     formal: [
       {
-        body: t`**Arc length.** The **length of an arc**, $s$, is the distance along the circle from one end of the arc to the other. In a circle of radius $r$, an arc that subtends $\theta^c$, that is $\theta$ radians, at the centre has length
-$$s = r\theta \qquad (\theta \text{ in radians})$$
-The arc comes out in the unit of the radius: a radius in cm gives an arc in cm. Double the radius, or double the angle, and the arc doubles.`,
+        title: "Arc length",
+        points: [
+          t`Take a circle of radius $r$, with centre $O$.`,
+          t`Turn the radius about $O$ through an angle $\theta^c$, that is $\theta$ radians.`,
+          t`Its tip traces an arc; the **length of the arc**, $s$, is the distance along the circle from end to end.`,
+          t`So $s = r\theta$, with $\theta$ in radians.`,
+          t`The arc comes out in the unit of the radius: a radius in cm gives an arc in cm.`,
+          t`Double the radius, or double the angle, and the arc doubles.`,
+        ],
         figure: {
           alt: "A circle with centre O. The radius r lies along the initial arm and turns anticlockwise about O through an angle θ. Its tip traces the arc s between the two radii: s = rθ.",
           axes: "none",
@@ -25,14 +38,21 @@ The arc comes out in the unit of the radius: a radius in cm gives an arc in cm. 
             { kind: "point", at: [0, 0], label: "O", labelAt: "s" },
             { kind: "segment", from: [0, 0], to: [3, 0], label: "radius r", labelAt: "s", tone: "good", step: 1 },
             { kind: "turn", r: 3, to: 100, label: "θ", labelAt: "n", step: 2 },
-            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 100, label: "s = rθ", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 100, label: "s", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [0, -1.5], label: "s = rθ", labelAt: "n", tone: "good", step: 4 },
           ],
         },
       },
       {
-        body: t`**Angle in degrees: convert first.** An angle given in **degrees** must be changed to radians before it goes into $s = r\theta$:
-$$\theta^c = \theta^\circ \times \frac{\pi}{180}$$
-This is the same as taking the fraction $\frac{\theta^\circ}{360}$ of the **circumference**, the whole way round the circle, $2\pi r$. A quarter turn is $90^\circ = \frac{\pi}{2}$, so its arc is $s = \frac{\pi r}{2}$, a quarter of $2\pi r$. Putting $90$ straight in would give $90r$, far longer than the whole circle.`,
+        title: "Angle in degrees: convert first",
+        points: [
+          t`An angle in **degrees** must be changed to radians before it goes into $s = r\theta$.`,
+          t`Convert with $\theta^c = \theta^\circ \times \frac{\pi}{180}$.`,
+          t`This is the same as taking the fraction $\frac{\theta^\circ}{360}$ of the **circumference** $2\pi r$, the whole way round the circle.`,
+          t`A quarter turn is $90^\circ = \frac{\pi}{2}$.`,
+          t`So its arc is $s = \frac{\pi r}{2}$, a quarter of $2\pi r$.`,
+          t`Putting $90$ straight in would give $90r$, far longer than the whole circle.`,
+        ],
         figure: {
           alt: "A circle with centre O and radius r along the initial arm. The radius turns a quarter turn, 90°, which is π/2 radians, and its tip traces the arc s = πr/2, a quarter of the circumference 2πr.",
           axes: "none",
@@ -41,16 +61,22 @@ This is the same as taking the fraction $\frac{\theta^\circ}{360}$ of the **circ
             { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
             { kind: "segment", from: [0, 0], to: [3, 0], label: "r", labelAt: "s", tone: "good", step: 1 },
-            { kind: "turn", r: 3, to: 90, label: "90° = π/2", labelAt: "nw", step: 2 },
-            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 90, label: "s = πr/2", labelAt: "ne", tone: "good", step: 3 },
-            { kind: "label", at: [0, -1.5], label: "a quarter of 2πr", labelAt: "n", tone: "good", step: 4 },
+            { kind: "turn", r: 3, to: 90, label: "90° = π/2", labelAt: "nw", step: 4 },
+            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 90, label: "s = πr/2", labelAt: "ne", tone: "good", step: 5 },
+            { kind: "label", at: [0, -1.5], label: "a quarter of 2πr", labelAt: "n", tone: "good", step: 5 },
           ],
         },
       },
       {
-        body: t`**Finding the radius or angle.** Rearranging $s = r\theta$ gives the radius or the angle:
-$$r = \frac{s}{\theta} \qquad \theta = \frac{s}{r}$$
-The angle comes out in radians; multiply by $\frac{180}{\pi}$ for degrees. An arc of $6$ cm on a circle of radius $4$ cm subtends $\theta = \frac{6}{4} = 1.5$ radians, and $1.5 \times \frac{180}{\pi}$ $= \left(\frac{270}{\pi}\right)^\circ$, about $86^\circ$.`,
+        title: "Finding the radius or angle",
+        points: [
+          t`Rearranging $s = r\theta$ gives the radius, $r = \frac{s}{\theta}$, and the angle, $\theta = \frac{s}{r}$.`,
+          t`The angle comes out in radians; multiply by $\frac{180}{\pi}$ for degrees.`,
+          t`Take a circle of radius $4$ cm.`,
+          t`Mark an arc $6$ cm long, starting at the radius's tip.`,
+          t`The arc subtends $\theta = \frac{6}{4} = 1.5$ radians at the centre.`,
+          t`In degrees, that is $1.5 \times \frac{180}{\pi} = \left(\frac{270}{\pi}\right)^\circ$, about $86^\circ$.`,
+        ],
         figure: {
           alt: "A circle with centre O and radius 4 along the initial arm, and an arc of length 6 starting at its tip. The radius turns anticlockwise until its tip reaches the end of the arc: it turns through 6/4 = 1.5 radians, which is 270/π degrees, about 86°.",
           axes: "none",
@@ -58,17 +84,48 @@ The angle comes out in radians; multiply by $\frac{180}{\pi}$ for degrees. An ar
           elements: [
             { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
-            { kind: "segment", from: [0, 0], to: [3, 0], label: "r = 4", labelAt: "s", tone: "good", step: 1 },
-            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 85.944, label: "s = 6", labelAt: "ne", tone: "good", step: 2 },
-            { kind: "turn", r: 3, to: 85.944, label: "θ = 1.5 rad", labelAt: "nw", step: 3 },
-            { kind: "label", at: [0, -1.5], label: "(270/π)° ≈ 86°", labelAt: "n", step: 4 },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "r = 4", labelAt: "s", tone: "good", step: 3 },
+            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 85.944, label: "s = 6", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "turn", r: 3, to: 85.944, label: "θ = 1.5 rad", labelAt: "nw", step: 5 },
+            { kind: "label", at: [0, -1.5], label: "(270/π)° ≈ 86°", labelAt: "n", step: 6 },
           ],
         },
       },
       {
-        body: t`**Equal arcs in two circles.** When arcs of the **same length** $s$ lie on circles of radii $r_1$ and $r_2$ and subtend $\theta_1$ and $\theta_2$, then $s = r_1\theta_1 = r_2\theta_2$, so
-$$r_1 : r_2 = \theta_2 : \theta_1$$
-The angles swap places: the smaller angle needs the bigger circle. Put both angles in the same unit first. An arc of $\frac{\pi}{2}$ cm subtends $\frac{\pi}{6}$ on a circle of radius $3$ cm and $\frac{\pi}{4}$ on one of radius $2$ cm: $3 : 2 = \frac{\pi}{4} : \frac{\pi}{6}$.`,
+        title: "Equal arcs in two circles",
+        points: [
+          t`Take two circles, of radii $r_1$ and $r_2$.`,
+          t`In each, the radius turns: through $\theta_1$ in the first, through $\theta_2$ in the second.`,
+          t`The tips trace arcs of the **same length** $s$, so $s = r_1\theta_1 = r_2\theta_2$.`,
+          t`So $r_1 : r_2 = \theta_2 : \theta_1$.`,
+          t`The angles swap places: the smaller angle needs the bigger circle.`,
+          t`Put both angles in the same unit first.`,
+        ],
+        figure: {
+          alt: "Two circles, of radii r₁ and r₂, the first the bigger. In the first the radius turns through θ₁; in the second, through a bigger angle θ₂. The two arcs they trace have the same length s: r₁ : r₂ = θ₂ : θ₁.",
+          axes: "none",
+          view: { x: [-5.7, 4.9], y: [-3.6, 3] },
+          elements: [
+            { kind: "circle", centre: [-2.9, 0], r: 2.4, tone: "muted", dashed: true },
+            { kind: "circle", centre: [2.6, 0], r: 1.6, tone: "muted", dashed: true },
+            { kind: "segment", from: [-2.9, 0], to: [-0.5, 0], label: "r₁", labelAt: "s", tone: "good", step: 1 },
+            { kind: "segment", from: [2.6, 0], to: [4.2, 0], label: "r₂", labelAt: "s", tone: "good", step: 1 },
+            { kind: "turn", centre: [-2.9, 0], r: 2.4, to: 30, label: "θ₁", labelAt: "ne", step: 2 },
+            { kind: "turn", centre: [2.6, 0], r: 1.6, to: 45, label: "θ₂", labelAt: "ne", step: 2 },
+            { kind: "arc", centre: [-2.9, 0], r: 2.4, from: 0, to: 30, label: "s", labelAt: "se", tone: "good", step: 3 },
+            { kind: "arc", centre: [2.6, 0], r: 1.6, from: 0, to: 45, label: "s", labelAt: "se", tone: "good", step: 3 },
+            { kind: "label", at: [-0.2, -2.75], label: "r₁ : r₂ = θ₂ : θ₁", labelAt: "s", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Equal arcs: an example",
+        points: [
+          t`Take circles of radii $3$ cm and $2$ cm.`,
+          t`In the first, the radius turns through $\frac{\pi}{6}$; in the second, through $\frac{\pi}{4}$.`,
+          t`Both tips trace arcs $\frac{\pi}{2}$ cm long: $3 \times \frac{\pi}{6} = 2 \times \frac{\pi}{4} = \frac{\pi}{2}$.`,
+          t`So $3 : 2 = \frac{\pi}{4} : \frac{\pi}{6}$: the smaller angle goes with the bigger circle.`,
+        ],
         figure: {
           alt: "Two circles, of radii r₁ = 3 and r₂ = 2. In the bigger circle the radius turns through π/6; in the smaller one it turns through π/4. The two arcs they trace have the same length s: the smaller angle goes with the bigger circle, r₁ : r₂ = 3 : 2.",
           axes: "none",
@@ -87,7 +144,14 @@ The angles swap places: the smaller angle needs the bigger circle. Put both angl
         },
       },
       {
-        body: t`**Find the circle in the story.** In a word problem, the **centre** is the point that stays still, the **radius** is what swings about it, and the **arc** is the path its far end traces. A pendulum's length is the radius and the bob's path is the arc; a tight rope tied to a post is the radius and the path walked is the arc. If the diameter is given, halve it: $r$ is always the radius.`,
+        title: "Find the circle in the story",
+        points: [
+          t`In a word problem, the **centre** is the point that stays still.`,
+          t`The **radius** is what swings about it: a pendulum's length is the radius.`,
+          t`The **arc** is the path the radius's far end traces: the pendulum bob's path.`,
+          t`A tight rope tied to a post is the radius, and the path walked is the arc.`,
+          t`If the diameter is given, halve it: $r$ is always the radius.`,
+        ],
         figure: {
           alt: "A pendulum hangs from a pivot O. Its string, the radius r, starts on the left and swings through an angle θ to the right. The bob's path is the arc s below the pivot.",
           axes: "none",
@@ -95,14 +159,22 @@ The angles swap places: the smaller angle needs the bigger circle. Put both angl
           elements: [
             { kind: "segment", from: [-1.8, 0], to: [1.8, 0], tone: "muted" },
             { kind: "point", at: [0, 0], label: "pivot O", labelAt: "n" },
-            { kind: "segment", from: [0, 0], to: [-1.5, -2.598], label: "string = r", labelAt: "nw", tone: "good", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-1.5, -2.598], label: "string = r", labelAt: "nw", tone: "good", step: 2 },
             { kind: "turn", r: 3, from: 240, to: 300, label: "θ", labelAt: "e", step: 2 },
             { kind: "arc", centre: [0, 0], r: 3, from: 240, to: 300, label: "s: the bob's path", labelAt: "s", tone: "good", step: 3 },
           ],
         },
       },
       {
-        body: t`**A chord is not the arc.** A **chord** is the straight segment joining two points of a circle. The arc between the same two points curves outward, so it is longer. A chord equal to the radius makes an equilateral triangle with the centre, so it subtends $60^\circ = \frac{\pi}{3}$, not $1$ radian. Its arc is $r \times \frac{\pi}{3} \approx 1.05r$, a little longer than the chord. One radian is where the **arc**, not the chord, equals the radius.`,
+        title: "A chord is not the arc",
+        points: [
+          t`A **chord** is the straight segment joining two points of a circle.`,
+          t`The arc between the same two points curves outward, so it is longer than the chord.`,
+          t`Take a chord $AB$ as long as the radius: $OA = AB = r$.`,
+          t`Join $O$ to $B$: triangle $OAB$ is equilateral, so $\angle AOB = 60^\circ = \frac{\pi}{3}$.`,
+          t`Its arc is $r \times \frac{\pi}{3} \approx 1.05r$, a little longer than the chord.`,
+          t`So this chord does not cut off $1$ radian: one radian is where the **arc**, not the chord, equals the radius.`,
+        ],
         figure: {
           alt: "A circle with centre O. The radius OA turns 60° anticlockwise to OB. The chord AB is as long as the radius, so triangle OAB is equilateral and angle AOB is 60°, which is π/3 radians. The arc AB, about 1.05r, curves outside the chord and is a little longer.",
           axes: "none",
@@ -111,9 +183,9 @@ The angles swap places: the smaller angle needs the bigger circle. Put both angl
             { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
             { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
             { kind: "point", at: [3, 0], label: "A", labelAt: "se" },
-            { kind: "segment", from: [0, 0], to: [3, 0], label: "OA = r", labelAt: "s", tone: "good", step: 1 },
-            { kind: "turn", r: 3, to: 60, label: "OB = r", labelAt: "w", step: 2 },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "OA = r", labelAt: "s", tone: "good", step: 3 },
             { kind: "segment", from: [3, 0], to: [1.5, 2.598], label: "AB = r", labelAt: "w", step: 3 },
+            { kind: "turn", r: 3, to: 60, label: "OB = r", labelAt: "w", step: 4 },
             { kind: "label", at: [0.95, 0.45], label: "60°", labelAt: "e", step: 4 },
             { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 60, label: "arc ≈ 1.05r", labelAt: "e", tone: "good", step: 5 },
           ],
@@ -150,9 +222,11 @@ The angles swap places: the smaller angle needs the bigger circle. Put both angl
         { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
         { kind: "point", at: [0, 0], label: "centre O", labelAt: "sw" },
         { kind: "segment", from: [0, 0], to: [3, 0], label: "radius r", labelAt: "s", tone: "good", step: 1 },
-        { kind: "turn", r: 3, to: 57.296, label: "1 rad", labelAt: "ne", step: 2 },
-        { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 57.296, label: "arc = r", labelAt: "e", tone: "good", step: 3 },
-        { kind: "turn", r: 3, from: 57.296, to: 143.239, label: "2.5 rad", labelAt: "w", step: 4 },
+        { kind: "turn", r: 3, to: 57.296, step: 2 },
+        { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 57.296, tone: "good", step: 2 },
+        { kind: "label", at: [1.621, 2.524], label: "1 rad", labelAt: "ne", step: 4 },
+        { kind: "label", at: [2.633, 1.438], label: "arc = r", labelAt: "e", tone: "good", step: 4 },
+        { kind: "turn", r: 3, from: 57.296, to: 143.239, label: "2.5 rad", labelAt: "w", step: 5 },
         { kind: "arc", centre: [0, 0], r: 3, from: 57.296, to: 114.592, label: "r", labelAt: "n", tone: "good", step: 5 },
         { kind: "arc", centre: [0, 0], r: 3, from: 114.592, to: 143.239, label: "½r", labelAt: "nw", tone: "good", step: 5 },
         { kind: "label", at: [0, -1.4], label: "arc = r + r + ½r = 2.5r", labelAt: "n", tone: "good", step: 6 },

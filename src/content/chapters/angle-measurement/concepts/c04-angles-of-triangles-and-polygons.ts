@@ -26,113 +26,170 @@ export const c04: Concept = {
     reveal: t`Put both in one unit first: $\left(\frac{\pi}{4}\right)^c = 45^\circ$. The angles add to $180^\circ$, so the third is $180^\circ - 45^\circ - 60^\circ = 75^\circ$, which is $\left(\frac{5\pi}{12}\right)^c$.`,
   },
   explanation: {
-    intuition: t`A **polygon** is a closed figure made of straight **sides**: a **triangle** has three, a **quadrilateral** four. The angle inside it at a **corner**, between the two sides that meet there, is an **interior angle**. All its interior angles added up make its **angle sum**. Put a triangle's three angles side by side and they fill a straight line: a **straight angle**, $180^\circ$, which in radians is $\pi^c$. So a triangle with angles $A$, $B$, $C$ has $A + B + C = \pi^c = 180^\circ$. The geometry is the same in either unit; only the numbers change.`,
+    intuition: [
+      t`A **polygon** is a closed figure made of straight **sides**: a **triangle** has three, a **quadrilateral** four.`,
+      t`At a **corner**, the angle inside, between the two sides that meet there, is an **interior angle**.`,
+      t`All the interior angles added up make the polygon's **angle sum**.`,
+      t`Put a triangle's three angles side by side: they fill a straight line, a **straight angle**, $180^\circ$ or $\pi^c$.`,
+      t`So a triangle with angles $A$, $B$, $C$ has $A + B + C = \pi^c = 180^\circ$.`,
+      t`The geometry is the same in either unit; only the numbers change.`,
+    ],
     formal: [
       {
-        body: t`**Polygons split into triangles.** A **diagonal** is a segment joining two corners that are not next to each other. Draw every diagonal from one corner of a polygon with $n$ sides, an **$n$-gon**, and it splits into $n - 2$ triangles. Their angles together make up the polygon's interior angles, so
-
-$$\text{angle sum} = (n - 2)\pi.$$
-
-A quadrilateral ($n = 4$) splits into $2$ triangles: its angles add to $2\pi^c = 360^\circ$. A hexagon ($n = 6$) splits into $4$: its angles add to $4\pi^c = 720^\circ$.`,
+        title: "Polygons split into triangles",
+        points: [
+          t`A **diagonal** is a segment joining two corners that are not next to each other.`,
+          t`Draw every diagonal from one corner of a polygon with $n$ sides, an **$n$-gon**.`,
+          t`The diagonals split it into $n - 2$ triangles.`,
+          t`Their angles together make up the polygon's interior angles, so the angle sum is $(n - 2)\pi$.`,
+          t`A quadrilateral ($n = 4$) splits into $2$ triangles, so its angles add to $2\pi^c = 360^\circ$.`,
+          t`A hexagon ($n = 6$) splits into $4$, so its angles add to $4\pi^c = 720^\circ$.`,
+        ],
         figure: {
-          alt: "A hexagon, six sides, not regular. Three diagonals drawn from its bottom-left corner split it into four triangles, shaded and numbered 1 to 4 in turn. Four triangles of angle sum π each give the hexagon's angle sum, 4π = 720°.",
+          alt: "A hexagon, six sides, not regular. Three diagonals drawn from its bottom-left corner split it into four triangles, shaded and numbered 1 to 4. Four triangles of angle sum π each give the hexagon's angle sum, 4π = 720°.",
           axes: "none",
           view: { x: [-2.4, 2.4], y: [-2.4, 2] },
           elements: [
             ...sidesOf(HEX),
             { kind: "point", at: HEX[0], tone: "muted" },
-            { kind: "segment", from: HEX[0], to: HEX[2], dashed: true, step: 1 },
-            { kind: "segment", from: HEX[0], to: HEX[3], dashed: true, step: 1 },
-            { kind: "segment", from: HEX[0], to: HEX[4], dashed: true, step: 1 },
-            triangle(HEX[0], HEX[1], HEX[2], "good", 2),
-            { kind: "label", at: [0.267, -1.13], label: "1", step: 2 },
+            { kind: "segment", from: HEX[0], to: HEX[2], dashed: true, step: 2 },
+            { kind: "segment", from: HEX[0], to: HEX[3], dashed: true, step: 2 },
+            { kind: "segment", from: HEX[0], to: HEX[4], dashed: true, step: 2 },
+            triangle(HEX[0], HEX[1], HEX[2], "good", 3),
+            { kind: "label", at: [0.267, -1.13], label: "1", step: 3 },
             triangle(HEX[0], HEX[2], HEX[3], "accent", 3),
             { kind: "label", at: [0.567, -0.2], label: "2", step: 3 },
-            triangle(HEX[0], HEX[3], HEX[4], "good", 4),
-            { kind: "label", at: [-0.2, 0.433], label: "3", step: 4 },
-            triangle(HEX[0], HEX[4], HEX[5], "accent", 5),
-            { kind: "label", at: [-1.367, 0.167], label: "4", step: 5 },
+            triangle(HEX[0], HEX[3], HEX[4], "good", 3),
+            { kind: "label", at: [-0.2, 0.433], label: "3", step: 3 },
+            triangle(HEX[0], HEX[4], HEX[5], "accent", 3),
+            { kind: "label", at: [-1.367, 0.167], label: "4", step: 3 },
             { kind: "label", at: [0, -1.75], label: "4 triangles: 4πᶜ = 720°", labelAt: "s", tone: "good", step: 6 },
           ],
         },
       },
       {
-        body: t`**One unit first.** Angles in **mixed units**, some in radians and some in degrees, cannot be added as they stand. Convert every angle to one unit before you add or subtract:
-
-$$\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ.$$
-
-So $\left(\frac{\pi}{5}\right)^c$ is $36^\circ$, not $\frac{\pi}{5}$ degrees.`,
+        title: "One unit first",
+        points: [
+          t`Angles in **mixed units**, some in radians and some in degrees, cannot be added as they stand.`,
+          t`Convert every angle to one unit before you add or subtract.`,
+          t`Radians turn into degrees by $\theta^c = \left(\theta \times \frac{180}{\pi}\right)^\circ$.`,
+          t`So $\left(\frac{\pi}{5}\right)^c$ is $36^\circ$, not $\frac{\pi}{5}$ degrees.`,
+        ],
       },
       {
-        body: t`**Take away the known angles.** The **known angles** are the ones the question gives, or that the figure fixes, such as a right angle. Subtract them from the angle sum first, then share only what is left among the unknown angles. A **right-angled triangle** has one right angle, $\frac{\pi}{2}$. Its other two angles are **acute**, each smaller than a right angle, and they share $\pi - \frac{\pi}{2} = \frac{\pi}{2}$, not $\pi$.`,
+        title: "Take away the known angles",
+        points: [
+          t`The **known angles** are the ones the question gives, or that the figure fixes, such as a right angle.`,
+          t`Subtract the known angles from the angle sum first.`,
+          t`Then share only what is left among the unknown angles.`,
+          t`A **right-angled triangle** has one right angle, $\frac{\pi}{2}$.`,
+          t`Its other two angles are **acute**: each is smaller than a right angle.`,
+          t`The two acute angles share $\pi - \frac{\pi}{2} = \frac{\pi}{2}$, not $\pi$.`,
+        ],
         figure: {
           alt: "A right-angled triangle. The right angle, π/2, is marked with a small square. The two acute angles x and y are marked at the other corners. They share what the right angle leaves: x + y = π − π/2 = π/2.",
           axes: "none",
           view: { x: [-0.8, 3.8], y: [-0.6, 2.6] },
           elements: [
             ...sidesOf([[0, 0], [3, 0], [0, 2]]),
-            { kind: "segment", from: [0.28, 0], to: [0.28, 0.28], step: 1 },
-            { kind: "segment", from: [0.28, 0.28], to: [0, 0.28], step: 1 },
-            { kind: "label", at: [0.28, 0.28], label: "π/2", labelAt: "ne", step: 1 },
-            { kind: "angle", at: [3, 0], from: 146.31, to: 180, label: "x", labelAt: "w", tone: "good", step: 2 },
-            { kind: "angle", at: [0, 2], from: 270, to: 326.31, label: "y", labelAt: "s", tone: "good", step: 2 },
-            { kind: "label", at: [1.6, 1.4], label: "x + y = π − π/2 = π/2", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [0.28, 0], to: [0.28, 0.28], step: 4 },
+            { kind: "segment", from: [0.28, 0.28], to: [0, 0.28], step: 4 },
+            { kind: "label", at: [0.28, 0.28], label: "π/2", labelAt: "ne", step: 4 },
+            { kind: "angle", at: [3, 0], from: 146.31, to: 180, label: "x", labelAt: "w", tone: "good", step: 5 },
+            { kind: "angle", at: [0, 2], from: 270, to: 326.31, label: "y", labelAt: "s", tone: "good", step: 5 },
+            { kind: "label", at: [1.6, 1.4], label: "x + y = π − π/2 = π/2", labelAt: "e", tone: "good", step: 6 },
           ],
         },
       },
       {
-        body: t`**Sharing in a ratio or A.P.:** Angles in the **ratio** $a : b : c$ are $a$, $b$ and $c$ times one number $k$: they are $ak$, $bk$, $ck$, and what they add up to fixes $k$. For $3 : 4 : 5$ in a triangle, $12k = \pi$, so $k = \frac{\pi}{12}$. Three angles in **arithmetic progression (A.P.)** go up by the same step, the **common difference** $d$: they are $a - d$, $a$, $a + d$. They add to $3a$, so in a triangle $3a = \pi$, and the middle angle is $a = \frac{\pi}{3}$ whatever $d$ is.`,
+        title: "Sharing in a ratio or A.P.",
+        points: [
+          t`Angles in the **ratio** $a : b : c$ are $a$, $b$ and $c$ times one number $k$: $ak$, $bk$, $ck$.`,
+          t`What the angles add up to fixes $k$.`,
+          t`For $3 : 4 : 5$ in a triangle, $12k = \pi$, so $k = \frac{\pi}{12}$.`,
+          t`Three angles in **arithmetic progression (A.P.)** go up by the same step, the **common difference** $d$.`,
+          t`So they are $a - d$, $a$, $a + d$, and they add to $3a$.`,
+          t`In a triangle $3a = \pi$, so the middle angle is $a = \frac{\pi}{3}$, whatever $d$ is.`,
+        ],
       },
       {
-        body: t`**Regular polygon.** A **regular polygon** has all its sides equal and all its interior angles equal. Its $n$ equal angles share the angle sum $(n - 2)\pi$, so each interior angle is
-
-$$\frac{(n-2)\pi}{n}.$$
-
-A regular hexagon's angles add to $4\pi$, so each is $\frac{4\pi}{6} = \frac{2\pi}{3}$, or $120^\circ$. For $n = 10$, each is $\frac{8\pi}{10} = \frac{4\pi}{5}$.`,
+        title: "Regular polygon",
+        points: [
+          t`A **regular polygon** has all its sides equal and all its interior angles equal.`,
+          t`Its $n$ equal angles share the angle sum $(n - 2)\pi$.`,
+          t`So each interior angle is $\frac{(n-2)\pi}{n}$.`,
+          t`A regular hexagon's angles add to $4\pi$, so each is $\frac{4\pi}{6} = \frac{2\pi}{3}$, or $120^\circ$.`,
+          t`For $n = 10$, each is $\frac{8\pi}{10} = \frac{4\pi}{5}$.`,
+        ],
         figure: {
           alt: "A regular hexagon. Its six interior angles are marked, each labelled 2π/3: they are equal, and share the angle sum 4π, so each is 4π ÷ 6 = 2π/3 = 120°.",
           axes: "none",
           view: { x: [-2.2, 2.2], y: [-2.3, 1.9] },
           elements: [
             ...sidesOf(REG),
-            ...REG.map((at, k): FigureElement => ({ kind: "angle", at, from: 60 * k, to: 60 * k + 120, label: "2π/3", labelAt: (["n", "n", "w", "s", "s", "e"] as const)[k], step: 1 })),
-            { kind: "label", at: [0, -1.5], label: "4π ÷ 6 = 2π/3 = 120° each", labelAt: "s", tone: "good", step: 2 },
+            ...REG.map((at, k): FigureElement => ({ kind: "angle", at, from: 60 * k, to: 60 * k + 120, label: "2π/3", labelAt: (["n", "n", "w", "s", "s", "e"] as const)[k], step: 4 })),
+            { kind: "label", at: [0, -1.5], label: "4π ÷ 6 = 2π/3 = 120° each", labelAt: "s", tone: "good", step: 4 },
           ],
         },
       },
       {
-        body: t`**Exterior angles.** Extend a side of a polygon past a corner. The angle between that extension and the next side is the **exterior angle** at the corner. It lies on a straight line with the interior angle there, so the two add to $\pi$. Walking round the polygon, you turn through the exterior angle at each corner and come back facing the way you started: the $n$ exterior angles make one full turn, $2\pi$. In a regular polygon they are equal, so each is
-
-$$\frac{2\pi}{n} = \pi - \frac{(n-2)\pi}{n}.$$
-
-For a hexagon that is $\frac{\pi}{3}$; for $n = 10$, it is $\frac{\pi}{5}$.`,
+        title: "Exterior angles",
+        points: [
+          t`Extend a side of a polygon past a corner.`,
+          t`The angle between that extension and the next side is the **exterior angle** at the corner.`,
+          t`It lies on a straight line with the interior angle there, so the two add to $\pi$.`,
+        ],
         figure: {
-          alt: "A regular hexagon. The bottom side is extended past the bottom-right corner. Beside the interior angle there, 2π/3, an arm turns from the extended side round to the next side: the exterior angle, π/3. On a straight line, 2π/3 + π/3 = π. Then at each of the other five corners an arm turns through π/3 from the extended side to the next side. Six turns of π/3 make 2π, one full turn.",
+          alt: "A regular hexagon. The bottom side is extended past the bottom-right corner. An arm turns from the extended side round to the next side: the exterior angle, π/3. Beside it is the interior angle there, 2π/3. On a straight line, 2π/3 + π/3 = π.",
           axes: "none",
           view: { x: [-2.8, 2.8], y: [-3, 2.4] },
           elements: [
             ...sidesOf(REG),
             { kind: "segment", from: REG[1], to: [1.6, -1.386], dashed: true, label: "side extended", labelAt: "s", tone: "good", step: 1 },
-            { kind: "angle", at: REG[1], from: 60, to: 180, label: "interior 2π/3", labelAt: "w", tone: "muted", step: 1 },
             { kind: "turn", centre: REG[1], r: 0.8, from: 0, to: 60, label: "exterior π/3", labelAt: "e", step: 2 },
+            { kind: "angle", at: REG[1], from: 60, to: 180, label: "interior 2π/3", labelAt: "w", tone: "muted", step: 3 },
             { kind: "label", at: [0.4, -2.1], label: "2π/3 + π/3 = π", labelAt: "e", step: 3 },
-            ...[2, 3, 4, 5, 0].flatMap((k): FigureElement[] => {
-              const [x, y] = REG[k];
-              const dir = 60 * (k - 1);
-              const end: Pt = [+(x + 0.8 * Math.cos((dir * Math.PI) / 180)).toFixed(3), +(y + 0.8 * Math.sin((dir * Math.PI) / 180)).toFixed(3)];
-              return [
-                { kind: "segment", from: REG[k], to: end, dashed: true, tone: "muted", step: 4 },
-                { kind: "turn", centre: REG[k], r: 0.8, from: dir, to: dir + 60, step: 4 },
-              ];
-            }),
-            { kind: "label", at: [-2.6, -2.7], label: "6 × π/3 = 2π: one full turn", labelAt: "e", tone: "good", step: 5 },
           ],
         },
       },
       {
-        body: t`**Number of sides.** To find how many sides $n$ a regular polygon has from its interior angle, go through the exterior angle: subtract the interior angle from $\pi$, then divide the full turn $2\pi$ by the result. Interior $\frac{5\pi}{6}$ gives exterior $\pi - \frac{5\pi}{6} = \frac{\pi}{6}$, so
-
-$$n = \frac{2\pi}{\pi/6} = 12.$$`,
+        title: "Exterior angles make a turn",
+        points: [
+          t`Walk round the polygon: at each corner you turn through its exterior angle.`,
+          t`You come back facing the way you started, so the $n$ exterior angles make one full turn, $2\pi$.`,
+          t`In a regular polygon they are equal, so each is $\frac{2\pi}{n}$.`,
+          t`This agrees with the straight line at each corner: $\frac{2\pi}{n} = \pi - \frac{(n-2)\pi}{n}$.`,
+          t`For a hexagon that is $\frac{\pi}{3}$; for $n = 10$, it is $\frac{\pi}{5}$.`,
+        ],
+        figure: {
+          alt: "A regular hexagon with each side extended past the corner it leads to. At every corner an arm turns through π/3 from the extended side to the next side. Six turns of π/3 make 2π, one full turn.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-3, 2.4] },
+          elements: [
+            ...sidesOf(REG),
+            ...[1, 2, 3, 4, 5, 0].flatMap((k): FigureElement[] => {
+              const [x, y] = REG[k];
+              const dir = 60 * (k - 1);
+              const end: Pt = [+(x + 0.8 * Math.cos((dir * Math.PI) / 180)).toFixed(3), +(y + 0.8 * Math.sin((dir * Math.PI) / 180)).toFixed(3)];
+              const label = k === 1 ? { label: "exterior π/3", labelAt: "e" as const } : {};
+              return [
+                { kind: "segment", from: REG[k], to: end, dashed: true, tone: "muted", step: 1 },
+                { kind: "turn", centre: REG[k], r: 0.8, from: dir, to: dir + 60, ...label, step: 1 },
+              ];
+            }),
+            { kind: "label", at: [-2.6, -2.7], label: "6 × π/3 = 2π: one full turn", labelAt: "e", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Number of sides",
+        points: [
+          t`You can find how many sides $n$ a regular polygon has from its interior angle.`,
+          t`Go through the exterior angle: subtract the interior angle from $\pi$.`,
+          t`Then divide the full turn $2\pi$ by that exterior angle to get $n$.`,
+          t`Interior $\frac{5\pi}{6}$ gives exterior $\pi - \frac{5\pi}{6} = \frac{\pi}{6}$.`,
+          t`So $n = \frac{2\pi}{\pi/6} = 12$.`,
+        ],
       },
     ],
     worked: {
@@ -151,13 +208,13 @@ $$n = \frac{2\pi}{\pi/6} = 12.$$`,
       view: { x: [-0.8, 4.4], y: [-0.7, 3] },
       elements: [
         ...sidesOf([[0, 0], [4, 0], [1.4, 2.2]]),
-        { kind: "angle", at: [0, 0], from: 0, to: 57.53, label: "A", labelAt: "e", step: 1 },
-        { kind: "angle", at: [4, 0], from: 139.76, to: 180, label: "B", labelAt: "w", step: 1 },
-        { kind: "angle", at: [1.4, 2.2], from: 237.53, to: 319.76, label: "C", labelAt: "s", step: 1 },
-        { kind: "segment", from: [-0.6, 2.2], to: [3.4, 2.2], dashed: true, tone: "muted", step: 2 },
-        { kind: "angle", at: [1.4, 2.2], from: 180, to: 237.53, label: "A", labelAt: "w", tone: "good", step: 3 },
-        { kind: "angle", at: [1.4, 2.2], from: 319.76, to: 360, label: "B", labelAt: "e", tone: "good", step: 3 },
-        { kind: "label", at: [1.4, 2.45], label: "A + B + C = 180° = πᶜ", labelAt: "n", tone: "good", step: 4 },
+        { kind: "angle", at: [0, 0], from: 0, to: 57.53, label: "A", labelAt: "e", step: 2 },
+        { kind: "angle", at: [4, 0], from: 139.76, to: 180, label: "B", labelAt: "w", step: 2 },
+        { kind: "angle", at: [1.4, 2.2], from: 237.53, to: 319.76, label: "C", labelAt: "s", step: 2 },
+        { kind: "segment", from: [-0.6, 2.2], to: [3.4, 2.2], dashed: true, tone: "muted", step: 4 },
+        { kind: "angle", at: [1.4, 2.2], from: 180, to: 237.53, label: "A", labelAt: "w", tone: "good", step: 4 },
+        { kind: "angle", at: [1.4, 2.2], from: 319.76, to: 360, label: "B", labelAt: "e", tone: "good", step: 4 },
+        { kind: "label", at: [1.4, 2.45], label: "A + B + C = 180° = πᶜ", labelAt: "n", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag the number of sides $n$ to grow a regular polygon that splits into $n - 2$ triangles, with the interior and exterior angles at one corner shown in radians and degrees.`,

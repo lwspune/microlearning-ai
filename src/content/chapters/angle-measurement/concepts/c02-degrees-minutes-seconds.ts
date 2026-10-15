@@ -22,37 +22,64 @@ export const c02: Concept = {
     reveal: t`No. A degree has 60 minutes, not 10 or 100, so $0.7^\circ = 0.7 \times 60 = 42'$. The angle is $183^\circ 42'$. Minutes and seconds count in sixties, like a clock.`,
   },
   explanation: {
-    intuition: t`A **degree**, $1^\circ$, is $\frac{1}{360}$ of a full turn. To measure finer than that, a degree is split into 60 equal parts called **minutes**, and each minute into 60 equal parts called **seconds**. One minute is written $1'$ and one second $1''$: so $1^\circ = 60'$ and $1' = 60''$. An hour splits up the same way. So $1.5^\circ$ is $1^\circ 30'$, just as 1.5 hours is 1 hour 30 minutes, not 1 hour 50 minutes. To change to a smaller unit, multiply by 60; to change to a larger unit, divide by 60.`,
+    intuition: [
+      t`A **degree**, $1^\circ$, is $\frac{1}{360}$ of a full turn.`,
+      t`To measure finer, a degree is split into 60 equal parts called **minutes**: one minute is $1'$, so $1^\circ = 60'$.`,
+      t`Each minute is split into 60 equal parts called **seconds**: one second is $1''$, so $1' = 60''$.`,
+      t`An hour splits the same way, so $1.5^\circ$ is $1^\circ 30'$, just as 1.5 hours is 1 hour 30 minutes.`,
+      t`It is not $1^\circ 50'$, just as 1.5 hours is not 1 hour 50 minutes.`,
+      t`To change to a smaller unit, multiply by 60; to change to a larger unit, divide by 60.`,
+    ],
     formal: [
       {
-        body: t`**Degrees, minutes and seconds.** An angle written $a^\circ\, b'\, c''$ is in **degrees, minutes and seconds** (D°M′S″ for short): $a$ degrees, $b$ minutes and $c$ seconds. So $35^\circ 12' 40''$ is 35 degrees, 12 minutes and 40 seconds. Sixty of one unit make one of the next, so $b$ and $c$ are each less than 60. A degree is $60'$, and each of those is $60''$, so $1^\circ = 60 \times 60'' = 3600''$.`,
+        title: "Degrees, minutes and seconds",
+        points: [
+          t`An angle written $a^\circ\, b'\, c''$ is in **degrees, minutes and seconds**, or D°M′S″ for short.`,
+          t`It means $a$ degrees, $b$ minutes and $c$ seconds.`,
+          t`So $35^\circ 12' 40''$ is 35 degrees, 12 minutes and 40 seconds.`,
+          t`Sixty of one unit make one of the next, so $b$ and $c$ are each less than 60.`,
+          t`A degree is $60'$, and each of those is $60''$, so $1^\circ = 60 \times 60'' = 3600''$.`,
+        ],
       },
       {
-        body: t`**Decimal degrees to D°M′S″.** An angle in **decimal degrees** is written as a decimal of a degree, such as $12.75^\circ$. To write it in D°M′S″:
-
-- **1.** Keep the whole degrees.
-- **2.** Multiply the decimal part by 60. The whole number is the minutes.
-- **3.** Multiply the part of a minute left over by 60. That is the seconds.
-
-So $12.75^\circ = 12^\circ + (0.75 \times 60)'$, which is $12^\circ 45'$, not $12^\circ 75'$.`,
+        title: "Decimal degrees to D°M′S″",
+        points: [
+          t`An angle in **decimal degrees** is written as a decimal of a degree, such as $12.75^\circ$.`,
+          t`To write it in D°M′S″, first keep the whole degrees.`,
+          t`Next, multiply the decimal part by 60: the whole number is the minutes.`,
+          t`Last, multiply the part of a minute left over by 60: that is the seconds.`,
+          t`So $12.75^\circ = 12^\circ + (0.75 \times 60)'$, which is $12^\circ 45'$, not $12^\circ 75'$.`,
+        ],
       },
       {
-        body: t`**D°M′S″ to decimal degrees.** To write $a^\circ\, b'\, c''$ in decimal degrees, turn the minutes and seconds into degrees and add them on. A minute is $\frac{1}{60}$ of a degree and a second is $\frac{1}{3600}$ of a degree, so
-
-$$a^\circ\, b'\, c'' = \left(a + \frac{b}{60} + \frac{c}{3600}\right)^\circ$$
-
-For example, $65^\circ 30' = \left(65 + \frac{30}{60}\right)^\circ$, which is $65.5^\circ$, not $65.3^\circ$.`,
+        title: "D°M′S″ to decimal degrees",
+        points: [
+          t`To write $a^\circ\, b'\, c''$ in decimal degrees, turn the minutes and seconds into degrees and add them on.`,
+          t`A minute is $\frac{1}{60}$ of a degree.`,
+          t`A second is $\frac{1}{3600}$ of a degree.`,
+          t`So $a^\circ\, b'\, c'' = \left(a + \frac{b}{60} + \frac{c}{3600}\right)^\circ$.`,
+          t`For example, $65^\circ 30' = \left(65 + \frac{30}{60}\right)^\circ$, which is $65.5^\circ$, not $65.3^\circ$.`,
+        ],
       },
       {
-        body: t`**Seconds to D°M′S″.** To write a number of seconds in D°M′S″, divide by 60 twice and keep the remainders:
-
-- **1.** Divide the seconds by 60. The quotient is the minutes; the remainder is the seconds.
-- **2.** Divide those minutes by 60. The quotient is the degrees; the remainder is the minutes.
-
-For example, $5000 \div 60 = 83$ remainder $20$, so $5000'' = 83' 20''$. Then $83 \div 60 = 1$ remainder $23$, so $5000'' = 1^\circ 23' 20''$.`,
+        title: "Seconds to D°M′S″",
+        points: [
+          t`To write a number of seconds in D°M′S″, divide by 60 twice and keep the remainders.`,
+          t`First, divide the seconds by 60: the quotient is the minutes, and the remainder is the seconds.`,
+          t`Then divide those minutes by 60: the quotient is the degrees, and the remainder is the minutes.`,
+          t`For example, $5000 \div 60 = 83$ remainder $20$, so $5000'' = 83' 20''$.`,
+          t`Then $83 \div 60 = 1$ remainder $23$, so $5000'' = 1^\circ 23' 20''$.`,
+        ],
       },
       {
-        body: t`**Negative angles.** A **negative angle**, such as $-10^\circ 30'$, is measured clockwise, the way a clock's hands go. Its minus sign belongs to the whole angle: $-a^\circ\, b'\, c''$ means $-(a^\circ\, b'\, c'')$. Convert the angle without its sign, then put the minus in front. So $-10^\circ 30' = -(10^\circ 30')$, which is $-10.5^\circ$, not $-9.5^\circ$. The other way, $-12.5^\circ$ is $-12^\circ 30'$, not $-13^\circ 30'$.`,
+        title: "Negative angles",
+        points: [
+          t`A **negative angle**, such as $-10^\circ 30'$, is measured clockwise, the way a clock's hands go.`,
+          t`Its minus sign belongs to the whole angle: $-a^\circ\, b'\, c''$ means $-(a^\circ\, b'\, c'')$.`,
+          t`Convert the angle without its sign, then put the minus in front.`,
+          t`So $-10^\circ 30' = -(10^\circ 30')$, which is $-10.5^\circ$, not $-9.5^\circ$.`,
+          t`The other way, $-12.5^\circ$ is $-12^\circ 30'$, not $-13^\circ 30'$.`,
+        ],
       },
     ],
     worked: {
@@ -76,10 +103,10 @@ For example, $5000 \div 60 = 83$ remainder $20$, so $5000'' = 83' 20''$. Then $8
         { kind: "label", at: [6, 0.4], label: "2°", labelAt: "n", step: 1 },
         ...minuteTicks(2),
         { kind: "label", at: [3, -0.45], label: "1° = 60′", labelAt: "s", step: 2 },
-        { kind: "point", at: [3, 0], tone: "good", step: 3 },
-        { kind: "label", at: [3, 0.4], label: "1.5° = 1°30′", labelAt: "n", tone: "good", step: 3 },
-        { kind: "point", at: [5, 0], tone: "bad", step: 4 },
-        { kind: "label", at: [5, -0.45], label: "1°50′ is not 1.5°", labelAt: "s", tone: "bad", step: 4 },
+        { kind: "point", at: [3, 0], tone: "good", step: 4 },
+        { kind: "label", at: [3, 0.4], label: "1.5° = 1°30′", labelAt: "n", tone: "good", step: 4 },
+        { kind: "point", at: [5, 0], tone: "bad", step: 5 },
+        { kind: "label", at: [5, -0.45], label: "1°50′ is not 1.5°", labelAt: "s", tone: "bad", step: 5 },
       ],
     },
     visualSpec: t`A one-degree strip split into 60 minute ticks, each of which zooms into 60 second ticks; drag a pointer along it to see the reading as a decimal of a degree and as $a^\circ\, b'\, c''$ side by side.`,

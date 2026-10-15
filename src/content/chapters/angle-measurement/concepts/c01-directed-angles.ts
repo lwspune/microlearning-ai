@@ -2,19 +2,23 @@ import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
-/** The xy-plane drawn as plain axes (no grid or numbers: only directions matter here), with its quadrants. */
-function planeOf(len: number): FigureElement[] {
+/**
+ * The xy-plane drawn as plain axes (no grid or numbers: only directions matter here), with its quadrants;
+ * the quadrant numerals appear at `quadrantStep` when given, else from the start.
+ */
+function planeOf(len: number, quadrantStep?: number): FigureElement[] {
   const q = len * 0.75;
+  const step = quadrantStep === undefined ? {} : { step: quadrantStep };
   return [
     { kind: "segment", from: [-len, 0], to: [len, 0], tone: "muted" },
     { kind: "label", at: [len, 0], label: "x", labelAt: "s", tone: "muted" },
     { kind: "segment", from: [0, -len], to: [0, len], tone: "muted" },
     { kind: "label", at: [0, len], label: "y", labelAt: "w", tone: "muted" },
     { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-    { kind: "label", at: [q, q], label: "I", labelAt: "n", tone: "muted" },
-    { kind: "label", at: [-q, q], label: "II", labelAt: "n", tone: "muted" },
-    { kind: "label", at: [-q, -q], label: "III", labelAt: "n", tone: "muted" },
-    { kind: "label", at: [q, -q], label: "IV", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [q, q], label: "I", labelAt: "n", tone: "muted", ...step },
+    { kind: "label", at: [-q, q], label: "II", labelAt: "n", tone: "muted", ...step },
+    { kind: "label", at: [-q, -q], label: "III", labelAt: "n", tone: "muted", ...step },
+    { kind: "label", at: [q, -q], label: "IV", labelAt: "n", tone: "muted", ...step },
   ];
 }
 const plane = planeOf(2.6);
@@ -27,10 +31,25 @@ export const c01: Concept = {
     reveal: t`Yes. $750^\circ = 2 \times 360^\circ + 30^\circ$, and two full turns change nothing, so the first spoke ends at $30^\circ$. Clockwise is negative: $-330^\circ$, and $-330^\circ + 360^\circ = 30^\circ$. Both end at $30^\circ$: the angles are **co-terminal**.`,
   },
   explanation: {
-    intuition: t`Think of an angle as a **turn**. A **ray** is a half-line: it starts at a point and goes on without end in one direction. Take a ray $OA$ and turn it about its starting point $O$ until it lies along $OB$. Where the ray starts, $OA$, is the **initial arm**; where it stops, $OB$, is the **terminal arm**. A ray can turn two ways: **anticlockwise**, against the hands of a clock, or **clockwise**, the way a clock's hands go.`,
+    intuition: [
+      t`A **ray** is a half-line: it starts at a point and goes on without end in one direction.`,
+      t`Think of an angle as a **turn** of a ray about its starting point.`,
+      t`Take a ray $OA$: where it starts, before turning, is the **initial arm**.`,
+      t`Turn it about $O$ until it lies along $OB$: where it stops, $OB$, is the **terminal arm**.`,
+      t`This ray turned **anticlockwise**, against the hands of a clock.`,
+      t`A ray can also turn **clockwise**, the way a clock's hands go.`,
+    ],
     formal: [
       {
-        body: t`**Directed angle.** An angle measured together with its direction of turn is a **directed angle**. Its size says how far the arm turned; its sign says which way. Anticlockwise turns are positive and clockwise turns are negative: $60^\circ$ is a turn of $60^\circ$ anticlockwise, $-60^\circ$ the same amount clockwise. The two end on different arms.`,
+        title: "Directed angle",
+        points: [
+          t`An angle measured together with its direction of turn is a **directed angle**.`,
+          t`Its size says how far the arm turned.`,
+          t`Its sign says which way the arm turned.`,
+          t`Anticlockwise turns are positive: $60^\circ$ is a turn of $60^\circ$ anticlockwise.`,
+          t`Clockwise turns are negative: $-60^\circ$ is the same amount clockwise.`,
+          t`The two end on different arms.`,
+        ],
         figure: {
           alt: "From the initial arm OA, one arm turns 60° anticlockwise, upwards, and is labelled 60°, anticlockwise; another turns 60° clockwise, downwards, and is labelled −60°, clockwise. They end on different arms, mirror images in the initial arm.",
           axes: "none",
@@ -38,31 +57,64 @@ export const c01: Concept = {
           elements: [
             { kind: "point", at: [0, 0], label: "O", labelAt: "w", tone: "muted" },
             { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm OA", labelAt: "s", tone: "good" },
-            { kind: "turn", r: 2.4, to: 60, label: "60°, anticlockwise", labelAt: "w", step: 1 },
-            { kind: "turn", r: 2.4, to: -60, label: "−60°, clockwise", labelAt: "w", tone: "bad", step: 2 },
+            { kind: "turn", r: 2.4, to: 60, label: "60°, anticlockwise", labelAt: "w", step: 4 },
+            { kind: "turn", r: 2.4, to: -60, label: "−60°, clockwise", labelAt: "w", tone: "bad", step: 5 },
           ],
         },
       },
       {
-        body: t`**Standard position.** An angle is in **standard position** when its vertex is the origin $O$ and its initial arm lies along the positive $x$-axis. The axes cut the plane into four quadrants, and the angle lies in the quadrant that holds its terminal arm:
-
-$$\begin{array}{c|c} 0^\circ < \theta < 90^\circ & \text{Quadrant I} \\ 90^\circ < \theta < 180^\circ & \text{Quadrant II} \\ 180^\circ < \theta < 270^\circ & \text{Quadrant III} \\ 270^\circ < \theta < 360^\circ & \text{Quadrant IV} \end{array}$$
-
-So $130^\circ$, between $90^\circ$ and $180^\circ$, lies in Quadrant II.`,
+        title: "Standard position",
+        points: [
+          t`An angle is in **standard position** when its vertex is the origin $O$ and its initial arm lies along the positive $x$-axis.`,
+          t`The axes cut the plane into four **quadrants**, I to IV.`,
+          t`The angle lies in the quadrant that holds its terminal arm.`,
+        ],
         figure: {
           alt: "The xy-plane with the quadrants I to IV, I top right and the rest in turn anticlockwise. The initial arm lies along the positive x-axis. An arm turns 130° anticlockwise from it and stops in Quadrant II, which is shaded.",
           axes: "none",
           view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
           elements: [
-            ...plane,
+            ...planeOf(2.6, 2),
             { kind: "segment", from: [0, 0], to: [2.4, 0], label: "initial arm", labelAt: "n", tone: "good", step: 1 },
-            { kind: "turn", r: 2.2, to: 130, label: "130°", labelAt: "w", step: 2 },
+            { kind: "turn", r: 2.2, to: 130, label: "130°", labelAt: "w", step: 3 },
             { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 90, to: 180 }], tone: "good", step: 3 },
           ],
         },
       },
       {
-        body: t`**Quadrantal angles.** When the terminal arm lies along an axis, as for $0^\circ$, $90^\circ$, $180^\circ$, $270^\circ$ and $360^\circ$, it is in no quadrant: the angle is a **quadrantal angle**.`,
+        title: "Quadrant of an angle",
+        points: [
+          t`Between $0^\circ$ and $90^\circ$, the terminal arm lies in Quadrant I.`,
+          t`Between $90^\circ$ and $180^\circ$, it lies in Quadrant II.`,
+          t`Between $180^\circ$ and $270^\circ$, it lies in Quadrant III.`,
+          t`Between $270^\circ$ and $360^\circ$, it lies in Quadrant IV.`,
+          t`So $130^\circ$, between $90^\circ$ and $180^\circ$, lies in Quadrant II.`,
+        ],
+        figure: {
+          alt: "The xy-plane with the quadrants I to IV and the initial arm along the positive x-axis. The axes are marked in turn 90°, 180°, 270° and 360°, the edges of the quadrants. An arm turns 130° anticlockwise and stops in Quadrant II, which is shaded.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            ...plane,
+            { kind: "segment", from: [0, 0], to: [2.4, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "label", at: [0, 2.2], label: "90°", labelAt: "e", step: 1 },
+            { kind: "label", at: [-2.2, 0], label: "180°", labelAt: "n", step: 2 },
+            { kind: "label", at: [0, -2.2], label: "270°", labelAt: "e", step: 3 },
+            { kind: "label", at: [1.9, 0], label: "360°", labelAt: "s", step: 4 },
+            { kind: "turn", r: 2.2, to: 130, label: "130°", labelAt: "w", step: 5 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.4 }, { kind: "sector", centre: [0, 0], from: 90, to: 180 }], tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Quadrantal angles",
+        points: [
+          t`When the terminal arm lies along an axis, it is in no quadrant: the angle is a **quadrantal angle**.`,
+          t`$90^\circ$ ends on the positive $y$-axis.`,
+          t`$180^\circ$ ends on the negative $x$-axis.`,
+          t`$270^\circ$ ends on the negative $y$-axis.`,
+          t`$0^\circ$ and $360^\circ$ end on the positive $x$-axis.`,
+        ],
         figure: {
           alt: "The xy-plane. An arm starts on the positive x-axis at 0° and turns anticlockwise, stopping on each axis in turn: 90° on the positive y-axis, 180° on the negative x-axis, 270° on the negative y-axis. Each of these arms lies on an axis, in no quadrant.",
           axes: "none",
@@ -70,39 +122,72 @@ So $130^\circ$, between $90^\circ$ and $180^\circ$, lies in Quadrant II.`,
           elements: [
             ...plane,
             { kind: "label", at: [2.2, 0], label: "0°", labelAt: "n", tone: "good" },
-            { kind: "turn", r: 2.2, to: 90, label: "90°", labelAt: "e", step: 1 },
-            { kind: "turn", r: 2.2, from: 90, to: 180, label: "180°", labelAt: "n", step: 2 },
-            { kind: "turn", r: 2.2, from: 180, to: 270, label: "270°", labelAt: "e", step: 3 },
+            { kind: "turn", r: 2.2, to: 90, label: "90°", labelAt: "e", step: 2 },
+            { kind: "turn", r: 2.2, from: 90, to: 180, label: "180°", labelAt: "n", step: 3 },
+            { kind: "turn", r: 2.2, from: 180, to: 270, label: "270°", labelAt: "e", step: 4 },
           ],
         },
       },
       {
-        body: t`**Co-terminal angles.** Angles with the same initial arm and the same terminal arm are **co-terminal**. A full turn, $360^\circ$, brings the arm back where it began, so co-terminal angles differ by whole turns: $\theta$ and $\theta + n \times 360^\circ$, where $n$ is any integer. So $30^\circ$, $390^\circ = 30^\circ + 360^\circ$ and $-330^\circ = 30^\circ - 360^\circ$ are co-terminal. But $100^\circ$ and $280^\circ$ differ by $180^\circ$, half a turn: their arms point opposite ways, so they are not co-terminal.`,
+        title: "Co-terminal angles",
+        points: [
+          t`Angles with the same initial arm and the same terminal arm are **co-terminal**.`,
+          t`A full turn, $360^\circ$, brings the arm back to where it began.`,
+          t`So co-terminal angles differ by whole turns: $\theta$ and $\theta + n \times 360^\circ$, where $n$ is any integer.`,
+          t`For example, $30^\circ$ and $390^\circ = 30^\circ + 360^\circ$ are co-terminal.`,
+          t`So is $-330^\circ = 30^\circ - 360^\circ$: all three end on the same arm.`,
+        ],
         figure: {
           alt: "The xy-plane. An arm turns 30° anticlockwise. A second turns one full turn and 30° more, 390°, and a third turns 330° clockwise, −330°. All three stop on the same arm, 30° above the positive x-axis: they are co-terminal.",
           axes: "none",
           view: { x: [-3.4, 3.4], y: [-3.4, 3.4] },
           elements: [
             ...planeOf(3.2),
-            { kind: "turn", r: 1.3, to: 30, label: "30°", labelAt: "se", step: 1 },
-            { kind: "turn", r: 2.1, to: 390, label: "390°", labelAt: "se", tone: "good", step: 2 },
-            { kind: "turn", r: 3, to: -330, label: "−330°", labelAt: "se", tone: "bad", step: 3 },
-            { kind: "label", at: [-3.2, -3.05], label: "same terminal arm: co-terminal", labelAt: "e", step: 4 },
+            { kind: "turn", r: 1.3, to: 30, label: "30°", labelAt: "se", step: 4 },
+            { kind: "turn", r: 2.1, to: 390, label: "390°", labelAt: "se", tone: "good", step: 4 },
+            { kind: "turn", r: 3, to: -330, label: "−330°", labelAt: "se", tone: "bad", step: 5 },
+            { kind: "label", at: [-3.2, -3.05], label: "same terminal arm: co-terminal", labelAt: "e", step: 5 },
           ],
         },
       },
       {
-        body: t`**Large or negative angles.** To see where a large or negative angle ends, add or subtract $360^\circ$ as many times as needed to land between $0^\circ$ and $360^\circ$. That gives the **smallest positive co-terminal angle**, and the original angle lies in the same quadrant. For example, $400^\circ - 360^\circ = 40^\circ$, in Quadrant I, and $-200^\circ + 360^\circ = 160^\circ$, in Quadrant II.`,
+        title: "Half a turn apart",
+        points: [
+          t`$100^\circ$ and $280^\circ$ differ by $180^\circ$, half a turn.`,
+          t`Their arms point opposite ways, so they are not co-terminal.`,
+        ],
+        figure: {
+          alt: "The xy-plane. One arm turns 100° anticlockwise and stops just past the positive y-axis, in Quadrant II. Another turns 280° anticlockwise and stops just past the negative y-axis, in Quadrant IV. The two arms point opposite ways: they are not co-terminal.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            ...plane,
+            { kind: "segment", from: [0, 0], to: [2.4, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "turn", r: 2.2, to: 100, label: "100°", labelAt: "w", step: 1 },
+            { kind: "turn", r: 1.6, to: 280, label: "280°", labelAt: "e", tone: "bad", step: 1 },
+            { kind: "label", at: [-2.7, -2.6], label: "opposite arms: not co-terminal", labelAt: "e", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Large or negative angles",
+        points: [
+          t`To see where a large or negative angle ends, add or subtract $360^\circ$ until it lies between $0^\circ$ and $360^\circ$.`,
+          t`The angle you land on is the **smallest positive co-terminal angle**.`,
+          t`The original angle lies in the same quadrant as this one.`,
+          t`For example, $400^\circ - 360^\circ = 40^\circ$, so $400^\circ$ lies in Quadrant I.`,
+          t`And $-200^\circ + 360^\circ = 160^\circ$, so $-200^\circ$ lies in Quadrant II.`,
+        ],
         figure: {
           alt: "The xy-plane. An arm turns 400° anticlockwise, one full turn and 40° more, and stops 40° above the positive x-axis: 400° − 360° = 40°. Another arm turns 200° clockwise and stops in Quadrant II, on the same arm as 160°: −200° + 360° = 160°.",
           axes: "none",
           view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
           elements: [
             ...plane,
-            { kind: "turn", r: 2.2, to: 400, label: "400°", labelAt: "e", step: 1 },
-            { kind: "label", at: [0.3, 2.5], label: "400° − 360° = 40°", labelAt: "e", step: 2 },
-            { kind: "turn", r: 2.2, to: -200, label: "−200°", labelAt: "w", tone: "bad", step: 3 },
-            { kind: "label", at: [-2.7, -2.2], label: "−200° + 360° = 160°", labelAt: "e", tone: "bad", step: 4 },
+            { kind: "turn", r: 2.2, to: 400, label: "400°", labelAt: "e", step: 4 },
+            { kind: "label", at: [0.3, 2.5], label: "400° − 360° = 40°", labelAt: "e", step: 4 },
+            { kind: "turn", r: 2.2, to: -200, label: "−200°", labelAt: "w", tone: "bad", step: 5 },
+            { kind: "label", at: [-2.7, -2.2], label: "−200° + 360° = 160°", labelAt: "e", tone: "bad", step: 5 },
           ],
         },
       },
@@ -135,9 +220,9 @@ So $130^\circ$, between $90^\circ$ and $180^\circ$, lies in Quadrant II.`,
       view: { x: [-1, 3.4], y: [-0.8, 2.8] },
       elements: [
         { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
-        { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm OA", labelAt: "s", tone: "good", step: 1 },
-        { kind: "turn", r: 2.4, to: 60, label: "terminal arm OB", labelAt: "w", step: 2 },
-        { kind: "label", at: [0.9, 0.55], label: "anticlockwise", labelAt: "e", step: 3 },
+        { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm OA", labelAt: "s", tone: "good", step: 3 },
+        { kind: "turn", r: 2.4, to: 60, label: "terminal arm OB", labelAt: "w", step: 4 },
+        { kind: "label", at: [0.9, 0.55], label: "anticlockwise", labelAt: "e", step: 5 },
       ],
     },
     visualSpec: t`Drag the terminal arm round and round, either way; a counter shows the directed angle, its smallest positive co-terminal angle and the quadrant the arm is in.`,
