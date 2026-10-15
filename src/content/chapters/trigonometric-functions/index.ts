@@ -13,7 +13,7 @@ import { graph } from "./graph.ts";
 
 export const trigonometricFunctions: Chapter = {
   slug: "trigonometric-functions",
-  title: "Trigonometric Functions",
+  title: "Trigonometry – I",
   group: "school",
   subject: "maths",
   standard: 11,

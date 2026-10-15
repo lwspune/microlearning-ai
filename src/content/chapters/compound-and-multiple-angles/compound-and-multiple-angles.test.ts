@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { ancestorsOf, validateChapter } from "../../validate";
 import { compoundAndMultipleAngles } from "./index";
 
-describe("Compound and Multiple Angles chapter", () => {
+describe("Trigonometry – II (compound and multiple angles) chapter", () => {
   it("passes structural validation", () => {
     expect(validateChapter(compoundAndMultipleAngles)).toEqual([]);
   });
