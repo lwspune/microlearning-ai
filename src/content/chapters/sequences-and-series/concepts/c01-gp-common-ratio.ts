@@ -1,6 +1,20 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/**
+ * A G.P.'s terms as stems from a zero line, a quarter of a unit high per unit of value, one unit
+ * apart from x = `x0`, with each value labelled at its tip; all appear at `step`.
+ */
+function stems(terms: number[], x0: number, step: number): FigureElement[] {
+  return terms.flatMap((v, i): FigureElement[] => {
+    const tip: Pt = [x0 + i, v / 4];
+    return [
+      { kind: "segment", from: [x0 + i, 0], to: tip, step },
+      { kind: "point", at: tip, label: String(v).replace("-", "−"), labelAt: v > 0 ? "n" : "s", step },
+    ];
+  });
+}
 
 export const c01: Concept = {
   id: "C01",
@@ -10,19 +24,87 @@ export const c01: Concept = {
     reveal: t`$\times \frac{1}{5}$: $5 \times \frac{1}{5} = 1$, $1 \times \frac{1}{5} = \frac{1}{5}$, and so on. So it is a G.P. with $r = \frac{t_2}{t_1} = \frac{1}{5}$. $-4$ is the difference $1 - 5$, which only works once; $5$ is the ratio upside down, $\frac{t_1}{t_2}$.`,
   },
   explanation: {
-    intuition: t`In an A.P. you add the same number each time. In a G.P. you **multiply** by the same number each time: the common ratio $r$. To find it, divide a term by the one before it, $r = \frac{t_2}{t_1}$. To be sure a sequence is a G.P., every such ratio must be the same, not just the first. A negative $r$ makes the signs alternate; an $r$ between $-1$ and $1$ makes the terms shrink.`,
-    formal: t`**Definition.** A sequence of non-zero terms $t_1, t_2, t_3, \ldots$ is a G.P. if $\frac{t_{n+1}}{t_n} = r$ for every $n$, the same $r$ each time. $r$ is the **common ratio**, and the first term is $a = t_1$.
-
-**Test a list of terms.** Work out $\frac{t_2}{t_1}$, $\frac{t_3}{t_2}$, $\frac{t_4}{t_3}$. All equal: a G.P. with that $r$. Any one different: not a G.P. For $4, 8, 12, 16$: $\frac{8}{4} = 2$ but $\frac{12}{8} = \frac{3}{2}$, so it is not a G.P. It is an A.P. with $d = 4$.
-
-**Keep the order and the sign.** Later term over earlier term, sign included. For $2, -8, 32, -128$: $r = \frac{-8}{2} = -4$, not $4$ and not $-\frac{1}{4}$.
-
-**Test a formula for $t_n$.** Write $t_{n+1}$ by putting $n + 1$ in place of $n$, then simplify $\frac{t_{n+1}}{t_n}$. If the $n$'s cancel and leave a constant, it is a G.P. with that $r$, and $a = t_1$.`,
+    intuition: [
+      t`A **sequence** is a list of numbers in order, its **terms**: $t_1$ first, $t_2$ second, and so on.`,
+      t`Recall: in an **A.P.**, an arithmetic progression, you add the same number each time, as in $2, 5, 8, 11$.`,
+      t`In a **G.P.**, a geometric progression, you **multiply** by the same number each time.`,
+      t`That number is the **common ratio**, $r$: in $2, 6, 18, 54$, $r = 3$.`,
+      t`To find $r$, divide a term by the one before it: $r = \frac{t_2}{t_1}$.`,
+      t`To be sure a sequence is a G.P., every such ratio must be the same, not just the first.`,
+    ],
+    formal: [
+      {
+        title: "Definition of a G.P.",
+        points: [
+          t`Write $t_n$ for the term in place $n$; the term after it is $t_{n+1}$.`,
+          t`A sequence of non-zero terms is a **G.P.** if $\frac{t_{n+1}}{t_n} = r$ for every $n$.`,
+          t`The number $r$ must be the same each time: it is the **common ratio**.`,
+          t`No term may be $0$, since each ratio divides by a term.`,
+          t`The first term is called $a$, so $a = t_1$.`,
+        ],
+      },
+      {
+        title: "What r does to the terms",
+        points: [
+          t`Multiplying by a negative number flips the sign, so a negative $r$ makes the signs **alternate**: plus, minus, plus.`,
+          t`For $1, -2, 4, -8$, $r = -2$: the terms jump from one side of $0$ to the other.`,
+          t`An $r$ between $-1$ and $1$ makes each term smaller in size than the one before.`,
+          t`For $8, 4, 2, 1$, $r = \frac{1}{2}$: the terms shrink towards $0$.`,
+        ],
+        figure: {
+          alt: "Two G.P.s drawn as stems from a zero line. On the left, 1, −2, 4, −8 with r = −2: the stems point up, down, up, down, getting longer. On the right, 8, 4, 2, 1 with r = ½: all the stems point up and each is half the one before.",
+          axes: "none",
+          view: { x: [-1, 9], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "segment", from: [-0.5, 0], to: [3.5, 0], tone: "muted" },
+            { kind: "label", at: [-0.5, 0], label: "0", labelAt: "w", tone: "muted" },
+            { kind: "segment", from: [4.5, 0], to: [8.5, 0], tone: "muted" },
+            { kind: "label", at: [4.5, 0], label: "0", labelAt: "w", tone: "muted" },
+            ...stems([1, -2, 4, -8], 0, 2),
+            { kind: "label", at: [1.5, 2], label: "r = −2", labelAt: "n", step: 2 },
+            ...stems([8, 4, 2, 1], 5, 4),
+            { kind: "label", at: [6.5, -0.8], label: "r = ½", labelAt: "s", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Testing a list of terms",
+        points: [
+          t`Work out $\frac{t_2}{t_1}$, $\frac{t_3}{t_2}$ and $\frac{t_4}{t_3}$.`,
+          t`All equal: it is a G.P. with that $r$.`,
+          t`Any one different: it is not a G.P.`,
+          t`For $4, 8, 12, 16$: $\frac{8}{4} = 2$ but $\frac{12}{8} = \frac{3}{2}$.`,
+          t`So it is not a G.P. It is an A.P. with **common difference** $d = 4$, the number added each time.`,
+        ],
+      },
+      {
+        title: "Keep the order and sign",
+        points: [
+          t`Divide the later term by the earlier one: $r = \frac{t_2}{t_1}$, not $\frac{t_1}{t_2}$.`,
+          t`Keep each term's sign when you divide.`,
+          t`For $2, -8, 32, -128$: $r = \frac{-8}{2} = -4$.`,
+          t`It is not $4$, which drops the sign.`,
+          t`It is not $-\frac{1}{4}$, which divides the wrong way round.`,
+          t`Check: $2 \times (-4) = -8$, the next term.`,
+        ],
+      },
+      {
+        title: "Testing a formula for tₙ",
+        points: [
+          t`Sometimes $t_n$ is given as a formula in $n$.`,
+          t`Write $t_{n+1}$ by putting $n + 1$ in place of $n$.`,
+          t`Then simplify $\frac{t_{n+1}}{t_n}$.`,
+          t`If the $n$'s cancel and leave a constant, it is a G.P. with that $r$.`,
+          t`If an $n$ is left, the ratio changes with $n$: it is not a G.P.`,
+          t`The first term is $a = t_1$: put $n = 1$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $t_n = \frac{5^{n-2}}{4^{n-3}}$, show that the sequence is a G.P. Find its first term and common ratio.`,
       steps: [
         t`Put $n + 1$ in place of $n$: $t_{n+1} = \frac{5^{n-1}}{4^{n-2}}$.`,
-        t`Divide: $\frac{t_{n+1}}{t_n} = \frac{5^{n-1}}{4^{n-2}} \times \frac{4^{n-3}}{5^{n-2}} = \frac{5^{(n-1)-(n-2)}}{4^{(n-2)-(n-3)}} = \frac{5}{4}$.`,
+        t`Divide: $\frac{t_{n+1}}{t_n}$ equals $\frac{5^{n-1}}{4^{n-2}} \times \frac{4^{n-3}}{5^{n-2}}$, which is $\frac{5^{(n-1)-(n-2)}}{4^{(n-2)-(n-3)}}$, so $\frac{5}{4}$.`,
         t`The $n$'s cancel, so the ratio is $\frac{5}{4}$ for every $n$: the sequence is a G.P. with $r = \frac{5}{4}$.`,
         t`First term: $t_1 = \frac{5^{-1}}{4^{-2}} = \frac{16}{5}$. Check: $t_2 = \frac{5^0}{4^{-1}} = 4$, and $4 \div \frac{16}{5} = \frac{5}{4}$.`,
       ],

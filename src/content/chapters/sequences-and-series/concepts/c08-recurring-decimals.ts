@@ -10,23 +10,68 @@ export const c08: Concept = {
     reveal: t`Exactly $1$. $0.999\ldots = 0.9 + 0.09 + 0.009 + \ldots$ is a G.P. with $a = 0.9$ and $r = 0.1$. Its sum to infinity is $\frac{0.9}{1 - 0.1} = \frac{0.9}{0.9} = 1$. The same sum turns any recurring decimal into a fraction.`,
   },
   explanation: {
-    intuition: t`A recurring decimal is an endless sum: $0.333\ldots = 0.3 + 0.03 + 0.003 + \ldots$. Each term is the one before divided by $10$, so it is a G.P. with $|r| < 1$, and its sum to infinity is one number: $\frac{0.3}{0.9} = \frac{1}{3}$. When two digits repeat, as in $0.3636\ldots = 0.36 + 0.0036 + \ldots$, each block sits two places further right, so $r = 0.01$. Digits that don't repeat stay out of the G.P. and are added on at the end.`,
-    formal: t`**Write the repeating part as a G.P.** $0.\overline{36} = 0.36 + 0.0036 + 0.000036 + \ldots$, with $a = 0.36$ and $r = \frac{0.0036}{0.36} = 0.01$.
-
-**Sum to infinity.** $|r| < 1$, so $S_\infty = \frac{a}{1 - r} = \frac{0.36}{0.99} = \frac{36}{99} = \frac{4}{11}$.
-
-**The ratio.** A block of $k$ repeating digits gives $r = \frac{1}{10^k}$: $r = 0.1$ when one digit repeats, $r = 0.01$ when two do.
-
-**Digits in front.** Keep the whole number and any non-repeating digits out of the G.P., and start the G.P. where the repeating digits really sit: $0.1\overline{3} = 0.1 + (0.03 + 0.003 + \ldots) = \frac{1}{10} + \frac{0.03}{0.9} = \frac{1}{10} + \frac{1}{30} = \frac{2}{15}$.
-
-**Check.** Divide your fraction out: $\frac{2}{15} = 0.1333\ldots$.`,
+    intuition: [
+      t`A **recurring decimal** goes on for ever, with a block of digits repeating, like $0.333\ldots$.`,
+      t`Split it by place value into an endless sum: $0.333\ldots$ is $0.3 + 0.03 + 0.003 + \ldots$.`,
+      t`Each term is the one before divided by $10$: recall, that makes a G.P., with ratio $r = 0.1$.`,
+      t`Since $|r| < 1$, it has a sum to infinity (recall: the total of all its terms), here $\frac{0.3}{0.9} = \frac{1}{3}$.`,
+      t`When two digits repeat, as in $0.3636\ldots = 0.36 + 0.0036 + \ldots$, each block sits two places further right, so $r = 0.01$.`,
+      t`Digits that don't repeat stay out of the G.P., and are added on at the end.`,
+    ],
+    formal: [
+      {
+        title: "Writing the repeats as a G.P.",
+        points: [
+          t`A bar over digits marks the repeating block: $0.\overline{36}$ means $0.363636\ldots$.`,
+          t`By place value, $0.\overline{36}$ equals $0.36 + 0.0036 + 0.000036 + \ldots$.`,
+          t`Its first term is $a = 0.36$.`,
+          t`Divide neighbouring terms for the ratio: $r = \frac{0.0036}{0.36} = 0.01$.`,
+        ],
+      },
+      {
+        title: "Sum to infinity",
+        points: [
+          t`$|r| < 1$, so the G.P. has a sum to infinity: $S_\infty = \frac{a}{1 - r}$.`,
+          t`Here $S_\infty = \frac{0.36}{1 - 0.01} = \frac{0.36}{0.99}$.`,
+          t`Clear the decimals: $\frac{0.36}{0.99} = \frac{36}{99} = \frac{4}{11}$.`,
+          t`So $0.\overline{36} = \frac{4}{11}$.`,
+        ],
+      },
+      {
+        title: "The ratio from the block",
+        points: [
+          t`Say the repeating block is $k$ digits long.`,
+          t`Each block then sits $k$ places to the right of the one before.`,
+          t`So each term is the one before divided by $10^k$: $r = \frac{1}{10^k}$.`,
+          t`One digit repeating gives $r = 0.1$; two digits repeating give $r = 0.01$.`,
+        ],
+      },
+      {
+        title: "Digits in front of the repeats",
+        points: [
+          t`Some decimals start repeating late: in $0.1\overline{3} = 0.1333\ldots$, only the $3$ repeats.`,
+          t`Keep the whole number and any non-repeating digits out of the G.P.`,
+          t`Start the G.P. where the repeating digits really sit: the first $3$ is in the hundredths place.`,
+          t`So $0.1\overline{3} = 0.1 + (0.03 + 0.003 + \ldots)$.`,
+          t`The bracket is a G.P. with $a = 0.03$ and $r = 0.1$, so its sum is $\frac{0.03}{0.9} = \frac{1}{30}$.`,
+          t`Add the front part back: $\frac{1}{10} + \frac{1}{30} = \frac{2}{15}$.`,
+        ],
+      },
+      {
+        title: "Check by dividing out",
+        points: [
+          t`Divide your fraction out: $\frac{2}{15} = 0.1333\ldots$.`,
+          t`Its digits should match the decimal you started from.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Express $0.5\overline{27} = 0.52727\ldots$ as a fraction.`,
       steps: [
-        t`Split off the digit that doesn't repeat: $0.5\overline{27} = 0.5 + (0.027 + 0.00027 + 0.0000027 + \ldots)$.`,
+        t`Split off the digit that doesn't repeat: $0.5\overline{27}$ equals $0.5$ plus $(0.027 + 0.00027 + 0.0000027 + \ldots)$.`,
         t`The bracket is a G.P. with $a = 0.027$ and $r = \frac{0.00027}{0.027} = 0.01$ (two digits repeat), and $|r| < 1$.`,
-        t`Its sum to infinity is $\frac{a}{1 - r} = \frac{0.027}{0.99} = \frac{27}{990} = \frac{3}{110}$.`,
-        t`Add the front part back: $\frac{1}{2} + \frac{3}{110} = \frac{55}{110} + \frac{3}{110} = \frac{58}{110} = \frac{29}{55}$.`,
+        t`Its sum to infinity is $\frac{a}{1 - r} = \frac{0.027}{0.99}$, which is $\frac{27}{990} = \frac{3}{110}$.`,
+        t`Add the front part back: $\frac{1}{2} + \frac{3}{110} = \frac{55}{110} + \frac{3}{110}$, which is $\frac{58}{110} = \frac{29}{55}$.`,
       ],
       answer: t`$0.5\overline{27} = \frac{29}{55}$.`,
     },

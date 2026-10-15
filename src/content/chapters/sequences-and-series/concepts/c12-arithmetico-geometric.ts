@@ -1,6 +1,24 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The x-position of column k (0 to 4) in the shift-and-subtract figure: one column per power of 2. */
+const col = (k: number) => +(2.4 + 1.6 * k).toFixed(2);
+
+/** The heights of the three rows: S, then 2S shifted one place right, then their difference. */
+const ROW_S = 3.2;
+const ROW_2S = 2.3;
+const ROW_D = 1.1;
+
+/** One row of the sum: `name =` at the left, then each term in its column, joined by "+". */
+function row(name: string, y: number, terms: [number, string][], step: number, tone?: "good"): FigureElement[] {
+  const els: FigureElement[] = [{ kind: "label", at: [1.1, y], label: `${name} =`, step }];
+  terms.forEach(([k, term], i) => {
+    els.push({ kind: "label", at: [col(k), y], label: term, step, ...(tone ? { tone } : {}) });
+    if (i > 0 && !term.startsWith("−")) els.push({ kind: "label", at: [col(k) - 0.8, y], label: "+", tone: "muted", step });
+  });
+  return els;
+}
 
 export const c12: Concept = {
   id: "C12",
@@ -10,27 +28,83 @@ export const c12: Concept = {
     reveal: t`Yes. Call it $S$ and halve every term: $\frac{S}{2} = \frac{1}{2} + \frac{2}{4} + \frac{3}{8} + \cdots$. Line it up one place to the right and subtract: $S - \frac{S}{2} = 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \cdots = 2$, a plain G.P. So $\frac{S}{2} = 2$ and $S = 4$. The halving bottoms win over the growing tops.`,
   },
   explanation: {
-    intuition: t`Each term is an A.P. number times a G.P. number: $1 \times 1$, $2 \times 2$, $3 \times 4$, $\ldots$ The sum is not a G.P., because $\frac{t_2}{t_1} \ne \frac{t_3}{t_2}$. But multiply the whole sum by the G.P.'s ratio $r$ and shift it one place: each term now sits under a term with the same power of $r$. Subtracting, the A.P. parts differ by $d$ every time, so what is left is a G.P. you can already sum. Then divide by $1 - r$ to get back to $S$.`,
-    formal: t`**What it is.** An arithmetico-geometric series has $t_n = [a + (n - 1)d]\,r^{n-1}$: the $n$th term of an A.P. ($a$, $d$) times the $n$th term of a G.P. (first term $1$, ratio $r$). Split each term into its two factors to read off $a$, $d$ and $r$.
-
-**Multiply by $r$ and subtract.** Under $S_n = a + (a + d)r + (a + 2d)r^2 + \cdots$ write $rS_n$, shifted one place. Subtracting gives
-$$(1 - r)S_n = a + \underbrace{dr + dr^2 + \cdots + dr^{n-1}}_{\text{G.P.: first term } dr,\ n - 1 \text{ terms}} - [a + (n - 1)d]\,r^n$$
-The last piece is the end term of $rS_n$: nothing in $S_n$ cancels it.
-
-**Sum of $n$ terms** ($r \ne 1$)
-$$S_n = \frac{a}{1 - r} + \frac{dr(1 - r^{n-1})}{(1 - r)^2} - \frac{[a + (n - 1)d]\,r^n}{1 - r}$$
-
-**Sum to infinity** ($|r| < 1$): the end term shrinks to $0$, so
-$$S_\infty = \frac{a}{1 - r} + \frac{dr}{(1 - r)^2}$$
-The square is there because you divide by $1 - r$ twice: once to sum the G.P. of $d$s, once more to turn $(1 - r)S$ into $S$.
-
-**Check $|r|$, not $\frac{t_2}{t_1}$.** The series is not a G.P., so the ratio of its first two terms means nothing. The sum to infinity exists when the G.P. factor's $|r| < 1$.`,
+    intuition: [
+      t`Recall: an **A.P.** adds the same number $d$ each time, and a **G.P.** multiplies by the same ratio $r$.`,
+      t`The terms $1, 4, 12, 32, \ldots$ are $1 \times 1$, $2 \times 2$, $3 \times 4$, $4 \times 8$.`,
+      t`The first factors, $1, 2, 3, 4$, form an A.P.; the second factors, $1, 2, 4, 8$, form a G.P.`,
+      t`A sum whose terms are an A.P. term times a G.P. term is an **arithmetico-geometric series**.`,
+      t`Multiply the sum by the G.P.'s ratio, here $2$, and shift it one place: equal powers of $2$ line up.`,
+      t`Subtract: each column's A.P. factors differ by $d$, here $1$, so a G.P. is left, plus one end term.`,
+    ],
+    figure: {
+      alt: "The sum S = 1·1 + 2·2 + 3·4 + 4·8, each term an A.P. number times a power of 2. Below it 2S = 1·2 + 2·4 + 3·8 + 4·16, shifted one place right so that equal powers of 2 sit in the same column. Below both, S − 2S = 1 + 1·2 + 1·4 + 1·8 − 4·16: in each column the A.P. factors differ by 1, leaving the G.P. 1 + 2 + 4 + 8, and the end term 4·16 of 2S, which has no partner.",
+      axes: "none",
+      view: { x: [0, 10], y: [0.4, 4.0] },
+      elements: [
+        ...row("S", ROW_S, [[0, "1·1"], [1, "2·2"], [2, "3·4"], [3, "4·8"]], 2),
+        ...row("2S", ROW_2S, [[1, "1·2"], [2, "2·4"], [3, "3·8"], [4, "4·16"]], 5),
+        { kind: "segment", from: [0.4, 1.8], to: [9.6, 1.8], tone: "muted", step: 6 },
+        ...row("S − 2S", ROW_D, [[0, "1"], [1, "1·2"], [2, "1·4"], [3, "1·8"]], 6, "good"),
+        { kind: "label", at: [col(4), ROW_D], label: "− 4·16", step: 6 },
+        { kind: "label", at: [(col(0) + col(3)) / 2, ROW_D], label: "a G.P.", labelAt: "s", tone: "good", step: 6 },
+        { kind: "label", at: [col(4), ROW_D], label: "end term", labelAt: "s", tone: "muted", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "The general term",
+        points: [
+          t`Call the A.P. factor's first term $a$ and its common difference $d$: its $n$th term is $a + (n - 1)d$.`,
+          t`Take the G.P. factor's first term as $1$ and its ratio as $r$: its $n$th term is $r^{n-1}$.`,
+          t`So the series' $n$th term is $t_n = [a + (n - 1)d]\,r^{n-1}$.`,
+          t`To read off $a$, $d$ and $r$, split each term into its two factors.`,
+        ],
+      },
+      {
+        title: "Multiply by r and subtract",
+        points: [
+          t`Write the sum of $n$ terms as $S_n = a + (a + d)r$ $+ (a + 2d)r^2 + \cdots$.`,
+          t`Under it write $rS_n$, shifted one place, so that equal powers of $r$ line up.`,
+          t`Subtract: the left side becomes $S_n - rS_n = (1 - r)S_n$.`,
+          t`On the right, $a$ stands alone, then each column leaves $d$ times a power of $r$.`,
+          t`Those make the G.P. $dr + dr^2 + \cdots + dr^{n-1}$, with first term $dr$ and $n - 1$ terms.`,
+          t`The end term of $rS_n$, $[a + (n - 1)d]\,r^n$, has nothing in $S_n$ to cancel it, so it is subtracted.`,
+        ],
+      },
+      {
+        title: "The sum of n terms",
+        points: [
+          t`So $(1 - r)S_n$ equals $a$ $+ (dr + \cdots + dr^{n-1})$ $- [a + (n - 1)d]\,r^n$.`,
+          t`By the G.P. sum, the bracket is $\frac{dr(1 - r^{n-1})}{1 - r}$.`,
+          t`For $r \ne 1$, divide the whole right side by $1 - r$ to get $S_n$.`,
+          t`This gives $S_n = \frac{a}{1 - r}$ $+ \frac{dr(1 - r^{n-1})}{(1 - r)^2}$ $- \frac{[a + (n - 1)d]\,r^n}{1 - r}$.`,
+        ],
+      },
+      {
+        title: "The sum to infinity",
+        points: [
+          t`Recall: the **sum to infinity** $S_\infty$ is the number the sums $S_n$ settle on as $n$ grows.`,
+          t`When $|r| < 1$, the powers $r^{n-1}$ and $r^n$ shrink to $0$, and so does the end term.`,
+          t`So $S_\infty = \frac{a}{1 - r}$ $+ \frac{dr}{(1 - r)^2}$.`,
+          t`The square is there because you divide by $1 - r$ twice.`,
+          t`You divide once to sum the G.P. of $d$s, and once more to turn $(1 - r)S$ into $S$.`,
+        ],
+      },
+      {
+        title: "Which ratio decides the sum",
+        points: [
+          t`The series is not a G.P.: in $1 + 4 + 12 + \cdots$, $\frac{4}{1} = 4$ but $\frac{12}{4} = 3$.`,
+          t`So the ratio $\frac{t_2}{t_1}$ of its first two terms means nothing here.`,
+          t`The sum to infinity exists when the G.P. factor's ratio has $|r| < 1$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $t_n$ and the sum of $n$ terms of $1, 4, 12, 32, 80, 192, \ldots$`,
       steps: [
         t`Split the terms: $1 \times 1$, $2 \times 2$, $3 \times 4$, $4 \times 8$, $5 \times 16$. The first factors are the A.P. $1, 2, 3, \ldots$ ($a = 1$, $d = 1$); the second are the G.P. $1, 2, 4, \ldots$ ($r = 2$). So $t_n = n \cdot 2^{n-1}$.`,
-        t`$S_n = 1 + 2 \cdot 2 + 3 \cdot 2^2 + \cdots + n \cdot 2^{n-1}$, and $2S_n = 1 \cdot 2 + 2 \cdot 2^2 + \cdots + (n - 1)2^{n-1} + n \cdot 2^n$, shifted one place.`,
-        t`Subtract: $S_n - 2S_n = 1 + 2 + 2^2 + \cdots + 2^{n-1} - n \cdot 2^n = (2^n - 1) - n \cdot 2^n$.`,
+        t`$S_n = 1 + 2 \cdot 2 + 3 \cdot 2^2$ $+ \cdots + n \cdot 2^{n-1}$, and $2S_n = 1 \cdot 2 + 2 \cdot 2^2$ $+ \cdots + (n - 1)2^{n-1}$ $+ n \cdot 2^n$, shifted one place.`,
+        t`Subtract: $S_n - 2S_n$ $= 1 + 2 + 2^2 + \cdots + 2^{n-1}$ $- n \cdot 2^n$ $= (2^n - 1) - n \cdot 2^n$.`,
         t`So $-S_n = 2^n - 1 - n \cdot 2^n$, giving $S_n = 1 + (n - 1)2^n$. Check $n = 3$: $1 + 4 + 12 = 17 = 1 + 2 \times 8$.`,
       ],
       answer: t`$t_n = n \cdot 2^{n-1}$ and $S_n = 1 + (n - 1)2^n$.`,

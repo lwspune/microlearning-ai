@@ -10,21 +10,85 @@ export const c10: Concept = {
     reveal: t`Say the town is $80$ km away: $4$ hours there, $1$ hour back, so $160$ km in $5$ hours, which is $32$ km/h. That is the H.M. of $20$ and $80$: $\frac{2 \times 20 \times 80}{100} = 32$. The A.M. is $50$ and the G.M. is $\sqrt{1600} = 40$, and look: $40^2 = 50 \times 32$.`,
   },
   explanation: {
-    intuition: t`There are three ways to average two positive numbers $a$ and $b$. The A.M. shares out their sum, the G.M. is the number whose square is their product, and the H.M. is the right average for rates, like speeds over equal distances. For $a \ne b$ they always come in the order $A > G > H$. And $G$ sits in the middle in a G.P. sense: $A, G, H$ are in G.P., so $G^2 = AH$. Know any two of the means and you know the third.`,
-    formal: t`**The three means.** For $a, b > 0$: $A = \frac{a+b}{2}$, $G = \sqrt{ab}$, $H = \frac{2ab}{a+b}$. $H$ is the reciprocal of the A.M. of $\frac{1}{a}$ and $\frac{1}{b}$.
-
-**The link.** $AH = \frac{a+b}{2} \times \frac{2ab}{a+b} = ab = G^2$. So $G^2 = AH$: $A, G, H$ are in G.P.
-
-**The order.** $A - G = \frac{(\sqrt{a} - \sqrt{b})^2}{2} \ge 0$, so $A \ge G$. Then $\frac{G}{H} = \frac{A}{G} \ge 1$, so $G \ge H$. All three are equal only when $a = b$.
-
-**Back to the numbers.** Once $A$ and $G$ are known, $a + b = 2A$ and $ab = G^2$, so $a$ and $b$ are the roots of $x^2 - 2Ax + G^2 = 0$.`,
+    intuition: [
+      t`A **mean** of two positive numbers $a$ and $b$, here $20$ and $80$, is an average lying between them.`,
+      t`Their **arithmetic mean** (A.M.), $A$, is half their sum: $A = 50$.`,
+      t`Their **geometric mean** (G.M.), $G$, is the positive number whose square is their product: $G = 40$.`,
+      t`Their **harmonic mean** (H.M.), $H$, is the right average for rates, like speeds over equal distances: $H = 32$.`,
+      t`Whenever $a \ne b$, the three come in this order: $A > G > H$.`,
+      t`And $50, 40, 32$ is a G.P., each term $\frac{4}{5}$ of the one before: in general $G^2 = AH$.`,
+    ],
+    figure: {
+      alt: "A number line from 20 to 80 with a = 20 and b = 80 marked. Between them sit H = 32, G = 40 and A = 50, in that order from left to right, so H < G < A. Then 40² = 50 × 32: G squared equals A times H.",
+      axes: "none",
+      view: { x: [1.2, 8.8], y: [-1, 1.1] },
+      elements: [
+        { kind: "segment", from: [1.5, 0], to: [8.5, 0], tone: "muted" },
+        { kind: "point", at: [2, 0], label: "a", labelAt: "n", step: 1 },
+        { kind: "label", at: [2, 0], label: "20", labelAt: "s", tone: "muted", step: 1 },
+        { kind: "point", at: [8, 0], label: "b", labelAt: "n", step: 1 },
+        { kind: "label", at: [8, 0], label: "80", labelAt: "s", tone: "muted", step: 1 },
+        { kind: "point", at: [5, 0], label: "A", labelAt: "n", tone: "good", step: 2 },
+        { kind: "label", at: [5, 0], label: "50", labelAt: "s", tone: "good", step: 2 },
+        { kind: "point", at: [4, 0], label: "G", labelAt: "n", tone: "good", step: 3 },
+        { kind: "label", at: [4, 0], label: "40", labelAt: "s", tone: "good", step: 3 },
+        { kind: "point", at: [3.2, 0], label: "H", labelAt: "n", tone: "good", step: 4 },
+        { kind: "label", at: [3.2, 0], label: "32", labelAt: "s", tone: "good", step: 4 },
+        { kind: "label", at: [1.4, 0.85], label: "H < G < A", labelAt: "e", tone: "good", step: 5 },
+        { kind: "label", at: [8.6, 0.85], label: "40² = 50 × 32", labelAt: "w", tone: "good", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "The three means",
+        points: [
+          t`For positive $a$ and $b$, the A.M. is half their sum: $A = \frac{a+b}{2}$.`,
+          t`The G.M. is the positive square root of their product: $G = \sqrt{ab}$.`,
+          t`The H.M. is $H = \frac{2ab}{a+b}$.`,
+          t`Recall: to **flip** a non-zero number $x$ is to take its **reciprocal**, $\frac{1}{x}$.`,
+          t`The A.M. of the reciprocals $\frac{1}{a}$ and $\frac{1}{b}$ is $\frac{a+b}{2ab}$.`,
+          t`Flip that back and you get $H$: the H.M. is the reciprocal of the A.M. of the reciprocals.`,
+        ],
+      },
+      {
+        title: "The link between the means",
+        points: [
+          t`Multiply $A$ by $H$: $\frac{a+b}{2} \times \frac{2ab}{a+b}$.`,
+          t`The $a + b$ and the $2$ cancel, leaving $ab$, which is $G^2$.`,
+          t`So $G^2 = AH$.`,
+          t`Recall: $x, y, z$ are in G.P. when $\frac{y}{x} = \frac{z}{y}$, that is when $y^2 = xz$.`,
+          t`So $A, G, H$ are in G.P., with $G$ in the middle.`,
+          t`Know any two of the means, and $G^2 = AH$ gives you the third.`,
+        ],
+      },
+      {
+        title: "The order of the means",
+        points: [
+          t`Subtract: $A - G = \frac{a + b - 2\sqrt{ab}}{2}$.`,
+          t`The top is a perfect square, so $A - G = \frac{(\sqrt{a} - \sqrt{b})^2}{2}$.`,
+          t`A square is never negative, so $A \ge G$.`,
+          t`Divide $G^2 = AH$ by $GH$: $\frac{G}{H} = \frac{A}{G}$.`,
+          t`Since $\frac{A}{G} \ge 1$, also $\frac{G}{H} \ge 1$, so $G \ge H$.`,
+          t`So $A \ge G \ge H$, and all three are equal only when $a = b$.`,
+        ],
+      },
+      {
+        title: "Back to the two numbers",
+        points: [
+          t`Given two of the means, first find the third with $G^2 = AH$.`,
+          t`Once $A$ and $G$ are known, $a + b = 2A$ and $ab = G^2$.`,
+          t`Recall: two numbers with sum $s$ and product $p$ are the **roots** (solutions) of $x^2 - sx + p = 0$.`,
+          t`So $a$ and $b$ are the roots of $x^2 - 2Ax + G^2 = 0$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`The A.M. of two numbers exceeds their G.M. by $2$ and their H.M. by $\frac{18}{5}$. Find the numbers.`,
       steps: [
         t`Write $G$ and $H$ in terms of $A$: $G = A - 2$ and $H = A - \frac{18}{5}$.`,
-        t`Use $G^2 = AH$: $(A - 2)^2 = A\left(A - \frac{18}{5}\right)$, so $A^2 - 4A + 4 = A^2 - \frac{18}{5}A$, which gives $\frac{2}{5}A = 4$, so $A = 10$ and $G = 8$.`,
+        t`Use $G^2 = AH$: $(A - 2)^2$ equals $A\left(A - \frac{18}{5}\right)$, so $A^2 - 4A + 4$ equals $A^2 - \frac{18}{5}A$, which gives $\frac{2}{5}A = 4$, so $A = 10$ and $G = 8$.`,
         t`Now $a + b = 2A = 20$ and $ab = G^2 = 64$, so $a$ and $b$ are the roots of $x^2 - 20x + 64 = 0$, that is $(x - 4)(x - 16) = 0$.`,
-        t`Check: $H = \frac{2 \times 64}{20} = \frac{32}{5}$, and $A - H = 10 - \frac{32}{5} = \frac{18}{5}$.`,
+        t`Check: $H = \frac{2 \times 64}{20}$, which is $\frac{32}{5}$, and $A - H = 10 - \frac{32}{5}$, which is $\frac{18}{5}$.`,
       ],
       answer: t`The numbers are $4$ and $16$.`,
     },

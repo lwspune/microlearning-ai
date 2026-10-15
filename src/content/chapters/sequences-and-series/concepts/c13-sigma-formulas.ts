@@ -1,6 +1,31 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The x-position of column k in a row figure, `gap` apart: one column per term. */
+const col = (k: number, gap = 1.6) => +(2.2 + gap * k).toFixed(2);
+
+/** The idea slide's column gap: wider, for terms like "n − 1". */
+const WIDE = 1.9;
+
+/** The heights of the rows on the idea slide: the sum, the sum backwards, and the column totals. */
+const ROW_TOP = 3.2;
+const ROW_BACK = 2.2;
+const ROW_SUM = 1.1;
+
+/**
+ * One row of a sum: `name` (if any) then `terms` in columns `first` onwards, joined by "+".
+ * Every element appears at `step`, in `tone` (default accent).
+ */
+function row(name: string, y: number, terms: string[], step: number, tone?: FigureElement["tone"], first = 0, gap = 1.6): FigureElement[] {
+  const els: FigureElement[] = name ? [{ kind: "label", at: [0.6, y], label: name, step }] : [];
+  terms.forEach((label, i) => {
+    const k = first + i;
+    els.push({ kind: "label", at: [col(k, gap), y], label, tone, step });
+    if (i > 0) els.push({ kind: "label", at: [col(k, gap) - gap / 2 + 0.05, y], label: "+", tone: "muted", step });
+  });
+  return els;
+}
 
 export const c13: Concept = {
   id: "C13",
@@ -10,24 +35,93 @@ export const c13: Concept = {
     reveal: t`No. $1^3 + 2^3 = 9 = 3^2$ and $1^3 + 2^3 + 3^3 = 36 = 6^2$: the first $n$ cubes always add up to the square of $1 + 2 + \ldots + n$. So $\sum r^3 = \left[\frac{n(n+1)}{2}\right]^2$. Squares are different: $1^2 + 2^2 = 5$, not $3^2$.`,
   },
   explanation: {
-    intuition: t`Write $1 + 2 + \ldots + n$ forwards and then backwards under it. Each column adds to $n + 1$, and there are $n$ columns, so twice the sum is $n(n+1)$. The sums of squares and cubes have formulas too, so you never add term by term. Any sum $\sum f(r)$ with $f$ a polynomial splits into $\sum r$, $\sum r^2$, $\sum r^3$ and $\sum 1$, each with its own formula.`,
-    formal: t`**The three formulas** (each sum runs from $r = 1$ to $n$)
-
-$$\sum r = \frac{n(n+1)}{2}, \qquad \sum r^2 = \frac{n(n+1)(2n+1)}{6}, \qquad \sum r^3 = \left[\frac{n(n+1)}{2}\right]^2$$
-
-Only the cubes give the square of $\sum r$. Test with $n = 2$: $1^2 + 2^2 = 5$ and $1^3 + 2^3 = 9$.
-
-**Splitting a sum.** $\sum (a_r \pm b_r) = \sum a_r \pm \sum b_r$ and $\sum k\,a_r = k \sum a_r$. A constant is added once for each $r$: $\sum_{r=1}^{n} k = nk$.
-
-**Not starting at 1.** Subtract the sum that ends just **before** the first term: $3^2 + 4^2 + \ldots + 29^2 = \sum_{r=1}^{29} r^2 - \sum_{r=1}^{2} r^2 = 8555 - 5 = 8550$.
-
-**Brackets.** For $(2r)^2 - (2r - 1)^2$, expand first: it is $4r - 1$. Then find the $r$ of the first and last bracket.`,
+    intuition: [
+      t`$\Sigma$, the Greek capital letter **sigma**, means "add up".`,
+      t`$\sum_{r=1}^{n} r$ adds $r$ as it counts $1, 2, \ldots, n$: it is $1 + 2 + \ldots + n$.`,
+      t`Write the same sum backwards under it: $n + (n - 1) + \ldots + 1$.`,
+      t`Each column then adds up to $n + 1$.`,
+      t`There are $n$ columns, so twice the sum is $n(n + 1)$, and $\sum r = \frac{n(n+1)}{2}$.`,
+      t`Sums of squares and of cubes have formulas too, so you never add term by term.`,
+    ],
+    figure: {
+      alt: "The sum S = 1 + 2 + 3 + ⋯ + n written as a row, and below it the same sum backwards, S = n + (n − 1) + (n − 2) + ⋯ + 1, so that 1 sits over n, 2 over n − 1, and so on. Under a line, each column adds to n + 1, so 2S is n + 1 added n times: 2S = n(n + 1), and S = n(n + 1)/2.",
+      axes: "none",
+      view: { x: [0, 11.4], y: [-1.2, 4] },
+      elements: [
+        ...row("S =", ROW_TOP, ["1", "2", "3", "⋯", "n"], 2, undefined, 0, WIDE),
+        ...row("S =", ROW_BACK, ["n", "n − 1", "n − 2", "⋯", "1"], 3, undefined, 0, WIDE),
+        { kind: "segment", from: [0.6, ROW_SUM + 0.75], to: [11, ROW_SUM + 0.75], tone: "muted", step: 4 },
+        ...row("2S =", ROW_SUM, ["n + 1", "n + 1", "n + 1", "⋯", "n + 1"], 4, "good", 0, WIDE),
+        { kind: "label", at: [1.2, 0.1], label: "n columns, so 2S = n(n + 1)", tone: "good", step: 5 },
+        { kind: "label", at: [1.2, -0.8], label: "S = n(n + 1)/2", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "The three formulas",
+        points: [
+          t`Each sum on this slide runs from $r = 1$ to $r = n$.`,
+          t`The first $n$ **natural numbers**, the counting numbers $1$ to $n$, add to $\sum r = \frac{n(n+1)}{2}$.`,
+          t`Their squares add to $\sum r^2 = \frac{n(n+1)(2n+1)}{6}$.`,
+          t`Their cubes add to $\sum r^3$ $= \left[\frac{n(n+1)}{2}\right]^2$.`,
+          t`Only the cubes give the square of $\sum r$.`,
+          t`Test with $n = 2$: $1^2 + 2^2 = 5$, but $1^3 + 2^3 = 9 = 3^2$.`,
+        ],
+      },
+      {
+        title: "Splitting a sum",
+        points: [
+          t`Let $a_r$ and $b_r$ be terms worked out from $r$, such as $r^2$ or $3r$.`,
+          t`A sum or difference splits: $\sum (a_r \pm b_r)$ equals $\sum a_r \pm \sum b_r$.`,
+          t`A **constant**, a number that does not change with $r$, comes out in front: $\sum k\,a_r = k \sum a_r$.`,
+          t`A constant on its own is added once for each $r$: $\sum_{r=1}^{n} k = nk$.`,
+          t`A **polynomial** in $r$ adds powers of $r$ times constants, like $3r^2 - 2r + 1$.`,
+          t`So the sum of a polynomial splits into $\sum r^3$, $\sum r^2$, $\sum r$ and $\sum 1$, each with its formula.`,
+        ],
+      },
+      {
+        title: "Sums not starting at 1",
+        points: [
+          t`The formulas add from $r = 1$, but a sum may start later: $3^2 + 4^2 + \ldots + 29^2$.`,
+          t`Add from $1^2$ to $29^2$ instead, then take off the extra terms.`,
+          t`The extra terms end just **before** the first term you want: at $2^2$, not $3^2$.`,
+          t`The numbers below and above $\Sigma$ are its **limits**: the first and last values of $r$.`,
+          t`So the sum is $\sum_{r=1}^{29} r^2 - \sum_{r=1}^{2} r^2$ $= 8555 - 5 = 8550$.`,
+          t`In general, $\sum_{r=a}^{b}$ equals $\sum_{r=1}^{b} - \sum_{r=1}^{a-1}$.`,
+        ],
+        figure: {
+          alt: "The squares 1², 2², 3², 4², ⋯, 29² in a row. The terms wanted, 3² to 29², are highlighted. A bracket under the whole row is labelled r = 1 to 29, and a shorter bracket under 1² and 2² only, the extra terms, is labelled r = 1 to 2: it stops just before 3². The result, 8555 − 5 = 8550, is shown below.",
+          axes: "none",
+          view: { x: [1.4, 11.8], y: [-2, 2.6] },
+          elements: [
+            ...row("", 1.5, ["3²", "4²", "⋯", "29²"], 1, undefined, 2),
+            ...row("", 1.5, ["1²", "2²"], 2, "muted"),
+            { kind: "label", at: [col(2) - 0.75, 1.5], label: "+", tone: "muted", step: 2 },
+            { kind: "segment", from: [col(0) - 0.2, 1.1], to: [col(5) + 0.9, 1.1], step: 2 },
+            { kind: "label", at: [5.6, 1.1], label: "r = 1 to 29", labelAt: "s", step: 2 },
+            { kind: "segment", from: [col(0) - 0.2, -0.3], to: [col(1) + 0.6, -0.3], tone: "bad", step: 3 },
+            { kind: "label", at: [col(0) + 0.6, -0.3], label: "r = 1 to 2", labelAt: "s", tone: "bad", step: 3 },
+            { kind: "label", at: [6.6, -0.9], label: "8555 − 5 = 8550", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Sums of brackets",
+        points: [
+          t`In a series of brackets, every bracket follows one pattern in $r$: the **general term**.`,
+          t`For example, $(2^2 - 1^2) + (4^2 - 3^2) + \ldots$ has general term $(2r)^2 - (2r - 1)^2$.`,
+          t`Expand it first: $(2r)^2 - (2r - 1)^2 = 4r - 1$.`,
+          t`Then find the $r$ of the first and of the last bracket: those are the limits.`,
+          t`Sum the expanded term between those limits, splitting it as before.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $(70^2 - 69^2) + (68^2 - 67^2) + (66^2 - 65^2) + \ldots + (2^2 - 1^2)$.`,
       steps: [
         t`Each bracket is $(2r)^2 - (2r - 1)^2$: $r = 35$ gives $70^2 - 69^2$ and $r = 1$ gives $2^2 - 1^2$. So $r$ runs from $1$ to $35$.`,
-        t`Expand: $(2r)^2 - (2r - 1)^2 = 4r^2 - (4r^2 - 4r + 1) = 4r - 1$. The sum is $\sum_{r=1}^{35} (4r - 1)$.`,
-        t`Split it: $4\sum_{r=1}^{35} r - \sum_{r=1}^{35} 1 = 4 \times \frac{35 \times 36}{2} - 35 = 2520 - 35 = 2485$.`,
+        t`Expand: $(2r)^2 - (2r - 1)^2$ $= 4r^2 - (4r^2 - 4r + 1)$ $= 4r - 1$. The sum is $\sum_{r=1}^{35} (4r - 1)$.`,
+        t`Split it: $4\sum_{r=1}^{35} r$ $- \sum_{r=1}^{35} 1$ $= 4 \times \frac{35 \times 36}{2} - 35$ $= 2520 - 35$ $= 2485$.`,
       ],
       answer: t`$2485$. Check: each bracket $a^2 - b^2 = a + b$ here, so the total is $1 + 2 + \ldots + 70 = \frac{70 \times 71}{2} = 2485$.`,
     },

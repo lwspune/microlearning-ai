@@ -1,4 +1,4 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
@@ -10,24 +10,85 @@ export const c02: Concept = {
     reveal: t`No. Each year the amount is multiplied by $1.1$: $1000, 1100, 1210, 1331$. That is a G.P. with $a = 1000$ and $r = 1.1$, and the amount after $3$ years is its fourth term, $1000(1.1)^3 = 1331$. Rs $1300$ would add the same $100$ every year: that is simple interest, an A.P.`,
   },
   explanation: {
-    intuition: t`To get from $t_1 = a$ to $t_n$ you take $n - 1$ steps, and each step multiplies by $r$. So $t_n$ is $a$ times $n - 1$ factors of $r$. The first term has no factor $r$ at all. Every question here is this one equation, solved for whichever letter is missing: the term, its position $n$, $a$ or $r$.`,
-    formal: t`**The $n$th term.** For a G.P. with first term $a$ and common ratio $r$:
-$$t_n = ar^{n-1}$$
-The power of $r$ is one less than the term number: $t_1 = a$, $t_2 = ar$, $t_{10} = ar^9$. Only $r$ carries the power: $3 \cdot 2^4 = 48$, not $6^4$.
-
-**Which term is a given number?** Set $ar^{n-1}$ equal to it, write both sides as powers of one base, and compare indices. For $\sqrt{3}, 3, 3\sqrt{3}, \ldots$: $\sqrt{3}(\sqrt{3})^{n-1} = (\sqrt{3})^n = 3^{n/2}$, and $243 = 3^5$, so $\frac{n}{2} = 5$, $n = 10$.
-
-**$a$ and $r$ from two terms.** Write $t_p = ar^{p-1}$ and $t_q = ar^{q-1}$. Divide the later by the earlier: $a$ cancels and $r^{q-p} = \frac{t_q}{t_p}$. Then put $r$ back into either equation to find $a$.
-
-**Compound interest.** A principal $P$ at $R\%$ a year grows by the factor $1 + \frac{R}{100}$ each year. The amounts $P, Pr, Pr^2, \ldots$ form a G.P. with $r = 1 + \frac{R}{100}$, and after $N$ years the amount is its $(N + 1)$th term:
-$$A = P\left(1 + \frac{R}{100}\right)^N$$`,
+    intuition: [
+      t`Recall: a G.P. starts at its first term $a$ and multiplies by the common ratio $r$ at each step.`,
+      t`$t_n$ is the $n$th term; its **position** $n$, the term number, says where it sits in the list.`,
+      t`To get from $t_1 = a$ to $t_n$ you take $n - 1$ steps, each one a multiplication by $r$.`,
+      t`So $t_n$ is $a$ times $n - 1$ factors of $r$.`,
+      t`The first term has no factor $r$ at all.`,
+      t`Every question here is this one equation, solved for whichever letter is missing: the term, its position $n$, $a$ or $r$.`,
+    ],
+    figure: {
+      alt: "Five terms of a G.P. in a row, t₁ to t₅. A curved hop labelled × r joins each term to the next: four hops take t₁ to t₅. Under the terms their values: a, ar, ar², ar³, ar⁴, so the power of r is one less than the term number.",
+      axes: "none",
+      view: { x: [-0.8, 8.8], y: [-1.8, 2.1] },
+      elements: [
+        ...[0, 2, 4, 6, 8].map((x): FigureElement => ({ kind: "point", at: [x, 0], tone: "muted" })),
+        ...[1, 3, 5, 7].flatMap((x): FigureElement[] => [
+          { kind: "arc", centre: [x, 0], r: 1, from: 0, to: 180, step: 1 },
+          { kind: "label", at: [x, 1], label: "× r", labelAt: "n", step: 1 },
+        ]),
+        ...["t₁", "t₂", "t₃", "t₄", "t₅"].map((label, i): FigureElement => ({
+          kind: "label", at: [2 * i, 0], label, labelAt: "s", tone: "muted", step: 2,
+        })),
+        { kind: "label", at: [4, 1.55], label: "t₁ to t₅: 4 steps", labelAt: "n", tone: "good", step: 3 },
+        ...["a", "ar", "ar²", "ar³", "ar⁴"].map((label, i): FigureElement => ({
+          kind: "label", at: [2 * i, -0.85], label, labelAt: "s", step: 4,
+        })),
+      ],
+    },
+    formal: [
+      {
+        title: "The nth term",
+        points: [
+          t`Take a G.P. with first term $a$ and common ratio $r$.`,
+          t`Its $n$th term is $t_n = ar^{n-1}$.`,
+          t`The **power** of $r$, the small raised number, is one less than the term number.`,
+          t`So $t_1 = a$, $t_2 = ar$ and $t_{10} = ar^9$.`,
+          t`Only $r$ carries the power: work out $r^{n-1}$ first, then multiply by $a$.`,
+          t`For example, $3 \cdot 2^4 = 3 \cdot 16 = 48$, not $6^4$.`,
+        ],
+      },
+      {
+        title: "Which term is a given number?",
+        points: [
+          t`To find which term a number is, set $ar^{n-1}$ equal to it and solve for $n$.`,
+          t`Write both sides as powers of one base; then their **indices**, the powers, must be equal.`,
+          t`Take $\sqrt{3}, 3, 3\sqrt{3}, \ldots$: here $a = \sqrt{3}$ and $r = \sqrt{3}$.`,
+          t`So $t_n = \sqrt{3}(\sqrt{3})^{n-1}$, which is $(\sqrt{3})^n = 3^{n/2}$.`,
+          t`To find which term is $243$, write it as a power of $3$: $243 = 3^5$.`,
+          t`Compare indices: $\frac{n}{2} = 5$, so $n = 10$, and $243$ is the tenth term.`,
+        ],
+      },
+      {
+        title: "Two terms give a and r",
+        points: [
+          t`Suppose you know two terms, $t_p$ and a later one $t_q$.`,
+          t`Write each with the formula: $t_p = ar^{p-1}$ and $t_q = ar^{q-1}$.`,
+          t`Divide the later by the earlier: $a$ cancels.`,
+          t`What is left is $r^{q-p} = \frac{t_q}{t_p}$; solve it for $r$.`,
+          t`Then put $r$ back into either equation to find $a$.`,
+        ],
+      },
+      {
+        title: "Compound interest as a G.P.",
+        points: [
+          t`The **principal** $P$ is the sum first put in the bank.`,
+          t`At **compound interest**, each year's interest is added to the amount and earns interest too.`,
+          t`At $R\%$ a year, the amount grows by the factor $1 + \frac{R}{100}$ each year.`,
+          t`So the amounts $P, Pr, Pr^2, \ldots$ form a G.P. with $r = 1 + \frac{R}{100}$.`,
+          t`After $N$ years the amount is its $(N + 1)$th term, since $P$ itself is the first.`,
+          t`So the amount is $A = P\left(1 + \frac{R}{100}\right)^N$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`In a G.P., the third term is $\frac{1}{5}$ and the sixth term is $\frac{1}{625}$. Find $a$, $r$ and $t_n$.`,
       steps: [
         t`$t_3 = ar^2 = \frac{1}{5}$ and $t_6 = ar^5 = \frac{1}{625}$.`,
-        t`Divide the later term by the earlier: $\frac{ar^5}{ar^2} = r^3 = \frac{1/625}{1/5} = \frac{1}{125}$, so $r = \frac{1}{5}$.`,
+        t`Divide the later term by the earlier: $\frac{ar^5}{ar^2} = r^3$, and $r^3 = \frac{1/625}{1/5}$, which is $\frac{1}{125}$. So $r = \frac{1}{5}$.`,
         t`Put $r$ into $t_3$: $a \cdot \frac{1}{25} = \frac{1}{5}$, so $a = 5$.`,
-        t`$t_n = 5\left(\frac{1}{5}\right)^{n-1} = \left(\frac{1}{5}\right)^{n-2}$. Check: $t_6 = \left(\frac{1}{5}\right)^4 = \frac{1}{625}$.`,
+        t`$t_n = 5\left(\frac{1}{5}\right)^{n-1}$, which is $\left(\frac{1}{5}\right)^{n-2}$. Check: $t_6 = \left(\frac{1}{5}\right)^4$, which is $\frac{1}{625}$.`,
       ],
       answer: t`$a = 5$, $r = \frac{1}{5}$ and $t_n = \left(\frac{1}{5}\right)^{n-2}$.`,
     },

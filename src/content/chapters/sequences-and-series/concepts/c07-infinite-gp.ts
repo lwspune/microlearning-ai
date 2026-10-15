@@ -1,6 +1,33 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+const SUB = ["₁", "₂", "₃", "₄", "₅"];
+
+/** Plain axes, with the partial sums Sₙ measured up. */
+function axes(right: number, top: number): FigureElement[] {
+  return [
+    { kind: "segment", from: [-0.15, 0], to: [right, 0], tone: "muted" },
+    { kind: "segment", from: [0, -0.15], to: [0, top], tone: "muted" },
+    { kind: "label", at: [0, top], label: "Sₙ", labelAt: "e", tone: "muted" },
+  ];
+}
+
+/** A bar for each partial sum S₁ to S₅ of a + ar + ar² + …, `gap` apart, named under the axis. */
+function bars(a: number, r: number, gap: number, step: number): FigureElement[] {
+  const els: FigureElement[] = [];
+  let s = 0;
+  for (let n = 1; n <= 5; n++) {
+    s += a * r ** (n - 1);
+    const x = gap * n;
+    els.push(
+      { kind: "segment", from: [x, 0], to: [x, s], step },
+      { kind: "point", at: [x, s], step },
+      { kind: "label", at: [x, 0], label: `S${SUB[n - 1]}`, labelAt: "s", tone: "muted", step },
+    );
+  }
+  return els;
+}
 
 export const c07: Concept = {
   id: "C07",
@@ -10,23 +37,103 @@ export const c07: Concept = {
     reveal: t`Yes. The running totals are $1, 1.5, 1.75, 1.875, \ldots$: each new term fills half of the gap that is left to $2$. The gap shrinks to nothing, so the sum is exactly $2$. But $1 + 2 + 4 + 8 + \ldots$ grows past every number, so it has no sum. The ratio decides which one you get.`,
   },
   explanation: {
-    intuition: t`Adding for ever can still give a finite total if the terms shrink fast enough. In a G.P. with $|r| < 1$, every term is the same fraction of the one before, so the terms die away and the running totals $S_n$ settle on one number: the sum to infinity, $S_\infty$. When $|r| \ge 1$ the terms never shrink, so the totals either grow without limit or keep jumping about, and there is no sum. A negative $r$ is fine: the terms change sign, so the totals swing above and below the limit, but the swings shrink and close in on it.`,
-    formal: t`**Where the formula comes from.** $S_n = \frac{a(1 - r^n)}{1 - r}$. If $|r| < 1$, then $r^n \to 0$ as $n$ grows (for example $0.5^{10} < 0.001$), so $S_n \to \frac{a}{1 - r}$.
-
-**The rule.** $$S_\infty = \frac{a}{1 - r}, \qquad \text{only when } |r| < 1, \text{ that is } -1 < r < 1.$$
-
-**No sum when $|r| \ge 1$.** For $r = 1$ the terms are $a, a, a, \ldots$; for $r = -1$ the totals jump between $a$ and $0$; for $|r| > 1$ the terms grow. Always check $|r|$ **first**.
-
-**Keep the sign of $r$.** For $r = -\frac{1}{4}$: $1 - r = 1 + \frac{1}{4} = \frac{5}{4}$. In $\sum_{k=1}^{\infty} c\,q^k$ the first term is the $k = 1$ term, $cq$, and the ratio is $q$.
-
-**Finding $a$ or $r$.** From $S_\infty = \frac{a}{1 - r}$: $a = S_\infty(1 - r)$ and $r = 1 - \frac{a}{S_\infty}$. Then check that $|r| < 1$.`,
+    intuition: [
+      t`An **infinite G.P.** has no last term: $a, ar, ar^2, \ldots$ go on for ever.`,
+      t`Its **partial sum** $S_n$ is the running total of its first $n$ terms.`,
+      t`For $1 + \frac{1}{2} + \frac{1}{4} + \ldots$ the partial sums are $1, 1.5, 1.75, 1.875, \ldots$`,
+      t`The terms halve each time, so the totals settle on one number, $2$: the **sum to infinity**, $S_\infty$.`,
+      t`The same happens whenever $|r| < 1$, where $|r|$ is the size of $r$ without its sign.`,
+      t`When $|r| \ge 1$ the terms never shrink: the totals grow for ever or keep jumping, so there is no sum.`,
+    ],
+    figure: {
+      alt: "Bars for the partial sums S₁ to S₅ of 1 + 1/2 + 1/4 + …: their heights are 1, 1.5, 1.75, 1.875 and 1.9375. A dashed line at height 2, labelled S∞ = 2: each bar is closer to it than the last, and none passes it.",
+      axes: "none",
+      view: { x: [-0.5, 4.6], y: [-0.45, 2.5] },
+      elements: [
+        ...axes(4.4, 2.35),
+        ...bars(1, 1 / 2, 0.8, 3),
+        { kind: "segment", from: [0, 2], to: [4.4, 2], dashed: true, tone: "good", step: 4 },
+        { kind: "label", at: [1.2, 2], label: "S∞ = 2", labelAt: "n", tone: "good", step: 4 },
+      ],
+    },
+    formal: [
+      {
+        title: "Where the formula comes from",
+        points: [
+          t`Recall: the sum of the first $n$ terms is $S_n = \frac{a(1 - r^n)}{1 - r}$.`,
+          t`If $|r| < 1$, the power $r^n$ shrinks towards $0$ as $n$ grows.`,
+          t`For example, $0.5^{10} < 0.001$.`,
+          t`We write $r^n \to 0$, said "$r^n$ tends to $0$": it gets as close to $0$ as we like.`,
+          t`Then $1 - r^n \to 1$, so $S_n \to \frac{a}{1 - r}$.`,
+        ],
+      },
+      {
+        title: "The rule",
+        points: [
+          t`The sum to infinity of a G.P. is $S_\infty = \frac{a}{1 - r}$.`,
+          t`It holds only when $|r| < 1$, that is, when $-1 < r < 1$.`,
+        ],
+      },
+      {
+        title: "No sum when |r| ≥ 1",
+        points: [
+          t`For $r = 1$ the terms are $a, a, a, \ldots$, so $S_n = na$ never settles.`,
+          t`For $r = -1$ the totals jump between $a$ and $0$.`,
+          t`For $|r| > 1$ the terms grow in size, so the totals never settle either.`,
+          t`So when $|r| \ge 1$ there is no sum to infinity.`,
+          t`Always check $|r|$ **first**, before you use $\frac{a}{1 - r}$.`,
+        ],
+      },
+      {
+        title: "Keep the sign of r",
+        points: [
+          t`A negative $r$ is fine when $|r| < 1$: the terms change sign but still shrink.`,
+          t`For $1 - \frac{1}{2} + \frac{1}{4} - \ldots$ the partial sums are $1, 0.5, 0.75, 0.625, \ldots$`,
+          t`Keep the sign: $1 - r = 1 + \frac{1}{2} = \frac{3}{2}$, so $S_\infty = \frac{2}{3}$.`,
+          t`The totals swing above and below $\frac{2}{3}$, and the swings shrink as they close in.`,
+          t`Dropping the sign gives $\frac{1}{1 - 1/2} = 2$, above every partial sum: that is wrong.`,
+          t`Likewise for $r = -\frac{1}{4}$: $1 - r = 1 + \frac{1}{4} = \frac{5}{4}$.`,
+        ],
+        figure: {
+          alt: "Bars for the partial sums S₁ to S₅ of 1 − 1/2 + 1/4 − …: their heights are 1, 0.5, 0.75, 0.625 and 0.6875, taking turns above and below a dashed line at 2/3, labelled S∞ = 2/3, and closer to it each time. Far above every bar, a red dashed line at 2 is what dropping the sign gives.",
+          axes: "none",
+          view: { x: [-0.4, 3.8], y: [-0.35, 2.35] },
+          elements: [
+            ...axes(2.9, 2.25),
+            ...bars(1, -1 / 2, 0.5, 2),
+            { kind: "segment", from: [0, 2 / 3], to: [2.9, 2 / 3], dashed: true, tone: "good", step: 3 },
+            { kind: "label", at: [2.9, 2 / 3], label: "S∞ = 2/3", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [0, 2], to: [2.9, 2], dashed: true, tone: "bad", step: 5 },
+            { kind: "label", at: [1.5, 2], label: "sign dropped: 2", labelAt: "n", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Sums written with Σ",
+        points: [
+          t`The sign $\sum$ means "add up": $\sum_{k=1}^{\infty} c\,q^k$ adds $c\,q^k$ for $k = 1, 2, 3, \ldots$ for ever.`,
+          t`Its first term is the $k = 1$ term, $cq$, not $c$.`,
+          t`Each term is $q$ times the one before, so the ratio is $q$.`,
+          t`If the sum starts at $k = 0$ instead, the first term is $c$.`,
+        ],
+      },
+      {
+        title: "Finding a or r",
+        points: [
+          t`Rearrange $S_\infty = \frac{a}{1 - r}$ to find the first term or the ratio.`,
+          t`First term: $a = S_\infty(1 - r)$.`,
+          t`Ratio: $r = 1 - \frac{a}{S_\infty}$.`,
+          t`Then check that $|r| < 1$: if not, no such G.P. exists.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Does the sum to infinity of $\frac{3}{5}, -\frac{9}{25}, \frac{27}{125}, -\frac{81}{625}, \ldots$ exist? If it does, find it.`,
       steps: [
-        t`First term $a = \frac{3}{5}$. Ratio $r = \frac{-9/25}{3/5} = -\frac{3}{5}$.`,
+        t`First term $a = \frac{3}{5}$. Ratio $r = \frac{-9/25}{3/5}$ $= -\frac{3}{5}$.`,
         t`Check: $|r| = \frac{3}{5} < 1$, so the sum to infinity exists, even though the terms change sign.`,
-        t`Keep the sign: $1 - r = 1 - \left(-\frac{3}{5}\right) = \frac{8}{5}$.`,
-        t`$S_\infty = \frac{a}{1 - r} = \frac{3/5}{8/5} = \frac{3}{8}$.`,
+        t`Keep the sign: $1 - r = 1 - \left(-\frac{3}{5}\right)$ $= \frac{8}{5}$.`,
+        t`$S_\infty = \frac{a}{1 - r}$ $= \frac{3/5}{8/5}$ $= \frac{3}{8}$.`,
       ],
       answer: t`It exists: $S_\infty = \frac{3}{8}$.`,
     },

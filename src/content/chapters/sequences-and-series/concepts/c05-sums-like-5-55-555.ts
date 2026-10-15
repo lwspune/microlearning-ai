@@ -10,25 +10,68 @@ export const c05: Concept = {
     reveal: t`Each term is a power of $10$ minus $1$. So the sum is $(10 + 100 + 1000 + 10000) - 4 = 11110 - 4 = 11106$. Any repeated-digit number can be turned into a power of $10$ minus $1$ the same way, and that is the whole trick for $5 + 55 + 555 + \ldots$.`,
   },
   explanation: {
-    intuition: t`$5, 55, 555, \ldots$ is not a G.P.: $\frac{55}{5} = 11$ but $\frac{555}{55}$ is not $11$. But each term is close to a power of $10$: $555 = \frac{5}{9} \times 999 = \frac{5}{9}(10^3 - 1)$. So every term is $\frac{5}{9}$ times (a power of $10$ minus $1$). The powers of $10$ form a G.P. you can sum, and the $-1$s just add up to $-n$. Decimals work the same way: $0.333 = \frac{3}{9}(1 - 0.001)$.`,
-    formal: t`**Write each term with a power of 10.** With $k$ copies of the digit $d$:
-
-$$dd\ldots d = \frac{d}{9}\left(10^k - 1\right), \qquad 0.dd\ldots d = \frac{d}{9}\left(1 - \frac{1}{10^k}\right)$$
-
-**Whole numbers.** $S_n = \frac{d}{9}\left[(10 + 100 + \ldots + 10^n) - n\right]$. The G.P. has $a = 10$, $r = 10$, so $S_n = \frac{d}{9}\left[\frac{10(10^n - 1)}{9} - n\right] = \frac{d}{81}\left(10^{n+1} - 9n - 10\right)$.
-
-**Decimals.** $S_n = \frac{d}{9}\left[n - (0.1 + 0.01 + \ldots + 0.1^n)\right] = \frac{d}{9}\left[n - \frac{1}{9}\left(1 - \frac{1}{10^n}\right)\right]$. The nth term alone is $t_n = \frac{d}{9}\left(1 - \frac{1}{10^n}\right)$.
-
-**Check.** Put $n = 1$ in your answer: you must get the first term back.`,
+    intuition: [
+      t`Recall: in a G.P., each term is the one before times the same number, the common ratio.`,
+      t`$5, 55, 555, \ldots$ is not a G.P.: $\frac{55}{5} = 11$, but $\frac{555}{55}$ is not $11$.`,
+      t`But each term is close to a power of $10$: $555 = \frac{5}{9} \times 999$, and $999 = 10^3 - 1$.`,
+      t`So every term is $\frac{5}{9}$ times (a power of $10$ minus $1$): $555 = \frac{5}{9}(10^3 - 1)$.`,
+      t`To add $n$ terms, sum the powers of $10$ as a G.P., and the $n$ copies of $-1$ give $-n$.`,
+      t`Decimals work the same way: $0.333 = \frac{3}{9}(1 - 0.001)$.`,
+    ],
+    formal: [
+      {
+        title: "Repeated digits as powers of 10",
+        points: [
+          t`Write $d$ for the repeated digit and $k$ for how many times it appears.`,
+          t`A string of $k$ nines is $10^k - 1$: for example, $999 = 1000 - 1$.`,
+          t`A string of $k$ digits $d$ is $\frac{d}{9}$ times the string of $k$ nines.`,
+          t`So $dd\ldots d$ equals $\frac{d}{9}(10^k - 1)$.`,
+          t`After the decimal point, $k$ nines make $0.99\ldots9 = 1 - \frac{1}{10^k}$.`,
+          t`So $0.dd\ldots d$ equals $\frac{d}{9}\left(1 - \frac{1}{10^k}\right)$.`,
+        ],
+      },
+      {
+        title: "Sum of whole-number terms",
+        points: [
+          t`Recall: $S_n$ is the sum of the first $n$ terms, here of $d + dd + ddd + \ldots$.`,
+          t`Write each term as $\frac{d}{9}(10^k - 1)$, and take out the common factor $\frac{d}{9}$.`,
+          t`The $n$ copies of $-1$ add up to $-n$, so $S_n$ is $\frac{d}{9}$ times $(10 + 100 + \ldots + 10^n) - n$.`,
+          t`The G.P. $10 + 100 + \ldots + 10^n$ has first term $a = 10$ and common ratio $r = 10$.`,
+          t`Its sum is $\frac{10(10^n - 1)}{9}$, so $S_n$ is $\frac{d}{9}$ times $\frac{10(10^n - 1)}{9} - n$.`,
+          t`Simplify: $S_n$ equals $\frac{d}{81}(10^{n+1} - 9n - 10)$.`,
+        ],
+      },
+      {
+        title: "Sum of decimal terms",
+        points: [
+          t`Now the terms are $0.d + 0.dd + 0.ddd + \ldots$, each $\frac{d}{9}\left(1 - \frac{1}{10^k}\right)$.`,
+          t`Take out $\frac{d}{9}$: the $n$ ones inside add up to $n$.`,
+          t`So $S_n$ is $\frac{d}{9}$ times $n - (0.1 + 0.01 + \ldots + 0.1^n)$.`,
+          t`The G.P. $0.1 + 0.01 + \ldots + 0.1^n$ has $a = 0.1$ and $r = 0.1$.`,
+          t`Its sum is $\frac{1}{9}\left(1 - \frac{1}{10^n}\right)$.`,
+          t`So $S_n$ is $\frac{d}{9}$ times $n - \frac{1}{9}\left(1 - \frac{1}{10^n}\right)$.`,
+        ],
+      },
+      {
+        title: "The nth term, and a check",
+        points: [
+          t`Recall: $t_n$ is the $n$th term alone, the one with $n$ digits.`,
+          t`For decimals, $t_n$ is $\frac{d}{9}\left(1 - \frac{1}{10^n}\right)$; for whole numbers, it is $\frac{d}{9}(10^n - 1)$.`,
+          t`$S_n$ adds the first $n$ terms, so it is not the same as $t_n$.`,
+          t`Check your answer: put $n = 1$, and you must get the first term back.`,
+          t`For whole numbers, $n = 1$ gives $\frac{d}{81}(100 - 9 - 10) = \frac{81d}{81} = d$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $5 + 55 + 555 + 5555 + \ldots$ up to $n$ terms.`,
       steps: [
-        t`Take out $5$ and multiply and divide by $9$: $S_n = \frac{5}{9}(9 + 99 + 999 + \ldots \text{ to } n \text{ terms})$.`,
-        t`Write each nine-string as a power of $10$ minus $1$: $9 + 99 + 999 + \ldots = (10 + 100 + \ldots + 10^n) - (1 + 1 + \ldots + 1) = (10 + 100 + \ldots + 10^n) - n$.`,
+        t`Take out $5$ and multiply and divide by $9$: $S_n = \frac{5}{9} \times$ $(9 + 99 + 999 + \ldots)$, to $n$ terms.`,
+        t`Write each nine-string as a power of $10$ minus $1$: $9 + 99 + 999 + \ldots$ equals $(10 + 100 + \ldots + 10^n)$ $- (1 + 1 + \ldots + 1)$, which is $(10 + 100 + \ldots + 10^n) - n$.`,
         t`$10 + 100 + \ldots + 10^n$ is a G.P. with $a = 10$, $r = 10$: its sum is $\frac{10(10^n - 1)}{9}$.`,
-        t`$S_n = \frac{5}{9}\left[\frac{10(10^n - 1)}{9} - n\right] = \frac{5}{81}\left(10^{n+1} - 9n - 10\right)$. Check: $n = 1$ gives $\frac{5}{81}(100 - 9 - 10) = 5$.`,
+        t`So $S_n$ is $\frac{5}{9}$ times $\frac{10(10^n - 1)}{9} - n$, which is $\frac{5}{81}(10^{n+1} - 9n - 10)$. Check: $n = 1$ gives $\frac{5}{81}(100 - 9 - 10) = 5$.`,
       ],
-      answer: t`$S_n = \frac{5}{81}\left(10^{n+1} - 9n - 10\right)$.`,
+      answer: t`$S_n = \frac{5}{81}(10^{n+1} - 9n - 10)$.`,
     },
     visualSpec: t`Drag $n$ to stack the terms $5, 55, 555, \ldots$ as bars; each bar shows $\frac{5}{9}$ of a power of $10$ with a small $-\frac{5}{9}$ piece cut off, and the totals of the two parts update as a G.P. sum and as $-\frac{5}{9}n$.`,
   },

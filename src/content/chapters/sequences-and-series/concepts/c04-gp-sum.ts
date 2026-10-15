@@ -1,6 +1,26 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The x-position of column k (0 to 5) in the shift-and-subtract figure: one column per power of r. */
+const col = (k: number) => +(2 + 1.4 * k).toFixed(2);
+
+/** The terms a, ar, ..., arⁿ by column, with "⋯" standing for the middle ones. */
+const TERMS = ["a", "ar", "ar²", "⋯", "arⁿ⁻¹", "arⁿ"];
+
+/** The heights of the two rows: Sₙ on top, rSₙ one place to the right below it. */
+const ROW_S = 3.2;
+const ROW_RS = 2.2;
+
+/** One row of the sum, `name =` then the terms in columns `first` to `first + 4` joined by "+". */
+function row(name: string, y: number, first: number, step: number): FigureElement[] {
+  const els: FigureElement[] = [{ kind: "label", at: [1.5, y], label: `${name} =`, labelAt: "nw", step }];
+  for (let k = first; k < first + 5; k++) {
+    els.push({ kind: "label", at: [col(k), y], label: TERMS[k], step });
+    if (k > first) els.push({ kind: "label", at: [col(k) - 0.7, y], label: "+", tone: "muted", step });
+  }
+  return els;
+}
 
 export const c04: Concept = {
   id: "C04",
@@ -10,24 +30,85 @@ export const c04: Concept = {
     reveal: t`Call the sum $S$. Double every term: $2S = 6 + 12 + \cdots + 384 + 768$. Subtract $S$: every term the two rows share cancels, leaving $2S - S = 768 - 3$. So $S = 765$. That shift-and-subtract trick is the whole formula.`,
   },
   explanation: {
-    intuition: t`Write $S_n = a + ar + ar^2 + \cdots + ar^{n-1}$. Multiply by $r$: $rS_n = ar + ar^2 + \cdots + ar^{n-1} + ar^n$. The two rows share every term except $a$ at the start and $ar^n$ at the end, so subtracting gives $rS_n - S_n = ar^n - a$. Divide by $r - 1$ and you have the sum. The power is $n$ because $ar^n$ is the term just after the last one.`,
-    formal: t`**The sum of $n$ terms** (for $r \ne 1$)
-
-$$S_n = \frac{a(r^n - 1)}{r - 1} = \frac{a(1 - r^n)}{1 - r}$$
-
-The two forms are equal. The second is handier when $r < 1$. Use one form whole; never the top of one with the bottom of the other.
-
-**Check on a small case.** $5 + 15 + 45 + 135 = 200$, and $\frac{5(3^4 - 1)}{3 - 1} = \frac{5 \times 80}{2} = 200$. The power is $n$, the number of terms, not $n - 1$.
-
-**When $r = 1$** every term is $a$, so $S_n = na$. The formula would give $\frac{0}{0}$, so don't use it.
-
-**Finding $a$, $n$ or $r$.** Put what you know into $S_n$ and solve. For $n$, get $r^n$ alone and write the number as a power of $r$.
-
-**Two sums.** Since $r^6 - 1 = (r^3 - 1)(r^3 + 1)$, $\frac{S_6}{S_3} = \frac{r^6 - 1}{r^3 - 1} = r^3 + 1$. The 4th to 6th terms add up to $S_6 - S_3 = r^3 S_3$.`,
+    intuition: [
+      t`Write $S_n$ for the sum of the first $n$ terms of a G.P.: $S_n = a + ar + \cdots + ar^{n-1}$.`,
+      t`Multiply by $r$: each term becomes the next one, so $rS_n = ar + ar^2 + \cdots + ar^n$.`,
+      t`The two rows share every term except $a$ at the start and $ar^n$ at the end.`,
+      t`Subtract, and the shared terms cancel: $rS_n - S_n = ar^n - a$.`,
+      t`Divide both sides by $r - 1$, and you have the sum.`,
+      t`The power is $n$ because $ar^n$ is the term just after the last one.`,
+    ],
+    figure: {
+      alt: "The sum Sₙ = a + ar + ar² + ⋯ + arⁿ⁻¹ written as a row, and below it rSₙ = ar + ar² + ⋯ + arⁿ, shifted one place right so that equal terms sit in the same column. Dashed lines join the four shared columns; only a, at the start of the top row, and arⁿ, at the end of the bottom row, have no partner. Subtracting the rows leaves rSₙ − Sₙ = arⁿ − a, so Sₙ = a(rⁿ − 1)/(r − 1). Under arⁿ: it is term n + 1, the term just after the last one.",
+      axes: "none",
+      view: { x: [0, 10], y: [-0.2, 4] },
+      elements: [
+        ...row("Sₙ", ROW_S, 0, 1),
+        ...row("rSₙ", ROW_RS, 1, 2),
+        ...[1, 2, 3, 4].map((k): FigureElement => (
+          { kind: "segment", from: [col(k), ROW_RS + 0.65], to: [col(k), ROW_S + 0.15], dashed: true, tone: "muted", step: 3 }
+        )),
+        { kind: "label", at: [col(0), ROW_S], label: TERMS[0], tone: "good", step: 3 },
+        { kind: "label", at: [col(5), ROW_RS], label: TERMS[5], tone: "good", step: 3 },
+        { kind: "label", at: [5.5, 0.9], label: "rSₙ − Sₙ = arⁿ − a", tone: "good", step: 4 },
+        { kind: "label", at: [5.5, 0], label: "Sₙ = a(rⁿ − 1) / (r − 1)", tone: "good", step: 5 },
+        { kind: "label", at: [col(5), ROW_RS], label: "term n + 1", labelAt: "s", tone: "muted", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "The sum of n terms",
+        points: [
+          t`For $r \ne 1$, the sum of the first $n$ terms is $S_n = \frac{a(r^n - 1)}{r - 1}$.`,
+          t`Multiply its top and bottom by $-1$: $S_n = \frac{a(1 - r^n)}{1 - r}$.`,
+          t`So the two forms are equal.`,
+          t`The second is handier when $r < 1$: its bottom, $1 - r$, is then positive.`,
+          t`Use one form whole: never the top of one with the bottom of the other.`,
+          t`Mixing them flips the sign of the sum.`,
+        ],
+      },
+      {
+        title: "Check on a small case",
+        points: [
+          t`Take $5 + 15 + 45 + 135$: here $a = 5$, $r = 3$ and $n = 4$.`,
+          t`Added one by one, the four terms make $200$.`,
+          t`The formula gives $\frac{5(3^4 - 1)}{3 - 1}$ $= \frac{5 \times 80}{2}$ $= 200$, the same.`,
+          t`The power is $n$, the number of terms, not $n - 1$.`,
+          t`The power $n - 1 = 3$ would give $\frac{5(3^3 - 1)}{2} = 65$: only the first three terms.`,
+        ],
+      },
+      {
+        title: "When the ratio is 1",
+        points: [
+          t`When $r = 1$, every term is $a$.`,
+          t`So $n$ terms add up to $S_n = na$: for example, $4 + 4 + 4 = 3 \times 4$.`,
+          t`The formula would give $\frac{0}{0}$ here, so don't use it.`,
+        ],
+      },
+      {
+        title: "Finding a, n or r",
+        points: [
+          t`Put what you know into $S_n$, and solve for the letter you don't know.`,
+          t`To find $n$, first get $r^n$ alone on one side.`,
+          t`Then write the number on the other side as a power of $r$: that power is $n$.`,
+        ],
+      },
+      {
+        title: "Comparing two sums",
+        points: [
+          t`As a difference of squares, $r^6 - 1 = (r^3 - 1)(r^3 + 1)$.`,
+          t`In $\frac{S_6}{S_3}$, the $a$ and the $r - 1$ cancel, leaving $\frac{r^6 - 1}{r^3 - 1}$.`,
+          t`Cancel $r^3 - 1$ too: $\frac{S_6}{S_3} = r^3 + 1$.`,
+          t`The $1$s don't cancel on their own, so the ratio is not $r^3$.`,
+          t`The 4th to 6th terms add up to $S_6 - S_3$.`,
+          t`That is $r^3 S_3$: each of them is $r^3$ times one of the first three.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`How many terms of the G.P. $2 + 4 + 8 + \cdots$ add up to $2046$?`,
       steps: [
-        t`Here $a = 2$ and $r = 2$, so $S_n = \frac{2(2^n - 1)}{2 - 1} = 2(2^n - 1)$.`,
+        t`Here $a = 2$ and $r = 2$, so $S_n = \frac{2(2^n - 1)}{2 - 1}$ $= 2(2^n - 1)$.`,
         t`Set $2(2^n - 1) = 2046$: then $2^n - 1 = 1023$, so $2^n = 1024$.`,
         t`$1024 = 2^{10}$, so $n = 10$. Check: the 10th term is $2 \times 2^9 = 1024$, and $2 + 4 + \cdots + 1024 = 2046$.`,
       ],

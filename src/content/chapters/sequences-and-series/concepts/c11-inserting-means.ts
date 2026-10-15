@@ -1,4 +1,4 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
@@ -10,16 +10,81 @@ export const c11: Concept = {
     reveal: t`No. With $d = 5$ the numbers are $7, 12, 17, 22$: the last one lands on $22$ itself. Six terms have only five gaps, so $d = \frac{20}{5} = 4$ and the numbers are $6, 10, 14, 18$. Counting the terms right is the whole trick of inserting means.`,
   },
   explanation: {
-    intuition: t`Inserting $k$ numbers between $a$ and $b$ builds a progression that starts at $a$ and ends at $b$. Count its terms: the $k$ new numbers plus the two ends make $k + 2$, so $b$ is $t_{k+2}$. That one equation gives $d$ for an A.P. or $r$ for a G.P., and the inserted numbers are the terms in between. For an H.P., work with the reciprocals, which are in A.P., and flip back at the end.`,
-    formal: t`**Count the terms.** $a, x_1, x_2, \ldots, x_k, b$ has $k + 2$ terms, so $b = t_{k+2}$ and the power in $t_n$ is $k + 1$.
-
-**A.M.s.** $b = a + (k + 1)d$, so $d = \frac{b - a}{k + 1}$. The means are $a + d, a + 2d, \ldots, a + kd$.
-
-**G.M.s.** $b = ar^{k+1}$, so $r^{k+1} = \frac{b}{a}$. The means are $ar, ar^2, \ldots, ar^k$. When $k + 1$ is odd, a negative $\frac{b}{a}$ gives a negative $r$.
-
-**H.M.s.** $\frac{1}{a}, \frac{1}{H_1}, \ldots, \frac{1}{H_k}, \frac{1}{b}$ is an A.P. Insert $k$ A.M.s between $\frac{1}{a}$ and $\frac{1}{b}$, then take the reciprocal of each.
-
-**Check.** One more step $d$, or one more factor $r$, after the last mean must land exactly on $b$.`,
+    intuition: [
+      t`To **insert** $k$ numbers between $a$ and $b$ is to fit them in so that $a$, the new numbers and $b$ form one progression.`,
+      t`The inserted numbers are called **means**: **arithmetic means** for an A.P., **geometric** for a G.P., **harmonic** for an H.P.`,
+      t`For example, three arithmetic means between $2$ and $18$ are $6$, $10$ and $14$.`,
+      t`The $3$ means and the $2$ ends make $5$ terms, $t_1$ to $t_5$.`,
+      t`Five terms have only $4$ **gaps**, the steps from one term to the next, so $d = \frac{16}{4} = 4$.`,
+      t`In general, $k$ means make $k + 2$ terms and $k + 1$ gaps, so $b$ is the term $t_{k+2}$.`,
+    ],
+    figure: {
+      alt: "A number line with the ends a = 2 and b = 18 marked. Three arithmetic means, 6, 10 and 14, are marked between them, and the five numbers are labelled t₁ to t₅. A hop labelled +4 joins each number to the next: four hops, one for each gap, take 2 to 18.",
+      axes: "none",
+      view: { x: [0.4, 19.6], y: [-2.6, 3] },
+      elements: [
+        { kind: "segment", from: [0.8, 0], to: [19.2, 0], tone: "muted" },
+        { kind: "point", at: [2, 0], label: "a = 2", labelAt: "s", step: 1 },
+        { kind: "point", at: [18, 0], label: "b = 18", labelAt: "s", step: 1 },
+        ...[6, 10, 14].map((x): FigureElement => ({ kind: "point", at: [x, 0], label: String(x), labelAt: "s", tone: "good", step: 3 })),
+        ...["t₁", "t₂", "t₃", "t₄", "t₅"].map((label, i): FigureElement => ({
+          kind: "label", at: [2 + 4 * i, -1.5], label, labelAt: "s", tone: "muted", step: 4,
+        })),
+        ...[4, 8, 12, 16].flatMap((x): FigureElement[] => [
+          { kind: "arc", centre: [x, 0], r: 2, from: 0, to: 180, step: 5 },
+          { kind: "label", at: [x, 2], label: "+4", labelAt: "n", step: 5 },
+        ]),
+      ],
+    },
+    formal: [
+      {
+        title: "Count the terms",
+        points: [
+          t`Call the inserted numbers $x_1, x_2, \ldots, x_k$.`,
+          t`The list $a, x_1, \ldots, x_k, b$ then has $k + 2$ terms.`,
+          t`So $b$ is the last term, $t_{k+2}$.`,
+          t`Recall: $t_n$ is $a + (n - 1)d$ in an A.P. and $ar^{n-1}$ in a G.P.`,
+          t`For $b = t_{k+2}$, that $n - 1$ is $k + 1$: one for each gap.`,
+        ],
+      },
+      {
+        title: "Inserting arithmetic means",
+        points: [
+          t`For A.M.s, the list from $a$ to $b$ is an A.P. with first term $a$.`,
+          t`Its last term gives $b = a + (k + 1)d$.`,
+          t`So the common difference is $d = \frac{b - a}{k + 1}$.`,
+          t`The means are $a + d, a + 2d, \ldots, a + kd$.`,
+        ],
+      },
+      {
+        title: "Inserting geometric means",
+        points: [
+          t`For G.M.s, the list from $a$ to $b$ is a G.P. with first term $a$.`,
+          t`Its last term gives $b = ar^{k+1}$.`,
+          t`So the common ratio solves $r^{k+1} = \frac{b}{a}$.`,
+          t`The means are $ar, ar^2, \ldots, ar^k$.`,
+          t`When $k + 1$ is odd, a negative $\frac{b}{a}$ gives a negative $r$.`,
+        ],
+      },
+      {
+        title: "Inserting harmonic means",
+        points: [
+          t`For H.M.s, the list $a, H_1, \ldots, H_k, b$ is an H.P.`,
+          t`Recall: then the reciprocals, from $\frac{1}{a}$ to $\frac{1}{b}$, form an A.P.`,
+          t`So insert $k$ A.M.s between $\frac{1}{a}$ and $\frac{1}{b}$.`,
+          t`Those A.M.s are $\frac{1}{H_1}, \ldots, \frac{1}{H_k}$, not the H.M.s themselves.`,
+          t`Take the reciprocal of each one: those are the H.M.s.`,
+        ],
+      },
+      {
+        title: "Check the last step",
+        points: [
+          t`In an A.P., one more step $d$ after the last mean must land exactly on $b$.`,
+          t`In a G.P., one more factor $r$ after the last mean must land exactly on $b$.`,
+          t`If the last mean you found is $b$ itself, you counted one term too few.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Insert two numbers between $1$ and $-27$ so that the resulting sequence is a G.P.`,
       steps: [

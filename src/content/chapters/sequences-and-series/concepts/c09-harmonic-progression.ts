@@ -10,15 +10,74 @@ export const c09: Concept = {
     reveal: t`Flip every term: $\frac{1}{6}, \frac{1}{4}, \frac{1}{3}$ is $\frac{2}{12}, \frac{3}{12}, \frac{4}{12}$, an A.P. with $d = \frac{1}{12}$. Its next term is $\frac{5}{12}$, so the next term of $6, 4, 3$ is $\frac{12}{5}$. A sequence whose reciprocals form an A.P. is a harmonic progression (H.P.).`,
   },
   explanation: {
-    intuition: t`An H.P. hides an A.P. behind reciprocals. The terms themselves have no common difference, but their reciprocals do. So there is no new formula to learn: flip every term, work in the A.P. with $t_n = a + (n - 1)d$, then flip the answer back. Because you flip, no term of an H.P. can be $0$.`,
-    formal: t`**Definition.** $t_1, t_2, t_3, \ldots$ (all non-zero) is an H.P. if $\frac{1}{t_1}, \frac{1}{t_2}, \frac{1}{t_3}, \ldots$ is an A.P.
-
-**The $n$th term.** If the reciprocals form an A.P. with first term $a$ and common difference $d$, then
-$$t_n = \frac{1}{a + (n - 1)d}$$
-
-**Three numbers.** $x, y, z$ are in H.P. when $\frac{1}{x}, \frac{1}{y}, \frac{1}{z}$ are in A.P.: the middle reciprocal is the average of the other two, $\frac{2}{y} = \frac{1}{x} + \frac{1}{z}$.
-
-**Flip back whole.** The reciprocal of a sum is not the sum of the reciprocals: $\frac{1}{a + (n - 1)d}$ does not split as $\frac{1}{a} + \frac{1}{(n - 1)d}$. Check your $t_n$ with $n = 1$: it must give $t_1$.`,
+    intuition: [
+      t`Recall: in an **A.P.**, each term is the one before plus a fixed number, the **common difference** $d$.`,
+      t`To **flip** a number is to take its **reciprocal**, $1$ divided by it: $4$ flips to $\frac{1}{4}$.`,
+      t`A **harmonic progression**, or **H.P.**, is a sequence whose reciprocals form an A.P.`,
+      t`The terms $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}$ bunch ever closer together: they have no common difference.`,
+      t`Their reciprocals $1, 2, 3, 4$ are evenly spaced, an A.P. with $d = 1$, so the terms form an H.P.`,
+      t`So no new formula is needed: flip every term, work in the A.P., then flip the answer back.`,
+    ],
+    figure: {
+      alt: "Two number lines, each starting at 0. On the top line, the terms 1, 1/2, 1/3 and 1/4 of an H.P. are marked; the gaps between them shrink, so they bunch together towards 0. On the bottom line their reciprocals 1, 2, 3 and 4 are marked, evenly spaced one unit apart. The top line is drawn four times larger than the bottom one.",
+      axes: "none",
+      view: { x: [-0.5, 4.7], y: [-0.8, 2.4] },
+      elements: [
+        { kind: "segment", from: [-0.2, 1.3], to: [4.5, 1.3], tone: "muted" },
+        { kind: "point", at: [0, 1.3], label: "0", labelAt: "n", tone: "muted" },
+        { kind: "segment", from: [-0.2, 0], to: [4.5, 0], tone: "muted" },
+        { kind: "point", at: [0, 0], label: "0", labelAt: "s", tone: "muted" },
+        { kind: "label", at: [-0.2, 2.1], label: "the terms: an H.P.", labelAt: "e", step: 4 },
+        { kind: "point", at: [4, 1.3], label: "1", labelAt: "n", step: 4 },
+        { kind: "point", at: [2, 1.3], label: "½", labelAt: "n", step: 4 },
+        { kind: "point", at: [4 / 3, 1.3], label: "⅓", labelAt: "n", step: 4 },
+        { kind: "point", at: [1, 1.3], label: "¼", labelAt: "n", step: 4 },
+        { kind: "label", at: [-0.2, 0.75], label: "their reciprocals: an A.P.", labelAt: "e", tone: "good", step: 5 },
+        { kind: "point", at: [1, 0], label: "1", labelAt: "s", tone: "good", step: 5 },
+        { kind: "point", at: [2, 0], label: "2", labelAt: "s", tone: "good", step: 5 },
+        { kind: "point", at: [3, 0], label: "3", labelAt: "s", tone: "good", step: 5 },
+        { kind: "point", at: [4, 0], label: "4", labelAt: "s", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Definition of an H.P.",
+        points: [
+          t`Write the terms of a sequence as $t_1, t_2, t_3, \ldots$, so $t_n$ is the $n$th term.`,
+          t`The sequence is an **H.P.** if its reciprocals form an A.P.`,
+          t`That is, $\frac{1}{t_1}, \frac{1}{t_2}, \frac{1}{t_3}, \ldots$ is an A.P.`,
+          t`Every term must be non-zero, since $0$ has no reciprocal.`,
+        ],
+      },
+      {
+        title: "The nth term",
+        points: [
+          t`Let the A.P. of reciprocals have first term $a$ and common difference $d$.`,
+          t`Recall: the $n$th term of that A.P. is $a + (n - 1)d$.`,
+          t`That term is $\frac{1}{t_n}$, the reciprocal of the H.P.'s $n$th term.`,
+          t`Flip it back: $t_n = \frac{1}{a + (n - 1)d}$.`,
+        ],
+      },
+      {
+        title: "Three numbers in H.P.",
+        points: [
+          t`$x, y, z$ are in H.P. when $\frac{1}{x}, \frac{1}{y}, \frac{1}{z}$ are in A.P.`,
+          t`Of three terms in A.P., the middle one is the **average**, half the sum, of the other two.`,
+          t`So the middle reciprocal $\frac{1}{y}$ is the average of $\frac{1}{x}$ and $\frac{1}{z}$.`,
+          t`Doubled, that reads $\frac{2}{y} = \frac{1}{x} + \frac{1}{z}$.`,
+        ],
+      },
+      {
+        title: "Flip back the whole sum",
+        points: [
+          t`The reciprocal of a sum is not the sum of the reciprocals.`,
+          t`For example, $\frac{1}{2 + 2} = \frac{1}{4}$, but $\frac{1}{2} + \frac{1}{2} = 1$.`,
+          t`So $\frac{1}{a + (n - 1)d}$ does not split as $\frac{1}{a} + \frac{1}{(n - 1)d}$.`,
+          t`Work out $a + (n - 1)d$ first, then flip the whole of it.`,
+          t`Check your $t_n$ with $n = 1$: it must give $t_1$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the $n$th term of the H.P. $\frac{1}{5}, 1, -\frac{1}{3}, -\frac{1}{7}, \ldots$`,
       steps: [

@@ -1,6 +1,40 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** Centres of the grid's three columns (second factors) and three rows (first factors). */
+const COLS = [2.5, 4, 5.5];
+const ROWS = [4, 3, 2];
+const FIRST = [1, 2, 3];
+const SECOND = [4, 5, 6];
+/** A label anchored this far below a cell's centre sits in the middle of the cell. */
+const MID = 0.3;
+
+/**
+ * (1 + 2 + 3)(4 + 5 + 6) as a multiplication grid. The diagonal cells are the series
+ * 1 × 4 + 2 × 5 + 3 × 6 (point 2); the rest are cross products (point 3); all nine make 90 (point 4).
+ */
+const GRID: FigureElement[] = [
+  ...[4.5, 3.5, 2.5, 1.5].map((y): FigureElement => (
+    { kind: "segment", from: [1.75, y], to: [6.25, y], tone: "muted", step: 2 }
+  )),
+  ...[1.75, 3.25, 4.75, 6.25].map((x): FigureElement => (
+    { kind: "segment", from: [x, 1.5], to: [x, 4.5], tone: "muted", step: 2 }
+  )),
+  { kind: "label", at: [1, 5 - MID], label: "×", tone: "muted", step: 2 },
+  ...SECOND.map((b, j): FigureElement => ({ kind: "label", at: [COLS[j], 5 - MID], label: `${b}`, step: 2 })),
+  ...FIRST.map((a, i): FigureElement => ({ kind: "label", at: [1, ROWS[i] - MID], label: `${a}`, step: 2 })),
+  ...FIRST.flatMap((a, i) => SECOND.map((b, j): FigureElement => ({
+    kind: "label",
+    at: [COLS[j], ROWS[i] - MID],
+    label: `${a * b}`,
+    tone: i === j ? "good" : "bad",
+    step: i === j ? 2 : 3,
+  }))),
+  { kind: "label", at: [4, 0.8 - MID], label: "series: 4 + 10 + 18 = 32", tone: "good", step: 2 },
+  { kind: "label", at: [4, 0 - MID], label: "all nine: 6 × 15 = 90", tone: "bad", step: 4 },
+];
+const GRID_VIEW = { x: [0, 7.5] as [number, number], y: [-0.6, 5.6] as [number, number] };
 
 export const c14: Concept = {
   id: "C14",
@@ -10,29 +44,90 @@ export const c14: Concept = {
     reveal: t`No: $(1 + 2 + 3)(4 + 5 + 6) = 6 \times 15 = 90$. Multiplying two sums also makes cross products like $1 \times 5$ and $2 \times 6$ that are not in the series. Instead, write the $r$th term, $r(r + 3) = r^2 + 3r$, and add each part: $(1 + 4 + 9) + 3(1 + 2 + 3) = 14 + 18 = 32$.`,
   },
   explanation: {
-    intuition: t`A series like $1 \times 5 + 3 \times 7 + 5 \times 9 + \ldots$ is neither an A.P. nor a G.P. But every term is built the same way from its position $r$: here $t_r = (2r - 1)(2r + 3)$. Multiply it out and $t_r$ becomes a mix of $r^2$, $r$ and a constant. You already know how to add $r^2$, $r$ and $1$ from $r = 1$ to $n$, so add each part on its own and combine. $\sum$ splits over $+$ and $-$; it never splits over $\times$.`,
-    formal: t`**1. Find $t_r$.** Each factor runs in an A.P., so its $r$th term is $a + (r - 1)d$. For $1 \times 5 + 3 \times 7 + \ldots$: $1, 3, 5, \ldots$ gives $2r - 1$ and $5, 7, 9, \ldots$ gives $2r + 3$.
-
-**2. Expand.** Multiply every part of one bracket by every part of the other: $(2r - 1)(2r + 3) = 4r^2 + 4r - 3$.
-
-**3. Split and sum.** $\sum (a\,t_r + b\,u_r) = a\sum t_r + b\sum u_r$, and $\sum_{r=1}^{n} c = cn$. For example
-$$\sum_{r=1}^{n} (5r^2 + 4r - 3) = 5\sum r^2 + 4\sum r - 3n$$
-Then use $\sum r = \frac{n(n+1)}{2}$, $\sum r^2 = \frac{n(n+1)(2n+1)}{6}$, $\sum r^3 = \left(\frac{n(n+1)}{2}\right)^2$.
-
-**Never** $\sum (t_r u_r) = \sum t_r \times \sum u_r$: expand first.
-
-**Ratio problems.** Sum the top and the bottom separately, cancel the common factors, then solve for $n$.
-
-**Check.** Put $n = 1$: you must get the first term back.`,
+    intuition: [
+      t`A **series** is a sum of terms, like $1 \times 5 + 3 \times 7 + 5 \times 9 + \ldots$.`,
+      t`Its terms $5, 21, 45, \ldots$ have no fixed gap or ratio: it is neither an A.P. nor a G.P.`,
+      t`But each term is built the same way from its **position** $r$, its place in the list: 1st, 2nd, 3rd, ...`,
+      t`Write $t_r$ for the **$r$th term**, the term in position $r$: here $t_r = (2r - 1)(2r + 3)$.`,
+      t`Multiply it out, and $t_r$ becomes a mix of $r^2$, $r$ and a **constant**, a plain number.`,
+      t`Recall: you can add $r^2$, $r$ and $1$ from $r = 1$ to $n$, so add each part on its own and combine.`,
+    ],
+    formal: [
+      {
+        title: "Find the rth term",
+        points: [
+          t`Each term here is a product of two **factors**, numbers multiplied together.`,
+          t`The first factors $1, 3, 5, \ldots$ form an A.P., and so do the second factors $5, 7, 9, \ldots$.`,
+          t`Recall: an A.P. with first term $a$ and common difference $d$ has $r$th term $a + (r - 1)d$.`,
+          t`First factors: $a = 1$ and $d = 2$, so $1 + (r - 1)2 = 2r - 1$.`,
+          t`Second factors: $a = 5$ and $d = 2$, so $5 + (r - 1)2 = 2r + 3$.`,
+          t`So $t_r = (2r - 1)(2r + 3)$.`,
+        ],
+      },
+      {
+        title: "Expand the rth term",
+        points: [
+          t`To **expand** brackets, multiply every part of one bracket by every part of the other.`,
+          t`So $(2r - 1)(2r + 3)$ equals $4r^2 + 6r - 2r - 3$.`,
+          t`Collect the $r$ terms: $t_r = 4r^2 + 4r - 3$.`,
+        ],
+      },
+      {
+        title: "Split the sum",
+        points: [
+          t`Recall: $S_n = \sum_{r=1}^{n} t_r$ is $t_1 + t_2 + \ldots + t_n$, the sum of the first $n$ terms.`,
+          t`$\sum$ splits over $+$ and $-$: $\sum (t_r + u_r) = \sum t_r + \sum u_r$.`,
+          t`A number multiplying every term comes out in front: $\sum a\,t_r = a\sum t_r$.`,
+          t`A constant is added once for each $r$, so $\sum_{r=1}^{n} c = cn$.`,
+          t`For example, $\sum_{r=1}^{n} (5r^2 + 4r - 3)$ equals $5\sum r^2 + 4\sum r - 3n$.`,
+        ],
+      },
+      {
+        title: "Sum each power of r",
+        points: [
+          t`Then put in the three sums of powers, each from $r = 1$ to $n$.`,
+          t`The sum of $r$: $\sum r = \frac{n(n+1)}{2}$.`,
+          t`The sum of squares: $\sum r^2 = \frac{n(n+1)(2n+1)}{6}$.`,
+          t`The sum of cubes: $\sum r^3 = \left(\frac{n(n+1)}{2}\right)^2$.`,
+          t`Check: put $n = 1$ in your $S_n$, and you must get the first term back.`,
+        ],
+      },
+      {
+        title: "Σ never splits over ×",
+        points: [
+          t`$\sum$ does not split over $\times$: $\sum (t_r u_r)$ is not $\sum t_r \times \sum u_r$.`,
+          t`Take $1 \times 4 + 2 \times 5 + 3 \times 6$: its terms $4$, $10$ and $18$ add up to $32$.`,
+          t`But $(1 + 2 + 3)(4 + 5 + 6)$ multiplies every first factor by every second factor.`,
+          t`That adds all nine products in the grid: $6 \times 15 = 90$.`,
+          t`The extra six, like $1 \times 5$ and $2 \times 6$, are **cross products**: they are not terms of the series.`,
+          t`So never sum the factors separately: expand $t_r$ first, then sum each part.`,
+        ],
+        figure: {
+          alt: "A multiplication grid: the first factors 1, 2, 3 down the side and the second factors 4, 5, 6 along the top. The three cells on the diagonal, 4, 10 and 18, are the terms of the series 1 × 4 + 2 × 5 + 3 × 6, which add up to 32. The other six cells, 5, 6, 8, 12, 12 and 15, are cross products such as 1 × 5 and 2 × 6. The product of the sums, 6 × 15 = 90, adds all nine cells.",
+          axes: "none",
+          view: GRID_VIEW,
+          elements: GRID,
+        },
+      },
+      {
+        title: "Ratio problems",
+        points: [
+          t`Some problems set one series divided by another equal to a number, and ask for $n$.`,
+          t`Sum the top series and the bottom series separately, each from its own $t_r$.`,
+          t`Cancel the factors the two sums share.`,
+          t`Then set the fraction equal to the number, and solve for $n$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $1 \times 5 + 3 \times 7 + 5 \times 9 + 7 \times 11 + \ldots$ up to $n$ terms.`,
       steps: [
         t`First factors $1, 3, 5, \ldots$: an A.P. with $a = 1$, $d = 2$, so $1 + (r - 1)2 = 2r - 1$. Second factors $5, 7, 9, \ldots$: $5 + (r - 1)2 = 2r + 3$. So $t_r = (2r - 1)(2r + 3)$.`,
-        t`Expand: $t_r = 4r^2 + 6r - 2r - 3 = 4r^2 + 4r - 3$.`,
-        t`Sum each part: $S_n = 4\sum r^2 + 4\sum r - 3n = \frac{4n(n+1)(2n+1)}{6} + \frac{4n(n+1)}{2} - 3n$.`,
-        t`Take out $\frac{n}{3}$: $S_n = \frac{n}{3}\left[2(2n^2 + 3n + 1) + 6(n + 1) - 9\right] = \frac{n}{3}\left(4n^2 + 12n - 1\right)$. Check: $n = 1$ gives $\frac{15}{3} = 5 = 1 \times 5$.`,
+        t`Expand: $t_r = 4r^2 + 6r - 2r - 3$ $= 4r^2 + 4r - 3$.`,
+        t`Sum each part: $S_n = 4\sum r^2 + 4\sum r - 3n$ $= \frac{4n(n+1)(2n+1)}{6}$ $+ \frac{4n(n+1)}{2} - 3n$.`,
+        t`Take out $\frac{n}{3}$: $S_n = \frac{n}{3}[2(2n^2 + 3n + 1)$ $+ 6(n + 1) - 9]$ $= \frac{n}{3}(4n^2 + 12n - 1)$. Check: $n = 1$ gives $\frac{15}{3} = 5 = 1 \times 5$.`,
       ],
-      answer: t`$S_n = \frac{n}{3}\left(4n^2 + 12n - 1\right)$.`,
+      answer: t`$S_n = \frac{n}{3}(4n^2 + 12n - 1)$.`,
     },
     visualSpec: t`Drag $n$ to grow $1 \times 5 + 3 \times 7 + \ldots$ as a row of rectangles; each rectangle splits into a $4r^2$ part, a $4r$ part and a $-3$ strip, and three running totals update as $4\sum r^2$, $4\sum r$ and $-3n$.`,
   },
