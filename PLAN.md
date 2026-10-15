@@ -508,6 +508,22 @@ lesson slides (C03, C04: label at `y` 7.05, view to 7.9).
   (C05's three are inside its taller 10 × 8 box, C08's is the U corner
   label, straight-line C01 has no rectangle); moved above it, view to 7.9.
 
+## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
+
+The owner: the chapter "should start with basics of seq and series + ap". The
+Std XI book assumes A.P. (Std X), so the chapter adds it at the front.
+- **Concepts:** C15 sequences and series; C16 A.P. and its nth term; C17 sum
+  of n terms of an A.P.; C18 three or four numbers in A.P. New ids, listed
+  first: C01–C14 keep their ids, item ids and every student's progress.
+- **Gate:** C16 becomes a prerequisite of C01 (Spotting a G.P.) and C09
+  (H.P.). Concepts a student has started stay open; unstarted G.P./H.P. ones
+  lock until A.P. is mastered (owner's choice).
+- **Items:** NCERT Class 10 Arithmetic Progressions and the Maharashtra SSC
+  Algebra board papers (PYQ Vault `ncert-10`, `mh-ssc-10`), verified like the
+  rest; written as points with figures from the start.
+- **Order:** graph (done), the four concepts (one agent each), checks,
+  read-through, sheets, owner review, publish.
+
 ## Slides as points, one per click (approved 2026-10-15, branch `progressive-points`)
 
 The owner's review of C02's idea slide: one bulky paragraph overloads; write
