@@ -487,8 +487,8 @@ topics; and measure the wait after answering.
   feedback, 2.0–2.9 s of it the server action. Vercel runs functions in
   `iad1` (Washington) while Supabase is in `ap-south-1` (Mumbai): ~8 database
   round trips per answer cross the world. The same action from Pune takes
-  ~0.3 s. Fix proposed: functions in `bom1` (`vercel.json` `regions`),
-  awaiting the owner's go-ahead.
+  ~0.3 s. Fix proposed: functions in `bom1` (`vercel.json` `regions`);
+  parked by the owner 2026-10-15 (SUGGESTIONS.md).
 
 ## Lesson slides: definitions, figures, rotation (approved 2026-10-15, branch `lesson-slide-figures`)
 

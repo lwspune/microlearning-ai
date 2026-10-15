@@ -51,6 +51,24 @@ mistake).
 4. The superadmin sees an academy's classes read-only from `/admin`, or
    nothing for now.
 
+## Server functions next to the database (parked 2026-10-15)
+
+Measured on the live site: 2.4–3.4 s from tapping an answer to its feedback,
+2.0–2.9 s of it the `submitAnswer` server action. Vercel runs the functions
+in `iad1` (Washington; response id `bom1::iad1::…`) while Supabase is in
+`ap-south-1` (Mumbai), and one answer makes ~8 database round trips in a
+row, each crossing the world (~250 ms). The same action run from Pune takes
+~0.3 s.
+- **Fix:** `vercel.json` with `"regions": ["bom1"]` (Next.js's
+  `preferredRegion` is deprecated; region is platform config). Every
+  server-rendered page that reads the database gets faster, not just answers.
+- **Check after:** time answers again with the timing script approach
+  (Playwright, server action response time, `x-vercel-id` shows `::bom1::`),
+  and delete the guest it creates.
+- **Further, if still slow:** verify the session from the JWT locally instead
+  of a call to the auth server, and fold "next question + solution" into the
+  `record_attempt` call.
+
 ## Also parked (details in PLAN.md)
 
 - Self sign-up; Google sign-in; staff reset a student's password
