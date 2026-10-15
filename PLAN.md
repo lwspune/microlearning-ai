@@ -485,7 +485,10 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   t₁ = S₁ (owner's call). Permutations and Combinations (C01–C14) done
   2026-10-15: figures in 11 concepts; C08-M1 split into M1 and M5 (the
   kth-word slip). Binomial Theorem (C01–C09) done 2026-10-15: figures in 7
-  concepts; no split.
+  concepts; no split. Determinants and Matrices (C01–C12) done 2026-10-16:
+  figures on every slide of C06 and in 10 others; no split; 41 matrix row
+  breaks mangled to `\ ` by agents' scripts were fixed, and the validator
+  now rejects them.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
