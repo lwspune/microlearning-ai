@@ -484,7 +484,8 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   12 concepts where they teach; C06-M2 feedback extended to name
   t₁ = S₁ (owner's call). Permutations and Combinations (C01–C14) done
   2026-10-15: figures in 11 concepts; C08-M1 split into M1 and M5 (the
-  kth-word slip).
+  kth-word slip). Binomial Theorem (C01–C09) done 2026-10-15: figures in 7
+  concepts; no split.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
