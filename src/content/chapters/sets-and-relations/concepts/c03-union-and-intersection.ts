@@ -1,6 +1,54 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The rectangle U, 10 by 7, as half-planes: a shaded piece stays inside it. */
+const inU: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+const view = { x: [-0.3, 10.3] as [number, number], y: [-0.3, 7.3] as [number, number] };
+const frame: FigureElement[] = [
+  { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+  { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+];
+
+/** Inside or outside the circle of radius r about `centre`. */
+const side = (inside: boolean, centre: Pt, r: number): Shape => (inside ? { kind: "disc", centre, r } : { kind: "outsideDisc", centre, r });
+
+/** Two overlapping sets A and B, as on the idea slide; `two(a, b)` is one of their pieces. */
+const A2: Pt = [3.9, 3.5];
+const B2: Pt = [6.1, 3.5];
+const two = (a: boolean, b: boolean): Shape[] => [side(a, A2, 2.4), side(b, B2, 2.4), ...inU];
+const twoSets: FigureElement[] = [
+  ...frame,
+  { kind: "circle", centre: A2, r: 2.4, tone: "muted" },
+  { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
+  { kind: "circle", centre: B2, r: 2.4, tone: "muted" },
+  { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
+];
+
+/** Three sets A, B and C, as in the worked example; `three(a, b, c)` is one of their seven pieces. */
+const A3: Pt = [3.9, 4.3];
+const B3: Pt = [6.1, 4.3];
+const C3: Pt = [5, 2.5];
+const three = (a: boolean, b: boolean, c: boolean): Shape[] => [side(a, A3, 2.2), side(b, B3, 2.2), side(c, C3, 2.2), ...inU];
+const threeSets: FigureElement[] = [
+  ...frame,
+  { kind: "circle", centre: A3, r: 2.2, tone: "muted" },
+  { kind: "label", at: [2.34, 5.86], label: "A", labelAt: "nw" },
+  { kind: "circle", centre: B3, r: 2.2, tone: "muted" },
+  { kind: "label", at: [7.66, 5.86], label: "B", labelAt: "ne" },
+  { kind: "circle", centre: C3, r: 2.2, tone: "muted" },
+  { kind: "label", at: [7.2, 1.29], label: "C", labelAt: "e" },
+];
+/** The seven pieces of three sets, as [in A, in B, in C]. */
+const pieces: [boolean, boolean, boolean][] = [
+  [true, false, false], [false, true, false], [false, false, true],
+  [true, true, false], [true, false, true], [false, true, true], [true, true, true],
+];
 
 export const c03: Concept = {
   id: "C03",
@@ -10,29 +58,150 @@ export const c03: Concept = {
     reveal: t`$4$ invitations: Asha, Bina, Chetan and Dev. Bina is in both clubs but gets one invitation. $1$ badge: Bina. The invitation list is the **union** of the two clubs; the badge list is their **intersection**.`,
   },
   explanation: {
-    intuition: t`$A \cup B$ collects everything: an element goes in if it is in $A$, in $B$, or in both, and it is written once. $A \cap B$ keeps only what the two sets share. On a Venn diagram, $A \cup B$ is the whole region covered by the two circles, and $A \cap B$ is the overlap. For $A = \{2, 4, 6, 8\}$ and $B = \{3, 6, 9\}$: $A \cup B = \{2, 3, 4, 6, 8, 9\}$ and $A \cap B = \{6\}$. With three sets or brackets, combine two sets at a time, bracket first.`,
-    formal: t`**Union.** $A \cup B = \{x \mid x \in A \text{ or } x \in B\}$. "Or" includes both: an element in both sets is in $A \cup B$, written once.
-
-**Intersection.** $A \cap B = \{x \mid x \in A \text{ and } x \in B\}$. If $A \cap B = \emptyset$ (also written $\phi$), $A$ and $B$ are **disjoint**.
-
-**Three sets.** $A \cup B \cup C$: the elements in at least one of the sets. $A \cap B \cap C$: the elements in all three. With only one operation, the brackets don't matter.
-
-**Mixed operations.** Work out the bracket first. $A \cup (B \cap C)$ and $(A \cup B) \cap C$ are, in general, different sets.
-
-**Sets given by a rule.** Write each set in roster form first. $\{x \mid x^2 - 7x + 12 = 0\}$: $(x - 3)(x - 4) = 0$, so the set is $\{3, 4\}$.`,
+    intuition: [
+      t`A **Venn diagram** draws each set as a circle inside a rectangle $U$, the **universal set** of everything being discussed.`,
+      t`Take $A = \{2, 4, 6, 8\}$ and $B = \{3, 6, 9\}$: $6$ is in both, so it sits where the circles overlap.`,
+      t`The **union** $A \cup B$ collects everything in $A$, in $B$ or in both, each written once.`,
+      t`So $A \cup B = \{2, 3, 4, 6, 8, 9\}$: the whole region the two circles cover.`,
+      t`The **intersection** $A \cap B$ keeps only what the two sets share: here $A \cap B = \{6\}$, the overlap.`,
+      t`With three sets or brackets, combine two sets at a time, the bracket first.`,
+    ],
+    formal: [
+      {
+        title: "Union",
+        points: [
+          t`$A \cup B = \{x \mid x \in A$ or $x \in B\}$, where $\mid$, like $/$, reads "such that".`,
+          t`"Or" includes both: an element $x$ in both sets is in $A \cup B$, written once.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two overlapping circles A and B in the rectangle U. Both circles together, the overlap included, are shaded as A ∪ B. Then a point x in the overlap is marked: it is in A ∪ B too.",
+          axes: "none",
+          view,
+          elements: [
+            { kind: "region", within: two(true, false), step: 1 },
+            { kind: "region", within: two(false, true), step: 1 },
+            { kind: "region", within: two(true, true), step: 1 },
+            ...twoSets,
+            { kind: "label", at: [5, 6.1], label: "A ∪ B", labelAt: "n", step: 1 },
+            { kind: "point", at: [5, 3.5], label: "x", labelAt: "n", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Intersection",
+        points: [
+          t`$A \cap B = \{x \mid x \in A$ and $x \in B\}$: the overlap of the two circles.`,
+          t`"And" needs both: an element $x$ in $A$ but not in $B$ is left out.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two overlapping circles A and B in the rectangle U. Only the overlap is shaded, as A ∩ B. Then a point x in A but outside B is marked: it is not in A ∩ B.",
+          axes: "none",
+          view,
+          elements: [
+            { kind: "region", within: two(true, true), tone: "good", step: 1 },
+            ...twoSets,
+            { kind: "label", at: [5, 6.1], label: "A ∩ B", labelAt: "n", tone: "good", step: 1 },
+            { kind: "point", at: [2.6, 3.5], label: "x", labelAt: "n", tone: "bad", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Disjoint sets",
+        points: [
+          t`Two sets are **disjoint** when they have no element in common.`,
+          t`For example, $\{1, 3, 5\}$ and $\{2, 4\}$ are disjoint: their circles do not overlap.`,
+          t`Then $A \cap B = \emptyset$, the **empty set**, with no elements; it is also written $\phi$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two separate circles in the rectangle U: A holds 1, 3, 5 and B holds 2, 4. They do not overlap, so A ∩ B = ∅.",
+          axes: "none",
+          view,
+          elements: [
+            ...frame,
+            { kind: "circle", centre: [2.8, 3.5], r: 1.8, tone: "muted" },
+            { kind: "label", at: [1.53, 4.77], label: "A", labelAt: "nw" },
+            { kind: "circle", centre: [7.2, 3.5], r: 1.8, tone: "muted" },
+            { kind: "label", at: [8.47, 4.77], label: "B", labelAt: "ne" },
+            { kind: "label", at: [2.8, 3.3], label: "1, 3, 5", labelAt: "n", step: 2 },
+            { kind: "label", at: [7.2, 3.3], label: "2, 4", labelAt: "n", step: 2 },
+            { kind: "label", at: [5, 6.1], label: "A ∩ B = ∅", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Three sets",
+        points: [
+          t`$A \cup B \cup C$ holds the elements in at least one of the three sets.`,
+          t`$A \cap B \cap C$ holds the elements in all three: the middle piece.`,
+          t`With only one operation, the brackets don't matter: $(A \cup B) \cup C$ equals $A \cup (B \cup C)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of three overlapping circles A, B and C in the rectangle U. First all three circles together are shaded, as A ∪ B ∪ C. Then the middle piece, inside all three, is shaded as A ∩ B ∩ C.",
+          axes: "none",
+          view,
+          elements: [
+            ...pieces.map(([a, b, c]): FigureElement => ({ kind: "region", within: three(a, b, c), step: 1 })),
+            { kind: "region", within: three(true, true, true), tone: "good", step: 2 },
+            ...threeSets,
+          ],
+        },
+      },
+      {
+        title: "Mixed operations: bracket first",
+        points: [
+          t`When $\cup$ and $\cap$ are mixed, work out the bracket first.`,
+          t`In $A \cup (B \cap C)$, first find $B \cap C$, the part in both $B$ and $C$.`,
+          t`Then join all of $A$ to it: that is $A \cup (B \cap C)$.`,
+          t`$(A \cup B) \cap C$ is, in general, a different set: moving the bracket changes the answer.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of three overlapping circles A, B and C in the rectangle U. First B ∩ C, the part inside both B and C, is shaded. Then all of A is shaded with it, as A ∪ (B ∩ C).",
+          axes: "none",
+          view,
+          elements: [
+            { kind: "region", within: three(false, true, true), step: 2 },
+            { kind: "region", within: three(true, true, true), step: 2 },
+            ...pieces
+              .filter(([a, b, c]) => a || (b && c))
+              .map(([a, b, c]): FigureElement => ({ kind: "region", within: three(a, b, c), tone: "good", step: 3 })),
+            ...threeSets,
+            { kind: "label", at: [0.3, 0.6], label: "A ∪ (B ∩ C)", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Sets given by a rule",
+        points: [
+          t`When a set is given by a rule, first write it in roster form, as a list of its elements.`,
+          t`Take $\{x \mid x^2 - 7x + 12 = 0\}$: factorise to get $(x - 3)(x - 4) = 0$.`,
+          t`Each factor is zero at one root, so the set is $\{3, 4\}$.`,
+        ],
+        figure: {
+          alt: "One circle in the rectangle U, for the set of x with x² − 7x + 12 = 0. Once the equation is factorised, its roots 3 and 4 appear inside the circle.",
+          axes: "none",
+          view,
+          elements: [
+            ...frame,
+            { kind: "circle", centre: [5, 3.3], r: 2.4, tone: "muted" },
+            { kind: "label", at: [5, 5.85], label: "{x | x² − 7x + 12 = 0}", labelAt: "n" },
+            { kind: "label", at: [5, 3.1], label: "3, 4", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
-      prompt: t`$A = \{x \mid x \text{ is a prime number less than } 10\}$, $B = \{x \mid x \in N,\ x \text{ is a factor of } 8\}$ and $C = \{x \mid x^2 - 9x + 20 = 0\}$. Find $A \cap (B \cup C)$.`,
+      prompt: t`$A = \{x \mid x$ is a prime number less than $10\}$, $B = \{x \mid x \in N$, $x$ is a factor of $8\}$ and $C = \{x \mid x^2 - 9x + 20 = 0\}$. Find $A \cap (B \cup C)$.`,
       steps: [
         t`Roster form: $A = \{2, 3, 5, 7\}$, $B = \{1, 2, 4, 8\}$, and $x^2 - 9x + 20 = (x - 4)(x - 5)$, so $C = \{4, 5\}$.`,
         t`Bracket first: $B \cup C = \{1, 2, 4, 5, 8\}$. Every element of $B$ or $C$, with $4$ written once.`,
         t`Keep the elements of $A$ that are also in $B \cup C$: $2$ and $5$. So $A \cap (B \cup C) = \{2, 5\}$.`,
-        t`The bracket matters: $(A \cap B) \cup C = \{2\} \cup \{4, 5\} = \{2, 4, 5\}$, a different set.`,
+        t`The bracket matters: $(A \cap B) \cup C$ is $\{2\} \cup \{4, 5\} = \{2, 4, 5\}$, a different set.`,
       ],
       answer: t`$A \cap (B \cup C) = \{2, 5\}$`,
       figure: {
         alt: "A Venn diagram of A = {2, 3, 5, 7}, B = {1, 2, 4, 8} and C = {4, 5}. A only holds 3, 7; A and B only holds 2; B only holds 1, 8; B and C only holds 4; A and C only holds 5. B ∪ C is shaded, then the part of A inside it, holding 2 and 5, is shaded as A ∩ (B ∪ C). A note says (A ∩ B) ∪ C = {2, 4, 5}.",
         axes: "none",
-        view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+        view: { x: [-0.3, 10.3], y: [-0.3, 7.9] },
         elements: [
           { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
           { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
@@ -56,7 +225,7 @@ export const c03: Concept = {
           { kind: "label", at: [7.1, 5], label: "1, 8", labelAt: "n", step: 1 },
           { kind: "label", at: [6.1, 2.9], label: "4", labelAt: "n", step: 1 },
           { kind: "label", at: [3.9, 2.9], label: "5", labelAt: "n", step: 1 },
-          { kind: "label", at: [5, 6.75], label: "(A∩B)∪C = {2, 4, 5}", labelAt: "n", step: 4, tone: "bad" },
+          { kind: "label", at: [5, 7.05], label: "(A∩B)∪C = {2, 4, 5}", labelAt: "n", step: 4, tone: "bad" },
         ],
       },
     },
@@ -65,19 +234,19 @@ export const c03: Concept = {
       axes: "none",
       view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
       elements: [
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3 },
+        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3 },
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3 },
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 5, tone: "good" },
         { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
         { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
         { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
         { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
         { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
         { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
-        { kind: "label", at: [2.6, 3.5], label: "2, 4, 8", labelAt: "n", step: 1 },
-        { kind: "label", at: [5, 3.5], label: "6", labelAt: "n", step: 1 },
-        { kind: "label", at: [7.4, 3.5], label: "3, 9", labelAt: "n", step: 1 },
+        { kind: "label", at: [2.6, 3.5], label: "2, 4, 8", labelAt: "n", step: 2 },
+        { kind: "label", at: [5, 3.5], label: "6", labelAt: "n", step: 2 },
+        { kind: "label", at: [7.4, 3.5], label: "3, 9", labelAt: "n", step: 2 },
       ],
     },
     visualSpec: t`Drag elements into or out of two circles; $A \cup B$ and $A \cap B$ update as rosters and as shaded regions, and the overlap empties when the sets become disjoint.`,

@@ -10,21 +10,74 @@ export const c01: Concept = {
     reveal: t`Only $4$. A set lists each element once, so the repeated I's, S's and P's add nothing: $A = \{\text{M, I, S, P}\}$ and $n(A) = 4$.`,
   },
   explanation: {
-    intuition: t`A set-builder form is a rule; the roster form lists everything the rule lets in. Read the rule like a filter: run through the allowed values in order, apply the formula to each, and write each result once. Two things decide the list: where the values start and stop ($N$ starts at $1$, $W$ at $0$; $<$ leaves the end out, $\le$ keeps it) and what the rule does to each value. Order and repeats never matter: $\{1, 2\} = \{2, 1, 1\}$.`,
-    formal: t`**Roster method.** List the elements inside braces, separated by commas: $C = \{a, e, i, o, u\}$. Each element is written once, in any order.
-
-**Set-builder method.** State the property every element has: $C = \{x / x \text{ is a vowel of the English alphabet}\}$. Read "$/$" as "such that".
-
-**Reading a rule.**
-- $N = \{1, 2, 3, \ldots\}$ starts at $1$; $W = \{0, 1, 2, \ldots\}$ starts at $0$; $Z = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$.
-- $n < 4$ stops at $3$; $n \le 4$ includes $4$.
-- In $\{x / x = 3n,\ n \in N,\ n \le 3\}$ the elements are $x = 3, 6, 9$, not the values $n = 1, 2, 3$.
-
-**Number of elements.** $n(A)$ counts the distinct elements of $A$. The letters of 'BOOK' give $\{\text{B, O, K}\}$, so $n = 3$.
-
-**Equal and equivalent sets.** $A = B$ when they have exactly the same elements. $A$ and $B$ are equivalent when $n(A) = n(B)$. Equal sets are always equivalent; $\{1, 2, 3\}$ and $\{a, b, c\}$ are equivalent but not equal.`,
+    intuition: [
+      t`A **set** is a collection of objects; each object in it is an **element** of the set.`,
+      t`We write a set's elements inside **braces**, the curly brackets $\{\ \}$.`,
+      t`A set can also be given by a **rule** that says which objects belong to it.`,
+      t`To list a set from its rule, try each value the rule allows, in order, and write down what it makes.`,
+      t`Two things decide the list: where the allowed values start and stop, and what the rule does to each one.`,
+      t`Order and repeats never matter: $\{1, 2\}$ and $\{2, 1, 1\}$ are the same set.`,
+    ],
+    formal: [
+      {
+        title: "Roster method",
+        points: [
+          t`The **roster method** lists a set's elements inside braces, separated by commas.`,
+          t`The vowels of the English alphabet make $C = \{a, e, i, o, u\}$.`,
+          t`Each element is written once, in any order.`,
+        ],
+      },
+      {
+        title: "Set-builder method",
+        points: [
+          t`The **set-builder method** states the property that every element of the set has.`,
+          t`The vowels again: $C = \{x / x$ is a vowel of the English alphabet$\}$.`,
+          t`Here $x$ stands for any element of the set.`,
+          t`Read the slash "$/$" as "such that".`,
+          t`So $C$ is "the set of all $x$ such that $x$ is a vowel of the English alphabet".`,
+        ],
+      },
+      {
+        title: "Where the values start",
+        points: [
+          t`In a rule, $n \in N$ means the letter $n$ is an element of $N$: read $\in$ as "belongs to".`,
+          t`$N = \{1, 2, 3, \ldots\}$, the **natural numbers**, starts at $1$; the dots mean "and so on".`,
+          t`$W = \{0, 1, 2, \ldots\}$, the **whole numbers**, is $N$ with $0$ added: it starts at $0$.`,
+          t`$Z = \{\ldots, -2, -1,$ $0, 1, 2, \ldots\}$, the **integers**, goes on in both directions.`,
+        ],
+      },
+      {
+        title: "Reading a rule",
+        points: [
+          t`A **strict** sign, $<$ or $>$, leaves its end value out: $n < 4$ stops at $3$.`,
+          t`The sign $\le$, "less than or equal to", keeps its end: $n \le 4$ includes $4$.`,
+          t`Commas in a rule separate its conditions, and every condition must hold: $\{x / x = 3n,\ n \in N,$ $n \le 3\}$.`,
+          t`Here $n \in N$ and $n \le 3$ allow $n = 1, 2, 3$.`,
+          t`The rule $x = 3n$ turns these into $x = 3, 6, 9$.`,
+          t`The elements are the values of $x$: the set is $\{3, 6, 9\}$, not $\{1, 2, 3\}$.`,
+        ],
+      },
+      {
+        title: "Number of elements",
+        points: [
+          t`$n(A)$, the **number of elements** of $A$, counts each different element of $A$ once.`,
+          t`The letters of 'BOOK' are B, O, O and K: the O comes twice.`,
+          t`As a set they give $\{\text{B, O, K}\}$, which has $3$ elements, not $4$.`,
+        ],
+      },
+      {
+        title: "Equal and equivalent sets",
+        points: [
+          t`Sets $A$ and $B$ are **equal**, $A = B$, when they have exactly the same elements.`,
+          t`They are **equivalent** when they have the same number of elements: $n(A) = n(B)$.`,
+          t`Equal sets are always equivalent.`,
+          t`$\{1, 2, 3\}$ and $\{a, b, c\}$ both have $3$ elements, so they are equivalent.`,
+          t`They are not equal: their elements are different.`,
+        ],
+      },
+    ],
     worked: {
-      prompt: t`Write $B = \left\{x / x \text{ is an integer},\ -\dfrac{3}{2} < x < \dfrac{9}{2}\right\}$ in roster form and find $n(B)$.`,
+      prompt: t`Write $B = \bigg\{x / x \text{ is an integer},$ $-\dfrac{3}{2} < x < \dfrac{9}{2}\bigg\}$ in roster form and find $n(B)$.`,
       steps: [
         t`The ends are $-\dfrac{3}{2} = -1.5$ and $\dfrac{9}{2} = 4.5$. Neither is an integer, so the question is only which integers lie between them.`,
         t`The smallest integer greater than $-1.5$ is $-1$: $-2$ lies to the left of $-1.5$, so it is too small. The largest integer less than $4.5$ is $4$.`,

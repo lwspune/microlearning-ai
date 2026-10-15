@@ -1,6 +1,23 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** A faint number line from x0 to x1 at height y: always present. */
+const line = (x0: number, x1: number, y = 0): FigureElement => ({ kind: "segment", from: [x0, y], to: [x1, y], tone: "muted" });
+
+/** An end of an interval at (x, y): a filled dot if it is in, a hollow one if not, with its number below. */
+function end(x: number, y: number, label: string, inside: boolean, step?: number, tone?: FigureElement["tone"]): FigureElement[] {
+  const at = step === undefined ? {} : { step };
+  const colour = tone === undefined ? {} : { tone };
+  return [
+    { kind: "point", at: [x, y], ...(inside ? {} : { hollow: true }), ...at, ...colour },
+    { kind: "label", at: [x, y], label, labelAt: "s", tone: "muted", ...at },
+  ];
+}
+
+/** The formal slides' frames: two or three rows of number line. */
+const rows2 = { x: [-0.6, 5.6] as [number, number], y: [-1.1, 1.1] as [number, number] };
+const rows3 = { x: [-0.6, 5.6] as [number, number], y: [-1.6, 1.6] as [number, number] };
 
 export const c09: Concept = {
   id: "C09",
@@ -10,24 +27,183 @@ export const c09: Concept = {
     reveal: t`There isn't one. $0.9$, $0.99$, $0.999$, ... are all allowed, and past any of them there is a bigger one still below $1$. So you can't name a last element. Instead you name the boundary, $1$, and mark it as left out: $[0, 1)$. The square bracket says $0$ is in; the round one says $1$ is not.`,
   },
   explanation: {
-    intuition: t`An interval is every real number between two ends, with no gaps. The only question is whether each end belongs. A square bracket says it does, a round bracket says it doesn't. On the number line, a square bracket is a filled dot and a round bracket is a hollow dot. $\infty$ is not a number, only a sign that the set runs on for ever, so it can never belong: it always gets a round bracket.`,
-    formal: t`**Four kinds of interval.** For real numbers $a < b$:
-$$\begin{array}{c|c|c} \text{Interval} & \text{Set-builder} & \text{Name} \\ \hline [a, b] & \{x \in R : a \le x \le b\} & \text{closed} \\ (a, b) & \{x \in R : a < x < b\} & \text{open} \\ [a, b) & \{x \in R : a \le x < b\} & \text{semi-open} \\ (a, b] & \{x \in R : a < x \le b\} & \text{semi-open} \end{array}$$
-
-**Rays.** $[a, \infty) = \{x \in R : x \ge a\}$, $(a, \infty) = \{x \in R : x > a\}$, $(-\infty, b] = \{x \in R : x \le b\}$, $(-\infty, b) = \{x \in R : x < b\}$, and $(-\infty, \infty) = R$. $\pm\infty$ always take a round bracket.
-
-**Read from $x$.** If $x$ is on the right, turn the inequality round first: $10 < x$ says $x > 10$, so the set is $(10, \infty)$, running right.
-
-**Real, not whole.** $(0, 3]$ holds $0.1$, $0.001$ and every real number up to $3$. There is no next number after $0$, so $(0, 3]$ is not $[1, 3]$.`,
+    intuition: [
+      t`A **real number** is any point on the number line, like $-2$, $0.5$ or $\sqrt{2}$.`,
+      t`An **interval** is all the real numbers between two **ends**, with no gaps.`,
+      t`A **square bracket** $[\ ]$, drawn as a filled dot, says that end belongs: $[-6, -3]$.`,
+      t`A **round bracket** $(\ )$, drawn as a hollow dot, says that end is left out: $(-1, 2)$.`,
+      t`**Infinity**, $\infty$, is not a number: it only says the set runs on for ever.`,
+      t`So $\infty$ can never belong, and it always gets a round bracket: $[4, \infty)$.`,
+    ],
+    formal: [
+      {
+        title: "Closed and open intervals",
+        points: [
+          t`A colon, like the slash, reads "such that": $\{x \in R : x > 2\}$ is every $x$ in $R$, the set of real numbers, with $x > 2$.`,
+          t`Take any two real numbers $a < b$.`,
+          t`The **closed** interval $[a, b]$ is $\{x \in R : a \le x \le b\}$: both ends are in.`,
+          t`The **open** interval $(a, b)$ is $\{x \in R : a < x < b\}$: both ends are out.`,
+        ],
+        figure: {
+          alt: "Two number lines, each with a and b marked. On the top one, a filled dot at a and at b, joined, mark the closed interval [a, b]. On the bottom one, a hollow dot at a and at b, joined, mark the open interval (a, b).",
+          axes: "none",
+          view: rows2,
+          elements: [
+            line(-0.4, 5.4, 0.5),
+            line(-0.4, 5.4, -0.5),
+            { kind: "label", at: [1, 0.5], label: "a", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [4, 0.5], label: "b", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [1, -0.5], label: "a", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [4, -0.5], label: "b", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "segment", from: [1, 0.5], to: [4, 0.5], step: 3 },
+            { kind: "point", at: [1, 0.5], step: 3 },
+            { kind: "point", at: [4, 0.5], step: 3 },
+            { kind: "label", at: [2.5, 0.5], label: "[a, b]", labelAt: "n", step: 3 },
+            { kind: "segment", from: [1, -0.5], to: [4, -0.5], step: 4 },
+            { kind: "point", at: [1, -0.5], hollow: true, step: 4 },
+            { kind: "point", at: [4, -0.5], hollow: true, step: 4 },
+            { kind: "label", at: [2.5, -0.5], label: "(a, b)", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Semi-open intervals",
+        points: [
+          t`An interval with one end in and the other end out is **semi-open**.`,
+          t`$[a, b)$ is $\{x \in R : a \le x < b\}$: $a$ is in, $b$ is out.`,
+          t`$(a, b]$ is $\{x \in R : a < x \le b\}$: $a$ is out, $b$ is in.`,
+          t`So $\le$ or $\ge$ gives a square bracket, and $<$ or $>$ gives a round one.`,
+        ],
+        figure: {
+          alt: "Two number lines, each with a and b marked. On the top one, a filled dot at a and a hollow dot at b, joined, mark [a, b). On the bottom one, a hollow dot at a and a filled dot at b, joined, mark (a, b].",
+          axes: "none",
+          view: rows2,
+          elements: [
+            line(-0.4, 5.4, 0.5),
+            line(-0.4, 5.4, -0.5),
+            { kind: "segment", from: [1, 0.5], to: [4, 0.5], step: 2 },
+            ...end(1, 0.5, "a", true, 2),
+            ...end(4, 0.5, "b", false, 2),
+            { kind: "label", at: [2.5, 0.5], label: "[a, b)", labelAt: "n", step: 2 },
+            { kind: "segment", from: [1, -0.5], to: [4, -0.5], step: 3 },
+            ...end(1, -0.5, "a", false, 3),
+            ...end(4, -0.5, "b", true, 3),
+            { kind: "label", at: [2.5, -0.5], label: "(a, b]", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Rays running right",
+        points: [
+          t`A **ray** is an interval with only one end: on the other side it runs on for ever.`,
+          t`$[a, \infty)$ is $\{x \in R : x \ge a\}$: from $a$ rightwards, with $a$ in.`,
+          t`$(a, \infty)$ is $\{x \in R : x > a\}$: the same, with $a$ out.`,
+          t`$\infty$ is never reached, so it always takes a round bracket.`,
+        ],
+        figure: {
+          alt: "Two number lines with a marked. On the top one, a filled dot at a with an arrow running off to the right marks [a, ∞). On the bottom one, a hollow dot at a with an arrow running off to the right marks (a, ∞).",
+          axes: "none",
+          view: rows2,
+          elements: [
+            line(-0.4, 5.4, 0.5),
+            line(-0.4, 5.4, -0.5),
+            { kind: "vector", from: [1.5, 0.5], to: [5.4, 0.5], step: 2 },
+            ...end(1.5, 0.5, "a", true, 2),
+            { kind: "label", at: [3.5, 0.5], label: "[a, ∞)", labelAt: "n", step: 2 },
+            { kind: "vector", from: [1.5, -0.5], to: [5.4, -0.5], step: 3 },
+            ...end(1.5, -0.5, "a", false, 3),
+            { kind: "label", at: [3.5, -0.5], label: "(a, ∞)", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Rays running left",
+        points: [
+          t`$(-\infty, b]$ is $\{x \in R : x \le b\}$: everything up to $b$, with $b$ in.`,
+          t`$(-\infty, b)$ is $\{x \in R : x < b\}$: the same, with $b$ out.`,
+          t`$-\infty$ is never reached either, so it too takes a round bracket.`,
+          t`With no end at all, $(-\infty, \infty)$ is the whole number line, $R$.`,
+        ],
+        figure: {
+          alt: "Three number lines. On the top one, a filled dot at b with an arrow running off to the left marks (−∞, b]. On the middle one, a hollow dot at b with an arrow to the left marks (−∞, b). On the bottom one, arrows run off both ends: (−∞, ∞) is the whole line, R.",
+          axes: "none",
+          view: rows3,
+          elements: [
+            line(-0.4, 5.4, 1),
+            line(-0.4, 5.4, 0),
+            line(-0.4, 5.4, -1),
+            { kind: "vector", from: [3.5, 1], to: [-0.4, 1], step: 1 },
+            ...end(3.5, 1, "b", true, 1),
+            { kind: "label", at: [1.5, 1], label: "(−∞, b]", labelAt: "n", step: 1 },
+            { kind: "vector", from: [3.5, 0], to: [-0.4, 0], step: 2 },
+            ...end(3.5, 0, "b", false, 2),
+            { kind: "label", at: [1.5, 0], label: "(−∞, b)", labelAt: "n", step: 2 },
+            { kind: "vector", from: [2.5, -1], to: [-0.4, -1], step: 4 },
+            { kind: "vector", from: [2.5, -1], to: [5.4, -1], step: 4 },
+            { kind: "label", at: [2.5, -1], label: "(−∞, ∞) = R", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Turn the inequality round",
+        points: [
+          t`Sometimes the inequality has $x$ on the right, as in $10 < x$.`,
+          t`Turn it round first, so that $x$ comes first: $10 < x$ says $x > 10$.`,
+          t`So the set is every real number above $10$: $(10, \infty)$, running right.`,
+          t`In the same way, $3 > x$ says $x < 3$, so the set runs left: $(-\infty, 3)$.`,
+        ],
+        figure: {
+          alt: "A number line from 0 to 13. A hollow dot at 10 with an arrow running off to the right marks (10, ∞). A hollow dot at 3 with an arrow running off to the left marks (−∞, 3).",
+          axes: "none",
+          view: { x: [-1.1, 14.1], y: [-1, 1] },
+          elements: [
+            line(-0.9, 13.9),
+            { kind: "vector", from: [10, 0], to: [13.9, 0], step: 3 },
+            ...end(10, 0, "10", false, 3),
+            { kind: "label", at: [12, 0], label: "(10, ∞)", labelAt: "n", step: 3 },
+            { kind: "vector", from: [3, 0], to: [-0.9, 0], step: 4 },
+            ...end(3, 0, "3", false, 4),
+            { kind: "label", at: [1, 0], label: "(−∞, 3)", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Real numbers, not whole numbers",
+        points: [
+          t`In an interval, $x$ is real, so fractions and decimals count too.`,
+          t`$(0, 3]$ holds $0.1$, $0.001$ and every real number up to $3$.`,
+          t`There is no next number after $0$: half of any number above $0$ is smaller still.`,
+          t`So $(0, 3]$ is not $[1, 3]$, which leaves out $0.5$, for one.`,
+        ],
+        figure: {
+          alt: "Two number lines from 0 to 3. On the top one, a hollow dot at 0 and a filled dot at 3, joined, mark (0, 3], with the point 0.5 inside it. On the bottom one, in red, filled dots at 1 and 3, joined, mark [1, 3], which misses 0.5.",
+          axes: "none",
+          view: { x: [-0.8, 3.8], y: [-0.9, 0.9] },
+          elements: [
+            line(-0.6, 3.6, 0.4),
+            line(-0.6, 3.6, -0.4),
+            { kind: "segment", from: [0, 0.4], to: [3, 0.4], step: 2 },
+            ...end(0, 0.4, "0", false, 2),
+            ...end(3, 0.4, "3", true, 2),
+            { kind: "label", at: [1.5, 0.4], label: "(0, 3]", labelAt: "n", step: 2 },
+            { kind: "point", at: [0.5, 0.4], label: "0.5", labelAt: "n", tone: "good", step: 4 },
+            { kind: "segment", from: [1, -0.4], to: [3, -0.4], tone: "bad", step: 4 },
+            ...end(1, -0.4, "1", true, 4, "bad"),
+            ...end(3, -0.4, "3", true, 4, "bad"),
+            { kind: "label", at: [2, -0.4], label: "[1, 3]", labelAt: "n", tone: "bad", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Write $\{x \in R : x \le -2\}$ in interval notation, and write $(1, 8]$ in set-builder form.`,
       steps: [
         t`$x \le -2$ allows $-2$ itself, so that end gets a square bracket: $-2]$.`,
         t`There is no lower limit: the set runs left for ever. $-\infty$ is never reached, so it gets a round bracket: $(-\infty, -2]$.`,
         t`In $(1, 8]$, the round bracket says $1$ is out, so $1 < x$; the square bracket says $8$ is in, so $x \le 8$.`,
-        t`Every real number between them is in, so $(1, 8] = \{x \in R : 1 < x \le 8\}$.`,
+        t`Every real number between them is in, so $(1, 8]$ is $\{x \in R : 1 < x \le 8\}$.`,
       ],
-      answer: t`$\{x \in R : x \le -2\} = (-\infty, -2]$, and $(1, 8] = \{x \in R : 1 < x \le 8\}$.`,
+      answer: t`$\{x \in R : x \le -2\}$ is $(-\infty, -2]$, and $(1, 8]$ is $\{x \in R : 1 < x \le 8\}$.`,
       figure: {
         alt: "A number line from −5 to 9. A filled dot at −2 with an arrow running off to the left marks (−∞, −2]. A hollow dot at 1 and a filled dot at 8, joined, mark (1, 8].",
         axes: "none",
@@ -48,27 +224,24 @@ $$\begin{array}{c|c|c} \text{Interval} & \text{Set-builder} & \text{Name} \\ \hl
       },
     },
     figure: {
-      alt: "A number line from −6 to 6 with three intervals. [−5, −2] has filled dots at both ends: both ends are in. (−1, 2) has hollow dots at both ends: both ends are out. [3, ∞) has a filled dot at 3 and an arrow running off to the right: there is no right end, so ∞ gets a round bracket.",
+      alt: "A number line from −6 to 6 with three intervals. [−6, −3] has filled dots at both ends: both ends are in. (−1, 2) has hollow dots at both ends: both ends are out. [4, ∞) has a filled dot at 4 and an arrow running off to the right: there is no right end, so ∞ gets a round bracket.",
       axes: "none",
       view: { x: [-7.1, 7.1], y: [-1, 1] },
       elements: [
-        { kind: "segment", from: [-6.9, 0], to: [6.9, 0], tone: "muted" },
-        { kind: "segment", from: [-5, 0], to: [-2, 0], step: 1 },
-        { kind: "point", at: [-5, 0], step: 1 },
-        { kind: "point", at: [-2, 0], step: 1 },
-        { kind: "label", at: [-5, 0], label: "−5", labelAt: "s", tone: "muted", step: 1 },
-        { kind: "label", at: [-2, 0], label: "−2", labelAt: "s", tone: "muted", step: 1 },
-        { kind: "label", at: [-3.5, 0], label: "[−5, −2]", labelAt: "n", step: 1 },
-        { kind: "segment", from: [-1, 0], to: [2, 0], step: 2 },
-        { kind: "point", at: [-1, 0], hollow: true, step: 2 },
-        { kind: "point", at: [2, 0], hollow: true, step: 2 },
-        { kind: "label", at: [-1, 0], label: "−1", labelAt: "s", tone: "muted", step: 2 },
-        { kind: "label", at: [2, 0], label: "2", labelAt: "s", tone: "muted", step: 2 },
-        { kind: "label", at: [0.5, 0], label: "(−1, 2)", labelAt: "n", step: 2 },
-        { kind: "vector", from: [3, 0], to: [6.9, 0], step: 3 },
-        { kind: "point", at: [3, 0], step: 3 },
-        { kind: "label", at: [3, 0], label: "3", labelAt: "s", tone: "muted", step: 3 },
-        { kind: "label", at: [5, 0], label: "[3, ∞)", labelAt: "n", step: 3 },
+        line(-6.9, 6.9),
+        { kind: "segment", from: [-6, 0], to: [-3, 0], step: 2 },
+        { kind: "label", at: [-6, 0], label: "−6", labelAt: "s", tone: "muted", step: 2 },
+        { kind: "label", at: [-3, 0], label: "−3", labelAt: "s", tone: "muted", step: 2 },
+        { kind: "point", at: [-6, 0], step: 3 },
+        { kind: "point", at: [-3, 0], step: 3 },
+        { kind: "label", at: [-4.5, 0], label: "[−6, −3]", labelAt: "n", step: 3 },
+        { kind: "segment", from: [-1, 0], to: [2, 0], step: 4 },
+        ...end(-1, 0, "−1", false, 4),
+        ...end(2, 0, "2", false, 4),
+        { kind: "label", at: [0.5, 0], label: "(−1, 2)", labelAt: "n", step: 4 },
+        { kind: "vector", from: [4, 0], to: [6.9, 0], step: 5 },
+        ...end(4, 0, "4", true, 5),
+        { kind: "label", at: [5.5, 0], label: "[4, ∞)", labelAt: "n", step: 6 },
       ],
     },
     visualSpec: t`Drag two end markers along a number line, tap each to switch it between filled and hollow, or push it off the end to $\pm\infty$; the interval and its set-builder form update together.`,

@@ -10,23 +10,87 @@ export const c16: Concept = {
     reveal: t`Three groups: remainder $0$, remainder $1$, remainder $2$. Each integer has exactly one remainder, so it sits in exactly one group. Two integers are related exactly when they share a group. A relation that is reflexive, symmetric and transitive always splits its set like this: the groups are its equivalence classes.`,
   },
   explanation: {
-    intuition: t`An equivalence relation says two things are the same in some respect: same remainder, same number of pages, congruent triangles. Everything is the same as itself, sameness works both ways, and it passes along a chain. So the set falls into groups, the equivalence classes. Inside a class every element is related to every other one, and to itself; across classes nothing is related. To build one from a few pairs, join everything the pairs link, directly or through a chain.`,
-    formal: t`**Equivalence relation.** A relation $R$ on $A$ is an equivalence relation if it is reflexive, symmetric and transitive. One failure is enough to say no.
-
-**Equivalence class.** The class of $a$ is $[a] = \{x \in A : (a, x) \in R\}$. It always contains $a$ itself. Two classes are either equal or disjoint, and together they cover $A$. For $R = \{(a, b) : |a - b| \text{ is even}\}$ on $\{1, 2, 3, 4, 5\}$: $[1] = \{1, 3, 5\}$ and $[2] = \{2, 4\}$.
-
-**Making one from a few pairs.** The smallest equivalence relation containing some pairs:
-- Add $(a, a)$ for **every** $a \in A$, even one that is in no pair.
-- For each $(a, b)$, add $(b, a)$.
-- Follow chains: $(a, b)$ and $(b, c)$ need $(a, c)$.
-
-In short: join the linked elements into classes; $R$ is every pair inside a class. A class of $k$ elements gives $k^2$ ordered pairs.
-
-**Congruence modulo $m$.** $a \equiv b \pmod m$ means $m$ divides $a - b$. It is an equivalence relation on $\mathbb{Z}$, and its classes are the $m$ remainders $0, 1, \dots, m - 1$.`,
+    intuition: [
+      t`An **equivalence relation** says two things are alike in some way, such as leaving the same remainder.`,
+      t`Other examples: books with the same number of pages, or triangles that are congruent.`,
+      t`Everything is alike to itself, being alike works both ways, and it passes along a chain.`,
+      t`So the set falls into separate groups, called **equivalence classes**.`,
+      t`Inside a class, every element is related to every other one, and to itself; across classes, nothing is.`,
+      t`To build one from a few pairs, join everything the pairs link, directly or through a chain.`,
+    ],
+    formal: [
+      {
+        title: "Equivalence relation",
+        points: [
+          t`A relation $R$ on $A$ is an **equivalence relation** if it is reflexive, symmetric and transitive.`,
+          t`Recall: **reflexive** means $(a, a) \in R$ for every $a \in A$.`,
+          t`Recall: **symmetric** means that $(a, b) \in R$ gives $(b, a) \in R$.`,
+          t`Recall: **transitive** means that $(a, b)$ and $(b, c)$ in $R$ give $(a, c) \in R$.`,
+          t`One failure of any of the three is enough to say no.`,
+        ],
+      },
+      {
+        title: "Equivalence class",
+        points: [
+          t`The **equivalence class** of $a$, written $[a]$, is the set of everything related to $a$.`,
+          t`In symbols, $[a] = \{x \in A : (a, x) \in R\}$.`,
+          t`It always contains $a$ itself, since $(a, a) \in R$.`,
+          t`Two classes are either equal or **disjoint**: they have no element in common.`,
+          t`Together the classes cover $A$, so every element is in exactly one class.`,
+        ],
+      },
+      {
+        title: "Classes of an example",
+        points: [
+          t`On $A = \{1, 2, 3, 4, 5\}$, let $(a, b) \in R$ when $|a - b|$ is even.`,
+          t`$1$, $3$ and $5$ are an even distance apart, so $[1] = \{1, 3, 5\}$.`,
+          t`$2$ and $4$ are an even distance apart too, so $[2] = \{2, 4\}$.`,
+          t`An odd and an even number are an odd distance apart, so the two classes are disjoint.`,
+          t`Together, $\{1, 3, 5\}$ and $\{2, 4\}$ cover $A$.`,
+        ],
+        figure: {
+          alt: "The numbers 1 to 5 as dots on a line. Arcs above the line join 1 to 3 and 3 to 5: the class [1] = {1, 3, 5}. An arc below the line joins 2 to 4: the class [2] = {2, 4}. The two classes share no number and together hold all five.",
+          axes: "none",
+          view: { x: [0.3, 5.7], y: [-1.9, 1.9] },
+          elements: [
+            { kind: "point", at: [1, 0], label: "1", labelAt: "s", tone: "muted" },
+            { kind: "point", at: [2, 0], label: "2", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "s", tone: "muted" },
+            { kind: "point", at: [4, 0], label: "4", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [5, 0], label: "5", labelAt: "s", tone: "muted" },
+            { kind: "arc", centre: [2, 0], r: 1, from: 0, to: 180, tone: "good", step: 2 },
+            { kind: "arc", centre: [4, 0], r: 1, from: 0, to: 180, tone: "good", step: 2 },
+            { kind: "label", at: [3, 1.2], label: "[1] = {1, 3, 5}", labelAt: "n", tone: "good", step: 2 },
+            { kind: "arc", centre: [3, 0], r: 1, from: 180, to: 360, tone: "accent", step: 3 },
+            { kind: "label", at: [3, -1.2], label: "[2] = {2, 4}", labelAt: "s", tone: "accent", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Making one from a few pairs",
+        points: [
+          t`The smallest equivalence relation containing some given pairs is built in three moves.`,
+          t`Reflexive: add $(a, a)$ for **every** $a \in A$, even one that is in no pair.`,
+          t`Symmetric: for each $(a, b)$, add $(b, a)$.`,
+          t`Transitive: follow chains, so $(a, b)$ and $(b, c)$ need $(a, c)$.`,
+          t`In short, join the linked elements into classes; $R$ is every pair inside a class.`,
+          t`A class of $k$ elements gives $k^2$ ordered pairs: $k$ choices for each entry.`,
+        ],
+      },
+      {
+        title: "Congruence modulo m",
+        points: [
+          t`$a \equiv b \pmod m$ is read "$a$ is congruent to $b$ modulo $m$".`,
+          t`It means $m$ divides $a - b$: $a - b = km$ for some integer $k$.`,
+          t`It is an equivalence relation on $\mathbb{Z}$, the set of all integers.`,
+          t`Its classes are the $m$ remainders $0, 1, \dots, m - 1$ on division by $m$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`On $A = \{1, 2, 3, 4, 5\}$, find the smallest equivalence relation $R$ containing $(1, 4)$ and $(4, 5)$. List its classes and count its ordered pairs.`,
       steps: [
-        t`Reflexive: $R$ needs $(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)$. $2$ and $3$ are in no pair, but they still need theirs.`,
+        t`Reflexive: $R$ needs $(1, 1)$, $(2, 2)$, $(3, 3)$, $(4, 4)$, $(5, 5)$. $2$ and $3$ are in no pair, but they still need theirs.`,
         t`Symmetric: $(1, 4)$ needs $(4, 1)$, and $(4, 5)$ needs $(5, 4)$.`,
         t`Transitive: $(1, 4)$ and $(4, 5)$ chain to $(1, 5)$; symmetry then needs $(5, 1)$.`,
         t`So the classes are $\{1, 4, 5\}$, $\{2\}$ and $\{3\}$, and $R$ has $3^2 + 1^2 + 1^2 = 11$ ordered pairs.`,

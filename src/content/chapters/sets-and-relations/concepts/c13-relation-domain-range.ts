@@ -10,26 +10,87 @@ export const c13: Concept = {
     reveal: t`Neither. The pairs are $(2, 4)$, $(2, 6)$ and $(3, 6)$. No pair starts with $5$, since $5$ divides nothing in $B$, so the domain is $\{2, 3\}$. No pair ends in $7$, so the range is $\{4, 6\}$. $7$ is still in the co-domain, which is all of $B$.`,
   },
   explanation: {
-    intuition: t`Think of a relation as arrows from $A$ to $B$: $x \to y$ whenever the rule pairs them. The relation is the set of these pairs, so it is a subset of $A \times B$, usually a small one. The domain is the part of $A$ that sends at least one arrow; the range is the part of $B$ that receives at least one. The co-domain is all of $B$, whether an arrow lands there or not.`,
-    formal: t`**Relation.** A relation $R$ from $A$ to $B$ is a subset of $A \times B$. If $(x, y) \in R$ we write $x\,R\,y$. A relation from $A$ to $A$ is a relation on $A$.
-
-**Listing $R$ from a rule.** Take each $x \in A$ in turn, test every $y \in B$ against the rule, and keep the pairs $(x, y)$ that pass. The first entry always comes from $A$, the second from $B$.
-
-**Domain, co-domain, range.**
-- Domain of $R$ $= \{x : (x, y) \in R\}$, the first entries; a subset of $A$.
-- Co-domain of $R$ $= B$, the whole set.
-- Range of $R$ $= \{y : (x, y) \in R\}$, the second entries; a subset of the co-domain.
-
-**Read the rule exactly.** $<$ and $>$ leave out equality. $N = \{1, 2, 3, \ldots\}$ has no $0$, so stop when an entry would reach $0$.`,
+    intuition: [
+      t`A **relation** pairs elements of a set $A$ with elements of a set $B$, by a rule.`,
+      t`Take $A = \{2, 3, 5\}$ and $B = \{4, 6, 7\}$, and pair $x$ with $y$ when $x$ is a factor of $y$.`,
+      t`Each pair $(x, y)$ the rule allows is drawn as an arrow $x \to y$: $2 \to 4$, $2 \to 6$, $3 \to 6$.`,
+      t`The **domain** is the part of $A$ that sends at least one arrow: here $\{2, 3\}$, as $5$ sends none.`,
+      t`The **range** is the part of $B$ that receives at least one arrow: here $\{4, 6\}$.`,
+      t`The **co-domain** is all of $B$, whether an arrow lands there or not, so $7$ is in it.`,
+    ],
+    figure: {
+      alt: "An arrow diagram. An oval A holds 2, 3 and 5; an oval B holds 4, 6 and 7. Arrows run from 2 to 4, from 2 to 6 and from 3 to 6, since x is a factor of y. A dashed loop round 2 and 3 marks the domain; 5 sends no arrow. A dashed loop round 4 and 6 marks the range; 7 receives no arrow but is still in B, the co-domain.",
+      axes: "none",
+      view: { x: [-3, 8], y: [-2.9, 2.8] },
+      elements: [
+        { kind: "ellipse", centre: [0, 0], rx: 1.1, ry: 2, tone: "muted", step: 1 },
+        { kind: "label", at: [0, 2], label: "A", labelAt: "n", tone: "muted", step: 1 },
+        { kind: "ellipse", centre: [5, 0], rx: 1.1, ry: 2, tone: "muted", step: 1 },
+        { kind: "label", at: [5, 2], label: "B", labelAt: "n", tone: "muted", step: 1 },
+        { kind: "point", at: [0, 1.2], label: "2", labelAt: "w", step: 2 },
+        { kind: "point", at: [0, 0], label: "3", labelAt: "w", step: 2 },
+        { kind: "point", at: [0, -1.2], label: "5", labelAt: "w", step: 2 },
+        { kind: "point", at: [5, 1.2], label: "4", labelAt: "e", step: 2 },
+        { kind: "point", at: [5, 0], label: "6", labelAt: "e", step: 2 },
+        { kind: "point", at: [5, -1.2], label: "7", labelAt: "e", step: 2 },
+        { kind: "vector", from: [0.25, 1.2], to: [4.75, 1.2], step: 3 },
+        { kind: "vector", from: [0.25, 1.14], to: [4.75, 0.06], step: 3 },
+        { kind: "vector", from: [0.25, 0], to: [4.75, 0], step: 3 },
+        { kind: "ellipse", centre: [0, 0.6], rx: 0.85, ry: 1.15, dashed: true, tone: "good", step: 4 },
+        { kind: "label", at: [-1.1, 0.6], label: "domain", labelAt: "w", tone: "good", step: 4 },
+        { kind: "ellipse", centre: [5, 0.6], rx: 0.85, ry: 1.15, dashed: true, tone: "good", step: 5 },
+        { kind: "label", at: [6.1, 0.6], label: "range", labelAt: "e", tone: "good", step: 5 },
+        { kind: "label", at: [5, -2], label: "co-domain = B", labelAt: "s", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "Relation from A to B",
+        points: [
+          t`Recall: $A \times B$ is the set of all ordered pairs $(x, y)$ with $x \in A$ and $y \in B$.`,
+          t`A **relation** $R$ from $A$ to $B$ is a subset of $A \times B$.`,
+          t`It keeps only the pairs its rule allows, usually a small part of $A \times B$.`,
+          t`If $(x, y) \in R$, we write $x\,R\,y$ and say $x$ is related to $y$.`,
+          t`A relation from $A$ to $A$ itself is called a **relation on $A$**.`,
+        ],
+      },
+      {
+        title: "Listing a relation from its rule",
+        points: [
+          t`Take each $x \in A$ in turn.`,
+          t`Test every $y \in B$ against the rule.`,
+          t`Keep the pairs $(x, y)$ that pass, and drop the rest.`,
+          t`The first entry always comes from $A$, the second from $B$.`,
+        ],
+      },
+      {
+        title: "Domain, co-domain and range",
+        points: [
+          t`The **domain** of $R$ is the set of first entries, $\{x : (x, y) \in R\}$.`,
+          t`So the domain is a subset of $A$.`,
+          t`The **co-domain** of $R$ is the whole set $B$.`,
+          t`The **range** of $R$ is the set of second entries, $\{y : (x, y) \in R\}$.`,
+          t`So the range is a subset of the co-domain.`,
+        ],
+      },
+      {
+        title: "Read the rule exactly",
+        points: [
+          t`$<$ and $>$ leave out equality: $2 < 2$ is false.`,
+          t`$N = \{1, 2, 3, \ldots\}$, the set of natural numbers, has no $0$.`,
+          t`So over $N$, stop listing when an entry would reach $0$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Let $A = \{1, 2, 3, 4, 5, 6\}$ and $R = \{(x, y) : y = x + 1\}$, a relation on $A$. List $R$, and write its domain, co-domain and range.`,
       steps: [
         t`For each $x \in A$, $y = x + 1$ must also be in $A$. That works for $x = 1$ to $5$; for $x = 6$, $y = 7 \notin A$.`,
-        t`$R = \{(1, 2), (2, 3), (3, 4), (4, 5), (5, 6)\}$.`,
+        t`$R = \{(1, 2), (2, 3), (3, 4),$ $(4, 5), (5, 6)\}$.`,
         t`Domain: the first entries, $\{1, 2, 3, 4, 5\}$. $6$ is in $A$ but starts no pair.`,
         t`Co-domain: the whole set $A = \{1, 2, 3, 4, 5, 6\}$. Range: the second entries, $\{2, 3, 4, 5, 6\}$. $1$ is in the co-domain but not in the range.`,
       ],
-      answer: t`$R = \{(1, 2), (2, 3), (3, 4), (4, 5), (5, 6)\}$; domain $\{1, 2, 3, 4, 5\}$, co-domain $\{1, 2, 3, 4, 5, 6\}$, range $\{2, 3, 4, 5, 6\}$.`,
+      answer: t`$R = \{(1, 2), (2, 3), (3, 4),$ $(4, 5), (5, 6)\}$; domain $\{1, 2, 3, 4, 5\}$, co-domain $\{1, 2, 3, 4, 5, 6\}$, range $\{2, 3, 4, 5, 6\}$.`,
     },
     visualSpec: t`Two ovals, $A$ and $B$: draw or delete arrows between their elements, and the elements of $A$ that send an arrow light up as the domain, the elements of $B$ that receive one light up as the range, while all of $B$ stays outlined as the co-domain.`,
   },

@@ -1,6 +1,47 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The box U, from (0, 0) to (10, 7), as the half-planes that keep a region inside it. */
+const box: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+
+/** The house Venn circles: A on the left, B on the right, both of radius 2.4. */
+const cA: Pt = [3.9, 3.5];
+const cB: Pt = [6.1, 3.5];
+const R = 2.4;
+const inA: Shape = { kind: "disc", centre: cA, r: R };
+const outA: Shape = { kind: "outsideDisc", centre: cA, r: R };
+const inB: Shape = { kind: "disc", centre: cB, r: R };
+const outB: Shape = { kind: "outsideDisc", centre: cB, r: R };
+
+/** The three cells of the circles, shaded at `step`. */
+const onlyA = (step: number, tone?: "good"): FigureElement => ({ kind: "region", within: [inA, outB, ...box], step, ...(tone ? { tone } : {}) });
+const onlyB = (step: number, tone?: "good"): FigureElement => ({ kind: "region", within: [outA, inB, ...box], step, ...(tone ? { tone } : {}) });
+const both = (step: number, tone?: "good"): FigureElement => ({ kind: "region", within: [inA, inB, ...box], step, ...(tone ? { tone } : {}) });
+
+/** The box U and the two circles with their names; `uStep` delays the label U. */
+function venn(a: string, b: string, u = "U", uStep?: number): FigureElement[] {
+  return [
+    { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+    { kind: "circle", centre: cA, r: R, tone: "muted" },
+    { kind: "label", at: [2.2, 5.2], label: a, labelAt: "nw" },
+    { kind: "circle", centre: cB, r: R, tone: "muted" },
+    { kind: "label", at: [7.8, 5.2], label: b, labelAt: "ne" },
+    { kind: "label", at: [9.5, 6.4], label: u, labelAt: "n", ...(uStep === undefined ? {} : { step: uStep }) },
+  ];
+}
+
+const view = { x: [-0.3, 10.3] as [number, number], y: [-0.3, 7.3] as [number, number] };
+
+/** For the greatest overlap: a smaller B (radius 1.7), and where it sits once slid inside A. */
+const cSmallB: Pt = [6.4, 3.5];
+const rSmallB = 1.7;
+const cSlidB: Pt = [3.4, 3.5];
 
 export const c08: Concept = {
   id: "C08",
@@ -10,26 +51,120 @@ export const c08: Concept = {
     reveal: t`$30 + 25 = 55$, but there are only $40$ students, so at least $55 - 40 = 15$ of them are counted twice: at least $15$ have both, never none. At most, all $25$ bicycle owners also have a phone, so the most is $25$.`,
   },
   explanation: {
-    intuition: t`Picture two circles of fixed sizes sliding inside $U$. Slide them apart and the overlap shrinks, but only until the two circles fill $U$: then $n(A) + n(B) - n(U)$ elements have nowhere else to go and must be in both. Slide them together and the overlap grows until the smaller circle sits wholly inside the larger: then the overlap is the whole smaller set. The union moves the other way: it is largest when the overlap is least, and least when the overlap is largest.`,
-    formal: t`**Least overlap.** $n(A \cup B) = n(A) + n(B) - n(A \cap B)$ and $A \cup B \subseteq U$, so $n(A \cap B) \ge n(A) + n(B) - n(U)$. A count is never negative, so
-$$\text{least } n(A \cap B) = \max\{0,\ n(A) + n(B) - n(U)\}$$
-
-**Greatest overlap.** $A \cap B \subseteq A$ and $A \cap B \subseteq B$, so
-$$\text{greatest } n(A \cap B) = \min\{n(A),\ n(B)\}$$
-It is reached when the smaller set lies inside the larger.
-
-**The union.** Since $n(A \cup B) = n(A) + n(B) - n(A \cap B)$, the least overlap gives the greatest union and the greatest overlap gives the least union:
-- least $n(A \cup B) = \max\{n(A),\ n(B)\}$
-- greatest $n(A \cup B) = \min\{n(U),\ n(A) + n(B)\}$
-
-**Percentages.** The same rules hold with $n(U) = 100\%$.`,
+    intuition: [
+      t`In a class of $40$ (the box $U$), $30$ students have a phone and $25$ have a bicycle.`,
+      t`The **overlap** is the part inside both circles: the students who have both.`,
+      t`Slide the circles apart, keeping their sizes, and the overlap shrinks until nobody is left outside them.`,
+      t`Then $30 + 25 - 40 = 15$ students have nowhere else to go: at least $15$ have both.`,
+      t`That leaves $15$ with only a phone and $10$ with only a bicycle.`,
+      t`Slide them together and the overlap grows, until the smaller circle sits inside the larger: at most $25$ have both.`,
+    ],
+    formal: [
+      {
+        title: "The least overlap",
+        points: [
+          t`Recall: $n(A)$ is the number of elements in $A$, and $n(A) + n(B)$ counts the overlap twice.`,
+          t`So $n(A \cup B)$ equals $n(A) + n(B) - n(A \cap B)$.`,
+          t`$A \cup B$ lies inside $U$, so $n(A \cup B) \le n(U)$.`,
+          t`Put the two together: $n(A \cap B) \ge n(A) + n(B) - n(U)$.`,
+          t`A count is never negative, so also $n(A \cap B) \ge 0$.`,
+          t`So the least $n(A \cap B)$ is $\max\{0,\ n(A) + n(B) - n(U)\}$, where $\max$ picks the larger number.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside the box U. Shading A and then B shades the overlap A ∩ B twice. Since the union lies inside U, n(A ∪ B) ≤ n(U), and so n(A ∩ B) ≥ n(A) + n(B) − n(U).",
+          axes: "none",
+          view,
+          elements: [
+            { kind: "region", within: [inA, ...box], step: 1 },
+            { kind: "region", within: [inB, ...box], step: 1 },
+            ...venn("A", "B"),
+            { kind: "label", at: [5, 3.5], label: "A ∩ B", labelAt: "n", step: 1 },
+            { kind: "label", at: [5, 6.1], label: "n(A ∪ B) ≤ n(U)", labelAt: "n", step: 3 },
+            { kind: "label", at: [5, 0.1], label: "n(A ∩ B) ≥ n(A) + n(B) − n(U)", labelAt: "n", step: 4, tone: "good" },
+          ],
+        },
+      },
+      {
+        title: "The greatest overlap",
+        points: [
+          t`$A \cap B$ lies inside $A$, so $n(A \cap B) \le n(A)$.`,
+          t`It lies inside $B$ too, so $n(A \cap B) \le n(B)$.`,
+          t`So the greatest $n(A \cap B)$ is $\min\{n(A),\ n(B)\}$, where $\min$ picks the smaller number.`,
+          t`It is reached when the smaller set, here $B$, lies wholly inside the larger.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of a larger circle A and a smaller circle B inside the box U. A is shaded, then B: the overlap lies inside each, so n(A ∩ B) ≤ min{n(A), n(B)}. A dashed copy of B sits wholly inside A, where the overlap is all of B.",
+          axes: "none",
+          view,
+          elements: [
+            { kind: "region", within: [inA, ...box], step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: cSmallB, r: rSmallB }, ...box], step: 2 },
+            { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+            { kind: "circle", centre: cA, r: R, tone: "muted" },
+            { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
+            { kind: "circle", centre: cSmallB, r: rSmallB, tone: "muted" },
+            { kind: "label", at: [7.6, 4.7], label: "B", labelAt: "ne" },
+            { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+            { kind: "label", at: [5, 0.1], label: "n(A ∩ B) ≤ min{n(A), n(B)}", labelAt: "n", step: 3, tone: "good" },
+            { kind: "circle", centre: cSlidB, r: rSmallB, dashed: true, tone: "good", step: 4 },
+            { kind: "label", at: cSlidB, label: "B inside A", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The least and greatest union",
+        points: [
+          t`Recall: the union $A \cup B$ is everything in either circle.`,
+          t`$n(A \cup B)$ is $n(A) + n(B)$ minus the overlap, so a smaller overlap means a bigger union.`,
+          t`The greatest overlap gives the least union: $\max\{n(A),\ n(B)\}$, the size of the larger set.`,
+          t`The least overlap gives the greatest union: $\min\{n(U),\ n(A) + n(B)\}$.`,
+          t`That is because no union holds more than $n(U)$ elements, or more than $n(A) + n(B)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside the box U, with the union A ∪ B shaded. The overlap is taken away once, so the union moves the other way from it: the least union is max{n(A), n(B)} and the greatest is min{n(U), n(A) + n(B)}.",
+          axes: "none",
+          view,
+          elements: [
+            onlyA(1, "good"),
+            onlyB(1, "good"),
+            both(1, "good"),
+            ...venn("A", "B"),
+            { kind: "label", at: [5, 3.5], label: "− n(A ∩ B)", labelAt: "n", tone: "bad", step: 2 },
+            { kind: "label", at: [5, 6.1], label: "least: max{n(A), n(B)}", labelAt: "n", step: 3 },
+            { kind: "label", at: [5, 0.1], label: "greatest: min{n(U), n(A) + n(B)}", labelAt: "n", step: 4, tone: "good" },
+          ],
+        },
+      },
+      {
+        title: "Percentages",
+        points: [
+          t`With percentages, the whole group is $100\%$, so take $n(U) = 100\%$.`,
+          t`Every rule above then holds as it stands.`,
+          t`Say $60\%$ of a town watch cricket and $70\%$ watch football.`,
+          t`At least $60\% + 70\% - 100\% = 30\%$ watch both.`,
+          t`At most $\min\{60\%,\ 70\%\} = 60\%$ watch both: every cricket watcher also watches football.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of Cricket (60%) and Football (70%) inside the box U = 100%. Both circles are shaded; the overlap must hold at least 60% + 70% − 100% = 30%, and at most 60%, when the Cricket circle lies inside the Football circle.",
+          axes: "none",
+          view,
+          elements: [
+            { kind: "region", within: [inA, ...box], step: 3 },
+            { kind: "region", within: [inB, ...box], step: 3 },
+            ...venn("Cricket", "Football", "U = 100%", 1),
+            { kind: "label", at: [5, 3.5], label: "30%", labelAt: "n", tone: "good", step: 4 },
+            { kind: "label", at: [5, 0.1], label: "at most 60%: Cricket inside Football", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Of $120$ people, $85$ speak Hindi and $60$ speak English. Find the least and the greatest number who speak both languages.`,
       steps: [
-        t`Let $A$ and $B$ be the Hindi and English speakers. $n(A \cup B) = 85 + 60 - n(A \cap B) = 145 - n(A \cap B)$.`,
+        t`Let $A$ and $B$ be the Hindi and English speakers. $n(A \cup B) = 85 + 60 - n(A \cap B)$, which is $145 - n(A \cap B)$.`,
         t`$A \cup B$ lies inside the group of $120$, so $145 - n(A \cap B) \le 120$, which gives $n(A \cap B) \ge 25$.`,
         t`$25$ is possible: $25$ speak both, $85 - 25 = 60$ Hindi only, $60 - 25 = 35$ English only and $0$ neither; $60 + 25 + 35 + 0 = 120$.`,
-        t`$A \cap B$ lies inside $A$ and inside $B$, so $n(A \cap B) \le \min\{85, 60\} = 60$. This happens when all $60$ English speakers also speak Hindi, and $120 - 85 = 35$ speak neither.`,
+        t`$A \cap B$ lies inside $A$ and inside $B$, so $n(A \cap B) \le \min\{85, 60\}$, which is $60$. This happens when all $60$ English speakers also speak Hindi, and $120 - 85 = 35$ speak neither.`,
       ],
       answer: t`The least is $25$ and the greatest is $60$.`,
       figure: {
@@ -55,25 +190,20 @@ It is reached when the smaller set lies inside the larger.
       },
     },
     figure: {
-      alt: "A Venn diagram of 40 students: the Phone circle (30) and the Bicycle circle (25). Shading both circles covers the overlap twice, since 30 + 25 = 55 is more than 40, so at least 15 must have both. With 15 in both, 15 have a phone only, 10 a bicycle only and 0 neither.",
+      alt: "A Venn diagram of 40 students: the Phone circle (30) and the Bicycle circle (25) inside the box U. The overlap is shaded first. With the circles slid apart until nobody is outside, 0 have neither, and 30 + 25 − 40 = 15 must have both, leaving 15 with only a phone and 10 with only a bicycle. Slid together, at most 25 have both, when the Bicycle circle lies inside the Phone circle.",
       axes: "none",
-      view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+      view,
       elements: [
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
-        { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [2.2, 5.2], label: "Phone", labelAt: "nw" },
-        { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [7.8, 5.2], label: "Bicycle", labelAt: "ne" },
-        { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
-        { kind: "label", at: [5, 3.5], label: "15", labelAt: "n", step: 3, tone: "bad" },
-        { kind: "label", at: [2.6, 3.5], label: "15", labelAt: "n", step: 4 },
-        { kind: "label", at: [7.4, 3.5], label: "10", labelAt: "n", step: 4 },
-        { kind: "label", at: [0.9, 0.8], label: "0", labelAt: "n", step: 4, tone: "good" },
-        { kind: "label", at: [5, 0.1], label: "at least 30 + 25 − 40 = 15 in both", labelAt: "n", step: 3, tone: "bad" },
+        both(2),
+        onlyA(3),
+        onlyB(3),
+        ...venn("Phone", "Bicycle"),
+        { kind: "label", at: [0.9, 0.8], label: "0", labelAt: "n", step: 3, tone: "good" },
+        { kind: "label", at: [5, 3.5], label: "15", labelAt: "n", step: 4, tone: "bad" },
+        { kind: "label", at: [5, 0.1], label: "at least 30 + 25 − 40 = 15 in both", labelAt: "n", step: 4, tone: "bad" },
+        { kind: "label", at: [2.6, 3.5], label: "15", labelAt: "n", step: 5 },
+        { kind: "label", at: [7.4, 3.5], label: "10", labelAt: "n", step: 5 },
+        { kind: "label", at: [5, 6.1], label: "at most 25: Bicycle inside Phone", labelAt: "n", step: 6, tone: "good" },
       ],
     },
     visualSpec: t`Drag circle $B$ along a line inside $U$ with $n(A)$, $n(B)$ and $n(U)$ fixed; the four cell counts update, and the overlap stops shrinking when the outside cell reaches $0$ and stops growing when $B$ sits inside $A$.`,

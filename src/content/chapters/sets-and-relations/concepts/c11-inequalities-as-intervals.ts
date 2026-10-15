@@ -1,6 +1,12 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The graph of 0.3(x − a)(x − b) with a = −2 and b = 2, for the "outside or between" slide. */
+const parabola: Pt[] = Array.from({ length: 25 }, (_, i): Pt => {
+  const x = -3.6 + 0.3 * i;
+  return [Math.round(x * 100) / 100, Math.round(0.3 * (x * x - 4) * 1000) / 1000];
+});
 
 export const c11: Concept = {
   id: "C11",
@@ -10,27 +16,148 @@ export const c11: Concept = {
     reveal: t`$x = 0$ gives $0 < 6$, which is true, yet $0 < -3$ is false. Dividing by a negative number reverses the order ($2 < 3$, but $-1 > -1.5$), so the sign must flip: $x > -3$, that is, $x \in (-3, \infty)$.`,
   },
   explanation: {
-    intuition: t`The solution set of an inequality is a piece of the number line, or a few pieces. For a linear inequality, isolate $x$, and flip the sign whenever you multiply or divide by a negative number. For a quadratic or a fraction, bring everything to one side and compare with $0$. The expression can change sign only at its **critical points**, where a factor is zero, so one test point per region decides that whole region. For $(x + 1)(x - 3) < 0$: the critical points are $-1$ and $3$, the signs are $+, -, +$, and the answer is $(-1, 3)$.`,
-    formal: t`**Linear inequalities**
-
-Add or subtract the same number on every side. Multiply or divide by a positive number: the sign stays. By a negative number: the sign **flips**. For $-9 < 2x + 7 \le 19$, work on all three parts: $-16 < 2x \le 12$, so $-8 < x \le 6$, that is, $x \in (-8, 6]$.
-
-**Quadratic and rational: the sign test**
-
-- **1.** Bring everything to one side, so you compare with $0$. Never multiply by an expression such as $x - 4$: its sign is unknown.
-- **2.** Make one fraction, factor it, and make each $x$-coefficient positive (dividing by a negative flips the sign).
-- **3.** Mark the critical points: the zeros of the numerator and of the denominator. Test one point in each region.
-- **4.** Keep the regions with the right sign.
-
-**The ends**
-
-A zero of the numerator gets a square bracket for $\le$ or $\ge$, a round one for $<$ or $>$. A zero of the denominator is never allowed: always a round bracket.
-
-**A pattern to check against.** For $a < b$: $(x - a)(x - b) > 0$ outside the roots, on $(-\infty, a) \cup (b, \infty)$; $(x - a)(x - b) < 0$ between them, on $(a, b)$.`,
+    intuition: [
+      t`The **solution set** of an inequality is every $x$ that makes it true: one or a few pieces of the number line.`,
+      t`For a linear inequality, get $x$ alone; flip the sign whenever you multiply or divide by a negative number.`,
+      t`For a product or a fraction, bring everything to one side and compare with $0$: say $(x + 1)(x - 3) < 0$.`,
+      t`Its **critical points**, where a factor is zero, are $-1$ and $3$; they cut the line into three **regions**.`,
+      t`The sign can change only at a critical point, so one **test point** per region gives that region's sign: $+$, $-$, $+$.`,
+      t`The product is negative in the middle region, so the solution set is $(-1, 3)$.`,
+    ],
+    formal: [
+      {
+        title: "Linear inequalities",
+        points: [
+          t`Adding or subtracting the same number on every side keeps the sign.`,
+          t`Multiplying or dividing every side by a positive number keeps it too.`,
+          t`Multiplying or dividing by a negative number **flips** it: $<$ becomes $>$, and $\le$ becomes $\ge$.`,
+          t`For example, $2 < 3$, but $-2 > -3$: a minus sign mirrors the number line.`,
+          t`In $-9 < 2x + 7 \le 19$, work on all three parts: subtract $7$, so $-16 < 2x \le 12$.`,
+          t`Divide every part by $2$: $-8 < x \le 6$, that is, $x \in (-8, 6]$.`,
+        ],
+        figure: {
+          alt: "Two number lines. On the upper one, 2 and 3 sit to the right of 0, and their mirror images −2 and −3 to the left: 2 < 3, but −2 > −3. On the lower one, the answer (−8, 6] is drawn in green, with a hollow point at −8 and a solid point at 6.",
+          axes: "none",
+          view: { x: [-10.1, 8.1], y: [-1.4, 1.7] },
+          elements: [
+            { kind: "segment", from: [-7.6, 0.8], to: [7.6, 0.8], tone: "muted" },
+            { kind: "point", at: [0, 0.8], tone: "muted" },
+            { kind: "label", at: [0, 0.8], label: "0", labelAt: "s", tone: "muted" },
+            { kind: "segment", from: [-9.9, -0.5], to: [7.9, -0.5], tone: "muted" },
+            { kind: "point", at: [4, 0.8], step: 4 },
+            { kind: "label", at: [4, 0.8], label: "2", labelAt: "n", step: 4 },
+            { kind: "point", at: [6, 0.8], step: 4 },
+            { kind: "label", at: [6, 0.8], label: "3", labelAt: "n", step: 4 },
+            { kind: "point", at: [-4, 0.8], tone: "bad", step: 4 },
+            { kind: "label", at: [-4, 0.8], label: "−2", labelAt: "n", tone: "bad", step: 4 },
+            { kind: "point", at: [-6, 0.8], tone: "bad", step: 4 },
+            { kind: "label", at: [-6, 0.8], label: "−3", labelAt: "n", tone: "bad", step: 4 },
+            { kind: "segment", from: [-8, -0.5], to: [6, -0.5], step: 6, tone: "good" },
+            { kind: "point", at: [-8, -0.5], hollow: true, step: 6, tone: "good" },
+            { kind: "label", at: [-8, -0.5], label: "−8", labelAt: "s", tone: "muted", step: 6 },
+            { kind: "point", at: [6, -0.5], step: 6, tone: "good" },
+            { kind: "label", at: [6, -0.5], label: "6", labelAt: "s", tone: "muted", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Quadratics and fractions: the sign test",
+        points: [
+          t`Bring everything to one side, so you compare with $0$.`,
+          t`Never multiply by an expression such as $x - 4$: its sign is unknown.`,
+          t`Make one fraction, factor it, and make each $x$-coefficient positive.`,
+          t`If a factor had to be multiplied by $-1$ for that, flip the sign.`,
+          t`Mark the critical points, the zeros of the numerator and denominator: for $\frac{x + 2}{x - 3} > 0$, $-2$ and $3$.`,
+          t`Test one point in each region, and keep the regions with the right sign: here the outer two.`,
+        ],
+        figure: {
+          alt: "A number line with the critical points −2 and 3 of (x + 2)/(x − 3). Above the regions the signs are +, − and +. The answer to (x + 2)/(x − 3) > 0, the two outer regions, is drawn in green: an arrow to the left from a hollow point at −2, and an arrow to the right from a hollow point at 3.",
+          axes: "none",
+          view: { x: [-5.1, 6.1], y: [-1, 1] },
+          elements: [
+            { kind: "segment", from: [-4.9, 0], to: [5.9, 0], tone: "muted" },
+            { kind: "point", at: [-2, 0], tone: "muted", step: 5 },
+            { kind: "label", at: [-2, 0], label: "−2", labelAt: "s", tone: "muted", step: 5 },
+            { kind: "point", at: [3, 0], tone: "muted", step: 5 },
+            { kind: "label", at: [3, 0], label: "3", labelAt: "s", tone: "muted", step: 5 },
+            { kind: "label", at: [-3.5, 0], label: "+", labelAt: "n", tone: "good", step: 6 },
+            { kind: "label", at: [0.5, 0], label: "−", labelAt: "n", tone: "bad", step: 6 },
+            { kind: "label", at: [4.5, 0], label: "+", labelAt: "n", tone: "good", step: 6 },
+            { kind: "vector", from: [-2, 0], to: [-4.9, 0], step: 6, tone: "good" },
+            { kind: "point", at: [-2, 0], hollow: true, step: 6, tone: "good" },
+            { kind: "vector", from: [3, 0], to: [5.9, 0], step: 6, tone: "good" },
+            { kind: "point", at: [3, 0], hollow: true, step: 6, tone: "good" },
+          ],
+        },
+      },
+      {
+        title: "Which bracket at each end",
+        points: [
+          t`Recall: a square bracket keeps an end in the set; a round bracket leaves it out.`,
+          t`Take $\frac{x + 2}{x - 3} \ge 0$: its signs are $+$, $-$, $+$, so keep the outer regions.`,
+          t`At a zero of the numerator, here $-2$, the fraction is $0$.`,
+          t`So that end is in for $\le$ or $\ge$, with a square bracket, and out for $<$ or $>$, with a round one.`,
+          t`At a zero of the denominator, here $3$, the fraction is undefined, so $3$ is never in.`,
+          t`So it always gets a round bracket: the answer is $(-\infty, -2] \cup (3, \infty)$.`,
+        ],
+        figure: {
+          alt: "A number line with the critical points −2 and 3 of (x + 2)/(x − 3), and the signs +, − and + above the regions. At −2 the fraction is 0: a solid green point with an arrow to the left. At 3 the denominator is 0: a hollow green point with an arrow to the right. Together they show (−∞, −2] ∪ (3, ∞).",
+          axes: "none",
+          view: { x: [-5.1, 6.1], y: [-1, 1] },
+          elements: [
+            { kind: "segment", from: [-4.9, 0], to: [5.9, 0], tone: "muted" },
+            { kind: "point", at: [-2, 0], tone: "muted", step: 2 },
+            { kind: "label", at: [-2, 0], label: "−2", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "point", at: [3, 0], tone: "muted", step: 2 },
+            { kind: "label", at: [3, 0], label: "3", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [-3.5, 0], label: "+", labelAt: "n", tone: "good", step: 2 },
+            { kind: "label", at: [0.5, 0], label: "−", labelAt: "n", tone: "bad", step: 2 },
+            { kind: "label", at: [4.5, 0], label: "+", labelAt: "n", tone: "good", step: 2 },
+            { kind: "label", at: [-2, 0], label: "fraction = 0", labelAt: "n", step: 3 },
+            { kind: "vector", from: [-2, 0], to: [-4.9, 0], step: 4, tone: "good" },
+            { kind: "point", at: [-2, 0], step: 4, tone: "good" },
+            { kind: "vector", from: [3, 0], to: [5.9, 0], step: 6, tone: "good" },
+            { kind: "point", at: [3, 0], hollow: true, step: 5, tone: "good" },
+            { kind: "label", at: [3, 0], label: "undefined", labelAt: "n", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Outside or between the roots",
+        points: [
+          t`Take two numbers $a < b$ and the product $(x - a)(x - b)$; its **roots**, where it is $0$, are $a$ and $b$.`,
+          t`Its graph is a U-shaped curve: above the line outside the roots, below it between them.`,
+          t`So $(x - a)(x - b) > 0$ outside the roots: on $(-\infty, a) \cup (b, \infty)$.`,
+          t`And $(x - a)(x - b) < 0$ between the roots: on $(a, b)$.`,
+          t`Use this pattern to check a sign-test answer.`,
+        ],
+        figure: {
+          alt: "A number line with the roots a and b of (x − a)(x − b), and its U-shaped graph crossing the line at a and b. The graph is above the line outside the roots, marked + and drawn in green: (−∞, a) ∪ (b, ∞). It is below the line between them, marked − and drawn in the accent colour: (a, b). All four ends are hollow.",
+          axes: "none",
+          view: { x: [-4.6, 4.6], y: [-1.7, 3] },
+          elements: [
+            { kind: "segment", from: [-4.4, 0], to: [4.4, 0], tone: "muted" },
+            { kind: "point", at: [-2, 0], tone: "muted", step: 1 },
+            { kind: "label", at: [-2, 0], label: "a", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "point", at: [2, 0], tone: "muted", step: 1 },
+            { kind: "label", at: [2, 0], label: "b", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "curve", points: parabola, tone: "muted", step: 2 },
+            { kind: "label", at: [-3.3, 0], label: "+", labelAt: "n", tone: "good", step: 3 },
+            { kind: "label", at: [3.3, 0], label: "+", labelAt: "n", tone: "good", step: 3 },
+            { kind: "vector", from: [-2, 0], to: [-4.4, 0], step: 3, tone: "good" },
+            { kind: "vector", from: [2, 0], to: [4.4, 0], step: 3, tone: "good" },
+            { kind: "label", at: [0, 0], label: "−", labelAt: "n", tone: "bad", step: 4 },
+            { kind: "segment", from: [-2, 0], to: [2, 0], step: 4 },
+            { kind: "point", at: [-2, 0], hollow: true, step: 3, tone: "good" },
+            { kind: "point", at: [2, 0], hollow: true, step: 3, tone: "good" },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Solve $\dfrac{x + 3}{x - 1} \le 2$ and write the solution set in interval notation.`,
       steps: [
-        t`Don't multiply by $x - 1$: it can be negative. Subtract $2$ instead: $\dfrac{x + 3 - 2(x - 1)}{x - 1} = \dfrac{5 - x}{x - 1} \le 0$.`,
+        t`Don't multiply by $x - 1$: it can be negative. Subtract $2$ instead: $\dfrac{x + 3 - 2(x - 1)}{x - 1} \le 0$, that is, $\dfrac{5 - x}{x - 1} \le 0$.`,
         t`Multiply by $-1$ and flip the sign: $\dfrac{x - 5}{x - 1} \ge 0$. The critical points are $1$ (denominator) and $5$ (numerator).`,
         t`Test a point in each region: $x = 0$ gives $\dfrac{-5}{-1} = 5 > 0$; $x = 3$ gives $\dfrac{-2}{2} = -1 < 0$; $x = 6$ gives $\dfrac{1}{5} > 0$. Keep the two outer regions.`,
         t`At $x = 5$ the fraction is $0$, and $0 \ge 0$, so $5$ is in: square bracket. At $x = 1$ the denominator is $0$, so $1$ is out: round bracket.`,
@@ -62,16 +189,16 @@ A zero of the numerator gets a square bracket for $\le$ or $\ge$, a round one fo
       view: { x: [-4.1, 6.1], y: [-1, 1] },
       elements: [
         { kind: "segment", from: [-3.9, 0], to: [5.9, 0], tone: "muted" },
-        { kind: "point", at: [-1, 0], tone: "muted", step: 1 },
-        { kind: "label", at: [-1, 0], label: "−1", labelAt: "s", tone: "muted", step: 1 },
-        { kind: "point", at: [3, 0], tone: "muted", step: 1 },
-        { kind: "label", at: [3, 0], label: "3", labelAt: "s", tone: "muted", step: 1 },
-        { kind: "label", at: [-2, 0], label: "+", labelAt: "n", tone: "good", step: 2 },
-        { kind: "label", at: [1, 0], label: "−", labelAt: "n", tone: "bad", step: 2 },
-        { kind: "label", at: [4, 0], label: "+", labelAt: "n", tone: "good", step: 2 },
-        { kind: "segment", from: [-1, 0], to: [3, 0], step: 3, tone: "good" },
-        { kind: "point", at: [-1, 0], hollow: true, step: 3, tone: "good" },
-        { kind: "point", at: [3, 0], hollow: true, step: 3, tone: "good" },
+        { kind: "point", at: [-1, 0], tone: "muted", step: 4 },
+        { kind: "label", at: [-1, 0], label: "−1", labelAt: "s", tone: "muted", step: 4 },
+        { kind: "point", at: [3, 0], tone: "muted", step: 4 },
+        { kind: "label", at: [3, 0], label: "3", labelAt: "s", tone: "muted", step: 4 },
+        { kind: "label", at: [-2, 0], label: "+", labelAt: "n", tone: "good", step: 5 },
+        { kind: "label", at: [1, 0], label: "−", labelAt: "n", tone: "bad", step: 5 },
+        { kind: "label", at: [4, 0], label: "+", labelAt: "n", tone: "good", step: 5 },
+        { kind: "segment", from: [-1, 0], to: [3, 0], step: 6, tone: "good" },
+        { kind: "point", at: [-1, 0], hollow: true, step: 6, tone: "good" },
+        { kind: "point", at: [3, 0], hollow: true, step: 6, tone: "good" },
       ],
     },
     visualSpec: t`Drag the critical points along a number line; the sign of the expression shows above each region, and the regions that satisfy the inequality light up, with the right bracket at each end.`,

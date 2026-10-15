@@ -10,24 +10,112 @@ export const c15: Concept = {
     reveal: t`No. Take $(5, 7)$ and then $(7, 5)$: the chain goes $5 \to 7 \to 5$, so transitivity needs $(5, 5)$ in $R$. It isn't there. A chain may come back to where it started, and it still has to close.`,
   },
   explanation: {
-    intuition: t`Think of each pair $(a, b)$ as an arrow from $a$ to $b$. **Reflexive**: every element of $A$ has a loop to itself. **Symmetric**: every arrow has a return arrow. **Transitive**: every two-step path $a \to b \to c$ has a direct arrow $a \to c$. Each test says **every**, so one missing loop, return arrow or direct arrow breaks the property.`,
-    formal: t`**Reflexive.** $(a, a) \in R$ for **every** $a \in A$. Check each element of $A$, even one that appears in no pair of $R$. Other pairs may be in $R$ too.
-
-**Symmetric.** Whenever $(a, b) \in R$, also $(b, a) \in R$. A pair $(a, a)$ is its own reverse.
-
-**Transitive.** Whenever $(a, b) \in R$ and $(b, c) \in R$, also $(a, c) \in R$. Here $c$ may equal $a$: $(a, b)$ and $(b, a)$ in $R$ need $(a, a)$ in $R$.
-
-**Proving and disproving.** One counterexample breaks a property; one example never proves it. If there is nothing to test, nothing breaks it: on $N$, $xy = x^2$ gives $y = x$, so $R$ has only pairs $(a, a)$ and is symmetric and transitive. For $2x + y = 41$ on $N$: $(1, 1) \notin R$, $(20, 1) \in R$ but $(1, 20) \notin R$, and $(20, 1), (1, 39) \in R$ but $(20, 39) \notin R$. It has none of the three.
-
-**To make $R$ reflexive**, add $(a, a)$ for each $a \in A$ that does not already have it.`,
+    intuition: [
+      t`Recall: a relation $R$ on a set $A$ is a set of pairs $(a, b)$, with $a$ and $b$ in $A$.`,
+      t`Draw each element of $A$ as a dot, and each pair $(a, b)$ as an arrow from $a$ to $b$.`,
+      t`**Reflexive**: every element of $A$ has a **loop**, an arrow back to itself, for the pair $(a, a)$.`,
+      t`**Symmetric**: every arrow has a **return arrow**, one going back the other way.`,
+      t`**Transitive**: every two-step path, an arrow $a \to b$ then $b \to c$, has a direct arrow $a \to c$.`,
+      t`Each test says **every**, so one missing loop, return arrow or direct arrow breaks the property.`,
+    ],
+    formal: [
+      {
+        title: "Reflexive relation",
+        points: [
+          t`$R$ is **reflexive** when $(a, a) \in R$ for **every** $a \in A$.`,
+          t`Check each element of $A$, even one that appears in no pair of $R$.`,
+          t`Other pairs may be in $R$ too: they do not spoil it.`,
+          t`To make $R$ reflexive, add $(a, a)$ for each $a \in A$ that does not already have it.`,
+          t`For example, on $A = \{1, 2, 3\}$, $R = \{(1, 1), (1, 2)\}$ needs $(2, 2)$ and $(3, 3)$ added.`,
+        ],
+      },
+      {
+        title: "Symmetric relation",
+        points: [
+          t`$R$ is **symmetric** when, whenever $(a, b) \in R$, also $(b, a) \in R$.`,
+          t`The pair $(b, a)$ is the **reverse** of $(a, b)$: the same two entries, swapped.`,
+          t`A pair $(a, a)$ is its own reverse, so it never breaks symmetry.`,
+        ],
+      },
+      {
+        title: "Transitive relation",
+        points: [
+          t`$R$ is **transitive** when $(a, b) \in R$ and $(b, c) \in R$ always give $(a, c) \in R$.`,
+          t`Call $(a, b), (b, c)$ a **chain**; it **closes** when $(a, c)$ is in $R$ too.`,
+          t`Here $c$ may equal $a$: a chain may come back to where it started.`,
+          t`So $(a, b)$ and $(b, a)$ in $R$ need $(a, a)$ in $R$.`,
+        ],
+        figure: {
+          alt: "Left: dots a, b and c, with arrows a to b and b to c, a chain, and the direct arrow a to c that closes it. Right: dots a and b with arrows a to b and b to a, a chain that comes back to a; it closes only with a loop at a, the pair (a, a).",
+          axes: "none",
+          view: { x: [-0.6, 6], y: [-0.9, 2.4] },
+          elements: [
+            { kind: "point", at: [0, 0], label: "a", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "point", at: [1.2, 1.8], label: "b", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "point", at: [2.4, 0], label: "c", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "vector", from: [0.194, 0.291], to: [1.006, 1.509], step: 1 },
+            { kind: "vector", from: [1.394, 1.509], to: [2.206, 0.291], step: 1 },
+            { kind: "vector", from: [0.35, 0], to: [2.05, 0], tone: "good", step: 1 },
+            { kind: "point", at: [4.2, 0], label: "a", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "point", at: [5.4, 1.8], label: "b", labelAt: "n", tone: "muted", step: 3 },
+            { kind: "vector", from: [4.578, 0.349], to: [5.222, 1.317], step: 3 },
+            { kind: "vector", from: [5.022, 1.451], to: [4.378, 0.483], step: 3 },
+            { kind: "circle", centre: [3.86, 0], r: 0.34, tone: "good", step: 4 },
+            { kind: "label", at: [3.86, -0.34], label: "(a, a)", labelAt: "s", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Proving and disproving",
+        points: [
+          t`A **counterexample** is one pair or chain that fails the test: one is enough to break a property.`,
+          t`One example that passes never proves it, since the test says every.`,
+          t`If there is nothing to test, nothing breaks the rule, so the property holds.`,
+          t`On $N$, $xy = x^2$ gives $y = x$, so $R$ has only pairs $(a, a)$.`,
+          t`So this $R$ is symmetric and transitive: no pair or chain can fail either test.`,
+        ],
+      },
+      {
+        title: "A relation with none",
+        points: [
+          t`Take $R = \{(x, y) : 2x + y = 41\}$ on $N$.`,
+          t`Not reflexive: $(1, 1) \notin R$, since $2 + 1 \ne 41$.`,
+          t`Not symmetric: $(20, 1) \in R$, but $(1, 20) \notin R$.`,
+          t`Not transitive: $(20, 1)$ and $(1, 39)$ are in $R$, but $(20, 39) \notin R$.`,
+          t`So $R$ has none of the three, each broken by one counterexample.`,
+        ],
+      },
+    ],
     worked: {
-      prompt: t`$R = \{(a, b) : a, b \in N,\ a \text{ divides } b\}$. Which of reflexive, symmetric, transitive does $R$ have?`,
+      prompt: t`$R = \{(a, b) :$ $a, b \in N,\ a \text{ divides } b\}$. Which of reflexive, symmetric, transitive does $R$ have?`,
       steps: [
         t`**Reflexive.** $a = 1 \times a$, so $a$ divides $a$ for every $a \in N$: $(a, a) \in R$. Reflexive.`,
         t`**Symmetric.** $2$ divides $6$, so $(2, 6) \in R$; $6$ does not divide $2$, so $(6, 2) \notin R$. One counterexample: not symmetric.`,
         t`**Transitive.** If $a$ divides $b$ and $b$ divides $c$, then $b = ka$ and $c = lb$ for some $k, l \in N$. So $c = (kl)a$ and $a$ divides $c$. Transitive.`,
       ],
       answer: t`$R$ is reflexive and transitive, but not symmetric.`,
+    },
+    figure: {
+      alt: "Dots 1, 2 and 3 for A = {1, 2, 3}, with arrows 1 to 2 and 2 to 3 for two pairs of R. A loop is added at each dot, then the return arrows 2 to 1 and 3 to 2, then the direct arrow 1 to 3 for the path 1, 2, 3. The path 3, 2, 1 has no direct arrow 3 to 1, shown dashed: that one missing arrow breaks transitivity.",
+      axes: "none",
+      view: { x: [-0.9, 4.9], y: [-0.75, 3.3] },
+      elements: [
+        { kind: "label", at: [-0.8, 3], label: "A = {1, 2, 3}", labelAt: "e", tone: "muted", step: 1 },
+        { kind: "point", at: [0, 0], label: "1", labelAt: "s", tone: "muted", step: 1 },
+        { kind: "point", at: [2, 2.4], label: "2", labelAt: "w", tone: "muted", step: 1 },
+        { kind: "point", at: [4, 0], label: "3", labelAt: "s", tone: "muted", step: 1 },
+        { kind: "vector", from: [0.42, 0.301], to: [1.78, 1.933], step: 2 },
+        { kind: "vector", from: [2.22, 1.933], to: [3.58, 0.301], step: 2 },
+        { kind: "circle", centre: [-0.29, 0.17], r: 0.34, tone: "good", step: 3 },
+        { kind: "circle", centre: [2.17, 2.69], r: 0.34, tone: "good", step: 3 },
+        { kind: "circle", centre: [4.29, 0.17], r: 0.34, tone: "good", step: 3 },
+        { kind: "vector", from: [1.58, 2.099], to: [0.22, 0.467], tone: "good", step: 4 },
+        { kind: "vector", from: [3.78, 0.467], to: [2.42, 2.099], tone: "good", step: 4 },
+        { kind: "vector", from: [0.45, -0.13], to: [3.55, -0.13], tone: "good", step: 5 },
+        { kind: "label", at: [2, -0.13], label: "direct 1 → 3", labelAt: "s", tone: "good", step: 5 },
+        { kind: "segment", from: [3.55, 0.13], to: [0.45, 0.13], dashed: true, tone: "bad", step: 6 },
+        { kind: "label", at: [2, 0.13], label: "no 3 → 1", labelAt: "n", tone: "bad", step: 6 },
+      ],
     },
     visualSpec: t`A dot for each element of $A$ and an arrow for each pair of $R$; tap reflexive, symmetric or transitive to see the loops, return arrows or direct arrows it needs, with the missing ones flashing.`,
   },

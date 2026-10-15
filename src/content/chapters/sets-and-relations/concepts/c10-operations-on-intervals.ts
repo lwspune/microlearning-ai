@@ -1,6 +1,41 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+type Tone = FigureElement["tone"];
+
+/** `{ step }` when a step is given: elements always present carry none. */
+const on = (step?: number) => (step === undefined ? {} : { step });
+
+/** `{ tone }` when a tone is given: the main object keeps the default accent. */
+const toned = (tone?: Tone) => (tone === undefined ? {} : { tone });
+
+/** The number `x` as a label, with a true minus sign. */
+const num = (x: number) => (x < 0 ? `−${-x}` : `${x}`);
+
+/** A muted number line at height `y`, from `x0` to `x1`, named at its left end. */
+const line = (y: number, x0: number, x1: number, name: string, step?: number): FigureElement[] => [
+  { kind: "segment", from: [x0, y], to: [x1, y], tone: "muted", ...on(step) },
+  { kind: "label", at: [x0 - 0.3, y], label: name, labelAt: "w", ...on(step) },
+];
+
+/** An end at `x` on the line at `y`: a filled dot if it is in, a hollow one if not, its number below. */
+const end = (x: number, y: number, isIn: boolean, tone?: Tone, step?: number): FigureElement[] => [
+  { kind: "point", at: [x, y], hollow: !isIn, ...toned(tone), ...on(step) },
+  { kind: "label", at: [x, y], label: num(x), labelAt: "s", tone: "muted", ...on(step) },
+];
+
+/** A piece from `a` to `b` on the line at `y`, each end in or out. */
+const piece = (y: number, a: number, aIn: boolean, b: number, bIn: boolean, tone?: Tone, step?: number): FigureElement[] => [
+  { kind: "segment", from: [a, y], to: [b, y], ...toned(tone), ...on(step) },
+  ...end(a, y, aIn, tone, step),
+  ...end(b, y, bIn, tone, step),
+];
+
+/** A piece running on for ever from `x`, drawn as an arrow to `to`, the line's left or right end. */
+const ray = (y: number, x: number, to: number, tone?: Tone, step?: number): FigureElement[] => [
+  { kind: "vector", from: [x, y], to: [to, y], ...toned(tone), ...on(step) },
+];
 
 export const c10: Concept = {
   id: "C10",
@@ -10,15 +45,133 @@ export const c10: Concept = {
     reveal: t`No. $3$ and $5$ are in $[3, 5]$, so they are removed too: what is left is $[0, 3) \cup (5, 9]$. Removing a closed end leaves an open one. And the two pieces stay separate: $4$ is in neither, so the answer is not one interval.`,
   },
   explanation: {
-    intuition: t`Draw each interval on its own number line, one under another, on the same scale. Then every operation is a question about each point $x$: is $x$ shaded on at least one line (union), on both (intersection), on the first but not the second (difference), or not on the line at all (complement)? The middle of the answer is easy to see; the work is at the ends. At each end, test that number itself: it is in the answer only if the definition lets it in.`,
-    formal: t`**Union** $A \cup B$: shaded on at least one line. Intervals that overlap, or meet at a point that is in one of them, join into one interval: $[-5, 3] \cup (3, 7) = [-5, 7)$. With a gap between them, write the two pieces with $\cup$.
-
-**Intersection** $A \cap B$: shaded on both lines. It runs from the larger left end to the smaller right end; an end is in it only if that number is in both sets. No common point: $A \cap B = \phi$.
-
-**Complement** in $\mathbb{R}$: everything off the interval. An end that was in $A$ is out of $A'$, so the brackets flip:
-$$[a, b]' = (-\infty, a) \cup (b, \infty), \qquad (a, b]' = (-\infty, a] \cup (b, \infty)$$
-
-**Difference** $A - B = A \cap B'$: the part of $A$ left after removing $B$. An end of $B$ that is in $B$ is removed (round bracket); an end of $B$ that is not in $B$ stays (square bracket). Note $A - B \ne B - A$.`,
+    intuition: [
+      t`Draw $A = [-3, 2)$ on a number line: a filled dot is an end that is in, a hollow dot one that is out.`,
+      t`Draw $B = (0, 5]$ on its own line under it, on the same scale.`,
+      t`The **union** $A \cup B$ is every number shaded on at least one line.`,
+      t`The **intersection** $A \cap B$ is every number shaded on both lines.`,
+      t`The **difference** $A - B$ is every number shaded on the first line but not the second.`,
+      t`The middle of each answer is easy to see; at each end, ask whether that number itself is in.`,
+    ],
+    formal: [
+      {
+        title: "Union of intervals",
+        points: [
+          t`Take $A = [-5, 3]$ and $B = (3, 7)$: they **meet**, or touch, at $3$.`,
+          t`$3$ is in $A$, so no number between them is missing.`,
+          t`So they join into one interval: $A \cup B = [-5, 7)$.`,
+          t`Intervals that **overlap**, sharing a stretch of numbers, join into one interval too.`,
+          t`If instead $C = [-5, 1]$, the numbers above $1$ up to $3$ are in neither set.`,
+          t`That **gap** splits $C \cup B$ into two pieces, joined by $\cup$: $[-5, 1] \cup (3, 7)$.`,
+        ],
+        figure: {
+          alt: "Number lines stacked. A = [−5, 3], closed at 3, and B = (3, 7), open at 3, meet at 3, which is in A, so A ∪ B = [−5, 7) is one interval. C = [−5, 1] stops at 1, so C ∪ B = [−5, 1] ∪ (3, 7) is two pieces with a gap from 1 to 3.",
+          axes: "none",
+          view: { x: [-9.5, 8.1], y: [-10.6, 1.6] },
+          elements: [
+            ...line(0, -5.9, 7.9, "A", 1),
+            ...piece(0, -5, true, 3, true, undefined, 1),
+            ...line(-2.4, -5.9, 7.9, "B", 1),
+            ...piece(-2.4, 3, false, 7, false, undefined, 1),
+            { kind: "label", at: [3, 0], label: "3 is in A", labelAt: "n", tone: "good", step: 2 },
+            ...line(-4.8, -5.9, 7.9, "A ∪ B", 3),
+            ...piece(-4.8, -5, true, 7, false, "good", 3),
+            ...line(-7.2, -5.9, 7.9, "C", 5),
+            ...piece(-7.2, -5, true, 1, true, undefined, 5),
+            ...line(-9.6, -5.9, 7.9, "C ∪ B", 6),
+            ...piece(-9.6, -5, true, 1, true, "good", 6),
+            ...piece(-9.6, 3, false, 7, false, "good", 6),
+            { kind: "label", at: [2, -9.6], label: "gap", labelAt: "n", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Intersection of intervals",
+        points: [
+          t`Take $A = [-4, 3]$ and $B = (1, 6]$, one line under the other.`,
+          t`$A \cap B$ runs from the larger left end, $1$, to the smaller right end, $3$.`,
+          t`An end is in $A \cap B$ only if that number is in both sets.`,
+          t`$1$ is not in $B$, so it is out; $3$ is in both, so it is in: $A \cap B = (1, 3]$.`,
+          t`If two intervals share no number, their intersection is $\phi$, the empty set.`,
+        ],
+        figure: {
+          alt: "Number lines stacked. A = [−4, 3] and B = (1, 6]. Both are shaded from 1 to 3, so A ∩ B runs from 1 to 3: open at 1, which is not in B, and closed at 3, which is in both: A ∩ B = (1, 3].",
+          axes: "none",
+          view: { x: [-8.5, 7.1], y: [-5.8, 1] },
+          elements: [
+            ...line(0, -4.9, 6.9, "A", 1),
+            ...piece(0, -4, true, 3, true, undefined, 1),
+            ...line(-2.4, -4.9, 6.9, "B", 1),
+            ...piece(-2.4, 1, false, 6, true, undefined, 1),
+            ...line(-4.8, -4.9, 6.9, "A ∩ B", 2),
+            { kind: "segment", from: [1, -4.8], to: [3, -4.8], tone: "good", step: 2 },
+            { kind: "label", at: [1, -4.8], label: "1", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [3, -4.8], label: "3", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "point", at: [1, -4.8], hollow: true, tone: "good", step: 4 },
+            { kind: "point", at: [3, -4.8], tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Complement of an interval",
+        points: [
+          t`Take $A = [1, 4]$: both its ends, $1$ and $4$, are in $A$.`,
+          t`Its **complement** in $\mathbb{R}$, $A'$, is every real number off $A$: two pieces running on for ever.`,
+          t`An end that was in $A$ is out of $A'$, so its bracket flips: $A' = (-\infty, 1) \cup (4, \infty)$.`,
+          t`In general, $[a, b]'$ equals $(-\infty, a) \cup (b, \infty)$.`,
+          t`An end that was out is in: for $B = (1, 4]$, $B' = (-\infty, 1] \cup (4, \infty)$.`,
+          t`In general, $(a, b]'$ equals $(-\infty, a] \cup (b, \infty)$.`,
+        ],
+        figure: {
+          alt: "Number lines stacked. A = [1, 4], closed at both ends. Its complement A′ = (−∞, 1) ∪ (4, ∞) is two arrows running off the line, open at 1 and 4. B = (1, 4], open at 1, and its complement B′ = (−∞, 1] ∪ (4, ∞), closed at 1 and open at 4: each bracket flips.",
+          axes: "none",
+          view: { x: [-5, 7.1], y: [-8.2, 1] },
+          elements: [
+            ...line(0, -1.9, 6.9, "A", 1),
+            ...piece(0, 1, true, 4, true, undefined, 1),
+            ...line(-2.4, -1.9, 6.9, "A′", 2),
+            ...ray(-2.4, 1, -1.9, "good", 2),
+            ...ray(-2.4, 4, 6.9, "good", 2),
+            ...end(1, -2.4, false, "good", 3),
+            ...end(4, -2.4, false, "good", 3),
+            ...line(-4.8, -1.9, 6.9, "B", 5),
+            ...piece(-4.8, 1, false, 4, true, undefined, 5),
+            ...line(-7.2, -1.9, 6.9, "B′", 5),
+            ...ray(-7.2, 1, -1.9, "good", 5),
+            ...end(1, -7.2, true, "good", 5),
+            ...ray(-7.2, 4, 6.9, "good", 5),
+            ...end(4, -7.2, false, "good", 5),
+          ],
+        },
+      },
+      {
+        title: "Difference of intervals",
+        points: [
+          t`$A - B$ is also $A \cap B'$: the numbers in $A$ and not in $B$.`,
+          t`Take $A = [-4, 5]$ and $B = [0, 2)$, which lies inside $A$.`,
+          t`An end of $B$ that is in $B$ is removed: $0$ goes, so the left piece is $[-4, 0)$.`,
+          t`An end of $B$ that is not in $B$ stays: $2$ stays, so the right piece is $[2, 5]$.`,
+          t`So $A - B = [-4, 0) \cup [2, 5]$.`,
+          t`The order matters: all of $B$ is in $A$, so $B - A = \phi$, and $A - B \ne B - A$.`,
+        ],
+        figure: {
+          alt: "Number lines stacked. A = [−4, 5] and B = [0, 2) inside it. Removing B leaves A − B = [−4, 0) ∪ [2, 5]: open at 0, which is in B, and closed at 2, which is not. B − A is empty, φ, because all of B is in A.",
+          axes: "none",
+          view: { x: [-8.5, 6.1], y: [-8.2, 1] },
+          elements: [
+            ...line(0, -4.9, 5.9, "A", 2),
+            ...piece(0, -4, true, 5, true, undefined, 2),
+            ...line(-2.4, -4.9, 5.9, "B", 2),
+            ...piece(-2.4, 0, true, 2, false, undefined, 2),
+            ...line(-4.8, -4.9, 5.9, "A − B", 3),
+            ...piece(-4.8, -4, true, 0, false, "good", 3),
+            ...piece(-4.8, 2, true, 5, true, "good", 4),
+            ...line(-7.2, -4.9, 5.9, "B − A", 6),
+            { kind: "label", at: [0.5, -7.2], label: "φ", labelAt: "n", tone: "bad", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`If $A = [-6, 4)$ and $B = (0, 7]$, find $A \cup B$, $A \cap B$, $A - B$ and $B'$ (complement in $\mathbb{R}$).`,
       steps: [

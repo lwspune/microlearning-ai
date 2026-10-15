@@ -10,17 +10,55 @@ export const c14: Concept = {
     reveal: t`$A \times B = \{(1, 7), (2, 7), (3, 7)\}$ has just $3$ pairs, and a relation is any subset of it. One with no pairs ($\phi$), three with one pair, three with two pairs, and $A \times B$ itself: $1 + 3 + 3 + 1 = 8 = 2^3$ relations. Each pair is in or out, $2 \times 2 \times 2$ ways.`,
   },
   explanation: {
-    intuition: t`A relation from $A$ to $B$ is a subset of $A \times B$, nothing more. So counting relations means counting subsets of $A \times B$. Go through the pairs one at a time: each pair is either in the relation or out of it, two choices. With $mn$ pairs that is $2 \times 2 \times \dots \times 2 = 2^{mn}$ relations. Even the empty set $\phi$ and the whole of $A \times B$ are among them.`,
-    formal: t`**Count the pairs first.** If $n(A) = m$ and $n(B) = n$, then $n(A \times B) = mn$.
-
-**Then count subsets.** A set with $N$ elements has $2^N$ subsets, so
-$$\text{number of relations from } A \text{ to } B = 2^{mn}$$
-A relation on $A$ is a subset of $A \times A$. With $n(A) = n$ there are $2^{n^2}$ of them.
-
-**Empty and universal.** $\phi \subseteq A \times B$ is the **empty (void) relation**; $A \times B$ itself is the **universal relation**. Both are counted in $2^{mn}$.
-
-**Some pairs fixed.** If a relation must contain $k$ given pairs, only the other $mn - k$ pairs are free to be in or out:
-$$2^{mn - k} \text{ relations}$$`,
+    intuition: [
+      t`Recall: $A \times B$ is the set of all pairs $(a, b)$ with $a \in A$ and $b \in B$.`,
+      t`A **relation** from $A$ to $B$ is any subset of $A \times B$, nothing more.`,
+      t`So counting relations means counting the subsets of $A \times B$.`,
+      t`Go through the pairs one at a time: each pair is either in the relation or out of it.`,
+      t`That is two choices per pair, and the choices multiply: $2 \times 2 \times \dots \times 2$, one $2$ for each pair.`,
+      t`Even the empty set $\phi$, with no pairs, and the whole of $A \times B$ are among them.`,
+    ],
+    formal: [
+      {
+        title: "Relations from A to B",
+        points: [
+          t`Recall: $n(A)$ is the number of elements in $A$; let $n(A) = m$ and $n(B) = n$.`,
+          t`Each element of $A$ pairs with each element of $B$, so $n(A \times B) = mn$.`,
+          t`Recall: a set with $N$ elements has $2^N$ subsets.`,
+          t`A relation is a subset of $A \times B$, so here $N = mn$.`,
+          t`So the number of relations from $A$ to $B$ is $2^{mn}$.`,
+        ],
+      },
+      {
+        title: "Relations on a set",
+        points: [
+          t`A **relation on $A$** is a relation from $A$ to $A$ itself: a subset of $A \times A$.`,
+          t`If $n(A) = n$, then $A \times A$ has $n \times n = n^2$ pairs.`,
+          t`So there are $2^{n^2}$ relations on $A$.`,
+        ],
+      },
+      {
+        title: "Empty and universal relations",
+        points: [
+          t`Recall: the empty set $\phi$ is a subset of every set, so $\phi \subseteq A \times B$.`,
+          t`So $\phi$ is a relation, the **empty (void) relation**: it relates nothing to anything.`,
+          t`$A \times B$ is a subset of itself, so it is a relation too: the **universal relation**.`,
+          t`The universal relation relates every element of $A$ to every element of $B$.`,
+          t`Both are counted in $2^{mn}$: leave neither of them out.`,
+        ],
+      },
+      {
+        title: "Relations containing given pairs",
+        points: [
+          t`Say a relation must **contain** $k$ given pairs: every one of them must be in it.`,
+          t`Those $k$ pairs have no choice: they are fixed in.`,
+          t`The other $mn - k$ pairs are still free, each one in or out.`,
+          t`So $2^{mn - k}$ relations contain the $k$ given pairs.`,
+          t`They run from the $k$ pairs alone up to the whole of $A \times B$.`,
+          t`Each fixed pair halves the count: $2^{mn}$, then $2^{mn - 1}$, and so on.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Let $A = \{p, q, r\}$ and $B = \{1, 2, 3, 4\}$. How many relations from $A$ to $B$ are there, and how many of them contain both $(p, 1)$ and $(q, 2)$?`,
       steps: [

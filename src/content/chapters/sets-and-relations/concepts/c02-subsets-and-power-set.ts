@@ -10,24 +10,84 @@ export const c02: Concept = {
     reveal: t`Go through the toppings one at a time: each is in or out, $2$ choices each. So there are $2^6 = 64$ pizzas. That count includes the plain pizza (no toppings, the empty set $\phi$) and the one with everything (the whole set). Each pizza is a **subset** of the $6$ toppings.`,
   },
   explanation: {
-    intuition: t`To build a subset of $A$, go through its elements and decide for each one: in or out. With $n$ elements that is $2 \times 2 \times \dots \times 2 = 2^n$ subsets. Saying out every time gives $\phi$; saying in every time gives $A$ itself, so both are always subsets. A proper subset is any subset except $A$ itself.`,
-    formal: t`**Subset.** $B \subseteq A$ when every element of $B$ is an element of $A$. For every set $A$: $\phi \subseteq A$ and $A \subseteq A$. $B$ is a **proper subset** of $A$ when $B \subseteq A$ and $B \neq A$.
-
-**Element or subset?** $x \in A$ says $x$ is listed in $A$; $B \subseteq A$ compares two sets. For $A = \{1, \{2\}\}$: $1 \in A$ and $\{1\} \subseteq A$; $\{2\} \in A$, but $\{2\} \not\subseteq A$, since $2 \notin A$. And $\phi \subseteq A$ always, but $\phi \in A$ only when $\phi$ is listed in $A$.
-
-**Power set.** $P(A)$ is the set of all subsets of $A$. If $n(A) = n$:
-$$n(P(A)) = 2^n, \qquad \text{proper subsets: } 2^n - 1, \qquad \text{non-empty proper subsets: } 2^n - 2.$$
-
-**Power set of a power set.** $P(A)$ is itself a set, with $2^n$ elements, so apply the rule to that number: $n(P(P(A))) = 2^{2^n}$, not $(2^n)^2$. For the empty set, $n(\phi) = 0$ and $P(\phi) = \{\phi\}$, which has one element.`,
+    intuition: [
+      t`A **subset** of a set $A$ is a set made only of elements of $A$.`,
+      t`To build one, go through the elements of $A$ and decide for each one: in or out.`,
+      t`With $n$ elements, that makes $2 \times 2 \times \dots \times 2 = 2^n$ subsets.`,
+      t`Saying out every time gives the **empty set** $\phi$, the set with no elements.`,
+      t`Saying in every time gives $A$ itself, so $\phi$ and $A$ are always subsets of $A$.`,
+      t`A **proper subset** of $A$ is any subset except $A$ itself.`,
+    ],
+    formal: [
+      {
+        title: "Subset",
+        points: [
+          t`$B \subseteq A$, read "$B$ is a subset of $A$", means every element of $B$ is also an element of $A$.`,
+          t`For example, $\{1, 2\} \subseteq \{1, 2, 3, 4\}$: both $1$ and $2$ are elements of the bigger set.`,
+          t`$\phi \subseteq A$ for every set $A$: $\phi$ has no element that could be missing from $A$.`,
+          t`$A \subseteq A$ for every set $A$ too: each element of $A$ is in $A$.`,
+          t`$B$ is a proper subset of $A$ when $B \subseteq A$ and $B \neq A$.`,
+          t`So $\{1, 2\}$ is a proper subset of $\{1, 2, 3, 4\}$, but no set is a proper subset of itself.`,
+        ],
+        figure: {
+          alt: "A large oval A holds the elements 1, 2, 3 and 4. A smaller circle B inside it holds 1 and 2, so every element of B is in A. The elements 3 and 4 are in A but outside B, so B is not equal to A: B is a proper subset of A.",
+          axes: "none",
+          view: { x: [0.4, 9.6], y: [-0.9, 5.9] },
+          elements: [
+            { kind: "ellipse", centre: [5, 3], rx: 4.2, ry: 2.6, tone: "muted", step: 1 },
+            { kind: "label", at: [2.03, 4.84], label: "A", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "circle", centre: [3.6, 3], r: 1.5, step: 1 },
+            { kind: "label", at: [2.54, 4.06], label: "B", labelAt: "nw", step: 1 },
+            { kind: "point", at: [3.2, 3.4], label: "1", labelAt: "ne", step: 2 },
+            { kind: "point", at: [4, 2.5], label: "2", labelAt: "ne", step: 2 },
+            { kind: "point", at: [6.4, 3.6], label: "3", labelAt: "ne", tone: "muted", step: 2 },
+            { kind: "point", at: [7.4, 2.5], label: "4", labelAt: "ne", tone: "muted", step: 2 },
+            { kind: "label", at: [5, 0.2], label: "3, 4 ∉ B, so B ≠ A", labelAt: "s", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Element or subset?",
+        points: [
+          t`Recall: $x \in A$, read "$x$ belongs to $A$", says $x$ is one of the elements listed in $A$.`,
+          t`$B \subseteq A$ compares two sets: every element of $B$ must belong to $A$.`,
+          t`Take $A = \{1, \{2\}\}$: its two elements are the number $1$ and the set $\{2\}$.`,
+          t`So $1 \in A$, and $\{1\} \subseteq A$, since its one element, $1$, belongs to $A$.`,
+          t`Also $\{2\} \in A$, but $\{2\} \not\subseteq A$ (not a subset), since $2 \notin A$: the number $2$ is not listed in $A$.`,
+          t`$\phi \subseteq A$ always, but $\phi \in A$ only when $\phi$ is listed in $A$.`,
+        ],
+      },
+      {
+        title: "The power set",
+        points: [
+          t`Recall: $n(A)$ is the number of distinct elements of $A$.`,
+          t`The **power set** $P(A)$ is the set of all subsets of $A$.`,
+          t`Its elements are sets: for $A = \{1, 2\}$ it holds $\{1\}$, not the number $1$.`,
+          t`If $n(A) = n$, then $n(P(A)) = 2^n$: each element is in or out.`,
+          t`Proper subsets leave out $A$ itself, so there are $2^n - 1$ of them.`,
+          t`Non-empty proper subsets leave out $\phi$ as well, so there are $2^n - 2$.`,
+        ],
+      },
+      {
+        title: "Power set of a power set",
+        points: [
+          t`$P(A)$ is itself a set, with $2^n$ elements.`,
+          t`So apply the rule to that number: $n(P(P(A))) = 2^{2^n}$.`,
+          t`It is not $(2^n)^2$: each $P$ puts the previous count in the exponent.`,
+          t`The empty set has no elements, so $n(\phi) = 0$, and its only subset is $\phi$ itself.`,
+          t`So $P(\phi) = \{\phi\}$, a set with one element: $n(P(\phi)) = 2^0 = 1$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`$A = \{p, q\}$. Write $P(A)$. Then find the number of proper subsets of $A$, the number of non-empty proper subsets, and $n(P(P(A)))$.`,
       steps: [
-        t`Each of $p$, $q$ is in or out: $P(A) = \{\phi, \{p\}, \{q\}, \{p, q\}\}$, so $n(P(A)) = 2^2 = 4$. Both $\phi$ (both out) and $A$ (both in) are on the list.`,
+        t`Each of $p$, $q$ is in or out: $P(A) = \{\phi, \{p\},$ $\{q\}, \{p, q\}\}$, so $n(P(A)) = 2^2 = 4$. Both $\phi$ (both out) and $A$ (both in) are on the list.`,
         t`Proper subsets: leave out $A$ itself, keep $\phi$. That leaves $\phi$, $\{p\}$, $\{q\}$: $2^2 - 1 = 3$.`,
         t`Non-empty proper subsets: leave out $\phi$ as well. That leaves $\{p\}$, $\{q\}$: $2^2 - 2 = 2$.`,
         t`$P(A)$ is a set with $4$ elements, so $n(P(P(A))) = 2^4 = 16$.`,
       ],
-      answer: t`$P(A) = \{\phi, \{p\}, \{q\}, \{p, q\}\}$; $A$ has $3$ proper subsets and $2$ non-empty proper subsets; $n(P(P(A))) = 16$.`,
+      answer: t`$P(A) = \{\phi, \{p\},$ $\{q\}, \{p, q\}\}$; $A$ has $3$ proper subsets and $2$ non-empty proper subsets; $n(P(P(A))) = 16$.`,
     },
     visualSpec: t`Tick boxes beside each element of $A$ switch it in or out of a subset; the subset and its place in $P(A)$ light up, with $\phi$ (all off) and $A$ (all on) marked, and the count $2^n$ updates as elements are added.`,
   },

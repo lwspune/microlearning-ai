@@ -1,6 +1,48 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The house three-set Venn diagram: circles of radius 2.2 inside a 10 by 7 frame, the universal set. */
+const R = 2.2;
+const CENTRES: [Pt, Pt, Pt] = [[3.9, 4.3], [6.1, 4.3], [5, 2.5]];
+const FRAME: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+
+/** A shaded cell: inside (true) or outside (false) each of the three circles, or either (null). */
+const cell = (ins: [boolean | null, boolean | null, boolean | null], step?: number, tone?: FigureElement["tone"]): FigureElement => ({
+  kind: "region",
+  within: [
+    ...ins.flatMap((v, i): Shape[] =>
+      v === null ? [] : [v ? { kind: "disc", centre: CENTRES[i], r: R } : { kind: "outsideDisc", centre: CENTRES[i], r: R }],
+    ),
+    ...FRAME,
+  ],
+  step,
+  tone,
+});
+
+/** Where each cell's count sits: only A, only B, only C, the three 'two sets only' cells, the centre, none. */
+const AT: Record<"a" | "b" | "c" | "ab" | "bc" | "ca" | "abc" | "none", Pt> = {
+  a: [2.9, 5], b: [7.1, 5], c: [5, 1.2], ab: [5, 5.2], bc: [6.1, 2.9], ca: [3.9, 2.9], abc: [5, 3.8], none: [0.9, 0.8],
+};
+
+/** The frame, the three circles and their names; always shown. */
+const venn = (names: [string, string, string]): FigureElement[] => [
+  { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+  { kind: "circle", centre: CENTRES[0], r: R, tone: "muted" },
+  { kind: "label", at: [2.34, 5.86], label: names[0], labelAt: "nw" },
+  { kind: "circle", centre: CENTRES[1], r: R, tone: "muted" },
+  { kind: "label", at: [7.66, 5.86], label: names[1], labelAt: "ne" },
+  { kind: "circle", centre: CENTRES[2], r: R, tone: "muted" },
+  { kind: "label", at: [7.2, 1.29], label: names[2], labelAt: "e" },
+  { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+];
+
+const VIEW: Figure["view"] = { x: [-0.3, 10.3], y: [-0.3, 7.3] };
 
 export const c07: Concept = {
   id: "C07",
@@ -10,26 +52,131 @@ export const c07: Concept = {
     reveal: t`No. A student in all three clubs is added $3$ times in $36$ and taken away $3$ times in $15$, so is not counted at all. Add those $2$ back: $36 - 15 + 2 = 23$ students.`,
   },
   explanation: {
-    intuition: t`In $n(A) + n(B) + n(C)$, an element in two of the sets is counted twice and an element in all three is counted three times. Subtracting the three pair counts fixes the doubles, but it takes the centre away three times, so the centre is now counted zero times. Add $n(A \cap B \cap C)$ back once. On a Venn diagram, three sets cut $U$ into eight cells. Fill them from the centre out: the centre, then the three 'two sets only' cells, then the three 'one set only' cells, then the outside.`,
-    formal: t`**Inclusion–exclusion.** For finite sets $A$, $B$, $C$:
-$$n(A \cup B \cup C) = n(A) + n(B) + n(C) - n(A \cap B) - n(B \cap C) - n(C \cap A) + n(A \cap B \cap C)$$
-Add the singles, subtract the pairs, add the triple.
-
-**Fill from the centre out.**
-- Centre: $n(A \cap B \cap C)$.
-- $A$ and $B$ only: $n(A \cap B) - n(A \cap B \cap C)$; the same for the other two pairs.
-- Only $A$: $n(A)$ minus the three other cells inside $A$.
-- None: $n(U) - n(A \cup B \cup C)$.
-
-**Exactly and at least.** Exactly one: the three 'only' cells. Exactly two: the three 'two sets only' cells. At least two: exactly two, plus the centre. At least one: $n(A \cup B \cup C)$.
-
-**Counting with repeats.** $n(A) + n(B) + n(C)$ counts each element once for every set it is in:
-$$n(A) + n(B) + n(C) = (\text{exactly one}) + 2\,(\text{exactly two}) + 3\,(\text{all three})$$`,
+    intuition: [
+      t`Three circles $A$, $B$, $C$, here the Drama, Music and Art clubs, cut $U$ into eight **cells**: separate regions.`,
+      t`Adding the sizes, $n(A) + n(B) + n(C)$, counts a student in two clubs twice, and one in all three clubs three times.`,
+      t`Subtracting the three pair counts, such as $n(A \cap B)$, fixes the students counted twice.`,
+      t`But the **centre**, the cell inside all three circles, is taken away three times, so it is now not counted.`,
+      t`So add $n(A \cap B \cap C)$, the centre, back once.`,
+      t`Then fill the cells from the centre out: centre, 'two sets only', 'one set only', then outside.`,
+    ],
+    formal: [
+      {
+        title: "Inclusion–exclusion for three sets",
+        points: [
+          t`For finite sets $A$, $B$, $C$, **inclusion–exclusion** finds $n(A \cup B \cup C)$ by adding, taking away, then adding back.`,
+          t`Add the **singles**, one count for each set: $n(A) + n(B) + n(C)$.`,
+          t`Subtract the **pairs**, the three two-set overlaps: $n(A \cap B)$, $n(B \cap C)$ and $n(C \cap A)$.`,
+          t`Add the **triple**, the overlap of all three: $n(A \cap B \cap C)$.`,
+          t`So $n(A \cup B \cup C)$ equals $n(A) + n(B) + n(C)$ $- n(A \cap B) - n(B \cap C)$ $- n(C \cap A) + n(A \cap B \cap C)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U. The three discs are shaded, so the two-set overlaps are shaded twice and the centre three times. The three two-set overlaps are then shaded in a second colour, marked − pairs, which covers the centre three times too. Last, the centre is shaded in a third colour, marked + triple; the first shading is marked + singles.",
+          axes: "none",
+          view: VIEW,
+          elements: [
+            cell([true, null, null], 2),
+            cell([null, true, null], 2),
+            cell([null, null, true], 2),
+            cell([true, true, null], 3, "bad"),
+            cell([null, true, true], 3, "bad"),
+            cell([true, null, true], 3, "bad"),
+            cell([true, true, true], 4, "good"),
+            ...venn(["A", "B", "C"]),
+            { kind: "label", at: [1.2, 1.3], label: "+ singles", labelAt: "n", step: 2 },
+            { kind: "label", at: [1.2, 0.8], label: "− pairs", labelAt: "n", step: 3, tone: "bad" },
+            { kind: "label", at: [1.2, 0.3], label: "+ triple", labelAt: "n", step: 4, tone: "good" },
+          ],
+        },
+      },
+      {
+        title: "Fill from the centre out",
+        points: [
+          t`Fill the centre first: it holds $n(A \cap B \cap C)$.`,
+          t`$A$ and $B$ only is $n(A \cap B) - n(A \cap B \cap C)$, since $n(A \cap B)$ includes the centre.`,
+          t`The other two 'two sets only' cells work the same way.`,
+          t`Only $A$ is $n(A)$ minus the three other cells inside $A$.`,
+          t`Only $B$ and only $C$ work the same way.`,
+          t`None, the cell outside all three circles, is $n(U) - n(A \cup B \cup C)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U, shaded one cell at a time: the centre, then the cell in A and B only, then the other two 'two sets only' cells, then only A, then only B and only C, then the region outside all three circles.",
+          axes: "none",
+          view: VIEW,
+          elements: [
+            cell([true, true, true], 1, "good"),
+            cell([true, true, false], 2, "good"),
+            cell([false, true, true], 3, "good"),
+            cell([true, false, true], 3, "good"),
+            cell([true, false, false], 4, "good"),
+            cell([false, true, false], 5, "good"),
+            cell([false, false, true], 5, "good"),
+            cell([false, false, false], 6),
+            ...venn(["A", "B", "C"]),
+            { kind: "label", at: AT.none, label: "none", labelAt: "n", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Exactly and at least",
+        points: [
+          t`**Exactly one** means in one set and no other: the three 'only' cells.`,
+          t`**Exactly two** means in two sets but not the third: the three 'two sets only' cells.`,
+          t`**At least two** means two or more: exactly two, plus the centre.`,
+          t`**At least one** means one or more: all seven cells, $n(A \cup B \cup C)$.`,
+          t`'At least' takes in the higher counts too; 'exactly' takes only its own cells.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U. The three 'only' cells are shaded in one colour (exactly one). The three 'two sets only' cells are shaded in another (exactly two), then the centre joins them (at least two). Together the seven shaded cells are at least one, A ∪ B ∪ C.",
+          axes: "none",
+          view: VIEW,
+          elements: [
+            cell([true, false, false], 1, "good"),
+            cell([false, true, false], 1, "good"),
+            cell([false, false, true], 1, "good"),
+            cell([true, true, false], 2),
+            cell([false, true, true], 2),
+            cell([true, false, true], 2),
+            cell([true, true, true], 3),
+            ...venn(["A", "B", "C"]),
+            { kind: "label", at: [1.8, 0.4], label: "at least one: A ∪ B ∪ C", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Counting with repeats",
+        points: [
+          t`$n(A) + n(B) + n(C)$ counts each element once for every set it is in.`,
+          t`An element in exactly one set is counted once.`,
+          t`An element in exactly two sets is counted twice.`,
+          t`An element in all three sets is counted three times.`,
+          t`So $n(A) + n(B) + n(C)$ equals $(\text{exactly one})$ $+ 2\,(\text{exactly two})$ $+ 3\,(\text{all three})$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U with the three discs shaded, so each cell is as dark as the number of sets it is in. The 'only' cells are marked ×1, the 'two sets only' cells ×2 and the centre ×3.",
+          axes: "none",
+          view: VIEW,
+          elements: [
+            cell([true, null, null], 1),
+            cell([null, true, null], 1),
+            cell([null, null, true], 1),
+            ...venn(["A", "B", "C"]),
+            { kind: "label", at: AT.a, label: "×1", labelAt: "n", step: 2 },
+            { kind: "label", at: AT.b, label: "×1", labelAt: "n", step: 2 },
+            { kind: "label", at: AT.c, label: "×1", labelAt: "n", step: 2 },
+            { kind: "label", at: AT.ab, label: "×2", labelAt: "n", step: 3 },
+            { kind: "label", at: AT.bc, label: "×2", labelAt: "n", step: 3 },
+            { kind: "label", at: AT.ca, label: "×2", labelAt: "n", step: 3 },
+            { kind: "label", at: AT.abc, label: "×3", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Of $60$ students, $26$ like cricket, $24$ like football and $19$ like hockey; $10$ like cricket and football, $9$ like football and hockey, $7$ like hockey and cricket, and $13$ like none of the three. How many like all three games, and how many like exactly two?`,
       steps: [
         t`At least one game: $n(C \cup F \cup H) = 60 - 13 = 47$.`,
-        t`Inclusion–exclusion: $47 = 26 + 24 + 19 - 10 - 9 - 7 + n(C \cap F \cap H) = 43 + n(C \cap F \cap H)$, so the centre is $4$.`,
+        t`Inclusion–exclusion: $47 = 26 + 24 + 19 - 10 - 9 - 7$ $+ n(C \cap F \cap H)$ $= 43 + n(C \cap F \cap H)$, so the centre is $4$.`,
         t`Two games only: $10 - 4 = 6$, $9 - 4 = 5$ and $7 - 4 = 3$. Exactly two: $6 + 5 + 3 = 14$.`,
         t`Check, one game only: cricket $26 - 6 - 3 - 4 = 13$, football $24 - 6 - 5 - 4 = 9$, hockey $19 - 3 - 5 - 4 = 7$; and $13 + 9 + 7 + 14 + 4 + 13 = 60$.`,
       ],
@@ -63,33 +210,26 @@ $$n(A) + n(B) + n(C) = (\text{exactly one}) + 2\,(\text{exactly two}) + 3\,(\tex
       },
     },
     figure: {
-      alt: "A Venn diagram of the Drama, Music and Art clubs, filled from the centre out: 2 students in all three clubs, 3 in each pair of clubs only, and 4 in each club only. The three circles together, shaded, hold 23 students.",
+      alt: "A Venn diagram of the Drama, Music and Art clubs inside U. The three 'two clubs only' cells are shaded first. Then the centre, in all three clubs, is shaded as lost, with its 2 students, and shaded again as added back. Filling from the centre out gives 3 in each 'two clubs only' cell and 4 in each 'one club only' cell, 23 students in all.",
       axes: "none",
-      view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+      view: VIEW,
       elements: [
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1, tone: "bad" },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [6.1, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 4, tone: "good" },
-        { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
-        { kind: "circle", centre: [3.9, 4.3], r: 2.2, tone: "muted" },
-        { kind: "label", at: [2.34, 5.86], label: "Drama", labelAt: "nw" },
-        { kind: "circle", centre: [6.1, 4.3], r: 2.2, tone: "muted" },
-        { kind: "label", at: [7.66, 5.86], label: "Music", labelAt: "ne" },
-        { kind: "circle", centre: [5, 2.5], r: 2.2, tone: "muted" },
-        { kind: "label", at: [7.2, 1.29], label: "Art", labelAt: "e" },
-        { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
-        { kind: "label", at: [5, 3.8], label: "2", labelAt: "n", step: 1, tone: "bad" },
-        { kind: "label", at: [5, 5.2], label: "3", labelAt: "n", step: 2 },
-        { kind: "label", at: [6.1, 2.9], label: "3", labelAt: "n", step: 2 },
-        { kind: "label", at: [3.9, 2.9], label: "3", labelAt: "n", step: 2 },
-        { kind: "label", at: [2.9, 5], label: "4", labelAt: "n", step: 3 },
-        { kind: "label", at: [7.1, 5], label: "4", labelAt: "n", step: 3 },
-        { kind: "label", at: [5, 1.2], label: "4", labelAt: "n", step: 3 },
+        cell([true, true, false], 3, "good"),
+        cell([false, true, true], 3, "good"),
+        cell([true, false, true], 3, "good"),
+        cell([true, true, true], 4, "bad"),
+        cell([true, true, true], 5, "good"),
+        cell([true, false, false], 6, "good"),
+        cell([false, true, false], 6, "good"),
+        cell([false, false, true], 6, "good"),
+        ...venn(["Drama", "Music", "Art"]),
+        { kind: "label", at: AT.abc, label: "2", labelAt: "n", step: 4, tone: "bad" },
+        { kind: "label", at: AT.ab, label: "3", labelAt: "n", step: 6 },
+        { kind: "label", at: AT.bc, label: "3", labelAt: "n", step: 6 },
+        { kind: "label", at: AT.ca, label: "3", labelAt: "n", step: 6 },
+        { kind: "label", at: AT.a, label: "4", labelAt: "n", step: 6 },
+        { kind: "label", at: AT.b, label: "4", labelAt: "n", step: 6 },
+        { kind: "label", at: AT.c, label: "4", labelAt: "n", step: 6 },
       ],
     },
     visualSpec: t`Drag the eight cell counts of a three-set Venn diagram; a tally beside it shows how many times each cell is counted in $n(A) + n(B) + n(C)$, after subtracting the pairs, and after adding back the triple.`,

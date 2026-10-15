@@ -1,6 +1,50 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The house Venn diagram (the worked and solution figures spell out the same shapes): U is the rectangle [0, 10] × [0, 7]. */
+const view = { x: [-0.3, 10.3] as [number, number], y: [-0.3, 7.3] as [number, number] };
+const cA: Pt = [3.9, 3.5];
+const cB: Pt = [6.1, 3.5];
+const r = 2.4;
+const frame: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+
+/** Where each cell's label sits. */
+const at = { onlyA: [2.6, 3.5] as Pt, both: [5, 3.5] as Pt, onlyB: [7.4, 3.5] as Pt, neither: [0.9, 0.8] as Pt };
+
+type Cell = keyof typeof at;
+
+/** One of the four cells, shaded. */
+function cell(c: Cell, more: { step?: number; tone?: FigureElement["tone"] } = {}): FigureElement {
+  const inA = c === "onlyA" || c === "both";
+  const inB = c === "onlyB" || c === "both";
+  return {
+    kind: "region",
+    within: [
+      { kind: inA ? "disc" : "outsideDisc", centre: cA, r },
+      { kind: inB ? "disc" : "outsideDisc", centre: cB, r },
+      ...frame,
+    ],
+    ...more,
+  };
+}
+
+/** The rectangle U, the two circles and their names. */
+function venn(a: string, b: string): FigureElement[] {
+  return [
+    { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+    { kind: "circle", centre: cA, r, tone: "muted" },
+    { kind: "label", at: [2.2, 5.2], label: a, labelAt: "nw" },
+    { kind: "circle", centre: cB, r, tone: "muted" },
+    { kind: "label", at: [7.8, 5.2], label: b, labelAt: "ne" },
+    { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+  ];
+}
 
 export const c06: Concept = {
   id: "C06",
@@ -10,26 +54,141 @@ export const c06: Concept = {
     reveal: t`The $7$ who play both were counted in the $18$ and again in the $15$. Count them once: $18 + 15 - 7 = 26$ play at least one game, so $30 - 26 = 4$ play neither.`,
   },
   explanation: {
-    intuition: t`$n(A) + n(B)$ counts every element of $A \cap B$ twice: once in $A$ and once in $B$. Subtract $n(A \cap B)$ once and each element is counted exactly once. On a Venn diagram, two sets cut $U$ into four cells: only $A$, both, only $B$ and neither. Fill the overlap first, then the rest of each circle, then the outside; the four cells add up to $n(U)$.`,
-    formal: t`**The addition rule.** For finite sets $A$ and $B$:
-$$n(A \cup B) = n(A) + n(B) - n(A \cap B)$$
-If $A$ and $B$ are disjoint, $n(A \cap B) = 0$ and $n(A \cup B) = n(A) + n(B)$.
-
-**The four cells.**
-- Only $A$: $n(A - B) = n(A \cap B') = n(A) - n(A \cap B)$
-- Only $B$: $n(B - A) = n(A' \cap B) = n(B) - n(A \cap B)$
-- Neither: $n(A' \cap B') = n(U) - n(A \cup B)$
-- Exactly one: only $A$ + only $B$ $= n(A) + n(B) - 2\,n(A \cap B)$
-
-**Words to sets.** "$A$ or $B$", "at least one": $A \cup B$. "Both": $A \cap B$. "Only $A$", "$A$ but not $B$": $A - B$. "Neither": $A' \cap B'$.
-
-**Percentages.** Use the same rule on percentages, then convert: $x\%$ of $N$ is $\dfrac{x}{100} \times N$.`,
+    intuition: [
+      t`Recall: a Venn diagram draws each set as a circle inside a rectangle, the universal set $U$.`,
+      t`In a class of $30$, the Cricket circle holds the $18$ who play cricket.`,
+      t`The Football circle holds the $15$ who play football.`,
+      t`The $7$ who play both sit in the **overlap**, the part inside both circles.`,
+      t`So $18 + 15 = 33$ counts those $7$ twice, once in each circle.`,
+      t`The circles cut $U$ into four **cells**, or regions: cricket only $11$, both $7$, football only $8$, neither $4$.`,
+    ],
+    formal: [
+      {
+        title: "The addition rule",
+        points: [
+          t`Recall: $n(A)$ is the number of elements of $A$, and it includes the overlap with $B$.`,
+          t`$n(B)$ includes that overlap too.`,
+          t`So $n(A) + n(B)$ counts each element of $A \cap B$ twice.`,
+          t`Subtracting $n(A \cap B)$ once counts every element exactly once.`,
+          t`So for **finite** sets, whose elements can be counted to an end, $n(A \cup B)$ equals $n(A) + n(B) - n(A \cap B)$.`,
+          t`Recall: **disjoint** sets share no element; then $n(A \cap B) = 0$ and $n(A \cup B) = n(A) + n(B)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U. Circle A is shaded, then circle B, so the overlap A ∩ B is shaded twice: n(A) + n(B) counts it twice.",
+          axes: "none",
+          view,
+          elements: [
+            cell("onlyA", { step: 1 }),
+            cell("both", { step: 1 }),
+            cell("onlyB", { step: 2 }),
+            cell("both", { step: 2 }),
+            ...venn("A", "B"),
+            { kind: "label", at: at.both, label: "A ∩ B", labelAt: "n", tone: "bad", step: 3 },
+            { kind: "label", at: [5, 0.1], label: "counted twice", labelAt: "n", tone: "bad", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "The four cells",
+        points: [
+          t`Both: the overlap $A \cap B$ has $n(A \cap B)$ elements.`,
+          t`Only $A$ is $A - B$, also written $A \cap B'$; recall, $B'$ is everything in $U$ outside $B$.`,
+          t`It has $n(A) - n(A \cap B)$ elements: take the overlap out of $A$.`,
+          t`Only $B$ is $B - A$, or $A' \cap B$, with $n(B) - n(A \cap B)$ elements.`,
+          t`Neither is $A' \cap B'$, outside both circles, with $n(U) - n(A \cup B)$ elements.`,
+          t`Fill the overlap first, then the rest of each circle, then the outside: the four counts add up to $n(U)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U, its four cells named in turn: the overlap A ∩ B, A − B (A only), B − A (B only) and, outside both circles, A′ ∩ B′ (neither).",
+          axes: "none",
+          view,
+          elements: [
+            ...venn("A", "B"),
+            { kind: "label", at: at.both, label: "A ∩ B", labelAt: "n", step: 1 },
+            { kind: "label", at: at.onlyA, label: "A − B", labelAt: "n", step: 2 },
+            { kind: "label", at: at.onlyB, label: "B − A", labelAt: "n", step: 4 },
+            { kind: "label", at: at.neither, label: "A′ ∩ B′", labelAt: "n", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Words to sets",
+        points: [
+          t`"$A$ or $B$" and "at least one" both mean $A \cup B$, the overlap included.`,
+          t`"Both" means $A \cap B$, the overlap.`,
+          t`"Only $A$" and "$A$ but not $B$" mean $A - B$.`,
+          t`"Only $B$" and "$B$ but not $A$" mean $B - A$.`,
+          t`"Neither" means $A' \cap B'$, outside both circles.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U. The two circles together are shaded for 'A or B', 'at least one'. Then the cells are named in words: both in the overlap, only A, only B, and neither outside both circles.",
+          axes: "none",
+          view,
+          elements: [
+            cell("onlyA", { step: 1 }),
+            cell("both", { step: 1 }),
+            cell("onlyB", { step: 1 }),
+            ...venn("A", "B"),
+            { kind: "label", at: at.both, label: "both", labelAt: "n", step: 2 },
+            { kind: "label", at: at.onlyA, label: "only A", labelAt: "n", step: 3 },
+            { kind: "label", at: at.onlyB, label: "only B", labelAt: "n", step: 4 },
+            { kind: "label", at: at.neither, label: "neither", labelAt: "n", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Exactly one",
+        points: [
+          t`"Exactly one", or "only one", means only $A$ together with only $B$.`,
+          t`It leaves out the overlap, which "$A$ or $B$" keeps.`,
+          t`Only $A$ has $n(A) - n(A \cap B)$ elements, and only $B$ has $n(B) - n(A \cap B)$.`,
+          t`Add them: exactly one has $n(A) + n(B) - 2\,n(A \cap B)$ elements.`,
+          t`The overlap is taken away twice: once from $n(A)$ and once from $n(B)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U. The A-only and B-only cells are shaded; the overlap is left out.",
+          axes: "none",
+          view,
+          elements: [
+            cell("onlyA", { step: 1, tone: "good" }),
+            cell("onlyB", { step: 1, tone: "good" }),
+            ...venn("A", "B"),
+            { kind: "label", at: at.both, label: "left out", labelAt: "n", tone: "bad", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Percentages",
+        points: [
+          t`A **percentage** is a number out of every $100$: $40\%$ of a group is $40$ in every $100$.`,
+          t`The addition rule works on percentages exactly as on counts.`,
+          t`Say $40\%$ of $200$ people read paper $A$, $30\%$ read paper $B$ and $10\%$ read both.`,
+          t`Then $40\% + 30\% - 10\% = 60\%$ read at least one paper.`,
+          t`$x\%$ of $N$ is $\frac{x}{100} \times N$, so that is $\frac{60}{100} \times 200 = 120$ people.`,
+          t`The other $40\%$, which is $80$ people, read neither.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of papers A and B among 200 people. The overlap holds 10%. The two circles together, shaded, hold 60%, which is 120 people; outside both circles is the other 40%.",
+          axes: "none",
+          view,
+          elements: [
+            cell("onlyA", { step: 4, tone: "good" }),
+            cell("both", { step: 4, tone: "good" }),
+            cell("onlyB", { step: 4, tone: "good" }),
+            ...venn("A", "B"),
+            { kind: "label", at: at.both, label: "10%", labelAt: "n", step: 3 },
+            { kind: "label", at: [5, 6.1], label: "60% of 200 = 120", labelAt: "n", tone: "good", step: 5 },
+            { kind: "label", at: at.neither, label: "40%", labelAt: "n", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`$A$ and $B$ are subsets of the universal set $X$, with $n(X) = 50$, $n(A) = 35$, $n(B) = 22$ and $n(A' \cap B') = 3$. Find $n(A \cap B)$ and $n(A' \cap B)$.`,
       steps: [
         t`$A' \cap B'$ is the region outside both circles: $3$ elements. So $n(A \cup B) = 50 - 3 = 47$.`,
-        t`$n(A \cap B) = n(A) + n(B) - n(A \cup B) = 35 + 22 - 47 = 10$.`,
-        t`$A' \cap B$ is the part of $B$ outside $A$: $n(A' \cap B) = n(B) - n(A \cap B) = 22 - 10 = 12$.`,
+        t`$n(A \cap B)$ equals $n(A) + n(B) - n(A \cup B)$, which is $35 + 22 - 47 = 10$.`,
+        t`$A' \cap B$ is the part of $B$ outside $A$: $n(A' \cap B) = n(B) - n(A \cap B)$ $= 22 - 10 = 12$.`,
         t`Check: only $A$ is $35 - 10 = 25$, and $25 + 10 + 12 + 3 = 50 = n(X)$.`,
       ],
       answer: t`$n(A \cap B) = 10$ and $n(A' \cap B) = 12$.`,
@@ -56,23 +215,18 @@ If $A$ and $B$ are disjoint, $n(A \cap B) = 0$ and $n(A \cup B) = n(A) + n(B)$.
     figure: {
       alt: "A Venn diagram of 30 students: the Cricket circle and the Football circle overlap. Shading Cricket, then Football, covers the overlap twice, so 18 + 15 counts the 7 who play both twice. The cells read 11 cricket only, 7 both, 8 football only, and 4 neither.",
       axes: "none",
-      view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+      view,
       elements: [
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
-        { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [2.2, 5.2], label: "Cricket", labelAt: "nw" },
-        { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [7.8, 5.2], label: "Football", labelAt: "ne" },
-        { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
-        { kind: "label", at: [5, 3.5], label: "7", labelAt: "n", tone: "bad", step: 2 },
-        { kind: "label", at: [2.6, 3.5], label: "11", labelAt: "n", step: 3 },
-        { kind: "label", at: [7.4, 3.5], label: "8", labelAt: "n", step: 3 },
-        { kind: "label", at: [0.9, 0.8], label: "4", labelAt: "n", tone: "good", step: 4 },
-        { kind: "label", at: [5, 0.1], label: "counted twice", labelAt: "n", tone: "bad", step: 2 },
+        cell("onlyA", { step: 2 }),
+        cell("both", { step: 2 }),
+        cell("onlyB", { step: 3 }),
+        cell("both", { step: 3 }),
+        ...venn("Cricket", "Football"),
+        { kind: "label", at: at.both, label: "7", labelAt: "n", tone: "bad", step: 4 },
+        { kind: "label", at: [5, 0.1], label: "counted twice", labelAt: "n", tone: "bad", step: 5 },
+        { kind: "label", at: at.onlyA, label: "11", labelAt: "n", step: 6 },
+        { kind: "label", at: at.onlyB, label: "8", labelAt: "n", step: 6 },
+        { kind: "label", at: at.neither, label: "4", labelAt: "n", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag the sizes of $n(A)$, $n(B)$ and $n(A \cap B)$ inside a fixed $n(U)$; the four cells of the Venn diagram update, and $n(A) + n(B)$ is shown beside $n(A \cup B)$ with the overlap counted twice.`,

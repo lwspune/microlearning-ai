@@ -1,6 +1,54 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The Venn diagram of the lesson slides: two circles of radius 2.4 inside the rectangle U. */
+const LEFT: Pt = [3.9, 3.5];
+const RIGHT: Pt = [6.1, 3.5];
+const R = 2.4;
+const view = { x: [-0.3, 10.3] as [number, number], y: [-0.3, 7.9] as [number, number] };
+
+/** The inside of the rectangle U, (0, 0) to (10, 7). */
+const inU: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+
+/** One of the four cells: inside (true) or outside (false) the left and the right circle, shaded at `step`. */
+function cell(inLeft: boolean, inRight: boolean, step?: number, tone?: FigureElement["tone"]): FigureElement {
+  const side = (inside: boolean, centre: Pt): Shape => ({ kind: inside ? "disc" : "outsideDisc", centre, r: R });
+  return { kind: "region", within: [side(inLeft, LEFT), side(inRight, RIGHT), ...inU], ...(step ? { step } : {}), ...(tone ? { tone } : {}) };
+}
+
+/** The rectangle U and the two circles, named `left` and `right`; `uStep` delays the rectangle. */
+function venn(left: string, right: string, uStep?: number): FigureElement[] {
+  const at = uStep ? { step: uStep } : {};
+  return [
+    { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted", ...at },
+    { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n", ...at },
+    { kind: "circle", centre: LEFT, r: R, tone: "muted" },
+    { kind: "label", at: [2.2, 5.2], label: left, labelAt: "nw" },
+    { kind: "circle", centre: RIGHT, r: R, tone: "muted" },
+    { kind: "label", at: [7.8, 5.2], label: right, labelAt: "ne" },
+  ];
+}
+
+/** A label just above the rectangle, clear of its top edge. */
+const top = (label: string, step: number, tone?: FigureElement["tone"]): FigureElement => ({ kind: "label", at: [5, 7.05], label, labelAt: "n", step, ...(tone ? { tone } : {}) });
+
+/** The names of the two crescents, under their elements. */
+const leftName = (label: string, step: number, tone?: FigureElement["tone"]): FigureElement => ({ kind: "label", at: [2.4, 3.3], label, labelAt: "s", step, ...(tone ? { tone } : {}) });
+const rightName = (label: string, step: number, tone?: FigureElement["tone"]): FigureElement => ({ kind: "label", at: [7.6, 3.3], label, labelAt: "s", step, ...(tone ? { tone } : {}) });
+
+/** The elements of A = {1, 2, 3, 5, 8} and B = {2, 4, 8} in their cells. */
+const hookElements = (step?: number): FigureElement[] =>
+  [
+    { at: [2.6, 3.5] as Pt, label: "1, 3, 5" },
+    { at: [5, 3.5] as Pt, label: "2, 8" },
+    { at: [7.4, 3.5] as Pt, label: "4" },
+  ].map((e): FigureElement => ({ kind: "label", ...e, labelAt: "n", ...(step ? { step } : {}) }));
 
 export const c04: Concept = {
   id: "C04",
@@ -10,29 +58,143 @@ export const c04: Concept = {
     reveal: t`No. $A - B$ strikes $2$ and $8$ out of $A$ and leaves $\{1, 3, 5\}$. $B - A$ strikes them out of $B$ and leaves $\{4\}$. Order matters for a difference. The two leftovers together, $\{1, 3, 4, 5\}$, are the elements in exactly one set: $A \,\Delta\, B$.`,
   },
   explanation: {
-    intuition: t`$A - B$ is what is left of $A$ after you strike out every element it shares with $B$. Start from $A$, cross out the common elements, write down the survivors. The complement $A'$ is the same move against the whole universal set: start from $U$ and strike out $A$. On a Venn diagram, $A - B$ is the crescent of $A$ outside $B$, and $A'$ is everything in the rectangle outside circle $A$, including the part outside every circle.`,
-    formal: t`**Difference.** $A - B = \{x : x \in A \text{ and } x \notin B\}$. Only elements of $A$ can be in it. In general $A - B \ne B - A$.
-
-**Complement.** For a universal set $U$ (the book also calls it $X$): $A' = U - A = \{x \in U : x \notin A\}$. It includes the elements of $U$ that are in none of the given sets. Also $(A')' = A$, $U' = \varnothing$, $\varnothing' = U$.
-
-**The link.** $A - B = A \cap B'$: in $A$ and outside $B$.
-
-**Complement of a bracket.** Work out the bracket first, then take what is left of $U$: $(A \cap C)' = U - (A \cap C)$, $(B - C)' = U - (B - C)$.
-
-**Symmetric difference.** $A \,\Delta\, B = (A - B) \cup (B - A)$: the elements in exactly one of the two sets. Here order does not matter: $A \,\Delta\, B = B \,\Delta\, A$.`,
+    intuition: [
+      t`Recall: a **Venn diagram** draws each set as a circle; here $A = \{1, 2, 3, 5, 8\}$ and $B = \{2, 4, 8\}$.`,
+      t`To find $A - B$, read "$A$ minus $B$", strike out of $A$ the elements it shares with $B$: $2$ and $8$.`,
+      t`What is left is the **difference** $A - B = \{1, 3, 5\}$: the crescent of $A$ outside $B$.`,
+      t`$B - A$ starts from $B$ instead and leaves $\{4\}$: order matters here, unlike for $\cup$ and $\cap$.`,
+      t`Recall: the universal set $U$, drawn as the rectangle, holds every element under discussion.`,
+      t`The **complement** $A'$ is what is left of $U$ once you strike out $A$: everything outside circle $A$, even outside both circles.`,
+    ],
+    formal: [
+      {
+        title: "Difference of two sets",
+        points: [
+          t`$A - B$ is the set of the elements that are in $A$ and not in $B$.`,
+          t`In set-builder form, $A - B$ equals $\{x : x \in A \text{ and } x \notin B\}$.`,
+          t`Only elements of $A$ can be in it: nothing from $B$ gets in.`,
+          t`$B - A$ is the other crescent: the elements of $B$ that are not in $A$.`,
+          t`So in general $A - B \ne B - A$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two sets A and B inside the rectangle U. First the part of circle A outside circle B is shaded and named A − B. Then the part of circle B outside circle A is shaded in another colour and named B − A. A note says A − B ≠ B − A.",
+          axes: "none",
+          view,
+          elements: [
+            cell(true, false, 1),
+            cell(false, true, 4, "good"),
+            ...venn("A", "B"),
+            leftName("A − B", 1),
+            rightName("B − A", 4, "good"),
+            top("A − B ≠ B − A", 5),
+          ],
+        },
+      },
+      {
+        title: "Complement of a set",
+        points: [
+          t`Fix a universal set $U$, the rectangle; the book also calls it $X$.`,
+          t`The complement of $A$ is $A' = U - A$: the elements of $U$ that are not in $A$.`,
+          t`In set-builder form, $A' = \{x \in U : x \notin A\}$.`,
+          t`It includes the elements of $U$ that are in none of the given sets.`,
+          t`Taking the complement twice gives back the set: $(A')' = A$.`,
+          t`Also $U' = \varnothing$, the empty set, since nothing in $U$ is outside $U$; and $\varnothing' = U$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two sets A and B inside the rectangle U. Everything in U outside circle A is shaded and named A′ = U − A: the part of B outside A and the part of U outside both circles. That outside part is marked: in neither A nor B, and still in A′.",
+          axes: "none",
+          view,
+          elements: [
+            cell(false, true, 2, "good"),
+            cell(false, false, 2, "good"),
+            ...venn("A", "B"),
+            top("A′ = U − A", 2, "good"),
+            { kind: "label", at: [5, 0.15], label: "in neither A nor B", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Difference as an intersection",
+        points: [
+          t`$B'$ is everything in $U$ outside circle $B$.`,
+          t`Recall: $A \cap B'$ keeps the part of $B'$ that is also inside circle $A$.`,
+          t`That is exactly the crescent $A - B$: so $A - B = A \cap B'$.`,
+          t`In words: an element of $A - B$ is in $A$ and outside $B$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two sets A and B inside the rectangle U. First everything outside circle B is shaded lightly and named B′. Then the part of it inside circle A is shaded and named A ∩ B′: it is the crescent A − B. A note says A − B = A ∩ B′.",
+          axes: "none",
+          view,
+          elements: [
+            cell(true, false, 1, "muted"),
+            cell(false, false, 1, "muted"),
+            cell(true, false, 2),
+            ...venn("A", "B"),
+            { kind: "label", at: [0.9, 0.8], label: "B′", labelAt: "n", tone: "muted", step: 1 },
+            leftName("A ∩ B′", 2),
+            top("A − B = A ∩ B′", 3),
+          ],
+        },
+      },
+      {
+        title: "Complement of a bracket",
+        points: [
+          t`To find $(B - C)'$, work out the bracket first: $B - C$.`,
+          t`Then take what is left of $U$: $(B - C)' = U - (B - C)$.`,
+          t`An intersection works the same way: $(A \cap C)' = U - (A \cap C)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two sets B and C inside the rectangle U. First the bracket, B − C, the part of circle B outside circle C, is shaded. Then everything else in U is shaded in another colour and named (B − C)′ = U − (B − C): the overlap, the part of C outside B and the part outside both circles.",
+          axes: "none",
+          view,
+          elements: [
+            cell(true, false, 1),
+            cell(true, true, 2, "good"),
+            cell(false, true, 2, "good"),
+            cell(false, false, 2, "good"),
+            ...venn("B", "C"),
+            leftName("B − C", 1),
+            top("(B − C)′ = U − (B − C)", 2, "good"),
+          ],
+        },
+      },
+      {
+        title: "Symmetric difference",
+        points: [
+          t`The **symmetric difference** $A \,\Delta\, B$ holds the elements in exactly one of the two sets.`,
+          t`So $A \,\Delta\, B = (A - B) \cup (B - A)$: the two crescents together.`,
+          t`Here order does not matter: $A \,\Delta\, B = B \,\Delta\, A$.`,
+          t`For $A = \{1, 2, 3, 5, 8\}$ and $B = \{2, 4, 8\}$: $A \,\Delta\, B = \{1, 3, 4, 5\}$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of two sets A and B inside the rectangle U. Both crescents, the part of A outside B and the part of B outside A, are shaded; the overlap is not. They are named A − B and B − A. Then the elements appear: A only holds 1, 3, 5, the overlap holds 2, 8 and B only holds 4, so A Δ B = {1, 3, 4, 5}.",
+          axes: "none",
+          view,
+          elements: [
+            cell(true, false, 1),
+            cell(false, true, 1),
+            ...venn("A", "B"),
+            leftName("A − B", 2),
+            rightName("B − A", 2),
+            ...hookElements(4),
+            top("A Δ B = {1, 3, 4, 5}", 4),
+          ],
+        },
+      },
+    ],
     worked: {
-      prompt: t`Let $U = \{1, 2, 3, \ldots, 10\}$, $A = \{x / x \text{ is a prime number less than } 10\}$ and $B = \{1, 3, 5, 7, 9\}$. Find $A - B$ and $(A - B)'$, and check that $A - B = A \cap B'$.`,
+      prompt: t`Let $U = \{1, 2, 3, \ldots, 10\}$, $A = \{x / x \text{ is prime},\ x < 10\}$ and $B = \{1, 3, 5, 7, 9\}$. Find $A - B$ and $(A - B)'$, and check that $A - B = A \cap B'$.`,
       steps: [
         t`$A = \{2, 3, 5, 7\}$. Sort $U$ into the four cells: $A$ only $\{2\}$, both $\{3, 5, 7\}$, $B$ only $\{1, 9\}$, neither $\{4, 6, 8, 10\}$.`,
         t`$A - B$: strike $3, 5, 7$ out of $A$. $A - B = \{2\}$.`,
-        t`$(A - B)' = U - \{2\}$: every other element of $U$, including $4, 6, 8, 10$, which are in neither set. $(A - B)' = \{1, 3, 4, 5, 6, 7, 8, 9, 10\}$.`,
+        t`$(A - B)' = U - \{2\}$: every other element of $U$, including $4, 6, 8, 10$, which are in neither set. So $(A - B)'$ equals $\{1, 3, 4, 5, 6, 7, 8, 9, 10\}$.`,
         t`Check: $B' = \{2, 4, 6, 8, 10\}$, so $A \cap B' = \{2\} = A - B$.`,
       ],
-      answer: t`$A - B = \{2\}$ and $(A - B)' = \{1, 3, 4, 5, 6, 7, 8, 9, 10\}$.`,
+      answer: t`$A - B = \{2\}$ and $(A - B)'$ equals $\{1, 3, 4, 5, 6, 7, 8, 9, 10\}$.`,
       figure: {
         alt: "A Venn diagram of A (primes) and B (odd numbers) inside U = {1, ..., 10}. A only holds 2; the overlap holds 3, 5, 7; B only holds 1, 9; outside both are 4, 6, 8, 10. A − B, the part of A outside B, is shaded first: {2}. Then everything else in U is shaded: (A − B)′ = {1, 3, 4, 5, 6, 7, 8, 9, 10}, including the four numbers outside both circles.",
         axes: "none",
-        view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+        view: { x: [-0.3, 10.3], y: [-0.3, 7.9] },
         elements: [
           { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
           { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
@@ -44,7 +206,7 @@ export const c04: Concept = {
           { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
           { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
           { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
-          { kind: "label", at: [5, 6.45], label: "(A − B)′ = {1, 3, 4, 5, 6, 7, 8, 9, 10}", labelAt: "n", step: 3, tone: "good" },
+          { kind: "label", at: [5, 7.05], label: "(A − B)′ = {1, 3, 4, 5, 6, 7, 8, 9, 10}", labelAt: "n", step: 3, tone: "good" },
           { kind: "label", at: [2.6, 3.5], label: "2", labelAt: "n", step: 1 },
           { kind: "label", at: [5, 3.5], label: "3, 5, 7", labelAt: "n", step: 1 },
           { kind: "label", at: [7.4, 3.5], label: "1, 9", labelAt: "n", step: 1 },
@@ -53,24 +215,19 @@ export const c04: Concept = {
       },
     },
     figure: {
-      alt: "A Venn diagram of A = {1, 2, 3, 5, 8} and B = {2, 4, 8}. A only holds 1, 3, 5; the overlap holds 2, 8; B only holds 4. First the part of A outside B is shaded: A − B = {1, 3, 5}. Then the part of B outside A: B − A = {4}, a different set. The two crescents together are A Δ B = {1, 3, 4, 5}.",
+      alt: "A Venn diagram of A = {1, 2, 3, 5, 8} and B = {2, 4, 8}. A only holds 1, 3, 5; the overlap holds 2, 8; B only holds 4. First the overlap, 2 and 8, is shaded as struck out of A. Then the part of A outside B is shaded: A − B = {1, 3, 5}. Then the part of B outside A: B − A = {4}, a different set. The rectangle U appears around both circles, and the part of U outside both circles is shaded too, so everything outside circle A is shaded: the complement A′.",
       axes: "none",
-      view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+      view,
       elements: [
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2, tone: "good" },
-        { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
-        { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
-        { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
-        { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
-        { kind: "label", at: [5, 6.45], label: "A Δ B = {1, 3, 4, 5}", labelAt: "n", step: 3 },
-        { kind: "label", at: [2.6, 3.5], label: "1, 3, 5", labelAt: "n" },
-        { kind: "label", at: [5, 3.5], label: "2, 8", labelAt: "n" },
-        { kind: "label", at: [7.4, 3.5], label: "4", labelAt: "n" },
-        { kind: "label", at: [2.4, 3.3], label: "A − B", labelAt: "s", step: 1 },
-        { kind: "label", at: [7.6, 3.3], label: "B − A", labelAt: "s", tone: "good", step: 2 },
+        cell(true, true, 2, "bad"),
+        cell(true, false, 3),
+        cell(false, true, 4, "good"),
+        cell(false, false, 6, "good"),
+        ...venn("A", "B", 5),
+        ...hookElements(),
+        leftName("A − B", 3),
+        rightName("B − A", 4, "good"),
+        { kind: "label", at: [9.1, 0.8], label: "A′", labelAt: "n", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Tap the elements of $U$ into $A$, $B$ or neither on a Venn diagram; buttons for $A - B$, $B - A$, $A \,\Delta\, B$ and $A'$ shade the matching cells and list their elements.`,

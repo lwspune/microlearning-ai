@@ -1,6 +1,74 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+type Extra = { step?: number; tone?: FigureElement["tone"] };
+
+/** The universal set's box, 10 wide and `h` high, as the four half-planes inside it. */
+const box = (h: number): Shape[] => [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, h]] },
+  { kind: "halfPlane", through: [[10, h], [0, h]] },
+  { kind: "halfPlane", through: [[0, h], [0, 0]] },
+];
+
+/** Inside or outside one circle. */
+const side = (inside: boolean, centre: Pt, r: number): Shape =>
+  inside ? { kind: "disc", centre, r } : { kind: "outsideDisc", centre, r };
+
+/** Two-set Venn diagram, the house layout: circles A and B in a 10 × 7 box. */
+const A2: Pt = [3.9, 3.5];
+const B2: Pt = [6.1, 3.5];
+const R2 = 2.4;
+/** The cell in (true) or out of (false) A, and in or out of B. */
+const cell2 = (a: boolean, b: boolean, extra: Extra = {}): FigureElement => ({
+  kind: "region",
+  within: [side(a, A2, R2), side(b, B2, R2), ...box(7)],
+  ...extra,
+});
+const venn2: FigureElement[] = [
+  { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+  { kind: "circle", centre: A2, r: R2, tone: "muted" },
+  { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
+  { kind: "circle", centre: B2, r: R2, tone: "muted" },
+  { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
+  { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+];
+const view2: Figure["view"] = { x: [-0.3, 10.3], y: [-0.3, 7.3] };
+
+/**
+ * Three-set Venn diagram: the house circles A, B and C in a 10 × 8 box, one unit taller than the
+ * solutions' so a law fits as a label above the circles (U moves to the bottom corner).
+ */
+const A3: Pt = [3.9, 4.3];
+const B3: Pt = [6.1, 4.3];
+const C3: Pt = [5, 2.5];
+const R3 = 2.2;
+const cell3 = (a: boolean, b: boolean, c: boolean, extra: Extra = {}): FigureElement => ({
+  kind: "region",
+  within: [side(a, A3, R3), side(b, B3, R3), side(c, C3, R3), ...box(8)],
+  ...extra,
+});
+const venn3: FigureElement[] = [
+  { kind: "curve", points: [[0, 0], [10, 0], [10, 8], [0, 8], [0, 0]], tone: "muted" },
+  { kind: "circle", centre: A3, r: R3, tone: "muted" },
+  { kind: "label", at: [2.34, 5.86], label: "A", labelAt: "nw" },
+  { kind: "circle", centre: B3, r: R3, tone: "muted" },
+  { kind: "label", at: [7.66, 5.86], label: "B", labelAt: "ne" },
+  { kind: "circle", centre: C3, r: R3, tone: "muted" },
+  { kind: "label", at: [7.2, 1.29], label: "C", labelAt: "e" },
+  { kind: "label", at: [9.5, 0.3], label: "U", labelAt: "n" },
+];
+const view3: Figure["view"] = { x: [-0.3, 10.3], y: [-0.3, 8.3] };
+/** Every cell of B ∪ C, at `step`. */
+const bOrC = (step: number): FigureElement[] => [
+  cell3(false, true, false, { step }),
+  cell3(false, false, true, { step }),
+  cell3(false, true, true, { step }),
+  cell3(true, true, false, { step }),
+  cell3(true, false, true, { step }),
+  cell3(true, true, true, { step }),
+];
 
 export const c05: Concept = {
   id: "C05",
@@ -10,25 +78,164 @@ export const c05: Concept = {
     reveal: t`No. An element is outside $A \cup B$ exactly when it is outside $A$ **and** outside $B$. So $(A \cup B)' = A' \cap B' = \{4, 8, 9\}$.`,
   },
   explanation: {
-    intuition: t`To be outside $A \cup B$, an element must miss $A$ and miss $B$: it lies in $A'$ and in $B'$. To be outside $A \cap B$, it only has to miss one of them: it lies in $A'$ or in $B'$. So a complement moves onto each set and turns $\cup$ into $\cap$, and $\cap$ into $\cup$. On a Venn diagram, $(A \cup B)'$ is the region outside both circles, and $(A \cap B)'$ is everything in $U$ except the overlap.`,
-    formal: t`**De Morgan's laws.** For subsets $A$ and $B$ of $U$:
-$$(A \cup B)' = A' \cap B' \qquad (A \cap B)' = A' \cup B'$$
-Two changes together: each set gets a dash, and $\cup$ and $\cap$ swap.
-
-**Why.** $x \in (A \cup B)'$ means $x \notin A$ and $x \notin B$, that is, $x \in A' \cap B'$. Likewise $x \in (A \cap B)'$ means $x \notin A$ or $x \notin B$, that is, $x \in A' \cup B'$.
-
-**Distributive laws.**
-$$A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$$
-$$A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$$
-The set outside the bracket goes to each set inside; the operation inside the bracket stays between the pieces. Nothing swaps here.
-
-**Using them.** Complements are always taken in $U$, so they include the elements outside every circle. To find $A' \cap B'$, find $A \cup B$ and take one complement. Since $A - X = A \cap X'$, the laws also give $A - (B \cup C) = (A - B) \cap (A - C)$.`,
+    intuition: [
+      t`Recall: $A'$, the **complement** of $A$, is everything in the universal set $U$ that is not in $A$.`,
+      t`In the same way, $B'$ is everything in $U$ that is not in $B$.`,
+      t`An element outside $A \cup B$ is in neither set: not in $A$ and not in $B$.`,
+      t`So it lies in both $A'$ and $B'$, the part shaded twice: $(A \cup B)' = A' \cap B'$.`,
+      t`An element outside $A \cap B$ only needs to be outside one of the two sets.`,
+      t`So it lies in $A'$ or in $B'$, shaded at least once: $(A \cap B)' = A' \cup B'$.`,
+    ],
+    formal: [
+      {
+        title: "De Morgan's laws",
+        points: [
+          t`**De Morgan's first law:** for any subsets $A$ and $B$ of $U$, $(A \cup B)' = A' \cap B'$.`,
+          t`**The second law:** $(A \cap B)' = A' \cup B'$.`,
+          t`Each law makes two changes at once.`,
+          t`Each set gets a dash, the mark of a complement: $A$ becomes $A'$, $B$ becomes $B'$.`,
+          t`And the operation swaps: $\cup$ becomes $\cap$, and $\cap$ becomes $\cup$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U. First the region outside both circles is shaded: that is (A ∪ B)′, equal to A′ ∩ B′. Then the shading spreads to A only and B only, and the overlap A ∩ B is marked: everything except the overlap is (A ∩ B)′, equal to A′ ∪ B′.",
+          axes: "none",
+          view: view2,
+          elements: [
+            cell2(false, false, { step: 1, tone: "good" }),
+            cell2(true, false, { step: 2, tone: "good" }),
+            cell2(false, true, { step: 2, tone: "good" }),
+            cell2(true, true, { step: 2, tone: "bad" }),
+            ...venn2,
+            { kind: "label", at: [5, 0.2], label: "(A ∪ B)′ = A′ ∩ B′", labelAt: "n", tone: "good", step: 1 },
+            { kind: "label", at: [5, 3.5], label: "A ∩ B", labelAt: "n", tone: "bad", step: 2 },
+            { kind: "label", at: [5, 6.35], label: "(A ∩ B)′ = A′ ∪ B′", labelAt: "n", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Why the laws hold",
+        points: [
+          t`Take any $x$ in $(A \cup B)'$: then $x \notin A$ and $x \notin B$, where $\notin$ means "is not in".`,
+          t`So $x \in A'$ and $x \in B'$, that is, $x \in A' \cap B'$.`,
+          t`Take any $y$ in $(A \cap B)'$: it is not in the overlap, so $y \notin A$ or $y \notin B$.`,
+          t`So $y \in A'$ or $y \in B'$, that is, $y \in A' \cup B'$.`,
+          t`Each step also works backwards, so the two sides of each law hold exactly the same elements.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U. A point x outside both circles is marked, and the region outside both is shaded: x is in A′ ∩ B′. Then the overlap A ∩ B is marked, and a point y in A only, outside the overlap: y is not in B, so y is in A′ ∪ B′.",
+          axes: "none",
+          view: view2,
+          elements: [
+            cell2(false, false, { step: 1, tone: "good" }),
+            cell2(true, true, { step: 3, tone: "bad" }),
+            ...venn2,
+            { kind: "point", at: [8.9, 1], label: "x", labelAt: "e", tone: "good", step: 1 },
+            { kind: "label", at: [5, 0.2], label: "x ∈ A′ ∩ B′", labelAt: "n", tone: "good", step: 2 },
+            { kind: "point", at: [2.6, 3.5], label: "y", labelAt: "n", step: 3 },
+            { kind: "label", at: [5, 6.35], label: "y ∈ A′ ∪ B′", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Intersection over a union",
+        points: [
+          t`A **distributive law** hands the set outside a bracket to each set inside it.`,
+          t`In $A \cap (B \cup C)$, the bracket $B \cup C$ is everything in $B$ or in $C$.`,
+          t`$A \cap (B \cup C)$ keeps just the part of $A$ inside that bracket.`,
+          t`That part is $A \cap B$ together with $A \cap C$.`,
+          t`So $A \cap (B \cup C)$ equals $(A \cap B) \cup (A \cap C)$.`,
+          t`The $\cup$ inside the bracket stays between the pieces.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U. First B ∪ C, everything in B or C, is shaded. Then the part of A inside it is picked out: A and B together, plus A and C together. Above the circles: A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C).",
+          axes: "none",
+          view: view3,
+          elements: [
+            ...bOrC(2),
+            cell3(true, true, false, { step: 3, tone: "good" }),
+            cell3(true, false, true, { step: 3, tone: "good" }),
+            cell3(true, true, true, { step: 3, tone: "good" }),
+            ...venn3,
+            { kind: "label", at: [5, 7], label: "A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Union over an intersection",
+        points: [
+          t`Here $B \cap C$ is the part that $B$ and $C$ share.`,
+          t`$A \cup (B \cap C)$ adds all of $A$ to that part.`,
+          t`Hand $A$ to each set inside the bracket: that gives $A \cup B$ and $A \cup C$.`,
+          t`So $A \cup (B \cap C)$ equals $(A \cup B) \cap (A \cup C)$.`,
+          t`The $\cap$ inside the bracket stays between the pieces: nothing swaps here.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U. First B ∩ C, the part B and C share, is shaded. Then all of A is added to it. Above the circles: A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C).",
+          axes: "none",
+          view: view3,
+          elements: [
+            cell3(false, true, true, { step: 1 }),
+            cell3(true, true, true, { step: 1 }),
+            cell3(true, false, false, { step: 2, tone: "good" }),
+            cell3(true, true, false, { step: 2, tone: "good" }),
+            cell3(true, false, true, { step: 2, tone: "good" }),
+            cell3(true, true, true, { step: 2, tone: "good" }),
+            cell3(false, true, true, { step: 2, tone: "good" }),
+            ...venn3,
+            { kind: "label", at: [5, 7], label: "A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C)", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Finding a complement quickly",
+        points: [
+          t`To find $A' \cap B'$, first find $A \cup B$.`,
+          t`Then take one complement: $A' \cap B' = (A \cup B)'$, the rest of $U$.`,
+          t`Complements are always taken in $U$, so they include the elements outside every circle.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside U. First A ∪ B, both circles, is shaded. Then the rest of U, the region outside both circles, is shaded: that is (A ∪ B)′, equal to A′ ∩ B′.",
+          axes: "none",
+          view: view2,
+          elements: [
+            cell2(true, false, { step: 1 }),
+            cell2(false, true, { step: 1 }),
+            cell2(true, true, { step: 1 }),
+            cell2(false, false, { step: 2, tone: "good" }),
+            ...venn2,
+            { kind: "label", at: [5, 3.5], label: "A ∪ B", labelAt: "n", step: 1 },
+            { kind: "label", at: [5, 0.2], label: "A′ ∩ B′ = (A ∪ B)′", labelAt: "n", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Difference of a union",
+        points: [
+          t`Recall: $A - X = A \cap X'$, the part of $A$ outside $X$.`,
+          t`Take $X = B \cup C$: then $A - (B \cup C)$ equals $A \cap (B \cup C)'$.`,
+          t`By De Morgan's first law, $(B \cup C)' = B' \cap C'$.`,
+          t`So it is $A \cap B' \cap C'$, which equals $(A \cap B') \cap (A \cap C')$.`,
+          t`That is, $A - (B \cup C)$ equals $(A - B) \cap (A - C)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A, B and C inside U. First B ∪ C is shaded. Then the part of A outside it, A only, is picked out: A − (B ∪ C). Above the circles: A − (B ∪ C) = (A − B) ∩ (A − C).",
+          axes: "none",
+          view: view3,
+          elements: [
+            ...bOrC(2),
+            cell3(true, false, false, { step: 4, tone: "good" }),
+            ...venn3,
+            { kind: "label", at: [5, 7], label: "A − (B ∪ C) = (A − B) ∩ (A − C)", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`$U = \{1, 2, 3, \ldots, 9\}$, $A = \{1, 2, 3, 4, 5\}$ and $B = \{4, 5, 6, 7\}$. Find $A' \cup B'$.`,
       steps: [
         t`By De Morgan's law, $A' \cup B' = (A \cap B)'$: one intersection and one complement, instead of two complements and a union.`,
         t`$A \cap B = \{4, 5\}$.`,
-        t`$(A \cap B)' = U - \{4, 5\} = \{1, 2, 3, 6, 7, 8, 9\}$. It includes $8$ and $9$, which are outside both sets.`,
+        t`$(A \cap B)' = U - \{4, 5\}$, which is $\{1, 2, 3, 6, 7, 8, 9\}$. It includes $8$ and $9$, which are outside both sets.`,
         t`Check the long way: $A' = \{6, 7, 8, 9\}$, $B' = \{1, 2, 3, 8, 9\}$, so $A' \cup B' = \{1, 2, 3, 6, 7, 8, 9\}$.`,
       ],
       answer: t`$A' \cup B' = \{1, 2, 3, 6, 7, 8, 9\}$`,
@@ -56,24 +263,22 @@ The set outside the bracket goes to each set inside; the operation inside the br
       },
     },
     figure: {
-      alt: "A Venn diagram of A and B inside U. First A′, everything outside circle A, is shaded; then B′, everything outside circle B. The only part shaded twice is the region outside both circles, which is exactly (A ∪ B)′. So A′ ∩ B′ = (A ∪ B)′.",
+      alt: "A Venn diagram of A and B inside U. First A′, everything outside circle A, is shaded; then B′, everything outside circle B. The region outside both circles, (A ∪ B)′, is shaded twice: A′ ∩ B′ = (A ∪ B)′. Then the overlap A ∩ B is marked: it is the only part not shaded at all, so everything shaded at least once is A′ ∪ B′ = (A ∩ B)′.",
       axes: "none",
-      view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+      view: view2,
       elements: [
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "disc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 1 },
-        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
-        { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 3.5], r: 2.4 }, { kind: "outsideDisc", centre: [6.1, 3.5], r: 2.4 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 3, tone: "good" },
-        { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
-        { kind: "circle", centre: [3.9, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
-        { kind: "circle", centre: [6.1, 3.5], r: 2.4, tone: "muted" },
-        { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
-        { kind: "label", at: [9.5, 6.4], label: "U", labelAt: "n" },
+        cell2(false, true, { step: 1 }),
+        cell2(false, false, { step: 1 }),
+        cell2(true, false, { step: 2 }),
+        cell2(false, false, { step: 2 }),
+        cell2(false, false, { step: 3, tone: "good" }),
+        cell2(true, true, { step: 5, tone: "bad" }),
+        ...venn2,
         { kind: "label", at: [8.9, 0.6], label: "A′", labelAt: "n", tone: "accent", step: 1 },
         { kind: "label", at: [1.1, 0.6], label: "B′", labelAt: "n", tone: "accent", step: 2 },
-        { kind: "label", at: [5, 0.2], label: "A′ ∩ B′ = (A ∪ B)′", labelAt: "n", tone: "good", step: 3 },
+        { kind: "label", at: [5, 0.2], label: "A′ ∩ B′ = (A ∪ B)′", labelAt: "n", tone: "good", step: 4 },
+        { kind: "label", at: [5, 3.5], label: "A ∩ B", labelAt: "n", tone: "bad", step: 5 },
+        { kind: "label", at: [5, 6.35], label: "A′ ∪ B′ = (A ∩ B)′", labelAt: "n", tone: "accent", step: 6 },
       ],
     },
     visualSpec: t`Shade any of $A'$, $B'$, $A \cup B$ and $A \cap B$ on a two-set Venn diagram by tapping; $(A \cup B)'$ and $A' \cap B'$ are drawn side by side and match cell by cell.`,
