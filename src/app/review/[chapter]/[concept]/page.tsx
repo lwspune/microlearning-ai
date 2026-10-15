@@ -72,6 +72,9 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
           {node.id} · {concept.status}
         </p>
         <h1 className="mt-1 text-2xl font-semibold">{node.title}</h1>
+        <Link href={`/review/${chapterSlug}/${conceptSlug}/slides`} className="mt-1 inline-block text-sm text-accent underline underline-offset-2">
+          See it as slides →
+        </Link>
         <p className="mt-2 text-muted">
           <RichInline text={node.oneLiner} />
         </p>
