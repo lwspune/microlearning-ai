@@ -176,8 +176,8 @@ export const c12: Concept = {
     },
     {
       id: "C12-M2",
-      mistake: t`Adds the sizes: $n(A \times B) = n(A) + n(B)$, and $n(A \cap B) + n(A \cap B)$ pairs common to $A \times B$ and $B \times A$`,
-      remediation: t`Each of the $n(A)$ first entries pairs with each of the $n(B)$ second entries, so you multiply: $n(A \times B) = n(A) \times n(B)$.`,
+      mistake: t`Adds the sizes instead of multiplying: $n(A \times B) = n(A) + n(B)$, and $n(A \cap B) + n(A \cap B)$ pairs common to $A \times B$ and $B \times A$`,
+      remediation: t`Each of the $n(A)$ first entries pairs with each of the $n(B)$ second entries, so you multiply: $n(A \times B) = n(A) \times n(B)$. The same goes for the common pairs: they are $(A \cap B) \times (A \cap B)$, so there are $n(A \cap B) \times n(A \cap B)$ of them, not $n(A \cap B) + n(A \cap B)$.`,
       fallback: { kind: "ext", topic: "the multiplication principle of counting" },
     },
     {
