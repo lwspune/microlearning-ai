@@ -76,6 +76,9 @@ ITEMS = [dict(id="CNN-Q1", stem=r"...", inputs={"a": "3"}, params={...}, models=
   options `text=` in the book's notation (`$\cot 2x$`, `$\operatorname{cosec}^2\theta$`): sympy's own LaTeX
   writes `\cot{\left(2 x \right)}`. Angles given in degrees go into sympy as radians (`pi/12` for $15^\circ$);
   an answer in degrees uses `fmt="deg"`.
+- Data tables are display maths, `$$\begin{array}{c|c} ... \end{array}$$`, and must fit a 390 px phone screen: at
+  most 3 short columns (put a long table's rows down the page, value and frequency as two columns), at most 8 rows.
+  A wider table doesn't scroll the page but hides its right-hand columns behind a scroll inside the box.
 - Percentages: when the question asks for a percentage, the value is the number (`60`) and `fmt="pct"` shows
   `60%`; when it asks "how many", convert to a count first. Never mix the two in one item.
 - Draft: `python verify/draft_items.py <scratch>/cNN_spec.py > <scratch>/cNN_items.ts` (run from the repo root).
