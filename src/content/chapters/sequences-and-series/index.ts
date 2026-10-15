@@ -13,6 +13,10 @@ import { c11 } from "./concepts/c11-inserting-means.ts";
 import { c12 } from "./concepts/c12-arithmetico-geometric.ts";
 import { c13 } from "./concepts/c13-sigma-formulas.ts";
 import { c14 } from "./concepts/c14-series-by-sigma.ts";
+import { c15 } from "./concepts/c15-sequences-and-series.ts";
+import { c16 } from "./concepts/c16-ap-nth-term.ts";
+import { c17 } from "./concepts/c17-ap-sum.ts";
+import { c18 } from "./concepts/c18-numbers-in-ap.ts";
 import { graph } from "./graph.ts";
 
 export const sequencesAndSeries: Chapter = {
@@ -22,5 +26,5 @@ export const sequencesAndSeries: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18],
 };
