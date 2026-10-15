@@ -487,7 +487,7 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
 
-### 6. Venn labels on the rectangle's top edge (logged 2026-10-15, open)
+### 6. Venn labels on the rectangle's top edge (logged 2026-10-15, done 2026-10-15)
 Found in the Sets and Relations slide rework: a label at `y` 6.45–6.75 with
 `labelAt: "n"` in a 10 × 7 rectangle sits on the top edge. Fixed on the
 lesson slides (C03, C04: label at `y` 7.05, view to 7.9).
@@ -498,6 +498,9 @@ lesson slides (C03, C04: label at `y` 7.05, view to 7.9).
 - **Does it really apply:** C05's three are readable (the halo keeps the text
   clear of the line); C03's ran through its label. Check each by eye.
 - **Recommendation:** partial: move only the ones the edge cuts through.
+- **Done:** on a closer look only C03-Q4's solution label sat on the edge
+  (C05's three are inside its taller 10 × 8 box, C08's is the U corner
+  label, straight-line C01 has no rectangle); moved above it, view to 7.9.
 
 ## Slides as points, one per click (approved 2026-10-15, branch `progressive-points`)
 
