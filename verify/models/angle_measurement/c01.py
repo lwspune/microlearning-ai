@@ -47,15 +47,11 @@ def key(v, p):
 
 
 def m1(v, p):
-    """Drops the minus sign: turns a negative angle anticlockwise (-140 read as 140), or writes a
-    positive angle that falls short of a whole turn by a (945 = 1080 - 135) as a, not -a."""
+    """Drops the minus sign: turns a negative angle anticlockwise (-140 read as 140)."""
     t = Integer(v["t"])
-    if t < 0:
-        return _answer(-t, p)
-    r = t % 360
-    if r <= 180:
-        raise ValueError("t lies less than a half turn past a whole turn: no minus to drop")
-    return _answer(360 - r, p)
+    if t >= 0:
+        raise ValueError("no minus sign to drop")
+    return _answer(-t, p)
 
 
 def m2(v, p):
@@ -93,4 +89,14 @@ def m5(v, p):
     return Symbol(f"quadrant_{_ROMAN[k]}")
 
 
-MODELS = {"key": key, "C01-M1": m1, "C01-M2": m2, "C01-M3": m3, "C01-M4": m4, "C01-M5": m5}
+def m6(v, p):
+    """Counts back from the next whole turn and drops the sign: writes a positive angle that
+    falls short of a whole number of turns by a (945 = 1080 - 135) as a, not -a."""
+    t = Integer(v["t"])
+    r = t % 360
+    if t < 0 or r <= 180:
+        raise ValueError("t lies less than a half turn past a whole turn: nothing to count back")
+    return _answer(360 - r, p)
+
+
+MODELS = {"key": key, "C01-M1": m1, "C01-M2": m2, "C01-M3": m3, "C01-M4": m4, "C01-M5": m5, "C01-M6": m6}

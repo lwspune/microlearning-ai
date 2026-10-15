@@ -83,7 +83,7 @@ An arm on an axis ($0^\circ$, $90^\circ$, $180^\circ$, $270^\circ$, ...) lies in
   misconceptions: [
     {
       id: "C01-M1",
-      mistake: "Drops the minus sign: turns a negative angle anticlockwise (-140 read as 140), or reads an angle that is a short of a whole number of turns (945 = 1080 - 135) as a instead of -a",
+      mistake: "Drops the minus sign: turns a negative angle anticlockwise (-140 read as 140)",
       remediation: t`A minus sign means clockwise: $-\alpha$ ends on a different arm from $\alpha$, its mirror image in the $x$-axis. Turn the right way, or add $360^\circ$ to a negative angle until it is positive.`,
       fallback: { kind: "none" },
     },
@@ -111,9 +111,15 @@ An arm on an axis ($0^\circ$, $90^\circ$, $180^\circ$, $270^\circ$, ...) lies in
       remediation: t`$k$ whole right angles bring the arm to an axis; the part left over carries it into the next quadrant. So $k$ right angles and a bit more is quadrant $k + 1$: between $180^\circ$ and $270^\circ$ is Quadrant III.`,
       fallback: { kind: "none" },
     },
+    {
+      id: "C01-M6",
+      mistake: "Counts back from the next whole turn and drops the sign: reads a positive angle a short of a whole number of turns (945 = 1080 - 135) as a instead of -a",
+      remediation: t`Counting back from the next whole turn keeps the direction. An angle $\alpha$ short of a whole number of turns stops $\alpha$ clockwise of the start, at $-\alpha$, not $\alpha$: $945^\circ = 1080^\circ - 135^\circ$ ends at $-135^\circ$, and $-135^\circ + 360^\circ = 225^\circ$. Simpler: take off whole turns until the angle lies between $0^\circ$ and $360^\circ$.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
-    t`C01-M1 gives the key on a positive angle whose remainder after whole turns is under $180^\circ$; diagnose it with negative angles or remainders over $180^\circ$.`,
+    t`C01-M1 applies only to negative angles. C01-M6 applies only to positive angles whose remainder after whole turns is over $180^\circ$; otherwise it gives the key.`,
     t`C01-M2 gives the key whenever the remainder after whole turns is under $180^\circ$ (Quadrants I and II); diagnose it with angles ending in Quadrant III or IV.`,
     "C01-M3 and C01-M5 apply only to quadrant questions, C01-M4 only to co-terminal angles of 720 degrees or more. C01-M5 cannot be detected in Quadrant I.",
   ],
@@ -165,7 +171,7 @@ An arm on an axis ($0^\circ$, $90^\circ$, $180^\circ$, $270^\circ$, ...) lies in
       verify: { kind: "value", inputs: { t: "945" }, params: { ask: "coterminal" } },
       options: [
         { key: "A", text: t`$225^\circ$`, correct: true, value: "225" },
-        { key: "B", text: t`$135^\circ$`, correct: false, misconceptionId: "C01-M1", value: "135" },
+        { key: "B", text: t`$135^\circ$`, correct: false, misconceptionId: "C01-M6", value: "135" },
         { key: "C", text: t`$45^\circ$`, correct: false, misconceptionId: "C01-M2", value: "45" },
         { key: "D", text: t`$585^\circ$`, correct: false, misconceptionId: "C01-M4", value: "585" },
       ],
@@ -280,7 +286,7 @@ An arm on an axis ($0^\circ$, $90^\circ$, $180^\circ$, $270^\circ$, ...) lies in
       verify: { kind: "value", inputs: { t: "1050" }, params: { ask: "coterminal" } },
       options: [
         { key: "A", text: t`$330^\circ$`, correct: true, value: "330" },
-        { key: "B", text: t`$30^\circ$`, correct: false, misconceptionId: "C01-M1", value: "30" },
+        { key: "B", text: t`$30^\circ$`, correct: false, misconceptionId: "C01-M6", value: "30" },
         { key: "C", text: t`$150^\circ$`, correct: false, misconceptionId: "C01-M2", value: "150" },
         { key: "D", text: t`$690^\circ$`, correct: false, misconceptionId: "C01-M4", value: "690" },
       ],
