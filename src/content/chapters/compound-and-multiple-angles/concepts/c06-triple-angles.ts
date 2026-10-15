@@ -1,6 +1,15 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The xy-plane as plain axes (no grid or numbers: only directions matter here). */
+const axes: FigureElement[] = [
+  { kind: "segment", from: [-2.8, 0], to: [2.8, 0], tone: "muted" },
+  { kind: "label", at: [2.8, 0], label: "x", labelAt: "s", tone: "muted" },
+  { kind: "segment", from: [0, -2.8], to: [0, 2.8], tone: "muted" },
+  { kind: "label", at: [0, 2.8], label: "y", labelAt: "w", tone: "muted" },
+  { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+];
 
 export const c06: Concept = {
   id: "C06",
@@ -10,33 +19,84 @@ export const c06: Concept = {
     reveal: t`No. $\sin 270^\circ = -1$, but $3\sin 90^\circ = 3$. The true formula is $\sin 3A = 3\sin A - 4\sin^3 A$, and at $A = 90^\circ$ it gives $3 - 4 = -1$, as it should.`,
   },
   explanation: {
-    intuition: t`Write $3A = 2A + A$ and expand with the sum formula and the double-angle formulas. Then turn every $\cos^2 A$ into $1 - \sin^2 A$, so only $\sin A$ is left. The cube appears because three copies of $A$ multiply together; the $3$ never simply comes out. To recall which term comes first, test the formula at $A = 0$ or $A = 90^\circ$.`,
-    formal: t`**sin 3A**
-
-$$\sin 3A = \sin(2A + A) = 2\sin A\cos^2 A + (1 - 2\sin^2 A)\sin A$$
-
-$$= 2\sin A - 2\sin^3 A + \sin A - 2\sin^3 A = 3\sin A - 4\sin^3 A$$
-
-**cos 3A and tan 3A** come the same way, from $\cos(2A + A)$ and $\tan(2A + A)$:
-
-$$\cos 3A = 4\cos^3 A - 3\cos A, \qquad \tan 3A = \frac{3\tan A - \tan^3 A}{1 - 3\tan^2 A}$$
-
-**Which term comes first?** sin starts with $3\sin A$; cos starts with $4\cos^3 A$. Check: $A = 90^\circ$ gives $\sin 270^\circ = 3 - 4 = -1$, and $A = 0$ gives $\cos 0 = 4 - 3 = 1$. The $3$s in tan go together: $3\tan A$ on top, $3\tan^2 A$ below.
-
-**The $60^\circ$ family.** Since $\cos(60^\circ - A)\cos(60^\circ + A) = \cos^2 60^\circ - \sin^2 A = \frac{1}{4} - \sin^2 A$:
-
-$$\cos A\cos(60^\circ - A)\cos(60^\circ + A) = \frac{1}{4}\cos 3A, \qquad \sin A\sin(60^\circ - A)\sin(60^\circ + A) = \frac{1}{4}\sin 3A$$
-
-$$\tan A\tan(60^\circ - A)\tan(60^\circ + A) = \tan 3A$$`,
+    intuition: [
+      t`A **triple angle** is three times an angle, such as $3A$ in $\sin 3A$.`,
+      t`Write $3A = 2A + A$, then expand with the sum formula and the double-angle formulas.`,
+      t`Then turn every $\cos^2 A$ into $1 - \sin^2 A$, so only $\sin A$ is left.`,
+      t`A **cube** such as $\sin^3 A$, meaning $(\sin A)^3$, appears: three factors of $\sin A$ multiply together.`,
+      t`So the $3$ never simply comes out: $\sin 3A$ is not $3\sin A$.`,
+      t`To recall which term comes first, test the formula at $A = 0$ or $A = 90^\circ$.`,
+    ],
+    formal: [
+      {
+        title: "sin 3A from 2A + A",
+        points: [
+          t`Write $\sin 3A$ as $\sin(2A + A)$ and use the sum formula.`,
+          t`It equals $\sin 2A\cos A + \cos 2A\sin A$.`,
+          t`Put in $\sin 2A = 2\sin A\cos A$ and $\cos 2A = 1 - 2\sin^2 A$.`,
+          t`The first term becomes $2\sin A\cos^2 A$, which is $2\sin A(1 - \sin^2 A)$, or $2\sin A - 2\sin^3 A$.`,
+          t`The second term becomes $(1 - 2\sin^2 A)\sin A$, which is $\sin A - 2\sin^3 A$.`,
+          t`Add them: $\sin 3A = 3\sin A - 4\sin^3 A$.`,
+        ],
+      },
+      {
+        title: "cos 3A and tan 3A",
+        points: [
+          t`$\cos 3A$ and $\tan 3A$ come the same way, from $\cos(2A + A)$ and $\tan(2A + A)$.`,
+          t`For cos, turn every $\sin^2 A$ into $1 - \cos^2 A$, so only $\cos A$ is left.`,
+          t`$\cos 3A = 4\cos^3 A - 3\cos A$.`,
+          t`$\tan 3A = \frac{3\tan A - \tan^3 A}{1 - 3\tan^2 A}$.`,
+        ],
+      },
+      {
+        title: "Which term comes first?",
+        points: [
+          t`sin starts with $3\sin A$; cos starts with $4\cos^3 A$.`,
+          t`To check sin, try $A = 90^\circ$, where $\sin A = 1$.`,
+          t`Then $3A = 270^\circ$, and $\sin 270^\circ = -1$.`,
+          t`The formula agrees: $3\sin A - 4\sin^3 A = 3 - 4 = -1$.`,
+          t`To check cos, try $A = 0$: $\cos 0 = 4 - 3 = 1$.`,
+          t`The $3$s in tan go together: $3\tan A$ on top, $3\tan^2 A$ below.`,
+        ],
+        figure: {
+          alt: "The unit circle about the origin. An arm turns 90° anticlockwise from the initial arm, so A = 90°, and ends at the top of the circle, where sin A = 1. It turns on to 270°, so 3A = 270°, and ends at the bottom, where sin 3A = −1, matching 3 − 4 = −1. At A = 0 the arm stays on the initial arm, at the point where cos 0 = 1.",
+          axes: "none",
+          view: { x: [-3.2, 3.8], y: [-3.5, 3.2] },
+          elements: [
+            ...axes,
+            { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [2.6, 0], tone: "good" },
+            { kind: "label", at: [2.2, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "turn", r: 2, to: 90, label: "A = 90°", labelAt: "nw", step: 2 },
+            { kind: "point", at: [0, 2], label: "sin A = 1", labelAt: "ne", step: 2 },
+            { kind: "turn", r: 2, from: 90, to: 270, label: "3A = 270°", labelAt: "sw", step: 3 },
+            { kind: "point", at: [0, -2], label: "sin 3A = −1", labelAt: "se", step: 3 },
+            { kind: "label", at: [0.25, -3.05], label: "3 − 4 = −1", labelAt: "e", tone: "good", step: 4 },
+            { kind: "point", at: [2, 0], label: "cos 0 = 1", labelAt: "sw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The 60° family",
+        points: [
+          t`Take three angles: $A$, $60^\circ - A$ and $60^\circ + A$.`,
+          t`$\cos(60^\circ - A)\cos(60^\circ + A)$ equals $\cos^2 60^\circ - \sin^2 A$.`,
+          t`That is $\frac{1}{4} - \sin^2 A$, since $\cos 60^\circ = \frac{1}{2}$.`,
+          t`So $\cos A$ times $\cos(60^\circ - A)\cos(60^\circ + A)$ is $\frac{1}{4}\cos 3A$.`,
+          t`In the same way, $\sin A$ times $\sin(60^\circ - A)\sin(60^\circ + A)$ is $\frac{1}{4}\sin 3A$.`,
+          t`Divide the sin product by the cos product: $\tan A$ times $\tan(60^\circ - A)\tan(60^\circ + A)$ is $\tan 3A$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $\sin 20^\circ\sin 40^\circ\sin 80^\circ$.`,
       steps: [
-        t`$40^\circ = 60^\circ - 20^\circ$ and $80^\circ = 60^\circ + 20^\circ$, so this is $\sin A\sin(60^\circ - A)\sin(60^\circ + A)$ with $A = 20^\circ$.`,
-        t`$\sin(60^\circ - A)\sin(60^\circ + A) = \sin^2 60^\circ - \sin^2 A = \frac{3}{4} - \sin^2 A$.`,
-        t`Multiply by $\sin A$: $\frac{3}{4}\sin A - \sin^3 A = \frac{1}{4}(3\sin A - 4\sin^3 A) = \frac{1}{4}\sin 3A$.`,
-        t`With $A = 20^\circ$: $\frac{1}{4}\sin 60^\circ = \frac{1}{4}\cdot\frac{\sqrt{3}}{2} = \frac{\sqrt{3}}{8}$.`,
+        t`$40^\circ = 60^\circ - 20^\circ$ and $80^\circ = 60^\circ + 20^\circ$, so this is $\sin A$ times $\sin(60^\circ - A)\sin(60^\circ + A)$, with $A = 20^\circ$.`,
+        t`$\sin(60^\circ - A)\sin(60^\circ + A)$ $= \sin^2 60^\circ - \sin^2 A$ $= \frac{3}{4} - \sin^2 A$.`,
+        t`Multiply by $\sin A$: $\frac{3}{4}\sin A - \sin^3 A$ $= \frac{1}{4}(3\sin A - 4\sin^3 A)$ $= \frac{1}{4}\sin 3A$.`,
+        t`With $A = 20^\circ$: $\frac{1}{4}\sin 60^\circ$ $= \frac{1}{4}\cdot\frac{\sqrt{3}}{2} = \frac{\sqrt{3}}{8}$.`,
       ],
-      answer: t`$\sin 20^\circ\sin 40^\circ\sin 80^\circ = \frac{\sqrt{3}}{8}$`,
+      answer: t`$\sin 20^\circ\sin 40^\circ\sin 80^\circ$ $= \frac{\sqrt{3}}{8}$`,
     },
     visualSpec: t`A slider for $A$ that draws $\sin 3A$ and $3\sin A - 4\sin^3 A$ as one curve, with $3\sin A$ beside it drifting away and leaving $[-1, 1]$.`,
   },

@@ -10,25 +10,75 @@ export const c09: Concept = {
     reveal: t`Yes. The two angles add to $60^\circ$ and differ by $45^\circ$, so $2\cos 52.5^\circ\cos 7.5^\circ = \cos 60^\circ + \cos 45^\circ = \frac{1}{2} + \frac{\sqrt{2}}{2}$. Halve it: $\cos 52.5^\circ\cos 7.5^\circ = \frac{1 + \sqrt{2}}{4}$.`,
   },
   explanation: {
-    intuition: t`Add $\sin(A + B) = \sin A\cos B + \cos A\sin B$ and $\sin(A - B) = \sin A\cos B - \cos A\sin B$: the $\cos A\sin B$ terms cancel and $2\sin A\cos B$ is left. Subtract them instead and $2\cos A\sin B$ is left. Do the same with $\cos(A - B)$ and $\cos(A + B)$ to get $2\cos A\cos B$ and $2\sin A\sin B$. So a product of two ratios becomes a sum of two, and sums are easy to cancel, add up or evaluate.`,
-    formal: t`**The four formulas**
-
-$$\begin{aligned} 2\sin A\cos B &= \sin(A + B) + \sin(A - B) \\ 2\cos A\sin B &= \sin(A + B) - \sin(A - B) \\ 2\cos A\cos B &= \cos(A + B) + \cos(A - B) \\ 2\sin A\sin B &= \cos(A - B) - \cos(A + B) \end{aligned}$$
-
-**The angles are just $A + B$ and $A - B$.** No halves: halves belong to the sum-into-product formulas, which go the other way.
-
-**Signs.** The cos-cos product has a plus; the sin-sin product is cos of the difference **minus** cos of the sum. A sin times a cos gives sines; write it with the sin's angle as $A$ and it is always a plus: $2\cos 5x\sin 2x = 2\sin 2x\cos 5x = \sin 7x + \sin(-3x) = \sin 7x - \sin 3x$.
-
-**The 2 matters.** The formulas give twice the product, so $\sin A\cos B = \frac{1}{2}[\sin(A + B) + \sin(A - B)]$.
-
-**Three or four factors.** Convert two at a time. Put in known values ($\cos 60^\circ = \frac{1}{2}$, $\sin 60^\circ = \frac{\sqrt{3}}{2}$) as numbers, and use $\cos(180^\circ - \theta) = -\cos\theta$ to make terms cancel.`,
+    intuition: [
+      t`Start from $\sin(A + B)$, which is $\sin A\cos B + \cos A\sin B$.`,
+      t`And $\sin(A - B)$ is $\sin A\cos B - \cos A\sin B$.`,
+      t`Add them: the $\cos A\sin B$ terms cancel, and $2\sin A\cos B$ is left.`,
+      t`Subtract them instead, and $2\cos A\sin B$ is left.`,
+      t`Do the same with $\cos(A - B)$ and $\cos(A + B)$ to get $2\cos A\cos B$ and $2\sin A\sin B$.`,
+      t`So a **product**, one ratio times another, becomes a sum of two ratios, which is easy to cancel, add up or evaluate.`,
+    ],
+    formal: [
+      {
+        title: "The four formulas",
+        points: [
+          t`$2\sin A\cos B$ equals $\sin(A + B) + \sin(A - B)$.`,
+          t`$2\cos A\sin B$ equals $\sin(A + B) - \sin(A - B)$.`,
+          t`$2\cos A\cos B$ equals $\cos(A + B) + \cos(A - B)$.`,
+          t`$2\sin A\sin B$ equals $\cos(A - B) - \cos(A + B)$.`,
+        ],
+      },
+      {
+        title: "No halves in the angles",
+        points: [
+          t`The angles on the right are just $A + B$ and $A - B$.`,
+          t`There are no halves in these formulas.`,
+          t`Halves belong to the **sum-into-product** formulas, which go the other way: they turn a sum into a product.`,
+        ],
+      },
+      {
+        title: "Two cosines or two sines",
+        points: [
+          t`A cos times a cos has a plus: $\cos(A + B) + \cos(A - B)$.`,
+          t`A sin times a sin is cos of the difference **minus** cos of the sum.`,
+          t`So $2\sin A\sin B$ is $\cos(A - B) - \cos(A + B)$, with the difference first.`,
+        ],
+      },
+      {
+        title: "A sin times a cos",
+        points: [
+          t`A sin times a cos gives sines: $\sin(A + B)$ and $\sin(A - B)$.`,
+          t`The order of the two **factors**, the ratios being multiplied, matters: $2\cos A\sin B$ has a minus.`,
+          t`So write it with the sin's angle as $A$, and it is always a plus.`,
+          t`For example, $2\cos 5x\sin 2x = 2\sin 2x\cos 5x$.`,
+          t`That is $\sin 7x + \sin(-3x)$, and $\sin(-3x) = -\sin 3x$.`,
+          t`So $2\cos 5x\sin 2x = \sin 7x - \sin 3x$.`,
+        ],
+      },
+      {
+        title: "The 2 matters",
+        points: [
+          t`The formulas give twice the product, not the product.`,
+          t`So $\sin A\cos B$ equals $\frac{1}{2}[\sin(A + B) + \sin(A - B)]$.`,
+        ],
+      },
+      {
+        title: "Three or four factors",
+        points: [
+          t`Convert two factors at a time.`,
+          t`Put in known values as numbers, such as $\cos 60^\circ = \frac{1}{2}$ and $\sin 60^\circ = \frac{\sqrt{3}}{2}$.`,
+          t`Use $\cos(180^\circ - \theta) = -\cos\theta$ to make terms cancel.`,
+          t`For example, $\cos 100^\circ$ becomes $-\cos 80^\circ$, which can cancel a $\cos 80^\circ$ term.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Show that $\cos 20^\circ\cos 40^\circ\cos 60^\circ\cos 80^\circ = \frac{1}{16}$.`,
       steps: [
-        t`$\cos 60^\circ = \frac{1}{2}$, so the product is $\frac{1}{2}\cos 20^\circ\cos 40^\circ\cos 80^\circ$.`,
-        t`$2\cos 40^\circ\cos 20^\circ = \cos 60^\circ + \cos 20^\circ = \frac{1}{2} + \cos 20^\circ$. So $\cos 20^\circ\cos 40^\circ\cos 80^\circ = \frac{1}{2}\left(\frac{1}{2} + \cos 20^\circ\right)\cos 80^\circ = \frac{1}{4}\cos 80^\circ + \frac{1}{2}\cos 20^\circ\cos 80^\circ$.`,
-        t`$2\cos 80^\circ\cos 20^\circ = \cos 100^\circ + \cos 60^\circ = -\cos 80^\circ + \frac{1}{2}$, so $\frac{1}{2}\cos 20^\circ\cos 80^\circ = \frac{1}{8} - \frac{1}{4}\cos 80^\circ$.`,
-        t`Add: $\frac{1}{4}\cos 80^\circ + \frac{1}{8} - \frac{1}{4}\cos 80^\circ = \frac{1}{8}$. Then multiply by the $\frac{1}{2}$ from step 1.`,
+        t`$\cos 60^\circ = \frac{1}{2}$, so the product is $\frac{1}{2}$ times $\cos 20^\circ\cos 40^\circ\cos 80^\circ$.`,
+        t`$2\cos 40^\circ\cos 20^\circ$ $= \cos 60^\circ + \cos 20^\circ$ $= \frac{1}{2} + \cos 20^\circ$. So $\cos 20^\circ\cos 40^\circ\cos 80^\circ$ $= \frac{1}{2}\left(\frac{1}{2} + \cos 20^\circ\right)\cos 80^\circ$ $= \frac{1}{4}\cos 80^\circ$ $+ \frac{1}{2}\cos 20^\circ\cos 80^\circ$.`,
+        t`$2\cos 80^\circ\cos 20^\circ$ $= \cos 100^\circ + \cos 60^\circ$ $= -\cos 80^\circ + \frac{1}{2}$, so $\frac{1}{2}\cos 20^\circ\cos 80^\circ$ $= \frac{1}{8} - \frac{1}{4}\cos 80^\circ$.`,
+        t`Add: $\frac{1}{4}\cos 80^\circ + \frac{1}{8}$ $- \frac{1}{4}\cos 80^\circ = \frac{1}{8}$. Then multiply by the $\frac{1}{2}$ from step 1.`,
       ],
       answer: t`$\frac{1}{2} \cdot \frac{1}{8} = \frac{1}{16}$.`,
     },

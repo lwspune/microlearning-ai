@@ -1,6 +1,28 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The radius of the unit circle in the figure's coordinates: heights read as sines. */
+const R = 2;
+
+/** The point on the unit circle at `deg` degrees. */
+const on = (deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(R * Math.cos(a)).toFixed(3), +(R * Math.sin(a)).toFixed(3)];
+};
+
+/** The first quadrant: plain axes (no numbers), the quarter of the unit circle and the initial arm. */
+const quadrantI: FigureElement[] = [
+  { kind: "segment", from: [-0.3, 0], to: [2.6, 0], tone: "muted" },
+  { kind: "label", at: [2.6, 0], label: "x", labelAt: "s", tone: "muted" },
+  { kind: "segment", from: [0, -0.3], to: [0, 2.5], tone: "muted" },
+  { kind: "label", at: [0, 2.5], label: "y", labelAt: "e", tone: "muted" },
+  { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+  { kind: "arc", centre: [0, 0], r: R, from: 0, to: 90, tone: "muted" },
+  { kind: "label", at: [on(15)[0] + 0.06, on(15)[1]], label: "unit circle", labelAt: "e", tone: "muted" },
+  { kind: "segment", from: [0, 0], to: [R, 0], tone: "good" },
+  { kind: "label", at: [1, 0], label: "initial arm", labelAt: "s", tone: "good" },
+];
 
 export const c04: Concept = {
   id: "C04",
@@ -10,31 +32,115 @@ export const c04: Concept = {
     reveal: t`No: $\sin 60^\circ = \frac{\sqrt{3}}{2}$. Doubling the angle does not double the sine. Write $60^\circ = 30^\circ + 30^\circ$ and use the sum formula: $\sin 60^\circ = 2\sin 30^\circ\cos 30^\circ = 2 \cdot \frac{1}{2} \cdot \frac{\sqrt{3}}{2} = \frac{\sqrt{3}}{2}$. The extra factor $\cos 30^\circ$ is what pulls it below $1$.`,
   },
   explanation: {
-    intuition: t`A double angle is a sum: $2A = A + A$. Put $B = A$ in the formulas for $\sin(A + B)$, $\cos(A + B)$ and $\tan(A + B)$, and the double-angle formulas drop out. Because $\sin^2 A + \cos^2 A = 1$, you can trade one square for the other, so $\cos 2A$ has three faces; pick the one that cancels what you have. Read backwards, they turn $1 - \cos 2A$ into a single square and $\sin A\cos A$ into half of $\sin 2A$.`,
-    formal: t`**The formulas** (put $B = A$ in the sum formulas)
-
-$$\sin 2A = 2\sin A\cos A$$
-$$\cos 2A = \cos^2 A - \sin^2 A = 1 - 2\sin^2 A = 2\cos^2 A - 1$$
-$$\tan 2A = \frac{2\tan A}{1 - \tan^2 A}$$
-
-**Read backwards**
-
-$1 - \cos 2A = 2\sin^2 A$, $\quad 1 + \cos 2A = 2\cos^2 A$, $\quad \sin A\cos A = \frac{1}{2}\sin 2A$. Sine squared goes with the minus sign: at $A = 0$, $1 - \cos 0 = 0 = 2\sin^2 0$.
-
-**From one ratio and a quadrant**
-
-Find $\sin A$ and $\cos A$ first, with the signs the quadrant gives them, then double. $\sin 2A$ and $\tan 2A$ depend on those signs; $\cos 2A$ uses only squares.
-
-**Any angle can be the double**
-
-$6\theta = 2(3\theta)$, so $\sin 6\theta = 2\sin 3\theta\cos 3\theta$. Cosines whose angles keep doubling fold up one at a time: $2\sin\theta\cos\theta = \sin 2\theta$, then $2\sin 2\theta\cos 2\theta = \sin 4\theta$, so $8\sin\theta\cos\theta\cos 2\theta\cos 4\theta = \sin 8\theta$.`,
+    intuition: [
+      t`A **multiple angle** is a whole number times an angle, such as $2A$ or $3A$.`,
+      t`Here an arm turns through an angle $A$, $30^\circ$, from the initial arm.`,
+      t`It turns through $A$ again, to $2A$, the **double angle**: so $2A = A + A$, a sum.`,
+      t`The **double-angle formulas**, for $\sin 2A$, $\cos 2A$ and $\tan 2A$, come from the sum formulas with $B = A$.`,
+      t`Doubling the angle does not double the sine: for this acute $A$, $\sin 2A$ is less than $2\sin A$.`,
+      t`Read backwards, right side to left, the formulas turn $1 - \cos 2A$ into a single square, and $\sin A\cos A$ into half of $\sin 2A$.`,
+    ],
+    figure: {
+      alt: "A quarter of the unit circle in the first quadrant. An arm turns 30°, the angle A, from the initial arm along the x-axis, then turns 30° more, to 2A = 60°. Dashed lines carry the heights of the two points on the circle across to the y-axis: sin A is half the radius and sin 2A is about 0.87 of it, below 2 sin A, which is the top of the circle.",
+      axes: "none",
+      view: { x: [-1.1, 2.9], y: [-0.6, 2.7] },
+      elements: [
+        ...quadrantI,
+        { kind: "turn", r: R, to: 30, label: "A", labelAt: "e", step: 2 },
+        { kind: "turn", r: R, from: 30, to: 60, label: "2A", labelAt: "ne", step: 3 },
+        { kind: "segment", from: on(30), to: [0, on(30)[1]], dashed: true, tone: "muted", step: 5 },
+        { kind: "label", at: [0, on(30)[1]], label: "sin A", labelAt: "w", step: 5 },
+        { kind: "segment", from: on(60), to: [0, on(60)[1]], dashed: true, tone: "muted", step: 5 },
+        { kind: "label", at: [0, on(60)[1]], label: "sin 2A", labelAt: "w", step: 5 },
+        { kind: "point", at: [0, R], label: "2 sin A", labelAt: "w", tone: "bad", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Sine of a double angle",
+        points: [
+          t`Start from the sum formula: $\sin(A + B)$ equals $\sin A\cos B + \cos A\sin B$.`,
+          t`Put $B = A$: the right side becomes $\sin A\cos A + \cos A\sin A$.`,
+          t`These are two equal terms, so they add up to twice one of them.`,
+          t`So $\sin 2A = 2\sin A\cos A$.`,
+          t`Keep both the $2$ and the $\cos A$: $\sin 2A$ is not $2\sin A$.`,
+        ],
+      },
+      {
+        title: "Cosine of a double angle",
+        points: [
+          t`Start from the sum formula: $\cos(A + B)$ equals $\cos A\cos B - \sin A\sin B$.`,
+          t`Put $B = A$: the right side becomes $\cos A\cos A - \sin A\sin A$.`,
+          t`So $\cos 2A = \cos^2 A - \sin^2 A$.`,
+          t`Cosine squared comes first, then the minus sign.`,
+        ],
+      },
+      {
+        title: "Three forms of cos 2A",
+        points: [
+          t`Since $\sin^2 A + \cos^2 A = 1$, one square can be swapped for the other.`,
+          t`Swap $\cos^2 A$ for $1 - \sin^2 A$: $\cos 2A = 1 - 2\sin^2 A$.`,
+          t`Swap $\sin^2 A$ for $1 - \cos^2 A$: $\cos 2A = 2\cos^2 A - 1$.`,
+          t`So $\cos 2A$ has three forms, and all three are equal.`,
+          t`Pick the one that cancels what you have.`,
+        ],
+      },
+      {
+        title: "Tangent of a double angle",
+        points: [
+          t`Start from the sum formula: $\tan(A + B)$ equals $\frac{\tan A + \tan B}{1 - \tan A\tan B}$.`,
+          t`Put $B = A$: the right side becomes $\frac{\tan A + \tan A}{1 - \tan A\tan A}$.`,
+          t`So $\tan 2A = \frac{2\tan A}{1 - \tan^2 A}$.`,
+          t`The bottom keeps the minus sign of $\tan(A + B)$.`,
+        ],
+      },
+      {
+        title: "The formulas read backwards",
+        points: [
+          t`Read from right to left, the formulas turn squares and products into double angles.`,
+          t`From $\cos 2A = 1 - 2\sin^2 A$: $1 - \cos 2A = 2\sin^2 A$.`,
+          t`From $\cos 2A = 2\cos^2 A - 1$: $1 + \cos 2A = 2\cos^2 A$.`,
+          t`Sine squared goes with the minus sign: at $A = 0$, $1 - \cos 0 = 0 = 2\sin^2 0$.`,
+          t`From $\sin 2A = 2\sin A\cos A$: $\sin A\cos A = \frac{1}{2}\sin 2A$.`,
+        ],
+      },
+      {
+        title: "From one ratio and a quadrant",
+        points: [
+          t`Often one ratio of $A$ is given, with the quadrant $A$ lies in.`,
+          t`First find $\sin A$ and $\cos A$, with the signs the quadrant gives them.`,
+          t`Then put them in the double-angle formulas.`,
+          t`$\sin 2A$ and $\tan 2A$ depend on those signs.`,
+          t`$\cos 2A$ uses only squares, so the signs don't change it.`,
+        ],
+      },
+      {
+        title: "Any angle can be a double",
+        points: [
+          t`Any angle is the double of its half: $6\theta = 2(3\theta)$.`,
+          t`So the formulas work with $3\theta$ in place of $A$.`,
+          t`For example, $\sin 6\theta = 2\sin 3\theta\cos 3\theta$.`,
+        ],
+      },
+      {
+        title: "Cosines whose angles keep doubling",
+        points: [
+          t`In $\cos\theta\cos 2\theta\cos 4\theta$, each angle is double the one before.`,
+          t`Put $\sin\theta$ in front, and the product **folds up**: a pair at a time, it joins into one sine.`,
+          t`First, $2\sin\theta\cos\theta = \sin 2\theta$.`,
+          t`Then $2\sin 2\theta\cos 2\theta = \sin 4\theta$.`,
+          t`Then $2\sin 4\theta\cos 4\theta = \sin 8\theta$.`,
+          t`Three steps used three 2s, so $8\sin\theta\cos\theta\cos 2\theta\cos 4\theta$ equals $\sin 8\theta$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $\tan A = -\frac{3}{4}$ and $\frac{3\pi}{2} < A < 2\pi$, find $\sin 2A$, $\cos 2A$ and $\tan 2A$.`,
       steps: [
-        t`In the fourth quadrant $\cos A > 0$ and $\sin A < 0$. $\sec^2 A = 1 + \frac{9}{16} = \frac{25}{16}$, so $\cos A = \frac{4}{5}$ and $\sin A = \tan A\cos A = -\frac{3}{5}$.`,
-        t`$\sin 2A = 2\sin A\cos A = 2\left(-\frac{3}{5}\right)\left(\frac{4}{5}\right) = -\frac{24}{25}$.`,
-        t`$\cos 2A = \cos^2 A - \sin^2 A = \frac{16}{25} - \frac{9}{25} = \frac{7}{25}$.`,
-        t`$\tan 2A = \dfrac{2\tan A}{1 - \tan^2 A} = \dfrac{-\frac{3}{2}}{1 - \frac{9}{16}} = -\frac{3}{2} \cdot \frac{16}{7} = -\frac{24}{7}$. Check: $\frac{\sin 2A}{\cos 2A} = \frac{-24/25}{7/25} = -\frac{24}{7}$.`,
+        t`In the fourth quadrant $\cos A > 0$ and $\sin A < 0$. $\sec^2 A = 1 + \frac{9}{16}$ $= \frac{25}{16}$, so $\cos A = \frac{4}{5}$ and $\sin A = \tan A\cos A$ $= -\frac{3}{5}$.`,
+        t`$\sin 2A = 2\sin A\cos A$ $= 2\left(-\frac{3}{5}\right)\left(\frac{4}{5}\right)$ $= -\frac{24}{25}$.`,
+        t`$\cos 2A = \cos^2 A - \sin^2 A$ $= \frac{16}{25} - \frac{9}{25}$ $= \frac{7}{25}$.`,
+        t`$\tan 2A = \dfrac{2\tan A}{1 - \tan^2 A}$ $= \dfrac{-\frac{3}{2}}{1 - \frac{9}{16}}$ $= -\frac{3}{2} \cdot \frac{16}{7}$ $= -\frac{24}{7}$. Check: $\frac{\sin 2A}{\cos 2A} = \frac{-24/25}{7/25}$ $= -\frac{24}{7}$.`,
       ],
       answer: t`$\sin 2A = -\frac{24}{25}$, $\cos 2A = \frac{7}{25}$, $\tan 2A = -\frac{24}{7}$.`,
     },

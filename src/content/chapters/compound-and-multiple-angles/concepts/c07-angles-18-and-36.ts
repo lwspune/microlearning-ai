@@ -1,6 +1,12 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The point r from O along the arm at `deg` degrees. */
+const tip = (r: number, deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(r * Math.cos(a)).toFixed(3), +(r * Math.sin(a)).toFixed(3)];
+};
 
 export const c07: Concept = {
   id: "C07",
@@ -10,26 +16,96 @@ export const c07: Concept = {
     reveal: t`Split $5\theta = 90^\circ$ as $2\theta + 3\theta$: then $2\theta$ and $3\theta$ are complements, so $\sin 2\theta = \cos 3\theta$. Expand both with the double and triple angle formulas and divide by $\cos\theta$: what is left is a quadratic in $\sin\theta$, $4\sin^2\theta + 2\sin\theta - 1 = 0$. A quadratic's roots are surds, so $\sin 18^\circ$ is one.`,
   },
   explanation: {
-    intuition: t`Most angles have no neat exact sine. $18^\circ$ does, because five of them make a right angle: $2\theta + 3\theta = 90^\circ$. So $\sin 2\theta = \cos 3\theta$, and the double and triple angle formulas turn that into a quadratic in $\sin\theta$. Once $\sin 18^\circ$ is known, $\cos 36^\circ$ follows from $\cos 2\theta$. The rest of the family ($\cos 72^\circ$, $\sin 54^\circ$, $\cos 18^\circ$, $\sin 36^\circ$) comes from complements and $\sin^2\theta + \cos^2\theta = 1$.`,
-    formal: t`**Set up.** Let $\theta = 18^\circ$. Then $5\theta = 90^\circ$, so $2\theta = 90^\circ - 3\theta$ and $\sin 2\theta = \cos 3\theta$.
-
-**The quadratic.** $2\sin\theta\cos\theta = 4\cos^3\theta - 3\cos\theta$. Divide by $\cos\theta \ne 0$: $2\sin\theta = 4\cos^2\theta - 3 = 1 - 4\sin^2\theta$. So $4\sin^2\theta + 2\sin\theta - 1 = 0$ and $\sin\theta = \frac{-2 \pm \sqrt{20}}{8} = \frac{-1 \pm \sqrt{5}}{4}$. $18^\circ$ is acute: keep the positive root.
-
-**The two values.**
-
-$$\sin 18^\circ = \frac{\sqrt{5} - 1}{4}, \qquad \cos 36^\circ = 1 - 2\sin^2 18^\circ = \frac{\sqrt{5} + 1}{4}$$
-
-Size check: $\sin 18^\circ \approx 0.31$ is below $\sin 30^\circ = \frac{1}{2}$; $\cos 36^\circ \approx 0.81$ is above $\cos 60^\circ = \frac{1}{2}$.
-
-**The relatives.** Complements: $\cos 72^\circ = \sin 18^\circ$ and $\sin 54^\circ = \cos 36^\circ$. Pythagoras: $\cos 18^\circ = \sqrt{1 - \sin^2 18^\circ}$ and $\sin 36^\circ = \sqrt{1 - \cos^2 36^\circ}$. Write $1 - \sin^2 18^\circ$ as one fraction first, then take the root of the whole.`,
+    intuition: [
+      t`Most angles have no neat exact sine, but $18^\circ$ does: five $18^\circ$ angles make a right angle.`,
+      t`Let $\theta = 18^\circ$: two of them make $2\theta = 36^\circ$.`,
+      t`The other three make $3\theta = 54^\circ$, so $2\theta + 3\theta = 90^\circ$.`,
+      t`Angles adding up to $90^\circ$ are **complements**, so $\sin 2\theta = \cos 3\theta$.`,
+      t`The double and triple angle formulas turn this into a **quadratic** in $\sin\theta$, an equation with $\sin^2\theta$ in it.`,
+      t`From $\sin 18^\circ$ come $\cos 36^\circ$, by the formula for $\cos 2\theta$, and the rest of the family.`,
+    ],
+    figure: {
+      alt: "The first quadrant of the xy-plane, with the initial arm along the positive x-axis. Dashed arms at 18°, 36°, 54° and 72° split the right angle into five 18° angles. An arm turns 36° from the initial arm: that is 2θ. A second arm starts there and turns 54° more, up to the y-axis: that is 3θ. Together they make 90°, so sin 2θ = cos 3θ.",
+      axes: "none",
+      view: { x: [-1.1, 2.9], y: [-0.5, 2.9] },
+      elements: [
+        { kind: "segment", from: [-0.3, 0], to: [2.7, 0], tone: "muted" },
+        { kind: "label", at: [2.7, 0], label: "x", labelAt: "s", tone: "muted" },
+        { kind: "segment", from: [0, -0.3], to: [0, 2.7], tone: "muted" },
+        { kind: "label", at: [0, 2.7], label: "y", labelAt: "w", tone: "muted" },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+        { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good" },
+        { kind: "label", at: [1.2, 0], label: "initial arm", labelAt: "s", tone: "good" },
+        ...[18, 36, 54, 72].map((d): FigureElement => ({ kind: "segment", from: [0, 0], to: tip(2.4, d), dashed: true, tone: "muted", step: 1 })),
+        { kind: "label", at: tip(1.9, 9), label: "18°", labelAt: "e", tone: "muted", step: 1 },
+        { kind: "turn", r: 1.5, to: 36, label: "2θ = 36°", labelAt: "e", step: 2 },
+        { kind: "turn", r: 1.9, from: 36, to: 90, label: "3θ = 54°", labelAt: "w", step: 3 },
+        { kind: "label", at: [1.0, 2.45], label: "sin 2θ = cos 3θ", labelAt: "e", tone: "good", step: 4 },
+      ],
+    },
+    formal: [
+      {
+        title: "An equation for sin 18°",
+        points: [
+          t`Let $\theta = 18^\circ$: then $5\theta = 90^\circ$, so $2\theta = 90^\circ - 3\theta$.`,
+          t`So $\sin 2\theta = \sin(90^\circ - 3\theta)$, which is $\cos 3\theta$.`,
+          t`The double angle formula: $\sin 2\theta = 2\sin\theta\cos\theta$.`,
+          t`The triple angle formula: $\cos 3\theta = 4\cos^3\theta - 3\cos\theta$.`,
+          t`So $2\sin\theta\cos\theta$ equals $4\cos^3\theta - 3\cos\theta$.`,
+        ],
+      },
+      {
+        title: "The quadratic in sin θ",
+        points: [
+          t`$\cos 18^\circ$ is not $0$, so divide both sides by $\cos\theta$.`,
+          t`That leaves $2\sin\theta = 4\cos^2\theta - 3$.`,
+          t`Put $\cos^2\theta = 1 - \sin^2\theta$: the right side becomes $1 - 4\sin^2\theta$.`,
+          t`So $2\sin\theta = 1 - 4\sin^2\theta$.`,
+          t`Rearranged, $4\sin^2\theta + 2\sin\theta - 1 = 0$: a quadratic in $\sin\theta$.`,
+        ],
+      },
+      {
+        title: "Solving the quadratic",
+        points: [
+          t`The roots of $ax^2 + bx + c = 0$ are $\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.`,
+          t`Here $a = 4$, $b = 2$ and $c = -1$, so the bottom is $2a = 8$.`,
+          t`So $\sin\theta = \frac{-2 \pm \sqrt{20}}{8}$, and $\sqrt{20} = 2\sqrt{5}$.`,
+          t`That is $\sin\theta = \frac{-1 \pm \sqrt{5}}{4}$.`,
+          t`$18^\circ$ is **acute**, between $0^\circ$ and $90^\circ$, so $\sin 18^\circ$ is positive.`,
+          t`Keep the positive root: $\sin 18^\circ = \frac{\sqrt{5} - 1}{4}$.`,
+        ],
+      },
+      {
+        title: "The two values",
+        points: [
+          t`$\sin 18^\circ = \frac{\sqrt{5} - 1}{4}$, about $0.31$.`,
+          t`The formula for $\cos 2\theta$ gives $\cos 36^\circ = 1 - 2\sin^2 18^\circ$.`,
+          t`That works out to $\cos 36^\circ = \frac{\sqrt{5} + 1}{4}$, about $0.81$.`,
+          t`Size check: $\sin 18^\circ$ is below $\sin 30^\circ = \frac{1}{2}$.`,
+          t`And $\cos 36^\circ$ is above $\cos 60^\circ = \frac{1}{2}$.`,
+          t`So $\sin 18^\circ$ has the $-1$ and $\cos 36^\circ$ the $+1$: don't swap them.`,
+        ],
+      },
+      {
+        title: "The rest of the family",
+        points: [
+          t`$\cos 72^\circ = \sin 18^\circ$, since $72^\circ$ and $18^\circ$ are complements.`,
+          t`$\sin 54^\circ = \cos 36^\circ$, since $54^\circ$ and $36^\circ$ are complements.`,
+          t`The identity $\sin^2\theta + \cos^2\theta = 1$ gives $\cos 18^\circ$ and $\sin 36^\circ$.`,
+          t`$\cos 18^\circ = \sqrt{1 - \sin^2 18^\circ}$, the positive root, as $18^\circ$ is acute.`,
+          t`$\sin 36^\circ = \sqrt{1 - \cos^2 36^\circ}$, positive for the same reason.`,
+          t`Work out $1 - \sin^2 18^\circ$ as one fraction first, then take the root of the whole.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $\sin 54^\circ \cdot \cos 72^\circ$.`,
       steps: [
-        t`$54^\circ = 90^\circ - 36^\circ$, so $\sin 54^\circ = \cos 36^\circ = \frac{\sqrt{5} + 1}{4}$.`,
-        t`$72^\circ = 90^\circ - 18^\circ$, so $\cos 72^\circ = \sin 18^\circ = \frac{\sqrt{5} - 1}{4}$.`,
-        t`Multiply: $\frac{(\sqrt{5} + 1)(\sqrt{5} - 1)}{16} = \frac{5 - 1}{16}$.`,
+        t`$54^\circ = 90^\circ - 36^\circ$, so $\sin 54^\circ = \cos 36^\circ$, which is $\frac{\sqrt{5} + 1}{4}$.`,
+        t`$72^\circ = 90^\circ - 18^\circ$, so $\cos 72^\circ = \sin 18^\circ$, which is $\frac{\sqrt{5} - 1}{4}$.`,
+        t`Multiply: $\frac{(\sqrt{5} + 1)(\sqrt{5} - 1)}{16}$, which is $\frac{5 - 1}{16}$.`,
       ],
-      answer: t`$\sin 54^\circ \cdot \cos 72^\circ = \frac{1}{4}$.`,
+      answer: t`$\sin 54^\circ \cdot \cos 72^\circ$ equals $\frac{1}{4}$.`,
     },
     visualSpec: t`Drag $\theta$ from $0^\circ$ to $45^\circ$: the graphs of $\sin 2\theta$ and $\cos 3\theta$ cross at exactly $\theta = 18^\circ$, and beside them the parabola $y = 4x^2 + 2x - 1$ shows its two roots, the negative one greyed out.`,
   },

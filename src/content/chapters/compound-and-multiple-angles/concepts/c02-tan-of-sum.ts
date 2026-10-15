@@ -10,20 +10,68 @@ export const c02: Concept = {
     reveal: t`Yes: it is exactly $1$. Since $20^\circ + 25^\circ = 45^\circ$, $\tan 45^\circ = \frac{\tan 20^\circ + \tan 25^\circ}{1 - \tan 20^\circ \tan 25^\circ} = 1$. Clear the fraction: $\tan 20^\circ + \tan 25^\circ = 1 - \tan 20^\circ \tan 25^\circ$, so the sum is $1$.`,
   },
   explanation: {
-    intuition: t`$\tan(A + B)$ is $\frac{\sin(A + B)}{\cos(A + B)}$. Expand both with the sin and cos formulas, then divide top and bottom by $\cos A\cos B$: every term turns into a tan. The top keeps the sign of $A \pm B$; the bottom copies the sign of $\cos(A \pm B)$, which is the opposite one. So $\tan(A + B)$ is never just $\tan A + \tan B$.`,
-    formal: t`**The formulas**
-
-$$\tan(A + B) = \frac{\tan A + \tan B}{1 - \tan A\tan B}, \qquad \tan(A - B) = \frac{\tan A - \tan B}{1 + \tan A\tan B}$$
-
-The top has the bracket's sign; the bottom has the opposite sign.
-
-**Where they come from.** $\frac{\sin A\cos B + \cos A\sin B}{\cos A\cos B - \sin A\sin B}$, divided top and bottom by $\cos A\cos B$.
-
-**With $\frac{\pi}{4}$.** $\tan\frac{\pi}{4} = 1$, so $\tan\left(\frac{\pi}{4} + x\right) = \frac{1 + \tan x}{1 - \tan x}$ and $\tan\left(\frac{\pi}{4} - x\right) = \frac{1 - \tan x}{1 + \tan x}$. Read backwards, $\frac{\cos x + \sin x}{\cos x - \sin x} = \tan\left(\frac{\pi}{4} + x\right)$: divide by $\cos x$ first.
-
-**cot.** $\cot(A \pm B) = \frac{1}{\tan(A \pm B)}$: find the tan, then flip it. Don't write cot into the tan pattern.
-
-**Clearing the fraction.** If $C = A + B$, then $\tan C(1 - \tan A\tan B) = \tan A + \tan B$, so $\tan C - \tan A - \tan B = \tan A\tan B\tan C$. For example $\tan 3x - \tan 2x - \tan x = \tan 3x\tan 2x\tan x$.`,
+    intuition: [
+      t`Recall: a **compound angle** is a sum or difference of two angles, written $A \pm B$.`,
+      t`Like any tan, $\tan(A + B)$ is $\frac{\sin(A + B)}{\cos(A + B)}$.`,
+      t`Expand the top and the bottom with the sin and cos formulae.`,
+      t`Then divide the top and the bottom by $\cos A\cos B$: every term turns into a tan.`,
+      t`The top keeps the sign of $A \pm B$; the bottom copies the sign of $\cos(A \pm B)$, the opposite one.`,
+      t`So $\tan(A + B)$ is never just $\tan A + \tan B$.`,
+    ],
+    formal: [
+      {
+        title: "The two tan formulae",
+        points: [
+          t`$\tan(A + B)$ equals $\frac{\tan A + \tan B}{1 - \tan A\tan B}$.`,
+          t`$\tan(A - B)$ equals $\frac{\tan A - \tan B}{1 + \tan A\tan B}$.`,
+          t`The top has the same sign as the bracket.`,
+          t`The bottom has the opposite sign.`,
+        ],
+      },
+      {
+        title: "Where they come from",
+        points: [
+          t`Start from $\tan(A + B)$, which is $\frac{\sin(A + B)}{\cos(A + B)}$.`,
+          t`Its top is $\sin A\cos B + \cos A\sin B$.`,
+          t`Its bottom is $\cos A\cos B - \sin A\sin B$.`,
+          t`Divide every term, on the top and the bottom, by $\cos A\cos B$.`,
+          t`The top becomes $\tan A + \tan B$, since $\frac{\sin A\cos B}{\cos A\cos B} = \tan A$.`,
+          t`The bottom becomes $1 - \tan A\tan B$, which gives the formula.`,
+        ],
+      },
+      {
+        title: "When one angle is π/4",
+        points: [
+          t`$\tan\frac{\pi}{4} = 1$, so put $A = \frac{\pi}{4}$ and $\tan A = 1$ in the formulae.`,
+          t`$\tan\left(\frac{\pi}{4} + x\right)$ equals $\frac{1 + \tan x}{1 - \tan x}$.`,
+          t`$\tan\left(\frac{\pi}{4} - x\right)$ equals $\frac{1 - \tan x}{1 + \tan x}$.`,
+          t`Read backwards, these turn a fraction into a single tan.`,
+          t`For $\frac{\cos x + \sin x}{\cos x - \sin x}$, first divide the top and the bottom by $\cos x$.`,
+          t`It becomes $\frac{1 + \tan x}{1 - \tan x}$, which is $\tan\left(\frac{\pi}{4} + x\right)$.`,
+        ],
+      },
+      {
+        title: "cot of a sum or difference",
+        points: [
+          t`The **reciprocal** of a ratio is that ratio turned upside down: $\cot\theta = \frac{1}{\tan\theta}$.`,
+          t`So $\cot(A \pm B)$ is $\frac{1}{\tan(A \pm B)}$.`,
+          t`Find the tan first, then flip it.`,
+          t`For example, $\cot(A - B)$ equals $\frac{1 + \tan A\tan B}{\tan A - \tan B}$.`,
+          t`Don't just write cot in place of tan in the tan formula: that is wrong.`,
+        ],
+      },
+      {
+        title: "Clearing the fraction",
+        points: [
+          t`Suppose $C = A + B$, so $\tan C$ equals $\frac{\tan A + \tan B}{1 - \tan A\tan B}$.`,
+          t`Multiply both sides by the bottom: $\tan C(1 - \tan A\tan B)$ equals $\tan A + \tan B$.`,
+          t`Expand the bracket: $\tan C - \tan A\tan B\tan C$ equals $\tan A + \tan B$.`,
+          t`Move $\tan A + \tan B$ to the left, and $\tan A\tan B\tan C$ to the right.`,
+          t`So $\tan C - \tan A - \tan B$ equals $\tan A\tan B\tan C$.`,
+          t`For example, $3x = 2x + x$, so $\tan 3x - \tan 2x - \tan x$ equals $\tan 3x\tan 2x\tan x$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Simplify $\dfrac{\cos 27^\circ + \sin 27^\circ}{\cos 27^\circ - \sin 27^\circ}$.`,
       steps: [

@@ -1,6 +1,29 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The xy-plane drawn as plain axes (only directions matter here), O labelled below the initial arm's start. */
+function planeOf(len: number): FigureElement[] {
+  return [
+    { kind: "segment", from: [-len, 0], to: [len, 0], tone: "muted" },
+    { kind: "label", at: [len, 0], label: "x", labelAt: "n", tone: "muted" },
+    { kind: "segment", from: [0, -1], to: [0, len], tone: "muted" },
+    { kind: "label", at: [0, len], label: "y", labelAt: "w", tone: "muted" },
+    { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+  ];
+}
+
+/** The initial arm along the positive x-axis, labelled below it, clear of the arms above. */
+const initialArm: FigureElement[] = [
+  { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good" },
+  { kind: "label", at: [1.5, 0], label: "initial arm", labelAt: "s", tone: "good" },
+];
+
+/** The point r from O along the arm at `deg` degrees. */
+const tip = (r: number, deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(r * Math.cos(a)).toFixed(3), +(r * Math.sin(a)).toFixed(3)];
+};
 
 export const c08: Concept = {
   id: "C08",
@@ -10,24 +33,88 @@ export const c08: Concept = {
     reveal: t`Yes. Turn the sum into a product: $\sin 75^\circ + \sin 15^\circ = 2\sin\frac{75^\circ + 15^\circ}{2}\cos\frac{75^\circ - 15^\circ}{2} = 2\sin 45^\circ\cos 30^\circ = 2 \cdot \frac{1}{\sqrt{2}} \cdot \frac{\sqrt{3}}{2} = \frac{\sqrt{6}}{2}$.`,
   },
   explanation: {
-    intuition: t`A sum like $\sin C + \sin D$ can't be simplified term by term, but a product can: factors cancel, and a product is $0$ when one factor is. These formulas turn a sum of two sines or two cosines into a product. The new angles are the average $\frac{C+D}{2}$ and the half-gap $\frac{C-D}{2}$. They are the formulas of C01 read backwards: $\sin(A + B) + \sin(A - B) = 2\sin A\cos B$.`,
-    formal: t`**The four formulas**
-
-$$\begin{aligned} \sin C + \sin D &= 2\sin\tfrac{C+D}{2}\cos\tfrac{C-D}{2} \\ \sin C - \sin D &= 2\cos\tfrac{C+D}{2}\sin\tfrac{C-D}{2} \\ \cos C + \cos D &= 2\cos\tfrac{C+D}{2}\cos\tfrac{C-D}{2} \\ \cos C - \cos D &= -2\sin\tfrac{C+D}{2}\sin\tfrac{C-D}{2} \end{aligned}$$
-
-**Where they come from.** Add $\sin(A + B)$ and $\sin(A - B)$: $2\sin A\cos B$. Put $C = A + B$ and $D = A - B$; then $A = \frac{C+D}{2}$ and $B = \frac{C-D}{2}$. The other three come the same way.
-
-**The sign trap.** Only $\cos C - \cos D$ has a minus in front, because $\cos(A + B) - \cos(A - B) = -2\sin A\sin B$. When $C < D$, $\sin\frac{C-D}{2}$ is negative too and the minuses cancel: $\cos 10^\circ - \cos 50^\circ = -2\sin 30^\circ\sin(-20^\circ) = \sin 20^\circ$.
-
-**Four terms.** Pair the terms whose angles have the same sum, so each pair gives the same factor: $(\sin 7\theta + \sin\theta) + (\sin 5\theta + \sin 3\theta) = 2\sin 4\theta(\cos 3\theta + \cos\theta)$.
-
-**Quotients.** Factorise the top and the bottom separately. A common factor cancels, often leaving a single tan or cot.`,
+    intuition: [
+      t`A **product** is a multiplication; its parts are its **factors**, like $\sin A$ and $\cos B$ in $2\sin A\cos B$.`,
+      t`A sum like $\sin C + \sin D$ can't be simplified term by term.`,
+      t`A product can: factors cancel, and a product is $0$ when one factor is.`,
+      t`To **factorise** a sum is to rewrite it as a product; these formulas do it for two angles $C$ and $D$.`,
+      t`The product's angles are the **average** $\frac{C+D}{2}$, the direction halfway between $C$ and $D$.`,
+      t`And the **half-gap** $\frac{C-D}{2}$: $C$ is this far past the average, and $D$ this far short of it.`,
+    ],
+    figure: {
+      alt: "The xy-plane. One arm turns 15° from the initial arm to the angle D, another turns 135° to the angle C. A dashed arm at 75° lies halfway between them: the average, (C + D)/2. Two arcs, one on each side of it, mark the half-gap (C − D)/2 = 60°: C is 60° past the average and D is 60° short of it.",
+      axes: "none",
+      view: { x: [-2.8, 2.8], y: [-1.2, 2.8] },
+      elements: [
+        ...planeOf(2.6),
+        ...initialArm,
+        { kind: "turn", r: 2.6, to: 15, label: "D", labelAt: "n", step: 4 },
+        { kind: "turn", r: 2.2, to: 135, label: "C", labelAt: "sw", step: 4 },
+        { kind: "segment", from: [0, 0], to: tip(2.2, 75), dashed: true, step: 5 },
+        { kind: "label", at: tip(2.2, 75), label: "(C + D)/2", labelAt: "e", step: 5 },
+        { kind: "arc", centre: [0, 0], r: 1.9, from: 15, to: 75, label: "(C − D)/2", labelAt: "ne", tone: "good", step: 6 },
+        { kind: "arc", centre: [0, 0], r: 1.9, from: 75, to: 135, label: "(C − D)/2", labelAt: "nw", tone: "good", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "The four formulas",
+        points: [
+          t`$\sin C + \sin D$ equals $2\sin\frac{C+D}{2}\cos\frac{C-D}{2}$.`,
+          t`$\sin C - \sin D$ equals $2\cos\frac{C+D}{2}\sin\frac{C-D}{2}$.`,
+          t`$\cos C + \cos D$ equals $2\cos\frac{C+D}{2}\cos\frac{C-D}{2}$.`,
+          t`$\cos C - \cos D$ equals $-2\sin\frac{C+D}{2}\sin\frac{C-D}{2}$.`,
+          t`Each product starts with $2$, or $-2$, and uses the average and the half-gap.`,
+        ],
+      },
+      {
+        title: "Where they come from",
+        points: [
+          t`Add $\sin(A + B)$ and $\sin(A - B)$, using the compound-angle formulas.`,
+          t`The $\cos A\sin B$ terms cancel, so $\sin(A + B) + \sin(A - B)$ equals $2\sin A\cos B$.`,
+          t`Now put $C = A + B$ and $D = A - B$.`,
+          t`Then $A = \frac{C+D}{2}$ and $B = \frac{C-D}{2}$, which gives the first formula.`,
+          t`The other three come the same way.`,
+          t`So these are the compound-angle formulas read backwards.`,
+        ],
+      },
+      {
+        title: "The sign trap",
+        points: [
+          t`Only $\cos C - \cos D$ has a minus in front.`,
+          t`That is because $\cos(A + B) - \cos(A - B)$ equals $-2\sin A\sin B$.`,
+          t`When $C < D$, the half-gap is negative, so $\sin\frac{C-D}{2}$ is negative too.`,
+          t`Then the two minuses cancel.`,
+          t`For example, $\cos 10^\circ - \cos 50^\circ$ equals $-2\sin 30^\circ\sin(-20^\circ)$.`,
+          t`$\sin(-20^\circ) = -\sin 20^\circ$ and $2\sin 30^\circ = 1$, so it equals $\sin 20^\circ$.`,
+        ],
+      },
+      {
+        title: "Four terms",
+        points: [
+          t`With four terms, pair the ones whose angles have the same sum.`,
+          t`Then each pair gives the same factor.`,
+          t`In $\sin 7\theta + \sin 5\theta + \sin 3\theta + \sin\theta$, pair $7\theta$ with $\theta$, and $5\theta$ with $3\theta$.`,
+          t`Both pairs add to $8\theta$: they give $2\sin 4\theta\cos 3\theta$ and $2\sin 4\theta\cos\theta$.`,
+          t`So the sum is $2\sin 4\theta(\cos 3\theta + \cos\theta)$.`,
+        ],
+      },
+      {
+        title: "Quotients",
+        points: [
+          t`A **quotient** is one expression divided by another.`,
+          t`Factorise the top and the bottom separately.`,
+          t`A factor common to both then cancels.`,
+          t`What is left is often a single tan or cot.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Simplify $\dfrac{\cos 3\theta - \cos 7\theta}{\sin 7\theta - \sin 3\theta}$.`,
       steps: [
-        t`Top, a cos difference: $\cos 3\theta - \cos 7\theta = -2\sin\frac{3\theta + 7\theta}{2}\sin\frac{3\theta - 7\theta}{2} = -2\sin 5\theta\sin(-2\theta)$.`,
+        t`Top, a cos difference: $\cos 3\theta - \cos 7\theta$ $= -2\sin\frac{3\theta + 7\theta}{2}\sin\frac{3\theta - 7\theta}{2}$ $= -2\sin 5\theta\sin(-2\theta)$.`,
         t`$\sin(-2\theta) = -\sin 2\theta$, so the two minuses cancel: the top is $2\sin 5\theta\sin 2\theta$.`,
-        t`Bottom, a sin difference: $\sin 7\theta - \sin 3\theta = 2\cos\frac{7\theta + 3\theta}{2}\sin\frac{7\theta - 3\theta}{2} = 2\cos 5\theta\sin 2\theta$.`,
+        t`Bottom, a sin difference: $\sin 7\theta - \sin 3\theta$ $= 2\cos\frac{7\theta + 3\theta}{2}\sin\frac{7\theta - 3\theta}{2}$ $= 2\cos 5\theta\sin 2\theta$.`,
         t`Cancel $2\sin 2\theta$: $\dfrac{\sin 5\theta}{\cos 5\theta}$.`,
       ],
       answer: t`$\tan 5\theta$.`,

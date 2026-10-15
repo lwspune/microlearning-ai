@@ -1,6 +1,35 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/**
+ * The xy-plane drawn as plain axes (no grid or numbers: only directions matter here), with its quadrants
+ * unless `quadrants` is false; O is labelled at `oAt`, in a quadrant no arm crosses.
+ */
+function planeOf(len: number, quadrants = true, oAt: FigureElement["labelAt"] = "sw"): FigureElement[] {
+  const q = len * 0.75;
+  const axes: FigureElement[] = [
+    { kind: "segment", from: [-len, 0], to: [len, 0], tone: "muted" },
+    { kind: "label", at: [len, 0], label: "x", labelAt: "s", tone: "muted" },
+    { kind: "segment", from: [0, -len], to: [0, len], tone: "muted" },
+    { kind: "label", at: [0, len], label: "y", labelAt: "w", tone: "muted" },
+    { kind: "point", at: [0, 0], label: "O", labelAt: oAt, tone: "muted" },
+  ];
+  if (!quadrants) return axes;
+  return [
+    ...axes,
+    { kind: "label", at: [q, q], label: "I", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [-q, q], label: "II", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [-q, -q], label: "III", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [q, -q], label: "IV", labelAt: "n", tone: "muted" },
+  ];
+}
+
+/** The initial arm along the positive x-axis, labelled clear of the arms and axis labels. */
+const initialArm = (labelAt: Pt = [2.05, 0]): FigureElement[] => [
+  { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good" },
+  { kind: "label", at: labelAt, label: "initial arm", labelAt: "n", tone: "good" },
+];
 
 export const c05: Concept = {
   id: "C05",
@@ -10,23 +39,78 @@ export const c05: Concept = {
     reveal: t`Not by halving: a ratio does not halve when the angle does. Read $\cos 2A = 2\cos^2 A - 1$ backwards with $2A = 60^\circ$: $\cos^2 30^\circ = \frac{1 + \cos 60^\circ}{2} = \frac{3}{4}$. So $\cos 30^\circ = \frac{\sqrt{3}}{2}$, positive because $30^\circ$ is in quadrant I.`,
   },
   explanation: {
-    intuition: t`A half-angle formula is a double-angle formula read backwards. In $\cos x = 1 - 2\sin^2\frac{x}{2}$, the angle $x$ is double $\frac{x}{2}$, so solving for $\sin^2\frac{x}{2}$ gives it from $\cos x$ alone. The formula gives a square, so its root comes with a $\pm$ and the formula can't choose. The angle $\frac{x}{2}$ chooses: halve the range of $x$ to find its quadrant.`,
-    formal: t`**The formulas.** From $\cos x = 1 - 2\sin^2\frac{x}{2} = 2\cos^2\frac{x}{2} - 1$:
-$$\sin^2\frac{x}{2} = \frac{1 - \cos x}{2}, \qquad \cos^2\frac{x}{2} = \frac{1 + \cos x}{2}$$
-The minus sign goes with $\sin$: at $x = 0$, $\sin 0 = 0$ and $1 - \cos 0 = 0$.
-
-**tan of a half angle.** $\tan\frac{x}{2} = \frac{\sin x}{1 + \cos x}$. There is no root here, so the sign comes out by itself. Its square is $\tan^2\frac{x}{2} = \frac{1 - \cos x}{1 + \cos x}$.
-
-**Picking the sign.** Take the root, then halve the range of $x$. If $\pi < x < \frac{3\pi}{2}$, then $\frac{\pi}{2} < \frac{x}{2} < \frac{3\pi}{4}$: quadrant II, so $\sin\frac{x}{2} > 0$ and $\cos\frac{x}{2} < 0$. The sign belongs to $\frac{x}{2}$, not to $x$.
-
-**In simplifications.** Read the formulas the other way: $1 - \cos x = 2\sin^2\frac{x}{2}$, $1 + \cos x = 2\cos^2\frac{x}{2}$, and $\sin x = 2\sin\frac{x}{2}\cos\frac{x}{2}$.`,
+    intuition: [
+      t`The **half angle** of an angle $x$ is $\frac{x}{2}$: $x$ is double it.`,
+      t`A **half-angle formula** gives a ratio of $\frac{x}{2}$ from a ratio of $x$.`,
+      t`It is a double-angle formula read backwards.`,
+      t`In $\cos x = 1 - 2\sin^2\frac{x}{2}$, solve for $\sin^2\frac{x}{2}$: you get it from $\cos x$ alone.`,
+      t`The formula gives a square, so its root comes with a $\pm$, and the formula can't choose.`,
+      t`The angle $\frac{x}{2}$ chooses: halve the interval $x$ lies in to find its quadrant.`,
+    ],
+    formal: [
+      {
+        title: "Sin and cos of half angles",
+        points: [
+          t`Put $A = \frac{x}{2}$, so $2A = x$, in two forms of $\cos 2A$.`,
+          t`$\cos x = 1 - 2\sin^2\frac{x}{2}$, so $\sin^2\frac{x}{2} = \frac{1 - \cos x}{2}$.`,
+          t`$\cos x = 2\cos^2\frac{x}{2} - 1$, so $\cos^2\frac{x}{2} = \frac{1 + \cos x}{2}$.`,
+          t`The minus sign goes with $\sin$.`,
+          t`Check at $x = 0$: $\sin 0 = 0$, and $1 - \cos 0 = 0$.`,
+        ],
+      },
+      {
+        title: "Read the other way",
+        points: [
+          t`Read the other way, the formulas turn expressions in $x$ into ones in $\frac{x}{2}$.`,
+          t`$1 - \cos x = 2\sin^2\frac{x}{2}$.`,
+          t`$1 + \cos x = 2\cos^2\frac{x}{2}$.`,
+          t`And from $\sin 2A = 2\sin A\cos A$: $\sin x = 2\sin\frac{x}{2}\cos\frac{x}{2}$.`,
+          t`Use them this way in simplifications.`,
+        ],
+      },
+      {
+        title: "Tan of a half angle",
+        points: [
+          t`$\tan\frac{x}{2} = \frac{\sin x}{1 + \cos x}$.`,
+          t`Why: its top is $2\sin\frac{x}{2}\cos\frac{x}{2}$, and its bottom is $2\cos^2\frac{x}{2}$.`,
+          t`Cancel $2\cos\frac{x}{2}$: what is left is $\frac{\sin\frac{x}{2}}{\cos\frac{x}{2}} = \tan\frac{x}{2}$.`,
+          t`There is no root here, so the sign comes out by itself.`,
+          t`Its square, $\tan^2\frac{x}{2}$, is $\frac{1 - \cos x}{1 + \cos x}$.`,
+        ],
+      },
+      {
+        title: "Picking the sign",
+        points: [
+          t`First take the square root, with both signs: $\sin\frac{x}{2} = \pm\sqrt{\frac{1 - \cos x}{2}}$.`,
+          t`Say $\pi < x < \frac{3\pi}{2}$: the arm of $x$ is in quadrant III.`,
+          t`Halve each end of the interval: $\frac{\pi}{2} < \frac{x}{2} < \frac{3\pi}{4}$.`,
+          t`So $\frac{x}{2}$ is in quadrant II, where $\sin\frac{x}{2} > 0$ and $\cos\frac{x}{2} < 0$.`,
+          t`The sign belongs to $\frac{x}{2}$, not to $x$: quadrant III would make $\sin$ negative.`,
+        ],
+        figure: {
+          alt: "The xy-plane with its four quadrants. Quadrant III, where π < x < 3π/2, is shaded, and an arm turns from the initial arm to an angle x there. Halving each end gives π/2 < x/2 < 3π/4: a narrower wedge in quadrant II is shaded, and an arm turns half as far, to x/2, inside it. Beside it: sin(x/2) > 0 and cos(x/2) < 0.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            ...planeOf(2.6, true, "se"),
+            ...initialArm(),
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 180, to: 270 }], tone: "bad", step: 2 },
+            { kind: "turn", r: 2, to: 240, label: "x", labelAt: "se", tone: "bad", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 90, to: 135 }], step: 3 },
+            { kind: "turn", r: 2, to: 120, label: "x/2", labelAt: "ne", step: 3 },
+            { kind: "label", at: [-2.75, 0.95], label: "sin(x/2) > 0", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [-2.75, 0.45], label: "cos(x/2) < 0", labelAt: "e", tone: "bad", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`If $\cos x = \frac{1}{9}$ and $\frac{3\pi}{2} < x < 2\pi$, find $\sin\frac{x}{2}$, $\cos\frac{x}{2}$ and $\tan\frac{x}{2}$.`,
       steps: [
-        t`Halve the range: $\frac{3\pi}{4} < \frac{x}{2} < \pi$. So $\frac{x}{2}$ is in quadrant II: $\sin\frac{x}{2} > 0$, $\cos\frac{x}{2} < 0$.`,
-        t`$\sin^2\frac{x}{2} = \frac{1 - \frac{1}{9}}{2} = \frac{4}{9}$, so $\sin\frac{x}{2} = \frac{2}{3}$.`,
-        t`$\cos^2\frac{x}{2} = \frac{1 + \frac{1}{9}}{2} = \frac{5}{9}$, so $\cos\frac{x}{2} = -\frac{\sqrt{5}}{3}$.`,
-        t`$\tan\frac{x}{2} = \frac{\sin\frac{x}{2}}{\cos\frac{x}{2}} = \frac{2}{3} \div \left(-\frac{\sqrt{5}}{3}\right) = -\frac{2}{\sqrt{5}}$. Note that $x$ itself is in quadrant IV, where $\sin$ is negative: its sign would have been wrong for $\sin\frac{x}{2}$.`,
+        t`Halve the interval: $\frac{3\pi}{4} < \frac{x}{2} < \pi$. So $\frac{x}{2}$ is in quadrant II: $\sin\frac{x}{2} > 0$, $\cos\frac{x}{2} < 0$.`,
+        t`$\sin^2\frac{x}{2} = \frac{1 - \frac{1}{9}}{2}$ $= \frac{4}{9}$, so $\sin\frac{x}{2} = \frac{2}{3}$.`,
+        t`$\cos^2\frac{x}{2} = \frac{1 + \frac{1}{9}}{2}$ $= \frac{5}{9}$, so $\cos\frac{x}{2} = -\frac{\sqrt{5}}{3}$.`,
+        t`$\tan\frac{x}{2} = \frac{\sin\frac{x}{2}}{\cos\frac{x}{2}}$ $= \frac{2}{3} \div \left(-\frac{\sqrt{5}}{3}\right)$ $= -\frac{2}{\sqrt{5}}$. Note that $x$ itself is in quadrant IV, where $\sin$ is negative: its sign would have been wrong for $\sin\frac{x}{2}$.`,
       ],
       answer: t`$\sin\frac{x}{2} = \frac{2}{3}$, $\cos\frac{x}{2} = -\frac{\sqrt{5}}{3}$, $\tan\frac{x}{2} = -\frac{2}{\sqrt{5}}$.`,
     },

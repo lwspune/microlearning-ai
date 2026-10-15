@@ -1,6 +1,23 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The unit circle about O on plain x- and y-axes, with the initial arm along the positive x-axis. */
+const unitPlane: FigureElement[] = [
+  { kind: "segment", from: [-1.4, 0], to: [1.4, 0], tone: "muted" },
+  { kind: "label", at: [1.4, 0], label: "x", labelAt: "s", tone: "muted" },
+  { kind: "segment", from: [0, -1.1], to: [0, 1.3], tone: "muted" },
+  { kind: "label", at: [0, 1.3], label: "y", labelAt: "w", tone: "muted" },
+  { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+  { kind: "circle", centre: [0, 0], r: 1, tone: "muted" },
+  { kind: "segment", from: [0, 0], to: [1, 0], label: "initial arm", labelAt: "s", tone: "good" },
+];
+
+/** The point r from O along the arm at `deg` degrees. */
+const tip = (r: number, deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(r * Math.cos(a)).toFixed(3), +(r * Math.sin(a)).toFixed(3)];
+};
 
 export const c01: Concept = {
   id: "C01",
@@ -10,26 +27,104 @@ export const c01: Concept = {
     reveal: t`No. $\sin(30^\circ + 60^\circ) = \sin 90^\circ = 1$, but $\sin 30^\circ + \sin 60^\circ = \frac{1}{2} + \frac{\sqrt{3}}{2} \approx 1.37$, more than any sine can be. The sine of a sum needs the sines **and** the cosines of both angles.`,
   },
   explanation: {
-    intuition: t`Sine and cosine don't split over a sum. Turning by $A$ and then by $B$ is one turn by $A + B$, and the end point's coordinates mix the sine and cosine of both turns. So each formula has two products. $\sin$ mixes the functions ($\sin \cdot \cos$ and $\cos \cdot \sin$) and keeps the sign; $\cos$ pairs like with like ($\cos \cdot \cos$ and $\sin \cdot \sin$) and flips the sign.`,
-    formal: t`**The four formulae**
-
-$$\sin(A \pm B) = \sin A\cos B \pm \cos A\sin B$$
-$$\cos(A \pm B) = \cos A\cos B \mp \sin A\sin B$$
-
-**Check the pattern with $B = 0$.** $\sin(A + 0)$ must give $\sin A$: only the mixed products do. In $\sin(A - B)$ keep the first angle first, since $\sin(B - A) = -\sin(A - B)$; for cos the order doesn't matter.
-
-**Exact values.** Split the angle into standard ones, such as $75^\circ = 45^\circ + 30^\circ$, put in the known values, and rationalise the denominator.
-
-**Given one ratio and a quadrant.** Find the other from $\sin^2\theta + \cos^2\theta = 1$, and take its sign from the quadrant.
-
-**Read backwards.** $\cos X\cos Y + \sin X\sin Y = \cos(X - Y)$ and $\sin X\cos Y - \cos X\sin Y = \sin(X - Y)$: a long expression can collapse to one ratio.`,
+    intuition: [
+      t`A **compound angle** is a sum or difference of two angles, such as $A + B$ or $A - B$.`,
+      t`Sine and cosine don't split over it: $\sin(A + B)$ is not $\sin A + \sin B$.`,
+      t`On the unit circle, turn the arm through $A$ from the initial arm.`,
+      t`Then turn it through $B$ more: together, that is one turn through $A + B$.`,
+      t`The end point's coordinates mix the sines and cosines of both turns, so each formula has two products.`,
+      t`Sine's products mix the functions, $\sin \cdot \cos$ and $\cos \cdot \sin$; cosine's pair like with like.`,
+    ],
+    figure: {
+      alt: "The unit circle about O, with the initial arm along the positive x-axis. An arm turns anticlockwise through A, then through B more, ending on the arm of A + B. That arm meets the circle at P(cos(A + B), sin(A + B)).",
+      axes: "none",
+      view: { x: [-2.4, 1.6], y: [-1.15, 1.4] },
+      elements: [
+        ...unitPlane,
+        { kind: "turn", r: 1, to: 40, step: 3 },
+        { kind: "label", at: tip(0.45, 20), label: "A", labelAt: "e", step: 3 },
+        { kind: "turn", r: 1, from: 40, to: 110, step: 4 },
+        { kind: "label", at: tip(0.45, 75), label: "B", labelAt: "ne", step: 4 },
+        { kind: "label", at: tip(0.7, 110), label: "A + B", labelAt: "w", step: 4 },
+        { kind: "point", at: tip(1, 110), label: "P", labelAt: "nw", tone: "good", step: 5 },
+        { kind: "label", at: [-2.38, -1.06], label: "P = (cos(A + B), sin(A + B))", labelAt: "e", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Sine of a sum or difference",
+        points: [
+          t`$\sin(A + B)$ equals $\sin A\cos B + \cos A\sin B$.`,
+          t`$\sin(A - B)$ equals $\sin A\cos B - \cos A\sin B$.`,
+          t`Sine keeps the sign: a plus in the angle gives a plus between the products.`,
+          t`Write both at once with $\pm$, read as "plus or minus".`,
+          t`$\sin(A \pm B)$ equals $\sin A\cos B \pm \cos A\sin B$.`,
+        ],
+      },
+      {
+        title: "Cosine of a sum or difference",
+        points: [
+          t`$\cos(A + B)$ equals $\cos A\cos B - \sin A\sin B$.`,
+          t`$\cos(A - B)$ equals $\cos A\cos B + \sin A\sin B$.`,
+          t`Cosine flips the sign: a plus in the angle gives a minus between the products.`,
+          t`$\cos(A \pm B)$ equals $\cos A\cos B \mp \sin A\sin B$.`,
+          t`Here $\mp$ is $\pm$ upside down: read all the top signs together, or all the bottom ones.`,
+        ],
+      },
+      {
+        title: "Check with B = 0",
+        points: [
+          t`Put $B = 0$, where $\sin 0 = 0$ and $\cos 0 = 1$.`,
+          t`Then $\sin(A + 0)$ must give $\sin A$.`,
+          t`Only the mixed products do: $\sin A \cdot 1 + \cos A \cdot 0$ $= \sin A$.`,
+          t`Like with like would give $\cos A \cdot 1 - \sin A \cdot 0$ $= \cos A$, the wrong function.`,
+        ],
+      },
+      {
+        title: "Keep the first angle first",
+        points: [
+          t`In $\sin(A - B)$, keep the first angle first.`,
+          t`Sine is **odd**: a negative angle gives the negative value, $\sin(-\theta) = -\sin\theta$.`,
+          t`So $\sin(B - A) = -\sin(A - B)$: swapping the angles changes the sign.`,
+          t`Cosine is **even**: a negative angle gives the same value, $\cos(-\theta) = \cos\theta$.`,
+          t`So for cos the order doesn't matter: $\cos(B - A) = \cos(A - B)$.`,
+        ],
+      },
+      {
+        title: "Exact values",
+        points: [
+          t`Split the angle into standard ones, such as $75^\circ = 45^\circ + 30^\circ$.`,
+          t`Expand it with the formula, and put in the known values at the standard angles.`,
+          t`Then **rationalise** the denominator: multiply the top and the bottom to clear the root from the bottom.`,
+        ],
+      },
+      {
+        title: "Given one ratio and a quadrant",
+        points: [
+          t`Often one ratio of each angle is given, with the quadrant the angle lies in.`,
+          t`Find the other ratio from $\sin^2\theta + \cos^2\theta = 1$.`,
+          t`For example, $\cos\theta = \pm\sqrt{1 - \sin^2\theta}$: the root alone doesn't give the sign.`,
+          t`Take its sign from the quadrant.`,
+        ],
+      },
+      {
+        title: "Read the formulae backwards",
+        points: [
+          t`Each formula also works from right to left.`,
+          t`$\cos X\cos Y + \sin X\sin Y$ equals $\cos(X - Y)$.`,
+          t`$\sin X\cos Y - \cos X\sin Y$ equals $\sin(X - Y)$.`,
+          t`So a plus between the cos products means a difference of the angles.`,
+          t`A long expression can collapse to one ratio this way.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $\sin A = \frac{7}{25}$, $\frac{\pi}{2} < A < \pi$, and $\cos B = -\frac{4}{5}$, $\pi < B < \frac{3\pi}{2}$, find $\sin(A - B)$.`,
       steps: [
-        t`$A$ is in the second quadrant, where cos is negative: $\cos A = -\sqrt{1 - \frac{49}{625}} = -\frac{24}{25}$.`,
-        t`$B$ is in the third quadrant, where sin is negative: $\sin B = -\sqrt{1 - \frac{16}{25}} = -\frac{3}{5}$.`,
-        t`$\sin(A - B) = \sin A\cos B - \cos A\sin B = \frac{7}{25}\left(-\frac{4}{5}\right) - \left(-\frac{24}{25}\right)\left(-\frac{3}{5}\right)$.`,
-        t`$= -\frac{28}{125} - \frac{72}{125} = -\frac{100}{125} = -\frac{4}{5}$.`,
+        t`$A$ is in the second quadrant, where cos is negative: $\cos A = -\sqrt{1 - \frac{49}{625}}$ $= -\frac{24}{25}$.`,
+        t`$B$ is in the third quadrant, where sin is negative: $\sin B = -\sqrt{1 - \frac{16}{25}}$ $= -\frac{3}{5}$.`,
+        t`$\sin(A - B)$ $= \sin A\cos B - \cos A\sin B$ $= \frac{7}{25}\left(-\frac{4}{5}\right)$ $- \left(-\frac{24}{25}\right)\left(-\frac{3}{5}\right)$.`,
+        t`$= -\frac{28}{125} - \frac{72}{125}$ $= -\frac{100}{125} = -\frac{4}{5}$.`,
       ],
       answer: t`$\sin(A - B) = -\frac{4}{5}$.`,
     },
