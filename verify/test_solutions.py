@@ -174,6 +174,23 @@ class BuildConcepts(unittest.TestCase):
     def test_without_them_the_output_is_unchanged(self):
         self.assertNotIn("solution:", build(self.BASE, self.ITEMS))
 
+    def test_writes_points_and_titled_formal_sections(self):
+        c = dict(self.BASE, intuition=["One $x$.", "Two."],
+                 formal=[dict(title="Arc length", points=["P1.", "P2 $s$."], figure=FIG), dict(title="Bare", points=["Q."])])
+        out = build(c, self.ITEMS)
+        self.assertIn("    intuition: [\n      t`One $x$.`,\n      t`Two.`,\n    ],\n", out)
+        self.assertIn(
+            '      {\n        title: "Arc length",\n        points: [\n          t`P1.`,\n          t`P2 $s$.`,\n        ],\n'
+            + figure_ts(FIG, 8) + "      },\n", out)
+        self.assertIn('      {\n        title: "Bare",\n        points: [\n          t`Q.`,\n        ],\n      },\n', out)
+
+    def test_formal_section_figures_leave_room_for_the_idea_and_worked_figures(self):
+        c = dict(self.BASE, intuition=["One."], formal=[dict(title="T", points=["P."], figure=FIG)],
+                 figure=FIG, solutions={"C99-Q1": {"steps": ["a", "b"]}})
+        c["worked"] = dict(c["worked"], figure=FIG)
+        out = build(c, self.ITEMS)
+        self.assertEqual((out.count("figure: {"), out.count("solution: {")), (3, 1))
+
 
 if __name__ == "__main__":
     unittest.main()

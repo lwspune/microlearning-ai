@@ -9,7 +9,9 @@ npm run content:verify) before registering the concept in index.ts.
 
 Each CONCEPTS entry:
   dict(id="C01", file="c01-imaginary-unit", var="c01",
-       hook=(prompt, reveal), intuition=..., formal=..., visual=...,
+       hook=(prompt, reveal), visual=...,
+       intuition=[point, ...],                                     # AUTHORING.md 20: points, not a paragraph
+       formal=[dict(title=..., points=[...], figure=...), ...],    # figure optional (required in visual concepts)
        worked=dict(prompt=..., steps=[...], answer=...),
        misconceptions=[(id, mistake, remediation, fallback)],   # fallback: ("concept", "C01") | ("ext", "topic") | ("none",)
        engine_notes=[...],                                         # optional
@@ -23,7 +25,7 @@ import sys
 from pathlib import Path
 
 from add_solutions import add_to_concept
-from ts_literal import t
+from ts_literal import figure_ts, t
 
 CHAPTERS = Path("src/content/chapters")
 
@@ -39,6 +41,29 @@ def out_dir(content) -> Path:
 def q(s: str) -> str:
     """A plain double-quoted string when there's no math, else a t`` literal."""
     return t(s) if ("$" in s or "\\" in s) else '"' + s.replace('"', '\\"') + '"'
+
+
+def points_ts(points: list[str], indent: int) -> str:
+    """A list of points as t`` literals, the opening bracket on the current line."""
+    p = " " * indent
+    return "[\n" + "".join(f"{p}  {t(s)},\n" for s in points) + f"{p}]"
+
+
+def intuition_ts(intuition) -> str:
+    """The idea slide: points (AUTHORING.md 20), or text for older concepts."""
+    return points_ts(intuition, 4) if isinstance(intuition, list) else t(intuition)
+
+
+def formal_ts(formal) -> str:
+    """Formal slides: titled sections of points, each with an optional figure; or text for older concepts."""
+    if not isinstance(formal, list):
+        return t(formal)
+    out = "[\n"
+    for sec in formal:
+        assert {"title", "points"} <= set(sec) <= {"title", "points", "figure"}, f"formal section keys: {sorted(sec)}"
+        fig = figure_ts(sec["figure"], 8) if sec.get("figure") else ""
+        out += f"      {{\n        title: {q(sec['title'])},\n        points: {points_ts(sec['points'], 8)},\n{fig}      }},\n"
+    return out + "    ]"
 
 
 def fallback(f) -> str:
@@ -85,8 +110,8 @@ export const {c["var"]}: Concept = {{
     reveal: {t(c["hook"][1])},
   }},
   explanation: {{
-    intuition: {t(c["intuition"])},
-    formal: {t(c["formal"])},
+    intuition: {intuition_ts(c["intuition"])},
+    formal: {formal_ts(c["formal"])},
     worked: {{
       prompt: {t(c["worked"]["prompt"])},
       steps: [

@@ -16,7 +16,8 @@ OPTIONS_END = "\n      ],\n"
 def already_built(src: str) -> bool:
     """Solutions, the idea figure or the worked figure are in. A question's own figure (in items) doesn't count."""
     explanation = src.split("\n  items: [", 1)[0]
-    return "solution: {" in src or "figure: {" in explanation
+    # The idea figure sits at 4 spaces and the worked one at 6; a formal section's own figure (8) doesn't count.
+    return "solution: {" in src or re.search(r"(?m)^ {4}figure: \{|^ {6}figure: \{", explanation) is not None
 
 
 def add_to_concept(src: str, data: dict) -> str:
