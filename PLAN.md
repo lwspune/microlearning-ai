@@ -830,3 +830,10 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
   8 · Conic Sections 14); equation answers verified as loci; same gates;
   published and merged. The book teaches asymptotes and the hyperbola's
   director circle without exercises, so those items are authored.
+- Wave 4 paused 2026-10-15 (owner asked to pause at a clean point), branch
+  `std11-stats-probability`: 17 concepts, 102 items (Measures of Dispersion
+  7 · Probability 10) written, read through, verified (0 problems) and
+  committed as **draft**; 363 tests pass. Not yet done: set them approved,
+  seed, full Definition of done, course-page screenshot sheet, merge. No
+  figures in this wave (data tables are display-maths arrays, checked at
+  390 px). Wave 5 (calculus) not started; its graphs are drafted.
