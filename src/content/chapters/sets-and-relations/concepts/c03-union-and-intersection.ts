@@ -437,7 +437,7 @@ export const c03: Concept = {
         figure: {
           alt: "A Venn diagram of P, Q and R. P only holds −5, −4; Q only holds 1; Q and R only holds 2; R only holds −3, 4, 5. Q ∪ R is shaded and does not reach P's elements, so P ∩ (Q ∪ R) = ∅.",
           axes: "none",
-          view: { x: [-0.3, 10.3], y: [-0.3, 7.3] },
+          view: { x: [-0.3, 10.3], y: [-0.3, 7.9] },
           elements: [
             { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "disc", centre: [6.1, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
             { kind: "region", within: [{ kind: "outsideDisc", centre: [3.9, 4.3], r: 2.2 }, { kind: "outsideDisc", centre: [6.1, 4.3], r: 2.2 }, { kind: "disc", centre: [5, 2.5], r: 2.2 }, { kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 7]] }, { kind: "halfPlane", through: [[10, 7], [0, 7]] }, { kind: "halfPlane", through: [[0, 7], [0, 0]] }], step: 2 },
@@ -457,7 +457,7 @@ export const c03: Concept = {
             { kind: "label", at: [7.1, 5], label: "1", labelAt: "n", step: 1 },
             { kind: "label", at: [6.1, 2.9], label: "2", labelAt: "n", step: 1 },
             { kind: "label", at: [5, 1.2], label: "−3, 4, 5", labelAt: "n", step: 1 },
-            { kind: "label", at: [5, 6.75], label: "P ∩ (Q ∪ R) = ∅", labelAt: "n", step: 3, tone: "good" },
+            { kind: "label", at: [5, 7.05], label: "P ∩ (Q ∪ R) = ∅", labelAt: "n", step: 3, tone: "good" },
           ],
         },
       },
