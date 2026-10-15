@@ -9,10 +9,18 @@ describe("Sequences and Series chapter", () => {
     expect(validateChapter(sequencesAndSeries)).toEqual([]);
   });
 
-  it("keeps the graph: 14 concepts, 13 edges", () => {
+  it("keeps the graph: 18 concepts, 18 edges", () => {
     const edges = sequencesAndSeries.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(sequencesAndSeries.graph).toHaveLength(14);
-    expect(edges).toBe(13);
+    expect(sequencesAndSeries.graph).toHaveLength(18);
+    expect(edges).toBe(18);
+  });
+
+  it("opens with sequences and A.P., which the G.P. and H.P. concepts build on", () => {
+    expect(sequencesAndSeries.graph.slice(0, 4).map((n) => n.id)).toEqual(["C15", "C16", "C17", "C18"]);
+    const node = (id: string) => sequencesAndSeries.graph.find((n) => n.id === id)!;
+    expect(node("C01").prereqs).toContain("C16");
+    expect(node("C09").prereqs).toContain("C16");
+    expect(node("C01").ext).not.toContain("arithmetic progressions");
   });
 
   it("keeps edges transitively reduced", () => {

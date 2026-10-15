@@ -4,17 +4,42 @@ const t = String.raw;
 
 /**
  * Sequences and Series prerequisite graph (Balbharati Std XI Part 2, Ch.2).
- * Edges are hard prerequisites, transitively reduced. A.P. is Std X work, so it is external.
- * `sources`: the book's sections, as PYQ Vault `mh-sb-11` subtopics.
+ * Edges are hard prerequisites, transitively reduced. A.P. is Std X work: the book assumes it, so the
+ * chapter teaches it first (C15–C18) from NCERT Class 10 and the Maharashtra SSC Algebra papers.
+ * `sources`: the book's sections, as PYQ Vault `mh-sb-11` subtopics (and `ncert-10`, `mh-ssc-10` for A.P.).
  */
 const GP = "mh-sb-11/sequences-series-11#Geometric Progression — General Term and Sum";
+const AP_NCERT = "ncert-10/c10ArithmeticProgressions";
+const AP_SSC = "mh-ssc-10/algebra#Arithmetic Progression";
 
 export const graph: GraphNode[] = [
+  // Sequences and A.P. (Std X work, taught first at the owner's request, 2026-10-16; ids C15–C18 so the
+  // existing C01–C14 keep their ids and every student's progress)
+  {
+    id: "C15", slug: "sequences-and-series", title: "Sequences and series", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`A sequence is a list in order, $t_n$ its $n$th term; a series adds the terms, $S_n$ the first $n$`,
+    prereqs: [], ext: [], sources: [AP_NCERT, AP_SSC],
+  },
+  {
+    id: "C16", slug: "ap-nth-term", title: "A.P. and its nth term", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`An A.P. adds the same $d$ each time: $t_n = a + (n-1)d$`,
+    prereqs: ["C15"], ext: [], sources: [AP_NCERT, AP_SSC],
+  },
+  {
+    id: "C17", slug: "ap-sum", title: "Sum of n terms of an A.P.", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`$S_n = \frac{n}{2}[2a + (n-1)d] = \frac{n}{2}(a + l)$: pair the first and last terms`,
+    prereqs: ["C16"], ext: [], sources: [AP_NCERT, AP_SSC],
+  },
+  {
+    id: "C18", slug: "numbers-in-ap", title: "Three or four numbers in A.P.", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`Take $a - d, a, a + d$ so the sum fixes $a$; for consecutive terms $2b = a + c$`,
+    prereqs: ["C16"], ext: [], sources: [AP_NCERT, AP_SSC],
+  },
   // Geometric progressions
   {
     id: "C01", slug: "gp-common-ratio", title: "Spotting a G.P.", group: "Geometric progressions", tier: "core",
     oneLiner: t`A G.P. multiplies by the same $r$ each time: $r = \frac{t_{n+1}}{t_n}$, not a difference`,
-    prereqs: [], ext: ["arithmetic progressions"], sources: [GP],
+    prereqs: ["C16"], ext: [], sources: [GP],
   },
   {
     id: "C02", slug: "gp-nth-term", title: "The nth term of a G.P.", group: "Geometric progressions", tier: "core",
@@ -56,7 +81,7 @@ export const graph: GraphNode[] = [
   {
     id: "C09", slug: "harmonic-progression", title: "Harmonic progression", group: "H.P. and means", tier: "core",
     oneLiner: "Take reciprocals: they form an A.P.; work there, then flip back",
-    prereqs: [], ext: ["arithmetic progressions"], sources: ["mh-sb-11/sequences-series-11#Harmonic Progression"],
+    prereqs: ["C16"], ext: [], sources: ["mh-sb-11/sequences-series-11#Harmonic Progression"],
   },
   {
     id: "C10", slug: "am-gm-hm", title: "A.M., G.M. and H.M.", group: "H.P. and means", tier: "core",
