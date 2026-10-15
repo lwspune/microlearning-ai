@@ -9,6 +9,8 @@
  * a plain word. Postgres echoes the failing SQL in its error, so /attempts/
  * "passed" against a missing-function error whose echoed SQL said "attempts".
  */
+import { readFileSync } from "node:fs";
+
 try {
   process.loadEnvFile(".env.local");
 } catch {
@@ -30,12 +32,18 @@ export async function sql<T = Record<string, unknown>>(query: string): Promise<T
   return JSON.parse(body) as T[];
 }
 
+/**
+ * A migration not yet pushed, run first inside every rolled-back transaction, so its tests can be
+ * written and run before `db push` (RUNBOOK 5): DB_TEST_PENDING=supabase/migrations/<file>.sql.
+ */
+const pending = process.env.DB_TEST_PENDING ? `${readFileSync(process.env.DB_TEST_PENDING, "utf8")}\n` : "";
+
 /** Runs `statements` in a transaction, checks deferred constraints, then rolls back. */
 export function rolledBack<T = Record<string, unknown>>(statements: string): Promise<T[]> {
-  return sql<T>(`begin;\n${statements}\nset constraints all immediate;\nrollback;`);
+  return sql<T>(`begin;\n${pending}${statements}\nset constraints all immediate;\nrollback;`);
 }
 
 /** Like rolledBack, but returns the result of the last statement before the constraint check. */
 export function rolledBackSelect<T = Record<string, unknown>>(setup: string, select: string): Promise<T[]> {
-  return sql<T>(`begin;\n${setup}\nset constraints all immediate;\n${select}\nrollback;`);
+  return sql<T>(`begin;\n${pending}${setup}\nset constraints all immediate;\n${select}\nrollback;`);
 }

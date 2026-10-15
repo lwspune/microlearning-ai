@@ -49,21 +49,21 @@ type R = { r: Record<string, unknown> };
 const last = async (statements: string) => (await rolledBackSelect<R>(statements.slice(0, statements.lastIndexOf("select record_attempt")), statements.slice(statements.lastIndexOf("select record_attempt"))))[0].r;
 
 describe("record_attempt", () => {
-  it("grades a correct answer and starts the streak", async () => {
+  it("grades a correct answer and counts it", async () => {
     expect(await last(setup() + answer("C01-Q1", "A"))).toMatchObject({
-      correct: true, correct_key: "A", misconception_code: null, remediation: null, streak: 1, needed: 3, state: "learning", mastered_now: false,
+      correct: true, correct_key: "A", misconception_code: null, remediation: null, streak: 1, to_retry: 0, needed: 3, state: "learning", mastered_now: false,
     });
   });
 
   it("returns the misconception and its remediation for a wrong answer", async () => {
     expect(await last(setup() + answer("C01-Q1", "B"))).toMatchObject({
-      correct: false, correct_key: "A", misconception_code: "C01-M1", remediation: "Think again: $x$.", streak: 0, state: "learning",
+      correct: false, correct_key: "A", misconception_code: "C01-M1", remediation: "Think again: $x$.", streak: 0, to_retry: 1, state: "learning",
     });
   });
 
-  it("masters the concept after 3 different questions in a row", async () => {
+  it("masters the concept after 3 different questions right with none left to retry", async () => {
     expect(await last(setup() + answer("C01-Q1", "A") + answer("C01-Q2", "A") + answer("C01-Q3", "A"))).toMatchObject({
-      streak: 3, state: "mastered", mastered_now: true,
+      streak: 3, to_retry: 0, state: "mastered", mastered_now: true,
     });
   });
 
@@ -73,10 +73,20 @@ describe("record_attempt", () => {
     });
   });
 
-  it("resets the streak on a wrong answer", async () => {
+  it("keeps right answers after a miss, but holds mastery until the miss is retried right", async () => {
+    const run = setup() + answer("C01-Q1", "A") + answer("C01-Q2", "A") + answer("C01-Q3", "B") + answer("C01-Q4", "A");
+    expect(await last(run)).toMatchObject({ streak: 3, to_retry: 1, state: "learning", mastered_now: false });
+    expect(await last(run + answer("C01-Q3", "A"))).toMatchObject({ streak: 4, to_retry: 0, state: "mastered", mastered_now: true });
+  });
+
+  it("counts a missed question once it is retried right", async () => {
     expect(
-      await last(setup() + answer("C01-Q1", "A") + answer("C01-Q2", "A") + answer("C01-Q3", "B") + answer("C01-Q4", "A")),
-    ).toMatchObject({ streak: 1, state: "learning" });
+      await last(setup() + answer("C01-Q1", "B") + answer("C01-Q2", "A") + answer("C01-Q1", "A") + answer("C01-Q3", "A")),
+    ).toMatchObject({ streak: 3, to_retry: 0, state: "mastered" });
+  });
+
+  it("reopens a question whose latest answer is wrong", async () => {
+    expect(await last(setup() + answer("C01-Q1", "A") + answer("C01-Q1", "B"))).toMatchObject({ streak: 0, to_retry: 1 });
   });
 
   it("keeps a mastered concept mastered after a later wrong answer", async () => {
@@ -90,9 +100,10 @@ describe("record_attempt", () => {
       setup() + answer("C01-Q1", "B"),
       `select (select count(*) from attempts where user_id = '${USER}') as attempts,
               (select misconception_id is not null from attempts where user_id = '${USER}') as tagged,
-              (select state from learner_concept_state where user_id = '${USER}') as state;`,
+              (select state from learner_concept_state where user_id = '${USER}') as state,
+              (select to_retry from learner_concept_state where user_id = '${USER}') as to_retry;`,
     );
-    expect(rows).toEqual([{ attempts: 1, tagged: true, state: "learning" }]);
+    expect(rows).toEqual([{ attempts: 1, tagged: true, state: "learning", to_retry: 1 }]);
   });
 
   it("refuses an item that is not published", async () => {

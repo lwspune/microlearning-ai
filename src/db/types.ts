@@ -328,6 +328,7 @@ export type Database = {
           review_correct: number
           state: string
           streak: number
+          to_retry: number
           updated_at: string
           user_id: string
         }
@@ -339,6 +340,7 @@ export type Database = {
           review_correct?: number
           state?: string
           streak?: number
+          to_retry?: number
           updated_at?: string
           user_id: string
         }
@@ -350,6 +352,7 @@ export type Database = {
           review_correct?: number
           state?: string
           streak?: number
+          to_retry?: number
           updated_at?: string
           user_id?: string
         }
