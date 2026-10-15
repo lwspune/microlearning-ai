@@ -10,35 +10,139 @@ export const c06: Concept = {
     reveal: t`Four times, not two. The area of a slice is $\frac{1}{2}r^2\theta$: the angle $\theta$ is the same, and doubling $r$ makes $r^2$ four times as big. The crust, the arc $s = r\theta$, only doubles.`,
   },
   explanation: {
-    intuition: t`A sector is a slice of the disc. A full turn, $2\pi$ radians, holds the whole area $\pi r^2$, so each radian holds $\frac{\pi r^2}{2\pi} = \frac{1}{2}r^2$. A sector of $\theta$ radians holds $\theta$ times that: $\frac{1}{2}r^2\theta$. Since its arc is $s = r\theta$, this is also $\frac{1}{2}rs$, like a triangle with base $s$ and height $r$.`,
-    formal: t`**Area of a sector** (with $\theta$ in radians)
-$$A = \frac{1}{2}r^2\theta = \frac{1}{2}rs$$
-An angle given in degrees is converted first: $\theta = d \times \frac{\pi}{180}$. A circle given by its area gives $r$ first: $\pi r^2 = 49\pi$ means $r = 7$.
-
-**Perimeter of a sector**: its boundary is two radii and the arc, so perimeter $= 2r + s = 2r + r\theta$.
-
-**Area of a segment** (between an arc and its chord): the sector minus the triangle on the chord,
-$$\frac{1}{2}r^2\theta - \frac{1}{2}r^2\sin\theta.$$
+    intuition: t`A **disc** is the flat region inside a circle. A **radius** is a line from the centre out to the circle. A **sector** is a slice of the disc, like a slice of pizza. Its edges are two radii and an **arc**, the piece of the circle between the radii's ends: the slice's crust. The angle $\theta$ between the two radii is the sector's **central angle**. Turn a radius about the centre and it sweeps out a sector. A full turn, $2\pi$ radians, sweeps the whole disc; half a turn sweeps half of it. The bigger the angle, the bigger the slice.`,
+    formal: [
+      {
+        body: t`**Area of a sector.** The **area of a sector** is its share of the disc: the fraction $\frac{\theta}{2\pi}$ of the whole area $\pi r^2$, with $\theta$ in radians.
+$$A = \frac{\theta}{2\pi} \times \pi r^2 = \frac{1}{2}r^2\theta$$
+So each radian of angle holds $\frac{1}{2}r^2$, and $\theta$ radians hold $\theta$ times as much.`,
+        figure: {
+          alt: "A circle of radius r with centre O. From the initial arm, a radius turns through 1 radian and the slice it sweeps, of area ½r², is shaded. It turns 1 radian more and sweeps a second slice of area ½r². An angle of θ radians holds θ such slices: A = ½r² × θ.",
+          axes: "none",
+          view: { x: [-3.6, 3.6], y: [-3.6, 3.6] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "s" },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "r", labelAt: "s", tone: "good", step: 1 },
+            { kind: "turn", r: 3, to: 57.296, label: "1 radian", labelAt: "ne", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 0, to: 57.296 }], step: 3 },
+            { kind: "label", at: [1.667, 0.911], label: "½r²", labelAt: "n", step: 3 },
+            { kind: "turn", r: 3, from: 57.296, to: 114.592, label: "2 radians", labelAt: "nw", step: 4 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 57.296, to: 114.592 }], step: 5 },
+            { kind: "label", at: [0.134, 1.895], label: "½r²", labelAt: "n", step: 5 },
+            { kind: "label", at: [0, -1.6], label: "θ radians: A = ½r² × θ", labelAt: "n", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        body: t`**Area from the arc.** The area can also be found from the **arc length** $s$, the length of the curved edge. Since $s = r\theta$,
+$$A = \frac{1}{2}r \times r\theta = \frac{1}{2}rs$$
+That is the area of a triangle with base $s$ and height $r$: cut the sector into thin slices and each is almost a triangle of height $r$, their bases lining up along the arc.`,
+        figure: {
+          alt: "A sector with centre O, two radii of length r and an angle θ between them; its arc, of length s = rθ, is highlighted. Beside it, a triangle whose base is the arc straightened out, of length s, and whose height is r. Both have area ½rs.",
+          axes: "none",
+          view: { x: [-2.0, 6.6], y: [-1.0, 3.4] },
+          elements: [
+            { kind: "point", at: [0, 2.4], label: "O", labelAt: "n" },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 2.4], r: 2.4 }, { kind: "sector", centre: [0, 2.4], from: 235, to: 305 }], step: 1 },
+            { kind: "segment", from: [0, 2.4], to: [-1.377, 0.434], label: "r", labelAt: "w", step: 1 },
+            { kind: "segment", from: [0, 2.4], to: [1.377, 0.434], step: 1 },
+            { kind: "angle", at: [0, 2.4], from: 235, to: 305, label: "θ", labelAt: "s", step: 1 },
+            { kind: "arc", centre: [0, 2.4], r: 2.4, from: 235, to: 305, label: "s = rθ", labelAt: "s", tone: "good", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[3.034, 0], [5.966, 0]] }, { kind: "halfPlane", through: [[5.966, 0], [4.5, 2.4]] }, { kind: "halfPlane", through: [[4.5, 2.4], [3.034, 0]] }], step: 3 },
+            { kind: "segment", from: [3.034, 0], to: [5.966, 0], label: "s", labelAt: "s", tone: "good", step: 3 },
+            { kind: "segment", from: [5.966, 0], to: [4.5, 2.4], step: 3 },
+            { kind: "segment", from: [4.5, 2.4], to: [3.034, 0], step: 3 },
+            { kind: "segment", from: [4.5, 2.4], to: [4.5, 0], label: "r", labelAt: "e", tone: "muted", dashed: true, step: 3 },
+            { kind: "label", at: [2.25, 2.9], label: "both: A = ½rs", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        body: t`**Radius and radians first.** The formulas need the **radius** $r$ and the angle in **radians**. A circle given by its area gives $r$ first: $\pi r^2 = 49\pi$ means $r^2 = 49$, so $r = 7$. An angle given in degrees, $d^\circ$, is converted first: $\theta = d \times \frac{\pi}{180}$, so $60^\circ = \frac{\pi}{3}$. Then $A = \frac{1}{2} \times 49 \times \frac{\pi}{3}$ $= \frac{49\pi}{6}$. Putting in $60$ for $\theta$ makes the area $\frac{180}{\pi} \approx 57$ times too big.`,
+        figure: {
+          alt: "A circle of area 49π, so radius 7, with centre O. From the initial arm, a radius turns 60°, which is π/3 radians. The sector it sweeps is shaded: its area is ½ × 49 × π/3 = 49π/6.",
+          axes: "none",
+          view: { x: [-3.5, 3.5], y: [-3.5, 3.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "label", at: [0, -2.2], label: "πr² = 49π", labelAt: "n", step: 1 },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "r = 7", labelAt: "s", tone: "good", step: 1 },
+            { kind: "turn", r: 3, to: 60, label: "60° = π/3", labelAt: "ne", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 0, to: 60 }], step: 3 },
+            { kind: "label", at: [1.645, 0.95], label: "A = 49π/6", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        body: t`**Perimeter of a sector.** The **perimeter** of a sector is the length of its boundary, all the way round: out along one radius, along the arc, and back along the other radius.
+$$\text{perimeter} = r + r + s = 2r + r\theta$$
+Both radii count, not just the arc.`,
+        figure: {
+          alt: "A shaded sector OAB with centre O and angle θ. Its boundary is traced in three pieces: the radius OA of length r, the arc AB of length s = rθ, and the radius BO of length r. Together: perimeter = r + r + s = 2r + rθ.",
+          axes: "none",
+          view: { x: [-3.5, 3.5], y: [-3.5, 3.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 0, to: 110 }] },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "s" },
+            { kind: "angle", at: [0, 0], from: 0, to: 110, label: "θ", labelAt: "ne" },
+            { kind: "point", at: [3, 0], label: "A", labelAt: "se" },
+            { kind: "point", at: [-1.026, 2.819], label: "B", labelAt: "nw" },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "r", labelAt: "s", tone: "good", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 110, label: "s = rθ", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "segment", from: [-1.026, 2.819], to: [0, 0], label: "r", labelAt: "w", tone: "good", step: 3 },
+            { kind: "label", at: [0, -1.4], label: "perimeter = r + r + s", labelAt: "n", tone: "good", step: 4 },
+            { kind: "label", at: [0, -2.1], label: "= 2r + rθ", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        body: t`**Area of a segment.** A **segment** is the piece of the disc between an arc and its **chord**, the straight line joining the arc's two ends. It is the sector minus the triangle on the chord. That triangle has two sides $r$ with the angle $\theta$ between them, so its area is $\frac{1}{2}r^2\sin\theta$:
+$$\frac{1}{2}r^2\theta - \frac{1}{2}r^2\sin\theta$$
 For $r = 12$ cm and $\theta = 30^\circ = \frac{\pi}{6}$: $12\pi - 36 = 12(\pi - 3)$ sq. cm.`,
+        figure: {
+          alt: "Sector OAB with centre O, radius r and angle θ, shaded: its area is ½r²θ. The chord AB cuts off the triangle OAB, of area ½r² sin θ. What is left, the segment between the arc AB and the chord, is the sector minus the triangle.",
+          axes: "none",
+          view: { x: [-1.4, 7.4], y: [-0.9, 3.7] },
+          elements: [
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "r", labelAt: "s" },
+            { kind: "segment", from: [0, 0], to: [-0.521, 2.954] },
+            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 100 },
+            { kind: "angle", at: [0, 0], from: 0, to: 100, label: "θ", labelAt: "ne" },
+            { kind: "point", at: [3, 0], label: "A", labelAt: "se" },
+            { kind: "point", at: [-0.521, 2.954], label: "B", labelAt: "nw" },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 0, to: 100 }], step: 1 },
+            { kind: "label", at: [3.3, 3.2], label: "sector ½r²θ", labelAt: "e", step: 1 },
+            { kind: "segment", from: [3, 0], to: [-0.521, 2.954], tone: "bad", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [3, 0]] }, { kind: "halfPlane", through: [[3, 0], [-0.521, 2.954]] }, { kind: "halfPlane", through: [[-0.521, 2.954], [0, 0]] }], tone: "bad", step: 2 },
+            { kind: "label", at: [3.3, 2.55], label: "− triangle ½r² sin θ", labelAt: "e", tone: "bad", step: 2 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "halfPlane", through: [[-0.521, 2.954], [3, 0]] }], tone: "good", step: 3 },
+            { kind: "label", at: [3.3, 1.9], label: "= segment", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`The area of a circle is $225\pi$ sq. cm. Find the length of the arc subtending $120^\circ$ at the centre, and the area of the corresponding sector.`,
       steps: [
         t`$\pi r^2 = 225\pi$, so $r^2 = 225$ and $r = 15$ cm.`,
         t`In radians: $\theta = 120 \times \frac{\pi}{180} = \frac{2\pi}{3}$.`,
-        t`Arc: $s = r\theta = 15 \times \frac{2\pi}{3} = 10\pi$ cm.`,
-        t`Sector: $A = \frac{1}{2}rs = \frac{1}{2} \times 15 \times 10\pi = 75\pi$ sq. cm. Check: $\frac{1}{2}r^2\theta = \frac{1}{2} \times 225 \times \frac{2\pi}{3} = 75\pi$.`,
+        t`Arc: $s = r\theta = 15 \times \frac{2\pi}{3}$ $= 10\pi$ cm.`,
+        t`Sector: $A = \frac{1}{2}rs = \frac{1}{2} \times 15 \times 10\pi$ $= 75\pi$ sq. cm. Check: $\frac{1}{2}r^2\theta = \frac{1}{2} \times 225 \times \frac{2\pi}{3}$ $= 75\pi$.`,
       ],
       answer: t`The arc is $10\pi$ cm and the sector's area is $75\pi$ sq. cm.`,
       figure: {
-        alt: "A circle of area 225π, so radius 15, with centre O. Two radii make an angle of 120°, which is 2π/3 radians. The arc between them has length 10π and the shaded sector has area 75π.",
+        alt: "A circle of area 225π, so radius 15, with centre O. From the initial arm, a radius turns 120°, which is 2π/3 radians. The arc it cuts off has length 10π and the shaded sector has area 75π.",
         axes: "none",
         view: { x: [-4.2, 4.2], y: [-4.2, 4.2] },
         elements: [
           { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
           { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
-          { kind: "segment", from: [0, 0], to: [3, 0], label: "r = 15", labelAt: "s", step: 1 },
-          { kind: "segment", from: [0, 0], to: [-1.5, 2.598], step: 1 },
-          { kind: "angle", at: [0, 0], from: 0, to: 120, label: "120°", labelAt: "ne", step: 2 },
+          { kind: "segment", from: [0, 0], to: [3, 0], label: "r = 15", labelAt: "s", tone: "good", step: 1 },
+          { kind: "turn", r: 3, to: 120, label: "120° = 2π/3", labelAt: "w", step: 2 },
           { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 120, step: 3 },
           { kind: "label", at: [1.5, 2.598], label: "s = 10π", labelAt: "ne", step: 3 },
           { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 0, to: 120 }], step: 4 },
@@ -47,22 +151,20 @@ For $r = 12$ cm and $\theta = 30^\circ = \frac{\pi}{6}$: $12\pi - 36 = 12(\pi - 
       },
     },
     figure: {
-      alt: "A circle with centre O and radius r. Two radii make an angle θ and cut off an arc of length s. The sector between them is shaded: its area is A = ½r²θ = ½rs. The chord joining the ends of the arc cuts off a segment, the sector minus the triangle on the chord.",
+      alt: "A shaded disc, the region inside a circle, with centre O. A radius r lies along the initial arm and turns anticlockwise about O through an angle θ to a second radius. The slice it sweeps between the two radii is the sector, shaded; the piece of the circle between their ends is the arc.",
       axes: "none",
-      view: { x: [-3.8, 4.4], y: [-1.2, 3.8] },
+      view: { x: [-3.5, 3.5], y: [-3.5, 3.5] },
       elements: [
         { kind: "circle", centre: [0, 0], r: 3, tone: "muted", dashed: true },
+        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }], tone: "muted" },
+        { kind: "label", at: [1.6, -1.7], label: "disc", labelAt: "n", tone: "muted" },
         { kind: "point", at: [0, 0], label: "O", labelAt: "s" },
-        { kind: "segment", from: [0, 0], to: [3, 0], label: "r", labelAt: "s", step: 1 },
-        { kind: "segment", from: [0, 0], to: [-1.026, 2.819], step: 1 },
-        { kind: "angle", at: [0, 0], from: 0, to: 110, label: "θ", labelAt: "ne", step: 1 },
-        { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 110, step: 2 },
-        { kind: "label", at: [1.721, 2.457], label: "s = rθ", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [0, 0], to: [3, 0], label: "radius r", labelAt: "s", tone: "good", step: 1 },
+        { kind: "turn", r: 3, to: 110, label: "radius r", labelAt: "w", step: 2 },
+        { kind: "label", at: [0.717, 1.024], label: "θ", labelAt: "e", step: 2 },
         { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "sector", centre: [0, 0], from: 0, to: 110 }], step: 3 },
-        { kind: "label", at: [1.25, 0.12], label: "A = ½r²θ", labelAt: "n", tone: "good", step: 3 },
-        { kind: "segment", from: [3, 0], to: [-1.026, 2.819], tone: "muted", dashed: true, step: 4 },
-        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 3 }, { kind: "halfPlane", through: [[-1.026, 2.819], [3, 0]] }], tone: "good", step: 4 },
-        { kind: "label", at: [2.913, 1.06], label: "segment", labelAt: "e", tone: "good", step: 4 },
+        { kind: "label", at: [0.718, 1.973], label: "sector", labelAt: "n", step: 3 },
+        { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 110, label: "arc", labelAt: "ne", tone: "good", step: 4 },
       ],
     },
     visualSpec: t`Drag the radius or the angle of a sector: the shaded area, the arc and the readout $A = \frac{1}{2}r^2\theta$ update together, and a toggle draws the chord to show the segment as sector minus triangle.`,
