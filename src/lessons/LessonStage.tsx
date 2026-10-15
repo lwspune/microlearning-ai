@@ -41,6 +41,7 @@ export function LessonStage({
 
   const stageRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
 
@@ -68,6 +69,25 @@ export function LessonStage({
     }
     headingRef.current?.focus({ preventScroll: true });
   }, [pos.index]);
+
+  // A new point can land below the fold (on phones the figure sits under the points): scroll so the
+  // newest point shows, with the figure under it when both fit.
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    const point = scroller?.querySelector<HTMLElement>("ul[aria-live] > li:last-child");
+    if (!scroller || !point || pos.shown < 2) return;
+    const top = (el: HTMLElement) => el.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
+    const pointTop = top(point);
+    let bottom = pointTop + point.offsetHeight;
+    const figure = scroller.querySelector<HTMLElement>("[data-slide-figure]");
+    if (figure && top(figure) > pointTop) {
+      const figureBottom = top(figure) + figure.offsetHeight;
+      if (figureBottom - pointTop <= scroller.clientHeight - 32) bottom = figureBottom;
+    }
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    if (bottom + 16 > scroller.scrollTop + scroller.clientHeight) scroller.scrollTo({ top: bottom + 16 - scroller.clientHeight, behavior });
+    else if (pointTop - 16 < scroller.scrollTop) scroller.scrollTo({ top: pointTop - 16, behavior });
+  }, [pos.index, pos.shown]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -133,7 +153,7 @@ export function LessonStage({
         )}
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-7 md:px-14 md:py-12">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-5 py-7 md:px-14 md:py-12">
         <div
           key={slide.id}
           aria-roledescription="slide"

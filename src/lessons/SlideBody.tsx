@@ -13,7 +13,9 @@ function WithFigure({ figure, children }: { figure: React.ReactNode; children: R
   return (
     <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-10">
       <div>{children}</div>
-      <FigureFrame>{figure}</FigureFrame>
+      <div data-slide-figure>
+        <FigureFrame>{figure}</FigureFrame>
+      </div>
     </div>
   );
 }
