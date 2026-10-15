@@ -1,6 +1,39 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** A clock reading (degrees clockwise from 12) as a figure angle (degrees anticlockwise from the positive x-axis). */
+const dir = (fromTwelve: number) => 90 - fromTwelve;
+/** The point r from the centre, `fromTwelve` degrees clockwise from 12. */
+function clock(fromTwelve: number, r: number): Pt {
+  const a = (dir(fromTwelve) * Math.PI) / 180;
+  return [+(r * Math.cos(a)).toFixed(3), +(r * Math.sin(a)).toFixed(3)];
+}
+const MINUTE = 2.8;
+const HOUR = 1.9;
+
+/** The clock face: its rim, the 12 hour marks and their numbers. */
+const face: FigureElement[] = [
+  { kind: "circle", centre: [0, 0], r: 4, tone: "muted" },
+  ...Array.from({ length: 12 }, (_, k): FigureElement => ({ kind: "segment", from: clock(30 * k, 3.72), to: clock(30 * k, 4), tone: "muted" })),
+  { kind: "label", at: [1.7, 2.584], label: "1", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [2.944, 1.34], label: "2", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [3.4, -0.36], label: "3", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [2.944, -2.06], label: "4", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [1.7, -3.304], label: "5", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [0, -3.76], label: "6", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [-1.7, -3.304], label: "7", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [-2.944, -2.06], label: "8", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [-3.4, -0.36], label: "9", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [-2.944, 1.34], label: "10", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [-1.7, 2.584], label: "11", labelAt: "n", tone: "muted" },
+  { kind: "label", at: [0, 3.04], label: "12", labelAt: "n", tone: "muted" },
+];
+/** Where both hands are measured from: the initial arm, pointing at 12. */
+const fromTwelve = (labelAt: "e" | "w"): FigureElement => ({ kind: "segment", from: [0, 0], to: [0, 2.6], label: "from 12", labelAt, tone: "good" });
+/** A clock face with room below it for a line of working. */
+const CAPTIONED: Figure["view"] = { x: [-4.6, 4.6], y: [-5.3, 4.6] };
+const caption = (label: string, step: number): FigureElement => ({ kind: "label", at: [0, -5.05], label, labelAt: "n", step });
 
 export const c07: Concept = {
   id: "C07",
@@ -10,82 +43,150 @@ export const c07: Concept = {
     reveal: t`No, it is $75^\circ$. In those 30 minutes the hour hand moved too: halfway from 3 to 4, which is $15^\circ$. From 12, the hour hand is at $90^\circ + 15^\circ = 105^\circ$ and the minute hand at $180^\circ$, so they are $180^\circ - 105^\circ = 75^\circ$ apart.`,
   },
   explanation: {
-    intuition: t`A clock face is $360^\circ$ split into 12 hour marks, $30^\circ$ apart. The minute hand goes all the way round in 60 minutes: $6^\circ$ a minute. In that same hour the hour hand creeps on just one mark, $30^\circ$: $\frac{1}{2}^\circ$ a minute. So the hour hand is almost never exactly on its number; at half past it is halfway to the next one. Place both hands by measuring clockwise from 12, then subtract.`,
-    formal: t`**Rates** (both hands turn clockwise)
+    intuition: t`A **clock face** is a circle, so once round it is a full turn, $360^\circ$. Twelve **hour marks** split it into equal parts: $360^\circ \div 12 = 30^\circ$ from one mark to the next. Two **hands** turn about the centre, both the same way, **clockwise**: from 12 to 1 to 2 and on round. The long **minute hand** goes once round every hour. In that hour the short **hour hand** moves on just one mark, and it moves all the time, not in jumps: at half past three it is halfway from 3 to 4. The **angle between the hands** is the angle at the centre from one hand to the other.`,
+    formal: [
+      {
+        body: t`**Rate of the minute hand.** A hand's **rate** is how far it turns in one minute. The minute hand makes a full turn, $360^\circ$, in 60 minutes, so its rate is $360^\circ \div 60 = 6^\circ$ a minute. Five minutes take it $30^\circ$, from one hour mark to the next. At $m$ minutes past the hour it has turned $6m$ degrees clockwise from 12: at 25 past, $6 \times 25 = 150^\circ$, pointing at 5.`,
+        figure: {
+          alt: "A clock face. The minute hand starts at 12 and turns clockwise 150°, to 5: 25 minutes at 6° a minute.",
+          axes: "none",
+          view: CAPTIONED,
+          elements: [
+            ...face,
+            fromTwelve("e"),
+            { kind: "turn", r: MINUTE, from: 90, to: dir(150), label: "150°", labelAt: "e", step: 1 },
+            caption("25 × 6° = 150°", 2),
+          ],
+        },
+      },
+      {
+        body: t`**Rate of the hour hand.** The hour hand moves on one hour mark, $30^\circ$, in 60 minutes, so its rate is $30^\circ \div 60 = \frac{1}{2}^\circ$ a minute, a twelfth of the minute hand's. At $m$ minutes past the hour it is $\frac{m}{2}$ degrees past its hour mark, on toward the next: at 1:40 it is $\frac{40}{2} = 20^\circ$ past the 1, two thirds of the way to 2.`,
+        figure: {
+          alt: "A clock face at 1:00: the hour hand at 1, the minute hand at 12. The minute hand turns clockwise to 8, 40 minutes on, and in that time the hour hand turns 20° on from 1, two thirds of the way to 2.",
+          axes: "none",
+          view: CAPTIONED,
+          elements: [
+            ...face,
+            { kind: "segment", from: [0, 0], to: [0, 2.6], tone: "good" },
+            { kind: "segment", from: [0, 0], to: clock(30, 1.7), tone: "good" },
+            { kind: "label", at: clock(30, 1.7), label: "1:00", labelAt: "n", tone: "good" },
+            { kind: "turn", r: MINUTE, from: 90, to: dir(240), label: "1:40", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "turn", r: HOUR, from: dir(30), to: dir(50), label: "20°", labelAt: "e", step: 2 },
+            caption("40 × ½° = 20°", 3),
+          ],
+        },
+      },
+      {
+        body: t`**The minute hand's gain.** The minute hand **gains** on the hour hand by how much further it turns in the same time. Both turn clockwise, so take the slower rate from the faster: each minute the minute hand gains $6^\circ - \frac{1}{2}^\circ = 5\frac{1}{2}^\circ$. In $m$ minutes it gains $\frac{11m}{2}$ degrees: from 12:00 to 12:20 the gap between the hands grows to $20 \times 5\frac{1}{2}^\circ = 110^\circ$.`,
+        figure: {
+          alt: "A clock face from 12:00 to 12:20. Both hands start at 12. The minute hand turns clockwise 120°, to 4; the hour hand turns the same way, only 10°. The gap between them is 110°, 20 minutes of gaining 5½° a minute.",
+          axes: "none",
+          view: CAPTIONED,
+          elements: [
+            ...face,
+            fromTwelve("w"),
+            { kind: "turn", r: MINUTE, from: 90, to: dir(120), label: "120°", labelAt: "ne", step: 1 },
+            { kind: "turn", r: HOUR, from: 90, to: dir(10), label: "10°", labelAt: "ne", step: 2 },
+            { kind: "arc", centre: [0, 0], r: 1.3, from: dir(120), to: dir(10), tone: "good", step: 3 },
+            caption("120° − 10° = 20 × 5½° = 110°", 3),
+          ],
+        },
+      },
+      {
+        body: t`**Positions of the hands.** A hand's **position** is its angle measured clockwise from 12. At $h$ hours $m$ minutes (take $h = 0$ at 12 o'clock), the hour hand has $30^\circ$ for each whole hour and $\frac{m}{2}$ more for the minutes:
 
-- Minute hand: $360^\circ$ in 60 minutes, so $6^\circ$ a minute.
-- Hour hand: $30^\circ$ in 60 minutes, so $\frac{1}{2}^\circ$ a minute.
-- The minute hand gains $6^\circ - \frac{1}{2}^\circ = 5\frac{1}{2}^\circ = 5^\circ 30'$ a minute.
+$$\text{hour hand} = 30h + \frac{m}{2}$$
 
-**At $h$ hours $m$ minutes**, measured clockwise from 12 (take $h = 0$ at 12 o'clock):
+$$\text{minute hand} = 6m$$
 
-$$\text{hour hand} = 30h + \frac{m}{2}, \qquad \text{minute hand} = 6m$$
+The angle between the hands is the difference of their positions:
 
-$$\theta = \left|30h - \frac{11m}{2}\right|$$
+$$\theta = \left|30h + \frac{m}{2} - 6m\right|$$
 
-**Smaller or reflex?** The two angles between the hands add up to $360^\circ$. If $\theta > 180^\circ$, the smaller angle is $360^\circ - \theta$. The reflex angle is the one larger than $180^\circ$. Read which one the question asks for.
+$$= \left|30h - \frac{11m}{2}\right|$$
 
-**Half degrees.** $1^\circ = 60'$, so $\frac{1}{2}^\circ = 30'$: $67.5^\circ = 67^\circ 30'$.`,
+The hour hand starts the hour $30h$ ahead, and the minute hand gains $\frac{11m}{2}$ on it. At 8:20 the hour hand is at $240^\circ + 10^\circ = 250^\circ$ and the minute hand at $120^\circ$: $\theta = 130^\circ$.`,
+        figure: {
+          alt: "A clock face at 8:20. From 12, the hour hand turns clockwise 250°, a third of the way from 8 to 9, and the minute hand turns 120°, to 4. The angle between them is 250° − 120° = 130°.",
+          axes: "none",
+          view: CAPTIONED,
+          elements: [
+            ...face,
+            fromTwelve("w"),
+            { kind: "turn", r: HOUR, from: 90, to: dir(250), label: "250°", labelAt: "w", step: 1 },
+            { kind: "turn", r: MINUTE, from: 90, to: dir(120), label: "120°", labelAt: "ne", step: 2 },
+            { kind: "arc", centre: [0, 0], r: 1.2, from: dir(250), to: dir(120), label: "130°", labelAt: "s", tone: "good", step: 3 },
+            caption("250° − 120° = 130°", 3),
+          ],
+        },
+      },
+      {
+        body: t`**Smaller or reflex angle.** The hands split the full turn into two angles that add up to $360^\circ$. The **reflex angle** is the one larger than $180^\circ$; the other, at most $180^\circ$, is the **smaller angle**. If $\theta > 180^\circ$, the smaller angle is $360^\circ - \theta$. At 9:10, $\theta = |270 - 55| = 215^\circ$, the reflex angle, so the smaller one is $360^\circ - 215^\circ = 145^\circ$. Read which one the question asks for.`,
+        figure: {
+          alt: "A clock face at 9:10: the minute hand at 2, the hour hand just past 9. Going round through 6, the angle between them is 215°, the reflex angle. Going round through 12 it is 145°, the smaller angle: 360° − 215° = 145°.",
+          axes: "none",
+          view: CAPTIONED,
+          elements: [
+            ...face,
+            { kind: "vector", to: clock(60, MINUTE) },
+            { kind: "vector", to: clock(275, HOUR) },
+            { kind: "arc", centre: [0, 0], r: 1.2, from: dir(275), to: dir(60), label: "215°, reflex", labelAt: "s", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 1.2, from: dir(60), to: dir(275) + 360, label: "145°, smaller", labelAt: "n", tone: "good", step: 2 },
+            caption("360° − 215° = 145°", 3),
+          ],
+        },
+      },
+      {
+        body: t`**Half degrees.** A degree splits into 60 **minutes of angle** (not the clock's minutes): $1^\circ = 60'$. So half a degree is $30'$, not $50'$. Half degrees come from the hour hand's $\frac{m}{2}$ when $m$ is odd: at 2:15 the hour hand is at $60^\circ + 7.5^\circ = 67.5^\circ$ from 12, which is $67^\circ 30'$. The minute hand's gain of $5\frac{1}{2}^\circ$ a minute is $5^\circ 30'$.`,
+        figure: {
+          alt: "A clock face at 2:15. The minute hand points at 3. From 12, the hour hand turns clockwise 67.5°, a quarter of the way from 2 to 3. Half a degree is 30′, so 67.5° is 67°30′.",
+          axes: "none",
+          view: CAPTIONED,
+          elements: [
+            ...face,
+            fromTwelve("w"),
+            { kind: "vector", to: clock(90, MINUTE), tone: "muted" },
+            { kind: "turn", r: HOUR, from: 90, to: dir(67.5), label: "67.5°", labelAt: "e", step: 1 },
+            caption("0.5° = 30′, so 67.5° = 67°30′", 2),
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the smaller angle between the hour hand and the minute hand of a clock at quarter to twelve (11:45), in degrees and minutes.`,
       steps: [
         t`Minute hand: $6 \times 45 = 270^\circ$ from 12, pointing at 9.`,
         t`Hour hand: $30 \times 11 = 330^\circ$ to the 11, plus $\frac{45}{2} = 22.5^\circ$ for the 45 minutes: $352.5^\circ$, just $7.5^\circ$ short of 12.`,
-        t`Subtract: $352.5^\circ - 270^\circ = 82.5^\circ$. The formula agrees: $\left|330 - \frac{11 \times 45}{2}\right| = |330 - 247.5| = 82.5$. It is less than $180^\circ$, so it is the smaller angle.`,
+        t`Subtract: $352.5^\circ - 270^\circ = 82.5^\circ$. The formula agrees: $\left|330 - \frac{11 \times 45}{2}\right|$ $= |330 - 247.5|$ $= 82.5$. It is less than $180^\circ$, so it is the smaller angle.`,
         t`$0.5^\circ = 30'$, so $82.5^\circ = 82^\circ 30'$.`,
       ],
       answer: t`The smaller angle is $82^\circ 30'$ (the reflex angle is $277^\circ 30'$).`,
       figure: {
-        alt: "A clock face at 11:45. The minute hand points at 9. The hour hand is 7.5° short of 12. The angle between them is 82.5°, which is 82°30′.",
+        alt: "A clock face at 11:45. From 12, the minute hand turns clockwise 270°, to 9, and the hour hand turns 352.5°, stopping 7.5° short of 12. The angle between them is 82.5°, which is 82°30′.",
         axes: "none",
-        view: { x: [-4.6, 4.6], y: [-4.6, 4.6] },
+        view: CAPTIONED,
         elements: [
-          { kind: "circle", centre: [0, 0], r: 4, tone: "muted" },
-          { kind: "label", at: [1.7, 2.584], label: "1", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [2.944, 1.34], label: "2", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [3.4, -0.36], label: "3", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [2.944, -2.06], label: "4", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [1.7, -3.304], label: "5", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [0, -3.76], label: "6", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [-1.7, -3.304], label: "7", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [-2.944, -2.06], label: "8", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [-3.4, -0.36], label: "9", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [-2.944, 1.34], label: "10", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [-1.7, 2.584], label: "11", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [0, 3.04], label: "12", labelAt: "n", tone: "muted" },
-          { kind: "vector", to: [-2.8, 0], step: 1 },
-          { kind: "vector", to: [-0.248, 1.884], step: 2 },
-          { kind: "angle", at: [0, 0], from: -262.5, to: -180, step: 3 },
-          { kind: "label", at: [-0.977, 0.497], label: "82.5°", labelAt: "n", step: 3 },
-          { kind: "label", at: [-1.262, 1.442], label: "= 82°30′", labelAt: "n", step: 4 },
+          ...face,
+          fromTwelve("e"),
+          { kind: "turn", r: MINUTE, from: 90, to: dir(270), label: "270°", labelAt: "n", step: 1 },
+          { kind: "turn", r: HOUR, from: 90, to: dir(352.5), label: "352.5°", labelAt: "w", step: 2 },
+          { kind: "arc", centre: [0, 0], r: 1.4, from: dir(352.5) + 360, to: dir(270) + 360, label: "82.5°", labelAt: "w", tone: "good", step: 3 },
+          caption("0.5° = 30′, so 82.5° = 82°30′", 4),
         ],
       },
     },
     figure: {
-      alt: "A clock face at 3:30. The hour hand's old place at 3 is shown faintly. The minute hand points at 6. The hour hand has moved on 15° past 3, halfway to 4, and the angle between the hands is 75°.",
+      alt: "A clock face at 3:00: the hour hand at 3, the minute hand at 12. The minute hand turns clockwise half a turn, 180°, to 6. In those 30 minutes the hour hand turns on 15°, halfway from 3 to 4, so the angle between the hands is 75°, not 90°.",
       axes: "none",
       view: { x: [-4.6, 4.6], y: [-4.6, 4.6] },
       elements: [
-        { kind: "circle", centre: [0, 0], r: 4, tone: "muted" },
-        { kind: "label", at: [1.7, 2.584], label: "1", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [2.944, 1.34], label: "2", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [3.4, -0.36], label: "3", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [2.944, -2.06], label: "4", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [1.7, -3.304], label: "5", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [0, -3.76], label: "6", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [-1.7, -3.304], label: "7", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [-2.944, -2.06], label: "8", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [-3.4, -0.36], label: "9", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [-2.944, 1.34], label: "10", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [-1.7, 2.584], label: "11", labelAt: "n", tone: "muted" },
-        { kind: "label", at: [0, 3.04], label: "12", labelAt: "n", tone: "muted" },
-        { kind: "vector", to: [1.9, 0], tone: "muted", step: 1 },
-        { kind: "vector", to: [0, -2.8], step: 2 },
-        { kind: "vector", to: [1.835, -0.492], step: 3 },
-        { kind: "angle", at: [0, 0], from: -15, to: 0, tone: "muted", step: 3 },
-        { kind: "label", at: [2.379, -0.673], label: "15°", labelAt: "n", tone: "muted", step: 3 },
-        { kind: "angle", at: [0, 0], from: -90, to: -15, tone: "good", step: 4 },
-        { kind: "label", at: [0.791, -1.391], label: "75°", labelAt: "n", tone: "good", step: 4 },
+        ...face,
+        { kind: "segment", from: [0, 0], to: [0, 2.6], label: "minute hand", labelAt: "w", tone: "good" },
+        { kind: "segment", from: [0, 0], to: [1.7, 0], tone: "good" },
+        { kind: "label", at: [1.9, 0], label: "hour hand", labelAt: "n", tone: "good" },
+        { kind: "turn", r: MINUTE, from: 90, to: dir(180), label: "180°", labelAt: "e", step: 1 },
+        { kind: "turn", r: HOUR, from: 0, to: dir(105), label: "15°", labelAt: "e", step: 2 },
+        { kind: "arc", centre: [0, 0], r: 1.3, from: dir(180), to: dir(105), label: "75°", labelAt: "se", tone: "good", step: 3 },
       ],
     },
     visualSpec: t`Drag the minute hand round the clock; the hour hand follows at one twelfth of its speed, and both angles between the hands, the smaller and the reflex, update as you drag.`,
