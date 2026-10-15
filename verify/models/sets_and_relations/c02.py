@@ -138,11 +138,25 @@ def m3(v, p):
 
 
 def m4(v, p):
-    """Mixes up ∈ and ⊆: counts ∅ as an element of A (since ∅ ⊆ A), writes x for the subset {x}."""
-    a, ask, n = v["A"], p["ask"], _n(v)
-    n1 = n if S.EmptySet in a else n + 1
+    """Mixes up ∈ and ⊆: writes x for the subset {x}, or reads {x} ∈ A as {x} ⊆ A."""
+    a, ask = v["A"], p["ask"]
     if ask == "list":
         return FiniteSet(*[(list(b)[0] if len(list(b)) == 1 else b) for b in _subsets(a)])
+    if ask == "stmt":
+        def believes(op, x, a):
+            if op == "sub":
+                return _sub(x, a) or x in a
+            if op == "elem":
+                return x in a or _sub(x, a)
+            return None
+        return _wrongly_true(v, p, believes)
+    raise ValueError("counts are C02-M5")
+
+
+def m5(v, p):
+    """Counts ∅ as an element of A (since ∅ ⊆ A), so works with n(A) + 1 elements."""
+    a, ask, n = v["A"], p["ask"], _n(v)
+    n1 = n if S.EmptySet in a else n + 1
     if ask == "count":
         x = n1
         for _ in range(_k(v)):
@@ -152,15 +166,7 @@ def m4(v, p):
         return Integer(2**n1 - 1)
     if ask == "nonempty_proper":
         return Integer(2**n1 - 2)
-    if ask == "stmt":
-        def believes(op, x, a):
-            if op == "sub":
-                return _sub(x, a) or x in a
-            if op == "elem":
-                return x in a or _sub(x, a)
-            return None
-        return _wrongly_true(v, p, believes)
-    raise ValueError(f"no ask {ask}")
+    raise ValueError("listing and statements are C02-M4")
 
 
-MODELS = {"key": key, "C02-M1": m1, "C02-M2": m2, "C02-M3": m3, "C02-M4": m4}
+MODELS = {"key": key, "C02-M1": m1, "C02-M2": m2, "C02-M3": m3, "C02-M4": m4, "C02-M5": m5}

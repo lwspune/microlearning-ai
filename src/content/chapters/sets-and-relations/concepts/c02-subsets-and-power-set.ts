@@ -112,15 +112,21 @@ export const c02: Concept = {
     },
     {
       id: "C02-M4",
-      mistake: t`Mixing up $\in$ and $\subseteq$: writing $x$ for the subset $\{x\}$, reading $\{x\} \in A$ as $\{x\} \subseteq A$, or counting $\phi$ as an element of $A$ because $\phi \subseteq A$`,
-      remediation: t`$x \in A$ means $x$ is listed in $A$; $B \subseteq A$ means every element of $B$ is listed in $A$. So a power set holds $\{1\}$, not $1$, and $\phi \subseteq A$ always, but $\phi$ is not an element of $A$ unless it is listed: $n(\phi) = 0$.`,
+      mistake: t`Mixing up $\in$ and $\subseteq$: writing $x$ for the subset $\{x\}$, or reading $\{x\} \in A$ as $\{x\} \subseteq A$`,
+      remediation: t`$x \in A$ means $x$ is listed in $A$; $B \subseteq A$ means every element of $B$ is listed in $A$. So a power set holds the set $\{1\}$, not the number $1$, and $\{2, 3\} \in A$ needs $\{2, 3\}$ itself listed in $A$.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C02-M5",
+      mistake: t`Counting $\phi$ as an element of $A$ because $\phi \subseteq A$, so working with $n(A) + 1$ elements`,
+      remediation: t`$\phi$ is a subset of every set, but it is not one of $A$'s elements unless it is listed in $A$. $n(A)$ counts only what is listed: $n(\phi) = 0$, and $\{1, 2\}$ has $2$ elements, not $3$.`,
       fallback: { kind: "concept", id: "C01" },
     },
   ],
   engineNotes: [
     t`C02-M3 applies only to power sets of power sets, and gives the key when $n(A)$ is $1$ or $2$ ($2^{2n} = 2^{2^n}$ there); diagnose it with $n(A) = 0$ or $n(A) \ge 3$.`,
     t`C02-M1 and C02-M2 give the same count, $2^n - 1$ at each step, on 'number of subsets' and nested items; list both only on proper-subset, listing and statement items. On non-empty proper subsets C02-M1 gives the key, so it has no model there.`,
-    t`C02-M4 gives the key on counts when $\phi$ is already an element of $A$; use sets without $\phi$ as an element.`,
+    t`C02-M5 gives the key on counts when $\phi$ is already an element of $A$; use sets without $\phi$ as an element. C02-M5 was split from C02-M4 (2026-10-15): M4 is listing $x$ for $\{x\}$ or reading $\in$ as $\subseteq$ (Q1, Q6); M5 is counting $\phi$ as an element (Q2 to Q5).`,
   ],
   items: [
     {
@@ -150,7 +156,7 @@ export const c02: Concept = {
       options: [
         { key: "A", text: t`$0$`, correct: false, misconceptionId: "C02-M1", value: "0" },
         { key: "B", text: t`$1$`, correct: false, misconceptionId: "C02-M3", value: "1" },
-        { key: "C", text: t`$16$`, correct: false, misconceptionId: "C02-M4", value: "16" },
+        { key: "C", text: t`$16$`, correct: false, misconceptionId: "C02-M5", value: "16" },
         { key: "D", text: t`$4$`, correct: true, value: "4" },
       ],
       solution: {
@@ -167,7 +173,7 @@ export const c02: Concept = {
       stem: t`The number of proper subsets of $V = \{a, e, i, o, u\}$ is:`,
       verify: { kind: "value", inputs: { A: "FiniteSet(a, e, i, o, u)" }, params: { ask: "proper" } },
       options: [
-        { key: "A", text: t`$63$`, correct: false, misconceptionId: "C02-M4", value: "63" },
+        { key: "A", text: t`$63$`, correct: false, misconceptionId: "C02-M5", value: "63" },
         { key: "B", text: t`$31$`, correct: true, value: "31" },
         { key: "C", text: t`$30$`, correct: false, misconceptionId: "C02-M1", value: "30" },
         { key: "D", text: t`$32$`, correct: false, misconceptionId: "C02-M2", value: "32" },
@@ -185,7 +191,7 @@ export const c02: Concept = {
       stem: t`$A = \{a, b, c\}$. The number of elements of $P(P(A))$ is:`,
       verify: { kind: "value", inputs: { A: "FiniteSet(a, b, c)", k: "2" }, params: { ask: "count" } },
       options: [
-        { key: "A", text: t`$65536$`, correct: false, misconceptionId: "C02-M4", value: "65536" },
+        { key: "A", text: t`$65536$`, correct: false, misconceptionId: "C02-M5", value: "65536" },
         { key: "B", text: t`$256$`, correct: true, value: "256" },
         { key: "C", text: t`$127$`, correct: false, misconceptionId: "C02-M1", value: "127" },
         { key: "D", text: t`$64$`, correct: false, misconceptionId: "C02-M3", value: "64" },
@@ -203,7 +209,7 @@ export const c02: Concept = {
       stem: t`$A = \{x : x \text{ is a prime number less than } 10\}$. The number of proper subsets of $A$ is:`,
       verify: { kind: "value", inputs: { A: "FiniteSet(2, 3, 5, 7)" }, params: { ask: "proper" } },
       options: [
-        { key: "A", text: t`$31$`, correct: false, misconceptionId: "C02-M4", value: "31" },
+        { key: "A", text: t`$31$`, correct: false, misconceptionId: "C02-M5", value: "31" },
         { key: "B", text: t`$15$`, correct: true, value: "15" },
         { key: "C", text: t`$14$`, correct: false, misconceptionId: "C02-M1", value: "14" },
         { key: "D", text: t`$16$`, correct: false, misconceptionId: "C02-M2", value: "16" },
