@@ -9,4 +9,14 @@ describe("renderDeck", () => {
     expect(slide.title).toBe("The nth term");
     expect(slide.heading.some((n) => n.type === "math")).toBe(true);
   });
+
+  it("renders each point as inline text with its math", () => {
+    const [slide] = renderDeck([{ id: "idea", title: "The idea", kind: "points", points: ["A **degree** is $1^\circ$.", "Two."] }]);
+    expect(slide.kind).toBe("points");
+    if (slide.kind !== "points") return;
+    expect(slide.points).toHaveLength(2);
+    expect(slide.points[0].some((n) => n.type === "math")).toBe(true);
+    expect(slide.points[0].some((n) => n.type === "text" && n.bold)).toBe(true);
+  });
 });
+

@@ -16,10 +16,12 @@ for (const file of process.argv.slice(2)) {
     continue;
   }
   const e = c.explanation;
-  const out: string[] = [`=== ${c.id} (${file})`, `HOOK: ${c.hook.prompt}`, `REVEAL: ${c.hook.reveal}`, `IDEA: ${e.intuition}`];
+  const points = (ps: string[]) => ps.map((p) => `\n  • ${p}`).join("");
+  const idea = typeof e.intuition === "string" ? e.intuition : points(e.intuition);
+  const out: string[] = [`=== ${c.id} (${file})`, `HOOK: ${c.hook.prompt}`, `REVEAL: ${c.hook.reveal}`, `IDEA: ${idea}`];
   if (e.figure) out.push(`  [figure: ${e.figure.alt}]`);
   for (const sec of typeof e.formal === "string" ? [{ body: e.formal, figure: undefined }] : e.formal) {
-    out.push(`FORMAL:\n${sec.body}`);
+    out.push("points" in sec ? `FORMAL: ${sec.title}${points(sec.points)}` : `FORMAL:\n${sec.body}`);
     if (sec.figure) out.push(`  [figure: ${sec.figure.alt}]`);
   }
   out.push(`WORKED: ${e.worked.prompt}`, ...e.worked.steps.map((s, i) => `  ${i + 1}. ${s}`), `  = ${e.worked.answer}`);

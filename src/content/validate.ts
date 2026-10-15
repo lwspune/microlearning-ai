@@ -158,7 +158,8 @@ function validateTeaching(chapter: Chapter): string[] {
     const node = nodes.get(c.id);
     if (!node) continue; // reported by validateConcepts
     const ex = c.explanation;
-    if (ex.figure) errors.push(...validateFigure(ex.figure, `${c.id} idea figure`));
+    if (typeof ex.intuition !== "string") errors.push(...pointsProblems(ex.intuition, `${c.id} idea`));
+    if (ex.figure) errors.push(...validateFigure(ex.figure, `${c.id} idea figure`, typeof ex.intuition === "string" ? undefined : ex.intuition.length));
     if (ex.worked.figure) errors.push(...validateFigure(ex.worked.figure, `${c.id} worked figure`, ex.worked.steps.length));
     errors.push(...formalProblems(c, node));
     for (const item of c.items) {
@@ -192,11 +193,35 @@ function formalProblems(c: Concept, node: GraphNode): string[] {
   return formal.flatMap((sec, i) => {
     const where = `${c.id} formal section ${i + 1}`;
     const errors: string[] = [];
-    if (!leadIn(sec.body)) errors.push(`${where}: needs a bold lead-in of up to six words ("**Directed angle.** ..."), which titles its slide`);
-    if (sec.figure) errors.push(...validateFigure(sec.figure, `${where} figure`));
+    if ("points" in sec) {
+      const words = sec.title.trim().split(/\s+/).filter(Boolean).length;
+      if (words < 1 || words > 6 || sec.title.includes("*")) errors.push(`${where}: title of 1 to 6 words, plain text`);
+      errors.push(...pointsProblems(sec.points, where));
+    } else if (!leadIn(sec.body)) {
+      errors.push(`${where}: needs a bold lead-in of up to six words ("**Directed angle.** ..."), which titles its slide`);
+    }
+    if (sec.figure) errors.push(...validateFigure(sec.figure, `${where} figure`, "points" in sec ? sec.points.length : undefined));
     else if (node.visual) errors.push(`${where}: a visual concept's formal section needs a figure`);
     return errors;
   });
+}
+
+/** Points per slide, and words per point outside its maths (AUTHORING.md 20). */
+export const MAX_POINTS = 6;
+export const MAX_POINT_WORDS = 25;
+
+/** Item 20: a few short inline sentences, revealed one per click. */
+function pointsProblems(points: string[], where: string): string[] {
+  const errors: string[] = [];
+  if (points.length === 0 || points.length > MAX_POINTS) errors.push(`${where}: at most ${MAX_POINTS} points, has ${points.length}`);
+  points.forEach((p, i) => {
+    const at = `${where} point ${i + 1}`;
+    if (p.trim() === "") return errors.push(`${at}: empty`);
+    if (p.includes("$$") || p.includes("\n")) errors.push(`${at}: inline only (no display maths or line breaks)`);
+    const words = p.replace(/\$[^$]*\$/g, " x ").trim().split(/\s+/).length;
+    if (words > MAX_POINT_WORDS) errors.push(`${at}: at most ${MAX_POINT_WORDS} words, has ${words}`);
+  });
+  return errors;
 }
 
 /** What a concept lacks under items 9–11. */

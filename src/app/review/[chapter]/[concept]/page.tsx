@@ -44,6 +44,36 @@ function ReviewFigure({ figure, upTo, caption }: { figure: Figure; upTo?: number
   );
 }
 
+/** A slide's text: a paragraph, or its points in order, each with its "After point n" figure frame. */
+function SlideText({ text, figure }: { text: string | string[]; figure?: Figure }) {
+  if (typeof text === "string") {
+    return (
+      <>
+        <RichText text={text} className="mt-2" />
+        {figure && (
+          <div className="mt-3 max-w-md">
+            <ReviewFigure figure={figure} />
+          </div>
+        )}
+      </>
+    );
+  }
+  return (
+    <ol className="mt-2 list-decimal space-y-3 pl-5">
+      {text.map((p, i) => (
+        <li key={i}>
+          <RichInline text={p} />
+          {figure && (
+            <div className="mt-2 max-w-xs">
+              <ReviewFigure figure={figure} upTo={i + 1} caption={`After point ${i + 1}`} />
+            </div>
+          )}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-10">
@@ -102,12 +132,7 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
 
       <Section title="Explanation">
         <h3 className="font-semibold">Intuition</h3>
-        <RichText text={ex.intuition} className="mt-2" />
-        {ex.figure && (
-          <div className="mt-3 max-w-md">
-            <ReviewFigure figure={ex.figure} caption="Idea slide" />
-          </div>
-        )}
+        <SlideText text={ex.intuition} figure={ex.figure} />
         {node.visual && !ex.figure && <p className="mt-3 text-sm text-danger">Visual concept: idea figure missing.</p>}
         <h3 className="mt-6 font-semibold">Formal</h3>
         {formalSlides(ex.formal).map((s, i) => (
@@ -115,12 +140,7 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
             <p className="text-sm font-medium text-muted">
               Slide title: <RichInline text={s.title} />
             </p>
-            <RichText text={s.body} className="mt-2" />
-            {s.figure && (
-              <div className="mt-3 max-w-md">
-                <ReviewFigure figure={s.figure} />
-              </div>
-            )}
+            <SlideText text={"points" in s ? s.points : s.body} figure={s.figure} />
           </div>
         ))}
         <h3 className="mt-6 font-semibold">Worked example</h3>

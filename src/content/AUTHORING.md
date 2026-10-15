@@ -128,3 +128,12 @@ discussed, arms that jumped instead of turning.
     worked slides. Mark the initial arm (a `good` segment, labelled) and
     label the terminal arm. Keep solution figures quick (arcs, no `turn`):
     learners open them to check an answer, not to watch.
+20. **[S]** Write the idea slide and formal slides as **points**, not
+    paragraphs (owner, 2026-10-15: a bulky paragraph overloads). `intuition`
+    is a list of points; a formal section is `{ title, points, figure }`.
+    Each point is one short sentence (at most 25 words outside its maths,
+    aim for under 20), inline only (no `$$`, no line breaks); at most 6
+    points a slide; a title of up to 6 words. Points appear one per click,
+    and figure step n appears with point n: give each point the figure
+    elements it talks about, and a point that needs no new picture no step.
+    **[R]** One idea per point; define a term in the point that first uses it.

@@ -9,6 +9,8 @@ export type SlideSpec = { id: string; title: string } & (
   | { kind: "hook"; prompt: string }
   | { kind: "reveal"; prompt: string; reveal: string }
   | { kind: "text"; body: string; figure?: Figure }
+  /** Points revealed one per click; figure step n appears with point n. */
+  | { kind: "points"; points: string[]; figure?: Figure }
   /** `step` is this slide's step number (1-based): the figure shows elements up to it. */
   | { kind: "worked"; prompt: string; steps: string[]; answer: string | null; figure?: Figure; step: number }
   | { kind: "questions" }
@@ -31,14 +33,21 @@ function sections(text: string): string[] {
   return out.filter((s) => s.length > 0);
 }
 
-/** Each formal slide: titled by its lead-in, else by the slide it continues. */
-export function formalSlides(formal: Concept["explanation"]["formal"]): { title: string; body: string; figure?: Figure }[] {
+type FormalSlide = { title: string; figure?: Figure } & ({ body: string } | { points: string[] });
+
+/** Each formal slide: titled by its title or lead-in, else by the slide it continues. */
+export function formalSlides(formal: Concept["explanation"]["formal"]): FormalSlide[] {
   const parts: FormalSection[] = typeof formal === "string" ? sections(formal).map((body) => ({ body })) : formal;
   let title = "Precisely";
-  return parts.map(({ body, figure }) => {
-    const lead = leadIn(body);
+  return parts.map((part) => {
+    const figure = part.figure && { figure: part.figure };
+    if ("points" in part) {
+      title = part.title;
+      return { title, points: part.points, ...figure };
+    }
+    const lead = leadIn(part.body);
     if (lead) title = lead.title;
-    return { title, body: lead ? lead.rest : body, ...(figure && { figure }) };
+    return { title, body: lead ? lead.rest : part.body, ...figure };
   });
 }
 
@@ -50,8 +59,18 @@ export function buildDeck(concept: Pick<Concept, "hook" | "explanation">): Slide
   return [
     { id: "hook", title: "Think about this", kind: "hook", prompt: hook.prompt },
     { id: "reveal", title: "Think about this", kind: "reveal", prompt: hook.prompt, reveal: hook.reveal },
-    { id: "idea", title: "The idea", kind: "text", body: ex.intuition, ...(ex.figure && { figure: ex.figure }) },
-    ...formal.map((s, i) => ({ id: `formal-${i + 1}`, kind: "text" as const, ...s })),
+    {
+      id: "idea",
+      title: "The idea",
+      ...(typeof ex.intuition === "string" ? { kind: "text" as const, body: ex.intuition } : { kind: "points" as const, points: ex.intuition }),
+      ...(ex.figure && { figure: ex.figure }),
+    },
+    ...formal.map(({ title, figure, ...rest }, i) => ({
+      id: `formal-${i + 1}`,
+      title,
+      ...("points" in rest ? { kind: "points" as const, points: rest.points } : { kind: "text" as const, body: rest.body }),
+      ...(figure && { figure }),
+    })),
     ...steps.map((_, i) => ({
       id: `worked-${i + 1}`,
       title: "Worked example",

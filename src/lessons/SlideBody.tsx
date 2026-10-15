@@ -3,6 +3,7 @@ import { StepList } from "@/components/StepList";
 import { FigureFrame } from "@/figures/FigureFrame";
 import { FigureView } from "@/figures/FigureView";
 import type { RenderedSlide } from "@/lessons/renderDeck";
+import type { RenderedInline } from "@/lib/renderedText";
 
 /** Seconds between steps when a figure plays through on its own (the idea slide). */
 const FIGURE_STAGGER_S = 0.9;
@@ -21,7 +22,27 @@ function WithFigure({ figure, children }: { figure: React.ReactNode; children: R
  * A slide's content, below its heading. Shared by the lesson deck and the review preview
  * (/review/<chapter>/<concept>/slides), so the preview shows exactly what learners see.
  */
-export function SlideBody({ slide }: { slide: RenderedSlide }) {
+/** Points shown so far, the newest rising in; new ones are announced to screen readers. */
+function Points({ points, shown }: { points: RenderedInline[][]; shown: number }) {
+  return (
+    <ul className="space-y-4" aria-live="polite">
+      {points.slice(0, shown).map((p, i) => (
+        <li key={i} className={`flex gap-3 ${i === shown - 1 ? "motion-safe:animate-rise" : ""}`}>
+          <span aria-hidden="true" className="mt-[0.6em] h-2 w-2 shrink-0 rounded-full bg-accent" />
+          <span>
+            <RenderedInlineNodes nodes={p} />
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * `shown`: on a points slide, how many points are revealed (the figure shows its steps up to the
+ * same number). Omitted: all of them, as on the review preview's list.
+ */
+export function SlideBody({ slide, shown }: { slide: RenderedSlide; shown?: number }) {
   switch (slide.kind) {
     case "hook":
       return <RenderedRichText blocks={slide.prompt} />;
@@ -40,6 +61,16 @@ export function SlideBody({ slide }: { slide: RenderedSlide }) {
       ) : (
         <RenderedRichText blocks={slide.body} />
       );
+    case "points": {
+      const n = shown ?? slide.points.length;
+      return slide.figure ? (
+        <WithFigure figure={<FigureView figure={slide.figure} upTo={n} className="h-auto w-full" />}>
+          <Points points={slide.points} shown={n} />
+        </WithFigure>
+      ) : (
+        <Points points={slide.points} shown={n} />
+      );
+    }
     case "worked": {
       const body = (
         <>

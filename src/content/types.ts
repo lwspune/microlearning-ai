@@ -176,8 +176,12 @@ export type Item = {
   solution: Solution;
 };
 
-/** A formal slide's text, with a figure that plays through like the idea slide's. */
-export type FormalSection = { body: string; figure?: Figure };
+/**
+ * A formal slide: text whose bold lead-in titles it, with a figure that plays through like the
+ * idea slide's; or a title and points revealed one per click, figure step n with point n
+ * (AUTHORING.md 20).
+ */
+export type FormalSection = { body: string; figure?: Figure } | { title: string; points: string[]; figure?: Figure };
 
 export type WorkedExample = {
   prompt: string;
@@ -192,7 +196,8 @@ export type Concept = {
   status: "draft" | "approved";
   hook: { prompt: string; reveal: string };
   explanation: {
-    intuition: string;
+    /** The idea slide: text, or points revealed one per click (AUTHORING.md 20). */
+    intuition: string | string[];
     /**
      * One slide per section. Text is split at blank lines (older concepts); sections are
      * one slide each and may carry a figure (AUTHORING.md 17). A section's bold lead-in

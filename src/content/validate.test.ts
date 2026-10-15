@@ -349,6 +349,50 @@ describe("validateChapter", () => {
     });
   });
 
+  describe("points (AUTHORING.md 20)", () => {
+    const points = (n: number, words = 5) => Array.from({ length: n }, (_, i) => `${"word ".repeat(words - 1)}point${i + 1}.`);
+
+    it("accepts an idea slide and a formal section written as points", () => {
+      const errors = errorsAfter((ch) => {
+        makeVisual(ch);
+        c3(ch).explanation.intuition = points(3);
+        c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [1, 1], step: 3 }] });
+        c3(ch).explanation.formal = [{ title: "A rule", points: points(2), figure: figure({ elements: [{ kind: "point", at: [0, 0], step: 2 }] }) }];
+      });
+      expect(errors).toEqual([]);
+    });
+
+    it("allows at most 6 points, each one non-empty sentence of at most 25 words outside its maths", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).explanation.intuition = [...points(6), "Seven."];
+        c3(ch).explanation.formal = [{ title: "Long", points: [points(1, 26)[0], "  ", `Short with maths $${"x + ".repeat(30)}y$ here.`] }];
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea: at most 6 points, has 7/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 formal section 1 point 1: at most 25 words/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 formal section 1 point 2: empty/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/point 3/));
+    });
+
+    it("keeps points to inline text: no display maths or line breaks", () => {
+      const errors = errorsAfter((ch) => (c3(ch).explanation.intuition = ["One $$x$$ two.", "Line\nbreak."]));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea point 1: inline only/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea point 2: inline only/));
+    });
+
+    it("needs a short title on a formal section in points", () => {
+      const errors = errorsAfter((ch) => (c3(ch).explanation.formal = [{ title: "A title that runs to far too many words", points: points(1) }]));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 formal section 1: title of 1 to 6 words/));
+    });
+
+    it("keeps a points slide's figure steps within its points", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).explanation.intuition = points(2);
+        c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [1, 1], step: 3 }] });
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*step 3 is outside 1 to 2/));
+    });
+  });
+
   describe("formal sections (AUTHORING.md 17)", () => {
     const sections = (ch: Chapter) => c3(ch).explanation.formal as Exclude<Concept["explanation"]["formal"], string>;
 

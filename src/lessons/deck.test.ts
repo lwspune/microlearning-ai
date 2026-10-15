@@ -133,3 +133,23 @@ describe("buildDeck: formal slides", () => {
     }
   });
 });
+
+describe("buildDeck: points", () => {
+  it("makes the idea slide a points slide when the intuition is a list", () => {
+    const c = fake("F", ["s"]);
+    c.explanation.intuition = ["One.", "Two."];
+    c.explanation.figure = FIG;
+    expect(buildDeck(c).find((s) => s.id === "idea")).toEqual({ id: "idea", title: "The idea", kind: "points", points: ["One.", "Two."], figure: FIG });
+  });
+
+  it("makes a formal section written as points a points slide with its own title", () => {
+    const c = fake("", ["s"]);
+    c.explanation.formal = [{ title: "Arc length", points: ["s = rθ.", "Radians only."], figure: FIG }, { body: "**Next.** Text." }];
+    const slides = buildDeck(c).filter((s) => s.id.startsWith("formal-"));
+    expect(slides).toEqual([
+      { id: "formal-1", title: "Arc length", kind: "points", points: ["s = rθ.", "Radians only."], figure: FIG },
+      { id: "formal-2", title: "Next", kind: "text", body: "Text." },
+    ]);
+  });
+});
+

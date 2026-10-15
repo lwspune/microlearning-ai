@@ -12,6 +12,7 @@ export type RenderedSlide = { id: string; title: string; heading: RenderedInline
   | { kind: "hook"; prompt: RenderedBlock[] }
   | { kind: "reveal"; prompt: RenderedBlock[]; reveal: RenderedBlock[] }
   | { kind: "text"; body: RenderedBlock[]; figure?: Figure }
+  | { kind: "points"; points: RenderedInline[][]; figure?: Figure }
   | { kind: "worked"; prompt: RenderedBlock[]; steps: RenderedInline[][]; answer: RenderedInline[] | null; figure?: Figure; step: number }
   | { kind: "questions" }
 );
@@ -26,6 +27,8 @@ export function renderDeck(deck: SlideSpec[]): RenderedSlide[] {
         return { ...s, prompt: renderRichText(s.prompt), reveal: renderRichText(s.reveal) };
       case "text":
         return { ...s, body: renderRichText(s.body) };
+      case "points":
+        return { ...s, points: s.points.map(renderInlineText) };
       case "worked":
         return {
           ...s,
