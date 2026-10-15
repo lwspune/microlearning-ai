@@ -489,6 +489,8 @@ of its own, apart from wave 4.
 - **Preview:** `/review/<chapter>/<concept>/slides` shows the slides from the
   files, since the lesson reads published content.
 - **E. Backfill:** ledger 5, after the owner's verdict on C01.
+- **Done 2026-10-15:** C01 approved by the owner; merged, deployed, C01
+  published and checked on the live site.
 
 ## Content: all 30 concepts (published 2026-10-14)
 
