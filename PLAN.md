@@ -482,7 +482,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   extended). Sequences and
   Series (C01–C14) done 2026-10-15, at most 10 agents at once; figures in
   12 concepts where they teach; C06-M2 feedback extended to name
-  t₁ = S₁ (owner's call).
+  t₁ = S₁ (owner's call). Permutations and Combinations (C01–C14) done
+  2026-10-15: figures in 11 concepts; C08-M1 split into M1 and M5 (the
+  kth-word slip).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
