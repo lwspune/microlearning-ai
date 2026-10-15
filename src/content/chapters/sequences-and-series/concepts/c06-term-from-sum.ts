@@ -124,8 +124,8 @@ export const c06: Concept = {
     },
     {
       id: "C06-M2",
-      mistake: "Subtracting S_(n-1) without brackets, so its constant is added instead of subtracted and the constants double instead of cancelling",
-      remediation: t`Bracket all of $S_{n-1}$ before you subtract: $-5(4^{n-1} - 1) = -5 \cdot 4^{n-1} + 5$. The constants in $S_n$ and $S_{n-1}$ then cancel.`,
+      mistake: "Subtracting S_(n-1) without brackets, so its constant is added instead of subtracted and the constants double instead of cancelling; on t_1 items, also subtracting S_0",
+      remediation: t`Bracket all of $S_{n-1}$ before you subtract: $-5(4^{n-1} - 1) = -5 \cdot 4^{n-1} + 5$. The constants in $S_n$ and $S_{n-1}$ then cancel. And there is no sum before the first term, so $t_1 = S_1$: don't subtract $S_0$ at all.`,
       fallback: { kind: "none" },
     },
     {
@@ -143,7 +143,7 @@ export const c06: Concept = {
   ],
   engineNotes: [
     "C06-M4 has no model for a t_n or t_k item (it agrees with the key from the 2nd term on), and it gives the key whenever S_0 = 0, as for S_n = A(r^n - 1). Draw it from a t_1 or t_2/t_1 item with S_0 not 0.",
-    "C06-M1 gives the key on a t_1 item (t_1 = S_1). C06-M3 gives the key on a t_2/t_1 item for a G.P., and matches C06-M4 there when S_n = A r^n + c. C06-M2 needs a constant in S_n.",
+    "C06-M1 gives the key on a t_1 item (t_1 = S_1). C06-M3 gives the key on a t_2/t_1 item for a G.P., and matches C06-M4 there when S_n = A r^n + c. C06-M2 needs a constant in S_n; on t_1 and t_2/t_1 items its model also takes t_1 = S_1 - S_0 (the C06-M4 slip), so its remediation names both.",
   ],
   items: [
     {
