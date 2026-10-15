@@ -473,7 +473,10 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   (AUTHORING.md 17–20). Each later chapter gets all of these together.
   Trigonometric Functions (C01–C10) done 2026-10-15, the same way in one
   pass (one agent per concept, my read-through and screen review); C09-M6
-  split into M6 and M7.
+  split into M6 and M7. Trigonometry – II (`compound-and-multiple-angles`,
+  C01–C10) done 2026-10-15 the same way; no concept there is visual, so
+  figures only where a picture teaches (C01, C03–C08, C10); no misconception
+  split.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.

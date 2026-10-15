@@ -173,6 +173,15 @@ Guests are anonymous logins with no profile.
    set names). Then read every concept through with
    `node scripts/review-text.ts <concept-file.ts>...` (keys and distractors
    by hand) and look at its figure sheet before registering.
+5f. **Reworking a published chapter's slides (PLAN.md backfill ledger 5):**
+   a branch per chapter; one agent per concept from
+   [verify/agent-brief-slides.md](verify/agent-brief-slides.md), with the
+   chapter, models package, concept file and any figure that clearly teaches
+   it. Take the "before" preview shots before the agents start (the dev
+   server serves the working tree). Then step 7, a read-through with
+   `scripts/review-text.ts`, and a check that everything from
+   `misconceptions:` down is unchanged unless a split was made (commit a
+   split separately). Merge, then `npm run content:seed`.
 6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
    concept imports and `concepts: [...]` in the chapter's `index.ts` (its
    title, group and subject stay as written); the chapter test fails if any
@@ -315,6 +324,7 @@ Guests are anonymous logins with no profile.
 | A one-column grid item doesn't shrink below its content, so `truncate` inside it never kicked in: long Linear Programming titles pushed a student's concept cards past a phone's width | `min-w-0` on the grid item as well as the truncated text; e2e `noSideScroll` on every staff page |
 | A textbook PDF's text layer reads cleanly but drops maths: `pdftotext` on Balbharati Std XI printed "−√3" as "= - 3" and stacked fractions as "3 2" | take maths from PYQ Vault's transcribed LaTeX or the page images; extracted text only for headings and structure |
 | Options were sent in stored order, so the answer was always A in hand-authored items | `displayOrder` shuffles per learner in `buildQuestion`; `optionOrder.test.ts` checks the spread across the chapter |
+| A production build died with `ENOSPC` while prerendering: drive C was down to 388 KB with the dev server, 11 build workers and a browser running (it recovered to 5 GB once they stopped) | stop `next dev` before `npm run build`; check free space on C first |
 
 ## 7. Fine-tuning knobs
 
