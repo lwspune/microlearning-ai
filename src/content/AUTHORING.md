@@ -137,3 +137,6 @@ discussed, arms that jumped instead of turning.
     and figure step n appears with point n: give each point the figure
     elements it talks about, and a point that needs no new picture no step.
     **[R]** One idea per point; define a term in the point that first uses it.
+    The validator requires points in every draft concept; published concepts
+    keep their text until reworked (PLAN.md backfill ledger 5). The concept
+    briefs (`verify/agent-brief*.md`) and `build_concepts.py` produce points.

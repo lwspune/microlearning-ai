@@ -471,8 +471,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
 - **Progress:** Angle Measurement (C01–C07) done 2026-10-15: titled slides,
   defined terms, figures, turning arms, and points one per click
   (AUTHORING.md 17–20). Each later chapter gets all of these together.
-- **Wave 4** (branch `std11-stats-probability`, drafts) must meet rule 17
-  before it is published: its visual concepts need formal sections.
+- **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
+  17–20 before it is published: points on every idea and formal slide (the
+  validator now requires them in drafts), and figures in its visual concepts.
 
 ## Slides as points, one per click (approved 2026-10-15, branch `progressive-points`)
 

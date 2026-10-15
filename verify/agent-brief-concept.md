@@ -91,7 +91,8 @@ CHAPTER = "<chapter>"
 CONCEPTS = [dict(
     id="CNN", file="cNN-<slug>", var="cNN",
     hook=(prompt, reveal),            # a quick puzzle that the concept resolves; reveal answers it
-    intuition=..., formal=...,        # formal: slide-sized sections separated by blank lines
+    intuition=[point, ...],           # the idea slide: up to 6 points, one short sentence each
+    formal=[dict(title="Arc length", points=[...], figure=...), ...],   # one slide each; figure: visual concepts
     visual=...,                       # one sentence: a future draggable visual for this idea
     worked=dict(prompt=..., steps=[...], answer=...),   # 3-5 steps, one move each
     misconceptions=[("CNN-M1", mistake, remediation, fallback), ...],
@@ -103,11 +104,25 @@ CONCEPTS = [dict(
 - Text is KaTeX: `$…$` inline, `$$…$$` display, `**bold**`. Raw strings (`r"..."`). No backticks, no `${`.
 - **Write every file with the Write tool**, never through a shell heredoc or `echo`: the shell strips or mangles backslashes (`\times` loses its `\t`, `\\` becomes `\`), and the validator rejects the control characters this leaves.
 - Write for a Class 11 Maharashtra Board student: short sentences, the book's notation (e.g. $t_n$, $S_n$,
-  ${}^nC_r$ written as `$^nC_r$`: a `$` followed by `{` is a template-literal interpolation), no fluff. Match c08's density: intuition ~3–5 sentences, formal ~3–5 short sections.
+  ${}^nC_r$ written as `$^nC_r$`: a `$` followed by `{` is a template-literal interpolation), no fluff.
+- **Slides are points, not paragraphs** (owner, 2026-10-15; AUTHORING.md 17–20, the validator enforces it).
+  The model to copy is Angle Measurement, `src/content/chapters/angle-measurement/concepts/c01-directed-angles.ts`
+  to `c07-clock-hands.ts`:
+  - `intuition` and each formal section's `points`: one simple sentence per point (aim under 20 words, never
+    over 25 outside `$…$`), at most 6 per slide; inline maths only (no `$$`, no line breaks). A display formula
+    becomes its own point; a table becomes one point per row. Split a section that needs more than 6 points.
+  - Each formal section has a `title` of up to 6 words (its topic: "Standard position", "Arc length").
+  - **Define every term before using it**, in plain words, in the point that first uses it ("a **ray** is a
+    half-line …"). The idea slide defines the everyday words; don't repeat it on the formal slides.
+  - Points appear one per click and **figure step n appears with point n**: give each point the figure elements
+    it talks about; a point that needs no new picture has none. Steps stay within 1..number of points.
 - The hook and worked example must not reuse any item's numbers (rule 5). Solutions never mention option letters.
-- Figures (only if your prompt says the concept is visual): labels are plain Unicode (`A ∩ B`, `x ≤ 3`, `−2`),
-  element `step`s match the step they illustrate; idea-slide steps are animation order. Each step's figure adds
-  only what that step's text talks about (AUTHORING.md rule 14): a count label appears at the step that computes it.
+- Figures (visual concepts: the idea slide, **every formal section**, the worked example and each solution;
+  others where a picture genuinely teaches): labels are plain Unicode (`A ∩ B`, `x ≤ 3`, `−2`). Element `step`s
+  match the point or step they illustrate. Each step's figure adds only what that step's text talks about
+  (AUTHORING.md rule 14): a count label appears at the step that computes it. Anything that turns uses a `turn`
+  element (it rotates at 90° a second); mark an initial arm with a labelled `tone: "good"` segment. Solutions
+  stay quick: no `turn` there (rule 19).
 
 ## 5. Build and check (repeat until clean)
 From the repo root:

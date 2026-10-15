@@ -27,7 +27,9 @@ from lpp_figures import figure, region, line, point, label
 CONCEPT = dict(
     id="C0N", file="c0N-<graph slug>", var="c0N",
     hook=(prompt, reveal),
-    intuition=..., formal=..., visual=...,           # visual = visualSpec, one sentence for a future draggable visual
+    intuition=[point, ...],                          # the idea slide: up to 6 points, one short sentence each
+    formal=[dict(title=..., points=[...], figure=...), ...],   # one slide per section, a figure on each
+    visual=...,                                      # visual = visualSpec, one sentence for a future draggable visual
     worked=dict(prompt=..., steps=[...], answer=..., figure=...),
     misconceptions=[("C0N-M1", mistake, remediation, fallback), ...],   # fallback: ("concept", "C0x") | ("ext", "topic") | ("none",)
     engine_notes=[...],                                                  # optional
@@ -38,8 +40,11 @@ CONCEPT = dict(
 Use raw strings (`r"..."`) for anything with LaTeX. No backticks, no `${` anywhere.
 
 ## Rules (quality bar)
-- Text is KaTeX-aware: `$…$` inline, `**bold**`. Short sentences, Indian-exam-student friendly, no fluff. Match c30's density.
-- `formal`: blank lines between slide-sized sections; bullet lists fine.
+- Text is KaTeX-aware: `$…$` inline, `**bold**`. Short sentences, Indian-exam-student friendly, no fluff.
+- **Slides are points, not paragraphs** (AUTHORING.md 17–20; the validator enforces it; model: Angle
+  Measurement C01–C07). One simple sentence per point, under 20 words where you can and never over 25
+  outside `$…$`, at most 6 per slide, inline maths only. Each formal section: a `title` of up to 6 words and
+  its own figure. Define every term in the point that first uses it. Figure step n appears with point n.
 - Hook and worked example must NOT reuse any item's numbers/system (rule 5).
 - Solutions: 2–4 steps, one move each, ending at the answer. Never refer to option letters. May state the answer.
 - **Every solution gets a figure** (visual concept). Worked example and idea slide get figures. Element `step`s match the step they illustrate (1-based, ≤ number of steps); idea-slide steps are animation order.
