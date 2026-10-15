@@ -468,6 +468,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   into M1 and M6).
 - **Recommendation:** wait for the owner's verdict on C01; then a chapter at
   a time, angle and trigonometry chapters first.
+- **Progress:** Angle Measurement (C01–C07) done 2026-10-15: titled slides,
+  defined terms, figures, turning arms, and points one per click
+  (AUTHORING.md 17–20). Each later chapter gets all of these together.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rule 17
   before it is published: its visual concepts need formal sections.
 
@@ -489,6 +492,8 @@ understanding builds step by step.
 - **Preview:** `/review/<chapter>/<concept>/slides` clicks through like the
   lesson, so unpublished slides can be checked as learners see them.
 - **Content first:** all of Angle Measurement, C01–C07 (owner's choice).
+- **Done 2026-10-15:** engine and C01–C07 approved by the owner; merged,
+  deployed, published and checked on the live site.
 
 ## Answering: tap to answer, retry until right (approved 2026-10-15)
 
