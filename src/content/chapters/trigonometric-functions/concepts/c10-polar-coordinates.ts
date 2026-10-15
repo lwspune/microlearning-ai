@@ -1,6 +1,20 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/**
+ * The xy-plane drawn as plain axes (no grid or numbers), running from `x[0]` to `x[1]` and `y[0]` to `y[1]`,
+ * with the origin O labelled at `o`.
+ */
+function planeOf(x: [number, number], y: [number, number], o: "sw" | "se" = "sw"): FigureElement[] {
+  return [
+    { kind: "segment", from: [x[0], 0], to: [x[1], 0], tone: "muted" },
+    { kind: "label", at: [x[1], 0], label: "x", labelAt: "s", tone: "muted" },
+    { kind: "segment", from: [0, y[0]], to: [0, y[1]], tone: "muted" },
+    { kind: "label", at: [0, y[1]], label: "y", labelAt: "w", tone: "muted" },
+    { kind: "point", at: [0, 0], label: "O", labelAt: o, tone: "muted" },
+  ];
+}
 
 export const c10: Concept = {
   id: "C10",
@@ -10,30 +24,167 @@ export const c10: Concept = {
     reveal: t`No. They lie on one line through the origin, but on opposite sides of it. $(3, \sqrt3)$ is at $\dfrac{\pi}{6}$; $(-3, -\sqrt3)$, in quadrant III, is at $\pi + \dfrac{\pi}{6} = \dfrac{7\pi}{6}$. The ratio $\dfrac{y}{x}$ gives the line; the quadrant picks the side.`,
   },
   explanation: {
-    intuition: t`A point can be reached two ways. Cartesian: go $x$ along, then $y$ up. Polar: turn through $\theta$ from the positive $x$-axis, then walk $r$ along that arm. The right triangle under the arm links them: $x = r\cos\theta$ and $y = r\sin\theta$. Going back, $r$ is the hypotenuse, and $\tan\theta = \dfrac{y}{x}$ fixes only the line, not the side. So **plot the point first**, then pick $\theta$ in its quadrant.`,
-    formal: t`**Polar to Cartesian.** For the point $P(r, \theta)$:
-$$x = r\cos\theta, \qquad y = r\sin\theta$$
-
-**Cartesian to polar.** For the point $P(x, y)$: $r = \sqrt{x^2 + y^2}$, and $\theta$ is the angle with $\cos\theta = \dfrac{x}{r}$, $\sin\theta = \dfrac{y}{r}$. Take $0 \le \theta < 2\pi$.
-
-**Placing $\theta$.** Find the reference angle $\alpha$ from $\tan\alpha = \left|\dfrac{y}{x}\right|$, then:
-- Quadrant I: $\theta = \alpha$
-- Quadrant II: $\theta = \pi - \alpha$
-- Quadrant III: $\theta = \pi + \alpha$
-- Quadrant IV: $\theta = 2\pi - \alpha$
-
-**Degrees or radians.** The book writes the polar co-ordinates of $(3, 3)$ as $(3\sqrt2, 45^\circ)$. That is the same as $\left(3\sqrt2, \dfrac{\pi}{4}\right)$.`,
+    intuition: [
+      t`The **Cartesian co-ordinates** $(x, y)$ of a point $P$ say: go $x$ along, then $y$ up.`,
+      t`**Polar co-ordinates** $(r, \theta)$ reach the same point another way: a turn, then a walk.`,
+      t`First turn an arm anticlockwise from the positive $x$-axis, through an angle $\theta$, until it points at $P$.`,
+      t`Then walk along the arm: $r$ is the distance $OP$, from the origin $O$ to $P$.`,
+      t`The arm, the $x$-axis and the drop from $P$ make a right triangle.`,
+      t`Its sides link the two: $x = r\cos\theta$ and $y = r\sin\theta$.`,
+    ],
+    formal: [
+      {
+        title: "Polar to Cartesian",
+        points: [
+          t`Say we know the polar co-ordinates $(r, \theta)$ of a point $P$.`,
+          t`Since $\cos\theta = \frac{x}{r}$, its $x$-co-ordinate is $x = r\cos\theta$.`,
+          t`Since $\sin\theta = \frac{y}{r}$, its $y$-co-ordinate is $y = r\sin\theta$.`,
+          t`For example, take $P\left(2, \frac{3\pi}{4}\right)$, whose arm lies in quadrant II.`,
+          t`Then $x = 2\cos\frac{3\pi}{4} = -\sqrt2$ and $y = 2\sin\frac{3\pi}{4} = \sqrt2$.`,
+          t`Keep the signs: $\cos\frac{3\pi}{4}$ is negative, so $P(-\sqrt2, \sqrt2)$ lies in quadrant II.`,
+        ],
+        figure: {
+          alt: "An arm of length 2 turns 3π/4 anticlockwise from the initial arm and stops at P, in quadrant II. A dashed drop from P to the x-axis marks x = r cos θ, and a dashed line from P to the y-axis marks y = r sin θ. P is the point (−√2, √2), and quadrant II is shaded.",
+          axes: "none",
+          view: { x: [-3.3, 3], y: [-0.9, 2.3] },
+          elements: [
+            ...planeOf([-2.8, 2.8], [-0.6, 2.1]),
+            { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
+            { kind: "turn", r: 2, to: 135, label: "P(r, θ)", labelAt: "n", step: 1 },
+            { kind: "segment", from: [-1.414, 1.414], to: [-1.414, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [-1.414, 0], label: "x = r cos θ", labelAt: "s", step: 2 },
+            { kind: "segment", from: [-1.414, 1.414], to: [0, 1.414], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [0, 1.414], label: "y = r sin θ", labelAt: "e", step: 3 },
+            { kind: "label", at: [-0.707, 0.707], label: "r = 2", labelAt: "sw", step: 4 },
+            { kind: "label", at: [0.35, 0.61], label: "3π/4", labelAt: "ne", step: 4 },
+            { kind: "point", at: [-1.414, 1.414], label: "(−√2, √2)", labelAt: "sw", tone: "good", step: 5 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2.1 }, { kind: "sector", centre: [0, 0], from: 90, to: 180 }], tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Cartesian to polar",
+        points: [
+          t`Now go the other way: start from $P(x, y)$ and find $(r, \theta)$.`,
+          t`$OP$ is the hypotenuse of a right triangle whose other two sides are $|x|$ and $|y|$.`,
+          t`So, by Pythagoras, $r = \sqrt{x^2 + y^2}$.`,
+          t`$\theta$ is the angle with $\cos\theta = \frac{x}{r}$ and $\sin\theta = \frac{y}{r}$.`,
+          t`Take $\theta$ with $0 \le \theta < 2\pi$, so each point gets just one $\theta$.`,
+        ],
+        figure: {
+          alt: "The point P(x, y) in quadrant II, joined to O. A dashed drop from P to the x-axis makes a right triangle with sides |x| along the axis and |y| up the drop; its hypotenuse OP is r = √(x² + y²). An arm turns anticlockwise from the initial arm through θ to OP.",
+          axes: "none",
+          view: { x: [-4.3, 2.6], y: [-0.9, 5] },
+          elements: [
+            ...planeOf([-3.9, 2.4], [-0.6, 4.7]),
+            { kind: "point", at: [-3, 4], label: "P(x, y)", labelAt: "n", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-3, 4], step: 2 },
+            { kind: "segment", from: [-3, 4], to: [-3, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [-1.5, 0], label: "|x|", labelAt: "s", step: 2 },
+            { kind: "label", at: [-3, 2], label: "|y|", labelAt: "w", step: 2 },
+            { kind: "label", at: [-1.95, 2.6], label: "r = √(x² + y²)", labelAt: "ne", step: 3 },
+            { kind: "segment", from: [0, 0], to: [2.2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 4 },
+            { kind: "turn", r: 5, to: 126.87, step: 4 },
+            { kind: "label", at: [0.83, 1.65], label: "θ", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Same line, opposite sides",
+        points: [
+          t`$\tan\theta = \frac{y}{x}$ fixes only the line through $O$ on which $P$ lies.`,
+          t`For example, $(3, \sqrt3)$ and $(-3, -\sqrt3)$ both give $\frac{y}{x} = \frac{1}{\sqrt3}$.`,
+          t`They lie on that one line, but on opposite sides of $O$.`,
+          t`$(3, \sqrt3)$ is in quadrant I, at $\theta = \frac{\pi}{6}$.`,
+          t`$(-3, -\sqrt3)$ is in quadrant III, at $\theta = \pi + \frac{\pi}{6} = \frac{7\pi}{6}$.`,
+          t`So **plot the point first**: its quadrant picks the side of $O$.`,
+        ],
+        figure: {
+          alt: "The xy-plane with quadrants I to IV. A dashed line through O passes through (3, √3) in quadrant I and (−3, −√3) in quadrant III, on opposite sides of O. One arm turns π/6 anticlockwise from the initial arm towards (3, √3); another turns 7π/6 towards (−3, −√3).",
+          axes: "none",
+          view: { x: [-3.9, 3.9], y: [-2.5, 2.5] },
+          elements: [
+            ...planeOf([-3.6, 3.6], [-2.3, 2.3]),
+            { kind: "label", at: [1.4, 1.9], label: "I", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.4, 1.9], label: "II", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [-1.4, -1.9], label: "III", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [1.4, -1.9], label: "IV", labelAt: "n", tone: "muted" },
+            { kind: "line", through: [[0, 0], [3, 1.732]], dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [3, 1.732], label: "(3, √3)", labelAt: "n", step: 2 },
+            { kind: "point", at: [-3, -1.732], label: "(−3, −√3)", labelAt: "s", step: 2 },
+            { kind: "segment", from: [0, 0], to: [3.4, 0], label: "initial arm", labelAt: "s", tone: "good", step: 4 },
+            { kind: "turn", r: 2.2, to: 30, label: "π/6", labelAt: "se", step: 4 },
+            { kind: "turn", r: 2.2, to: 210, label: "7π/6", labelAt: "nw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Placing θ in its quadrant",
+        points: [
+          t`The **reference angle** $\alpha$ is the acute angle between the arm $OP$ and the $x$-axis.`,
+          t`Find it from $\tan\alpha = \left|\frac{y}{x}\right|$.`,
+          t`Quadrant I: $\theta = \alpha$.`,
+          t`Quadrant II: $\theta = \pi - \alpha$, as the arm stops short of the negative $x$-axis.`,
+          t`Quadrant III: $\theta = \pi + \alpha$, as the arm goes past the negative $x$-axis.`,
+          t`Quadrant IV: $\theta = 2\pi - \alpha$, as the arm stops short of a full turn.`,
+        ],
+        figure: {
+          alt: "Four arms, one in each quadrant, each making the same acute angle α with the x-axis. Arms turn anticlockwise from the initial arm to each in turn: θ = α in quadrant I, θ = π − α in quadrant II, θ = π + α in quadrant III and θ = 2π − α in quadrant IV.",
+          axes: "none",
+          view: { x: [-3.7, 3.7], y: [-2.9, 2.9] },
+          elements: [
+            ...planeOf([-3.1, 3.1], [-2.6, 2.6]),
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "good" },
+            { kind: "label", at: [3, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "segment", from: [0, 0], to: [1.915, 1.607], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-1.915, 1.607], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-1.915, -1.607], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [1.915, -1.607], tone: "muted", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 1.3, from: 0, to: 40, label: "α", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 1.3, from: 140, to: 180, label: "α", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 1.3, from: 180, to: 220, label: "α", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "arc", centre: [0, 0], r: 1.3, from: 320, to: 360, label: "α", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "turn", r: 2.5, to: 40, label: "θ = α", labelAt: "ne", step: 3 },
+            { kind: "turn", r: 2.5, to: 140, label: "θ = π − α", labelAt: "nw", step: 4 },
+            { kind: "turn", r: 2.5, to: 220, label: "θ = π + α", labelAt: "sw", step: 5 },
+            { kind: "turn", r: 2.5, to: 320, label: "θ = 2π − α", labelAt: "se", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Degrees or radians",
+        points: [
+          t`The book sometimes gives $\theta$ in degrees, not radians.`,
+          t`For example, it writes the polar co-ordinates of $(3, 3)$ as $(3\sqrt2, 45^\circ)$.`,
+          t`That is the same as $\left(3\sqrt2, \frac{\pi}{4}\right)$, because $45^\circ = \frac{\pi}{4}$.`,
+        ],
+        figure: {
+          alt: "The point (3, 3), joined to O by an arm of length 3√2. The arm turns 45° anticlockwise from the initial arm, and 45° is π/4, so (3√2, 45°) and (3√2, π/4) name the same point.",
+          axes: "none",
+          view: { x: [-0.8, 4.6], y: [-0.9, 3.9] },
+          elements: [
+            ...planeOf([-0.5, 4.3], [-0.5, 3.6]),
+            { kind: "segment", from: [0, 0], to: [4, 0], label: "initial arm", labelAt: "s", tone: "good", step: 2 },
+            { kind: "turn", r: 4.243, to: 45, step: 2 },
+            { kind: "point", at: [3, 3], label: "(3, 3)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [1.5, 1.5], label: "r = 3√2", labelAt: "nw", step: 2 },
+            { kind: "label", at: [1.48, 0.61], label: "45°", labelAt: "e", step: 2 },
+            { kind: "label", at: [0.25, 3], label: "θ = 45° = π/4", labelAt: "e", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the polar co-ordinates $(r, \theta)$, with $0 \le \theta < 2\pi$, of the point $(2, -2\sqrt3)$.`,
       steps: [
         t`Plot: $x > 0$ and $y < 0$, so the point is in quadrant IV.`,
-        t`$r = \sqrt{2^2 + (2\sqrt3)^2} = \sqrt{4 + 12} = 4$.`,
-        t`Reference angle: $\tan\alpha = \left|\dfrac{-2\sqrt3}{2}\right| = \sqrt3$, so $\alpha = \dfrac{\pi}{3}$.`,
-        t`Quadrant IV: $\theta = 2\pi - \dfrac{\pi}{3} = \dfrac{5\pi}{3}$. Check: $4\cos\dfrac{5\pi}{3} = 2$ and $4\sin\dfrac{5\pi}{3} = -2\sqrt3$.`,
+        t`$r = \sqrt{2^2 + (2\sqrt3)^2}$ $= \sqrt{4 + 12} = 4$.`,
+        t`Reference angle: $\tan\alpha = \left|\dfrac{-2\sqrt3}{2}\right|$ $= \sqrt3$, so $\alpha = \dfrac{\pi}{3}$.`,
+        t`Quadrant IV: $\theta = 2\pi - \dfrac{\pi}{3}$ $= \dfrac{5\pi}{3}$. Check: $4\cos\dfrac{5\pi}{3} = 2$ and $4\sin\dfrac{5\pi}{3} = -2\sqrt3$.`,
       ],
       answer: t`$\left(4, \dfrac{5\pi}{3}\right)$. The trap: stopping at $\dfrac{\pi}{3}$, which points into quadrant I.`,
       figure: {
-        alt: "The point (2, −2√3) in quadrant IV, joined to the origin by an arm of length 4. The arm is π/3 below the positive x-axis, so θ, measured anticlockwise, is 5π/3.",
+        alt: "The point (2, −2√3) in quadrant IV, joined to the origin by an arm of length 4. The arm is π/3 below the positive x-axis, so an arm turning anticlockwise from the initial arm to it sweeps θ = 5π/3.",
         axes: "xy",
         view: { x: [-1.5, 4], y: [-4.5, 1.5] },
         elements: [
@@ -41,22 +192,27 @@ $$x = r\cos\theta, \qquad y = r\sin\theta$$
           { kind: "label", at: [1, -1.732], label: "r = 4", labelAt: "ne", step: 2 },
           { kind: "angle", at: [0, 0], from: 300, to: 360, step: 3, tone: "muted" },
           { kind: "label", at: [1.2, -0.75], label: "π/3", labelAt: "n", step: 3, tone: "muted" },
-          { kind: "angle", at: [0, 0], from: 0, to: 300, label: "5π/3", step: 4 },
+          { kind: "segment", from: [0, 0], to: [3.5, 0], label: "initial arm", labelAt: "n", tone: "good", step: 4 },
+          { kind: "turn", r: 2, to: 300, label: "5π/3", labelAt: "w", step: 4 },
         ],
       },
     },
     figure: {
-      alt: "The point P(x, y) = (4, 3) joined to the origin by an arm of length r = 5, at angle θ from the positive x-axis. A dashed drop from P to the x-axis makes a right triangle: its base is x = r cos θ and its height is y = r sin θ.",
-      axes: "xy",
-      view: { x: [-1, 6], y: [-1, 4.5] },
+      alt: "The point P(x, y), with a dashed drop to the x-axis. An arm turns anticlockwise from the initial arm along the positive x-axis through θ until it points at P; OP has length r. The arm, the x-axis and the drop make a right triangle: its base is x = r cos θ and its height is y = r sin θ.",
+      axes: "none",
+      view: { x: [-0.8, 6.6], y: [-0.8, 3.9] },
       elements: [
-        { kind: "vector", to: [4, 3], label: "P(x, y)", labelAt: "ne", step: 1 },
-        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 0.9 }, { kind: "sector", centre: [0, 0], from: 0, to: 36.87 }], tone: "muted", step: 2 },
-        { kind: "angle", at: [0, 0], from: 0, to: 36.87, label: "θ", step: 2 },
-        { kind: "label", at: [2, 1.5], label: "r", labelAt: "nw", step: 2 },
-        { kind: "segment", from: [4, 3], to: [4, 0], dashed: true, tone: "muted", step: 3 },
-        { kind: "label", at: [4, 1.5], label: "y = r sin θ", labelAt: "e", step: 3 },
-        { kind: "label", at: [2.5, 0], label: "x = r cos θ", labelAt: "n", step: 3 },
+        ...planeOf([-0.6, 6.3], [-0.6, 3.7]),
+        { kind: "point", at: [4, 3], label: "P(x, y)", labelAt: "ne", step: 1 },
+        { kind: "segment", from: [4, 3], to: [4, 0], dashed: true, tone: "muted", step: 1 },
+        { kind: "segment", from: [0, 0], to: [6, 0], tone: "good", step: 3 },
+        { kind: "label", at: [5.2, 0], label: "initial arm", labelAt: "n", tone: "good", step: 3 },
+        { kind: "turn", r: 5, to: 36.87, step: 3 },
+        { kind: "label", at: [1.66, 0.55], label: "θ", labelAt: "e", step: 3 },
+        { kind: "label", at: [2, 1.5], label: "r", labelAt: "nw", step: 4 },
+        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [4, 0]] }, { kind: "halfPlane", through: [[4, 0], [4, 3]] }, { kind: "halfPlane", through: [[4, 3], [0, 0]] }], tone: "muted", step: 5 },
+        { kind: "label", at: [2, 0], label: "x = r cos θ", labelAt: "s", step: 6 },
+        { kind: "label", at: [4, 1.5], label: "y = r sin θ", labelAt: "e", step: 6 },
       ],
     },
     visualSpec: t`Drag the point $P$ around the plane: its arm, $r$ and $\theta$ update live, with the reference angle marked against the $x$-axis, so you see $\theta$ jump from $\alpha$ to $\pi - \alpha$ as $P$ crosses into quadrant II.`,

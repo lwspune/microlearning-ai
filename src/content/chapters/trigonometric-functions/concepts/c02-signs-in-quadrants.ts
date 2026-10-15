@@ -1,6 +1,39 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/**
+ * The xy-plane drawn as plain axes (no grid or numbers: only directions matter here); `oAt` places
+ * the origin's label clear of the arms.
+ */
+function axesOf(len: number, oAt: FigureElement["labelAt"] = "sw"): FigureElement[] {
+  return [
+    { kind: "segment", from: [-len, 0], to: [len, 0], tone: "muted" },
+    { kind: "label", at: [len, 0], label: "x", labelAt: "s", tone: "muted" },
+    { kind: "segment", from: [0, -len], to: [0, len], tone: "muted" },
+    { kind: "label", at: [0, len], label: "y", labelAt: "w", tone: "muted" },
+    { kind: "point", at: [0, 0], label: "O", labelAt: oAt, tone: "muted" },
+  ];
+}
+
+/** The plain axes with their quadrants I to IV (Angle Measurement C01's helper). */
+function planeOf(len: number, oAt: FigureElement["labelAt"] = "sw"): FigureElement[] {
+  const q = len * 0.75;
+  return [
+    ...axesOf(len, oAt),
+    { kind: "label", at: [q, q], label: "I", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [-q, q], label: "II", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [-q, -q], label: "III", labelAt: "n", tone: "muted" },
+    { kind: "label", at: [q, -q], label: "IV", labelAt: "n", tone: "muted" },
+  ];
+}
+
+/** Quadrant n (1 to 4) of a disc of radius r about the origin, shaded. */
+const quadrant = (n: number, r: number, more: { step?: number; tone?: FigureElement["tone"] } = {}): FigureElement => ({
+  kind: "region",
+  within: [{ kind: "disc", centre: [0, 0], r }, { kind: "sector", centre: [0, 0], from: 90 * (n - 1), to: 90 * n }],
+  ...more,
+});
 
 export const c02: Concept = {
   id: "C02",
@@ -10,24 +43,183 @@ export const c02: Concept = {
     reveal: t`Two. The arm of $200^\circ$ is in Quadrant III, where a point on it has $x < 0$ and $y < 0$, while $r > 0$. So $\sin\theta = \frac{y}{r}$ and $\cos\theta = \frac{x}{r}$ are negative, and so are cosec and sec. But $\tan\theta = \frac{y}{x}$ is a negative over a negative: positive, and so is $\cot\theta$.`,
   },
   explanation: {
-    intuition: t`Put the angle in standard position and take any point $P(x, y)$ on its terminal arm. The distance $r = OP$ is always positive, so each function's sign comes only from $x$ and $y$. sin and cosec follow $y$, cos and sec follow $x$, and tan and cot follow $\frac{y}{x}$: positive when $x$ and $y$ have the same sign. As the arm turns from one quadrant to the next, $x$ or $y$ changes sign, and the functions change with it.`,
-    formal: t`**Signs of $x$ and $y$**
-
-Quadrant I: $x > 0$, $y > 0$. Quadrant II: $x < 0$, $y > 0$. Quadrant III: $x < 0$, $y < 0$. Quadrant IV: $x > 0$, $y < 0$.
-
-**All Sin Tan Cos** (anticlockwise from Quadrant I)
-
-$$\begin{array}{c|c} \text{Quadrant} & \text{Positive} \\ \hline \text{I} & \text{all six} \\ \text{II} & \sin, \operatorname{cosec} \\ \text{III} & \tan, \cot \\ \text{IV} & \cos, \sec \end{array}$$
-
-The others are negative there. A reciprocal always has its partner's sign.
-
-**Placing the angle**
-
-Drop whole turns of $360^\circ$, never $180^\circ$. Then $0^\circ$ to $90^\circ$ is Quadrant I, $90^\circ$ to $180^\circ$ is II, $180^\circ$ to $270^\circ$ is III and $270^\circ$ to $360^\circ$ is IV. So $400^\circ = 360^\circ + 40^\circ$ is in Quadrant I. In radians the boundaries are $\frac{\pi}{2} \approx 1.57$, $\pi \approx 3.14$ and $\frac{3\pi}{2} \approx 4.71$.
-
-**Two conditions**
-
-Each sign condition allows two quadrants; $\theta$ lies in the one they share. $\sin\theta < 0$ (III or IV) and $\tan\theta > 0$ (I or III) put $\theta$ in Quadrant III.`,
+    intuition: [
+      t`A number's **sign** says whether it is positive, $+$, or negative, $-$.`,
+      t`Put an angle $\theta$ in standard position, and pick any point $P(x, y)$ on its terminal arm.`,
+      t`Its distance from the origin, $r = OP$, is always positive.`,
+      t`So the sign of each trigonometric function comes only from the signs of $x$ and $y$.`,
+      t`As the arm turns into the next quadrant, $x$ or $y$ changes sign, and some functions change sign with it.`,
+    ],
+    formal: [
+      {
+        title: "Signs of x and y",
+        points: [
+          t`When the terminal arm is in Quadrant I, a point on it has $x > 0$ and $y > 0$.`,
+          t`In Quadrant II, $x < 0$ and $y > 0$.`,
+          t`In Quadrant III, $x < 0$ and $y < 0$.`,
+          t`In Quadrant IV, $x > 0$ and $y < 0$.`,
+        ],
+        figure: {
+          alt: "The xy-plane. From the initial arm along the positive x-axis, an arm turns anticlockwise and stops in each quadrant in turn. Quadrant I: x > 0, y > 0. Quadrant II: x < 0, y > 0. Quadrant III: x < 0, y < 0. Quadrant IV: x > 0, y < 0.",
+          axes: "none",
+          view: { x: [-3.4, 3.4], y: [-3, 3] },
+          elements: [
+            ...axesOf(2.8, "s"),
+            { kind: "segment", from: [0, 0], to: [2.6, 0], tone: "good" },
+            { kind: "label", at: [1.7, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "turn", r: 2, to: 60, step: 1 },
+            { kind: "label", at: [1.75, 2.2], label: "I: x > 0, y > 0", labelAt: "n", step: 1 },
+            { kind: "turn", r: 2, from: 60, to: 120, step: 2 },
+            { kind: "label", at: [-1.75, 2.2], label: "II: x < 0, y > 0", labelAt: "n", step: 2 },
+            { kind: "turn", r: 2, from: 120, to: 240, step: 3 },
+            { kind: "label", at: [-1.75, -2.2], label: "III: x < 0, y < 0", labelAt: "s", step: 3 },
+            { kind: "turn", r: 2, from: 240, to: 300, step: 4 },
+            { kind: "label", at: [1.75, -2.2], label: "IV: x > 0, y < 0", labelAt: "s", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The sign each function takes",
+        points: [
+          t`$\sin\theta = \frac{y}{r}$ and $\operatorname{cosec}\theta = \frac{r}{y}$ take the sign of $y$, since $r > 0$.`,
+          t`$\cos\theta = \frac{x}{r}$ and $\sec\theta = \frac{r}{x}$ take the sign of $x$.`,
+          t`$\tan\theta = \frac{y}{x}$ and $\cot\theta = \frac{x}{y}$ are positive when $x$ and $y$ have the same sign.`,
+          t`They are negative when $x$ and $y$ have opposite signs.`,
+          t`So a reciprocal, such as $\operatorname{cosec}\theta = \frac{1}{\sin\theta}$, always has its partner's sign.`,
+        ],
+        figure: {
+          alt: "A point P(x, y) on a terminal arm in Quadrant III, where x < 0 and y < 0, with r > 0 along the arm. Step 1: sin θ and cosec θ are negative, like y. Step 2: cos θ and sec θ are negative, like x. Step 3: tan θ and cot θ, a negative over a negative, are positive.",
+          axes: "none",
+          view: { x: [-3, 3.4], y: [-2.6, 2.6] },
+          elements: [
+            ...axesOf(2.4, "se"),
+            { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good" },
+            { kind: "label", at: [1.3, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "vector", to: [-1.839, -1.543] },
+            { kind: "point", at: [-1.839, -1.543], label: "P(x, y)", labelAt: "s" },
+            { kind: "segment", from: [0, 0], to: [-1.839, 0], label: "x < 0", labelAt: "n", tone: "bad" },
+            { kind: "segment", from: [-1.839, 0], to: [-1.839, -1.543], dashed: true, label: "y < 0", labelAt: "w", tone: "bad" },
+            { kind: "label", at: [-0.45, -1.25], label: "r > 0", labelAt: "s", tone: "good", step: 1 },
+            { kind: "label", at: [0.3, 2], label: "sin θ, cosec θ < 0", labelAt: "e", tone: "bad", step: 1 },
+            { kind: "label", at: [0.3, 1.4], label: "cos θ, sec θ < 0", labelAt: "e", tone: "bad", step: 2 },
+            { kind: "label", at: [0.3, 0.8], label: "tan θ, cot θ > 0", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "All Sin Tan Cos",
+        points: [
+          t`The phrase **All Sin Tan Cos** tells you which functions are positive, anticlockwise from Quadrant I.`,
+          t`In Quadrant I, all six functions are positive.`,
+          t`In Quadrant II, only sin and cosec are positive.`,
+          t`In Quadrant III, only tan and cot are positive.`,
+          t`In Quadrant IV, only cos and sec are positive.`,
+          t`In each quadrant, the other functions are negative.`,
+        ],
+        figure: {
+          alt: "A circle about the origin. An arm turns anticlockwise from the initial arm through the four quadrants, and each is shaded as it arrives. Quadrant I: all six functions positive. Quadrant II: sin and cosec positive. Quadrant III: tan and cot positive. Quadrant IV: cos and sec positive.",
+          axes: "none",
+          view: { x: [-4.4, 4.4], y: [-3.4, 3.4] },
+          elements: [
+            ...axesOf(3.2, "s"),
+            { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "good" },
+            { kind: "label", at: [3.2, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "turn", r: 2, to: 45, step: 2 },
+            quadrant(1, 2, { step: 2, tone: "good" }),
+            { kind: "label", at: [1.6, 2.4], label: "I: all six +", labelAt: "e", tone: "good", step: 2 },
+            { kind: "turn", r: 2, from: 45, to: 135, step: 3 },
+            quadrant(2, 2, { step: 3 }),
+            { kind: "label", at: [-1.6, 2.4], label: "II: sin, cosec +", labelAt: "w", step: 3 },
+            { kind: "turn", r: 2, from: 135, to: 225, step: 4 },
+            quadrant(3, 2, { step: 4 }),
+            { kind: "label", at: [-1.6, -2.4], label: "III: tan, cot +", labelAt: "w", step: 4 },
+            { kind: "turn", r: 2, from: 225, to: 315, step: 5 },
+            quadrant(4, 2, { step: 5 }),
+            { kind: "label", at: [1.6, -2.4], label: "IV: cos, sec +", labelAt: "e", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Which quadrant an angle is in",
+        points: [
+          t`Between $0^\circ$ and $90^\circ$, the terminal arm lies in Quadrant I.`,
+          t`Between $90^\circ$ and $180^\circ$, it lies in Quadrant II.`,
+          t`Between $180^\circ$ and $270^\circ$, it lies in Quadrant III.`,
+          t`Between $270^\circ$ and $360^\circ$, it lies in Quadrant IV.`,
+          t`In radians, the axes between quadrants are at $\frac{\pi}{2} \approx 1.57$, $\pi \approx 3.14$ and $\frac{3\pi}{2} \approx 4.71$.`,
+        ],
+        figure: {
+          alt: "The xy-plane with the quadrants I to IV. From the initial arm, an arm turns anticlockwise through one quadrant at a time, stopping on the axes at 90°, 180°, 270° and 360°. In radians these are π/2 ≈ 1.57, π ≈ 3.14 and 3π/2 ≈ 4.71.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            ...planeOf(2.6),
+            { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good" },
+            { kind: "label", at: [1.5, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "turn", r: 2.2, to: 90, label: "90°", labelAt: "e", step: 1 },
+            { kind: "turn", r: 2.2, from: 90, to: 180, label: "180°", labelAt: "n", step: 2 },
+            { kind: "turn", r: 2.2, from: 180, to: 270, label: "270°", labelAt: "e", step: 3 },
+            { kind: "turn", r: 2.2, from: 270, to: 360, step: 4 },
+            { kind: "label", at: [2, 0], label: "360°", labelAt: "s", step: 4 },
+            { kind: "label", at: [0, 2.2], label: "π/2 ≈ 1.57", labelAt: "w", step: 5 },
+            { kind: "label", at: [-2.2, 0], label: "π ≈ 3.14", labelAt: "s", step: 5 },
+            { kind: "label", at: [0, -2.2], label: "3π/2 ≈ 4.71", labelAt: "w", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Dropping whole turns",
+        points: [
+          t`A whole turn, $360^\circ$, brings the arm back to where it started.`,
+          t`So **drop** (take off) whole turns first: they do not change the quadrant.`,
+          t`For example, $400^\circ = 360^\circ + 40^\circ$ ends where $40^\circ$ does, in Quadrant I.`,
+          t`Never drop $180^\circ$: half a turn points the arm the opposite way.`,
+        ],
+        figure: {
+          alt: "The xy-plane with the quadrants I to IV. Step 1: an arm turns one whole turn, 360°, and comes back to the initial arm. Step 3: an arm turns 400°, one whole turn and 40° more, and stops in Quadrant I, which is shaded: 400° − 360° = 40°. Step 4: dropping 180° instead gives 220°, an arm pointing the opposite way, in Quadrant III.",
+          axes: "none",
+          view: { x: [-2.8, 2.8], y: [-2.8, 2.8] },
+          elements: [
+            ...planeOf(2.6, "se"),
+            { kind: "segment", from: [0, 0], to: [2.4, 0], tone: "good" },
+            { kind: "label", at: [1.6, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "turn", r: 1.2, to: 360, label: "360°", labelAt: "n", step: 1 },
+            { kind: "turn", r: 2.2, to: 400, label: "400°", labelAt: "e", step: 3 },
+            quadrant(1, 2.4, { step: 3, tone: "good" }),
+            { kind: "label", at: [0.3, 2.5], label: "400° − 360° = 40°", labelAt: "e", tone: "good", step: 3 },
+            { kind: "turn", r: 1.8, to: 220, tone: "bad", step: 4 },
+            { kind: "label", at: [-2.7, -2.5], label: "400° − 180° = 220°", labelAt: "e", tone: "bad", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Two sign conditions",
+        points: [
+          t`A **sign condition** says whether a function is positive or negative, such as $\sin\theta < 0$.`,
+          t`Each one holds in two quadrants: $\sin\theta < 0$ in Quadrants III and IV, where $y < 0$.`,
+          t`And $\tan\theta > 0$ in Quadrants I and III, where $x$ and $y$ have the same sign.`,
+          t`Given two conditions, $\theta$ lies in the quadrant they share.`,
+          t`Here both hold only in Quadrant III, so $\theta$ lies in Quadrant III.`,
+        ],
+        figure: {
+          alt: "The xy-plane with the quadrants I to IV. Step 2: Quadrants III and IV are shaded, where sin θ < 0. Step 3: Quadrants I and III are shaded, where tan θ > 0. Step 5: Quadrant III, shaded by both, is marked: θ lies in Quadrant III.",
+          axes: "none",
+          view: { x: [-3, 3], y: [-3.1, 3.1] },
+          elements: [
+            ...planeOf(2.4),
+            quadrant(3, 2.2, { step: 2 }),
+            quadrant(4, 2.2, { step: 2 }),
+            { kind: "label", at: [0, -2.85], label: "sin θ < 0: III, IV", labelAt: "n", step: 2 },
+            quadrant(1, 2.2, { step: 3, tone: "muted" }),
+            quadrant(3, 2.2, { step: 3, tone: "muted" }),
+            { kind: "label", at: [0, 2.6], label: "tan θ > 0: I, III", labelAt: "n", tone: "muted", step: 3 },
+            quadrant(3, 2.2, { step: 5, tone: "good" }),
+            { kind: "label", at: [-1.3, -0.45], label: "θ in III", labelAt: "s", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Which is greater, $\sin 1856^\circ$ or $\sin 2006^\circ$?`,
       steps: [
@@ -45,13 +237,13 @@ Each sign condition allows two quadrants; $\theta$ lies in the one they share. $
           { kind: "label", at: [3.6, 2.4], label: "I", labelAt: "n", tone: "muted" },
           { kind: "label", at: [-3.6, 2.4], label: "II", labelAt: "n", tone: "muted" },
           { kind: "label", at: [-3.6, -2.4], label: "III", labelAt: "s", tone: "muted" },
-          { kind: "vector", to: [1.118, 1.658], step: 1 },
-          { kind: "angle", at: [0, 0], from: 0, to: 56, step: 1 },
+          { kind: "segment", from: [0, 0], to: [3.6, 0], tone: "good" },
+          { kind: "label", at: [3, 0], label: "initial arm", labelAt: "n", tone: "good" },
+          { kind: "turn", r: 2, to: 56, step: 1 },
           { kind: "segment", from: [1.118, 0], to: [1.118, 1.658], dashed: true, tone: "good", step: 1 },
           { kind: "label", at: [2.35, 1.7], label: "1856° → 56°", labelAt: "e", step: 1 },
           { kind: "label", at: [2.35, 1.1], label: "y > 0", labelAt: "e", step: 1, tone: "good" },
-          { kind: "vector", to: [-1.798, -0.877], step: 2 },
-          { kind: "angle", at: [0, 0], from: 0, to: 206, step: 2 },
+          { kind: "turn", r: 2, to: 206, step: 2 },
           { kind: "segment", from: [-1.798, 0], to: [-1.798, -0.877], dashed: true, tone: "bad", step: 2 },
           { kind: "label", at: [-2.35, -0.9], label: "2006° → 206°", labelAt: "w", step: 2 },
           { kind: "label", at: [-2.35, -1.5], label: "y < 0", labelAt: "w", step: 2, tone: "bad" },
@@ -60,19 +252,20 @@ Each sign condition allows two quadrants; $\theta$ lies in the one they share. $
       },
     },
     figure: {
-      alt: "A circle about the origin split into the four quadrants, shaded one at a time, anticlockwise. Quadrant I: all six functions positive. Quadrant II: sin and cosec positive. Quadrant III: tan and cot positive. Quadrant IV: cos and sec positive.",
-      axes: "xy",
-      view: { x: [-4.4, 4.4], y: [-3.2, 3.2] },
+      alt: "The xy-plane with the quadrants I to IV. Step 2: an angle θ in standard position; its arm turns 130° from the initial arm to a point P(x, y) in Quadrant II. Step 3: r = OP > 0. Step 4: P has x < 0 and y > 0. Step 5: the arm turns on into Quadrant III, where y < 0: y has changed sign.",
+      axes: "none",
+      view: { x: [-3.2, 3.2], y: [-3, 3] },
       elements: [
-        { kind: "circle", centre: [0, 0], r: 2, tone: "muted" },
-        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 0, to: 90 }], step: 1, tone: "good" },
-        { kind: "label", at: [1.6, 2.4], label: "I: all six +", labelAt: "e", tone: "good", step: 1 },
-        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 90, to: 180 }], step: 2 },
-        { kind: "label", at: [-1.6, 2.4], label: "II: sin, cosec +", labelAt: "w", step: 2 },
-        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 180, to: 270 }], step: 3 },
-        { kind: "label", at: [-1.6, -2.4], label: "III: tan, cot +", labelAt: "w", step: 3 },
-        { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 270, to: 360 }], step: 4 },
-        { kind: "label", at: [1.6, -2.4], label: "IV: cos, sec +", labelAt: "e", step: 4 },
+        ...planeOf(2.8, "se"),
+        { kind: "segment", from: [0, 0], to: [2.6, 0], tone: "good", step: 2 },
+        { kind: "label", at: [1.9, 0], label: "initial arm", labelAt: "n", tone: "good", step: 2 },
+        { kind: "turn", r: 2.4, to: 130, label: "P(x, y)", labelAt: "w", step: 2 },
+        { kind: "label", at: [-0.5, 1.3], label: "r > 0", labelAt: "n", tone: "good", step: 3 },
+        { kind: "segment", from: [0, 0], to: [-1.543, 0], tone: "bad", step: 4 },
+        { kind: "label", at: [-1.1, 0], label: "x < 0", labelAt: "n", tone: "bad", step: 4 },
+        { kind: "segment", from: [-1.543, 0], to: [-1.543, 1.839], dashed: true, label: "y > 0", labelAt: "w", tone: "good", step: 4 },
+        { kind: "turn", r: 2.4, from: 130, to: 230, label: "P", labelAt: "s", tone: "bad", step: 5 },
+        { kind: "segment", from: [-1.543, 0], to: [-1.543, -1.839], dashed: true, label: "y < 0", labelAt: "w", tone: "bad", step: 5 },
       ],
     },
     visualSpec: t`Drag the terminal arm round the circle: its quadrant lights up, the signs of $x$ and $y$ show at its tip, and the six functions show $+$ or $-$ as they change.`,

@@ -10,26 +10,76 @@ export const c07: Concept = {
     reveal: t`No. At $45^\circ$, $\sin^6\theta = \cos^6\theta = \left(\frac{1}{\sqrt{2}}\right)^6 = \frac{1}{8}$, so the sum is $\frac{1}{4}$. Write it as $(\sin^2\theta)^3 + (\cos^2\theta)^3$ and use $a^3 + b^3 = (a + b)^3 - 3ab(a + b)$ with $a + b = 1$: $\sin^6\theta + \cos^6\theta = 1 - 3\sin^2\theta\cos^2\theta$. At $45^\circ$ that is $1 - \frac{3}{4} = \frac{1}{4}$.`,
   },
   explanation: {
-    intuition: t`There are six ratios, but they are all built from $\sin\theta$ and $\cos\theta$. When an expression looks tangled, rewrite every ratio in $\sin\theta$ and $\cos\theta$: it becomes ordinary fractions, and $\sin^2\theta + \cos^2\theta = 1$ cleans up the rest. When $\tan\theta$ is given, you don't need $\sin\theta$ and $\cos\theta$ separately. Divide the top and the bottom by $\cos\theta$, and every $\sin\theta$ turns into $\tan\theta$.`,
-    formal: t`**Change everything to $\sin$ and $\cos$**
-
-$\tan\theta = \frac{\sin\theta}{\cos\theta}$, $\cot\theta = \frac{\cos\theta}{\sin\theta}$, $\sec\theta = \frac{1}{\cos\theta}$, $\operatorname{cosec}\theta = \frac{1}{\sin\theta}$. Then take a common denominator and use $\sin^2\theta + \cos^2\theta = 1$.
-
-**$\tan\theta$ is given: divide through by $\cos\theta$**
-
-When every term has one $\sin\theta$ or one $\cos\theta$, divide the top and the bottom by $\cos\theta$:
-
-$$\frac{a\sin\theta + b\cos\theta}{c\sin\theta + d\cos\theta} = \frac{a\tan\theta + b}{c\tan\theta + d}$$
-
-For squares, divide by $\cos^2\theta$, or use $\sec^2\theta = 1 + \tan^2\theta$ and $\operatorname{cosec}^2\theta = 1 + \cot^2\theta$.
-
-**Expand with the algebra identities**
-
-$(a \pm b)^2 = a^2 \pm 2ab + b^2$ and $a^3 + b^3 = (a + b)^3 - 3ab(a + b)$. Watch for the products that equal $1$: $\sin\theta\operatorname{cosec}\theta$, $\cos\theta\sec\theta$, $\tan\theta\cot\theta$. Also $\tan\theta + \cot\theta = \frac{\sin^2\theta + \cos^2\theta}{\sin\theta\cos\theta} = \sec\theta\operatorname{cosec}\theta$.
-
-**Proving $L = R$**
-
-Start from the more complicated side and simplify it until it becomes the other side.`,
+    intuition: [
+      t`To **simplify** an expression is to rewrite it in a shorter form with the same value for every $\theta$.`,
+      t`There are six trigonometric ratios, but all of them are built from $\sin\theta$ and $\cos\theta$.`,
+      t`So rewrite a tangled expression in $\sin\theta$ and $\cos\theta$ only: it becomes ordinary fractions.`,
+      t`Then the **identity** $\sin^2\theta + \cos^2\theta = 1$, an equation true for every $\theta$, cleans up the rest.`,
+      t`When $\tan\theta$ is given, you don't need $\sin\theta$ and $\cos\theta$ separately.`,
+      t`Divide the top and the bottom by $\cos\theta$, and every $\sin\theta$ turns into $\tan\theta$.`,
+    ],
+    formal: [
+      {
+        title: "Change everything to sin and cos",
+        points: [
+          t`First, write every ratio in terms of $\sin\theta$ and $\cos\theta$.`,
+          t`$\tan\theta = \frac{\sin\theta}{\cos\theta}$ and $\cot\theta = \frac{\cos\theta}{\sin\theta}$.`,
+          t`$\sec\theta = \frac{1}{\cos\theta}$ and $\operatorname{cosec}\theta = \frac{1}{\sin\theta}$.`,
+          t`Next, put the fractions over a **common denominator**, one bottom that they all share.`,
+          t`Last, use $\sin^2\theta + \cos^2\theta = 1$ to clean up.`,
+        ],
+      },
+      {
+        title: "When tan θ is given",
+        points: [
+          t`A **term** is one piece of a sum, such as $2\sin\theta$ in $2\sin\theta + 3\cos\theta$.`,
+          t`Suppose every term, on the top and the bottom, has one $\sin\theta$ or one $\cos\theta$.`,
+          t`Divide the top and the bottom by $\cos\theta$: the fraction keeps its value.`,
+          t`Each $\sin\theta$ becomes $\tan\theta$, and each $\cos\theta$ becomes $1$, wherever the term stands.`,
+          t`So $\frac{a\sin\theta + b\cos\theta}{c\sin\theta + d\cos\theta} = \frac{a\tan\theta + b}{c\tan\theta + d}$.`,
+          t`Now put in the given value of $\tan\theta$.`,
+        ],
+      },
+      {
+        title: "When the terms are squares",
+        points: [
+          t`When the terms are squares, such as $\sin^2\theta$ and $\cos^2\theta$, divide the top and the bottom by $\cos^2\theta$.`,
+          t`Then $\frac{\sin^2\theta}{\cos^2\theta} = \tan^2\theta$ and $\frac{\cos^2\theta}{\cos^2\theta} = 1$.`,
+          t`Or use the identities $\sec^2\theta = 1 + \tan^2\theta$ and $\operatorname{cosec}^2\theta = 1 + \cot^2\theta$.`,
+          t`A given $\tan\theta$ also gives $\cot\theta = \frac{1}{\tan\theta}$, so both identities can be used.`,
+          t`Keep the $1$ in each: $\sec^2\theta$ is not $\tan^2\theta$.`,
+        ],
+      },
+      {
+        title: "Expand with the algebra identities",
+        points: [
+          t`To **expand** a bracket is to multiply it out into separate terms.`,
+          t`$(a + b)^2 = a^2 + 2ab + b^2$.`,
+          t`$(a - b)^2 = a^2 - 2ab + b^2$.`,
+          t`Keep the middle term $2ab$: $(a + b)^2$ is not $a^2 + b^2$.`,
+          t`For cubes, $a^3 + b^3 = (a + b)^3 - 3ab(a + b)$.`,
+        ],
+      },
+      {
+        title: "Products that equal one",
+        points: [
+          t`A ratio's **reciprocal** is the ratio turned upside down, such as $\sec\theta = \frac{1}{\cos\theta}$.`,
+          t`A ratio times its reciprocal is $1$.`,
+          t`So $\sin\theta\operatorname{cosec}\theta = 1$, $\cos\theta\sec\theta = 1$ and $\tan\theta\cot\theta = 1$.`,
+          t`Watch for these products: they often hide in the middle term after you expand.`,
+          t`Also, over a common denominator, $\tan\theta + \cot\theta = \frac{\sin^2\theta + \cos^2\theta}{\sin\theta\cos\theta}$.`,
+          t`Its top is $1$, so $\tan\theta + \cot\theta = \frac{1}{\sin\theta\cos\theta} = \sec\theta\operatorname{cosec}\theta$.`,
+        ],
+      },
+      {
+        title: "Proving L = R",
+        points: [
+          t`To **prove** an identity $L = R$ is to show that the left side $L$ always equals the right side $R$.`,
+          t`Start from the more complicated side.`,
+          t`Simplify it until it becomes the other side.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $\tan A = \frac{4}{3}$, find $\dfrac{2\sin A - 3\cos A}{2\sin A + 3\cos A}$.`,
       steps: [

@@ -1,6 +1,17 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** Plain xy axes (no grid, numbers or quadrants) over the given extents, with the origin O. */
+function axesOf(x: Pt, y: Pt): FigureElement[] {
+  return [
+    { kind: "segment", from: [x[0], 0], to: [x[1], 0], tone: "muted" },
+    { kind: "label", at: [x[1], 0], label: "x", labelAt: "s", tone: "muted" },
+    { kind: "segment", from: [0, y[0]], to: [0, y[1]], tone: "muted" },
+    { kind: "label", at: [0, y[1]], label: "y", labelAt: "w", tone: "muted" },
+    { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+  ];
+}
 
 export const c03: Concept = {
   id: "C03",
@@ -10,37 +21,228 @@ export const c03: Concept = {
     reveal: t`$0$. One of the factors is $\cos 90^\circ$. At $90^\circ$ the point on the terminal arm is $(0, 1)$, so $\cos 90^\circ = \frac{x}{r} = 0$. One zero factor makes the whole product $0$, whatever the other $178$ factors are.`,
   },
   explanation: {
-    intuition: t`Every value comes from one point $P(x, y)$ on the terminal arm: $\sin\theta = \frac{y}{r}$, $\cos\theta = \frac{x}{r}$. At $30^\circ$, $45^\circ$ and $60^\circ$ the half-square and the half equilateral triangle give exact sides, so the values are exact surds. On the axes, take $r = 1$: the point is $(\pm 1, 0)$ or $(0, \pm 1)$, and you read $\cos\theta$ and $\sin\theta$ straight off it. So you never guess a value: picture the point, read $x$ and $y$.`,
-    formal: t`**The table**
-
-$$\begin{array}{c|ccccc} \theta & 0^\circ & 30^\circ & 45^\circ & 60^\circ & 90^\circ \\ \hline \sin\theta & 0 & \frac{1}{2} & \frac{1}{\sqrt{2}} & \frac{\sqrt{3}}{2} & 1 \\ \cos\theta & 1 & \frac{\sqrt{3}}{2} & \frac{1}{\sqrt{2}} & \frac{1}{2} & 0 \\ \tan\theta & 0 & \frac{1}{\sqrt{3}} & 1 & \sqrt{3} & \text{not defined} \end{array}$$
-
-Sine climbs from $0$ to $1$; cosine falls from $1$ to $0$. In radians: $30^\circ = \frac{\pi}{6}$, $45^\circ = \frac{\pi}{4}$, $60^\circ = \frac{\pi}{3}$, $90^\circ = \frac{\pi}{2}$.
-
-**The axes** (with $r = 1$, $\cos\theta = x$ and $\sin\theta = y$)
-
-- $0^\circ$ and $360^\circ$: $(1, 0)$, so $\cos = 1$, $\sin = 0$.
-- $90^\circ$: $(0, 1)$, so $\cos = 0$, $\sin = 1$.
-- $180^\circ = \pi$: $(-1, 0)$, so $\cos = -1$, $\sin = 0$.
-- $270^\circ = \frac{3\pi}{2}$: $(0, -1)$, so $\cos = 0$, $\sin = -1$.
-
-**The other three are reciprocals**
-
-$\operatorname{cosec}\theta = \frac{1}{\sin\theta}$, $\sec\theta = \frac{1}{\cos\theta}$, $\cot\theta = \frac{1}{\tan\theta}$: e.g. $\operatorname{cosec} 30^\circ = 2$. A value is not defined where its denominator is $0$: $\tan 90^\circ$, $\sec 90^\circ$, $\cot 0^\circ$, $\operatorname{cosec} 0^\circ$.
-
-**Evaluating an expression**
-
-Find each angle first ($\sin 2\theta$ is the sine of the angle $2\theta$), then put in each value, then do the powers: $\sin^2\theta = (\sin\theta)^2$.
-
-**Long products**
-
-A factor equal to $0$ makes the whole product $0$. In $\tan 1^\circ \tan 2^\circ \cdots \tan 89^\circ$, pair $\tan\theta$ with $\tan(90^\circ - \theta) = \cot\theta$: each pair is $1$, and the middle factor is $\tan 45^\circ = 1$, so the product is $1$.`,
+    intuition: [
+      t`Every value comes from a point $P(x, y)$ on the terminal arm, at distance $r$ from $O$.`,
+      t`Then $\sin\theta = \frac{y}{r}$, $\cos\theta = \frac{x}{r}$ and $\tan\theta = \frac{y}{x}$.`,
+      t`The **standard angles** are $0^\circ$, $30^\circ$, $45^\circ$, $60^\circ$, $90^\circ$ and the quadrantal angles $180^\circ$, $270^\circ$, $360^\circ$.`,
+      t`At $30^\circ$, $45^\circ$ and $60^\circ$, half a square or half an equal-sided triangle gives exact sides.`,
+      t`So their values are exact **surds**: roots such as $\sqrt{2}$ and $\sqrt{3}$, left as roots.`,
+      t`On the axes, take $r = 1$ and read $\cos\theta = x$ and $\sin\theta = y$ straight off the point.`,
+    ],
+    formal: [
+      {
+        title: "Values at 45°",
+        points: [
+          t`Turn the arm $45^\circ$ from the initial arm, and mark the point $P(1, 1)$ on it.`,
+          t`Drop a perpendicular from $P$: the triangle is half a square of side $1$, cut along its diagonal.`,
+          t`The diagonal is $r = OP = \sqrt{1^2 + 1^2} = \sqrt{2}$, by Pythagoras.`,
+          t`So $\sin 45^\circ = \frac{y}{r} = \frac{1}{\sqrt{2}}$ and $\cos 45^\circ = \frac{x}{r} = \frac{1}{\sqrt{2}}$.`,
+          t`And $\tan 45^\circ = \frac{y}{x} = \frac{1}{1} = 1$.`,
+        ],
+        figure: {
+          alt: "The xy-plane. An arm turns 45° anticlockwise from the initial arm along the positive x-axis, through P(1, 1). The perpendicular from P to the x-axis makes a shaded triangle, half of the square of side 1 cut along its diagonal OP. Its sides along the axis and up to P are 1, and the diagonal is r = √2. Beside it: sin 45° = 1/√2, cos 45° = 1/√2, tan 45° = 1.",
+          axes: "none",
+          view: { x: [-0.5, 2.7], y: [-0.45, 1.85] },
+          elements: [
+            ...axesOf([-0.3, 2.4], [-0.3, 1.7]),
+            { kind: "segment", from: [0, 0], to: [2, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
+            { kind: "turn", r: 1.9, to: 45, label: "45°", labelAt: "ne", step: 1 },
+            { kind: "point", at: [1, 1], label: "P(1, 1)", labelAt: "nw", step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [1, 0]] }, { kind: "halfPlane", through: [[1, 0], [1, 1]] }, { kind: "halfPlane", through: [[1, 1], [0, 0]] }], tone: "good", step: 2 },
+            { kind: "segment", from: [1, 0], to: [1, 1], dashed: true, label: "1", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "segment", from: [0, 1], to: [1, 1], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [0.5, 0], label: "1", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [0.5, 0.5], label: "r = √2", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "label", at: [1.5, 0.8], label: "sin 45° = 1/√2", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [1.5, 0.5], label: "cos 45° = 1/√2", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [1.5, 0.2], label: "tan 45° = 1", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Values at 30°",
+        points: [
+          t`An **equilateral triangle** has three equal sides and three $60^\circ$ angles; take one with sides $2$.`,
+          t`Cut it in half along the $x$-axis: each half has a short side $1$ and a longest side $2$.`,
+          t`By Pythagoras, the cut is $\sqrt{2^2 - 1^2} = \sqrt{3}$ long.`,
+          t`The cut halves the $60^\circ$ angle at $O$, so the top half has $30^\circ$ there.`,
+          t`Turn the arm $30^\circ$: it ends at the top corner, $P(\sqrt{3}, 1)$, with $r = 2$.`,
+          t`So $\sin 30^\circ = \frac{1}{2}$, $\cos 30^\circ = \frac{\sqrt{3}}{2}$ and $\tan 30^\circ = \frac{1}{\sqrt{3}}$.`,
+        ],
+        figure: {
+          alt: "The xy-plane. An equilateral triangle with sides 2 has one corner at O and the opposite side upright, crossing the x-axis. The x-axis cuts it into two halves, each with a short side 1, a longest side 2 and the cut √3. The top half, shaded, has 30° at O. An arm turns 30° from the initial arm to its top corner P(√3, 1). Beside it: sin 30° = 1/2, cos 30° = √3/2, tan 30° = 1/√3.",
+          axes: "none",
+          view: { x: [-0.5, 3.7], y: [-1.45, 1.6] },
+          elements: [
+            ...axesOf([-0.3, 2.3], [-1.3, 1.4]),
+            { kind: "segment", from: [0, 0], to: [1.732, 1], label: "2", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "segment", from: [1.732, 1], to: [1.732, -1], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [1.732, -1], label: "2", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [1.732, 0], tone: "accent", step: 2 },
+            { kind: "label", at: [1.732, 0.5], label: "1", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "label", at: [1.732, -0.5], label: "1", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "label", at: [0.866, 0], label: "√3", labelAt: "n", step: 3 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [1.732, 0]] }, { kind: "halfPlane", through: [[1.732, 0], [1.732, 1]] }, { kind: "halfPlane", through: [[1.732, 1], [0, 0]] }], tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [2.3, 0], label: "initial arm", labelAt: "s", tone: "good", step: 5 },
+            { kind: "turn", r: 2, to: 30, label: "30°", labelAt: "n", step: 5 },
+            { kind: "point", at: [1.732, 1], label: "P(√3, 1)", labelAt: "e", step: 5 },
+            { kind: "label", at: [2.1, -0.45], label: "sin 30° = 1/2", labelAt: "e", tone: "good", step: 6 },
+            { kind: "label", at: [2.1, -0.8], label: "cos 30° = √3/2", labelAt: "e", tone: "good", step: 6 },
+            { kind: "label", at: [2.1, -1.15], label: "tan 30° = 1/√3", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Values at 60°",
+        points: [
+          t`Lay the same half with its short side $1$ along the $x$-axis.`,
+          t`Its angle at $O$ is now the $60^\circ$ one.`,
+          t`Turn the arm $60^\circ$: it ends at the top corner, $Q(1, \sqrt{3})$, with $r = 2$.`,
+          t`So $\sin 60^\circ = \frac{\sqrt{3}}{2}$, $\cos 60^\circ = \frac{1}{2}$ and $\tan 60^\circ = \sqrt{3}$.`,
+          t`The values swap with $30^\circ$: $\sin 60^\circ = \cos 30^\circ$ and $\cos 60^\circ = \sin 30^\circ$.`,
+          t`Sine grows with the angle, so $\sin 30^\circ = \frac{1}{2}$ is the smaller and $\sin 60^\circ = \frac{\sqrt{3}}{2}$ the larger.`,
+        ],
+        figure: {
+          alt: "The xy-plane. The half triangle lies with its short side 1 along the x-axis from O, its upright side √3 and its longest side 2 from O to Q(1, √3). Its angle at O, shaded, is 60°. An arm turns 60° from the initial arm to Q. Beside it: sin 60° = √3/2, cos 60° = 1/2, tan 60° = √3.",
+          axes: "none",
+          view: { x: [-0.5, 3.5], y: [-0.45, 2.25] },
+          elements: [
+            ...axesOf([-0.3, 2.6], [-0.3, 2.1]),
+            { kind: "segment", from: [0, 0], to: [1, 0], tone: "accent", step: 1 },
+            { kind: "label", at: [0.5, 0], label: "1", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "segment", from: [1, 0], to: [1, 1.732], dashed: true, label: "√3", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [1, 1.732], label: "2", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [1, 0]] }, { kind: "halfPlane", through: [[1, 0], [1, 1.732]] }, { kind: "halfPlane", through: [[1, 1.732], [0, 0]] }], tone: "good", step: 2 },
+            { kind: "segment", from: [0, 0], to: [2.5, 0], label: "initial arm", labelAt: "s", tone: "good", step: 3 },
+            { kind: "turn", r: 2, to: 60, label: "60°", labelAt: "n", step: 3 },
+            { kind: "point", at: [1, 1.732], label: "Q(1, √3)", labelAt: "e", step: 3 },
+            { kind: "label", at: [1.9, 1.2], label: "sin 60° = √3/2", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [1.9, 0.85], label: "cos 60° = 1/2", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [1.9, 0.5], label: "tan 60° = √3", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Values on the axes",
+        points: [
+          t`When the terminal arm lies along an axis, take the point at $r = 1$: then $\cos\theta = x$ and $\sin\theta = y$.`,
+          t`At $0^\circ$ and $360^\circ$, the point is $(1, 0)$, so $\cos 0^\circ = 1$ and $\sin 0^\circ = 0$.`,
+          t`At $90^\circ$, it is $(0, 1)$, so $\cos 90^\circ = 0$ and $\sin 90^\circ = 1$.`,
+          t`At $180^\circ = \pi$, it is $(-1, 0)$, so $\cos 180^\circ = -1$ and $\sin 180^\circ = 0$.`,
+          t`At $270^\circ = \frac{3\pi}{2}$, it is $(0, -1)$, so $\cos 270^\circ = 0$ and $\sin 270^\circ = -1$.`,
+          t`A point on the negative half of an axis gives a negative value.`,
+        ],
+        figure: {
+          alt: "The xy-plane with a circle of radius 1 about O. The initial arm runs along the positive x-axis to (1, 0), the point for 0° and 360°. An arm turns anticlockwise, stopping on each axis in turn: 90° at (0, 1), 180° at (−1, 0), 270° at (0, −1).",
+          axes: "none",
+          view: { x: [-2, 2], y: [-1.55, 1.7] },
+          elements: [
+            ...axesOf([-1.75, 1.75], [-1.4, 1.45]),
+            { kind: "circle", centre: [0, 0], r: 1, tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [1, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "point", at: [1, 0], label: "(1, 0)", labelAt: "se", step: 2 },
+            { kind: "label", at: [1, 0], label: "0°, 360°", labelAt: "ne", step: 2 },
+            { kind: "turn", r: 1, to: 90, label: "90°", labelAt: "ne", step: 3 },
+            { kind: "point", at: [0, 1], label: "(0, 1)", labelAt: "nw", step: 3 },
+            { kind: "turn", r: 1, from: 90, to: 180, label: "180°", labelAt: "nw", step: 4 },
+            { kind: "point", at: [-1, 0], label: "(−1, 0)", labelAt: "sw", step: 4 },
+            { kind: "turn", r: 1, from: 180, to: 270, label: "270°", labelAt: "se", step: 5 },
+            { kind: "point", at: [0, -1], label: "(0, −1)", labelAt: "sw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Table of values",
+        points: [
+          t`From $0^\circ$ to $90^\circ$, the standard angles are $0^\circ$, $30^\circ$, $45^\circ$, $60^\circ$ and $90^\circ$.`,
+          t`In radians, they are $0$, $\frac{\pi}{6}$, $\frac{\pi}{4}$, $\frac{\pi}{3}$ and $\frac{\pi}{2}$.`,
+          t`With $r = 1$, $\sin\theta$ is the height $y$, climbing from $0$ to $1$: $0$, $\frac{1}{2}$, $\frac{1}{\sqrt{2}}$, $\frac{\sqrt{3}}{2}$, $1$.`,
+          t`And $\cos\theta$ is the width $x$, falling from $1$ to $0$: $1$, $\frac{\sqrt{3}}{2}$, $\frac{1}{\sqrt{2}}$, $\frac{1}{2}$, $0$.`,
+          t`$\tan\theta$ goes $0$, $\frac{1}{\sqrt{3}}$, $1$, $\sqrt{3}$, and is not defined at $90^\circ$, where $x = 0$.`,
+        ],
+        figure: {
+          alt: "A quarter circle of radius 1 about O, with points on it at 0°, 30°, 45°, 60° and 90°. Upright lines from the x-axis to each point show its height y = sin θ, which climbs from 0 to 1. Dashed lines from the y-axis to each point show its width x = cos θ, which falls from 1 to 0.",
+          axes: "none",
+          view: { x: [-0.3, 1.65], y: [-0.3, 1.4] },
+          elements: [
+            ...axesOf([-0.15, 1.3], [-0.15, 1.25]),
+            { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 90, tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [0.866, 0.5], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [0.7071, 0.7071], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [0.5, 0.866], tone: "muted", step: 1 },
+            { kind: "point", at: [1, 0], label: "0°", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0.866, 0.5], label: "30°", labelAt: "e", step: 1 },
+            { kind: "point", at: [0.7071, 0.7071], label: "45°", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0.5, 0.866], label: "60°", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 1], label: "90°", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [0.866, 0], to: [0.866, 0.5], tone: "good", step: 3 },
+            { kind: "segment", from: [0.7071, 0], to: [0.7071, 0.7071], tone: "good", step: 3 },
+            { kind: "segment", from: [0.5, 0], to: [0.5, 0.866], tone: "good", step: 3 },
+            { kind: "segment", from: [0, 0], to: [0, 1], tone: "good", step: 3 },
+            { kind: "label", at: [1.6, 1.3], label: "height y = sin θ", labelAt: "w", tone: "good", step: 3 },
+            { kind: "segment", from: [0, 0], to: [1, 0], dashed: true, step: 4 },
+            { kind: "segment", from: [0, 0.5], to: [0.866, 0.5], dashed: true, step: 4 },
+            { kind: "segment", from: [0, 0.7071], to: [0.7071, 0.7071], dashed: true, step: 4 },
+            { kind: "segment", from: [0, 0.866], to: [0.5, 0.866], dashed: true, step: 4 },
+            { kind: "label", at: [1.6, 1.15], label: "width x = cos θ", labelAt: "w", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The reciprocal functions",
+        points: [
+          t`The **reciprocal** of a number is $1$ divided by it: the reciprocal of $2$ is $\frac{1}{2}$.`,
+          t`$\operatorname{cosec}\theta = \frac{1}{\sin\theta}$, so $\operatorname{cosec} 30^\circ = \frac{1}{1/2} = 2$.`,
+          t`$\sec\theta = \frac{1}{\cos\theta}$ and $\cot\theta = \frac{1}{\tan\theta}$.`,
+          t`A fraction is not defined when its **denominator**, the number below the line, is $0$.`,
+          t`So $\tan 90^\circ$ and $\sec 90^\circ$ are not defined, as $\cos 90^\circ = 0$.`,
+          t`And $\cot 0^\circ$ and $\operatorname{cosec} 0^\circ$ are not defined, as $\sin 0^\circ = 0$.`,
+        ],
+      },
+      {
+        title: "Evaluating an expression",
+        points: [
+          t`To **evaluate** an expression is to work out its value.`,
+          t`First find each angle: $\sin 2\theta$ is the sine of the angle $2\theta$.`,
+          t`For $\theta = 30^\circ$, that is $\sin 60^\circ = \frac{\sqrt{3}}{2}$, not $2\sin 30^\circ = 1$.`,
+          t`Then put in each value from the table.`,
+          t`Then do the powers: $\sin^2\theta$ means $(\sin\theta)^2$.`,
+          t`For example, $\cos^2 30^\circ = \left(\frac{\sqrt{3}}{2}\right)^2 = \frac{3}{4}$.`,
+        ],
+      },
+      {
+        title: "Long products",
+        points: [
+          t`In a **product**, the numbers multiplied together are its **factors**.`,
+          t`If any factor is $0$, the whole product is $0$.`,
+          t`In $\tan 1^\circ \tan 2^\circ \cdots \tan 89^\circ$, pair $\tan\theta$ with $\tan(90^\circ - \theta)$: $\tan 1^\circ$ with $\tan 89^\circ$.`,
+          t`Swap $x$ and $y$: $P(x, y)$ on the arm at $\theta$ becomes $Q(y, x)$ on the arm at $90^\circ - \theta$.`,
+          t`So $\tan(90^\circ - \theta) = \frac{x}{y} = \cot\theta$, and each pair is $\tan\theta \cot\theta = 1$.`,
+          t`The middle factor is $\tan 45^\circ = 1$, so the whole product is $1$.`,
+        ],
+        figure: {
+          alt: "The xy-plane. One arm makes an angle θ with the positive x-axis; another makes the same angle θ with the positive y-axis, so it is at 90° − θ. The point P(x, y) on the first arm and Q(y, x) on the second are mirror images in the dashed line y = x.",
+          axes: "none",
+          view: { x: [-0.4, 2.6], y: [-0.35, 2.3] },
+          elements: [
+            ...axesOf([-0.25, 2.3], [-0.25, 2.15]),
+            { kind: "vector", to: [1.8126, 0.8452], step: 3 },
+            { kind: "angle", at: [0, 0], from: 0, to: 25, label: "θ", labelAt: "e", step: 3 },
+            { kind: "vector", to: [0.8452, 1.8126], step: 3 },
+            { kind: "angle", at: [0, 0], from: 65, to: 90, label: "θ", labelAt: "n", step: 3 },
+            { kind: "segment", from: [0, 0], to: [2, 2], dashed: true, label: "y = x", labelAt: "se", tone: "muted", step: 4 },
+            { kind: "point", at: [1.8126, 0.8452], label: "P(x, y)", labelAt: "e", step: 4 },
+            { kind: "point", at: [0.8452, 1.8126], label: "Q(y, x)", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`If $\theta = 60^\circ$, find $\frac{1 + \tan^2\theta}{2\tan\theta}$.`,
       steps: [
-        t`$\tan 60^\circ = \frac{\sin 60^\circ}{\cos 60^\circ} = \frac{\sqrt{3}/2}{1/2} = \sqrt{3}$.`,
+        t`$\tan 60^\circ = \frac{\sin 60^\circ}{\cos 60^\circ}$ $= \frac{\sqrt{3}/2}{1/2}$ $= \sqrt{3}$.`,
         t`Square it: $\tan^2 60^\circ = 3$, so the numerator is $1 + 3 = 4$.`,
-        t`The denominator is $2\sqrt{3}$, so the value is $\frac{4}{2\sqrt{3}} = \frac{2}{\sqrt{3}}$.`,
+        t`The denominator is $2\sqrt{3}$, so the value is $\frac{4}{2\sqrt{3}}$ $= \frac{2}{\sqrt{3}}$.`,
       ],
       answer: t`$\frac{2}{\sqrt{3}}$`,
     },

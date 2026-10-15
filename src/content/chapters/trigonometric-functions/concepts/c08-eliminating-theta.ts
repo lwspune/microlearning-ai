@@ -10,24 +10,67 @@ export const c08: Concept = {
     reveal: t`Yes. Square and add: $x^2 + y^2 = \cos^2\theta + \sin^2\theta = 1$, whatever $\theta$ is. Every point lies on the circle $x^2 + y^2 = 1$. Finding such an equation is called **eliminating** $\theta$.`,
   },
   explanation: {
-    intuition: t`Think of $\theta$ as a hidden dial: each setting gives one point $(x, y)$. To get rid of the dial, make each trigonometric function the subject, then put them into an identity that links the two. The identity is true for every $\theta$, so $\theta$ drops out and only $x$ and $y$ are left. The whole skill is choosing the right identity and doing the algebra cleanly.`,
-    formal: t`**The method**
-
-- **1.** Make each trigonometric function the subject: from $x = a\cos\theta$, $\cos\theta = \frac{x}{a}$.
-- **2.** Choose the identity that links the pair.
-- **3.** Substitute, and write the answer as one equation in $x$ and $y$.
-
-**Which identity?** Only sin and cos add; the other two pairs subtract, with sec or cosec first:
-
-$$\cos^2\theta + \sin^2\theta = 1, \qquad \sec^2\theta - \tan^2\theta = 1, \qquad \operatorname{cosec}^2\theta - \cot^2\theta = 1$$
-
-**The standard result.** From $x = a\cos\theta$, $y = b\sin\theta$: $\cos\theta = \frac{x}{a}$, $\sin\theta = \frac{y}{b}$, so
-
-$$\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$$
-
-The square acts on the whole fraction: $\left(\frac{x}{a}\right)^2 = \frac{x^2}{a^2}$.
-
-**Constant terms and cubes.** If $x = h + a\cos\theta$, subtract $h$ first: $\cos\theta = \frac{x - h}{a}$. If $x = a\cos^3\theta$, take the cube root first: $\cos\theta = \left(\frac{x}{a}\right)^{1/3}$, so $\cos^2\theta = \left(\frac{x}{a}\right)^{2/3}$.`,
+    intuition: [
+      t`Think of $\theta$ as a hidden dial: each setting of the dial gives one point $(x, y)$.`,
+      t`To **eliminate** $\theta$ is to get rid of it, leaving one equation in $x$ and $y$ alone.`,
+      t`First make each trigonometric function the **subject**: get it alone on one side, as in $\cos\theta = \frac{x}{a}$.`,
+      t`An **identity** is an equation that is true for every $\theta$, such as $\cos^2\theta + \sin^2\theta = 1$.`,
+      t`Put both functions into an identity that links them, and $\theta$ drops out.`,
+      t`The whole skill is choosing the right identity and doing the algebra cleanly.`,
+    ],
+    formal: [
+      {
+        title: "The method in three steps",
+        points: [
+          t`Step 1: make each trigonometric function the subject.`,
+          t`In $x = a\cos\theta$, the number $a$ multiplying $\cos\theta$ is its **coefficient**.`,
+          t`Divide both sides by the coefficient: $\cos\theta = \frac{x}{a}$.`,
+          t`Step 2: choose the identity that links the pair of functions.`,
+          t`Step 3: **substitute**, putting each fraction in place of its function.`,
+          t`Write the answer as one equation in $x$ and $y$.`,
+        ],
+      },
+      {
+        title: "Which identity to use",
+        points: [
+          t`Each pair of functions is linked by its own identity.`,
+          t`Cos and sin: $\cos^2\theta + \sin^2\theta = 1$.`,
+          t`Sec and tan: $\sec^2\theta - \tan^2\theta = 1$.`,
+          t`Cosec and cot: $\operatorname{cosec}^2\theta - \cot^2\theta = 1$.`,
+          t`Only sin and cos add; the other two pairs subtract.`,
+          t`When they subtract, sec or cosec comes first.`,
+        ],
+      },
+      {
+        title: "The standard result",
+        points: [
+          t`Take $x = a\cos\theta$ and $y = b\sin\theta$.`,
+          t`Divide by the coefficients: $\cos\theta = \frac{x}{a}$ and $\sin\theta = \frac{y}{b}$.`,
+          t`Cos and sin are linked by $\cos^2\theta + \sin^2\theta = 1$.`,
+          t`Substitute: $\left(\frac{x}{a}\right)^2 + \left(\frac{y}{b}\right)^2 = 1$.`,
+          t`The square acts on the whole fraction, top and bottom: $\left(\frac{x}{a}\right)^2 = \frac{x^2}{a^2}$.`,
+          t`So $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$.`,
+        ],
+      },
+      {
+        title: "Constant terms",
+        points: [
+          t`A **constant term** is a number standing on its own, like $h$ in $x = h + a\cos\theta$.`,
+          t`Move it first: subtract $h$ from both sides, so $x - h = a\cos\theta$.`,
+          t`Then divide by the coefficient: $\cos\theta = \frac{x - h}{a}$.`,
+        ],
+      },
+      {
+        title: "Cubed functions",
+        points: [
+          t`In $x = a\cos^3\theta$, the function is **cubed**: $\cos^3\theta$ means $(\cos\theta)^3$.`,
+          t`Divide by the coefficient: $\cos^3\theta = \frac{x}{a}$.`,
+          t`A **cube root**, the power $\frac{1}{3}$, undoes a cube.`,
+          t`So take the cube root first: $\cos\theta = \left(\frac{x}{a}\right)^{1/3}$.`,
+          t`Then square it for the identity: $\cos^2\theta = \left(\frac{x}{a}\right)^{2/3}$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Eliminate $\theta$ from $x = 2 + 3\cos\theta$, $y = 5 + 3\sin\theta$.`,
       steps: [

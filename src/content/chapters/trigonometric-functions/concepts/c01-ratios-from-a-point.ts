@@ -1,6 +1,33 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The X- and Y-axes as plain lines (no numbers: x, y and r are letters here), with the origin O. */
+function axesOf(x: [number, number], y: [number, number]): FigureElement[] {
+  return [
+    { kind: "segment", from: [x[0], 0], to: [x[1], 0], tone: "muted" },
+    { kind: "label", at: [x[1], 0], label: "x", labelAt: "s", tone: "muted" },
+    { kind: "segment", from: [0, y[0]], to: [0, y[1]], tone: "muted" },
+    { kind: "label", at: [0, y[1]], label: "y", labelAt: "e", tone: "muted" },
+    { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted" },
+  ];
+}
+
+/**
+ * The angle θ = 143.13° turned to the arm through P(−4, 3), with the right triangle under P and
+ * its sides x, y and r marked, all appearing at step 1 (the definitions and reciprocals slides).
+ */
+const triangleP: FigureElement[] = [
+  { kind: "turn", r: 6.5, to: 143.13, label: "terminal arm", labelAt: "n", step: 1 },
+  { kind: "label", at: [1.29, 1.53], label: "θ", labelAt: "ne", step: 1 },
+  { kind: "point", at: [-4, 3], label: "P(x, y)", labelAt: "ne", step: 1 },
+  { kind: "segment", from: [-4, 0], to: [-4, 3], dashed: true, step: 1 },
+  { kind: "segment", from: [-4, 0.3], to: [-3.7, 0.3], tone: "muted", step: 1 },
+  { kind: "segment", from: [-3.7, 0.3], to: [-3.7, 0], tone: "muted", step: 1 },
+  { kind: "segment", from: [0, 0], to: [-4, 0], label: "x", labelAt: "s", step: 1 },
+  { kind: "label", at: [-4, 1.5], label: "y", labelAt: "w", step: 1 },
+  { kind: "label", at: [-2.8, 2.1], label: "r", labelAt: "ne", step: 1 },
+];
 
 export const c01: Concept = {
   id: "C01",
@@ -10,35 +37,152 @@ export const c01: Concept = {
     reveal: t`Neither. $OP = \sqrt{16 + 9} = 5$ and $OQ = \sqrt{64 + 36} = 10$, so $\sin\theta = \frac{3}{5}$ from $P$ and $\frac{6}{10} = \frac{3}{5}$ from $Q$. Doubling the point doubles $y$ and $r$ together, so the ratio stays the same. The trigonometric functions depend only on the arm, not on which point of it you pick.`,
   },
   explanation: {
-    intuition: t`Put the angle in standard position: vertex at the origin, initial arm along the positive $X$-axis, turned anticlockwise to the terminal arm. Pick any point $P(x, y)$ on that arm and drop a perpendicular to the $X$-axis: you get a right triangle with hypotenuse $r = OP$. The six trigonometric functions are ratios of $x$, $y$ and $r$. Unlike a triangle's sides, $x$ and $y$ carry signs, so for angles past $90^\circ$ some ratios come out negative. $r$ is a distance, so it is always positive.`,
-    formal: t`**The definitions.** For $\theta$ in standard position, with $P(x, y) \ne O$ on its terminal arm and $r = OP = \sqrt{x^2 + y^2}$:
-
-$$\sin\theta = \frac{y}{r}, \quad \cos\theta = \frac{x}{r}, \quad \tan\theta = \frac{y}{x}\ (x \ne 0)$$
-
-**The reciprocals.** $\operatorname{cosec}\theta = \frac{r}{y}$, $\sec\theta = \frac{r}{x}$, $\cot\theta = \frac{x}{y}$, wherever the bottom is not $0$. $\operatorname{cosec}$ pairs with $\sin$ (both use $y$), $\sec$ with $\cos$ (both use $x$).
-
-**Signs come from the coordinates.** Put $x$ and $y$ in with their signs; $r$ is always positive. For $P(-12, 35)$: $r = \sqrt{144 + 1225} = 37$, so $\sin\theta = \frac{35}{37}$, $\cos\theta = -\frac{12}{37}$, $\tan\theta = -\frac{35}{12}$.
-
-**On the unit circle** $x^2 + y^2 = 1$, $r = 1$: $\cos\theta = x$ and $\sin\theta = y$, so $P = (\cos\theta, \sin\theta)$.`,
+    intuition: [
+      t`Put an angle $\theta$ in standard position: its vertex at the origin $O$, its initial arm along the positive $x$-axis.`,
+      t`Turn the arm anticlockwise through $\theta$: where it stops is the **terminal arm**.`,
+      t`Pick any point $P(x, y)$ on the terminal arm, other than $O$.`,
+      t`Drop a **perpendicular** from $P$ to the $x$-axis: a line that meets the axis at a right angle.`,
+      t`This makes a right triangle: its side along the axis is $x$, and its upright side is $y$.`,
+      t`Its longest side, the **hypotenuse**, is $OP$; its length $r$ is the distance of $P$ from $O$.`,
+    ],
+    formal: [
+      {
+        title: "Sine, cosine and tangent",
+        points: [
+          t`The six **trigonometric functions** of $\theta$ are ratios of $x$, $y$ and $r$.`,
+          t`By Pythagoras' theorem in the triangle, $r = OP = \sqrt{x^2 + y^2}$.`,
+          t`The **sine** of $\theta$ is $\sin\theta = \frac{y}{r}$.`,
+          t`The **cosine** of $\theta$ is $\cos\theta = \frac{x}{r}$.`,
+          t`The **tangent** of $\theta$ is $\tan\theta = \frac{y}{x}$, defined only when $x \ne 0$.`,
+        ],
+        figure: {
+          alt: "The angle θ turned anticlockwise from the initial arm to a terminal arm in the second quadrant, through P(x, y). The perpendicular from P makes a right triangle with sides x along the X-axis, y upright and r = OP. Below, in turn: r = √(x² + y²), sin θ = y/r, cos θ = x/r and tan θ = y/x, for x ≠ 0.",
+          axes: "none",
+          view: { x: [-7.2, 3.4], y: [-3.8, 5] },
+          elements: [
+            ...axesOf([-7, 3.2], [-3.6, 4.8]),
+            { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            ...triangleP,
+            { kind: "label", at: [-7, -1], label: "r = √(x² + y²)", labelAt: "e", step: 2 },
+            { kind: "label", at: [-7, -1.8], label: "sin θ = y/r", labelAt: "e", tone: "good", step: 3 },
+            { kind: "label", at: [-7, -2.6], label: "cos θ = x/r", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [-7, -3.4], label: "tan θ = y/x  (x ≠ 0)", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The reciprocal functions",
+        points: [
+          t`The **reciprocal** of a fraction is the fraction turned upside down: $\frac{r}{y}$ for $\frac{y}{r}$.`,
+          t`The **cosecant**, $\operatorname{cosec}\theta = \frac{r}{y}$, is the reciprocal of $\sin\theta$: both use $y$.`,
+          t`The **secant**, $\sec\theta = \frac{r}{x}$, is the reciprocal of $\cos\theta$: both use $x$.`,
+          t`The **cotangent**, $\cot\theta = \frac{x}{y}$, is the reciprocal of $\tan\theta$.`,
+          t`Each is defined only where the bottom of its fraction is not $0$.`,
+        ],
+        figure: {
+          alt: "The same angle θ, terminal arm through P(x, y), with the right triangle of sides x, y and r. Below, sin θ = y/r, cos θ = x/r and tan θ = y/x, and beside each in turn its reciprocal: cosec θ = r/y, sec θ = r/x and cot θ = x/y.",
+          axes: "none",
+          view: { x: [-7.6, 3.4], y: [-3, 5] },
+          elements: [
+            ...axesOf([-7.4, 3.2], [-2.8, 4.8]),
+            { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            ...triangleP,
+            { kind: "label", at: [-7.4, -1], label: "sin θ = y/r", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "label", at: [-7.4, -1.8], label: "cos θ = x/r", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "label", at: [-7.4, -2.6], label: "tan θ = y/x", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "label", at: [-3.6, -1], label: "cosec θ = r/y", labelAt: "e", tone: "good", step: 2 },
+            { kind: "label", at: [-3.6, -1.8], label: "sec θ = r/x", labelAt: "e", tone: "good", step: 3 },
+            { kind: "label", at: [-3.6, -2.6], label: "cot θ = x/y", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Signs come from the coordinates",
+        points: [
+          t`Unlike a triangle's sides, $x$ and $y$ are coordinates, so they carry signs.`,
+          t`Put them in with their signs; $r$ is a distance, so it is always positive.`,
+          t`So for angles past $90^\circ$, some ratios come out negative.`,
+          t`For example, take the point $P(-12, 35)$.`,
+          t`Its distance from $O$ is $r = \sqrt{144 + 1225} = 37$.`,
+          t`So $\sin\theta = \frac{35}{37}$, $\cos\theta = -\frac{12}{37}$ and $\tan\theta = -\frac{35}{12}$.`,
+        ],
+        figure: {
+          alt: "The angle θ turned anticlockwise past 90° to a terminal arm in the second quadrant, through P(−12, 35). The right triangle under P has x < 0 along the negative X-axis, shown in red, y > 0 upright, and r > 0. Beside it: r = 37, sin θ = 35/37, and in red cos θ = −12/37 and tan θ = −35/12.",
+          axes: "none",
+          view: { x: [-18, 15], y: [-3, 41.5] },
+          elements: [
+            ...axesOf([-17, 14.5], [-2.5, 40]),
+            { kind: "segment", from: [0, 0], to: [13, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "turn", r: 41, to: 108.925, label: "terminal arm", labelAt: "n", step: 1 },
+            { kind: "label", at: [8.36, 9.96], label: "θ", labelAt: "ne", step: 1 },
+            { kind: "point", at: [-12, 35], step: 1 },
+            { kind: "segment", from: [-12, 0], to: [-12, 35], dashed: true, label: "y > 0", labelAt: "w", step: 1 },
+            { kind: "segment", from: [-12, 1.5], to: [-10.5, 1.5], tone: "muted", step: 1 },
+            { kind: "segment", from: [-10.5, 1.5], to: [-10.5, 0], tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-12, 0], label: "x < 0", labelAt: "s", step: 1 },
+            { kind: "label", at: [-7.2, 21], label: "r > 0", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [0, 0], to: [-12, 0], tone: "bad", step: 3 },
+            { kind: "label", at: [-12, 35], label: "P(−12, 35)", labelAt: "ne", step: 4 },
+            { kind: "label", at: [1, 36], label: "r = 37", labelAt: "e", step: 5 },
+            { kind: "label", at: [1, 32.5], label: "sin θ = 35/37", labelAt: "e", tone: "good", step: 6 },
+            { kind: "label", at: [1, 29], label: "cos θ = −12/37", labelAt: "e", tone: "bad", step: 6 },
+            { kind: "label", at: [1, 25.5], label: "tan θ = −35/12", labelAt: "e", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "On the unit circle",
+        points: [
+          t`The **unit circle** is the circle of radius $1$ about $O$; its equation is $x^2 + y^2 = 1$.`,
+          t`Let the terminal arm meet it at $P(x, y)$: then $r = OP = 1$.`,
+          t`So $\cos\theta = \frac{x}{r} = \frac{x}{1} = x$.`,
+          t`And $\sin\theta = \frac{y}{r} = \frac{y}{1} = y$.`,
+          t`So $P = (\cos\theta, \sin\theta)$: its coordinates are the cosine and the sine.`,
+        ],
+        figure: {
+          alt: "The unit circle x² + y² = 1 about O. The angle θ turns anticlockwise from the initial arm to the terminal arm, which meets the circle at P with r = 1. The side along the X-axis, x, is cos θ and the upright side, y, is sin θ, so P is (cos θ, sin θ).",
+          axes: "none",
+          view: { x: [-2.1, 1.7], y: [-1.15, 1.3] },
+          elements: [
+            ...axesOf([-1.5, 1.5], [-1.1, 1.2]),
+            { kind: "circle", centre: [0, 0], r: 1, tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [1, 0], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "label", at: [0.707, -0.707], label: "x² + y² = 1", labelAt: "se", step: 1 },
+            { kind: "turn", r: 1, to: 143.13, step: 2 },
+            { kind: "label", at: [0.24, 0.24], label: "θ", labelAt: "ne", step: 2 },
+            { kind: "point", at: [-0.8, 0.6], step: 2 },
+            { kind: "label", at: [-0.6, 0.45], label: "r = 1", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [0, 0], to: [-0.8, 0], step: 3 },
+            { kind: "label", at: [-0.47, 0], label: "cos θ", labelAt: "s", step: 3 },
+            { kind: "segment", from: [-0.8, 0], to: [-0.8, 0.6], dashed: true, label: "sin θ", labelAt: "w", step: 4 },
+            { kind: "segment", from: [-0.8, 0.07], to: [-0.73, 0.07], tone: "muted", step: 4 },
+            { kind: "segment", from: [-0.73, 0.07], to: [-0.73, 0], tone: "muted", step: 4 },
+            { kind: "label", at: [-0.8, 0.6], label: "P(cos θ, sin θ)", labelAt: "nw", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find all the trigonometric functions of the angle $\theta$ in standard position whose terminal arm passes through $P(-20, -21)$.`,
       steps: [
-        t`$x = -20$, $y = -21$, so $r = \sqrt{(-20)^2 + (-21)^2} = \sqrt{400 + 441} = \sqrt{841} = 29$.`,
-        t`$\sin\theta = \frac{y}{r} = -\frac{21}{29}$ and $\cos\theta = \frac{x}{r} = -\frac{20}{29}$: both negative, because $x$ and $y$ are.`,
-        t`$\tan\theta = \frac{y}{x} = \frac{-21}{-20} = \frac{21}{20}$: the two minus signs cancel.`,
+        t`$x = -20$, $y = -21$, so $r = \sqrt{(-20)^2 + (-21)^2}$ $= \sqrt{400 + 441}$ $= \sqrt{841} = 29$.`,
+        t`$\sin\theta = \frac{y}{r}$ $= -\frac{21}{29}$ and $\cos\theta = \frac{x}{r}$ $= -\frac{20}{29}$: both negative, because $x$ and $y$ are.`,
+        t`$\tan\theta = \frac{y}{x}$ $= \frac{-21}{-20} = \frac{21}{20}$: the two minus signs cancel.`,
         t`Turn each one over for the reciprocals: $\operatorname{cosec}\theta = -\frac{29}{21}$, $\sec\theta = -\frac{29}{20}$, $\cot\theta = \frac{20}{21}$.`,
       ],
       answer: t`$\sin\theta = -\frac{21}{29}$, $\cos\theta = -\frac{20}{29}$, $\tan\theta = \frac{21}{20}$, $\operatorname{cosec}\theta = -\frac{29}{21}$, $\sec\theta = -\frac{29}{20}$, $\cot\theta = \frac{20}{21}$.`,
       figure: {
-        alt: "The terminal arm from the origin through P(−20, −21) in the third quadrant, with the angle θ marked from the positive x-axis. The legs x = −20 along the axis and y = −21 down to P, and OP = r = 29. Beside it, the six values: sin θ = −21/29, cos θ = −20/29, tan θ = 21/20, cosec θ = −29/21, sec θ = −29/20, cot θ = 20/21.",
+        alt: "From the initial arm along the positive x-axis, the arm turns anticlockwise through θ to the terminal arm from the origin through P(−20, −21) in the third quadrant. The legs x = −20 along the axis and y = −21 down to P, and OP = r = 29. Beside it, the six values: sin θ = −21/29, cos θ = −20/29, tan θ = 21/20, cosec θ = −29/21, sec θ = −29/20, cot θ = 20/21.",
         axes: "xy",
-        view: { x: [-26.3, 18.3], y: [-27.3, 6.3] },
+        view: { x: [-26.3, 20.5], y: [-27.3, 11.3] },
         elements: [
-          { kind: "angle", at: [0, 0], from: 0, to: 226.4, tone: "muted" },
-          { kind: "label", at: [2.74, 1.919], label: "θ", labelAt: "e", tone: "muted" },
-          { kind: "vector", to: [-20, -21] },
+          { kind: "segment", from: [0, 0], to: [16, 0], tone: "good" },
+          { kind: "label", at: [14.6, 0], label: "initial arm", labelAt: "n", tone: "good" },
           { kind: "point", at: [-20, -21], label: "P(−20, −21)", labelAt: "s" },
-          { kind: "segment", from: [0, 0], to: [-20, 0], label: "x = −20", labelAt: "n", tone: "muted", step: 1 },
+          { kind: "turn", r: 29, to: 226.397, step: 1 },
+          { kind: "label", at: [4.9, 8.49], label: "θ", labelAt: "ne", step: 1 },
+          { kind: "segment", from: [0, 0], to: [-20, 0], tone: "muted", step: 1 },
+          { kind: "label", at: [-14, 0], label: "x = −20", labelAt: "n", tone: "muted", step: 1 },
           { kind: "segment", from: [-20, 0], to: [-20, -21], dashed: true, label: "y = −21", labelAt: "w", tone: "muted", step: 1 },
           { kind: "label", at: [-10, -10.5], label: "r = 29", labelAt: "se", step: 1 },
           { kind: "label", at: [2, -6], label: "sin θ = −21/29", labelAt: "e", tone: "good", step: 2 },
@@ -51,17 +195,22 @@ $$\sin\theta = \frac{y}{r}, \quad \cos\theta = \frac{x}{r}, \quad \tan\theta = \
       },
     },
     figure: {
-      alt: "An angle θ in standard position: the initial arm along the positive x-axis, the terminal arm from the origin O through a point P(x, y) in the second quadrant. The perpendicular from P to the x-axis makes a right triangle with a horizontal leg x along the axis, a vertical leg y, and the hypotenuse OP = r = √(x² + y²).",
-      axes: "xy",
-      view: { x: [-6, 3], y: [-1.5, 5] },
+      alt: "An angle θ in standard position: the initial arm along the positive X-axis, and the arm turning anticlockwise through θ to the terminal arm, in the second quadrant. A point P(x, y) on the terminal arm, and the perpendicular from P to the X-axis, meeting it at a right angle. The right triangle has the side x along the axis, the upright side y, and the hypotenuse OP of length r.",
+      axes: "none",
+      view: { x: [-7.2, 3.4], y: [-1, 5] },
       elements: [
-        { kind: "vector", to: [-4, 3], step: 1 },
-        { kind: "angle", at: [0, 0], from: 0, to: 143.13, step: 1 },
-        { kind: "label", at: [0.553, 0.387], label: "θ", labelAt: "e", step: 1 },
-        { kind: "point", at: [-4, 3], label: "P(x, y)", labelAt: "n", step: 1 },
-        { kind: "segment", from: [0, 0], to: [-4, 0], label: "x", labelAt: "n", tone: "muted", step: 2 },
-        { kind: "segment", from: [-4, 0], to: [-4, 3], dashed: true, label: "y", labelAt: "w", tone: "muted", step: 3 },
-        { kind: "label", at: [-3.2, 2.4], label: "r = √(x²+y²)", labelAt: "ne", tone: "good", step: 4 },
+        ...axesOf([-7, 3.2], [-0.8, 4.8]),
+        { kind: "segment", from: [0, 0], to: [2.6, 0], label: "initial arm", labelAt: "s", tone: "good", step: 1 },
+        { kind: "turn", r: 6.5, to: 143.13, label: "terminal arm", labelAt: "n", step: 2 },
+        { kind: "label", at: [1.29, 1.53], label: "θ", labelAt: "ne", step: 2 },
+        { kind: "point", at: [-4, 3], label: "P(x, y)", labelAt: "ne", step: 3 },
+        { kind: "segment", from: [-4, 0], to: [-4, 3], dashed: true, step: 4 },
+        { kind: "segment", from: [-4, 0.3], to: [-3.7, 0.3], tone: "muted", step: 4 },
+        { kind: "segment", from: [-3.7, 0.3], to: [-3.7, 0], tone: "muted", step: 4 },
+        { kind: "segment", from: [0, 0], to: [-4, 0], label: "x", labelAt: "s", step: 5 },
+        { kind: "label", at: [-4, 1.5], label: "y", labelAt: "w", step: 5 },
+        { kind: "segment", from: [0, 0], to: [-4, 3], tone: "good", step: 6 },
+        { kind: "label", at: [-2.8, 2.1], label: "r = OP", labelAt: "ne", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag $P$ anywhere in the plane: the terminal arm, the right triangle and $r$ follow it, and the six ratios update live, with their signs.`,
@@ -136,7 +285,7 @@ $$\sin\theta = \frac{y}{r}, \quad \cos\theta = \frac{x}{r}, \quad \tan\theta = \
     {
       id: "C01-Q2",
       source: { kind: "pyqvault-practice", ref: "mh-sb-11/trigonometry-1-11/2.1 SolvedEx.4" },
-      stem: t`$\theta$ is the angle in standard position made by $OP$ with the $X$-axis, where $P$ is $(-5, 12)$. Then $\sec\theta =$`,
+      stem: t`$\theta$ is the angle in standard position made by $OP$ with the $x$-axis, where $P$ is $(-5, 12)$. Then $\sec\theta =$`,
       verify: { kind: "value", inputs: { x: "-5", y: "12" }, params: { f: "sec" } },
       options: [
         { key: "A", text: t`$- \frac{13}{5}$`, correct: true, value: "-13/5" },
