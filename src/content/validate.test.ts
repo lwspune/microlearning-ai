@@ -38,7 +38,7 @@ function makeVisual(ch: Chapter) {
   c.explanation.figure = figure();
   c.explanation.worked.steps = ["one", "two"];
   c.explanation.worked.figure = figure({ elements: [{ kind: "point", at: [1, 1], step: 2 }] });
-  c.explanation.formal = [{ body: "**Rule.** One.", figure: figure() }];
+  c.explanation.formal = [{ title: "Rule", points: ["One."], figure: figure() }];
 }
 
 /** C1 → C2 → C3, with C3 fully authored and valid. */
@@ -47,7 +47,7 @@ function validChapter(): Chapter {
     id: "C3",
     status: "draft",
     hook: { prompt: "", reveal: "" },
-    explanation: { intuition: "", formal: "", worked: { prompt: "", steps: [], answer: "" }, visualSpec: "" },
+    explanation: { intuition: ["I."], formal: [{ title: "Rule", points: ["P."] }], worked: { prompt: "", steps: [], answer: "" }, visualSpec: "" },
     misconceptions: [
       { id: "C3-M1", mistake: "", remediation: "", fallback: { kind: "concept", id: "C2" } },
       { id: "C3-M2", mistake: "", remediation: "", fallback: { kind: "concept", id: "C1" } },
@@ -184,7 +184,11 @@ describe("validateChapter", () => {
     });
 
     it("allows newlines, which separate slide sections", () => {
-      expect(errorsAfter((ch) => (c3(ch).explanation.formal = "One.\n\nTwo."))).toEqual([]);
+      const errors = errorsAfter((ch) => {
+        c3(ch).status = "approved"; // a draft must use points (item 20); older concepts keep text
+        c3(ch).explanation.formal = "One.\n\nTwo.";
+      });
+      expect(errors).toEqual([]);
     });
   });
 
@@ -377,6 +381,24 @@ describe("validateChapter", () => {
       const errors = errorsAfter((ch) => (c3(ch).explanation.intuition = ["One $$x$$ two.", "Line\nbreak."]));
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea point 1: inline only/));
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea point 2: inline only/));
+    });
+
+    it("requires a draft concept's idea slide and formal sections to be points", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).explanation.intuition = "A paragraph.";
+        c3(ch).explanation.formal = [{ body: "**Rule.** A paragraph." }];
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3: a new concept writes its idea slide as points/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 formal section 1: a new concept writes it as points/));
+    });
+
+    it("leaves an approved concept's paragraphs alone (backfill is separate)", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).status = "approved";
+        c3(ch).explanation.intuition = "A paragraph.";
+        c3(ch).explanation.formal = "Plain text.";
+      });
+      expect(errors).toEqual([]);
     });
 
     it("needs a short title on a formal section in points", () => {

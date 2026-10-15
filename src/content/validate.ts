@@ -187,12 +187,17 @@ function validateTeaching(chapter: Chapter): string[] {
  */
 function formalProblems(c: Concept, node: GraphNode): string[] {
   const formal = c.explanation.formal;
+  const draft = c.status === "draft";
+  // Item 20: new concepts are points; published ones keep their text until reworked (PLAN.md backfill 5).
+  const idea = draft && typeof c.explanation.intuition === "string" ? [`${c.id}: a new concept writes its idea slide as points (AUTHORING.md 20)`] : [];
   if (typeof formal === "string") {
-    return node.visual && c.status === "draft" ? [`${c.id}: a visual concept writes its formal explanation as sections, each with a figure`] : [];
+    if (!draft) return idea;
+    return [...idea, `${c.id}: a new concept writes its formal slides as titled sections of points (AUTHORING.md 20)`, ...(node.visual ? [`${c.id}: a visual concept writes its formal explanation as sections, each with a figure`] : [])];
   }
-  return formal.flatMap((sec, i) => {
+  return [...idea, ...formal.flatMap((sec, i) => {
     const where = `${c.id} formal section ${i + 1}`;
     const errors: string[] = [];
+    if (draft && !("points" in sec)) errors.push(`${where}: a new concept writes it as points (AUTHORING.md 20)`);
     if ("points" in sec) {
       const words = sec.title.trim().split(/\s+/).filter(Boolean).length;
       if (words < 1 || words > 6 || sec.title.includes("*")) errors.push(`${where}: title of 1 to 6 words, plain text`);
@@ -203,7 +208,7 @@ function formalProblems(c: Concept, node: GraphNode): string[] {
     if (sec.figure) errors.push(...validateFigure(sec.figure, `${where} figure`, "points" in sec ? sec.points.length : undefined));
     else if (node.visual) errors.push(`${where}: a visual concept's formal section needs a figure`);
     return errors;
-  });
+  })];
 }
 
 /** Points per slide, and words per point outside its maths (AUTHORING.md 20). */
