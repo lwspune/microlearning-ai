@@ -130,35 +130,37 @@ describe("conceptStates", () => {
 describe("nextItem", () => {
   const items = ["Q1", "Q2", "Q3", "Q4", "Q5"];
   const a = (itemId: string, correct: boolean) => ({ itemId, correct });
+  const fresh = (itemId: string) => ({ itemId, retry: false });
+  const retry = (itemId: string) => ({ itemId, retry: true });
 
   it("starts with the first item", () => {
-    expect(nextItem(items, [])).toBe("Q1");
+    expect(nextItem(items, [])).toEqual(fresh("Q1"));
   });
 
-  it("prefers an item never attempted", () => {
-    expect(nextItem(items, [a("Q1", true)])).toBe("Q2");
-    expect(nextItem(items, [a("Q1", false)])).toBe("Q2");
+  it("offers a question not yet answered right, never one whose last answer was right", () => {
+    expect(nextItem(items, [a("Q1", true)])).toEqual(fresh("Q2"));
+    expect(nextItem(items, [a("Q1", true), a("Q2", true), a("Q3", true)])).toEqual(fresh("Q4"));
   });
 
-  it("never offers an item already answered correctly in the current run", () => {
-    // Run since the last wrong answer (Q1): Q2 and Q3 correct. Q4, Q5 unseen.
-    const attempts = [a("Q1", false), a("Q2", true), a("Q3", true)];
-    expect(nextItem(items, attempts)).toBe("Q4");
+  it("brings a missed question back after one other question", () => {
+    expect(nextItem(items, [a("Q1", false)])).toEqual(fresh("Q2"));
+    expect(nextItem(items, [a("Q1", false), a("Q2", true)])).toEqual(retry("Q1"));
   });
 
-  it("when every item has been seen, picks the least recently attempted outside the run", () => {
-    const attempts = [a("Q1", true), a("Q2", true), a("Q3", true), a("Q4", false), a("Q5", false), a("Q1", false)];
-    // Run is empty (last attempt wrong). Least recent last-attempts: Q2, Q3 (oldest) … Q2 first.
-    expect(nextItem(items, attempts)).toBe("Q2");
+  it("keeps bringing it back until it is answered right", () => {
+    expect(nextItem(items, [a("Q1", false), a("Q2", true), a("Q1", false), a("Q3", true)])).toEqual(retry("Q1"));
+    expect(nextItem(items, [a("Q1", false), a("Q2", true), a("Q1", true)])).toEqual(fresh("Q3"));
   });
 
-  it("avoids repeating the item just answered when there is another choice", () => {
-    const attempts = [a("Q1", false), a("Q2", false), a("Q3", false), a("Q4", false), a("Q5", false)];
-    expect(nextItem(items, attempts)).toBe("Q1");
-    expect(nextItem(["Q1", "Q2"], [a("Q2", false), a("Q1", false)])).toBe("Q2");
+  it("brings the oldest miss back first", () => {
+    expect(nextItem(items, [a("Q1", false), a("Q2", false), a("Q3", true)])).toEqual(retry("Q1"));
   });
 
-  it("still returns something when every item is correct in the run", () => {
-    expect(nextItem(["Q1", "Q2"], [a("Q1", true), a("Q2", true)])).toBe("Q1");
+  it("brings a miss straight back when there is no other question to ask", () => {
+    expect(nextItem(["Q1", "Q2"], [a("Q2", true), a("Q1", false)])).toEqual(retry("Q1"));
+  });
+
+  it("once every question is right, practises the one answered longest ago", () => {
+    expect(nextItem(["Q1", "Q2"], [a("Q1", true), a("Q2", true)])).toEqual(fresh("Q1"));
   });
 });

@@ -9,11 +9,12 @@ const question: Question = {
   itemId: "00000000-0000-0000-0000-000000000001",
   stem: [{ type: "paragraph", inline: [{ type: "text", text: "Pick one", bold: false, italic: false }] }],
   figure: null,
+  retry: false,
   options: ["A", "B", "C", "D"].map((key, i) => ({ key, label: "ABCD"[i], text: [{ type: "text", text: `option ${key}`, bold: false, italic: false }] })),
 };
-const progress: Progress = { streak: 0, needed: 3, state: "learning", review: { due: false, correct: 0, needed: 2 } };
+const progress: Progress = { streak: 0, toRetry: 0, needed: 3, state: "learning", review: { due: false, correct: 0, needed: 2 } };
 
-const html = () =>
+const html = (q: Question = question, p: Progress = progress) =>
   renderToStaticMarkup(
     <QuestionPanel
       title="T"
@@ -21,8 +22,8 @@ const html = () =>
       mapHref="/learn/c"
       conceptSlug="s"
       refresher={null}
-      initialQuestion={question}
-      progress={progress}
+      initialQuestion={q}
+      progress={p}
       nextConcept={null}
       onReread={() => {}}
     />,
@@ -39,5 +40,23 @@ describe("QuestionPanel: tap to answer", () => {
     const out = html();
     expect(out).not.toContain("Check answer");
     expect(out).not.toContain('type="radio"');
+  });
+});
+
+describe("QuestionPanel: retry until right", () => {
+  it("counts questions right toward mastery, not a run in a row", () => {
+    const out = html(question, { ...progress, streak: 2 });
+    expect(out).toContain("2 of 3 right");
+    expect(out).not.toContain("in a row");
+  });
+
+  it("says how many missed questions are waiting to be retried", () => {
+    expect(html(question, { ...progress, streak: 2, toRetry: 1 })).toContain("1 to retry");
+    expect(html(question, { ...progress, streak: 2, toRetry: 0 })).not.toContain("to retry");
+  });
+
+  it("marks a question the learner missed and is now retrying", () => {
+    expect(html({ ...question, retry: true })).toContain("Try again: you missed this one earlier.");
+    expect(html(question)).not.toContain("Try again");
   });
 });

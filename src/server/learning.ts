@@ -1,7 +1,7 @@
 import "server-only";
 import type { Concept, ConceptId, Figure, GraphNode, Solution, Tier } from "@/content/types";
 import { conceptStates, type ConceptState, inScope, nextConceptAfter } from "@/engine/unlock";
-import { nextItem } from "@/engine/nextItem";
+import { type NextItem, nextItem } from "@/engine/nextItem";
 import { displayOrder } from "@/engine/optionOrder";
 import { isReviewDue } from "@/engine/review";
 import { isRepeatedMisconception } from "@/engine/routing";
@@ -35,12 +35,17 @@ export type Question = {
   stem: RenderedBlock[];
   /** Shown whole with the stem ("the shaded region is ..."). */
   figure: Figure | null;
+  /** A question the learner missed and is now retrying (it counts once answered right). */
+  retry: boolean;
   /** In display order. `key` is the stored key, sent back for grading; `label` is the letter shown. */
   options: { key: string; label: string; text: RenderedInline[] }[];
 };
 
 export type Progress = {
+  /** Different questions whose latest answer is right. */
   streak: number;
+  /** Questions whose latest answer is wrong: they come back until answered right. */
+  toRetry: number;
   needed: number;
   state: ConceptState;
   /** Spaced review: due now, correct answers so far in this review, answers needed to pass. */
@@ -96,11 +101,11 @@ async function loadGraph(chapterSlug: string) {
 
 async function learnerStates(userId: string | null, conceptIds: string[], codeById: Map<string, string>) {
   const states = new Map<string, "learning" | "mastered">();
-  type Row = { concept_id: string; state: string; streak: number; next_review_at: string | null; review_correct: number };
+  type Row = { concept_id: string; state: string; streak: number; to_retry: number; next_review_at: string | null; review_correct: number };
   if (!userId || conceptIds.length === 0) return { states, rows: [] as Row[] };
   const { data, error } = await createAdminClient()
     .from("learner_concept_state")
-    .select("concept_id, state, streak, next_review_at, review_correct")
+    .select("concept_id, state, streak, to_retry, next_review_at, review_correct")
     .eq("user_id", userId)
     .in("concept_id", conceptIds);
   if (error) throw error;
@@ -149,7 +154,8 @@ export async function getChapterMap(
   return { slug: chapter.slug, title: chapter.title, groups };
 }
 
-async function buildQuestion(itemId: string, userId: string): Promise<Question> {
+/** `tries`: earlier answers to this question; each retry shows the options in a new order. */
+async function buildQuestion({ itemId, retry }: NextItem, userId: string, tries: number): Promise<Question> {
   const db = createAdminClient();
   const [{ data: item, error: ie }, { data: options, error: oe }] = await Promise.all([
     db.from("published_items").select("id, stem, figure").eq("id", itemId).single(),
@@ -162,9 +168,10 @@ async function buildQuestion(itemId: string, userId: string): Promise<Question> 
     itemId: item.id!,
     stem: renderRichText(item.stem!),
     figure: (item.figure as Figure | null) ?? null,
+    retry,
     options: displayOrder(
       options.map((o) => ({ key: o.key!, text: renderInlineText(o.text!) })),
-      `${userId}:${item.id}`,
+      tries === 0 ? `${userId}:${item.id}` : `${userId}:${item.id}:${tries}`,
     ),
   };
 }
@@ -218,7 +225,7 @@ export async function getConceptSession(
     code: concept.code,
     title: concept.title,
     slides: renderDeck(buildDeck(content)),
-    question: await buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))), userId),
+    question: await questionAfter(itemIds, attempts, userId),
     nextConcept: (() => {
       const code = nextConceptAfter(graph, open, states, concept.code, options.gate);
       const next = code ? concepts.find((c) => c.code === code) : undefined;
@@ -226,6 +233,7 @@ export async function getConceptSession(
     })(),
     progress: {
       streak: own?.streak ?? 0,
+      toRetry: own?.to_retry ?? 0,
       needed,
       state,
       review: {
@@ -252,7 +260,13 @@ export async function nextQuestionFor(itemId: string, userId: string): Promise<Q
     .in("item_id", itemIds)
     .order("id");
   if (ae) throw ae;
-  return buildQuestion(nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct }))), userId);
+  return questionAfter(itemIds, attempts, userId);
+}
+
+/** The next question given this learner's attempts on the concept, oldest first. */
+function questionAfter(itemIds: string[], attempts: { item_id: string; correct: boolean }[], userId: string): Promise<Question> {
+  const next = nextItem(itemIds, attempts.map((a) => ({ itemId: a.item_id, correct: a.correct })));
+  return buildQuestion(next, userId, attempts.filter((a) => a.item_id === next.itemId).length);
 }
 
 /** An item's step-by-step solution with its math rendered. */

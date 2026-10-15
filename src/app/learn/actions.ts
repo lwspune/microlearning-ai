@@ -30,7 +30,9 @@ export type AnswerResult = {
   correct: boolean;
   correctKey: string;
   remediation: RenderedBlock[] | null;
+  /** Different questions right (by latest answer), and missed ones still to retry. */
   streak: number;
+  toRetry: number;
   needed: number;
   mastered: boolean;
   masteredNow: boolean;
@@ -48,6 +50,7 @@ type RecordAttemptResult = {
   correct_key: string;
   remediation: string | null;
   streak: number;
+  to_retry: number;
   needed: number;
   state: string;
   mastered_now: boolean;
@@ -86,6 +89,7 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
         correctKey: r.correct_key,
         remediation: r.remediation ? renderRichText(r.remediation) : null,
         streak: r.streak,
+        toRetry: r.to_retry,
         needed: r.needed,
         mastered: r.state === "mastered",
         masteredNow: r.mastered_now,

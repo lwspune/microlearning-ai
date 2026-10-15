@@ -17,19 +17,21 @@ import { card, primaryButton, secondaryButton } from "@/components/ui";
 /** Questions answered in a refresher before offering the way back. */
 const REFRESHER_QUESTIONS = 2;
 
-function StreakDots({ streak, needed }: { streak: number; needed: number }) {
+/** Questions right toward mastery (a retried miss counts once right), and misses still to retry. */
+function RightDots({ right, needed, toRetry }: { right: number; needed: number; toRetry: number }) {
   return (
     <p className="flex items-center gap-2 text-sm text-muted">
       <span className="flex gap-1" aria-hidden="true">
         {Array.from({ length: needed }, (_, i) => (
           <span
             key={i}
-            className={`h-2.5 w-6 rounded-full transition-colors duration-300 motion-reduce:transition-none ${i < streak ? "bg-success" : "bg-border"}`}
+            className={`h-2.5 w-6 rounded-full transition-colors duration-300 motion-reduce:transition-none ${i < right ? "bg-success" : "bg-border"}`}
           />
         ))}
       </span>
       <span>
-        {Math.min(streak, needed)} of {needed} in a row
+        {Math.min(right, needed)} of {needed} right
+        {toRetry > 0 && <span className="font-medium text-foreground"> · {toRetry} to retry</span>}
       </span>
     </p>
   );
@@ -88,6 +90,7 @@ export function QuestionPanel({
   const [result, setResult] = useState<AnswerResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [streak, setStreak] = useState(progress.streak);
+  const [toRetry, setToRetry] = useState(progress.toRetry);
   const [mastered, setMastered] = useState(progress.state === "mastered");
   const [celebrate, setCelebrate] = useState(false);
   const [answered, setAnswered] = useState(0);
@@ -129,6 +132,7 @@ export function QuestionPanel({
         }
       }
       setStreak(res.data.streak);
+      setToRetry(res.data.toRetry);
       if (res.data.mastered) setMastered(true);
       if (res.data.masteredNow) setCelebrate(true);
     });
@@ -152,7 +156,7 @@ export function QuestionPanel({
         </span>
         <h3 className="mt-4 font-display text-3xl font-semibold text-success">Mastered ✓</h3>
         <p className="mx-auto mt-2 max-w-md">
-          You answered {progress.needed} different questions in a row correctly. {title} is mastered.
+          You got {progress.needed} different questions right, with none left to retry. {title} is mastered.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           {nextConcept && !refresher && (
@@ -181,7 +185,7 @@ export function QuestionPanel({
         ) : mastered ? (
           <p className="inline-flex items-center gap-1.5 rounded-full bg-success-surface px-3 py-1 text-sm font-medium text-success">Mastered ✓</p>
         ) : (
-          <StreakDots streak={streak} needed={progress.needed} />
+          <RightDots right={streak} needed={progress.needed} toRetry={toRetry} />
         )}
       </div>
 
@@ -191,6 +195,7 @@ export function QuestionPanel({
         data-item-id={question.itemId}
       >
         <legend className="sr-only">Tap an answer</legend>
+        {question.retry && <p className="mb-3 text-sm font-semibold text-accent">Try again: you missed this one earlier.</p>}
         <RenderedRichText blocks={question.stem} />
         {question.figure && (
           <div className="mt-4">

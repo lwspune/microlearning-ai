@@ -263,23 +263,28 @@ await (async () => {
     check(await page.getByText("✓ Correct answer").isVisible(), "wrong answer: shows the correct option");
     const remediation = await page.locator(".bg-warning-surface").innerText();
     check(remediation.length > "Not quite.".length + 10, "wrong answer: shows the misconception's remediation");
-    check((await page.getByText("0 of 3 in a row").count()) === 1, "streak shows 0 of 3");
+    check((await page.getByText("0 of 3 right").count()) === 1, "progress shows 0 of 3 right");
+    check((await page.getByText("· 1 to retry").count()) === 1, "progress shows the miss waiting to be retried");
     await shot("08-wrong-feedback");
     await noSideScroll("feedback");
 
-    // 2–4. Three different questions answered correctly → mastered.
-    const seen = new Set([q1.itemId]);
+    // 2–4. A new question right, then the missed one comes back and is retried right, then one more → mastered.
     for (let i = 1; i <= 3; i++) {
       await page.getByRole("button", { name: "Next question" }).click();
       await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
       const q = await keyFor();
-      check(!seen.has(q.itemId) || i === 1, `question ${i + 1} is a different item`);
-      seen.add(q.itemId);
+      if (i === 2) {
+        check(q.itemId === q1.itemId, "the missed question comes back after one other question");
+        check(await page.getByText("Try again: you missed this one earlier.").isVisible(), "a retried question says so");
+        await shot("09b-retry");
+      } else {
+        check(q.itemId !== q1.itemId, `question ${i + 1} is a new one`);
+      }
       await answer(q.correct);
       if (i === 1) await shot("09-correct-feedback");
     }
     await page.getByRole("heading", { name: "Mastered ✓" }).waitFor();
-    ok("mastered after 3 different correct answers in a row");
+    ok("mastered after the miss was retried right and 3 different questions were right");
     const nextConcept = page.getByRole("link", { name: /^Next concept: .+ →$/ });
     check(await nextConcept.isVisible(), "the Mastered screen offers the next concept");
     check(/\/learn\/complex-numbers\/[a-z-]+/.test((await nextConcept.getAttribute("href")) ?? ""), "next concept links into the chapter");
