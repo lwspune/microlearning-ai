@@ -1,6 +1,12 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** y = √(1 + x) from x = −1 to 1.8, traced as (s² − 1, s) so it stays smooth where it starts steeply. */
+const rootCurve: Pt[] = Array.from({ length: 85 }, (_, i) => {
+  const s = (i * Math.sqrt(2.8)) / 84;
+  return [+(s * s - 1).toFixed(3), +s.toFixed(3)];
+});
 
 export const c09: Concept = {
   id: "C09",
@@ -10,27 +16,83 @@ export const c09: Concept = {
     reveal: t`Closer to $1.01$. $\sqrt{1.02} = (1 + 0.02)^{1/2} \approx 1 + \frac{1}{2}(0.02) = 1.01$. The next term, $\frac{\frac{1}{2}\left(-\frac{1}{2}\right)}{2!}(0.02)^2 = -0.00005$, sharpens it to $1.00995$. A calculator gives $1.0099505\ldots$: two or three terms are already very close.`,
   },
   explanation: {
-    intuition: t`When $x$ is small, $x^2$ is much smaller and $x^3$ smaller still. So in $(1 + x)^n = 1 + nx + \frac{n(n-1)}{2!}x^2 + \ldots$ each term is only a small correction to the one before, and the first two or three terms give the value very closely. The whole trick is to make $x$ small: take out the nearest number whose power you know, such as $25$ for a square root or $125$ for a cube root. What is left is $1 + x$ with $x$ close to $0$.`,
-    formal: t`**The method.** To approximate $N^n$:
-- **1.** Write $N = a + b$, where $a$ is near $N$ and $a^n$ is easy. Then $N = a(1 + x)$ with $x = \frac{b}{a}$.
-- **2.** $N^n = a^n(1 + x)^n$.
-- **3.** $(1 + x)^n \approx 1 + nx + \frac{n(n-1)}{2!}x^2$ (two terms: stop after $nx$).
-- **4.** Multiply back by $a^n$.
-
-**$a$ comes out as $a^n$.** $\sqrt{50} = \left[49\left(1 + \frac{1}{49}\right)\right]^{1/2} = 7\left(1 + \frac{1}{49}\right)^{1/2}$. The $49$ leaves the bracket as $49^{1/2} = 7$, and $x = \frac{1}{49}$: the extra $1$ is divided by $49$, not by $7$.
-
-**The third term.** Its coefficient is $\frac{n(n-1)}{2!}$, with $n$ put in with its sign: for $n = \frac{1}{2}$ it is $-\frac{1}{8}$; for $n = -2$ it is $\frac{(-2)(-3)}{2} = 3$.
-
-**Keep the sign of $x$.** Below a perfect power, $x$ is negative: $0.97 = 1 + (-0.03)$, so $nx$ changes sign while $x^2 = 0.0009$ stays positive.
-
-The answer is the exact value of the terms you keep. It differs from the true value by roughly the size of the first term you dropped.`,
+    intuition: [
+      t`A number $x$ is **small** when it is close to $0$: then $x^2$ is much smaller, and $x^3$ smaller still.`,
+      t`So for a small $x$, each term of $(1 + x)^n$ $= 1 + nx + \frac{n(n-1)}{2!}x^2 + \ldots$ is only a small correction to the one before.`,
+      t`The curve here is $y = (1 + x)^n$ for $n = \frac{1}{2}$, that is $y = \sqrt{1 + x}$.`,
+      t`Its first two terms, $1 + nx$, give the straight line $y = 1 + \frac{x}{2}$.`,
+      t`Near $x = 0$ the line hugs the curve, so the first two or three terms give the value very closely.`,
+      t`So make $x$ small: take out the nearest number with an easy power, like $25$ for a square root or $125$ for a cube root.`,
+    ],
+    figure: {
+      alt: "The curve y = √(1 + x), starting on the x-axis at x = −1 and rising more and more slowly, and the straight line y = 1 + x/2. Both pass through (0, 1) and almost touch near x = 0; further from 0, on either side, the line runs above the curve and the gap between them grows.",
+      axes: "xy",
+      view: { x: [-1.3, 1.8], y: [-0.4, 2.1] },
+      elements: [
+        { kind: "curve", points: rootCurve, step: 3 },
+        { kind: "label", at: [0.9, 1.25], label: "y = √(1 + x)", labelAt: "se", step: 3 },
+        { kind: "line", through: [[0, 1], [1, 1.5]], tone: "good", step: 4 },
+        { kind: "label", at: [-0.4, 0.95], label: "y = 1 + x/2", labelAt: "nw", tone: "good", step: 4 },
+        { kind: "point", at: [0, 1], label: "(0, 1)", labelAt: "se", tone: "muted", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "The method",
+        points: [
+          t`To approximate $N^n$, write $N = a + b$, where $a$ is near $N$ and $a^n$ is easy.`,
+          t`Then $N = a(1 + x)$, with $x = \frac{b}{a}$ close to $0$.`,
+          t`So $N^n = a^n(1 + x)^n$.`,
+          t`Keep three terms: $(1 + x)^n \approx 1 + nx$ $+ \frac{n(n-1)}{2!}x^2$, where $\approx$ means "is about".`,
+          t`For two terms, stop after $nx$.`,
+          t`Multiply back by $a^n$.`,
+        ],
+      },
+      {
+        title: "Taking a out of the bracket",
+        points: [
+          t`The power acts on both factors: $\left[a(1 + x)\right]^n$ $= a^n(1 + x)^n$.`,
+          t`So $a$ comes out of the bracket as $a^n$, not as $a$.`,
+          t`For example, $50 = 49\left(1 + \frac{1}{49}\right)$, so $x = \frac{1}{49}$.`,
+          t`The $49$ leaves the bracket as $49^{1/2} = 7$.`,
+          t`So $\sqrt{50}$ $= 7\left(1 + \frac{1}{49}\right)^{1/2}$.`,
+          t`The extra $1$ is divided by $49$, not by $7$.`,
+        ],
+      },
+      {
+        title: "The third term",
+        points: [
+          t`The third term is $\frac{n(n-1)}{2!}x^2$, with $2! = 2 \times 1 = 2$.`,
+          t`Its **coefficient**, the number multiplying $x^2$, is $\frac{n(n-1)}{2!}$.`,
+          t`Put $n$ in with its sign.`,
+          t`For $n = \frac{1}{2}$ it is $\frac{\frac{1}{2}\left(-\frac{1}{2}\right)}{2}$ $= -\frac{1}{8}$.`,
+          t`For $n = -2$ it is $\frac{(-2)(-3)}{2} = 3$.`,
+        ],
+      },
+      {
+        title: "Keep the sign of x",
+        points: [
+          t`A **perfect power** is a number with an exact root, such as $1$, $49 = 7^2$ or $125 = 5^3$.`,
+          t`Just below a perfect power, $x$ is negative: $0.97 = 1 + (-0.03)$, so $x = -0.03$.`,
+          t`Then the term $nx$ changes sign.`,
+          t`But $x^2 = 0.0009$ stays positive.`,
+        ],
+      },
+      {
+        title: "How close the answer is",
+        points: [
+          t`The answer is the exact value of the terms you keep.`,
+          t`It differs from the true value by roughly the size of the first term you dropped.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Use the first three terms of the binomial expansion to approximate $\sqrt[3]{127}$.`,
       steps: [
-        t`$125 = 5^3$ is the nearest cube: $127 = 125\left(1 + \frac{2}{125}\right)$, so $\sqrt[3]{127} = 5\left(1 + \frac{2}{125}\right)^{1/3}$, with $x = \frac{2}{125}$ and $n = \frac{1}{3}$.`,
-        t`Second term: $nx = \frac{1}{3} \times \frac{2}{125} = \frac{2}{375}$.`,
-        t`Third term: $\frac{n(n-1)}{2!} = \frac{\frac{1}{3}\left(-\frac{2}{3}\right)}{2} = -\frac{1}{9}$ and $x^2 = \frac{4}{15625}$, so the term is $-\frac{4}{140625}$.`,
-        t`Multiply back by $5$: $5\left(1 + \frac{2}{375} - \frac{4}{140625}\right) = 5 + \frac{2}{75} - \frac{4}{28125} = \frac{141371}{28125}$.`,
+        t`$125 = 5^3$ is the nearest cube: $127$ $= 125\left(1 + \frac{2}{125}\right)$, so $\sqrt[3]{127}$ $= 5\left(1 + \frac{2}{125}\right)^{1/3}$, with $x = \frac{2}{125}$ and $n = \frac{1}{3}$.`,
+        t`Second term: $nx = \frac{1}{3} \times \frac{2}{125}$ $= \frac{2}{375}$.`,
+        t`Third term: $\frac{n(n-1)}{2!}$ $= \frac{\frac{1}{3}\left(-\frac{2}{3}\right)}{2}$ $= -\frac{1}{9}$ and $x^2 = \frac{4}{15625}$, so the term is $-\frac{4}{140625}$.`,
+        t`Multiply back by $5$: $5\left(1 + \frac{2}{375} - \frac{4}{140625}\right)$ $= 5 + \frac{2}{75} - \frac{4}{28125}$ $= \frac{141371}{28125}$.`,
       ],
       answer: t`$\sqrt[3]{127} \approx \frac{141371}{28125} \approx 5.02652$ (a calculator gives $5.02653$).`,
     },

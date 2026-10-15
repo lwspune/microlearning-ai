@@ -1,6 +1,42 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Figure } from "../../../types.ts";
 
 const t = String.raw;
+
+type Tone = FigureElement["tone"];
+
+/** A tile of width `w` and height 1 with its bottom-left corner at (x, 0), its `text` inside. */
+const tile = (x: number, w: number, tone: Tone, step: number, text?: string): FigureElement[] => [
+  { kind: "segment", from: [x, 0], to: [x + w, 0], tone, step },
+  { kind: "segment", from: [x, 1], to: [x + w, 1], tone, step },
+  { kind: "segment", from: [x, 0], to: [x, 1], tone, step },
+  { kind: "segment", from: [x + w, 0], to: [x + w, 1], tone, step },
+  ...(text ? [{ kind: "label", at: [x + w / 2, 0.2], label: text, labelAt: "n", tone, step } as FigureElement] : []),
+];
+
+/** The idea slide's tiles: each `IDEA_W` wide, `IDEA_PITCH` apart, with a plus sign in each gap. */
+const IDEA_W = 1.35;
+const IDEA_PITCH = 1.75;
+const termRow = (terms: string[], step: number): FigureElement[] =>
+  terms.flatMap((term, i): FigureElement[] => [
+    ...tile(i * IDEA_PITCH, IDEA_W, undefined, step, term),
+    ...(i === 0 ? [] : [{ kind: "label", at: [i * IDEA_PITCH - (IDEA_PITCH - IDEA_W) / 2, 0.2], label: "+", labelAt: "n", step } as FigureElement]),
+  ]);
+
+const SUB = "₀₁₂₃₄₅₆₇₈₉";
+/** `count` tiles of width 1 from x = x0, labelled T₁, T₂, … */
+const numberedRow = (count: number, x0: number, step: number): FigureElement[] =>
+  Array.from({ length: count }, (_, i) => tile(x0 + i, 1, undefined, step, `T${SUB[i + 1]}`)).flat();
+
+/** A bracket under the row from x = a to x = b, labelled below its middle. */
+const bracket = (a: number, b: number, label: string, step: number): FigureElement[] => [
+  { kind: "segment", from: [a + 0.05, -0.2], to: [b - 0.05, -0.2], tone: "muted", step },
+  { kind: "segment", from: [a + 0.05, -0.2], to: [a + 0.05, -0.05], tone: "muted", step },
+  { kind: "segment", from: [b - 0.05, -0.2], to: [b - 0.05, -0.05], tone: "muted", step },
+  { kind: "label", at: [(a + b) / 2, -0.2], label, labelAt: "s", tone: "muted", step },
+];
+
+/** The view for the formal slides' rows of up to nine unit tiles. */
+const ROW_VIEW: Figure["view"] = { x: [-0.5, 9.5], y: [-1.0, 1.8] };
 
 export const c05: Concept = {
   id: "C05",
@@ -10,24 +46,101 @@ export const c05: Concept = {
     reveal: t`No. $(a + b)^{20}$ has $21$ terms, not $20$. The middle one has $10$ terms before it and $10$ after, so it is the $11$th term: $T_{11} = {}^{20}C_{10}\,a^{10}b^{10}$. Half of $n$ is the middle term's $r$, not its number.`,
   },
   explanation: {
-    intuition: t`Write out $(a + b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4$. Five terms, and the middle one, $6a^2b^2$, has $a$ and $b$ to the same power. In general $(a + b)^n$ has $n + 1$ terms. For even $n$ that count is odd, so one term sits in the middle; for odd $n$ the count is even, so two terms share the middle. Find the term's number, take $r$ one less, and the general term does the rest.`,
-    formal: t`**Count first.** $(a + b)^n$ has $n + 1$ terms.
-
-**$n$ even:** one middle term, $T_{\frac{n}{2}+1}$, with $r = \frac{n}{2}$.
-
-**$n$ odd:** two middle terms, $T_{\frac{n+1}{2}}$ and $T_{\frac{n+3}{2}}$, with $r = \frac{n-1}{2}$ and $r = \frac{n+1}{2}$.
-
-**Then use the general term** $T_{r+1} = {}^nC_r\,a^{n-r}b^r$. Raise the whole of $a$ and of $b$, numbers and signs included.
-
-**Example.** In $\left(x^2 + \frac{2}{x}\right)^8$, $n = 8$ is even, so the middle term is $T_5$, with $r = 4$:
-$$T_5 = {}^8C_4\,(x^2)^4\left(\frac{2}{x}\right)^4 = 70 \cdot x^8 \cdot \frac{16}{x^4} = 1120x^4$$`,
+    intuition: [
+      t`Expand $(a + b)^4$: it is $a^4 + 4a^3b + 6a^2b^2$ $+ 4ab^3 + b^4$.`,
+      t`It has five terms, and its **middle term**, with as many terms before it as after it, is $6a^2b^2$.`,
+      t`In the middle term, $a$ and $b$ carry the same power, $2$.`,
+      t`In general, $(a + b)^n$ has $n + 1$ terms: one more than the **index** $n$, the power on the bracket.`,
+      t`For an even $n$, that count is odd, so one term sits in the middle.`,
+      t`For an odd $n$, the count is even, so two terms share the middle.`,
+    ],
+    figure: {
+      alt: "The five terms of (a + b)⁴ in a row of tiles joined by plus signs: a⁴, 4a³b, 6a²b², 4ab³ and b⁴. The middle tile, 6a²b², turns green, with a bracket under the two tiles before it reading 2 before and one under the two after it reading 2 after. A label above the row reads n = 4: 5 terms.",
+      axes: "none",
+      view: { x: [-0.4, 8.75], y: [-1.0, 1.8] },
+      elements: [
+        ...termRow(["a⁴", "4a³b", "6a²b²", "4ab³", "b⁴"], 1),
+        ...tile(2 * IDEA_PITCH, IDEA_W, "good", 2, "6a²b²"),
+        ...bracket(0, IDEA_PITCH + IDEA_W, "2 before", 2),
+        ...bracket(3 * IDEA_PITCH, 4 * IDEA_PITCH + IDEA_W, "2 after", 2),
+        { kind: "label", at: [2 * IDEA_PITCH + IDEA_W / 2, 1.05], label: "n = 4: 5 terms", labelAt: "n", tone: "muted", step: 4 },
+      ],
+    },
+    formal: [
+      {
+        title: "Even n: one middle term",
+        points: [
+          t`Recall: $T_k$ is the $k$th term, so $(a + b)^n$ runs from $T_1$ to $T_{n+1}$.`,
+          t`When $n$ is even, $n + 1$ is odd: for $n = 8$, there are $9$ terms.`,
+          t`An odd count has one term in the middle, with as many terms before it as after it.`,
+          t`Each side holds $\frac{n}{2}$ terms, so the middle term is $T_{\frac{n}{2}+1}$: here $T_5$.`,
+          t`Recall: in $T_{r+1}$, $r$ is one less than the term's number, so here $r = \frac{n}{2}$, which is $4$.`,
+        ],
+        figure: {
+          alt: "Nine tiles in a row, T₁ to T₉, for the 9 terms when n = 8. The middle tile, T₅, turns green, with a bracket under T₁ to T₄ reading 4 before and one under T₆ to T₉ reading 4 after. Above T₅ a label reads r = 4.",
+          axes: "none",
+          view: ROW_VIEW,
+          elements: [
+            ...numberedRow(9, 0, 1),
+            ...tile(4, 1, "good", 3, "T₅"),
+            ...bracket(0, 4, "4 before", 3),
+            ...bracket(5, 9, "4 after", 3),
+            { kind: "label", at: [4.5, 1], label: "r = 4", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Odd n: two middle terms",
+        points: [
+          t`When $n$ is odd, $n + 1$ is even: for $n = 7$, there are $8$ terms.`,
+          t`An even count has no single middle term, so the middle two share it.`,
+          t`Then $\frac{n-1}{2}$ terms come before the pair, and as many after it: here $3$.`,
+          t`So they are $T_{\frac{n+1}{2}}$ and $T_{\frac{n+3}{2}}$: here $T_4$ and $T_5$.`,
+          t`Their $r$ values are $\frac{n-1}{2}$ and $\frac{n+1}{2}$: here $3$ and $4$.`,
+        ],
+        figure: {
+          alt: "Eight tiles in a row, T₁ to T₈, for the 8 terms when n = 7. The two middle tiles, T₄ and T₅, turn green; a bracket under T₁ to T₃ reads 3 before and one under T₆ to T₈ reads 3 after. Above T₄ a label reads r = 3, and above T₅, r = 4.",
+          axes: "none",
+          view: ROW_VIEW,
+          elements: [
+            ...numberedRow(8, 0.5, 1),
+            ...tile(3.5, 1, "good", 2, "T₄"),
+            ...tile(4.5, 1, "good", 2, "T₅"),
+            ...bracket(0.5, 3.5, "3 before", 3),
+            ...bracket(5.5, 8.5, "3 after", 3),
+            { kind: "label", at: [4.4, 1], label: "r = 3", labelAt: "nw", tone: "good", step: 5 },
+            { kind: "label", at: [4.6, 1], label: "r = 4", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Then use the general term",
+        points: [
+          t`Recall the general term: $T_{r+1} = {}^nC_r\,a^{n-r}b^r$.`,
+          t`Find the middle term's number $k$, then take $r = k - 1$.`,
+          t`Raise the whole of $a$ and of $b$, numbers and signs included.`,
+          t`So $(2x)^3 = 8x^3$: the number $2$ is cubed too.`,
+          t`And $(-b)^r$ is negative when $r$ is odd, positive when $r$ is even.`,
+        ],
+      },
+      {
+        title: "Example: one middle term",
+        points: [
+          t`Take $\left(x^2 + \frac{2}{x}\right)^8$: here $n = 8$ is even.`,
+          t`So there are $9$ terms, and the middle one is $T_5$, with $r = 4$.`,
+          t`Then $T_5 = {}^8C_4\,(x^2)^4$ $\left(\frac{2}{x}\right)^4$.`,
+          t`Here $^8C_4 = 70$, $(x^2)^4 = x^8$ and $\left(\frac{2}{x}\right)^4 = \frac{16}{x^4}$.`,
+          t`So $T_5 = 70 \cdot x^8 \cdot \frac{16}{x^4}$ $= 1120x^4$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the middle term(s) in the expansion of $\left(x^2 + \frac{1}{x}\right)^7$.`,
       steps: [
         t`Count: $n = 7$, so there are $8$ terms. An even count has two middle terms.`,
         t`They are $T_{\frac{7+1}{2}} = T_4$ and $T_{\frac{7+3}{2}} = T_5$: three terms before them and three after. Their $r$ values are $3$ and $4$.`,
-        t`$T_4 = {}^7C_3\,(x^2)^4\left(\frac{1}{x}\right)^3 = 35 \cdot x^8 \cdot \frac{1}{x^3} = 35x^5$.`,
-        t`$T_5 = {}^7C_4\,(x^2)^3\left(\frac{1}{x}\right)^4 = 35 \cdot x^6 \cdot \frac{1}{x^4} = 35x^2$.`,
+        t`$T_4 = {}^7C_3\,(x^2)^4$ $\left(\frac{1}{x}\right)^3$ $= 35 \cdot x^8 \cdot \frac{1}{x^3}$ $= 35x^5$.`,
+        t`$T_5 = {}^7C_4\,(x^2)^3$ $\left(\frac{1}{x}\right)^4$ $= 35 \cdot x^6 \cdot \frac{1}{x^4}$ $= 35x^2$.`,
       ],
       answer: t`$35x^5$ and $35x^2$.`,
     },

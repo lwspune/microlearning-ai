@@ -1,6 +1,34 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** Half a unit of height per unit of coefficient, so the towers of 8 stand 4 high. */
+const H = 0.5;
+
+/**
+ * One block of a tower: the rectangle [x0, x0 + 1.4] by [lo, hi] coefficient units, shaded and
+ * outlined, its corners taken anticlockwise from the bottom left.
+ */
+function block(x0: number, lo: number, hi: number, tone: FigureElement["tone"], step: number): FigureElement[] {
+  const [x1, y0, y1] = [x0 + 1.4, lo * H, hi * H];
+  return [
+    {
+      kind: "region",
+      within: [
+        { kind: "halfPlane", through: [[x0, y0], [x1, y0]] },
+        { kind: "halfPlane", through: [[x1, y0], [x1, y1]] },
+        { kind: "halfPlane", through: [[x1, y1], [x0, y1]] },
+        { kind: "halfPlane", through: [[x0, y1], [x0, y0]] },
+      ],
+      tone,
+      step,
+    },
+    { kind: "segment", from: [x0, y0], to: [x1, y0], tone, step },
+    { kind: "segment", from: [x1, y0], to: [x1, y1], tone, step },
+    { kind: "segment", from: [x1, y1], to: [x0, y1], tone, step },
+    { kind: "segment", from: [x0, y1], to: [x0, y0], tone, step },
+  ];
+}
 
 export const c06: Concept = {
   id: "C06",
@@ -10,23 +38,97 @@ export const c06: Concept = {
     reveal: t`Count by size: $^6C_0 + {}^6C_1 + \ldots + {}^6C_6$ pizzas with $0, 1, \ldots, 6$ toppings. Or decide topping by topping: each one is in or out, $2$ ways each, so $2^6 = 64$ pizzas. The two counts must agree, so $^6C_0 + {}^6C_1 + \ldots + {}^6C_6 = 2^6 = 64$.`,
   },
   explanation: {
-    intuition: t`In $(1 + x)^n = {}^nC_0 + {}^nC_1 x + {}^nC_2 x^2 + \ldots + {}^nC_n x^n$, the coefficients sit next to powers of $x$. Put $x = 1$ and every power becomes $1$, so the right side is just the sum of the coefficients, and the left side is $2^n$. Put $x = -1$ instead and the signs alternate, so the coefficients cancel to $0$. The same trick works for any binomial: put $x = 1$ and what is left is the sum of its coefficients.`,
-    formal: t`**All the coefficients.** We write $C_r$ for $^nC_r$. Put $x = 1$ in $(1 + x)^n$:
-$$C_0 + C_1 + C_2 + \ldots + C_n = 2^n$$
-
-**Alternating signs.** Put $x = -1$:
-$$C_0 - C_1 + C_2 - C_3 + \ldots + (-1)^n C_n = 0$$
-
-**Odd-placed and even-placed.** The second line says $C_0 + C_2 + C_4 + \ldots = C_1 + C_3 + C_5 + \ldots$: the 1st, 3rd, 5th, ... coefficients (even $r$) add to the same as the 2nd, 4th, 6th, ... (odd $r$). The two halves add to $2^n$, so each is $2^{n-1}$. For $n = 4$: $1 + 6 + 1 = 4 + 4 = 8 = 2^3$.
-
-**Missing terms.** If a sum stops short, start from $2^n$ (or $2^{n-1}$) and take off the coefficients that are left out. Only $C_0$ and $C_n$ are $1$; $C_1 = C_{n-1} = n$.
-
-**Any binomial.** The sum of the coefficients of $(ax + b)^n$ is its value at $x = 1$: $(a + b)^n$, signs included.`,
+    intuition: [
+      t`A **coefficient** is the number that multiplies a power of $x$: in $5x^2$ it is $5$.`,
+      t`Recall: in $(1 + x)^n$, the coefficient of $x^r$ is $^nC_r$, for each $r$ from $0$ to $n$.`,
+      t`Put $x = 1$ in $(1 + x)^n$: every power of $x$ becomes $1$.`,
+      t`So the right side is just the sum of the coefficients, and the left side is $2^n$.`,
+      t`Put $x = -1$ instead: the signs **alternate**, plus, minus, plus, ..., and the coefficients cancel to $0$.`,
+      t`Any binomial works the same way: at $x = 1$, what is left is the sum of its coefficients.`,
+    ],
+    formal: [
+      {
+        title: "Sum of all the coefficients",
+        points: [
+          t`We write $C_r$ for $^nC_r$, the coefficient of $x^r$ in $(1 + x)^n$.`,
+          t`Put $x = 1$: the left side, $(1 + 1)^n$, becomes $2^n$.`,
+          t`The right side becomes $C_0 + C_1 + C_2 + \ldots + C_n$.`,
+          t`So $C_0 + C_1 + C_2 + \ldots + C_n = 2^n$.`,
+          t`It counts all $n + 1$ coefficients, from $C_0$ to $C_n$.`,
+          t`For $n = 4$: $1 + 4 + 6 + 4 + 1 = 16 = 2^4$.`,
+        ],
+      },
+      {
+        title: "The alternating sum",
+        points: [
+          t`Put $x = -1$ instead: the left side, $(1 - 1)^n$, becomes $0$.`,
+          t`On the right, odd powers of $-1$ are $-1$ and even powers are $1$.`,
+          t`So the signs alternate: plus, minus, plus, minus, and so on.`,
+          t`So $C_0 - C_1 + C_2 - C_3 + \ldots$, up to $(-1)^n C_n$, equals $0$.`,
+          t`For $n = 4$: $1 - 4 + 6 - 4 + 1 = 0$.`,
+        ],
+      },
+      {
+        title: "Odd-placed and even-placed",
+        points: [
+          t`The **odd-placed** coefficients come 1st, 3rd, 5th, ...: $C_0, C_2, C_4, \ldots$, with even $r$.`,
+          t`The **even-placed** ones come 2nd, 4th, 6th, ...: $C_1, C_3, C_5, \ldots$, with odd $r$.`,
+          t`The alternating sum says the two groups are equal: $C_0 + C_2 + \ldots$ equals $C_1 + C_3 + \ldots$.`,
+          t`Together the two groups are all the coefficients, which add to $2^n$.`,
+          t`So each group adds to half of $2^n$, that is $2^{n-1}$.`,
+          t`For $n = 4$: $1 + 6 + 1 = 8$ and $4 + 4 = 8$, both $2^3$.`,
+        ],
+        figure: {
+          alt: "The coefficients 1, 4, 6, 4, 1 of (1 + x)⁴ as blocks, each as tall as its value. The odd-placed ones, C₀ = 1, C₂ = 6 and C₄ = 1, stack into one tower; the even-placed ones, C₁ = 4 and C₃ = 4, stack into another. A dashed line shows the towers are the same height, 8, which is 2³, half of 2⁴ = 16.",
+          axes: "none",
+          view: { x: [-1.6, 5.4], y: [-0.9, 5] },
+          elements: [
+            { kind: "label", at: [-1.4, 4.7], label: "n = 4: 1, 4, 6, 4, 1", labelAt: "e", tone: "muted" },
+            { kind: "segment", from: [-0.4, 0], to: [4, 0], tone: "muted" },
+            ...block(0, 0, 1, "good", 1),
+            ...block(0, 1, 7, "good", 1),
+            ...block(0, 7, 8, "good", 1),
+            { kind: "label", at: [0, 0.5 * H], label: "C₀ = 1", labelAt: "w", tone: "good", step: 1 },
+            { kind: "label", at: [0, 4 * H], label: "C₂ = 6", labelAt: "w", tone: "good", step: 1 },
+            { kind: "label", at: [0, 7.5 * H], label: "C₄ = 1", labelAt: "w", tone: "good", step: 1 },
+            { kind: "label", at: [0.7, 0], label: "odd-placed", labelAt: "s", tone: "good", step: 1 },
+            ...block(2.2, 0, 4, "accent", 2),
+            ...block(2.2, 4, 8, "accent", 2),
+            { kind: "label", at: [3.6, 2 * H], label: "C₁ = 4", labelAt: "e", step: 2 },
+            { kind: "label", at: [3.6, 6 * H], label: "C₃ = 4", labelAt: "e", step: 2 },
+            { kind: "label", at: [2.9, 0], label: "even-placed", labelAt: "s", step: 2 },
+            { kind: "segment", from: [-0.4, 8 * H], to: [4, 8 * H], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [4, 8 * H], label: "8 = 2³", labelAt: "e", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "When terms are missing",
+        points: [
+          t`Some sums start late or stop early, leaving some coefficients out.`,
+          t`Start from the full total: $2^n$ for all of them, $2^{n-1}$ for one group.`,
+          t`Then take off each coefficient that is left out.`,
+          t`Only the end coefficients, $C_0$ and $C_n$, are $1$.`,
+          t`The next ones in are $C_1 = C_{n-1} = n$, not $1$.`,
+          t`For $n = 5$: $C_2 + C_3 + C_4 + C_5$ is $2^5 - 1 - 5 = 26$.`,
+        ],
+      },
+      {
+        title: "Coefficients of any binomial",
+        points: [
+          t`Write $(ax + b)^n$ as $c_0 + c_1 x + \ldots + c_n x^n$.`,
+          t`Each $c_r$ carries powers of $a$ and $b$, so it is not just $^nC_r$.`,
+          t`Put $x = 1$: the right side becomes $c_0 + c_1 + \ldots + c_n$.`,
+          t`So the sum of the coefficients is the left side at $x = 1$: $(a + b)^n$.`,
+          t`Keep the signs: $(2x - 5)^3$ gives $(2 - 5)^3 = -27$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the value of $^{13}C_3 + {}^{13}C_5 + {}^{13}C_7 + \ldots + {}^{13}C_{13}$.`,
       steps: [
         t`Here $n = 13$ and every $r$ is odd. All the $C_r$ with odd $r$ together are $C_1 + C_3 + \ldots + C_{13}$.`,
-        t`The odd-$r$ sum equals the even-$r$ sum, and together they make $2^{13}$. So $C_1 + C_3 + \ldots + C_{13} = 2^{12} = 4096$.`,
+        t`The odd-$r$ sum equals the even-$r$ sum, and together they make $2^{13}$. So $C_1 + C_3 + \ldots + C_{13}$ is $2^{12} = 4096$.`,
         t`The sum asked for leaves out $C_1$, and $^{13}C_1 = 13$ (not $1$).`,
         t`So the sum is $4096 - 13 = 4083$.`,
       ],

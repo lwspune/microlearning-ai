@@ -1,6 +1,17 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The column heads T₁ to T₇, one term a unit apart (term k at x = k), above the two rows. */
+const heads: FigureElement[] = ["T₁", "T₂", "T₃", "T₄", "T₅", "T₆", "T₇"].map(
+  (label, i): FigureElement => ({ kind: "label", at: [i + 1, 4.1], label, labelAt: "n", tone: "muted", step: 1 }),
+);
+
+/** A row of seven terms: its expansion named at height `y`, and below it a dot per term with its power of x. */
+const row = (y: number, name: string, powers: string[], step: number): FigureElement[] => [
+  { kind: "label", at: [0.4, y], label: name, labelAt: "e", step },
+  ...powers.map((label, i): FigureElement => ({ kind: "point", at: [i + 1, y - 0.7], label, labelAt: "s", step })),
+];
 
 export const c04: Concept = {
   id: "C04",
@@ -10,24 +21,78 @@ export const c04: Concept = {
     reveal: t`No. In $T_{r+1} = {}^6C_r (x^2)^{6-r}\left(\dfrac{1}{x}\right)^r$ the power of $x$ is $12 - 2r - r = 12 - 3r$. It is $0$ when $r = 4$, so the term is $T_5 = {}^6C_4 = 15$, not the middle term $T_4$. The $x^2$ pulls harder than the $\dfrac{1}{x}$, so the balance point moves.`,
   },
   explanation: {
-    intuition: t`Each term of the expansion is a power of $x$ times a number. The term independent of $x$ (the constant term) is the one where the powers from $a$ and from $b$ cancel exactly. So write the power of $x$ in $T_{r+1}$, set it equal to $0$, and solve for $r$. The term is the number that is left, and it carries everything from $^nC_r$, $a^{n-r}$ and $b^r$: the constants and the signs.`,
-    formal: t`**The method**
-
-- **1.** Write $T_{r+1} = {}^nC_r\,a^{n-r}\,b^r$ and split it into a number times a power of $x$.
-- **2.** Set the power of $x$ equal to $0$ and solve for $r$.
-- **3.** The term independent of $x$ is $T_{r+1}$, the $(r+1)^{\text{th}}$ term. Its value is the number part, worked out at that $r$.
-
-**Keep the constants and the sign.** In $\left(x - \dfrac{2}{x^2}\right)^n$, $b = -\dfrac{2}{x^2}$, so the number part is $^nC_r(-2)^r$. A constant inside a bracket is raised to the power too: $(3x^2)^4 = 81x^8$, not $3x^8$.
-
-**It need not be the middle term.** In $\left(x + \dfrac{1}{x}\right)^{2m}$ it is, because the powers $1$ and $-1$ cancel evenly. With unequal powers, solve for $r$.
-
-**No whole-number $r$, no constant term.** In $\left(x^2 - \dfrac{1}{x}\right)^8$ the power is $16 - 3r$, and $r = \dfrac{16}{3}$ is not a whole number, so no term is independent of $x$.`,
+    intuition: [
+      t`Each term of an expansion like $\left(x^2 + \frac{1}{x}\right)^6$ is a number times a power of $x$.`,
+      t`The **term independent of $x$**, or **constant term**, has no $x$ in it: its power of $x$ is $0$.`,
+      t`Recall: the general term of $(a + b)^n$ is $T_{r+1} = {}^nC_r\,a^{n-r}\,b^r$.`,
+      t`Its power of $x$ is $0$ where the powers of $x$ from $a$ and from $b$ cancel exactly.`,
+      t`So write the power of $x$ in $T_{r+1}$, set it equal to $0$, and solve for $r$.`,
+      t`The term is the number left, with everything from $^nC_r$, $a^{n-r}$ and $b^r$: constants and signs.`,
+    ],
+    formal: [
+      {
+        title: "Finding the constant term",
+        points: [
+          t`Step 1: write $T_{r+1} = {}^nC_r\,a^{n-r}\,b^r$.`,
+          t`Split it into a number times a power of $x$.`,
+          t`Step 2: set the power of $x$ equal to $0$, and solve for $r$.`,
+          t`Step 3: the term independent of $x$ is $T_{r+1}$, the $(r+1)^{\text{th}}$ term.`,
+          t`Its value is the number part, worked out at that $r$.`,
+        ],
+      },
+      {
+        title: "Keep the constants and sign",
+        points: [
+          t`The sign belongs to $b$: in $\left(x - \frac{2}{x^2}\right)^n$, $b = -\frac{2}{x^2}$.`,
+          t`So the number part is $^nC_r(-2)^r$, which is negative when $r$ is odd.`,
+          t`A constant inside a bracket is raised to the power too.`,
+          t`So $(3x^2)^4 = 81x^8$, not $3x^8$.`,
+        ],
+      },
+      {
+        title: "Not always the middle term",
+        points: [
+          t`The **middle term** has as many terms before it as after it: of $7$ terms, $T_4$.`,
+          t`In $\left(x + \frac{1}{x}\right)^6$ the powers of $x$ in $T_1$ to $T_7$ are $6, 4, 2, 0, -2, -4, -6$.`,
+          t`The powers $1$ and $-1$ cancel evenly, so in any $\left(x + \frac{1}{x}\right)^{2m}$ the middle term is the constant.`,
+          t`In $\left(x^2 + \frac{1}{x}\right)^6$ they are $12, 9, 6, 3, 0, -3, -6$.`,
+          t`The $x^2$ pulls harder than the $\frac{1}{x}$, so the power $0$ moves to $T_5$, past the middle.`,
+          t`So with unequal powers, don't take the middle term: solve for $r$.`,
+        ],
+        figure: {
+          alt: "Two rows of seven dots, one dot for each term T1 to T7, with a dashed line down the middle term T4. Under each dot is its power of x. In the top row, for (x + 1/x)⁶, the powers go 6, 4, 2, 0, −2, −4, −6, and the power 0 on T4, the middle, is circled. In the bottom row, for (x² + 1/x)⁶, they go 12, 9, 6, 3, 0, −3, −6, and the power 0 on T5, one past the middle, is circled.",
+          axes: "none",
+          view: { x: [0.3, 7.7], y: [-0.9, 4.6] },
+          elements: [
+            ...heads,
+            // The middle line, broken where it would cross T₄'s dots and their powers.
+            { kind: "segment", from: [4, 2.85], to: [4, 3.9], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [4, 0.85], to: [4, 1.85], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [4, -0.5], to: [4, -0.15], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [4, -0.5], label: "middle", labelAt: "s", tone: "muted", step: 1 },
+            ...row(3.3, "(x + 1/x)⁶", ["x⁶", "x⁴", "x²", "x⁰", "x⁻²", "x⁻⁴", "x⁻⁶"], 2),
+            { kind: "circle", centre: [4, 2.35], r: 0.5, tone: "good", step: 3 },
+            ...row(1.3, "(x² + 1/x)⁶", ["x¹²", "x⁹", "x⁶", "x³", "x⁰", "x⁻³", "x⁻⁶"], 4),
+            { kind: "circle", centre: [5, 0.35], r: 0.5, tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "When there is no constant term",
+        points: [
+          t`$r$ counts terms, so it must be a whole number from $0$ to $n$.`,
+          t`In $\left(x^2 - \frac{1}{x}\right)^8$ the power of $x$ in $T_{r+1}$ is $16 - 3r$.`,
+          t`Setting $16 - 3r = 0$ gives $r = \frac{16}{3}$, not a whole number.`,
+          t`So no term of this expansion is independent of $x$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the term independent of $x$ in the expansion of $\left(x - \dfrac{1}{2x^2}\right)^9$.`,
       steps: [
-        t`$T_{r+1} = {}^9C_r\,x^{9-r}\left(-\dfrac{1}{2x^2}\right)^r = {}^9C_r\left(-\dfrac{1}{2}\right)^r x^{9-r-2r} = {}^9C_r\left(-\dfrac{1}{2}\right)^r x^{9-3r}$.`,
+        t`$T_{r+1} = {}^9C_r\,x^{9-r}$ $\times \left(-\dfrac{1}{2x^2}\right)^r$ $= {}^9C_r\left(-\dfrac{1}{2}\right)^r x^{9-r-2r}$ $= {}^9C_r\left(-\dfrac{1}{2}\right)^r x^{9-3r}$.`,
         t`No $x$ means $9 - 3r = 0$, so $r = 3$: the term is $T_4$, the $4^{\text{th}}$ term.`,
-        t`$T_4 = {}^9C_3\left(-\dfrac{1}{2}\right)^3 = 84 \times \left(-\dfrac{1}{8}\right) = -\dfrac{21}{2}$. The sign stays: $r = 3$ is odd.`,
+        t`$T_4 = {}^9C_3\left(-\dfrac{1}{2}\right)^3$ $= 84 \times \left(-\dfrac{1}{8}\right)$ $= -\dfrac{21}{2}$. The sign stays: $r = 3$ is odd.`,
       ],
       answer: t`The term independent of $x$ is $T_4 = -\dfrac{21}{2}$.`,
     },

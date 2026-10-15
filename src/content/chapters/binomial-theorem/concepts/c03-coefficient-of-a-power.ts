@@ -10,24 +10,56 @@ export const c03: Concept = {
     reveal: t`No. Here $T_{r+1} = {}^{11}C_r(x^2)^{11-r}\left(\frac{1}{x}\right)^r = {}^{11}C_r\,x^{22-3r}$. For $x^7$, $22 - 3r = 7$, so $r = 5$: the term is $T_6$, not $T_8$, and the coefficient is $^{11}C_5 = 462$.`,
   },
   explanation: {
-    intuition: t`Every term of the expansion carries its own power of $x$, and that power depends on $r$. Write the power of $x$ in $T_{r+1}$ as a formula in $r$, and the question becomes a simple equation for $r$. Once you know which term it is, its coefficient is everything in it except the power of $x$: $^nC_r$ and the numbers in $a$ and $b$, raised to their powers, signs included. Only in $(1 + x)^n$ is $x^k$ simply the term $T_{k+1}$.`,
-    formal: t`**1. Write the general term** with $a$ and $b$ whole, signs included:
-$$T_{r+1} = {}^nC_r\,a^{n-r}\,b^r$$
-
-**2. Separate the numbers from the powers of $x$.** Use $(c\,x^p)^m = c^m x^{pm}$ and $\frac{1}{x^q} = x^{-q}$, then add the powers of $x$ from both factors.
-
-**3. Solve for $r$.** Set the power of $x$ equal to the one asked. $r$ must be a whole number from $0$ to $n$.
-
-**4. Read off the coefficient:** $^nC_r$ times the constant of $a$ to the power $n - r$ times the constant of $b$ to the power $r$.
-
-**Example.** In $\left(x^2 - \frac{2}{x}\right)^6$: $T_{r+1} = {}^6C_r(-2)^r x^{12-3r}$. For $x^3$, $12 - 3r = 3$, so $r = 3$ and the coefficient is $^6C_3(-2)^3 = 20(-8) = -160$.`,
+    intuition: [
+      t`In $5x^3$, the **power** of $x$ is $3$, and its **coefficient**, the number multiplying it, is $5$.`,
+      t`Every term of the expansion carries its own power of $x$, and that power depends on $r$.`,
+      t`Write the power of $x$ in $T_{r+1}$ as a formula in $r$: the question becomes a simple equation for $r$.`,
+      t`Once you know which term it is, its coefficient is everything in it except the power of $x$.`,
+      t`That is $^nC_r$ and the numbers in $a$ and $b$, raised to their powers, signs included.`,
+      t`Only in $(1 + x)^n$ is $x^k$ simply the term $T_{k+1}$.`,
+    ],
+    formal: [
+      {
+        title: "Power of x in a term",
+        points: [
+          t`Recall: the general term is $T_{r+1} = {}^nC_r\,a^{n-r}\,b^r$.`,
+          t`Put in $a$ and $b$ whole, each with its sign.`,
+          t`Split each into a **constant**, a number with no $x$, and a power of $x$.`,
+          t`Raise both parts to the power: $(c\,x^p)^m = c^m x^{pm}$.`,
+          t`Write $x$ in a denominator as a negative power: $\frac{1}{x^q} = x^{-q}$.`,
+          t`Add the powers of $x$ from both factors: that sum is the power of $x$ in $T_{r+1}$.`,
+        ],
+      },
+      {
+        title: "Which term, and its coefficient",
+        points: [
+          t`Set the power of $x$ in $T_{r+1}$ equal to the one asked, and solve for $r$.`,
+          t`$r$ must be a whole number from $0$ to $n$.`,
+          t`The coefficient is $^nC_r$, times two powers of constants.`,
+          t`One is the constant of $a$, raised to the power $n - r$.`,
+          t`The other is the constant of $b$, raised to the power $r$.`,
+          t`Keep the signs: a negative constant to an odd power stays negative.`,
+        ],
+      },
+      {
+        title: "Example: the coefficient of x³",
+        points: [
+          t`Find the coefficient of $x^3$ in $\left(x^2 - \frac{2}{x}\right)^6$.`,
+          t`Here $a = x^2$, $b = -\frac{2}{x}$ and $n = 6$.`,
+          t`$(x^2)^{6-r} = x^{12-2r}$, and $\left(-\frac{2}{x}\right)^r = (-2)^r x^{-r}$.`,
+          t`Adding the powers, $T_{r+1} = {}^6C_r(-2)^r x^{12-3r}$.`,
+          t`For $x^3$, $12 - 3r = 3$, so $r = 3$.`,
+          t`The coefficient is $^6C_3(-2)^3 = 20(-8) = -160$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the coefficient of $x^{-2}$ in the expansion of $\left(2x - \frac{1}{\sqrt{3}\,x^2}\right)^{10}$.`,
       steps: [
-        t`Here $a = 2x$, $b = -\frac{1}{\sqrt{3}\,x^2}$, $n = 10$, so $T_{r+1} = {}^{10}C_r(2x)^{10-r}\left(-\frac{1}{\sqrt{3}\,x^2}\right)^r$.`,
-        t`Separate numbers from powers of $x$: $T_{r+1} = {}^{10}C_r\,2^{10-r}\left(-\frac{1}{\sqrt{3}}\right)^r x^{10-r}\,x^{-2r} = {}^{10}C_r\,2^{10-r}\left(-\frac{1}{\sqrt{3}}\right)^r x^{10-3r}$.`,
+        t`Here $a = 2x$, $b = -\frac{1}{\sqrt{3}\,x^2}$, $n = 10$, so $T_{r+1}$ $= {}^{10}C_r(2x)^{10-r}$ $\left(-\frac{1}{\sqrt{3}\,x^2}\right)^r$.`,
+        t`Separate numbers from powers of $x$: $T_{r+1}$ $= {}^{10}C_r\,2^{10-r}$ $\left(-\frac{1}{\sqrt{3}}\right)^r$ $x^{10-r}\,x^{-2r}$ $= {}^{10}C_r\,2^{10-r}$ $\left(-\frac{1}{\sqrt{3}}\right)^r$ $x^{10-3r}$.`,
         t`For $x^{-2}$: $10 - 3r = -2$, so $r = 4$. The term is $T_5$.`,
-        t`Coefficient $= {}^{10}C_4\,2^6\left(-\frac{1}{\sqrt{3}}\right)^4 = 210 \times 64 \times \frac{1}{9} = \frac{4480}{3}$. The sign is $+$ because $r = 4$ is even.`,
+        t`Coefficient $= {}^{10}C_4\,2^6$ $\left(-\frac{1}{\sqrt{3}}\right)^4$ $= 210 \times 64 \times \frac{1}{9}$ $= \frac{4480}{3}$. The sign is $+$ because $r = 4$ is even.`,
       ],
       answer: t`The coefficient of $x^{-2}$ is $\frac{4480}{3}$.`,
     },

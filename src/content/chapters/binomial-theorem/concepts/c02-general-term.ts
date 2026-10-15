@@ -1,6 +1,26 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The outline of a box `w` wide and `h` high, its lower-left corner at `[x, y]`. */
+const box = ([x, y]: Pt, w: number, h: number, step: number): FigureElement[] => [
+  { kind: "segment", from: [x, y], to: [x + w, y], step },
+  { kind: "segment", from: [x + w, y], to: [x + w, y + h], step },
+  { kind: "segment", from: [x + w, y + h], to: [x, y + h], step },
+  { kind: "segment", from: [x, y + h], to: [x, y], step },
+];
+
+/** The figure's view width, which is drawn 400px wide. */
+const W = 9;
+
+/** Text centred on `at`: an "n" label sits 10px above its anchor, so the anchor drops 15px to centre it. */
+const mid = ([x, y]: Pt, label: string, step: number): FigureElement => ({
+  kind: "label",
+  at: [x, y - (15 * W) / 400],
+  label,
+  labelAt: "n",
+  step,
+});
 
 export const c02: Concept = {
   id: "C02",
@@ -10,23 +30,85 @@ export const c02: Concept = {
     reveal: t`$^8C_4$. The terms carry $^8C_0, {}^8C_1, {}^8C_2, \ldots$ in order, so the $5$th one has $^8C_4$: $T_5 = {}^8C_4\,(2x)^4\left(-\frac{1}{x}\right)^4 = 70 \cdot 16 = 1120$. The $x$'s cancel, and the even power makes it positive.`,
   },
   explanation: {
-    intuition: t`Each term of $(a + b)^n$ takes $b$ from $r$ of the $n$ brackets and $a$ from the other $n - r$, in $^nC_r$ ways. The first term takes $b$ from no bracket: $r = 0$. So $r$ counts the $b$'s, and the term's place is one more than $r$: $r = 4$ gives the $5$th term. $b$ brings its sign along, so in $(a - b)^n$ the odd powers of $b$ are negative.`,
-    formal: t`**The general term**
-
-$$T_{r+1} = {}^nC_r\,a^{n-r}\,b^r, \qquad r = 0, 1, 2, \ldots, n$$
-
-**For the $k$th term, take $r = k - 1$.** The $5$th term has $r = 4$: $^nC_4\,a^{n-4}\,b^4$. The powers of $a$ and $b$ add up to $n$, and $b$'s power is the same $r$ as in $^nC_r$.
-
-**Put $a$ and $b$ in whole.** In $(a - b)^n$, $b$ enters as $-b$, so the term is negative when $r$ is odd. Raise numbers too: $(2x^2)^4 = 16x^8$.
-
-**Counting from the end.** There are $n + 1$ terms, so the $k$th term from the end is the $(n - k + 2)$th from the start. In $(x + 2)^6$, the $2$nd term from the end is $T_6 = {}^6C_5\,x\,(2)^5 = 192x$.`,
+    intuition: [
+      t`Recall: $(a + b)^n$ is $n$ brackets multiplied, and each term picks $a$ or $b$ from every bracket.`,
+      t`A term that takes $b$ from $r$ of the brackets takes $a$ from the other $n - r$.`,
+      t`There are $^nC_r$ ways to choose those $r$ brackets, so the term is $^nC_r\,a^{n-r}b^r$.`,
+      t`The first term takes $b$ from no bracket, so it has $r = 0$.`,
+      t`So a term's **place**, its position counted from the start, is one more than $r$: $r = 4$ gives the $5$th term.`,
+      t`$b$ brings its sign along: in $(a - b)^n$, a term with an odd power of $b$ gets a minus sign.`,
+    ],
+    formal: [
+      {
+        title: "The general term",
+        points: [
+          t`The **general term** is one formula that gives every term of the expansion, through $r$.`,
+          t`$T_{r+1}$ stands for the $(r + 1)$th term, the term in place $r + 1$.`,
+          t`$T_{r+1} = {}^nC_r\,a^{n-r}\,b^r$.`,
+          t`Here $r$ runs through $0, 1, 2, \ldots, n$.`,
+          t`The powers of $a$ and $b$ add up to $n$.`,
+          t`$b$ carries the same power $r$ as in $^nC_r$; $a$ carries the rest, $n - r$.`,
+        ],
+      },
+      {
+        title: "Finding the kth term",
+        points: [
+          t`For the $k$th term, take $r = k - 1$, one less than its place.`,
+          t`For example, the $5$th term has $r = 4$.`,
+          t`So the $5$th term is $^nC_4\,a^{n-4}\,b^4$.`,
+        ],
+      },
+      {
+        title: "Put in a and b whole",
+        points: [
+          t`Put $a$ and $b$ in whole, with their signs and their numbers.`,
+          t`In $(a - b)^n$, $b$ enters as $-b$, so the term has $(-b)^r$.`,
+          t`$(-b)^r$ brings a minus sign when $r$ is odd, and none when $r$ is even.`,
+          t`Raise a number along with its variable: $(2x^2)^4 = 2^4x^8 = 16x^8$.`,
+        ],
+      },
+      {
+        title: "Counting from the end",
+        points: [
+          t`The expansion has $n + 1$ terms, since $r$ runs from $0$ to $n$.`,
+          t`Counting from the end, the last term is the $1$st, the one before it the $2$nd, and so on.`,
+          t`The $k$th from the end lies $k - 1$ places back from the last, the $(n + 1)$th.`,
+          t`So the $k$th term from the end is the $(n - k + 2)$th from the start.`,
+          t`Check: $k = 1$ gives the $(n + 1)$th term, the last one.`,
+        ],
+      },
+      {
+        title: "A term from the end",
+        points: [
+          t`Example: $(x + 2)^6$ has $6 + 1 = 7$ terms, $T_1$ to $T_7$.`,
+          t`Counted from the end, $T_7$ is the $1$st and $T_6$ the $2$nd.`,
+          t`The rule agrees: $k = 2$ gives the $(6 - 2 + 2)$th, the $6$th from the start.`,
+          t`$T_6$ has $r = 5$, so $T_6 = {}^6C_5\,x\,(2)^5$.`,
+          t`$^6C_5 = 6$ and $2^5 = 32$, so $T_6 = 192x$.`,
+        ],
+        figure: {
+          alt: "Seven boxes in a row, the terms T1 to T7 of (x + 2) to the power 6. Under them, an arrow runs right to left, numbering the terms from the end: T7 is 1st, T6 is 2nd, down to T1, which is 7th. The box T6 is highlighted, with r = 5 above it.",
+          axes: "none",
+          view: { x: [-0.4, 8.6], y: [-1.9, 1.8] },
+          elements: [
+            ...[0, 1, 2, 3, 4, 5, 6].flatMap((i) => box([i * 1.2, 0], 1, 1, 1)),
+            ...[0, 1, 2, 3, 4, 5, 6].map((i) => mid([i * 1.2 + 0.5, 0.5], `T${"₁₂₃₄₅₆₇"[i]}`, 1)),
+            ...["7th", "6th", "5th", "4th", "3rd", "2nd", "1st"].map((s, i) => mid([i * 1.2 + 0.5, -0.45], s, 2)),
+            { kind: "vector", from: [8.2, -1], to: [0, -1], tone: "muted", step: 2 },
+            { kind: "label", at: [4.1, -1], label: "counting from the end", labelAt: "s", tone: "muted", step: 2 },
+            ...box([6, 0], 1, 1, 3).map((e): FigureElement => ({ ...e, tone: "good" })),
+            { kind: "label", at: [6.5, 1], label: "r = 5", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the $5$th term in the expansion of $\left(2x^2 + \frac{3}{2x}\right)^8$.`,
       steps: [
         t`$a = 2x^2$, $b = \frac{3}{2x}$, $n = 8$. The $5$th term is $T_{r+1}$ with $r = 4$.`,
-        t`$T_5 = {}^8C_4\,(2x^2)^{8-4}\left(\frac{3}{2x}\right)^4$.`,
-        t`$^8C_4 = \frac{8 \cdot 7 \cdot 6 \cdot 5}{4 \cdot 3 \cdot 2 \cdot 1} = 70$, $(2x^2)^4 = 16x^8$ and $\left(\frac{3}{2x}\right)^4 = \frac{81}{16x^4}$.`,
-        t`$T_5 = 70 \cdot 16x^8 \cdot \frac{81}{16x^4} = 5670x^4$.`,
+        t`$T_5 = {}^8C_4\,(2x^2)^{8-4}$ $\left(\frac{3}{2x}\right)^4$.`,
+        t`$^8C_4 = \frac{8 \cdot 7 \cdot 6 \cdot 5}{4 \cdot 3 \cdot 2 \cdot 1}$ $= 70$, $(2x^2)^4 = 16x^8$ and $\left(\frac{3}{2x}\right)^4$ $= \frac{81}{16x^4}$.`,
+        t`$T_5 = 70 \cdot 16x^8 \cdot \frac{81}{16x^4}$ $= 5670x^4$.`,
       ],
       answer: t`The $5$th term is $5670x^4$.`,
     },

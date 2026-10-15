@@ -1,6 +1,20 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The total of the first `terms` terms of the series for (1 + x)^(-1): 1 - x + x^2 - ... */
+const partial = (terms: number) => (x: number) => {
+  let sum = 0;
+  for (let r = 0; r < terms; r++) sum += (-x) ** r;
+  return sum;
+};
+
+/** Points on y = g(x) from x0 to x1, for a `curve` element. */
+const sample = (g: (x: number) => number, x0: number, x1: number, n = 60): Pt[] =>
+  Array.from({ length: n + 1 }, (_, i) => {
+    const x = x0 + ((x1 - x0) * i) / n;
+    return [+x.toFixed(3), +g(x).toFixed(3)];
+  });
 
 export const c08: Concept = {
   id: "C08",
@@ -10,24 +24,96 @@ export const c08: Concept = {
     reveal: t`Nothing in the division: the series is only true for $|x| < 1$. At $x = 0.1$ the totals $1, 0.9, 0.91, 0.909, \ldots$ close in on $\frac{1}{1.1} = 0.9090\ldots$ At $x = 2$ the terms double each time, so the totals never settle. A negative or fractional index always gives an endless series like this, and it holds only while the term after $1$ is smaller than $1$ in size.`,
   },
   explanation: {
-    intuition: t`For a positive whole number $n$, $(1 + x)^n$ stops after $n + 1$ terms, because the factor $(n - n)$ turns up and makes every later coefficient $0$. For $n = -3$ or $n = \frac{1}{2}$ no factor is ever $0$, so the series never stops. The coefficients follow the same pattern as before, $\frac{n(n-1)\ldots(n-r+1)}{r!}$, just with a negative or fractional $n$. An endless sum makes sense only when its terms shrink, so the bracket must be $(1 + \text{something small})$, with that something less than $1$ in size.`,
-    formal: t`**The binomial series.** For any rational $n$ and $|x| < 1$:
-$$(1 + x)^n = 1 + nx + \frac{n(n-1)}{2!}x^2 + \frac{n(n-1)(n-2)}{3!}x^3 + \ldots$$
-
-**General term.** $T_{r+1} = \frac{n(n-1)(n-2)\ldots(n-r+1)}{r!}\,x^r$: $r$ factors on top, $r!$ underneath. For $n = -3$: $(1 + x)^{-3} = 1 - 3x + 6x^2 - 10x^3 + \ldots$, not $1 - 3x + 3x^2 - x^3$.
-
-**Replace $x$ by $kx$.** Raise the whole of $kx$: in $(1 - 2x)^{\frac{1}{2}}$ the $x^2$ term is $\frac{\frac{1}{2}\left(-\frac{1}{2}\right)}{2!}(-2x)^2 = -\frac{1}{8} \cdot 4x^2 = -\frac{x^2}{2}$. It holds for $|2x| < 1$, that is $|x| < \frac{1}{2}$.
-
-**Make the bracket start with $1$.** $(a + bx)^n = a^n\left(1 + \frac{bx}{a}\right)^n$: take out $a^n$, not $a$, and divide $bx$ by $a$. It holds for $\left|\frac{bx}{a}\right| < 1$, that is $|x| < \left|\frac{a}{b}\right|$.`,
+    intuition: [
+      t`The **index** is the power $n$ in $(1 + x)^n$; so far it has been a positive whole number.`,
+      t`Recall: the coefficient of $x^r$ is then $^nC_r$, which is $\frac{n(n-1)\ldots(n-r+1)}{r!}$.`,
+      t`From $x^{n+1}$ on, the top includes the factor $(n - n) = 0$, so the expansion stops after $n + 1$ terms.`,
+      t`Now let $n$ be negative or a fraction, such as $-3$ or $\frac{1}{2}$: the coefficients keep the same pattern.`,
+      t`Then no factor on top is ever $0$, so the terms never stop: the sum is endless.`,
+      t`An endless sum makes sense only when its terms shrink, so the $x$ in $(1 + x)$ must be less than $1$ in size.`,
+    ],
+    formal: [
+      {
+        title: "The binomial series",
+        points: [
+          t`Let $n$ be any **rational** number: a whole number or a fraction, positive or negative.`,
+          t`Write $|x|$ for the size of $x$ without its sign: $|x| < 1$ means $x$ lies between $-1$ and $1$.`,
+          t`For $|x| < 1$, $(1 + x)^n$ equals an endless sum, the **binomial series**.`,
+          t`Its first three terms are $1 + nx + \frac{n(n-1)}{2!}x^2$.`,
+          t`The next is $\frac{n(n-1)(n-2)}{3!}x^3$, and the terms go on for ever.`,
+        ],
+      },
+      {
+        title: "Where the series holds",
+        points: [
+          t`Take $n = -1$: $(1 + x)^{-1}$ is $\frac{1}{1 + x}$, drawn as the solid curve.`,
+          t`Every coefficient comes out as $1$ or $-1$, so its series is $1 - x + x^2 - x^3 + \ldots$`,
+          t`The first three terms, $1 - x + x^2$, give the first dashed curve.`,
+          t`The first six terms, $1 - x + x^2 - x^3 + x^4 - x^5$, give the second.`,
+          t`Between $x = -1$ and $x = 1$, the six-term total is the closer one: more terms, closer still.`,
+          t`For $|x| > 1$ the terms keep growing, so the totals swing ever further from the curve.`,
+        ],
+        figure: {
+          alt: "The curve y = 1/(1 + x) for x from about −0.7 to 2, with two dashed curves: the total of the first three terms of its series, 1 − x + x², and of the first six, up to −x⁵. Upright lines mark x = −1 and x = 1. Between them both totals lie near the curve, the six-term one nearer. Beyond x = 1 the three-term total rises above the curve and the six-term total falls far below it.",
+          axes: "xy",
+          view: { x: [-1.3, 2.1], y: [-1.1, 3.6] },
+          elements: [
+            { kind: "curve", points: sample((x) => 1 / (1 + x), -0.714, 2.1), step: 1 },
+            { kind: "label", at: [1.5, 0.4], label: "1/(1 + x)", labelAt: "n", step: 1 },
+            { kind: "curve", points: sample(partial(3), -1.15, 2.05), dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [1.75, partial(3)(1.75)], label: "1 − x + x²", labelAt: "nw", tone: "muted", step: 3 },
+            { kind: "curve", points: sample(partial(6), -0.775, 1.214), dashed: true, tone: "good", step: 4 },
+            { kind: "label", at: [0.92, -0.6], label: "1 − x + … − x⁵", labelAt: "w", tone: "good", step: 4 },
+            { kind: "line", through: [[-1, -1], [-1, 3]], tone: "muted", step: 5 },
+            { kind: "label", at: [-1, -0.8], label: "x = −1", labelAt: "e", tone: "muted", step: 5 },
+            { kind: "line", through: [[1, -1], [1, 3]], tone: "muted", step: 5 },
+            { kind: "label", at: [1, 3.3], label: "x = 1", labelAt: "e", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The general term",
+        points: [
+          t`Recall: the **general term** $T_{r+1}$ is the $(r + 1)$th term, the one with $x^r$.`,
+          t`Here $T_{r+1}$ equals $\frac{n(n-1)(n-2)\ldots(n-r+1)}{r!}$ times $x^r$.`,
+          t`On top are $r$ factors, starting at $n$ and each $1$ less; underneath is $r! = 1 \times 2 \times \ldots \times r$.`,
+          t`For $n = -3$ the coefficients are $1$, $-3$, $\frac{(-3)(-4)}{2!} = 6$ and $\frac{(-3)(-4)(-5)}{3!} = -10$.`,
+          t`So $(1 + x)^{-3} = 1 - 3x + 6x^2 - 10x^3 + \ldots$`,
+          t`It is not $(1 - x)^3 = 1 - 3x + 3x^2 - x^3$: a negative index does more than flip signs.`,
+        ],
+      },
+      {
+        title: "Replace x by kx",
+        points: [
+          t`The series works with any small term in place of $x$, such as $kx$ for a number $k$.`,
+          t`In $(1 + kx)^n$, each $x^r$ becomes $(kx)^r = k^r x^r$: raise the whole of $kx$.`,
+          t`For example, $(1 - 2x)^{\frac{1}{2}}$ has $n = \frac{1}{2}$ and $-2x$ in place of $x$.`,
+          t`Its $x^2$ term is $\frac{\frac{1}{2}\left(-\frac{1}{2}\right)}{2!}$ times $(-2x)^2$.`,
+          t`That is $-\frac{1}{8} \cdot 4x^2 = -\frac{x^2}{2}$.`,
+          t`The term after $1$ in the bracket is now $-2x$, so it holds for $|2x| < 1$, that is $|x| < \frac{1}{2}$.`,
+        ],
+      },
+      {
+        title: "Make the bracket start with 1",
+        points: [
+          t`The series needs a bracket that starts with $1$, so first rewrite $(a + bx)^n$.`,
+          t`Take $a$ out of the bracket, dividing $bx$ by $a$: $a + bx = a\left(1 + \frac{bx}{a}\right)$.`,
+          t`Raise both factors to the power $n$: $(a + bx)^n$ equals $a^n\left(1 + \frac{bx}{a}\right)^n$.`,
+          t`So $a^n$ comes out in front, not $a$.`,
+          t`The term after $1$ in the bracket is now $\frac{bx}{a}$, so it holds for $\left|\frac{bx}{a}\right| < 1$.`,
+          t`That is $|x| < \left|\frac{a}{b}\right|$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Write the first three terms of $(2 + x)^{-2}$ and say for which $x$ the expansion holds.`,
       steps: [
-        t`Make the bracket start with $1$: $(2 + x)^{-2} = 2^{-2}\left(1 + \frac{x}{2}\right)^{-2} = \frac{1}{4}\left(1 + \frac{x}{2}\right)^{-2}$.`,
+        t`Make the bracket start with $1$: $(2 + x)^{-2} = 2^{-2}\left(1 + \frac{x}{2}\right)^{-2}$ $= \frac{1}{4}\left(1 + \frac{x}{2}\right)^{-2}$.`,
         t`It holds when $\left|\frac{x}{2}\right| < 1$, that is $|x| < 2$.`,
-        t`Use $n = -2$ with $\frac{x}{2}$ in place of $x$: $1 + (-2)\left(\frac{x}{2}\right) + \frac{(-2)(-3)}{2!}\left(\frac{x}{2}\right)^2 = 1 - x + 3 \cdot \frac{x^2}{4}$.`,
+        t`Use $n = -2$ with $\frac{x}{2}$ in place of $x$: $1 + (-2)\left(\frac{x}{2}\right)$ $+ \frac{(-2)(-3)}{2!}\left(\frac{x}{2}\right)^2$ $= 1 - x + 3 \cdot \frac{x^2}{4}$.`,
         t`Multiply by $\frac{1}{4}$: $\frac{1}{4} - \frac{x}{4} + \frac{3x^2}{16}$.`,
       ],
-      answer: t`$(2 + x)^{-2} = \frac{1}{4} - \frac{x}{4} + \frac{3x^2}{16} + \ldots$, for $|x| < 2$.`,
+      answer: t`$(2 + x)^{-2}$ $= \frac{1}{4} - \frac{x}{4} + \frac{3x^2}{16} + \ldots$, for $|x| < 2$.`,
     },
     visualSpec: t`Drag $x$ from $-1.5$ to $1.5$: the totals $1$, $1 - x$, $1 - x + x^2$, $\ldots$ of the series for $(1 + x)^{-1}$ hug the curve $\frac{1}{1 + x}$ inside $-1 < x < 1$ and fly away from it outside.`,
   },
