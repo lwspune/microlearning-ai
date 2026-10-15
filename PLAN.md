@@ -471,6 +471,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
 - **Progress:** Angle Measurement (C01–C07) done 2026-10-15: titled slides,
   defined terms, figures, turning arms, and points one per click
   (AUTHORING.md 17–20). Each later chapter gets all of these together.
+  Trigonometric Functions (C01–C10) done 2026-10-15, the same way in one
+  pass (one agent per concept, my read-through and screen review); C09-M6
+  split into M6 and M7.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
