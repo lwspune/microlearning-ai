@@ -10,26 +10,83 @@ export const c10: Concept = {
     reveal: t`Yes. $A^2 = A \cdot A$: row 1 times column 1 is $2(2) + (-4)(1) = 0$, and the other three entries also come out $0$. So $A^2 = O$ although $A \ne O$. With numbers, $a^2 = 0$ forces $a = 0$; with matrices it doesn't.`,
   },
   explanation: {
-    intuition: t`Multiplying matrices is not like multiplying numbers. $AB$ pairs the rows of $A$ with the columns of $B$, while $BA$ pairs the rows of $B$ with the columns of $A$, so the two usually come out different. Rows and columns can also cancel each other completely, giving $O$ from two non-zero matrices. So any number rule that swaps the order, like $(a + b)^2 = a^2 + 2ab + b^2$, must be checked again before you use it with matrices.`,
-    formal: t`**1. Order matters.** In general $AB \ne BA$. With $A = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$ and $B = \begin{bmatrix} 1 & 0 \\ 1 & 1 \end{bmatrix}$:
-
-$$AB = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}, \quad BA = \begin{bmatrix} 1 & 1 \\ 1 & 2 \end{bmatrix}$$
-
-**2. A zero product.** $AB = O$ can happen with $A \ne O$ and $B \ne O$. From $AB = O$ you cannot conclude that $A = O$ or $B = O$.
-
-**3. Powers.** $A^2 = A \cdot A$, row by column, and $A^3 = A^2 \cdot A$. Never square the entries one by one.
-
-**4. Expanding.** Keep every product in its order:
-$$(A + B)^2 = A^2 + AB + BA + B^2, \quad (A + B)(A - B) = A^2 - AB + BA - B^2$$
-These shrink to $A^2 + 2AB + B^2$ and $A^2 - B^2$ only when $AB = BA$.
-
-**5. The unit matrix.** $AI = IA = A$, so $(A + I)(A - I) = A^2 - I$. In $A^2 - 3A + 2I$, the term $2I = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}$ changes only the diagonal. To find $k$ in such an equation, write the left side as one matrix and set every entry to $0$.`,
+    intuition: [
+      t`Multiplying matrices is not like multiplying numbers.`,
+      t`Recall: each entry of $AB$ is a row of $A$ times a column of $B$.`,
+      t`$BA$ pairs the rows of $B$ with the columns of $A$ instead, so the two usually come out different.`,
+      t`Recall: the **null matrix** (zero matrix) $O$ has every entry $0$.`,
+      t`Rows and columns can cancel completely: two **non-zero** matrices, each with some entry not $0$, can multiply to $O$.`,
+      t`So a number rule that swaps the order, as $ba = ab$ does in $(a + b)^2 = a^2 + 2ab + b^2$, must be checked again for matrices.`,
+    ],
+    formal: [
+      {
+        title: "Order matters",
+        points: [
+          t`In general $AB \ne BA$: the order of the two factors matters.`,
+          t`Take $A = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$ and $B = \begin{bmatrix} 1 & 0 \\ 1 & 1 \end{bmatrix}$.`,
+          t`Rows of $A$ times columns of $B$ give $AB = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$.`,
+          t`Rows of $B$ times columns of $A$ give $BA = \begin{bmatrix} 1 & 1 \\ 1 & 2 \end{bmatrix}$.`,
+          t`The two products differ, so keep every product in the order it is written.`,
+        ],
+      },
+      {
+        title: "A zero product",
+        points: [
+          t`$AB = O$ can happen with $A \ne O$ and $B \ne O$.`,
+          t`In the opening question, $A = \begin{bmatrix} 2 & -4 \\ 1 & -2 \end{bmatrix}$ is not $O$.`,
+          t`Yet $A \cdot A = O$: each row of $A$ times each column of $A$ comes to $0$.`,
+          t`So from $AB = O$ you cannot conclude that $A = O$ or $B = O$.`,
+          t`With numbers, $ab = 0$ forces $a = 0$ or $b = 0$; with matrices it doesn't.`,
+        ],
+      },
+      {
+        title: "Powers of a matrix",
+        points: [
+          t`Recall: a **square matrix** has as many rows as columns, so $A \cdot A$ is defined.`,
+          t`Its **square** $A^2$ means $A \cdot A$, worked out row by column.`,
+          t`Its **cube** $A^3$ means $A^2 \cdot A$: multiply the square by $A$ once more.`,
+          t`Never square the entries one by one: that is not matrix multiplication.`,
+          t`For $A = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$, row by column gives $A^2 = \begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}$.`,
+          t`Squaring each entry would give back $A$ itself, which is wrong.`,
+        ],
+      },
+      {
+        title: "Expanding brackets",
+        points: [
+          t`To expand, multiply each term of the first bracket by each term of the second, keeping their order.`,
+          t`$(A + B)^2$ means $(A + B)(A + B)$.`,
+          t`So $(A + B)^2 = A^2 + AB + BA + B^2$.`,
+          t`Likewise $(A + B)(A - B)$ equals $A^2 - AB + BA - B^2$.`,
+          t`The middle terms $AB$ and $BA$ are usually different matrices, so they don't combine.`,
+          t`These shrink to $A^2 + 2AB + B^2$ and $A^2 - B^2$ only when $AB = BA$.`,
+        ],
+      },
+      {
+        title: "The unit matrix",
+        points: [
+          t`Recall: the **unit matrix** (identity) $I$ has $1$s on its diagonal, top left to bottom right, and $0$s elsewhere.`,
+          t`$AI = IA = A$: multiplying by $I$, on either side, leaves $A$ unchanged.`,
+          t`So $(A + I)(A - I)$ equals $A^2 - AI + IA - I^2$.`,
+          t`The middle terms cancel and $I^2 = I$, so $(A + I)(A - I) = A^2 - I$.`,
+          t`In $A^2 - 3A + 2I$, the term $2I = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}$ changes only the diagonal, not every entry.`,
+        ],
+      },
+      {
+        title: "Finding an unknown number",
+        points: [
+          t`Some questions ask for a number $k$ in an equation such as $A^2 - 3A + kI = O$.`,
+          t`Keep every term on one side, so the equation reads (one matrix) $= O$.`,
+          t`Work out that side as one matrix, entry by entry.`,
+          t`Then set every entry to $0$ and solve for $k$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $A = \begin{bmatrix} 1 & 0 \\ -1 & 7 \end{bmatrix}$, find $k$ so that $A^2 - 8A - kI = O$, where $I$ is the unit matrix and $O$ the null matrix of order $2$.`,
       steps: [
-        t`$A^2 = A \cdot A$, row by column: $\begin{bmatrix} 1 + 0 & 0 + 0 \\ -1 - 7 & 0 + 49 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ -8 & 49 \end{bmatrix}$.`,
-        t`$8A = \begin{bmatrix} 8 & 0 \\ -8 & 56 \end{bmatrix}$, so $A^2 - 8A = \begin{bmatrix} -7 & 0 \\ 0 & -7 \end{bmatrix}$.`,
-        t`$kI = \begin{bmatrix} k & 0 \\ 0 & k \end{bmatrix}$ has $k$ only on the diagonal, so $A^2 - 8A - kI = \begin{bmatrix} -7 - k & 0 \\ 0 & -7 - k \end{bmatrix}$.`,
+        t`$A^2 = A \cdot A$, row by column: $\begin{bmatrix} 1 + 0 & 0 + 0 \\ -1 - 7 & 0 + 49 \end{bmatrix}$ $= \begin{bmatrix} 1 & 0 \\ -8 & 49 \end{bmatrix}$.`,
+        t`$8A = \begin{bmatrix} 8 & 0 \\ -8 & 56 \end{bmatrix}$, so $A^2 - 8A$ $= \begin{bmatrix} -7 & 0 \\ 0 & -7 \end{bmatrix}$.`,
+        t`$kI = \begin{bmatrix} k & 0 \\ 0 & k \end{bmatrix}$ has $k$ only on the diagonal, so $A^2 - 8A - kI$ $= \begin{bmatrix} -7 - k & 0 \\ 0 & -7 - k \end{bmatrix}$.`,
         t`This is $O$ when $-7 - k = 0$, so $k = -7$.`,
       ],
       answer: t`$k = -7$`,

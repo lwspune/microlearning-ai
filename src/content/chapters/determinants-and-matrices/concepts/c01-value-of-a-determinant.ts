@@ -1,6 +1,31 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/**
+ * Figures draw a determinant as labels between two upright bars (50 px a unit). A label sits above
+ * its anchor: the middle of its text is LIFT above the anchor.
+ */
+const LIFT = 0.31;
+
+/** The two upright bars of a determinant, at x = `left` and `right`, from y = `bottom` to `top`. */
+const bars = (left: number, right: number, bottom: number, top: number, step?: number): FigureElement[] =>
+  [left, right].map((x): FigureElement => ({ kind: "segment", from: [x, bottom], to: [x, top], tone: "muted", ...(step ? { step } : {}) }));
+
+/** A box with corners `lo` and `hi`. */
+const box = ([x0, y0]: Pt, [x1, y1]: Pt, step: number): FigureElement[] =>
+  ([[[x0, y0], [x1, y0]], [[x1, y0], [x1, y1]], [[x1, y1], [x0, y1]], [[x0, y1], [x0, y0]]] as [Pt, Pt][]).map(
+    ([from, to]): FigureElement => ({ kind: "segment", from, to, tone: "good", step }),
+  );
+
+/** The 2 × 2 on the idea slide: columns at X2, rows at Y2 (anchors). */
+const X2 = [3, 5];
+const Y2 = [3.2, 1.6];
+
+/** The 3 × 3 on the expansion slide: columns at X3, rows at Y3 (anchors). */
+const X3 = [2.6, 4, 5.4];
+const Y3 = [3.4, 2.4, 1.4];
+const SUB = ["₁", "₂", "₃"];
 
 export const c01: Concept = {
   id: "C01",
@@ -10,26 +35,106 @@ export const c01: Concept = {
     reveal: t`No. A $2 \times 2$ determinant is $ad - bc$: $7 \times 3 - 9 \times (-4) = 21 - (-36) = 21 + 36 = 57$. The product $bc$ is negative here, and subtracting a negative adds it.`,
   },
   explanation: {
-    intuition: t`A determinant turns a square array of numbers into one number. For a $2 \times 2$, cross-multiply: the leading diagonal's product minus the other diagonal's. A $3 \times 3$ is broken into $2 \times 2$s: take each entry of the top row, cross out its row and column, and multiply the entry by the $2 \times 2$ that is left. Add these three terms with the signs $+ - +$.`,
-    formal: t`**$2 \times 2$**
-
-$$\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc$$
-
-**$3 \times 3$: expand along the first row**
-
-$$\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix} = a_1\begin{vmatrix} b_2 & c_2 \\ b_3 & c_3 \end{vmatrix} - b_1\begin{vmatrix} a_2 & c_2 \\ a_3 & c_3 \end{vmatrix} + c_1\begin{vmatrix} a_2 & b_2 \\ a_3 & b_3 \end{vmatrix}$$
-
-**The signs alternate.** The middle term is always subtracted. If $b_1$ is negative, $-b_1$ makes that term added.
-
-**No diagonal shortcut.** $ad - bc$ is only for a $2 \times 2$. A $3 \times 3$ always goes through the three $2 \times 2$s.
-
-**Finding $x$.** If the determinant equals a value, expand it, set the result equal to that value, and solve the equation in $x$.`,
+    intuition: [
+      t`A **square array** is numbers set out in **rows**, across, and **columns**, down, as many rows as columns.`,
+      t`Put between two upright bars, a square array is a **determinant**: it stands for a single number.`,
+      t`A $2 \times 2$ determinant has $2$ rows and $2$ columns, so four **entries**, the numbers in it.`,
+      t`Its **leading diagonal** runs from top-left to bottom-right; the other diagonal, from top-right to bottom-left.`,
+      t`Its value comes by **cross-multiplying**: the leading diagonal's product minus the other diagonal's.`,
+      t`A bigger determinant, such as a $3 \times 3$, is broken up into $2 \times 2$s.`,
+    ],
+    figure: {
+      alt: "Four entries, a and b on top, c and d below. The rows are labelled row 1 and row 2, the columns column 1 and column 2. Two upright bars appear on either side, making a determinant. Then two arrows cross: the leading diagonal, from a down to d, and the other diagonal, from b down to c. Last, the value: = ad − bc.",
+      axes: "none",
+      view: { x: [0, 8], y: [1, 4.9] },
+      elements: [
+        ...["a", "b", "c", "d"].map((label, i): FigureElement => ({ kind: "label", at: [X2[i % 2], Y2[Math.floor(i / 2)]], label })),
+        ...Y2.map((y, r): FigureElement => ({ kind: "label", at: [1.1, y], label: `row ${r + 1}`, tone: "muted", step: 1 })),
+        ...X2.map((x, c): FigureElement => ({ kind: "label", at: [x, 4.25], label: `column ${c + 1}`, tone: "muted", step: 1 })),
+        ...bars(2.3, 5.7, 1.3, 3.95, 2),
+        { kind: "vector", from: [3.2, 3.35], to: [4.78, 2.08], tone: "good", step: 4 },
+        { kind: "vector", from: [4.8, 3.35], to: [3.22, 2.08], step: 4 },
+        { kind: "label", at: [7, 2.4], label: "= ad − bc", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Value of a 2 × 2",
+        points: [
+          t`$\begin{vmatrix} a & b \\ c & d \end{vmatrix}$ equals $ad - bc$.`,
+          t`$ad$ is the leading diagonal's product: top-left times bottom-right.`,
+          t`$bc$ is the other diagonal's product: top-right times bottom-left.`,
+          t`The leading diagonal comes first; $bc - ad$ would flip the sign.`,
+          t`If $bc$ is negative, subtracting it adds: $4 - (-6) = 10$.`,
+          t`If an entry holds $i$, replace each $i^2$ by $-1$.`,
+        ],
+      },
+      {
+        title: "Expanding a 3 × 3",
+        points: [
+          t`Name the entries of a $3 \times 3$ by row: $a_1, b_1, c_1$ on top, then the $a_2$ row and the $a_3$ row.`,
+          t`To **expand along the first row** is to break it into $2 \times 2$s, one for each top-row entry, starting with $a_1$.`,
+          t`Cross out the row and the column of $a_1$: a $2 \times 2$ is left.`,
+          t`Multiply $a_1$ by that $2 \times 2$: this is the first term.`,
+          t`Do the same for $b_1$ and $c_1$, then join the three terms with the signs $+$, $-$, $+$.`,
+        ],
+        figure: {
+          alt: "A 3 × 3 determinant with rows a₁ b₁ c₁, a₂ b₂ c₂ and a₃ b₃ c₃. The entry a₁ is ringed. Then lines cross out its row and its column, and a box goes round the 2 × 2 left over: b₂ c₂ over b₃ c₃. The label reads: first term: a₁ × the boxed 2 × 2. Last, the signs +, −, + appear above the three columns.",
+          axes: "none",
+          view: { x: [0, 8], y: [0.3, 4.9] },
+          elements: [
+            ...Y3.flatMap((y, r) => X3.map((x, c): FigureElement => ({ kind: "label", at: [x, y], label: `${"abc"[c]}${SUB[r]}` }))),
+            ...bars(1.9, 6.1, 1.2, 4),
+            { kind: "circle", centre: [X3[0], Y3[0] + LIFT], r: 0.34, tone: "good", step: 2 },
+            { kind: "segment", from: [2, Y3[0] + LIFT], to: [6, Y3[0] + LIFT], tone: "bad", step: 3 },
+            { kind: "segment", from: [X3[0], 1.3], to: [X3[0], 3.95], tone: "bad", step: 3 },
+            ...box([3.6, 1.4], [5.8, 3.05], 3),
+            { kind: "label", at: [4, 0.45], label: "first term: a₁ × the boxed 2 × 2", tone: "good", step: 4 },
+            ...["+", "−", "+"].map((label, c): FigureElement => ({ kind: "label", at: [X3[c], 4.2], label, step: 5 })),
+          ],
+        },
+      },
+      {
+        title: "The expansion in full",
+        points: [
+          t`$\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}$ equals the sum of three terms.`,
+          t`First, $+a_1\begin{vmatrix} b_2 & c_2 \\ b_3 & c_3 \end{vmatrix}$: row 1 and column 1 are crossed out.`,
+          t`Then $-b_1\begin{vmatrix} a_2 & c_2 \\ a_3 & c_3 \end{vmatrix}$: row 1 and column 2 are crossed out.`,
+          t`Then $+c_1\begin{vmatrix} a_2 & b_2 \\ a_3 & b_3 \end{vmatrix}$: row 1 and column 3 are crossed out.`,
+          t`Each $2 \times 2$ is then worked out as $ad - bc$.`,
+        ],
+      },
+      {
+        title: "The signs alternate",
+        points: [
+          t`Along the first row the signs **alternate**: they switch back and forth, $+$, $-$, $+$.`,
+          t`So the middle term, $b_1$ times its $2 \times 2$, is always subtracted.`,
+          t`If $b_1$ is negative, $-b_1$ is positive, so that term is added.`,
+        ],
+      },
+      {
+        title: "No diagonal shortcut",
+        points: [
+          t`The rule $ad - bc$ is only for a $2 \times 2$.`,
+          t`A $3 \times 3$ always goes through its three $2 \times 2$s.`,
+        ],
+      },
+      {
+        title: "Finding an unknown entry",
+        points: [
+          t`Sometimes an entry holds an unknown $x$, and the determinant's value is given.`,
+          t`Expand the determinant: the result is an expression in $x$.`,
+          t`Set that expression equal to the given value.`,
+          t`Solve the equation for $x$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Evaluate $\begin{vmatrix} 3 & -4 & 5 \\ 1 & 1 & -2 \\ 2 & 3 & -1 \end{vmatrix}$.`,
       steps: [
-        t`Expand along the first row with signs $+ - +$: $3\begin{vmatrix} 1 & -2 \\ 3 & -1 \end{vmatrix} - (-4)\begin{vmatrix} 1 & -2 \\ 2 & -1 \end{vmatrix} + 5\begin{vmatrix} 1 & 1 \\ 2 & 3 \end{vmatrix}$.`,
-        t`The $2 \times 2$s: $(1)(-1) - (-2)(3) = -1 + 6 = 5$; $(1)(-1) - (-2)(2) = -1 + 4 = 3$; $(1)(3) - (1)(2) = 1$.`,
-        t`Put them together: $3 \times 5 + 4 \times 3 + 5 \times 1 = 15 + 12 + 5 = 32$.`,
+        t`Expand along the first row with signs $+ - +$: $3\begin{vmatrix} 1 & -2 \\ 3 & -1 \end{vmatrix}$ $- (-4)\begin{vmatrix} 1 & -2 \\ 2 & -1 \end{vmatrix}$ $+ 5\begin{vmatrix} 1 & 1 \\ 2 & 3 \end{vmatrix}$.`,
+        t`The $2 \times 2$s: $(1)(-1) - (-2)(3)$ $= -1 + 6 = 5$; $(1)(-1) - (-2)(2)$ $= -1 + 4 = 3$; $(1)(3) - (1)(2) = 1$.`,
+        t`Put them together: $3 \times 5 + 4 \times 3 + 5 \times 1$ $= 15 + 12 + 5 = 32$.`,
       ],
       answer: t`The determinant is $32$.`,
     },

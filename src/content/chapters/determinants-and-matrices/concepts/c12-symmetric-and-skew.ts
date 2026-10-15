@@ -1,6 +1,51 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+type Tone = FigureElement["tone"];
+
+/** Where the entry in row r, column c (1 to 3) of a 3 × 3 matrix sits. */
+const at = (r: number, c: number): Pt => [c, 4 - r];
+
+/** Square brackets round the 3 × 3 matrix, with short serifs. */
+const brackets: FigureElement[] = [[0.5, 0.2], [3.5, -0.2]].flatMap(([x, d]): FigureElement[] => [
+  { kind: "segment", from: [x, 0.65], to: [x, 3.6], tone: "muted" },
+  { kind: "segment", from: [x, 3.6], to: [x + d, 3.6], tone: "muted" },
+  { kind: "segment", from: [x, 0.65], to: [x + d, 0.65], tone: "muted" },
+]);
+
+/** The nine entries, row by row, as labels. */
+const entries = (names: string[]): FigureElement[] =>
+  names.map((label, k): FigureElement => ({ kind: "label", at: at(Math.floor(k / 3) + 1, (k % 3) + 1), label, labelAt: "n" }));
+
+/** A box round the entry in row r, column c (its text sits about 0.13 above its anchor). */
+const box = (r: number, c: number, tone: Tone, step: number): FigureElement[] => {
+  const [x, y] = at(r, c);
+  const [x0, x1, y0, y1] = [x - 0.4, x + 0.4, y - 0.27, y + 0.53];
+  return ([[[x0, y0], [x1, y0]], [[x1, y0], [x1, y1]], [[x1, y1], [x0, y1]], [[x0, y1], [x0, y0]]] as [Pt, Pt][]).map(
+    ([from, to]): FigureElement => ({ kind: "segment", from, to, tone, step }),
+  );
+};
+
+/**
+ * The dashed leading diagonal, from top left to bottom right, the fold line, through the
+ * diagonal entries' text. List it before the entries so their halos break it round the text.
+ */
+const diagonal = (step?: number): FigureElement[] => [
+  { kind: "segment", from: [0.6, 3.53], to: [3.45, 0.68], dashed: true, tone: "muted", step },
+];
+
+/** Each mirror pair boxed in its own tone: (1, 2) with (2, 1), (1, 3) with (3, 1), (2, 3) with (3, 2). */
+const pairs = (step: number): FigureElement[] => [
+  ...box(1, 2, "good", step), ...box(2, 1, "good", step),
+  ...box(1, 3, "accent", step), ...box(3, 1, "accent", step),
+  ...box(2, 3, "bad", step), ...box(3, 2, "bad", step),
+];
+
+/** The three diagonal entries boxed. */
+const diagonalBoxes = (tone: Tone, step: number): FigureElement[] => [1, 2, 3].flatMap((i) => box(i, i, tone, step));
+
+const view: Figure["view"] = { x: [0, 4], y: [0.4, 4] };
 
 export const c12: Concept = {
   id: "C12",
@@ -10,25 +55,123 @@ export const c12: Concept = {
     reveal: t`No. Skew-symmetric means $a_{ij} = -a_{ji}$ for **every** $i$ and $j$, the diagonal included. There it says $a_{ii} = -a_{ii}$, so $a_{ii} = 0$. This diagonal is $2, 4, 3$, so the matrix is not skew-symmetric. It is not symmetric either ($5 \ne -5$): it is neither.`,
   },
   explanation: {
-    intuition: t`Fold a square matrix along its leading diagonal, from top left to bottom right. Each entry $a_{ij}$ lands on its mirror image $a_{ji}$, which is exactly what $A^T$ does. If every entry lands on an equal one, the matrix is symmetric. If every entry lands on its negative, it is skew-symmetric; the diagonal lands on itself, so each diagonal entry equals its own negative and must be $0$. Every square matrix is a mix of the two: half of $A + A^T$ is its symmetric part and half of $A - A^T$ its skew part.`,
-    formal: t`**Symmetric**: $A^T = A$, that is $a_{ij} = a_{ji}$ for all $i, j$. The diagonal entries can be anything.
-
-**Skew-symmetric**: $A^T = -A$, that is $a_{ij} = -a_{ji}$ for all $i, j$. With $i = j$ this gives $a_{ii} = -a_{ii}$, so **every diagonal entry is $0$**. A diagonal matrix with a non-zero entry is symmetric only; only the zero matrix is both.
-
-**Finding unknowns**: equate each entry with its mirror image (symmetric) or with minus its mirror image (skew-symmetric). Bracket the whole entry before negating: $-(3x - 1) = -3x + 1$.
-
-**Two always-true facts**: for any square $A$, $(A + A^T)^T = A^T + A$, so $A + A^T$ is symmetric; $(A - A^T)^T = A^T - A = -(A - A^T)$, so $A - A^T$ is skew-symmetric.
-
-**The split**: $A = P + Q$ with $P = \frac{1}{2}(A + A^T)$ symmetric and $Q = \frac{1}{2}(A - A^T)$ skew-symmetric. Without the halves the two add up to $2A$.`,
+    intuition: [
+      t`Recall: the **leading diagonal** of a square matrix runs from its top left entry to its bottom right.`,
+      t`Fold the matrix along that diagonal: each entry $a_{ij}$ lands on its **mirror image** $a_{ji}$.`,
+      t`Recall: swapping every $a_{ij}$ with $a_{ji}$ is exactly what the transpose $A^T$ does.`,
+      t`A matrix is **symmetric** if every entry lands on an equal one, and **skew-symmetric** if on its negative.`,
+      t`The diagonal lands on itself, so a skew-symmetric matrix has each diagonal entry equal to its own negative: $0$.`,
+      t`Every square matrix is a mix of the two: half of $A + A^T$ is symmetric, half of $A - A^T$ skew-symmetric.`,
+    ],
+    figure: {
+      alt: "A 3 × 3 matrix with entries a₁₁ to a₃₃. First a dashed line is drawn along its leading diagonal, through a₁₁, a₂₂ and a₃₃, from top left to bottom right. Then a₁₂ and a₂₁ are boxed: they sit on opposite sides of the diagonal, each the mirror image of the other. Last, the three diagonal entries are boxed: folding along the diagonal leaves them where they are.",
+      axes: "none",
+      view,
+      elements: [
+        ...brackets,
+        ...diagonal(1),
+        ...entries(["a₁₁", "a₁₂", "a₁₃", "a₂₁", "a₂₂", "a₂₃", "a₃₁", "a₃₂", "a₃₃"]),
+        { kind: "label", at: [1.2, 3.65], label: "leading diagonal", labelAt: "n", tone: "muted", step: 1 },
+        ...box(1, 2, "good", 2),
+        ...box(2, 1, "good", 2),
+        ...diagonalBoxes("accent", 5),
+      ],
+    },
+    formal: [
+      {
+        title: "Symmetric matrices",
+        points: [
+          t`A square matrix $A$ is **symmetric** when $A^T = A$.`,
+          t`Entry by entry, that says $a_{ij} = a_{ji}$ for all $i$ and $j$.`,
+          t`So each pair of mirror entries is equal, sign included: here $5$ and $5$, $1$ and $1$, $6$ and $6$.`,
+          t`A diagonal entry is its own mirror image, so the diagonal entries can be anything.`,
+        ],
+        figure: {
+          alt: "The symmetric matrix with rows 2 5 1, 5 4 6 and 1 6 3, with its leading diagonal dashed. The mirror pairs are boxed in matching colours: 5 and 5, 1 and 1, 6 and 6, each pair equal. Then the diagonal entries 2, 4 and 3 are boxed: they can be any numbers.",
+          axes: "none",
+          view,
+          elements: [
+            ...brackets,
+            ...diagonal(),
+            ...entries(["2", "5", "1", "5", "4", "6", "1", "6", "3"]),
+            ...pairs(3),
+            ...diagonalBoxes("muted", 4),
+          ],
+        },
+      },
+      {
+        title: "Skew-symmetric matrices",
+        points: [
+          t`A square matrix $A$ is **skew-symmetric** when $A^T = -A$.`,
+          t`Entry by entry, that says $a_{ij} = -a_{ji}$ for all $i$ and $j$.`,
+          t`So each pair of mirror entries is a pair of negatives: here $5$ and $-5$, $-1$ and $1$, $6$ and $-6$.`,
+          t`With $i = j$ it says $a_{ii} = -a_{ii}$, so **every diagonal entry is $0$**.`,
+        ],
+        figure: {
+          alt: "The skew-symmetric matrix with rows 0 5 −1, −5 0 6 and 1 −6 0, with its leading diagonal dashed. The mirror pairs are boxed in matching colours: 5 and −5, −1 and 1, 6 and −6, each pair negatives. Then the diagonal entries are boxed: all three are 0.",
+          axes: "none",
+          view,
+          elements: [
+            ...brackets,
+            ...diagonal(),
+            ...entries(["0", "5", "−1", "−5", "0", "6", "1", "−6", "0"]),
+            ...pairs(3),
+            ...diagonalBoxes("muted", 4),
+          ],
+        },
+      },
+      {
+        title: "Both, one or neither",
+        points: [
+          t`Recall: a **diagonal matrix** has every entry off the leading diagonal equal to $0$.`,
+          t`Its mirror pairs are all $0$ and $0$, so a diagonal matrix is always symmetric.`,
+          t`If one of its diagonal entries is not $0$, it is not skew-symmetric: it is symmetric only.`,
+          t`A matrix that is both has $a_{ij} = a_{ji} = -a_{ji}$, so every entry is $0$.`,
+          t`So the **zero matrix** $O$, with every entry $0$, is the only matrix that is both.`,
+          t`A matrix can be **neither**: say its mirror pairs are negatives but its diagonal is not all $0$.`,
+        ],
+      },
+      {
+        title: "Finding an unknown entry",
+        points: [
+          t`If $A$ is symmetric, set the entry with the unknown equal to its mirror image.`,
+          t`If $A$ is skew-symmetric, set it equal to **minus** its mirror image.`,
+          t`Bracket the whole mirror entry before you negate it.`,
+          t`So $-(3x - 1) = -3x + 1$, not $-3x - 1$.`,
+          t`Then solve that equation for the unknown.`,
+        ],
+      },
+      {
+        title: "Two always-true facts",
+        points: [
+          t`Take any square matrix $A$, and recall that $(A^T)^T = A$ and a sum transposes term by term.`,
+          t`So $(A + A^T)^T = A^T + A$, which is $A + A^T$ again.`,
+          t`That makes $A + A^T$ always symmetric.`,
+          t`Likewise $(A - A^T)^T = A^T - A$.`,
+          t`That is $-(A - A^T)$, so $A - A^T$ is always skew-symmetric.`,
+        ],
+      },
+      {
+        title: "Splitting a square matrix",
+        points: [
+          t`Every square matrix $A$ is a sum $A = P + Q$, with $P$ symmetric and $Q$ skew-symmetric.`,
+          t`The symmetric part is $P = \frac{1}{2}(A + A^T)$.`,
+          t`The skew-symmetric part is $Q = \frac{1}{2}(A - A^T)$.`,
+          t`Halving every entry keeps a matrix's type, so $P$ is still symmetric and $Q$ still skew-symmetric.`,
+          t`Adding them, the $A^T$ terms cancel: $P + Q = \frac{1}{2}(2A) = A$.`,
+          t`Without the halves the two add up to $2A$, not $A$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Express $A = \begin{bmatrix} 5 & 2 & -4 \\ 3 & -7 & 2 \\ 4 & -5 & -3 \end{bmatrix}$ as the sum of a symmetric and a skew-symmetric matrix.`,
       steps: [
         t`Write the transpose: rows become columns. $A^T = \begin{bmatrix} 5 & 3 & 4 \\ 2 & -7 & -5 \\ -4 & 2 & -3 \end{bmatrix}$.`,
-        t`$A + A^T = \begin{bmatrix} 10 & 5 & 0 \\ 5 & -14 & -3 \\ 0 & -3 & -6 \end{bmatrix}$, so $P = \frac{1}{2}(A + A^T) = \begin{bmatrix} 5 & \frac{5}{2} & 0 \\ \frac{5}{2} & -7 & -\frac{3}{2} \\ 0 & -\frac{3}{2} & -3 \end{bmatrix}$. Mirror entries are equal: $P$ is symmetric.`,
-        t`$A - A^T = \begin{bmatrix} 0 & -1 & -8 \\ 1 & 0 & 7 \\ 8 & -7 & 0 \end{bmatrix}$, so $Q = \frac{1}{2}(A - A^T) = \begin{bmatrix} 0 & -\frac{1}{2} & -4 \\ \frac{1}{2} & 0 & \frac{7}{2} \\ 4 & -\frac{7}{2} & 0 \end{bmatrix}$. Mirror entries are negatives and the diagonal is $0$: $Q$ is skew-symmetric.`,
-        t`Check one entry of $P + Q$: in row 1, column 2, $\frac{5}{2} + \left(-\frac{1}{2}\right) = 2 = a_{12}$. Every other entry adds back to $A$ the same way.`,
+        t`$A + A^T = \begin{bmatrix} 10 & 5 & 0 \\ 5 & -14 & -3 \\ 0 & -3 & -6 \end{bmatrix}$, so $P = \frac{1}{2}(A + A^T)$ $= \begin{bmatrix} 5 & \frac{5}{2} & 0 \\ \frac{5}{2} & -7 & -\frac{3}{2} \\ 0 & -\frac{3}{2} & -3 \end{bmatrix}$. Mirror entries are equal: $P$ is symmetric.`,
+        t`$A - A^T = \begin{bmatrix} 0 & -1 & -8 \\ 1 & 0 & 7 \\ 8 & -7 & 0 \end{bmatrix}$, so $Q = \frac{1}{2}(A - A^T)$ $= \begin{bmatrix} 0 & -\frac{1}{2} & -4 \\ \frac{1}{2} & 0 & \frac{7}{2} \\ 4 & -\frac{7}{2} & 0 \end{bmatrix}$. Mirror entries are negatives and the diagonal is $0$: $Q$ is skew-symmetric.`,
+        t`Check one entry of $P + Q$: in row 1, column 2, $\frac{5}{2} + \left(-\frac{1}{2}\right)$ $= 2 = a_{12}$. Every other entry adds back to $A$ the same way.`,
       ],
-      answer: t`$A = \begin{bmatrix} 5 & \frac{5}{2} & 0 \\ \frac{5}{2} & -7 & -\frac{3}{2} \\ 0 & -\frac{3}{2} & -3 \end{bmatrix} + \begin{bmatrix} 0 & -\frac{1}{2} & -4 \\ \frac{1}{2} & 0 & \frac{7}{2} \\ 4 & -\frac{7}{2} & 0 \end{bmatrix}$, symmetric plus skew-symmetric.`,
+      answer: t`$A = \begin{bmatrix} 5 & \frac{5}{2} & 0 \\ \frac{5}{2} & -7 & -\frac{3}{2} \\ 0 & -\frac{3}{2} & -3 \end{bmatrix}$ $+ \begin{bmatrix} 0 & -\frac{1}{2} & -4 \\ \frac{1}{2} & 0 & \frac{7}{2} \\ 4 & -\frac{7}{2} & 0 \end{bmatrix}$, symmetric plus skew-symmetric.`,
     },
     visualSpec: t`Drag a fold line onto the leading diagonal of a $3 \times 3$ matrix: mirror pairs light up green when equal and orange when negatives, and a slider splits the matrix into its symmetric part $P$ and skew-symmetric part $Q$.`,
   },

@@ -1,6 +1,100 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+type Tone = FigureElement["tone"];
+type Show = { step?: number; tone?: Tone };
+
+/** The figure frame is 400 px wide: plane units per pixel for a view `width` units wide. */
+const px = (width: number) => width / 400;
+
+/**
+ * A label centred on `at`. Labels sit above their anchor ("n": baseline 10 px up, text about 15 px
+ * up at its middle), so the anchor drops by `lift` = 15 px in plane units.
+ */
+const text = (at: Pt, label: string, lift: number, show: Show = {}): FigureElement => ({
+  kind: "label",
+  at: [at[0], +(at[1] - lift).toFixed(3)],
+  label,
+  labelAt: "n",
+  ...show,
+});
+
+/** A matrix drawn as labels in square brackets: entry (r, c) centred at (x0 + (c − 1)·wx, y0 − (r − 1)·wy). */
+type Grid = { x0: number; y0: number; wx: number; wy: number; pad: number; lift: number };
+
+const cell = (g: Grid, r: number, c: number): Pt => [+(g.x0 + (c - 1) * g.wx).toFixed(3), +(g.y0 - (r - 1) * g.wy).toFixed(3)];
+
+/** The entries of `rows` with their brackets, appearing at `step`; zeros muted when `muteZeros`. */
+function matrix(g: Grid, rows: string[][], step?: number, muteZeros = false): FigureElement[] {
+  const at = step === undefined ? {} : { step };
+  const m = rows.length;
+  const n = rows[0].length;
+  const left = g.x0 - g.pad;
+  const right = g.x0 + (n - 1) * g.wx + g.pad;
+  const top = g.y0 + g.wy / 2;
+  const bottom = g.y0 - (m - 0.5) * g.wy;
+  const serif = 0.15;
+  const seg = (from: Pt, to: Pt): FigureElement => ({ kind: "segment", from, to, tone: "muted", ...at });
+  return [
+    seg([left, top], [left, bottom]),
+    seg([left, top], [left + serif, top]),
+    seg([left, bottom], [left + serif, bottom]),
+    seg([right, top], [right, bottom]),
+    seg([right, top], [right - serif, top]),
+    seg([right, bottom], [right - serif, bottom]),
+    ...rows.flatMap((row, r) =>
+      row.map((v, c) => text(cell(g, r + 1, c + 1), v, g.lift, { ...at, ...(muteZeros && v === "0" ? { tone: "muted" as const } : {}) })),
+    ),
+  ];
+}
+
+/** A shaded convex polygon, its corners listed anticlockwise. */
+const shade = (corners: Pt[], tone: Tone, step: number): FigureElement => ({
+  kind: "region",
+  within: corners.map((p, i) => ({ kind: "halfPlane" as const, through: [p, corners[(i + 1) % corners.length]] as [Pt, Pt] })),
+  tone,
+  step,
+});
+
+/** A shaded rectangle from corner `lo` to corner `hi`. */
+const band = ([x0, y0]: Pt, [x1, y1]: Pt, tone: Tone, step: number): FigureElement =>
+  shade([[x0, y0], [x1, y0], [x1, y1], [x0, y1]], tone, step);
+
+/** A ring round each diagonal entry of an n × n grid. */
+const diagonalRings = (g: Grid, n: number, step: number, tone: Tone = "good"): FigureElement[] =>
+  Array.from({ length: n }, (_, k): FigureElement => ({ kind: "circle", centre: cell(g, k + 1, k + 1), r: 0.32, tone, step }));
+
+/** The idea slide's 2 × 3 matrix: wide cells so the column names fit above. */
+const IDEA_W = 6.2;
+const ideaGrid: Grid = { x0: 0, y0: 0, wx: 1.6, wy: 1, pad: 0.55, lift: 15 * px(IDEA_W) };
+
+/** The shapes slide: a row matrix, a zero matrix under it, a column matrix and a square matrix. */
+const SHAPES_W = 9.5;
+const shapesLift = 15 * px(SHAPES_W);
+const unit = (x0: number, y0: number, lift: number, pad = 0.5): Grid => ({ x0, y0, wx: 1, wy: 1, pad, lift });
+const rowG = unit(0, 0, shapesLift);
+const zeroG = unit(0.5, -2, shapesLift);
+const colG = unit(3.9, 0, shapesLift);
+const squareG = unit(5.5, 0, shapesLift);
+
+/** The triangular slide: an upper triangular matrix on the left, a lower triangular one on the right. */
+const TRI_W = 8.4;
+const triLift = 15 * px(TRI_W);
+const upperG = unit(0, 0, triLift, 0.6);
+const lowerG = unit(4.6, 0, triLift, 0.6);
+
+/** The diagonal-types slide: three 3 × 3 matrices side by side. */
+const DIAG_W = 11.8;
+const diagLift = 15 * px(DIAG_W);
+const dG = unit(0, 0, diagLift, 0.55);
+const sG = unit(4, 0, diagLift, 0.55);
+const iG = unit(8, 0, diagLift, 0.55);
+const diag = (a: string, b: string, c: string) => [
+  [a, "0", "0"],
+  ["0", b, "0"],
+  ["0", "0", c],
+];
 
 export const c07: Concept = {
   id: "C07",
@@ -10,16 +104,173 @@ export const c07: Concept = {
     reveal: t`No. The order is always **rows $\times$ columns**: a $2 \times 4$ matrix has $2$ rows and $4$ columns, so it is wide; a $4 \times 2$ matrix has $4$ rows and $2$ columns, so it is tall. Only the number of entries, $mn = 8$, is the same.`,
   },
   explanation: {
-    intuition: t`A matrix is a rectangular table of numbers. Everything about it is counted **row first, then column**: an $m \times n$ matrix has $m$ rows and $n$ columns, and $a_{ij}$ is the entry in row $i$, column $j$. When a square matrix has zeros in a pattern around its diagonal (top-left to bottom-right), the pattern gives it a name: triangular, diagonal, scalar or identity. A square matrix also has a determinant, and the matrix is called singular when that determinant is $0$.`,
-    formal: t`**Order and entries.** A matrix with $m$ rows and $n$ columns has order $m \times n$ and $mn$ entries. $A = [a_{ij}]_{m \times n}$: $a_{ij}$ is in row $i$, column $j$.
-
-**By shape.** Row matrix: order $1 \times n$. Column matrix: order $m \times 1$. Square matrix: $m = n$; its diagonal is $a_{11}, a_{22}, \dots, a_{nn}$. Zero matrix $O$: every entry is $0$.
-
-**Square types.** Upper triangular: $a_{ij} = 0$ for $i > j$ (zeros **below** the diagonal). Lower triangular: $a_{ij} = 0$ for $i < j$ (zeros **above** it). Diagonal: $a_{ij} = 0$ for $i \ne j$. Scalar: diagonal, with every diagonal entry the same $k$. Identity $I$: scalar with $k = 1$.
-
-**They nest.** Every identity matrix is scalar, every scalar matrix is diagonal, and a diagonal matrix is both upper and lower triangular.
-
-**Singular.** A square matrix $A$ is singular if $|A| = 0$, and non-singular if $|A| \ne 0$.`,
+    intuition: [
+      t`A **matrix** is a rectangular table of numbers, its **entries**, set in **rows** across and **columns** down.`,
+      t`Everything is counted **row first, then column**: an $m \times n$ matrix has $m$ rows and $n$ columns.`,
+      t`$a_{ij}$ is the entry in row $i$, column $j$: the first subscript is the row.`,
+      t`A **square** matrix has as many rows as columns; its **diagonal** runs from top left to bottom right.`,
+      t`Zeros in a pattern around that diagonal give it a name: triangular, diagonal, scalar or identity.`,
+      t`A square matrix also has a determinant, and it is called **singular** when that determinant is $0$.`,
+    ],
+    figure: {
+      alt: "A matrix with 2 rows and 3 columns: 5, 1, 7 in row 1 and 2, 9, 4 in row 2. First the rows are named down the left, row 1 and row 2, and the columns along the top, column 1 to column 3. Then the label 2 × 3: 2 rows, 3 columns. Last, row 2 and column 3 are shaded; they cross at the entry 4, ringed, labelled a₂₃ = 4: row 2, column 3.",
+      axes: "none",
+      view: { x: [-2, 4.2], y: [-3, 1.35] },
+      elements: [
+        ...matrix(ideaGrid, [
+          ["5", "1", "7"],
+          ["2", "9", "4"],
+        ]),
+        { kind: "label", at: [-0.75, 0], label: "row 1", labelAt: "w", tone: "muted", step: 1 },
+        { kind: "label", at: [-0.75, -1], label: "row 2", labelAt: "w", tone: "muted", step: 1 },
+        ...[1, 2, 3].map((c) => text([cell(ideaGrid, 1, c)[0], 0.85], `column ${c}`, ideaGrid.lift, { tone: "muted", step: 1 })),
+        text([1.6, -2], "2 × 3: 2 rows, 3 columns", ideaGrid.lift, { step: 2 }),
+        band([-0.45, -1.45], [3.7, -0.55], "good", 3),
+        band([2.6, -1.45], [3.7, 0.45], "good", 3),
+        { kind: "circle", centre: cell(ideaGrid, 2, 3), r: 0.3, tone: "good", step: 3 },
+        text([1.6, -2.6], "a₂₃ = 4: row 2, column 3", ideaGrid.lift, { tone: "good", step: 3 }),
+      ],
+    },
+    formal: [
+      {
+        title: "Order and entries",
+        points: [
+          t`The **order** of a matrix is its size, rows $\times$ columns: $m$ rows and $n$ columns give $m \times n$.`,
+          t`An $m \times n$ matrix has $mn$ entries.`,
+          t`A $2 \times 3$ and a $3 \times 2$ matrix both have $6$ entries, but different orders.`,
+          t`We write $A = [a_{ij}]_{m \times n}$: the entry in row $i$, column $j$ is $a_{ij}$.`,
+          t`The row number $i$ runs from $1$ to $m$; the column number $j$ runs from $1$ to $n$.`,
+        ],
+      },
+      {
+        title: "Matrices by shape",
+        points: [
+          t`A **row matrix** has just one row: its order is $1 \times n$.`,
+          t`A **column matrix** has just one column: its order is $m \times 1$.`,
+          t`A **square matrix** has $m = n$: its order is $n \times n$.`,
+          t`Its **leading diagonal**, or just diagonal, is $a_{11}, a_{22}, \dots, a_{nn}$: the entries with $i = j$.`,
+          t`A **zero matrix**, written $O$, has every entry $0$.`,
+        ],
+        figure: {
+          alt: "Four matrices. First a row matrix, 3 1 4, labelled 1 × 3. Then a column matrix, 2 7 5 down one column, labelled 3 × 1. Then a square matrix with 3 rows and 3 columns, labelled 3 × 3; its entries 4, 3 and 9, from top left to bottom right, are ringed and labelled diagonal. Last, a 2 × 2 matrix of zeros, labelled O.",
+          axes: "none",
+          view: { x: [-1.4, 8.1], y: [-3.8, 1.3] },
+          elements: [
+            ...matrix(rowG, [["3", "1", "4"]], 1),
+            text([1, -0.95], "1 × 3", shapesLift, { tone: "muted", step: 1 }),
+            ...matrix(colG, [["2"], ["7"], ["5"]], 2),
+            text([3.9, -2.95], "3 × 1", shapesLift, { tone: "muted", step: 2 }),
+            ...matrix(
+              squareG,
+              [
+                ["4", "1", "2"],
+                ["0", "3", "8"],
+                ["6", "5", "9"],
+              ],
+              3,
+            ),
+            text([6.5, -2.95], "3 × 3", shapesLift, { tone: "muted", step: 3 }),
+            ...diagonalRings(squareG, 3, 4),
+            text([5.9, 0.85], "diagonal", shapesLift, { tone: "good", step: 4 }),
+            ...matrix(
+              zeroG,
+              [
+                ["0", "0"],
+                ["0", "0"],
+              ],
+              5,
+            ),
+            { kind: "label", at: [-0.15, -2.5], label: "O =", labelAt: "w", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Upper and lower triangular",
+        points: [
+          t`The next types are all square matrices, named by the zeros around the diagonal.`,
+          t`Below the diagonal the row number is larger, $i > j$; above it, $i < j$.`,
+          t`**Upper triangular**: $a_{ij} = 0$ for $i > j$, so every entry **below** the diagonal is $0$.`,
+          t`Its other entries sit on or above the diagonal, in the upper triangle: hence the name.`,
+          t`**Lower triangular**: $a_{ij} = 0$ for $i < j$, so every entry **above** the diagonal is $0$.`,
+          t`So name it by the triangle its other entries fill, not by where the zeros are.`,
+        ],
+        figure: {
+          alt: "Two 3 × 3 matrices with their diagonals ringed. The left one has zeros below the diagonal: that corner is shaded red, then the upper triangle, on and above the diagonal, is shaded green, and it is labelled upper triangular. The right one has zeros above the diagonal, shaded red, and its lower triangle shaded green; it is labelled lower triangular.",
+          axes: "none",
+          view: { x: [-0.9, 7.5], y: [-3.4, 0.9] },
+          elements: [
+            ...matrix(
+              upperG,
+              [
+                ["1", "4", "2"],
+                ["0", "3", "5"],
+                ["0", "0", "6"],
+              ],
+              undefined,
+              true,
+            ),
+            ...matrix(
+              lowerG,
+              [
+                ["1", "0", "0"],
+                ["4", "3", "0"],
+                ["2", "5", "6"],
+              ],
+              undefined,
+              true,
+            ),
+            ...diagonalRings(upperG, 3, 1, "accent"),
+            ...diagonalRings(lowerG, 3, 1, "accent"),
+            shade([[-0.5, 0], [-0.5, -2.5], [2, -2.5]], "bad", 3),
+            text([1, -3], "upper triangular", triLift, { step: 3 }),
+            shade([[-0.5, 0], [2, -2.5], [2.5, -2.5], [2.5, 0.5], [-0.5, 0.5]], "good", 4),
+            shade([[4.6, 0.5], [7.1, -2], [7.1, 0.5]], "bad", 5),
+            text([5.6, -3], "lower triangular", triLift, { step: 5 }),
+            shade([[4.1, 0.5], [4.1, -2.5], [7.1, -2.5], [7.1, -2], [4.6, 0.5]], "good", 6),
+          ],
+        },
+      },
+      {
+        title: "Diagonal, scalar and identity",
+        points: [
+          t`A **diagonal matrix** is a square matrix with $a_{ij} = 0$ whenever $i \ne j$: every entry off the diagonal is $0$.`,
+          t`A **scalar matrix** is a diagonal matrix whose diagonal entries all equal the same number $k$.`,
+          t`Equal diagonal entries are not enough: every entry off the diagonal must be $0$ as well.`,
+          t`The **identity matrix** $I$ is the scalar matrix with $k = 1$.`,
+        ],
+        figure: {
+          alt: "Three 3 × 3 matrices with zeros everywhere off the diagonal. First a diagonal matrix with 2, −1 and 5 on its diagonal. Then a scalar matrix with 3, 3 and 3 on its diagonal, labelled scalar, k = 3. Last the identity matrix I, with 1, 1 and 1 on its diagonal.",
+          axes: "none",
+          view: { x: [-0.9, 10.9], y: [-3.6, 0.9] },
+          elements: [
+            ...matrix(dG, diag("2", "−1", "5"), 1, true),
+            text([1, -3.1], "diagonal", diagLift, { step: 1 }),
+            ...matrix(sG, diag("3", "3", "3"), 2, true),
+            text([5, -3.1], "scalar, k = 3", diagLift, { step: 2 }),
+            ...matrix(iG, diag("1", "1", "1"), 4, true),
+            text([9, -3.1], "identity I", diagLift, { step: 4 }),
+          ],
+        },
+      },
+      {
+        title: "How the types nest",
+        points: [
+          t`Every identity matrix is a scalar matrix, with $k = 1$.`,
+          t`Every scalar matrix is a diagonal matrix.`,
+          t`A diagonal matrix has zeros both below and above its diagonal.`,
+          t`So a diagonal matrix is both upper triangular and lower triangular.`,
+        ],
+      },
+      {
+        title: "Singular and non-singular",
+        points: [
+          t`Recall: a square matrix $A$ has a determinant, a single number written $|A|$.`,
+          t`$A$ is **singular** if $|A| = 0$.`,
+          t`$A$ is **non-singular** if $|A| \ne 0$.`,
+          t`A matrix that is not square has no determinant, so it is neither.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Construct $A = [a_{ij}]_{2 \times 3}$ with $a_{ij} = 2i - j$.`,
       steps: [

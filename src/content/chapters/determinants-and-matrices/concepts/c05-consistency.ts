@@ -10,22 +10,90 @@ export const c05: Concept = {
     reveal: t`Adding the first two gives $2x = 6$, so they meet at $(3, 1)$. The third line passes through it only if $k = 2(3) + 3(1) = 9$. For any other $k$ the three lines share no point. A single determinant does this test for you.`,
   },
   explanation: {
-    intuition: t`Two equations in $x$ and $y$ usually pin down one point. A third equation is a third line, and the three equations have a common solution only if that line also passes through the point. When it does, the rows $(a, b, c)$ of the three equations are tied together, and the determinant made from them is $0$. So to find $k$, you set one determinant to $0$ instead of solving. One catch: parallel lines also make it $0$, so check that the lines really meet.`,
-    formal: t`**Condition of consistency.** If $a_1x + b_1y + c_1 = 0$, $a_2x + b_2y + c_2 = 0$ and $a_3x + b_3y + c_3 = 0$ are consistent (have a common solution), then
-
-$$\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix} = 0$$
-
-**First, one form.** Write every equation as $ax + by + c = 0$. So $2x - y = 3$ becomes $2x - y - 3 = 0$: its constant is $-3$, not $3$.
-
-**Then find $k$.** Expand along row 1 with signs $+ - +$, set the result to $0$ and solve for $k$.
-
-**Zero is not enough.** For $x + y = 1$, $2x + 2y = 2$, $3x + 3y = 5$ the determinant is $0$, but $x + y = 1$ and $3x + 3y = 5$ are parallel: no common point, so not consistent. Reject any $k$ that makes two lines parallel.`,
+    intuition: [
+      t`An equation $ax + by + c = 0$ draws a straight line: each point on it is a **solution**, an $(x, y)$ that makes it true.`,
+      t`Two lines usually cross at exactly one point, as $x + y = 4$ and $x - y = 2$ do at $(3, 1)$.`,
+      t`Three equations are **consistent** if they have a common solution: one point that lies on all three lines.`,
+      t`So a third line must pass through the point where the first two cross, as $2x + 3y = 9$ does.`,
+      t`Write each equation's $a$, $b$ and $c$ as a row of a determinant: when the three lines meet, it is $0$.`,
+      t`One catch: **parallel** lines, which never meet, can make it $0$ too, so check that the lines really meet.`,
+    ],
+    figure: {
+      alt: "The lines x + y = 4 and x − y = 2 cross at the point (3, 1). A third line, 2x + 3y = 9, also passes through (3, 1), so one point lies on all three lines: the three equations are consistent.",
+      axes: "xy",
+      view: { x: [-1, 5.5], y: [-1.5, 4.8] },
+      elements: [
+        { kind: "line", through: [[0, 4], [4, 0]], step: 1 },
+        { kind: "label", at: [0.6, 3.4], label: "x + y = 4", labelAt: "ne", step: 1 },
+        { kind: "line", through: [[2, 0], [3, 1]], step: 2 },
+        { kind: "label", at: [4.4, 1.9], label: "x − y = 2", labelAt: "e", step: 2 },
+        { kind: "point", at: [3, 1], step: 2 },
+        { kind: "label", at: [3, 0.45], label: "(3, 1)", labelAt: "s", step: 2 },
+        { kind: "line", through: [[0, 3], [4.5, 0]], tone: "good", step: 4 },
+        { kind: "label", at: [1.5, 2], label: "2x + 3y = 9", labelAt: "sw", tone: "good", step: 4 },
+      ],
+    },
+    formal: [
+      {
+        title: "Condition of consistency",
+        points: [
+          t`Take three equations in $x$ and $y$, each with $0$ on the right.`,
+          t`Call them $a_1x + b_1y + c_1 = 0$, $a_2x + b_2y + c_2 = 0$ and $a_3x + b_3y + c_3 = 0$.`,
+          t`Here $a$ and $b$ are the **coefficients**, the numbers multiplying $x$ and $y$, and $c$ is the **constant**.`,
+          t`If the three are consistent, so they have a common solution, then:`,
+          t`$\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix} = 0$`,
+          t`Lines through one common point are called **concurrent**: concurrent lines come from consistent equations.`,
+        ],
+      },
+      {
+        title: "Every equation in one form",
+        points: [
+          t`Before writing the determinant, put every equation in the form $ax + by + c = 0$.`,
+          t`A term that crosses the $=$ sign changes its sign.`,
+          t`So $2x - y = 3$ becomes $2x - y - 3 = 0$.`,
+          t`Its constant is $-3$, not $3$.`,
+        ],
+      },
+      {
+        title: "Finding k",
+        points: [
+          t`The unknown $k$ sits among the entries of the determinant.`,
+          t`Expand along row 1 with the signs $+ - +$, as for any $3 \times 3$ determinant.`,
+          t`Recall: each $2 \times 2$ determinant $\begin{vmatrix} a & b \\ c & d \end{vmatrix}$ is $ad - bc$.`,
+          t`Set the result to $0$ and solve for $k$.`,
+          t`Check your $k$: one point should lie on all three lines.`,
+        ],
+      },
+      {
+        title: "Zero is not enough",
+        points: [
+          t`Take $x + y = 1$ and $2x + 2y = 2$: the second is the first doubled, so they are one line.`,
+          t`Add $3x + 3y = 5$: the determinant of all three is $0$.`,
+          t`But $3x + 3y = 5$ is parallel to $x + y = 1$, so the two never meet.`,
+          t`So no point lies on all three: the equations are not consistent.`,
+          t`A zero determinant is needed for consistency, but it is not enough.`,
+          t`So test each $k$ you find, and reject it if it makes two lines parallel and distinct (not one line).`,
+        ],
+        figure: {
+          alt: "The line x + y = 1, which is also 2x + 2y = 2, and beside it the parallel line 3x + 3y = 5. The two lines never meet, so no point lies on all three, although the determinant of the three equations is 0.",
+          axes: "xy",
+          view: { x: [-1.5, 3], y: [-1.5, 3] },
+          elements: [
+            { kind: "line", through: [[0, 1], [1, 0]], step: 1 },
+            { kind: "label", at: [-0.6, 1.6], label: "x + y = 1", labelAt: "sw", step: 1 },
+            { kind: "label", at: [1.8, -0.8], label: "2x + 2y = 2", labelAt: "sw", step: 1 },
+            { kind: "line", through: [[0, 5 / 3], [5 / 3, 0]], tone: "bad", step: 2 },
+            { kind: "label", at: [1.2, 0.467], label: "3x + 3y = 5", labelAt: "ne", tone: "bad", step: 2 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find $k$ if the equations $3x - y = 5$, $x + y = 3$ and $kx + 2y - 8 = 0$ are consistent.`,
       steps: [
         t`Bring all three to the form $ax + by + c = 0$: $3x - y - 5 = 0$, $x + y - 3 = 0$, $kx + 2y - 8 = 0$.`,
         t`Consistent, so $\begin{vmatrix} 3 & -1 & -5 \\ 1 & 1 & -3 \\ k & 2 & -8 \end{vmatrix} = 0$.`,
-        t`Expand along row 1 with $+ - +$: $3(-8 + 6) + 1(-8 + 3k) - 5(2 - k) = -6 - 8 + 3k - 10 + 5k = 8k - 24$.`,
+        t`Expand along row 1 with $+ - +$: $3(-8 + 6) + 1(-8 + 3k) - 5(2 - k)$ $= -6 - 8 + 3k - 10 + 5k$ $= 8k - 24$.`,
         t`$8k - 24 = 0$, so $k = 3$. Check: the first two lines meet at $(2, 1)$, and $3(2) + 2(1) - 8 = 0$.`,
       ],
       answer: t`$k = 3$`,

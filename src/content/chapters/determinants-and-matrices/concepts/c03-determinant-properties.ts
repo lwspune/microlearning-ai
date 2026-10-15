@@ -10,20 +10,99 @@ export const c03: Concept = {
     reveal: t`Yes: it is $0$. Do $R_1 \to R_1 - R_3$: the top row becomes $100, 200, 300$, which is $100$ times $R_3$. Take $100$ out of $R_1$: now $R_1$ and $R_3$ are equal, and a determinant with two equal rows is $0$.`,
   },
   explanation: {
-    intuition: t`Row operations change a determinant in fixed, predictable ways, so you can simplify before you expand. Interchanging two rows flips the sign, and two equal rows give $0$. A number common to one row comes out once, as a factor. Adding a multiple of one row to another changes nothing: that is your tool for making zeros and common factors. Since $|A^T| = |A|$, everything true for rows is true for columns.`,
-    formal: t`**Interchange.** $R_i \leftrightarrow R_j$ (or $C_i \leftrightarrow C_j$) changes the sign of the determinant.
-
-**Zero.** Two equal rows, or two proportional rows (one a multiple of the other), give $0$.
-
-**Factor out of one row.** A factor $k$ common to one row comes out once:
-$$\begin{vmatrix} ka_1 & kb_1 & kc_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix} = k\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}$$
-In $kA$ every row carries $k$, so for order $n$, $|kA| = k^n|A|$: a $3 \times 3$ gives $k^3$.
-
-**Add a multiple: no change.** $R_i \to R_i + kR_j$ keeps the value. But $R_i \to aR_i + bR_j$ multiplies it by $a$, because $R_i$ itself was scaled. For rows like $x+y$, $y+z$, $z+x$: add all the columns into one, take the common factor out, then subtract.
-
-**Transpose.** $|A^T| = |A|$, so every rule for rows holds for columns.`,
+    intuition: [
+      t`Recall: a **determinant** is a square array between bars that stands for one number, its value.`,
+      t`We call its rows $R_1, R_2, R_3$ from the top, and its columns $C_1, C_2, C_3$ from the left.`,
+      t`A **row operation** changes the rows in a set way, and it changes the value in a fixed, predictable way.`,
+      t`**Interchanging** two rows, swapping their places, flips the sign; and two equal rows give $0$.`,
+      t`A number common to every entry of one row comes out once, as a factor in front.`,
+      t`Adding a multiple of one row to another changes nothing: your tool for making zeros and factors before you expand.`,
+    ],
+    formal: [
+      {
+        title: "Interchanging two rows",
+        points: [
+          t`$R_i \leftrightarrow R_j$ means interchange rows $i$ and $j$.`,
+          t`Each interchange changes the sign of the determinant: its value is multiplied by $-1$.`,
+          t`For example, $\begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix} = 4 - 6 = -2$.`,
+          t`Interchange its rows: $\begin{vmatrix} 3 & 4 \\ 1 & 2 \end{vmatrix} = 6 - 4 = 2$.`,
+          t`Columns work the same way, here and in every rule below: $C_i \leftrightarrow C_j$ also flips the sign.`,
+          t`Two interchanges flip the sign twice, so they cancel: an odd number of them changes the sign, an even number keeps it.`,
+        ],
+      },
+      {
+        title: "A factor out of one row",
+        points: [
+          t`If every entry of one row is $k$ times something, $k$ is a **common factor** of that row.`,
+          t`It comes out once, in front of the determinant.`,
+          t`$\begin{vmatrix} ka_1 & kb_1 & kc_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}$ equals`,
+          t`$k\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}$.`,
+          t`Read backwards: $R_i \to kR_i$, replacing a row by $k$ times itself, multiplies the determinant by $k$.`,
+          t`For example, $\begin{vmatrix} 2 & 4 \\ 1 & 3 \end{vmatrix} = 2\begin{vmatrix} 1 & 2 \\ 1 & 3 \end{vmatrix}$, and both are $2$.`,
+        ],
+      },
+      {
+        title: "Equal or proportional rows",
+        points: [
+          t`If two rows are equal, interchanging them leaves the determinant just as it was.`,
+          t`Yet an interchange flips the sign, so the value equals its own negative: it is $0$.`,
+          t`Two rows are **proportional** when one is a multiple of the other, like $(1, 2, 3)$ and $(2, 4, 6)$.`,
+          t`Take the multiple out as a factor: two equal rows are left, so the value is $0$ too.`,
+          t`The same holds for two equal or two proportional columns.`,
+        ],
+      },
+      {
+        title: "A factor in every row",
+        points: [
+          t`A **matrix** is an array of numbers in rows and columns; we name one $A$.`,
+          t`For a square matrix $A$, $|A|$ is its determinant, and its **order** is its number of rows.`,
+          t`$kA$ is the matrix with every entry of $A$ multiplied by $k$.`,
+          t`So every row of $kA$ carries the factor $k$, and $k$ comes out of each row.`,
+          t`For order $n$, that gives $|kA| = k^n|A|$: a $3 \times 3$ gives $k^3$.`,
+          t`For example, if $A$ is $3 \times 3$ with $|A| = 5$, then $|2A| = 2^3 \times 5 = 40$.`,
+        ],
+      },
+      {
+        title: "Adding a multiple: no change",
+        points: [
+          t`$R_i \to R_i + kR_j$ means add $k$ times row $j$ to row $i$, entry by entry.`,
+          t`This keeps the value of the determinant: nothing changes.`,
+          t`For example, $\begin{vmatrix} 3 & 7 \\ 1 & 2 \end{vmatrix} = 6 - 7 = -1$.`,
+          t`$R_1 \to R_1 - 3R_2$ makes a zero: $\begin{vmatrix} 0 & 1 \\ 1 & 2 \end{vmatrix} = 0 - 1 = -1$, the same value.`,
+          t`Several at once, like $C_1 \to C_1 + C_2 + C_3$, change nothing either.`,
+          t`Use it to make zeros or common factors, then expand.`,
+        ],
+      },
+      {
+        title: "Scaling the row you replace",
+        points: [
+          t`In $R_i \to aR_i + bR_j$, the row $R_i$ itself is multiplied by $a$.`,
+          t`So this operation multiplies the determinant by $a$; adding $bR_j$ changes nothing.`,
+          t`For example, $R_2 \to 2R_2 + R_1$ doubles the determinant.`,
+          t`Only adding a multiple of another row is free; multiplying a row by a number never is.`,
+        ],
+      },
+      {
+        title: "Entries that are sums",
+        points: [
+          t`Some determinants have entries like $x+y$, $y+z$, $z+x$ in every row.`,
+          t`Add all the columns into the first one: $C_1 \to C_1 + C_2 + C_3$ changes nothing.`,
+          t`Now every entry of $C_1$ is twice the same sum, so take the common factor out.`,
+          t`Then subtract $C_1$ from the other columns, which changes nothing either, to make them simple.`,
+        ],
+      },
+      {
+        title: "The transpose: rows become columns",
+        points: [
+          t`The **transpose** $A^T$ of a matrix $A$ writes each row of $A$ as a column, in order.`,
+          t`For example, $\begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix} = -2$, and with its rows written as columns, $\begin{vmatrix} 1 & 3 \\ 2 & 4 \end{vmatrix} = 4 - 6 = -2$.`,
+          t`No two rows are interchanged, so the sign does not flip: $|A^T| = |A|$.`,
+          t`The columns of $A$ are the rows of $A^T$, so every rule for rows holds for columns too.`,
+        ],
+      },
+    ],
     worked: {
-      prompt: t`Find $k$ if $\begin{vmatrix} x+y & y+z & z+x \\ z+x & x+y & y+z \\ y+z & z+x & x+y \end{vmatrix} = k\begin{vmatrix} x & y & z \\ z & x & y \\ y & z & x \end{vmatrix}$.`,
+      prompt: t`Find $k$ if $\begin{vmatrix} x+y & y+z & z+x \\ z+x & x+y & y+z \\ y+z & z+x & x+y \end{vmatrix}$ equals $k\begin{vmatrix} x & y & z \\ z & x & y \\ y & z & x \end{vmatrix}$.`,
       steps: [
         t`$C_1 \to C_1 + C_2 + C_3$ (no change): every entry of $C_1$ becomes $2(x+y+z)$. Take $2$ out of $C_1$, leaving $x+y+z$ all down $C_1$.`,
         t`$C_2 \to C_2 - C_1$ and $C_3 \to C_3 - C_1$ (no change) give the columns $-x, -z, -y$ and $-y, -x, -z$. Take $-1$ out of each: $(-1)(-1) = 1$.`,

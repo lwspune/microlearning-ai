@@ -10,26 +10,78 @@ export const c04: Concept = {
     reveal: t`Yes. Eliminating $y$ from any such pair gives $x$ as a ratio of two determinants. Here $D = \begin{vmatrix} 3 & 2 \\ 5 & -3 \end{vmatrix} = -19$, and putting the constants $7, 37$ in place of the $x$-coefficients gives $D_x = \begin{vmatrix} 7 & 2 \\ 37 & -3 \end{vmatrix} = -95$. So $x = \frac{-95}{-19} = 5$, and in the same way $y = \frac{76}{-19} = -4$.`,
   },
   explanation: {
-    intuition: t`Eliminate $y$ from $a_1x + b_1y = d_1$ and $a_2x + b_2y = d_2$ by hand and you get $(a_1b_2 - a_2b_1)x = d_1b_2 - d_2b_1$. Both sides are determinants: on the left the coefficients, on the right the same grid with the $x$-coefficients swapped for the constants. Cramer's rule is this elimination done once for every system, and it works the same way for three unknowns. It needs the coefficient determinant $D$ to be non-zero: then the system has exactly one solution.`,
-    formal: t`**1. Standard form.** Write each equation as $a_ix + b_iy + c_iz = d_i$: unknowns in the order $x, y, z$, constants on the right. A missing unknown gets coefficient $0$, in its own place. $ax + by + k = 0$ becomes $ax + by = -k$.
-
-**2. The determinants.** $D$ is made of the coefficients. $D_x$ is $D$ with the **column** of $x$-coefficients replaced by the constants; $D_y$ and $D_z$ replace the $y$- and $z$-columns.
-
-$$D = \begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}, \qquad D_x = \begin{vmatrix} d_1 & b_1 & c_1 \\ d_2 & b_2 & c_2 \\ d_3 & b_3 & c_3 \end{vmatrix}$$
-
-**3. Cramer's rule.** If $D \ne 0$, the system has exactly one solution:
-
-$$x = \frac{D_x}{D}, \quad y = \frac{D_y}{D}, \quad z = \frac{D_z}{D}$$
-
-$D$ is always the denominator. For two unknowns, drop $z$ and use $2 \times 2$ determinants.
-
-**4. Equations in $\frac{1}{x}$.** Put $p = \frac{1}{x}$, $q = \frac{1}{y}$, $r = \frac{1}{z}$, solve for $p, q, r$, then turn back: $x = \frac{1}{p}$, $y = \frac{1}{q}$, $z = \frac{1}{r}$.`,
+    intuition: [
+      t`A **linear equation** such as $a_1x + b_1y = d_1$ has **coefficients** $a_1$, $b_1$ multiplying the unknowns $x$, $y$, and a **constant** $d_1$.`,
+      t`Each linear equation is a straight line; two of them form a **system**, whose **solution** is the point where the lines meet.`,
+      t`To **eliminate** $y$, combine the equations so that $y$ cancels: this leaves $(a_1b_2 - a_2b_1)x$ $= d_1b_2 - d_2b_1$.`,
+      t`The bracket is $\begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix}$, the determinant of the coefficients: the **coefficient determinant** $D$.`,
+      t`The right side is $D_x = \begin{vmatrix} d_1 & b_1 \\ d_2 & b_2 \end{vmatrix}$: $D$ with the constants in place of the $x$-coefficients.`,
+      t`So $x = \frac{D_x}{D}$ when $D \ne 0$: this is **Cramer's rule**, elimination done once for every system, and it works for three unknowns too.`,
+    ],
+    figure: {
+      alt: "Two straight lines, a₁x + b₁y = d₁ falling to the right and a₂x + b₂y = d₂ rising to the right, cross at one point, marked as the solution of the system.",
+      axes: "none",
+      view: { x: [-0.8, 5], y: [-0.7, 3.5] },
+      elements: [
+        { kind: "segment", from: [-0.4, 0], to: [4.6, 0], tone: "muted" },
+        { kind: "label", at: [4.6, 0], label: "x", labelAt: "s", tone: "muted" },
+        { kind: "segment", from: [0, -0.4], to: [0, 3.2], tone: "muted" },
+        { kind: "label", at: [0, 3.2], label: "y", labelAt: "e", tone: "muted" },
+        { kind: "segment", from: [0.3, 2.35], to: [4.2, 0.4], step: 2 },
+        { kind: "label", at: [3.3, 1.05], label: "a₁x + b₁y = d₁", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [1.4, 0.2], to: [3.2, 2.9], step: 2 },
+        { kind: "label", at: [3.2, 2.9], label: "a₂x + b₂y = d₂", labelAt: "e", step: 2 },
+        { kind: "point", at: [2.2, 1.4], label: "solution", labelAt: "w", tone: "good", step: 2 },
+      ],
+    },
+    formal: [
+      {
+        title: "Standard form",
+        points: [
+          t`An equation is in **standard form** when it reads $a_ix + b_iy + c_iz = d_i$, where $i$ numbers the equation.`,
+          t`The unknowns stand in the order $x, y, z$, and the constant is on the right.`,
+          t`A missing unknown gets coefficient $0$, in its own place.`,
+          t`So $x + z = 1$ is $1x + 0y + 1z = 1$.`,
+          t`A constant on the left moves across with its sign changed.`,
+          t`So $ax + by + k = 0$ becomes $ax + by = -k$.`,
+        ],
+      },
+      {
+        title: "Four determinants for three unknowns",
+        points: [
+          t`Recall: $D$ is the determinant of the coefficients; each **row**, read across, is one equation's.`,
+          t`$D = \begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}$.`,
+          t`Each **column**, read down, belongs to one unknown: the first column holds the $x$-coefficients.`,
+          t`$D_x$ is $D$ with the column of $x$-coefficients replaced by the constants.`,
+          t`$D_x = \begin{vmatrix} d_1 & b_1 & c_1 \\ d_2 & b_2 & c_2 \\ d_3 & b_3 & c_3 \end{vmatrix}$.`,
+          t`$D_y$ and $D_z$ replace the $y$-column and the $z$-column in the same way.`,
+        ],
+      },
+      {
+        title: "Cramer's rule",
+        points: [
+          t`If $D \ne 0$, the system has exactly one solution.`,
+          t`It is $x = \frac{D_x}{D}$, $y = \frac{D_y}{D}$, $z = \frac{D_z}{D}$.`,
+          t`$D$ is always the denominator, the same for every unknown.`,
+          t`For two unknowns, drop $z$ and use $2 \times 2$ determinants.`,
+        ],
+      },
+      {
+        title: "Equations in 1/x, 1/y, 1/z",
+        points: [
+          t`Some systems have the **reciprocals** $\frac{1}{x}$, $\frac{1}{y}$, $\frac{1}{z}$ where the unknowns should be.`,
+          t`Put $p = \frac{1}{x}$, $q = \frac{1}{y}$, $r = \frac{1}{z}$: the equations become linear in $p, q, r$.`,
+          t`Solve for $p$, $q$, $r$ by Cramer's rule.`,
+          t`Then turn back: $x = \frac{1}{p}$, $y = \frac{1}{q}$, $z = \frac{1}{r}$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Solve $x + y + z = 6$, $x - y + z = 2$, $x + 2y - z = 2$ by Cramer's rule.`,
       steps: [
-        t`$D = \begin{vmatrix} 1 & 1 & 1 \\ 1 & -1 & 1 \\ 1 & 2 & -1 \end{vmatrix} = 1(1 - 2) - 1(-1 - 1) + 1(2 + 1) = -1 + 2 + 3 = 4$. Since $D \ne 0$, the rule applies.`,
-        t`Put the constants $6, 2, 2$ in the $x$-column: $D_x = \begin{vmatrix} 6 & 1 & 1 \\ 2 & -1 & 1 \\ 2 & 2 & -1 \end{vmatrix} = 6(1 - 2) - 1(-2 - 2) + 1(4 + 2) = -6 + 4 + 6 = 4$.`,
-        t`In the $y$-column: $D_y = 1(-2 - 2) - 6(-1 - 1) + 1(2 - 2) = -4 + 12 + 0 = 8$. In the $z$-column: $D_z = 1(-2 - 4) - 1(2 - 2) + 6(2 + 1) = -6 + 0 + 18 = 12$.`,
+        t`$D = \begin{vmatrix} 1 & 1 & 1 \\ 1 & -1 & 1 \\ 1 & 2 & -1 \end{vmatrix}$ $= 1(1 - 2) - 1(-1 - 1) + 1(2 + 1)$ $= -1 + 2 + 3 = 4$. Since $D \ne 0$, the rule applies.`,
+        t`Put the constants $6, 2, 2$ in the $x$-column: $D_x = \begin{vmatrix} 6 & 1 & 1 \\ 2 & -1 & 1 \\ 2 & 2 & -1 \end{vmatrix}$ $= 6(1 - 2) - 1(-2 - 2) + 1(4 + 2)$ $= -6 + 4 + 6 = 4$.`,
+        t`In the $y$-column: $D_y = 1(-2 - 2) - 6(-1 - 1)$ $+ 1(2 - 2)$ $= -4 + 12 + 0 = 8$. In the $z$-column: $D_z = 1(-2 - 4) - 1(2 - 2)$ $+ 6(2 + 1)$ $= -6 + 0 + 18 = 12$.`,
         t`$x = \frac{4}{4} = 1$, $y = \frac{8}{4} = 2$, $z = \frac{12}{4} = 3$. Check in the third equation: $1 + 4 - 3 = 2$.`,
       ],
       answer: t`$x = 1$, $y = 2$, $z = 3$.`,

@@ -10,23 +10,83 @@ export const c08: Concept = {
     reveal: t`No. The determinant is a number, $4 - 6 = -2$, so $2$ times it is $-4$: the $2$ can go into one row. The matrix is the whole array, so the $2$ multiplies every entry: $\begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}$. Its determinant is $16 - 24 = -8$, not $-4$.`,
   },
   explanation: {
-    intuition: t`A matrix is a table of numbers, like a sales sheet with a row for each shop and a column for each subject. To add two such sheets you add the matching cells, so both must have the same shape. Scaling the sheet by $k$ scales every cell. All of it works entry by entry: ordinary arithmetic done in each position at once.`,
-    formal: t`**Adding and subtracting.** Only matrices of the **same order** can be added: $(A + B)_{ij} = a_{ij} + b_{ij}$. Subtracting is adding the negative: $A - B = A + (-1)B$. A $2 \times 3$ and a $3 \times 2$ cannot be added.
-
-**Scalar multiple.** $(kA)_{ij} = k\,a_{ij}$: $k$ multiplies **every** entry. In a determinant a factor goes into one row only; in a matrix it goes everywhere. So $kI$ has $k$ on the diagonal and $0$ elsewhere.
-
-**Rules.** $A + B = B + A$, $(A + B) + C = A + (B + C)$, $A + O = A$, $k(A + B) = kA + kB$.
-
-**Equal matrices.** Same order and every pair of matching entries equal. One matrix equation gives one ordinary equation per entry.
-
-**Matrix equations.** Solve them like number equations: a term that crosses the $=$ sign changes sign, and $kX = M$ gives $X = \frac{1}{k}M$. For two equations in $X$ and $Y$, eliminate one unknown as in simultaneous equations.`,
+    intuition: [
+      t`Recall: a **matrix** is a table of numbers, set out in rows and columns.`,
+      t`Think of a sales sheet, with a row for each shop and a column for each subject.`,
+      t`To add two such sheets, add the **matching cells**: the ones in the same row and the same column.`,
+      t`So both sheets must have the same shape: the same number of rows and of columns.`,
+      t`Scaling the sheet by a number $k$ multiplies every cell by $k$.`,
+      t`All of it works **entry by entry**: ordinary arithmetic, done in each position at once.`,
+    ],
+    formal: [
+      {
+        title: "Adding matrices",
+        points: [
+          t`Recall: a matrix of **order** $m \times n$ has $m$ rows and $n$ columns.`,
+          t`Recall: $a_{ij}$ is the entry of $A$ in row $i$, column $j$.`,
+          t`Two matrices have the **same order** when they have the same number of rows and of columns.`,
+          t`Only matrices of the same order can be added.`,
+          t`Add the **matching entries**, the ones in the same position: $(A + B)_{ij} = a_{ij} + b_{ij}$.`,
+          t`So a $2 \times 3$ and a $3 \times 2$ matrix cannot be added.`,
+        ],
+      },
+      {
+        title: "Multiplying by a scalar",
+        points: [
+          t`A **scalar** is an ordinary number, not a matrix.`,
+          t`The **scalar multiple** $kA$ multiplies **every** entry of $A$ by $k$: $(kA)_{ij} = k\,a_{ij}$.`,
+          t`In a determinant a factor goes into one row only; in a matrix it goes into every entry.`,
+          t`Recall: the identity matrix $I$ has $1$ on its diagonal and $0$ elsewhere.`,
+          t`So $kI$ has $k$ on the diagonal and $0$ elsewhere.`,
+        ],
+      },
+      {
+        title: "Subtracting matrices",
+        points: [
+          t`The **negative** $-B = (-1)B$ is $B$ with the sign of every entry changed.`,
+          t`Subtracting is adding the negative: $A - B = A + (-1)B$.`,
+          t`So subtract the matching entries: $(A - B)_{ij} = a_{ij} - b_{ij}$.`,
+          t`Subtracting a negative entry adds it: $a - (-b) = a + b$.`,
+        ],
+      },
+      {
+        title: "Rules of addition",
+        points: [
+          t`Recall: the **zero matrix** $O$ has every entry $0$.`,
+          t`The order of adding doesn't matter: $A + B = B + A$.`,
+          t`The grouping doesn't matter: $(A + B) + C = A + (B + C)$.`,
+          t`Adding $O$ changes nothing: $A + O = A$.`,
+          t`A scalar multiplies each matrix in a sum: $k(A + B) = kA + kB$.`,
+          t`These hold for matrices of the same order, because they hold for the numbers in each entry.`,
+        ],
+      },
+      {
+        title: "Equal matrices",
+        points: [
+          t`Two matrices are **equal** when they have the same order and all their matching entries are equal.`,
+          t`A **matrix equation** says that two matrices are equal.`,
+          t`So one matrix equation gives one ordinary equation for each entry.`,
+          t`For example, $\begin{bmatrix} x & 2 \end{bmatrix} = \begin{bmatrix} 5 & 2 \end{bmatrix}$ gives $x = 5$.`,
+        ],
+      },
+      {
+        title: "Solving matrix equations",
+        points: [
+          t`Solve a matrix equation for an unknown matrix $X$ just as you would a number equation.`,
+          t`A term that crosses the $=$ sign changes sign: $pA + kX = C$ gives $kX = C - pA$.`,
+          t`Then multiply every entry by $\frac{1}{k}$: $kX = M$ gives $X = \frac{1}{k}M$.`,
+          t`With two equations in $X$ and $Y$, remove one unknown, as in simultaneous equations.`,
+          t`To remove it, add or subtract the two equations, after scaling one if needed.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $X$ and $Y$ if $2X - Y = \begin{bmatrix} 3 & -1 \\ 4 & 2 \end{bmatrix}$ and $X + Y = \begin{bmatrix} 3 & 4 \\ -1 & 1 \end{bmatrix}$.`,
       steps: [
         t`Adding the two equations removes $Y$: $(2X - Y) + (X + Y) = 3X$.`,
-        t`Add entry by entry: $3X = \begin{bmatrix} 3 + 3 & -1 + 4 \\ 4 + (-1) & 2 + 1 \end{bmatrix} = \begin{bmatrix} 6 & 3 \\ 3 & 3 \end{bmatrix}$.`,
+        t`Add entry by entry: $3X = \begin{bmatrix} 3 + 3 & -1 + 4 \\ 4 + (-1) & 2 + 1 \end{bmatrix}$, so $3X = \begin{bmatrix} 6 & 3 \\ 3 & 3 \end{bmatrix}$.`,
         t`Multiply every entry by $\frac{1}{3}$: $X = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$.`,
-        t`From $X + Y$: $Y = \begin{bmatrix} 3 & 4 \\ -1 & 1 \end{bmatrix} - \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 3 \\ -2 & 0 \end{bmatrix}$. Check: $2X - Y = \begin{bmatrix} 4 - 1 & 2 - 3 \\ 2 - (-2) & 2 - 0 \end{bmatrix} = \begin{bmatrix} 3 & -1 \\ 4 & 2 \end{bmatrix}$.`,
+        t`From $X + Y$: $Y = \begin{bmatrix} 3 & 4 \\ -1 & 1 \end{bmatrix} - \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$, so $Y = \begin{bmatrix} 1 & 3 \\ -2 & 0 \end{bmatrix}$. Check: $2X - Y = \begin{bmatrix} 4 - 1 & 2 - 3 \\ 2 - (-2) & 2 - 0 \end{bmatrix}$, which is $\begin{bmatrix} 3 & -1 \\ 4 & 2 \end{bmatrix}$.`,
       ],
       answer: t`$X = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$ and $Y = \begin{bmatrix} 1 & 3 \\ -2 & 0 \end{bmatrix}$.`,
     },
