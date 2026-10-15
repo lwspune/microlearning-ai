@@ -596,3 +596,7 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
 - Wave 2 done 2026-10-15: 27 concepts, 159 items (Angle and its Measurement
   7 · Trigonometric Functions 10 · Compound and Multiple Angles 10), same
   gates; published and merged.
+- Wave 3 done 2026-10-15: 34 concepts, 204 items (Straight Line 12 · Circle
+  8 · Conic Sections 14); equation answers verified as loci; same gates;
+  published and merged. The book teaches asymptotes and the hyperbola's
+  director circle without exercises, so those items are authored.
