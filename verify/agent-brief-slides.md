@@ -4,7 +4,9 @@ The prompt that sends you this brief gives: the chapter slug (`<chapter>`), its 
 your concept (`CNN`) and its file, and any figure that clearly teaches it. Repo:
 C:\Users\vilas\Downloads\MicroLearningAI, on the chapter's rework branch; do not commit, do not switch
 branches. Other agents edit the chapter's other concepts at the same time: touch only your concept file (and
-its verifier model `verify/models/<pkg>/cNN.py`, only for a misconception split).
+its verifier model `verify/models/<pkg>/cNN.py`, only for a misconception split). Keep your own temporary
+files in a subfolder named for you (`<scratchpad>/<chapter>-cNN/`): other agents share the scratchpad, and a
+helper script with a common name like `edit.py` gets overwritten.
 
 ## Why
 The owner reviewed Angle Measurement and asked for: every term defined before it is used; formal slides with real
@@ -34,7 +36,8 @@ Angle Measurement, Trigonometry – I and Trigonometry – II were reworked that
 - **Define every term** in plain words in the point that first uses it, before later points rely on it. The idea
   slide defines the everyday words; formal slides don't repeat it. A term an earlier concept of the chapter
   defines gets a short "Recall:" at most. Keep every fact, rule, formula and example the slides had: reorganise,
-  don't drop. A claim that holds only for some angles says so ("for an acute $A$").
+  don't drop. A claim that holds only for some angles says so ("for an acute $A$"). Never name a concept
+  by its code (C01, C04…) in anything a student reads: say what it taught ("the product rule").
 - **Figures:** a `visual: true` concept needs a figure on the idea slide and **every formal section**. Others:
   add one only where a picture genuinely teaches; don't decorate pure algebra. **Figure step n appears with
   point n**: number each element's `step` to the point that names it; elements always present (axes, the
