@@ -476,7 +476,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   split into M6 and M7. Trigonometry – II (`compound-and-multiple-angles`,
   C01–C10) done 2026-10-15 the same way; no concept there is visual, so
   figures only where a picture teaches (C01, C03–C08, C10); no misconception
-  split.
+  split. Sets and Relations (C01–C16) done 2026-10-15: figures on every
+  formal slide of C03–C11, arrow diagrams and grids in C12–C16; no split
+  (C02-M4 and C12-M2 are borderline, left for the owner).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
