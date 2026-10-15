@@ -69,6 +69,12 @@ row, each crossing the world (~250 ms). The same action run from Pune takes
   of a call to the auth server, and fold "next question + solution" into the
   `record_attempt` call.
 
+## "Show all" on point-by-point slides (parked 2026-10-15)
+
+Slides reveal one point per click (PLAN.md "Slides as points"). A small
+"Show all" link below the points would help quick readers and revision. The
+owner chose not to add it for now.
+
 ## Also parked (details in PLAN.md)
 
 - Self sign-up; Google sign-in; staff reset a student's password

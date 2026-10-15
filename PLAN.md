@@ -471,6 +471,25 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rule 17
   before it is published: its visual concepts need formal sections.
 
+## Slides as points, one per click (approved 2026-10-15, branch `progressive-points`)
+
+The owner's review of C02's idea slide: one bulky paragraph overloads; write
+single, simple sentences as points that appear one per click, so
+understanding builds step by step.
+- **Content:** the idea slide and each formal slide may be a list of points:
+  one sentence each (about 20 words at most), up to 6 per slide; a formal
+  section in points has its own short title. Old text keeps working as a
+  paragraph.
+- **Deck:** Next (button, → key, swipe) shows the next point; after the last
+  one it moves on. Back hides the last point. A slide already read shows all
+  its points. New points are announced to screen readers.
+- **Figures follow the points:** figure step n appears with point n.
+- **Phones:** points stay above the figure (owner, 2026-10-15). No "Show all"
+  link (parked).
+- **Preview:** `/review/<chapter>/<concept>/slides` clicks through like the
+  lesson, so unpublished slides can be checked as learners see them.
+- **Content first:** all of Angle Measurement, C01–C07 (owner's choice).
+
 ## Answering: tap to answer, retry until right (approved 2026-10-15)
 
 The owner's choices after C01: (b) tap an option to answer, no Check step;
