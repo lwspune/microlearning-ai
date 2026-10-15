@@ -51,10 +51,10 @@ def _rank_from(before, p):
 
 def m1(v, p):
     """Takes the number of words before the word as its rank: forgets the + 1 (rank asked), or
-    adds it when the count before is asked; for the k-th word, gives the word with k words before it."""
+    adds it when the count before is asked."""
     w, _ = _letters(p)
     if p["ask"] == "word":
-        return Symbol(_listing(p)[int(v["k"])])
+        raise ValueError("the k-th word is C08-M5")
     before = _listing(p).index(w)
     return Integer(before if p["ask"] == "rank" else before + 1)
 
@@ -103,4 +103,11 @@ def m4(v, p):
     return _rank_from(before, p)
 
 
-MODELS = {"key": key, "C08-M1": m1, "C08-M2": m2, "C08-M3": m3, "C08-M4": m4}
+def m5(v, p):
+    """For the k-th word, takes k as the number of words before it: gives the (k + 1)-th word."""
+    if p["ask"] != "word":
+        raise ValueError("modelled on k-th word questions only")
+    return Symbol(_listing(p)[int(v["k"])])
+
+
+MODELS = {"key": key, "C08-M1": m1, "C08-M2": m2, "C08-M3": m3, "C08-M4": m4, "C08-M5": m5}

@@ -37,7 +37,7 @@ export const c08: Concept = {
   misconceptions: [
     {
       id: "C08-M1",
-      mistake: "Taking the number of words before the word as its rank (and, for the kth word, finding the word with k words before it)",
+      mistake: "Taking the number of words before the word as its rank, or giving the rank when the number before is asked",
       remediation: t`Adding the blocks gives the number of words **before** yours. Your word comes right after them, so its rank is that count $+ 1$.`,
       fallback: { kind: "none" },
     },
@@ -59,11 +59,17 @@ export const c08: Concept = {
       remediation: "After fixing the first letter, repeat the count for the second place, the third, and so on. Every place can push the word further down the list.",
       fallback: { kind: "none" },
     },
+    {
+      id: "C08-M5",
+      mistake: "For the kth word, taking k as the number of words before it, so giving the (k + 1)th word",
+      remediation: t`The $k$th word has only $k - 1$ words before it. Count on from the start of its block until you reach place $k$ itself, not the place after it.`,
+      fallback: { kind: "none" },
+    },
   ],
   engineNotes: [
     "C08-M2 gives the key only for the last word (letters in reverse alphabetical order), C08-M3 only for the first word (letters in order), and C08-M4 whenever the letters after the first are in order (e.g. RAMN). Draw diagnosing items from other words.",
     "C08-M3 on a rank question gives more than n! whenever the first letter is not the smallest, which a student can rule out; tag it on rank items only when the first letter is the smallest (as in C08-Q3 and C08-Q6), or on kth-word items.",
-    "C08-M2 is modelled on rank questions only; C08-Q1 (the kth word) tags C08-M1, C08-M3 and C08-M4.",
+    "C08-M2 is modelled on rank questions only, and C08-M1 on rank and count-before questions; C08-Q1 (the kth word) tags C08-M5, C08-M3 and C08-M4.",
   ],
   items: [
     {
@@ -73,7 +79,7 @@ export const c08: Concept = {
       verify: { kind: "value", inputs: { k: "40" }, params: { word: "REMAIN", ask: "word" } },
       options: [
         { key: "A", text: t`AINMRE`, correct: true, value: "AINMRE" },
-        { key: "B", text: t`AINREM`, correct: false, misconceptionId: "C08-M1", value: "AINREM" },
+        { key: "B", text: t`AINREM`, correct: false, misconceptionId: "C08-M5", value: "AINREM" },
         { key: "C", text: t`AEMRNI`, correct: false, misconceptionId: "C08-M3", value: "AEMRNI" },
         { key: "D", text: t`AEIMNR`, correct: false, misconceptionId: "C08-M4", value: "AEIMNR" },
       ],
