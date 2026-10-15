@@ -62,8 +62,9 @@ a student has used: retire it instead of removing it.
    student has already seen their answers.
 6. **[R]** An option's `text` must show exactly its `value`. The verifier
    checks `value`, not the rendered text.
-7. **[S]** At least 5 items per concept, so mastery (2–3 in a row on fresh
-   items) and the review queue never repeat an item too soon.
+7. **[S]** At least 5 items per concept, so mastery (3 different questions
+   right, misses retried until right) and the review queue never repeat an
+   item too soon.
 8. **[S]** Exactly one correct option, which carries no misconception, and
    **exactly 4 options** (owner's rule, 2026-10-15). The 3 wrong ones each
    come from a modelled mistake; where no conceptual one fits, a modelled

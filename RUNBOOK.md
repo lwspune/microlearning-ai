@@ -245,6 +245,10 @@ Guests are anonymous logins with no profile.
    an applied migration**: fix forward with a new one.
 2. Write the DB tests first. They run as `postgres` through the Management API
    inside transactions that are **always rolled back** (`supabase/tests/sql.ts`).
+   The project is the live database, so test a migration *before* pushing it:
+   `DB_TEST_PENDING=supabase/migrations/<file>.sql` runs it first inside each
+   rolled-back transaction. Run only the affected test files, with
+   `--no-file-parallelism`: DDL in every transaction otherwise queues on locks.
 3. Dry-run the SQL in a rolled-back transaction, then `npx supabase db push --dry-run`,
    then `npx supabase db push --yes`.
 4. Run `npm run test:db`, then regenerate types with `npm run db:types`.

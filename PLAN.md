@@ -43,7 +43,9 @@ attempts        user, item, chosen_option, correct, misconception_id, at
 - Concept states: `locked → available → learning → mastered → review_due`.
 - Unlock: a concept opens when **all** its prerequisites are `mastered`.
 - Mastery v1: 2–3 correct in a row on fresh items, then Leitner-style spaced
-  review. Bayesian knowledge tracing (BKT) only once real data exists to tune it.
+  review. **v2 (2026-10-15):** each question counts by its latest answer;
+  mastered at 3 different questions right with none left to retry (a miss
+  comes back until answered right). Bayesian knowledge tracing (BKT) only once real data exists to tune it.
 - Remediation: a wrong option → the hint for its misconception. A second miss
   on the same misconception → route to that misconception's `fallback_prereq`.
 - Unlock, mastery and routing are pure functions, built test-first.
@@ -468,6 +470,25 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   a time, angle and trigonometry chapters first.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rule 17
   before it is published: its visual concepts need formal sections.
+
+## Answering: tap to answer, retry until right (approved 2026-10-15)
+
+The owner's choices after C01: (b) tap an option to answer, no Check step;
+wrong questions are retried until right and count toward mastery, instead of
+a miss resetting a run "in a row" and the only help being to reread whole
+topics; and measure the wait after answering.
+- **Tap to answer** (branch `tap-to-answer`): each option is a button; the
+  tapped one shows "Checking…". A mis-tap counts (owner's choice).
+- **Retry until right** (branch `retry-wrong`): `record_attempt` counts each
+  question by its latest answer; mastered at 3 right with none to retry;
+  `learner_concept_state.to_retry`. `nextItem` brings a miss back after one
+  other question. Pill: "2 of 3 right · 1 to retry"; "Try again" on a retry.
+- **The wait** (measured 2026-10-15 on the live site): 2.4–3.4 s from tap to
+  feedback, 2.0–2.9 s of it the server action. Vercel runs functions in
+  `iad1` (Washington) while Supabase is in `ap-south-1` (Mumbai): ~8 database
+  round trips per answer cross the world. The same action from Pune takes
+  ~0.3 s. Fix proposed: functions in `bom1` (`vercel.json` `regions`),
+  awaiting the owner's go-ahead.
 
 ## Lesson slides: definitions, figures, rotation (approved 2026-10-15, branch `lesson-slide-figures`)
 
