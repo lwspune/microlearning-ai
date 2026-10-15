@@ -447,6 +447,49 @@ gate can come back on for students.
   (the origin's value), C05-Q4's "1 corner", C04's "Can't tell without the
   objective function" on every C04 item.
 
+### 5. Formal slides: titles, figures, defined terms (logged 2026-10-15, open)
+The owner's review of Angle C01 (2026-10-15): terms used before they were
+defined, every formal slide titled "Precisely" and text only, quadrants
+discussed without a plane, angles drawn instead of turned. Fixed for C01
+and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
+- **Scope:** every published concept's `formal` text (186 concepts, 773
+  formal slides). After the engine change, 227 slides still have no lead-in
+  and keep "Precisely"; every visual concept's formal slides have no figure.
+- **Blast radius:** content only (the engine already takes both forms);
+  each rewritten concept is re-seeded. No item, option or attempt changes.
+- **Does it really apply:** titles and definitions, yes, everywhere. Figures
+  only where a picture teaches (visual concepts). Rotation only where
+  something turns (angles, the unit circle, radians, arg z).
+- **Also check while there:** a misconception that bundles two different
+  student moves, so its feedback fits only one (C01-M1 told a student who
+  picked 135° for 945° about a minus sign the question didn't have; split
+  into M1 and M6).
+- **Recommendation:** wait for the owner's verdict on C01; then a chapter at
+  a time, angle and trigonometry chapters first.
+- **Wave 4** (branch `std11-stats-probability`, drafts) must meet rule 17
+  before it is published: its visual concepts need formal sections.
+
+## Lesson slides: definitions, figures, rotation (approved 2026-10-15, branch `lesson-slide-figures`)
+
+From the owner's review of Angle C01's slides. Decisions: formal slides are
+titled by their bold lead-in; arms turn at 90° a second; built on a branch
+of its own, apart from wave 4.
+- **A. Formal slides** (`src/lessons/deck.ts`): titled by the section's bold
+  lead-in (else the slide it continues; "Precisely" only when there is
+  nothing before); a paragraph ending in a colon keeps what it introduces;
+  `formal` may be a list of sections, each with its own figure, played like
+  the idea slide's. Titles render maths.
+- **B. Turning arms** (`turn` figure element): the arm rotates from the
+  initial to the terminal arm at 90°/s, its trace drawn alongside and
+  winding outward past a full turn; the next step waits for it. Solutions
+  keep quick figures.
+- **C. C01 rewritten** as the pilot: terms defined, a figure on every
+  formal slide, the −820° spin turned; C01-M1 split into M1 and M6.
+- **D. Rules:** AUTHORING.md 17–19; checked by the validator (17).
+- **Preview:** `/review/<chapter>/<concept>/slides` shows the slides from the
+  files, since the lesson reads published content.
+- **E. Backfill:** ledger 5, after the owner's verdict on C01.
+
 ## Content: all 30 concepts (published 2026-10-14)
 
 - All 30 Complex Numbers concepts are approved and seeded: 159 items, 0

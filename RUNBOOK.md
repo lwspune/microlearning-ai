@@ -184,6 +184,11 @@ Guests are anonymous logins with no profile.
    each "After step n" frame, labels clear of axis numbers and of each other.
    A per-figure contact sheet beats a full-page screenshot (figures are too
    small to judge at full-page scale): `node scripts/figure-sheet.mjs <outDir> <chapter> <slug>...`.
+   Then read the lesson as a learner meets it, on `/review/<chapter>/<slug>/slides`
+   (the live deck reads published content, so this is the only place to see
+   unpublished slides): every term defined before it is used, every formal
+   slide titled by its lead-in and, in a visual concept, with a figure that
+   shows what it says (AUTHORING.md 17–19). Watch each turning arm play.
 8. **Review:** the user approves on `/review`. Then set `status: "approved"`,
    commit, run `npm run content:seed`.
 9. **Remember the unlock consequence:** publishing a prerequisite *locks*

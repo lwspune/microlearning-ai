@@ -104,3 +104,26 @@ is. Figures are data ([types.ts](types.ts) `Figure`), drawn by
 16. **[S]** A question may show a figure with its stem (`item.figure`, e.g.
     "the shaded region is ..."). It is shown whole, so its elements carry no
     `step`, and it must not give the answer away (a solution figure may).
+
+## Lesson slides
+
+Asked for 2026-10-15 after the owner's review of Angle C01: terms used before
+they were defined, text-only "Precisely" slides, no plane where quadrants were
+discussed, arms that jumped instead of turning.
+
+17. **[S]** A new visual concept (`status: "draft"`) writes `formal` as
+    sections, one slide each, every one with a figure that shows what its
+    text says. Every section, in any concept, starts with a bold lead-in of
+    up to six words ending in a full stop or colon (`**Directed angle.**`):
+    it becomes the slide's title. (Older concepts keep `formal` as text,
+    split at blank lines; see the PLAN.md backfill ledger.)
+18. **[R]** Define every term the first time a learner meets it, in plain
+    words, before using it: "a **ray** is a half-line ...", "**clockwise**,
+    the way a clock's hands go". The idea slide defines the everyday words;
+    each formal slide defines its own term in its first sentence. Don't
+    repeat the idea slide on the formal slides.
+19. **[R]** Anything that turns, turns: use a `turn` element (it rotates at
+    90° a second and traces the angle) for angles on the idea, formal and
+    worked slides. Mark the initial arm (a `good` segment, labelled) and
+    label the terminal arm. Keep solution figures quick (arcs, no `turn`):
+    learners open them to check an answer, not to watch.
