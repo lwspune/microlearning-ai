@@ -330,6 +330,22 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*two different points/));
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*at least one shape/));
     });
+
+    it("rejects a turn with no arm or no turn", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            elements: [
+              { kind: "turn", r: 0, to: 30 },
+              { kind: "turn", r: 2, from: 45, to: 45 },
+              { kind: "turn", centre: [1, 0], r: 2, from: 10, to: -820 },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*positive/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*turn/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 3/));
+    });
   });
 
 });

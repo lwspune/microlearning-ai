@@ -25,7 +25,8 @@ import {
  * - `upTo`: worked example. Shows elements up to that step; the ones it
  *   introduces animate in.
  * - `stagger`: idea slide or solution. Shows everything; each step's elements
- *   animate in `stagger` seconds after the previous step's.
+ *   animate in `stagger` seconds after the previous step's, or once its arms
+ *   have stopped turning, whichever is later.
  * Animations are CSS (globals.css) and only run when the learner allows motion.
  */
 type Props = { figure: Figure; upTo?: number; stagger?: number; className?: string };
@@ -55,17 +56,47 @@ const LABEL_CHAR_PX = 8.5;
 /** Angle marks are drawn at a fixed size on screen. */
 const ANGLE_MARK_PX = 22;
 
-type Motion = { className?: string; style?: CSSProperties };
+/** How fast a turning arm rotates, and the size of the pieces its trace draws in. */
+const TURN_DEG_PER_S = 90;
+const TRACE_PIECE_DEG = 15;
 
-function motionFor(el: FigureElement, props: Props): Motion | null {
+type Turn = Extract<FigureElement, { kind: "turn" }>;
+const turnSeconds = (el: Turn) => Math.abs(el.to - (el.from ?? 0)) / TURN_DEG_PER_S;
+
+type Motion = { className?: string; style?: CSSProperties };
+/** `start`: seconds until the element animates in; absent when it is shown still. */
+type Timing = { motion: Motion; start?: number };
+
+const secs = (s: number) => `${+s.toFixed(3)}s`;
+
+/** When each step starts in sequence mode: `stagger` apart, or later while an arm is still turning. */
+function stepStarts(figure: Figure, stagger: number): number[] {
+  const last = Math.max(0, ...figure.elements.map((e) => e.step ?? 0));
+  const starts = [0, 0];
+  for (let s = 1; s < last; s++) {
+    const turns = figure.elements.filter((e): e is Turn => e.kind === "turn" && e.step === s).map(turnSeconds);
+    starts.push(starts[s] + Math.max(stagger, ...turns));
+  }
+  return starts;
+}
+
+const animateFrom = (start: number): Timing => ({ start, motion: { className: "fig-in", ...(start > 0 && { style: { animationDelay: secs(start) } }) } });
+
+function timingFor(el: FigureElement, props: Props, starts: number[]): Timing | null {
+  let start: number | undefined;
   if (props.upTo !== undefined) {
     if (el.step !== undefined && el.step > props.upTo) return null; // not yet
-    return el.step === props.upTo ? { className: "fig-in" } : {};
+    if (el.step === props.upTo) start = 0;
+  } else if (props.stagger !== undefined && el.step !== undefined) {
+    start = starts[el.step];
   }
-  if (props.stagger !== undefined && el.step !== undefined) {
-    return { className: "fig-in", style: { animationDelay: `${(el.step - 1) * props.stagger}s` } };
-  }
-  return {};
+  return start === undefined ? { motion: {} } : animateFrom(start);
+}
+
+/** A label fades in with its element; a turning arm's label waits for the arm to arrive. */
+function labelMotion(el: FigureElement, t: Timing): Motion {
+  if (t.start === undefined) return t.motion;
+  return animateFrom(t.start + (el.kind === "turn" ? turnSeconds(el) : 0)).motion;
 }
 
 /** Line-like strokes draw in instead of fading (unless dashed: dashes and draw-in both use the dash array). */
@@ -102,6 +133,8 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
       return el.axis === "x" ? [el.centre[0] + el.branch * el.a, el.centre[1]] : [el.centre[0], el.centre[1] + el.branch * el.a];
     case "arc":
       return polar(el.centre, el.r, (el.from + el.to) / 2);
+    case "turn":
+      return polar(el.centre ?? [0, 0], el.r, el.to);
     case "curve":
       return el.points.findLast(([x, y]) => x >= view.x[0] && x <= view.x[1] && y >= view.y[0] && y <= view.y[1]) ?? null;
     case "angle":
@@ -205,7 +238,7 @@ function Region({ el, id, view, f, color, motion }: { el: Extract<FigureElement,
   );
 }
 
-function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: string; view: View; f: Frame; motion: Motion }) {
+function ElementView({ el, id, view, f, motion, start }: { el: FigureElement; id: string; view: View; f: Frame; motion: Motion; start?: number }) {
   const color = TONE[el.tone ?? "accent"];
   const stroke = { stroke: color, strokeWidth: 2.5, fill: "none", strokeLinecap: "round" as const };
   // Draw-in needs pathLength={1}, but that would stretch the dash pattern over the whole stroke.
@@ -274,6 +307,8 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
       const d = el.points.map((p, i) => `${i === 0 ? "M" : "L"} ${f.px(p).map(fmt).join(" ")}`).join(" ");
       return <path {...drawn(motion, el.dashed)} {...stroke} {...dash(el.dashed)} strokeLinejoin="round" d={d} />;
     }
+    case "turn":
+      return <TurnView el={el} f={f} color={color} start={start} />;
     case "angle":
       return <path {...drawn(motion)} {...stroke} strokeWidth={1.75} pathLength={1} d={arcPath(f, el.at, ANGLE_MARK_PX / f.scale, el.from, el.to)} />;
     case "label":
@@ -281,6 +316,86 @@ function ElementView({ el, id, view, f, motion }: { el: FigureElement; id: strin
     case "region":
       return <Region el={el} id={id} view={view} f={f} color={color} motion={motion} />;
   }
+}
+
+/**
+ * The trace's points, in pieces of TRACE_PIECE_DEG along the sweep. It keeps a fixed radius
+ * within one turn and winds outward past it, so the turns stay apart.
+ */
+function tracePieces(el: Turn): { from: number; to: number; points: Pt[] }[] {
+  const centre = el.centre ?? [0, 0];
+  const from = el.from ?? 0;
+  const sweep = Math.abs(el.to - from);
+  const dir = Math.sign(el.to - from);
+  const grow = sweep > 360 ? 0.15 * el.r : 0;
+  const at = (phi: number) => polar(centre, el.r * 0.3 + (grow * phi) / 360, from + dir * phi);
+  const pieces = [];
+  for (let a = 0; a < sweep; a += TRACE_PIECE_DEG) {
+    const b = Math.min(a + TRACE_PIECE_DEG, sweep);
+    const n = Math.max(2, Math.ceil((b - a) / 3));
+    pieces.push({ from: a, to: b, points: Array.from({ length: n + 1 }, (_, i) => at(a + ((b - a) * i) / n)) });
+  }
+  return pieces;
+}
+
+/**
+ * A turning arm. The arm is drawn at its terminal position; animated, it rotates there from
+ * the initial arm at a steady pace while its trace draws in alongside, piece by piece.
+ */
+function TurnView({ el, f, color, start }: { el: Turn; f: Frame; color: string; start?: number }) {
+  const centre = el.centre ?? [0, 0];
+  const tip = polar(centre, el.r, el.to);
+  const [cx, cy] = f.px(centre);
+  const [tx, ty] = f.px(tip);
+  const stroke = { stroke: color, strokeWidth: 2.5, fill: "none", strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const path = (pts: Pt[]) => pts.map((p, i) => `${i === 0 ? "M" : "L"} ${f.px(p).map(fmt).join(" ")}`).join(" ");
+  const pieces = tracePieces(el);
+  const arm = (
+    <>
+      <line {...stroke} x1={fmt(cx)} y1={fmt(cy)} x2={fmt(tx)} y2={fmt(ty)} />
+      <polygon points={arrowHead(f, centre, tip)} fill={color} />
+    </>
+  );
+  if (start === undefined) {
+    return (
+      <g>
+        <path {...stroke} d={path(pieces.flatMap((p, i) => (i === 0 ? p.points : p.points.slice(1))))} />
+        {arm}
+      </g>
+    );
+  }
+  const from = el.from ?? 0;
+  const turning = {
+    "--turn-from": `${el.to - from}deg`,
+    transformOrigin: `${fmt(cx)}px ${fmt(cy)}px`,
+    transformBox: "view-box",
+    animationDuration: secs(turnSeconds(el)),
+    ...(start > 0 && { animationDelay: secs(start) }),
+  } as CSSProperties;
+  return (
+    <g>
+      {pieces.map((p, i) => (
+        <path
+          key={i}
+          className="fig-draw"
+          style={{
+            animationDelay: secs(start + p.from / TURN_DEG_PER_S),
+            animationDuration: secs((p.to - p.from) / TURN_DEG_PER_S),
+            animationTimingFunction: "linear",
+          }}
+          {...stroke}
+          pathLength={1}
+          d={path(p.points)}
+        />
+      ))}
+      {/* Hidden until it starts: waiting, the arm would sit on the initial arm. */}
+      <g {...animateFrom(start).motion}>
+        <g className="fig-turn" style={turning}>
+          {arm}
+        </g>
+      </g>
+    </g>
+  );
 }
 
 function Label({ el, view, f, motion }: { el: FigureElement; view: View; f: Frame; motion: Motion }) {
@@ -317,9 +432,12 @@ export function FigureView(props: Props) {
   const { figure, className } = props;
   const id = useId().replace(/[^a-zA-Z0-9-]/g, "");
   const f = frameFor(figure.view);
+  const starts = stepStarts(figure, props.stagger ?? 0);
   const visible = figure.elements
-    .map((el, i) => ({ el, i, motion: motionFor(el, props) }))
-    .filter((v): v is { el: FigureElement; i: number; motion: Motion } => v.motion !== null);
+    .flatMap((el, i) => {
+      const t = timingFor(el, props, starts);
+      return t ? [{ el, i, ...t }] : [];
+    });
   // Regions underneath the axes; everything else above; labels on top.
   const regions = visible.filter((v) => v.el.kind === "region");
   const others = visible.filter((v) => v.el.kind !== "region");
@@ -337,11 +455,11 @@ export function FigureView(props: Props) {
         <ElementView key={i} el={el} id={`${id}-r${i}`} view={figure.view} f={f} motion={motion} />
       ))}
       {figure.axes !== "none" && <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />}
-      {others.map(({ el, i, motion }) => (
-        <ElementView key={i} el={el} id={`${id}-e${i}`} view={figure.view} f={f} motion={motion} />
+      {others.map(({ el, i, motion, start }) => (
+        <ElementView key={i} el={el} id={`${id}-e${i}`} view={figure.view} f={f} motion={motion} start={start} />
       ))}
-      {visible.map(({ el, i, motion }) => (
-        <Label key={`l${i}`} el={el} view={figure.view} f={f} motion={motion.className ? { ...motion, className: "fig-in" } : motion} />
+      {visible.map(({ el, i, motion, start }) => (
+        <Label key={`l${i}`} el={el} view={figure.view} f={f} motion={labelMotion(el, { motion, start })} />
       ))}
     </svg>
   );

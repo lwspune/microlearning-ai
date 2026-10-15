@@ -128,6 +128,13 @@ export type FigureElement = {
   | { kind: "curve"; points: Pt[]; dashed?: boolean }
   /** Angles in degrees, anticlockwise from `from` to `to`. */
   | { kind: "arc"; centre: Pt; r: number; from: number; to: number }
+  /**
+   * An arm of length `r` turning about `centre` (default the origin) from `from` (default 0)
+   * to `to` degrees, tracing the angle it sweeps. Positive is anticlockwise; past a full turn
+   * the trace winds outward. It rotates at a steady pace when it animates; still, it shows the
+   * terminal arm. Its label sits at the arm's tip.
+   */
+  | { kind: "turn"; centre?: Pt; r: number; from?: number; to: number }
   /** A small arc marking an angle at `at`, anticlockwise from `from` to `to` degrees. */
   | { kind: "angle"; at: Pt; from: number; to: number }
   /** Text alone, anchored at a point. */

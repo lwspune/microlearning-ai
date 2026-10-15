@@ -260,6 +260,10 @@ function elementProblems(el: FigureElement): string[] {
       return el.a > 0 && el.b > 0 ? [] : ["semi-axes must be positive"];
     case "angle":
       return finitePts(el.at) && finite(el.from, el.to) ? [] : ["coordinates must be finite numbers"];
+    case "turn":
+      if (!finitePts(el.centre ?? [0, 0]) || !finite(el.r, el.from ?? 0, el.to)) return ["coordinates must be finite numbers"];
+      if (el.r <= 0) return ["the arm's length must be positive"];
+      return el.to === (el.from ?? 0) ? ["a turn needs different start and end angles"] : [];
     case "curve":
       if (el.points.length < 2) return ["a curve needs at least two points"];
       return finitePts(...el.points) ? [] : ["coordinates must be finite numbers"];

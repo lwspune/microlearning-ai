@@ -150,3 +150,77 @@ describe("FigureView", () => {
     expect(out).toContain("animation-delay:2s");
   });
 });
+
+describe("FigureView: a turning arm", () => {
+  // 8 x 8 view, 50px per unit: the origin is at (200, 200).
+  const turnFig = (turn: Partial<Extract<Figure["elements"][number], { kind: "turn" }>>, more: Figure["elements"] = []): Figure => ({
+    alt: "An arm turning about the origin",
+    axes: "none",
+    view: { x: [-4, 4], y: [-4, 4] },
+    elements: [{ kind: "turn", r: 2, to: 90, step: 1, ...turn }, ...more],
+  });
+  const arm = (out: string) => out.match(/<g class="fig-turn" style="([^"]*)">\s*<line[^>]*x2="([\d.-]+)" y2="([\d.-]+)"/);
+  const trace = (out: string) => [...out.matchAll(/<path class="fig-draw" style="([^"]*)"[^>]*d="M ([\d.-]+) ([\d.-]+)[^"]*?([\d.-]+) ([\d.-]+)"/g)];
+  const seconds = (style: string, prop: string) => Number(style.match(new RegExp(`${prop}:([\\d.]+)s`))?.[1] ?? 0);
+
+  it("without motion, shows the arm still at its terminal position", () => {
+    const out = html({ figure: turnFig({ to: 90 }) });
+    expect(out).not.toContain("fig-turn");
+    expect(out).toMatch(/<line[^>]*x1="200" y1="200" x2="200" y2="100"/);
+  });
+
+  it("rotates the arm from the initial arm to the terminal arm at 90° a second", () => {
+    const anti = arm(html({ figure: turnFig({ to: 90 }), stagger: 1 }));
+    expect(anti).not.toBeNull();
+    // Drawn at its end (90°) and rotated back to its start: +90° on screen is clockwise.
+    expect([anti![2], anti![3]]).toEqual(["200", "100"]);
+    expect(anti![1]).toContain("--turn-from:90deg");
+    expect(seconds(anti![1], "animation-duration")).toBe(1);
+
+    const clockwise = arm(html({ figure: turnFig({ to: -820 }), upTo: 1 }));
+    expect(clockwise![1]).toContain("--turn-from:-820deg");
+    expect(seconds(clockwise![1], "animation-duration")).toBeCloseTo(9.11, 2);
+  });
+
+  it("pivots the arm about the turn's centre", () => {
+    const out = arm(html({ figure: turnFig({ centre: [1, 0], to: 45 }), stagger: 1 }));
+    expect(out![1]).toContain("transform-origin:250px 200px");
+  });
+
+  it("traces the angle swept in pieces that keep pace with the arm", () => {
+    const pieces = trace(html({ figure: turnFig({ to: 90 }), stagger: 1 }));
+    expect(pieces.length).toBeGreaterThan(2);
+    const starts = pieces.map(([, style]) => seconds(style, "animation-delay"));
+    const ends = pieces.map(([, style]) => seconds(style, "animation-delay") + seconds(style, "animation-duration"));
+    expect(starts[0]).toBe(0);
+    for (let i = 1; i < pieces.length; i++) expect(starts[i]).toBeCloseTo(ends[i - 1], 2);
+    expect(ends.at(-1)).toBeCloseTo(1, 2);
+    for (const [, style] of pieces) expect(style).toContain("animation-timing-function:linear");
+  });
+
+  it("winds the trace outward past a full turn, so the turns don't overlap", () => {
+    const radius = (x: string, y: string) => Math.hypot(+x - 200, +y - 200);
+    const one = trace(html({ figure: turnFig({ to: 270 }), stagger: 1 }));
+    const two = trace(html({ figure: turnFig({ to: 720 }), stagger: 1 }));
+    expect(radius(one[0][2], one[0][3])).toBeCloseTo(radius(one.at(-1)![4], one.at(-1)![5]), 0);
+    expect(radius(two.at(-1)![4], two.at(-1)![5]) - radius(two[0][2], two[0][3])).toBeGreaterThan(20);
+  });
+
+  it("starts the next step only when the arm has stopped", () => {
+    const out = html({ figure: turnFig({ to: 360 }, [{ kind: "label", at: [1, 1], label: "next", step: 2 }]), stagger: 1 });
+    const next = out.match(/<text[^>]*style="animation-delay:([\d.]+)s"[^>]*>next</);
+    expect(Number(next![1])).toBe(4);
+  });
+
+  it("keeps a later step's arm hidden until it starts to turn", () => {
+    const out = html({ figure: turnFig({ to: 90 }, [{ kind: "turn", r: 1, to: 45, step: 2 }]), stagger: 1 });
+    const later = out.match(/<g class="fig-in" style="animation-delay:([\d.]+)s"><g class="fig-turn" style="[^"]*--turn-from:45deg/);
+    expect(Number(later![1])).toBe(1);
+  });
+
+  it("shows the arm's label when the arm arrives, not before", () => {
+    const out = html({ figure: turnFig({ to: 180, label: "terminal arm" }), upTo: 1 });
+    const label = out.match(/<text[^>]*style="animation-delay:([\d.]+)s"[^>]*>terminal arm</);
+    expect(Number(label![1])).toBe(2);
+  });
+});

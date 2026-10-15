@@ -136,6 +136,20 @@ body {
     stroke-dasharray: 1;
     animation: fig-draw 0.8s ease-out both;
   }
+  /* A turning arm: drawn at its terminal position, rotated back by --turn-from at the start.
+     FigureView sets the duration (a steady pace) and the pivot. */
+  .fig-turn {
+    animation: fig-turn linear both;
+  }
+}
+
+@keyframes fig-turn {
+  from {
+    transform: rotate(var(--turn-from));
+  }
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 @keyframes fig-in {
