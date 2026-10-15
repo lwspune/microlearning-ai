@@ -6,6 +6,7 @@ import { RichInline, RichText } from "@/components/RichText";
 import { chapters } from "@/content/chapters";
 import type { Fallback, Figure, ItemSource } from "@/content/types";
 import { FigureView } from "@/figures/FigureView";
+import { formalSlides } from "@/lessons/deck";
 import { findConcept, reviewEnabled } from "@/lib/review";
 
 export function generateStaticParams() {
@@ -106,7 +107,19 @@ async function ConceptReviewContent({ params }: { params: PageProps<"/review/[ch
         )}
         {node.visual && !ex.figure && <p className="mt-3 text-sm text-danger">Visual concept: idea figure missing.</p>}
         <h3 className="mt-6 font-semibold">Formal</h3>
-        <RichText text={ex.formal} className="mt-2" />
+        {formalSlides(ex.formal).map((s, i) => (
+          <div key={i} className="mt-3 rounded-lg border border-border p-4">
+            <p className="text-sm font-medium text-muted">
+              Slide title: <RichInline text={s.title} />
+            </p>
+            <RichText text={s.body} className="mt-2" />
+            {s.figure && (
+              <div className="mt-3 max-w-md">
+                <ReviewFigure figure={s.figure} />
+              </div>
+            )}
+          </div>
+        ))}
         <h3 className="mt-6 font-semibold">Worked example</h3>
         <div className="mt-2 rounded-lg border border-border p-4">
           <RichText text={ex.worked.prompt} />

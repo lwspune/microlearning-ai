@@ -38,6 +38,7 @@ function makeVisual(ch: Chapter) {
   c.explanation.figure = figure();
   c.explanation.worked.steps = ["one", "two"];
   c.explanation.worked.figure = figure({ elements: [{ kind: "point", at: [1, 1], step: 2 }] });
+  c.explanation.formal = [{ body: "**Rule.** One.", figure: figure() }];
 }
 
 /** C1 → C2 → C3, with C3 fully authored and valid. */
@@ -345,6 +346,49 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*positive/));
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*turn/));
       expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 3/));
+    });
+  });
+
+  describe("formal sections (AUTHORING.md 17)", () => {
+    const sections = (ch: Chapter) => c3(ch).explanation.formal as Exclude<Concept["explanation"]["formal"], string>;
+
+    it("requires a draft visual concept to write its formal explanation as sections", () => {
+      const errors = errorsAfter((ch) => {
+        makeVisual(ch);
+        c3(ch).explanation.formal = "**Rule.** One.";
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3.*formal explanation as sections/));
+    });
+
+    it("leaves an approved concept's formal text alone (backfill is separate)", () => {
+      const errors = errorsAfter((ch) => {
+        makeVisual(ch);
+        c3(ch).status = "approved";
+        c3(ch).explanation.formal = "Plain text.";
+      });
+      expect(errors).toEqual([]);
+    });
+
+    it("requires a bold lead-in on every section, which titles its slide", () => {
+      expect(errorsAfter((ch) => (c3(ch).explanation.formal = [{ body: "No title here." }]))).toContainEqual(
+        expect.stringMatching(/C3 formal section 1.*bold lead-in/),
+      );
+    });
+
+    it("requires a figure on every section of a visual concept", () => {
+      const errors = errorsAfter((ch) => {
+        makeVisual(ch);
+        sections(ch).push({ body: "**Bare.** No figure." });
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 formal section 2.*needs a figure/));
+    });
+
+    it("checks the figures on formal sections", () => {
+      const errors = errorsAfter((ch) => {
+        makeVisual(ch);
+        sections(ch)[0].figure = figure({ alt: "" });
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 formal section 1 figure.*alt text/));
     });
   });
 

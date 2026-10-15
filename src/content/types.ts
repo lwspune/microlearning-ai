@@ -176,6 +176,9 @@ export type Item = {
   solution: Solution;
 };
 
+/** A formal slide's text, with a figure that plays through like the idea slide's. */
+export type FormalSection = { body: string; figure?: Figure };
+
 export type WorkedExample = {
   prompt: string;
   steps: string[];
@@ -190,7 +193,12 @@ export type Concept = {
   hook: { prompt: string; reveal: string };
   explanation: {
     intuition: string;
-    formal: string;
+    /**
+     * One slide per section. Text is split at blank lines (older concepts); sections are
+     * one slide each and may carry a figure (AUTHORING.md 17). A section's bold lead-in
+     * ("**Directed angle.** ...") titles its slide.
+     */
+    formal: string | FormalSection[];
     worked: WorkedExample;
     /** Shown on the idea slide; required for `visual` concepts. */
     figure?: Figure;

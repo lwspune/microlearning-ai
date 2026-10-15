@@ -1,4 +1,5 @@
-import type { Concept, Figure } from "@/content/types";
+import { leadIn } from "@/content/leadIn";
+import type { Concept, Figure, FormalSection } from "@/content/types";
 
 /**
  * A concept as a slide deck. Slide ids are stable ("hook", "formal-2",
@@ -15,30 +16,42 @@ export type SlideSpec = { id: string; title: string } & (
 
 /**
  * Splits authored text into slide-sized sections at blank lines. A blank line
- * inside display math ($$…$$) never splits; lists stay with their lead-in
- * because authors write them without a blank line before.
+ * inside display math ($$…$$) never splits, and a paragraph ending in a colon
+ * keeps what it introduces; lists stay with their lead-in because authors
+ * write them without a blank line before.
  */
 function sections(text: string): string[] {
   const out: string[] = [];
   for (const part of text.split(/\n\s*\n/)) {
     const prev = out.at(-1);
     const insideDisplayMath = prev !== undefined && (prev.match(/\$\$/g) ?? []).length % 2 === 1;
-    if (insideDisplayMath) out[out.length - 1] = `${prev}\n\n${part}`;
+    if (insideDisplayMath || prev?.endsWith(":")) out[out.length - 1] = `${prev}\n\n${part.trim()}`;
     else out.push(part.trim());
   }
   return out.filter((s) => s.length > 0);
 }
 
+/** Each formal slide: titled by its lead-in, else by the slide it continues. */
+export function formalSlides(formal: Concept["explanation"]["formal"]): { title: string; body: string; figure?: Figure }[] {
+  const parts: FormalSection[] = typeof formal === "string" ? sections(formal).map((body) => ({ body })) : formal;
+  let title = "Precisely";
+  return parts.map(({ body, figure }) => {
+    const lead = leadIn(body);
+    if (lead) title = lead.title;
+    return { title, body: lead ? lead.rest : body, ...(figure && { figure }) };
+  });
+}
+
 export function buildDeck(concept: Pick<Concept, "hook" | "explanation">): SlideSpec[] {
   const { hook, explanation: ex } = concept;
-  const formal = sections(ex.formal);
+  const formal = formalSlides(ex.formal);
   const steps = ex.worked.steps;
 
   return [
     { id: "hook", title: "Think about this", kind: "hook", prompt: hook.prompt },
     { id: "reveal", title: "Think about this", kind: "reveal", prompt: hook.prompt, reveal: hook.reveal },
     { id: "idea", title: "The idea", kind: "text", body: ex.intuition, ...(ex.figure && { figure: ex.figure }) },
-    ...formal.map((body, i) => ({ id: `formal-${i + 1}`, title: "Precisely", kind: "text" as const, body })),
+    ...formal.map((s, i) => ({ id: `formal-${i + 1}`, kind: "text" as const, ...s })),
     ...steps.map((_, i) => ({
       id: `worked-${i + 1}`,
       title: "Worked example",

@@ -4,8 +4,11 @@ import type { RenderedBlock, RenderedInline } from "@/lib/renderedText";
 import { renderInlineText, renderRichText } from "@/lib/richText";
 import type { SlideSpec } from "./deck";
 
-/** A slide with its math pre-rendered on the server (JSON-safe, no KaTeX on the client). */
-export type RenderedSlide = { id: string; title: string } & (
+/**
+ * A slide with its math pre-rendered on the server (JSON-safe, no KaTeX on the client).
+ * `heading` is the title as shown; `title` is plain text for labels.
+ */
+export type RenderedSlide = { id: string; title: string; heading: RenderedInline[] } & (
   | { kind: "hook"; prompt: RenderedBlock[] }
   | { kind: "reveal"; prompt: RenderedBlock[]; reveal: RenderedBlock[] }
   | { kind: "text"; body: RenderedBlock[]; figure?: Figure }
@@ -14,7 +17,8 @@ export type RenderedSlide = { id: string; title: string } & (
 );
 
 export function renderDeck(deck: SlideSpec[]): RenderedSlide[] {
-  return deck.map((s): RenderedSlide => {
+  return deck.map((spec): RenderedSlide => {
+    const s = { ...spec, title: spec.title.replaceAll("$", ""), heading: renderInlineText(spec.title) };
     switch (s.kind) {
       case "hook":
         return { ...s, prompt: renderRichText(s.prompt) };

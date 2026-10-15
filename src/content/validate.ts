@@ -1,3 +1,4 @@
+import { leadIn } from "./leadIn.ts";
 import type { Chapter, Concept, ConceptId, Figure, FigureElement, GraphNode, Item, Pt, Shape } from "./types";
 
 /** Minimum items per authored concept, so mastery and review never repeat an item too soon. */
@@ -159,6 +160,7 @@ function validateTeaching(chapter: Chapter): string[] {
     const ex = c.explanation;
     if (ex.figure) errors.push(...validateFigure(ex.figure, `${c.id} idea figure`));
     if (ex.worked.figure) errors.push(...validateFigure(ex.worked.figure, `${c.id} worked figure`, ex.worked.steps.length));
+    errors.push(...formalProblems(c, node));
     for (const item of c.items) {
       if (item.figure) {
         errors.push(...validateFigure(item.figure, `${item.id} figure`));
@@ -176,6 +178,25 @@ function validateTeaching(chapter: Chapter): string[] {
     errors.push(...missingTeaching(c, node));
   }
   return errors;
+}
+
+/**
+ * Item 17: new visual concepts (drafts) write their formal explanation as sections, one slide
+ * each, with a figure. Every section, in any concept, starts with a bold lead-in: its title.
+ */
+function formalProblems(c: Concept, node: GraphNode): string[] {
+  const formal = c.explanation.formal;
+  if (typeof formal === "string") {
+    return node.visual && c.status === "draft" ? [`${c.id}: a visual concept writes its formal explanation as sections, each with a figure`] : [];
+  }
+  return formal.flatMap((sec, i) => {
+    const where = `${c.id} formal section ${i + 1}`;
+    const errors: string[] = [];
+    if (!leadIn(sec.body)) errors.push(`${where}: needs a bold lead-in of up to six words ("**Directed angle.** ..."), which titles its slide`);
+    if (sec.figure) errors.push(...validateFigure(sec.figure, `${where} figure`));
+    else if (node.visual) errors.push(`${where}: a visual concept's formal section needs a figure`);
+    return errors;
+  });
 }
 
 /** What a concept lacks under items 9–11. */

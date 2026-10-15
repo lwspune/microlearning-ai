@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "@/content/chapters/complex-numbers";
+import { chapters } from "@/content/chapters";
 import type { Concept, Figure } from "@/content/types";
 import { buildDeck } from "./deck";
 
@@ -81,5 +82,54 @@ describe("buildDeck", () => {
 
   it("splits C14's formal explanation into its three authored sections", () => {
     expect(buildDeck(concept("C14")).filter((s) => s.id.startsWith("formal-"))).toHaveLength(3);
+  });
+});
+
+describe("buildDeck: formal slides", () => {
+  const formal = (c: Pick<Concept, "hook" | "explanation">) =>
+    buildDeck(c).flatMap((s) => (s.kind === "text" && s.id.startsWith("formal-") ? [s] : []));
+
+  it("titles a formal slide by its bold lead-in, and drops the lead-in from the body", () => {
+    const slides = formal(fake("**Directed angle.** A ray turns.\n\n**Standard position:** Vertex at $O$.", ["s"]));
+    expect(slides.map((s) => [s.title, s.body])).toEqual([
+      ["Directed angle", "A ray turns."],
+      ["Standard position", "Vertex at $O$."],
+    ]);
+  });
+
+  it("continues the previous slide's title on a section without a lead-in; the first falls back to Precisely", () => {
+    const slides = formal(fake("Intro.\n\n**Rule.** One.\n\nMore of it.", ["s"]));
+    expect(slides.map((s) => s.title)).toEqual(["Precisely", "Rule", "Rule"]);
+  });
+
+  it("keeps a lead-in longer than six words in the body: it is a sentence, not a title", () => {
+    const slides = formal(fake("**Rule.** One.\n\n**First make the coefficients of $x^2$ and $y^2$ equal to $1$.** Then.", ["s"]));
+    expect(slides.map((s) => s.title)).toEqual(["Rule", "Rule"]);
+    expect(slides[1].body).toMatch(/^\*\*First make/);
+  });
+
+  it("keeps a section that ends in a colon with what follows it", () => {
+    const slides = formal(fake("**Quadrants.** It lies in:\n\n$$\\begin{array}{c} I \\end{array}$$\n\nNext.", ["s"]));
+    expect(slides.map((s) => s.body)).toEqual(["It lies in:\n\n$$\\begin{array}{c} I \\end{array}$$", "Next."]);
+  });
+
+  it("takes sections written one per slide, each with its own figure", () => {
+    const c = fake("", ["s"]);
+    c.explanation.formal = [{ body: "**First.** One.\n\nStill one.", figure: FIG }, { body: "**Second.** Two." }];
+    expect(formal(c).map((s) => [s.title, s.body, s.figure])).toEqual([
+      ["First", "One.\n\nStill one.", FIG],
+      ["Second", "Two.", undefined],
+    ]);
+  });
+
+  it("gives every formal slide in the catalog a title and a body", () => {
+    for (const ch of chapters) {
+      for (const c of ch.concepts) {
+        for (const s of formal(c)) {
+          expect(s.title.trim(), `${ch.slug} ${c.id} ${s.id}`).not.toBe("");
+          expect(s.body.trim(), `${ch.slug} ${c.id} ${s.id}`).not.toBe("");
+        }
+      }
+    }
   });
 });

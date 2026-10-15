@@ -18,7 +18,11 @@ for (const file of process.argv.slice(2)) {
   const e = c.explanation;
   const out: string[] = [`=== ${c.id} (${file})`, `HOOK: ${c.hook.prompt}`, `REVEAL: ${c.hook.reveal}`, `IDEA: ${e.intuition}`];
   if (e.figure) out.push(`  [figure: ${e.figure.alt}]`);
-  out.push(`FORMAL:\n${e.formal}`, `WORKED: ${e.worked.prompt}`, ...e.worked.steps.map((s, i) => `  ${i + 1}. ${s}`), `  = ${e.worked.answer}`);
+  for (const sec of typeof e.formal === "string" ? [{ body: e.formal, figure: undefined }] : e.formal) {
+    out.push(`FORMAL:\n${sec.body}`);
+    if (sec.figure) out.push(`  [figure: ${sec.figure.alt}]`);
+  }
+  out.push(`WORKED: ${e.worked.prompt}`, ...e.worked.steps.map((s, i) => `  ${i + 1}. ${s}`), `  = ${e.worked.answer}`);
   if (e.worked.figure) out.push(`  [figure: ${e.worked.figure.alt}]`);
   for (const m of c.misconceptions) {
     const fb = m.fallback.kind === "concept" ? m.fallback.id : m.fallback.kind === "ext" ? `ext: ${m.fallback.topic}` : "none";
