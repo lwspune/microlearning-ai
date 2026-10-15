@@ -67,9 +67,15 @@ export const c09: Concept = {
     },
     {
       id: "C09-M6",
-      mistake: t`Slips the sign of the middle term: factorises $at^2 + bt + c$ as if it were $at^2 - bt + c$ (every root changes sign), or completes a square with $(p + q)^2$ where $(p - q)^2$ is needed.`,
+      mistake: t`Slips the sign of the middle term: factorises $at^2 + bt + c$ as if it were $at^2 - bt + c$, so every root changes sign.`,
       remediation: "Check the factors by expanding them back: the middle term must come out with the same sign as in the equation.",
       fallback: { kind: "ext", topic: "quadratic equations" },
+    },
+    {
+      id: "C09-M7",
+      mistake: t`Completes the square with $(p + q)^2$ where $(p - q)^2$ is needed, so takes a negative bound that is never reached as the least value.`,
+      remediation: t`Use the square whose middle term is $-2pq$: $\tan^2\theta + \cot^2\theta = (\tan\theta - \cot\theta)^2 + 2$, and that square is $0$ at $45^\circ$. With $(p + q)^2$ the number left over is negative, but $\tan\theta + \cot\theta$ is never $0$, so that bound is never reached.`,
+      fallback: { kind: "ext", topic: "completing the square" },
     },
   ],
   engineNotes: [
@@ -78,6 +84,7 @@ export const c09: Concept = {
     "C09-M3 shows only when an allowed value is negative (Q1, Q3, Q4, Q5).",
     "C09-M4 shows only when a root is exactly 1 or -1 for sin or cos (Q3, Q5).",
     "C09-M5 is caught by the least-value item (Q6) only.",
+    "C09-M6 shows on the quadratic items (Q1 to Q5); C09-M7, split from it, on the least-value item (Q6) only.",
   ],
   items: [
     {
@@ -182,7 +189,7 @@ export const c09: Concept = {
       stem: t`What is the least value of $4\tan^2\theta + 9\cot^2\theta$ (for $\theta$ where both are defined)?`,
       verify: { kind: "value", inputs: { a: "4", b: "9" }, params: { type: "least" } },
       options: [
-        { key: "A", text: t`$-12$`, correct: false, misconceptionId: "C09-M6", value: "-12" },
+        { key: "A", text: t`$-12$`, correct: false, misconceptionId: "C09-M7", value: "-12" },
         { key: "B", text: t`$12$`, correct: true, value: "12" },
         { key: "C", text: t`$13$`, correct: false, misconceptionId: "C09-M2", value: "13" },
         { key: "D", text: t`$0$`, correct: false, misconceptionId: "C09-M5", value: "0" },

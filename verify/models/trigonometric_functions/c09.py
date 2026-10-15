@@ -99,11 +99,18 @@ def m5(v, p):
 
 
 def m6(v, p):
-    """Middle-term sign slip: solves q(-t) (roots negated), or completes (p + q)^2 for (p - q)^2."""
-    if p["type"] == "quad":
-        f = p["f"]
-        return _set([-r for r in _roots(v["q"]) if _in_range(f, -r)])
+    """Middle-term sign slip in the factors: solves q(-t), so every root is negated."""
+    if p["type"] != "quad":
+        raise ValueError("quadratic items only")
+    f = p["f"]
+    return _set([-r for r in _roots(v["q"]) if _in_range(f, -r)])
+
+
+def m7(v, p):
+    """Completes (p + q)^2 for (p - q)^2: a tan^2 + b cot^2 = (sqrt(a) tan + sqrt(b) cot)^2 - 2 sqrt(ab)."""
+    if p["type"] != "least":
+        raise ValueError("least-value items only")
     return -2 * sqrt(v["a"] * v["b"])
 
 
-MODELS = {"key": key, "C09-M1": m1, "C09-M2": m2, "C09-M3": m3, "C09-M4": m4, "C09-M5": m5, "C09-M6": m6}
+MODELS = {"key": key, "C09-M1": m1, "C09-M2": m2, "C09-M3": m3, "C09-M4": m4, "C09-M5": m5, "C09-M6": m6, "C09-M7": m7}
