@@ -13,7 +13,9 @@ for (const scheme of ["light", "dark"]) {
   const ctx = await browser.newContext({ viewport: { width: 420, height: 900 }, deviceScaleFactor: 2, colorScheme: scheme });
   const page = await ctx.newPage();
   for (const slug of slugs) {
-    await page.goto(`http://localhost:3000/review/${chapter}/${slug}`, { waitUntil: "networkidle" });
+    // "load", not "networkidle": while other edits hot-reload the dev server the network never goes quiet.
+    await page.goto(`http://localhost:3000/review/${chapter}/${slug}`, { waitUntil: "load", timeout: 120000 });
+    await page.evaluate(() => document.fonts.ready);
     const figs = page.locator("figure");
     const n = await figs.count();
     const shots = [];
