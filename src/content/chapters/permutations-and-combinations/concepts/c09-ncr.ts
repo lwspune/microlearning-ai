@@ -10,24 +10,69 @@ export const c09: Concept = {
     reveal: t`A handshake is a pair of guests, and the order doesn't matter: $A$ with $B$ is the same as $B$ with $A$. With $n$ guests there are $n(n - 1)$ ordered pairs, each handshake counted twice, so $\frac{n(n - 1)}{2} = {}^nC_2 = 28$. Then $n(n - 1) = 56 = 8 \times 7$: there were $8$ guests.`,
   },
   explanation: {
-    intuition: t`Choose a team of $3$ from $7$ friends. Counting in order gives $7 \times 6 \times 5 = 210$, but a team is just a group: $\{a, b, c\}$ is the same team as $\{c, a, b\}$. Each team of $3$ shows up $3! = 6$ times in that count, once for every order. So the number of teams is $210 \div 6 = 35$. That is a combination: a selection where order doesn't matter.`,
-    formal: t`**Selection, not arrangement.** A combination of $r$ things from $n$ different things is a selection in which order doesn't matter. Their number is $^nC_r$.
-
-**From $^nP_r$.** Each selection of $r$ things can be arranged in $r!$ ways, so $^nP_r = {}^nC_r \times r!$. Hence
-$$^nC_r = \frac{{}^nP_r}{r!} = \frac{n!}{r!\,(n - r)!}, \quad 0 \le r \le n$$
-
-**Quick calculation.** Cancel the bigger factorial: $r$ factors counting down from $n$, over $r!$.
-$$^7C_3 = \frac{7!}{3!\,4!} = \frac{7 \times 6 \times 5}{3 \times 2 \times 1} = 35$$
-
-**Several groups.** Choosing from one group **and** then from another: multiply the counts. Choosing one way **or** another: add.
-
-**Finding $n$.** $^nC_2 = \frac{n(n - 1)}{2}$. If $^nC_2 = 45$, then $n(n - 1) = 90 = 10 \times 9$, so $n = 10$.`,
+    intuition: [
+      t`Choose a team of $3$ from $7$ friends.`,
+      t`Picking a first, second and third friend in turn gives $7 \times 6 \times 5 = 210$ ordered picks.`,
+      t`But a team is just a group: $\{a, b, c\}$ and $\{c, a, b\}$ are the same three friends.`,
+      t`Each team shows up $3! = 3 \times 2 \times 1 = 6$ times in that count, once for every order.`,
+      t`So the number of teams is $210 \div 6 = 35$.`,
+      t`A **combination** is a selection like this team: a choice of things where order doesn't matter.`,
+    ],
+    formal: [
+      {
+        title: "Selection, not arrangement",
+        points: [
+          t`A **combination** of $r$ things from $n$ different things, no two alike, is a selection of $r$ of them.`,
+          t`Order doesn't matter: choosing $a$ then $b$ gives the same selection as $b$ then $a$.`,
+          t`The number of these selections is written $^nC_r$, read "n C r".`,
+          t`Recall: $^nP_r$ counts **arrangements**, where the order does matter.`,
+        ],
+      },
+      {
+        title: "From arrangements to selections",
+        points: [
+          t`Each selection of $r$ things can be arranged in $r!$ ways.`,
+          t`So the $^nP_r$ arrangements count every selection $r!$ times.`,
+          t`That gives $^nP_r = {}^nC_r \times r!$.`,
+          t`Divide by $r!$: $^nC_r = \frac{{}^nP_r}{r!}$.`,
+          t`Recall: $^nP_r = \frac{n!}{(n - r)!}$.`,
+          t`So $^nC_r = \frac{n!}{r!\,(n - r)!}$, for $0 \le r \le n$.`,
+        ],
+      },
+      {
+        title: "Quick calculation",
+        points: [
+          t`To work out $^nC_r$, cancel the bigger of $r!$ and $(n - r)!$ against the $n!$ on top.`,
+          t`Cancelling $(n - r)!$ leaves $r$ factors counting down from $n$, over $r!$.`,
+          t`For example, $^7C_3 = \frac{7!}{3!\,4!}$.`,
+          t`Cancel $4!$ to leave $\frac{7 \times 6 \times 5}{3 \times 2 \times 1}$.`,
+          t`That is $\frac{210}{6} = 35$.`,
+        ],
+      },
+      {
+        title: "Selections from several groups",
+        points: [
+          t`Choosing from one group **and** then from another: multiply the counts.`,
+          t`Choosing one way **or** another: add the counts.`,
+          t`Recall: these are the multiplication and addition principles.`,
+        ],
+      },
+      {
+        title: "Finding n from nC2",
+        points: [
+          t`With $r = 2$, $^nC_2 = \frac{n(n - 1)}{2}$.`,
+          t`Suppose $^nC_2 = 45$.`,
+          t`Then $n(n - 1) = 90$.`,
+          t`$90 = 10 \times 9$, a number times the one just below it, so $n = 10$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A question paper has two parts, A and B, each with $10$ questions. A student must answer $8$ questions from part A and $5$ from part B. In how many ways can the questions be chosen?`,
       steps: [
         t`Order doesn't matter: answering Q1 then Q2 is the same choice as Q2 then Q1. So each part is a combination.`,
-        t`Part A: $^{10}C_8 = \frac{10!}{8!\,2!} = \frac{10 \times 9}{2 \times 1} = 45$ ways.`,
-        t`Part B: $^{10}C_5 = \frac{10 \times 9 \times 8 \times 7 \times 6}{5 \times 4 \times 3 \times 2 \times 1} = \frac{30240}{120} = 252$ ways.`,
+        t`Part A: $^{10}C_8 = \frac{10!}{8!\,2!}$ $= \frac{10 \times 9}{2 \times 1}$ $= 45$ ways.`,
+        t`Part B: $^{10}C_5$ $= \frac{10 \times 9 \times 8 \times 7 \times 6}{5 \times 4 \times 3 \times 2 \times 1}$ $= \frac{30240}{120}$ $= 252$ ways.`,
         t`The student chooses from part A **and** from part B, so multiply: $45 \times 252 = 11340$. Adding, $45 + 252 = 297$, would count a choice from one part only.`,
       ],
       answer: t`$11340$ ways.`,

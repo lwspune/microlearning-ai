@@ -1,6 +1,12 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** UBUNTU with its three U's tagged, in all 3! = 6 orders of the tags. */
+const tagged = ["U₁BU₂NTU₃", "U₁BU₃NTU₂", "U₂BU₁NTU₃", "U₂BU₃NTU₁", "U₃BU₁NTU₂", "U₃BU₂NTU₁"];
+/** The height of tagged word i, top to bottom, and of the one untagged word they all become. */
+const rowY = (i: number) => 5 - 0.9 * i;
+const wordY = 2.75;
 
 export const c06: Concept = {
   id: "C06",
@@ -10,21 +16,70 @@ export const c06: Concept = {
     reveal: t`Only $120$. The three U's look the same, so swapping them changes nothing: each word turns up $3! = 6$ times among the $720$ orders. So there are $\frac{720}{6} = 120$ different words.`,
   },
   explanation: {
-    intuition: t`Give the alike letters name tags, like $A_1, A_2, A_3$. Now every letter is different and there are $n!$ orders. Remove the tags: the $3!$ orders that only shuffle $A_1, A_2, A_3$ among themselves all become the same word. So each word was counted $3!$ times, and you divide by $3!$. Every group of alike letters divides out its own factorial.`,
-    formal: t`**The rule.** $n$ objects, of which $p$ are alike of one kind, $q$ are alike of another kind, and so on, the rest all different, can be arranged in
-
-$$\frac{n!}{p!\,q!\,\ldots} \text{ ways.}$$
-
-**Why factorials.** $p$ alike letters, if tagged, could be shuffled among themselves in $p!$ ways, not $p$ ways. ASSASSIN has $8$ letters: S four times, A twice. So it has $\frac{8!}{4!\,2!} = \frac{40320}{48} = 840$ arrangements. Each kind gets its own factorial: $4! \times 2!$, never $(4 + 2)!$.
-
-**Together.** Glue the letters into one block. Arrange the block with the other letters using the rule, then arrange the letters inside the block, again dividing for any alike letters there. Multiply.
-
-**Never together, or no leading 0.** Count all the arrangements, then take away the bad ones: never together $=$ all $-$ together. A number can't begin with $0$: take away the arrangements that start with $0$.`,
+    intuition: [
+      t`Letters are **alike** when you cannot tell them apart, like the three U's in UBUNTU.`,
+      t`Give them name tags, $U_1, U_2, U_3$: now all $n$ letters of the word are different, with $n!$ orders.`,
+      t`The tags can be swapped among the three U's in $3! = 6$ ways, with the other letters left in place.`,
+      t`Remove the tags: those $3!$ orders all become the same word.`,
+      t`So $n!$ counts each word $3!$ times, and you divide by $3!$.`,
+      t`Every group of alike letters divides out its own factorial.`,
+    ],
+    figure: {
+      alt: "Six tagged versions of UBUNTU, with the three U's tagged U₁, U₂ and U₃ in each of their 3! = 6 orders: U₁BU₂NTU₃, U₁BU₃NTU₂, U₂BU₁NTU₃, U₂BU₃NTU₁, U₃BU₁NTU₂ and U₃BU₂NTU₁. Arrows from all six point to the one word UBUNTU, which is counted 3! = 6 times.",
+      axes: "none",
+      view: { x: [0, 10], y: [0, 5.5] },
+      elements: [
+        ...tagged.map((w, i): FigureElement => ({ kind: "label", at: [0.2, rowY(i)], label: w, labelAt: "e", step: i === 0 ? 2 : 3 })),
+        ...tagged.map((_, i): FigureElement => ({ kind: "vector", from: [2.7, rowY(i)], to: [5.9, wordY], tone: "muted", step: 4 })),
+        { kind: "label", at: [6, wordY], label: "UBUNTU", labelAt: "e", tone: "good", step: 4 },
+        { kind: "label", at: [6, 2], label: "counted 3! = 6 times", labelAt: "e", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "The rule",
+        points: [
+          t`Take $n$ objects: $p$ alike of one kind, $q$ alike of another kind, and so on.`,
+          t`The rest of the objects are all different.`,
+          t`They can be arranged in $\frac{n!}{p!\,q!\,\ldots}$ ways.`,
+        ],
+      },
+      {
+        title: "Why factorials, not counts",
+        points: [
+          t`Tagged, $p$ alike letters could be shuffled among themselves in $p!$ ways, not $p$ ways.`,
+          t`ASSASSIN has $8$ letters: S four times, A twice.`,
+          t`So it has $\frac{8!}{4!\,2!}$ arrangements.`,
+          t`That is $\frac{40320}{48} = 840$.`,
+          t`S's swap only with S's, and A's only with A's, so each kind gets its own factorial.`,
+          t`So divide by $4! \times 2!$, never by $(4 + 2)!$.`,
+        ],
+      },
+      {
+        title: "Alike letters kept together",
+        points: [
+          t`To keep some letters **together**, side by side, glue them into one **block** that moves as a single letter.`,
+          t`Arrange the block with the other letters, using the rule for any alike letters.`,
+          t`Then arrange the letters inside the block, again dividing for any alike letters there.`,
+          t`Multiply the two counts.`,
+        ],
+      },
+      {
+        title: "Never together, no leading 0",
+        points: [
+          t`When a condition rules some arrangements out, count all of them, then take away the bad ones.`,
+          t`**Never together** means the chosen letters do not all sit side by side in one block.`,
+          t`So never together $=$ all $-$ together.`,
+          t`A number can't begin with $0$: it would really be a number with one digit fewer.`,
+          t`So take away the arrangements that start with $0$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`How many arrangements of the letters of the word CALCULATOR are there? In how many of them do the vowels come together?`,
       steps: [
-        t`CALCULATOR has $10$ letters: C, A and L twice each, and U, T, O, R once. All arrangements: $\frac{10!}{2!\,2!\,2!} = \frac{3628800}{8} = 453600$.`,
-        t`The vowels are A, U, A, O. Glue them into one block $P$. Now there are $7$ things to arrange: $P$, C, L, C, L, T, R, with C twice and L twice: $\frac{7!}{2!\,2!} = \frac{5040}{4} = 1260$.`,
+        t`CALCULATOR has $10$ letters: C, A and L twice each, and U, T, O, R once. All arrangements: $\frac{10!}{2!\,2!\,2!}$ $= \frac{3628800}{8}$ $= 453600$.`,
+        t`The vowels are A, U, A, O. Glue them into one block $P$. Now there are $7$ things to arrange: $P$, C, L, C, L, T, R, with C twice and L twice: $\frac{7!}{2!\,2!}$ $= \frac{5040}{4}$ $= 1260$.`,
         t`Inside the block, A, U, A, O can be arranged in $\frac{4!}{2!} = 12$ ways, since A is used twice.`,
         t`Vowels together: $1260 \times 12 = 15120$.`,
       ],

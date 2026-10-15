@@ -1,6 +1,15 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** A square box with its lower-left corner at (x, 0): one place in the row. */
+const box = (x: number, w: number, style: Pick<FigureElement, "step" | "tone"> & { dashed?: boolean }): FigureElement[] => {
+  const c: [number, number][] = [[x, 0], [x + w, 0], [x + w, w], [x, w]];
+  return c.map((from, i) => ({ kind: "segment", from, to: c[(i + 1) % 4], ...style }));
+};
+
+/** Anchor for a number centred in a 1.2-high box: an "n" label sits 10px above its anchor, so 15px (0.45) below the centre. */
+const DIGIT_Y = 0.15;
 
 export const c04: Concept = {
   id: "C04",
@@ -10,23 +19,78 @@ export const c04: Concept = {
     reveal: t`No. Once a runner has gold, they can't also take silver. Gold has $8$ choices, silver the $7$ runners left, bronze the $6$ left after that: $8 \times 7 \times 6 = 336$ podiums. That is $^8P_3$, the number of ways to arrange $3$ of $8$ different things.`,
   },
   explanation: {
-    intuition: t`Arrange $r$ of $n$ different things by filling $r$ places one at a time. The first place can take any of the $n$ things. That thing is now used, so the second place has $n - 1$ choices, the third $n - 2$, and so on. Multiply the choices: one factor per place, so exactly $r$ factors. The product is the top of $n!$ with the tail $(n - r)!$ cut off, which is why it equals $\frac{n!}{(n - r)!}$.`,
-    formal: t`**Definition.** $^nP_r$ is the number of arrangements of $r$ things taken from $n$ different things, with no thing used twice ($0 \le r \le n$). Order matters: AB and BA are different arrangements.
-
-**Formula.**
-$$^nP_r = n(n - 1)(n - 2)\cdots(n - r + 1) = \frac{n!}{(n - r)!}$$
-There are exactly $r$ factors, and the last one is $n - r + 1$. For example, $^6P_2 = 6 \times 5 = 30$.
-
-**Special values.** $^nP_n = n!$ (all $n$ things in a row, since $0! = 1$), $^nP_1 = n$ and $^nP_0 = 1$.
-
-**Ratios with the same $n$.** The $n!$ cancels:
-$$\frac{^nP_a}{^nP_b} = \frac{(n - b)!}{(n - a)!}$$
-For example, $\frac{^nP_4}{^nP_2} = \frac{(n - 2)!}{(n - 4)!} = (n - 2)(n - 3)$. It is not $^nP_2$: these are not powers, and indices don't subtract.`,
+    intuition: [
+      t`To **arrange** $r$ of $n$ different things is to put $r$ of them in a row of $r$ **places**, one in each.`,
+      t`Here $n = 8$ runners fill $r = 3$ places: gold, silver and bronze.`,
+      t`The first place can take any of the $n$ things: $8$ runners here.`,
+      t`That thing is now used, so the second place has $n - 1$ choices, the third $n - 2$, and so on.`,
+      t`Multiply the choices, one factor per place, so exactly $r$ factors: $8 \times 7 \times 6 = 336$.`,
+      t`Recall $n! = n(n - 1)\cdots 1$: our product is its first $r$ factors, with the tail $(n - r)!$ cut off.`,
+    ],
+    figure: {
+      alt: "Three boxes in a row, the places gold, silver and bronze. The first box holds 8, the runners it can take; the second 7 and the third 6, one fewer each time, with times signs between them: 8 × 7 × 6. After them, five dashed grey boxes hold 5, 4, 3, 2 and 1, the rest of 8!, marked 5! cut off.",
+      axes: "none",
+      view: { x: [-0.4, 11.6], y: [-1, 1.6] },
+      elements: [
+        ...[0, 2, 4].flatMap((x) => box(x, 1.2, { step: 1 })),
+        { kind: "label", at: [0.6, 0], label: "gold", labelAt: "s", tone: "muted", step: 2 },
+        { kind: "label", at: [2.6, 0], label: "silver", labelAt: "s", tone: "muted", step: 2 },
+        { kind: "label", at: [4.6, 0], label: "bronze", labelAt: "s", tone: "muted", step: 2 },
+        { kind: "label", at: [0.6, DIGIT_Y], label: "8", step: 3 },
+        { kind: "label", at: [2.6, DIGIT_Y], label: "7", step: 4 },
+        { kind: "label", at: [4.6, DIGIT_Y], label: "6", step: 4 },
+        { kind: "label", at: [1.6, DIGIT_Y], label: "×", step: 5 },
+        { kind: "label", at: [3.6, DIGIT_Y], label: "×", step: 5 },
+        ...[5, 4, 3, 2, 1].flatMap((d, i): FigureElement[] => [
+          ...box(5.9 + 1.1 * i, 0.8, { step: 6, tone: "muted", dashed: true }),
+          { kind: "label", at: [6.3 + 1.1 * i, DIGIT_Y - 0.2], label: String(d), tone: "muted", step: 6 },
+        ]),
+        { kind: "label", at: [8.5, 0], label: "5! cut off", labelAt: "s", tone: "muted", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "What nPr counts",
+        points: [
+          t`$^nP_r$ is the number of arrangements of $r$ things taken from $n$ different things.`,
+          t`No thing is used twice, so $r$ is at most $n$: $0 \le r \le n$.`,
+          t`Order matters: AB and BA are different arrangements.`,
+        ],
+      },
+      {
+        title: "The formula for nPr",
+        points: [
+          t`$^nP_r$ equals $n(n - 1)(n - 2)\cdots(n - r + 1)$.`,
+          t`There are exactly $r$ factors, and the last one is $n - r + 1$.`,
+          t`Dividing $n!$ by $(n - r)!$ cancels the factors from $n - r$ down to $1$, leaving that product.`,
+          t`So $^nP_r = \frac{n!}{(n - r)!}$.`,
+          t`For example, $^6P_2 = 6 \times 5 = 30$.`,
+        ],
+      },
+      {
+        title: "Special values",
+        points: [
+          t`$^nP_n = n!$: all $n$ things in a row.`,
+          t`The formula agrees, since $0! = 1$: $\frac{n!}{0!} = n!$.`,
+          t`$^nP_1 = n$: one place, with $n$ choices.`,
+          t`$^nP_0 = \frac{n!}{n!} = 1$.`,
+        ],
+      },
+      {
+        title: "Ratios with the same n",
+        points: [
+          t`In a ratio of two permutations with the same $n$, the $n!$ cancels.`,
+          t`$\frac{^nP_a}{^nP_b}$ equals $\frac{(n - b)!}{(n - a)!}$.`,
+          t`For example, $\frac{^nP_4}{^nP_2}$ equals $\frac{(n - 2)!}{(n - 4)!}$, which is $(n - 2)(n - 3)$.`,
+          t`It is not $^nP_2$: unlike with powers, you can't just subtract $4 - 2$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $r$ if $^{56}P_{r+6} : {}^{54}P_{r+3} = 30800 : 1$.`,
       steps: [
         t`Write both with the formula: $^{56}P_{r+6} = \frac{56!}{(50 - r)!}$ and $^{54}P_{r+3} = \frac{54!}{(51 - r)!}$.`,
-        t`Divide: $\frac{56!}{54!} \cdot \frac{(51 - r)!}{(50 - r)!} = 56 \times 55 \times (51 - r) = 3080(51 - r)$.`,
+        t`Divide: $\frac{56!}{54!} \cdot \frac{(51 - r)!}{(50 - r)!}$ $= 56 \times 55 \times (51 - r)$ $= 3080(51 - r)$.`,
         t`Set it equal to the ratio: $3080(51 - r) = 30800$, so $51 - r = 10$ and $r = 41$.`,
         t`Check: $r + 6 = 47 \le 56$ and $r + 3 = 44 \le 54$, so both permutations make sense.`,
       ],

@@ -1,6 +1,27 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The tree of choices: the start, the first stage's choices A and B, and the second stage's 1, 2, 3 after each. */
+const START: Pt = [0, 0];
+const FIRST: [string, Pt][] = [["A", [2.2, 1.6]], ["B", [2.2, -1.6]]];
+/** The second stage's ends after the choice at height `y`: one per choice 1, 2, 3, top to bottom. */
+const ends = (y: number): Pt[] => [0.9, 0, -0.9].map((dy): Pt => [4.6, +(y + dy).toFixed(2)]);
+
+/** A road from `from` to `to`, bowed sideways by `bow` (0 is straight), as a smooth curve. */
+function road(from: Pt, to: Pt, bow: number, step: number): FigureElement {
+  const [dx, dy] = [to[0] - from[0], to[1] - from[1]];
+  const ctrl: Pt = [(from[0] + to[0]) / 2 - bow * dy, (from[1] + to[1]) / 2 + bow * dx];
+  const points = Array.from({ length: 13 }, (_, i): Pt => {
+    const u = i / 12;
+    const [a, b, c] = [(1 - u) ** 2, 2 * u * (1 - u), u ** 2];
+    return [+(a * from[0] + b * ctrl[0] + c * to[0]).toFixed(3), +(a * from[1] + b * ctrl[1] + c * to[1]).toFixed(3)];
+  });
+  return { kind: "curve", points, step };
+}
+
+/** The towns of the routes figure: A to B through N or through S, with no road joining N and S. */
+const TOWN = { A: [0, 0] as Pt, N: [3, 1.5] as Pt, S: [3, -1.5] as Pt, B: [6, 0] as Pt };
 
 export const c01: Concept = {
   id: "C01",
@@ -10,14 +31,100 @@ export const c01: Concept = {
     reveal: t`Arjun. Riya picks from one list of $5 + 2 = 7$ things. Arjun's every tea can go with either biscuit, so he has $5 \times 2 = 10$ pairs. One thing OR another: add. One thing AND then another: multiply.`,
   },
   explanation: {
-    intuition: t`Ask one question: after the first choice, is the task over, or is there a next step? If you do one thing OR another, the choices sit side by side in one list, so you add. If you do one thing AND THEN another, every first choice pairs with every second choice, like the cells of a grid, so you multiply. Bigger problems mix both: split them into cases, multiply inside each case, then add the cases.`,
-    formal: t`**Addition principle.** If one task can be done in $m$ ways and another in $n$ ways, and only one of them is to be done, the choice can be made in $m + n$ ways. Example: $5$ fruit juices or $3$ milk shakes give $5 + 3 = 8$ choices of one drink.
-
-**Multiplication principle.** If a task has two stages, the first done in $m$ ways and then, for each of these, the second in $n$ ways, the task can be done in $m \times n$ ways. It extends to any number of stages. Example: a code of two letters followed by three digits: $26 \times 26 \times 10 \times 10 \times 10 = 676000$.
-
-**Which one?** "Or", "either ... or", "one of the kinds": add. "And", "then", "followed by", "one for each item": multiply. When repetition is allowed, every place keeps its full set of choices.
-
-**Mixed problems.** Split into cases that cannot happen together. Count each case by multiplying its stages, then add the cases. Routes A to B through N ($2 \times 3 = 6$) or through S ($1 \times 2 = 2$): $6 + 2 = 8$ routes.`,
+    intuition: [
+      t`A task can often be done in several different **ways**; counting finds how many.`,
+      t`Ask one question: after the first choice, is the task over, or is there a next step?`,
+      t`One thing **or** another: you do just one, so the choices sit side by side in one list, and you add.`,
+      t`One thing **and then** another: the task has **stages**, steps done one after the other.`,
+      t`Every first choice pairs with every second choice, like the cells of a grid, so you multiply.`,
+      t`Bigger problems mix both: split them into **cases** that cannot happen together, multiply inside each case, then add the cases.`,
+    ],
+    formal: [
+      {
+        title: "The addition principle",
+        points: [
+          t`One task can be done in $m$ ways, and another task in $n$ ways.`,
+          t`If only one of the two is to be done, the choice can be made in $m + n$ ways.`,
+          t`For example, $5$ fruit juices or $3$ milk shakes give $5 + 3 = 8$ choices of one drink.`,
+        ],
+      },
+      {
+        title: "The multiplication principle",
+        points: [
+          t`A task has two stages: say the first can be done in $m$ ways, drawn as $m$ branches.`,
+          t`Then, from each of these, the second can be done in $n$ ways: $n$ more branches each.`,
+          t`Each path from the start to an end is one way of doing the whole task.`,
+          t`So the task can be done in $m \times n$ ways: here $2 \times 3 = 6$ ends.`,
+          t`It extends to any number of stages: multiply the ways for every stage.`,
+          t`For example, two letters followed by three digits make $26 \times 26 \times 10$ $\times 10 \times 10$ $= 676000$ codes.`,
+        ],
+        figure: {
+          alt: "A tree of choices growing left to right. From the start, the first stage branches two ways, to A and B: m = 2. From each of A and B the second stage branches three ways, to 1, 2 and 3: n = 3 each, ending at A1, A2, A3, B1, B2 and B3. One path, start to A to A1, is marked as one way of doing the whole task. The six ends give 2 × 3 = 6 ways.",
+          axes: "none",
+          view: { x: [-1.4, 5.8], y: [-3.8, 3.4] },
+          elements: [
+            { kind: "point", at: START, label: "start", labelAt: "w", tone: "muted" },
+            ...FIRST.flatMap(([name, at]): FigureElement[] => [
+              { kind: "segment", from: START, to: at, step: 1 },
+              { kind: "point", at, label: name, labelAt: name === "A" ? "nw" : "sw", step: 1 },
+            ]),
+            { kind: "label", at: [1.1, 2.9], label: "m = 2", labelAt: "n", tone: "muted", step: 1 },
+            ...FIRST.flatMap(([name, at]): FigureElement[] =>
+              ends(at[1]).flatMap((end, i): FigureElement[] => [
+                { kind: "segment", from: at, to: end, step: 2 },
+                { kind: "point", at: end, label: `${name}${i + 1}`, labelAt: "e", step: 2 },
+              ]),
+            ),
+            { kind: "label", at: [3.4, 2.9], label: "n = 3 each", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "segment", from: START, to: FIRST[0][1], tone: "good", step: 3 },
+            { kind: "segment", from: FIRST[0][1], to: ends(FIRST[0][1][1])[0], tone: "good", step: 3 },
+            { kind: "label", at: [2.3, -3.3], label: "2 × 3 = 6 ways", labelAt: "s", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Add or multiply?",
+        points: [
+          t`The words "or", "either ... or" and "one of the kinds" mean add.`,
+          t`The words "and", "then", "followed by" and "one for each item" mean multiply.`,
+          t`**Repetition allowed** means a letter or digit may be used again.`,
+          t`Then every place keeps its full set of choices.`,
+        ],
+      },
+      {
+        title: "Mixed problems: cases",
+        points: [
+          t`Split the problem into cases that cannot happen together.`,
+          t`Count each case by multiplying its stages, then add the cases.`,
+          t`For example, a route from town A to town B goes through N or through S.`,
+          t`Through N: $2$ roads and then $3$ roads give $2 \times 3 = 6$ routes.`,
+          t`Through S: $1$ road and then $2$ roads give $1 \times 2 = 2$ routes.`,
+          t`A route goes through N or S, never both: $6 + 2 = 8$ routes.`,
+        ],
+        figure: {
+          alt: "Four towns: A on the left, B on the right, N above the middle and S below it, with no road between N and S. Through N: 2 roads join A to N and 3 roads join N to B, giving 2 × 3 = 6 routes. Through S: 1 road joins A to S and 2 roads join S to B, giving 1 × 2 = 2 routes. Adding the two cases gives 6 + 2 = 8 routes.",
+          axes: "none",
+          view: { x: [-1, 7], y: [-2.6, 2.6] },
+          elements: [
+            { kind: "point", at: TOWN.A, label: "A", labelAt: "w", step: 3 },
+            { kind: "point", at: TOWN.B, label: "B", labelAt: "e", step: 3 },
+            { kind: "point", at: TOWN.N, label: "N", labelAt: "n", step: 3 },
+            { kind: "point", at: TOWN.S, label: "S", labelAt: "s", step: 3 },
+            road(TOWN.A, TOWN.N, 0.12, 4),
+            road(TOWN.A, TOWN.N, -0.12, 4),
+            road(TOWN.N, TOWN.B, 0.16, 4),
+            road(TOWN.N, TOWN.B, 0, 4),
+            road(TOWN.N, TOWN.B, -0.16, 4),
+            { kind: "label", at: [4.9, 1.2], label: "2 × 3 = 6", labelAt: "ne", step: 4 },
+            road(TOWN.A, TOWN.S, 0, 5),
+            road(TOWN.S, TOWN.B, 0.12, 5),
+            road(TOWN.S, TOWN.B, -0.12, 5),
+            { kind: "label", at: [4.9, -1.2], label: "1 × 2 = 2", labelAt: "se", step: 5 },
+            { kind: "label", at: [2.1, 0], label: "6 + 2 = 8 routes", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`How many numbers less than $1000$ that are divisible by $5$ can be formed using the digits $1, 3, 5, 6, 9$, if the digits may be repeated?`,
       steps: [

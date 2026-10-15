@@ -1,6 +1,35 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The radius of a table, garland or ring in the figures. */
+const R = 1.3;
+
+/** The place on the ring about `c` at `deg` degrees, `r` from its centre. */
+const on = (c: Pt, deg: number, r = R): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(c[0] + r * Math.cos(a)).toFixed(3), +(c[1] + r * Math.sin(a)).toFixed(3)];
+};
+
+/** Where a label sits so it points out of the ring from a place at `deg` degrees. */
+const outward = (deg: number): FigureElement["labelAt"] => {
+  const dirs = ["e", "ne", "n", "nw", "w", "sw", "s", "se"] as const;
+  return dirs[Math.round((((deg % 360) + 360) % 360) / 45) % 8];
+};
+
+/** Places round a ring, each a point labelled outward with its person or bead. */
+const seats = (c: Pt, people: [string, number][], step?: number, tone?: FigureElement["tone"]): FigureElement[] =>
+  people.map(([label, deg]) => ({
+    kind: "point",
+    at: on(c, deg),
+    label,
+    labelAt: outward(deg),
+    ...(tone ? { tone } : {}),
+    ...(step === undefined ? {} : { step }),
+  }));
+
+const left: Pt = [-2.4, 0];
+const right: Pt = [2.4, 0];
 
 export const c07: Concept = {
   id: "C07",
@@ -10,16 +39,138 @@ export const c07: Concept = {
     reveal: t`Only $2$. Turn the seating $A, B, C$ one seat round and you get $B, C, A$, then $C, A, B$: everyone keeps the same neighbours, so these three are one seating. The $6$ row orders fall into groups of $3$, giving $\frac{6}{3} = 2$: either $B$ is on $A$'s right or $C$ is.`,
   },
   explanation: {
-    intuition: t`A row has a first seat, so moving everyone along changes the arrangement. A round table has no first seat: turn everyone one place round and nothing has changed, since each person has the same left and right neighbour. So each round-table seating shows up $n$ times among the $n!$ row orders, and there are $\frac{n!}{n} = (n-1)!$ of them. The easy way to see it: seat one person anywhere, then arrange the other $n - 1$ in the fixed seats next to him, like a row. A garland or necklace can also be turned over, which makes clockwise and anticlockwise the same, so you halve once more.`,
-    formal: t`**Round table, seats not numbered.** $n$ different people: $(n-1)!$ seatings. Fix one person; the rest fill the other seats like a row.
-
-**Seats numbered.** Every seat is different, as in a row: $n!$.
-
-**Garland or necklace** (it can be turned over), $n \ge 3$ different things: $\frac{(n-1)!}{2}$.
-
-**Some always together.** Glue the $k$ into one block. The block and the other $n - k$ make $n - k + 1$ units round the table: $(n-k)!$ ways, times $k!$ for the order inside the block. **Never together** = all $-$ together.
-
-**No two of one group side by side.** Seat the $m$ men first: $(m-1)!$. The $m$ gaps between them are now fixed places, so $w$ women fill them in $^mP_w$ ways. Only the first group seated gets the $(m-1)!$.`,
+    intuition: [
+      t`In a **row**, the seats run from a first to a last, so moving everyone along one seat gives a new order.`,
+      t`A **round table** has no first seat: everyone sits round a circle.`,
+      t`Turn the whole seating one seat round: everyone keeps the same two **neighbours**, the people beside them, so it is the same seating.`,
+      t`Read round from each of its $n$ seats in turn, and one seating gives $n$ different row orders.`,
+      t`So the $n!$ row orders make $\frac{n!}{n} = (n-1)!$ seatings.`,
+      t`A **garland** or **necklace** can also be turned over, which swaps **clockwise**, the way a clock's hands go, and anticlockwise.`,
+    ],
+    figure: {
+      alt: "Two round tables. At the first, A, B, C and D sit anticlockwise. At the second, the same seating is turned one seat round anticlockwise: an arm turns from A's old seat to A's new one, and D, A, B, C now sit where A, B, C, D sat. Everyone has the same two neighbours, so it is the same seating.",
+      axes: "none",
+      view: { x: [-4.3, 4.3], y: [-2.4, 2] },
+      elements: [
+        { kind: "circle", centre: left, r: R, tone: "muted", step: 2 },
+        ...seats(left, [["A", 0], ["B", 90], ["C", 180], ["D", 270]], 2),
+        { kind: "label", at: [-2.4, -1.75], label: "a seating", labelAt: "s", tone: "muted", step: 2 },
+        { kind: "circle", centre: right, r: R, tone: "muted", step: 3 },
+        ...seats(right, [["D", 0], ["A", 90], ["B", 180], ["C", 270]], 3),
+        { kind: "segment", from: right, to: on(right, 0, 1.1), label: "start", labelAt: "s", tone: "good", step: 3 },
+        { kind: "turn", centre: right, r: 1.1, from: 0, to: 90, step: 3 },
+        { kind: "label", at: [2.4, -1.75], label: "turned one seat", labelAt: "s", tone: "muted", step: 3 },
+        { kind: "label", at: [0, 0], label: "same", labelAt: "n", tone: "good", step: 3 },
+      ],
+    },
+    formal: [
+      {
+        title: "Round table: fix one person",
+        points: [
+          t`At a plain round table no seat is marked out: the seats are **not numbered**.`,
+          t`Seat one person, $A$, anywhere: every seat is the same until someone sits.`,
+          t`Now each other seat is fixed by how many places on from $A$ it is.`,
+          t`So the other $n - 1$ people fill these seats like a row: $(n-1)!$ ways.`,
+          t`For example, $5$ people sit round a table in $4! = 24$ ways.`,
+        ],
+        figure: {
+          alt: "A round table with five seats. A sits at the top. The other four seats, going anticlockwise from A, are the 1st, 2nd, 3rd and 4th places on from A: fixed places, like seats in a row. The other 4 people fill them in 4! = 24 ways.",
+          axes: "none",
+          view: { x: [-2.4, 2.4], y: [-2.3, 2] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: R, tone: "muted" },
+            ...seats([0, 0], [["A", 90]], 2, "good"),
+            ...seats([0, 0], [["1st", 162], ["2nd", 234], ["3rd", 306], ["4th", 18]], 3),
+            { kind: "label", at: [0, -1.75], label: "4! = 24 ways", labelAt: "s", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Numbered seats",
+        points: [
+          t`When the seats are **numbered**, every seat is different from the others.`,
+          t`Then turning everyone round gives a new seating: each person moves to a new number.`,
+          t`So it is like a row: $n$ people fill $n$ numbered seats in $n!$ ways.`,
+        ],
+      },
+      {
+        title: "Garlands and necklaces",
+        points: [
+          t`Here beads $A$, $B$, $C$, $D$ go anticlockwise round a garland.`,
+          t`Turn it over, and the same beads go $A, B, C, D$ clockwise.`,
+          t`People at a table can't be turned over, so there these are two seatings; on a garland they are one.`,
+          t`So each garland is counted twice among the $(n-1)!$ table seatings.`,
+          t`So $n$ different things make $\frac{(n-1)!}{2}$ garlands or necklaces.`,
+          t`This needs $n \ge 3$: with only $2$ things, both ways round are already the same.`,
+        ],
+        figure: {
+          alt: "Two rings of beads. On the first, A, B, C and D go anticlockwise, with a dashed line through A and C. Turned over about that line, the second ring has A and C in place and B and D swapped: now A, B, C, D go clockwise. It is the same garland.",
+          axes: "none",
+          view: { x: [-4.3, 4.3], y: [-2.4, 2] },
+          elements: [
+            { kind: "circle", centre: left, r: R, tone: "muted" },
+            ...seats(left, [["A", 90], ["B", 180], ["C", 270], ["D", 0]], 1),
+            { kind: "label", at: [-2.4, -1.8], label: "anticlockwise", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "segment", from: on(left, 270, 1), to: on(left, 90, 1), dashed: true, tone: "muted", step: 2 },
+            { kind: "circle", centre: right, r: R, tone: "muted", step: 2 },
+            ...seats(right, [["A", 90], ["B", 0], ["C", 270], ["D", 180]], 2),
+            { kind: "label", at: [2.4, -1.8], label: "clockwise", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "label", at: [0, 0], label: "same", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Some people always together",
+        points: [
+          t`Recall: people who must sit together are glued into one **block**, which moves as one unit.`,
+          t`Glue the $k$ particular people into one block.`,
+          t`The block and the other $n - k$ people make $n - k + 1$ **units**, the things to seat round the table.`,
+          t`Round the table, these $n - k + 1$ units sit in $(n-k)!$ ways.`,
+          t`Inside the block, the $k$ people can be ordered in $k!$ ways.`,
+          t`So there are $(n-k)! \times k!$ seatings.`,
+        ],
+      },
+      {
+        title: "Never together",
+        points: [
+          t`For **never together**, count the opposite and take it away from all the seatings.`,
+          t`Never together $=$ all $-$ together.`,
+          t`For two people, never together means never side by side.`,
+          t`For example, $5$ people with two of them apart: $4! - 3! \times 2!$ $= 24 - 12 = 12$.`,
+        ],
+      },
+      {
+        title: "No two side by side",
+        points: [
+          t`To keep $w$ women apart, no two side by side, seat the $m$ men first ($w \le m$).`,
+          t`The $m$ men sit round the table in $(m-1)!$ ways.`,
+          t`Between each pair of neighbouring men is one **gap**: $m$ gaps in all.`,
+          t`Each woman takes a different gap, so no two women sit side by side.`,
+          t`The gaps are now fixed places, like seats in a row, so the women fill them in $^mP_w$ ways.`,
+          t`Only the first group seated takes $(m-1)!$: in all, $(m-1)! \times {}^mP_w$.`,
+        ],
+        figure: {
+          alt: "A round table with 4 men, M, seated first. Between each pair of neighbouring men is a gap: 4 gaps in all. Three women, W, each take a different gap, so no two women sit side by side; one gap stays empty.",
+          axes: "none",
+          view: { x: [-2.4, 2.4], y: [-2.1, 2.1] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: R, tone: "muted" },
+            ...seats([0, 0], [["M", 90], ["M", 180], ["M", 270], ["M", 0]], 2),
+            ...seats([0, 0], [["gap", 45], ["gap", 135], ["gap", 225], ["gap", 315]], 3, "muted").map(
+              (e): FigureElement => (e.kind === "point" ? { ...e, hollow: true } : e),
+            ),
+            ...([45, 135, 225] as const).map((deg): FigureElement => ({
+              kind: "point",
+              at: on([0, 0], deg),
+              label: "W",
+              labelAt: outward(deg + 180),
+              tone: "good",
+              step: 4,
+            })),
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`8 persons, two of them brothers, sit at a round table. In how many ways can they sit so that exactly one person sits between the brothers?`,
       steps: [

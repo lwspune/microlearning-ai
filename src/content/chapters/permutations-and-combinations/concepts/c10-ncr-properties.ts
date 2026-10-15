@@ -1,6 +1,41 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** Row 6 of Pascal's triangle, drawn as bars of height H per unit, each 2W wide, centred at r - 3. */
+const row6 = [1, 6, 15, 20, 15, 6, 1];
+const H = 0.15;
+const W = 0.35;
+const SUB = "₀₁₂₃₄₅₆";
+
+/** The outline of the bar for ⁶Cᵣ: its two sides and its top. */
+function bar(r: number, tone: FigureElement["tone"], step: number): FigureElement[] {
+  const [x0, x1, h] = [r - 3 - W, r - 3 + W, row6[r] * H];
+  return [
+    { kind: "segment", from: [x0, 0], to: [x0, h], tone, step },
+    { kind: "segment", from: [x0, h], to: [x1, h], tone, step },
+    { kind: "segment", from: [x1, 0], to: [x1, h], tone, step },
+  ];
+}
+
+/** The bar for ⁶Cᵣ, outlined and shaded in `tone`. */
+function filledBar(r: number, tone: FigureElement["tone"], step: number): FigureElement[] {
+  const [x0, x1, h] = [r - 3 - W, r - 3 + W, row6[r] * H];
+  const corners: Pt[] = [[x0, 0], [x1, 0], [x1, h], [x0, h]];
+  return [
+    { kind: "region", within: corners.map((p, i) => ({ kind: "halfPlane" as const, through: [p, corners[(i + 1) % 4]] as [Pt, Pt] })), tone, step },
+    ...bar(r, tone, step),
+  ];
+}
+
+/** ᵏCⱼ, for the small rows drawn. */
+const choose = (k: number, j: number): number => (j === 0 || j === k ? 1 : choose(k - 1, j - 1) + choose(k - 1, j));
+
+/** Where ᵏCⱼ sits in the drawn triangle: row k one unit below row k - 1, entries one unit apart. */
+const pascalAt = (k: number, j: number): Pt => [j - k / 2, 5 - k];
+
+/** From a label's anchor up to the middle of its text (labelAt "n", 15 px type), in figure units. */
+const LIFT = 0.29;
 
 export const c10: Concept = {
   id: "C10",
@@ -10,20 +45,112 @@ export const c10: Concept = {
     reveal: t`Choosing $8$ things to take from $n$ is the same as choosing the $n - 8$ to leave behind. So $^nC_8 = {}^nC_{n-8}$, and this equals $^nC_6$ when $n - 8 = 6$. So $n = 14$: picking $8$ of $14$ and picking $6$ of $14$ are the same count.`,
   },
   explanation: {
-    intuition: t`Every choice of $r$ things to take is also a choice of $n - r$ things to leave, so $^nC_r = {}^nC_{n-r}$. The values $^nC_0, {}^nC_1, \ldots, {}^nC_n$ read the same from both ends: they rise to the middle and fall again. So equal values come in mirror pairs, and the largest sits in the middle. Two neighbours in one row add up to an entry of the next row: that is Pascal's rule.`,
-    formal: t`**Complement.** $^nC_r = {}^nC_{n-r}$. Use it to shorten work: $^{100}C_{98} = {}^{100}C_2 = 4950$.
-
-**Equal values.** $^nC_x = {}^nC_y$ means $x = y$ **or** $x + y = n$. Solve both cases, then keep only roots that make each lower index a whole number from $0$ to $n$.
-
-**Pascal's rule.** $^nC_r + {}^nC_{r-1} = {}^{n+1}C_r$: the top goes up by one, the larger lower index stays. Out of $n + 1$ things, a choice of $r$ either leaves out one particular thing ($^nC_r$ ways) or takes it ($^nC_{r-1}$ ways).
-
-**Ratio of neighbours.** $\frac{{}^nC_r}{{}^nC_{r-1}} = \frac{n - r + 1}{r}$. Given a ratio such as $^nC_{r-1} : {}^nC_r : {}^nC_{r+1} = 14 : 8 : 3$, write two such equations and solve: $n = 10$, $r = 7$.
-
-**The largest $^nC_r$.** The ratio is above $1$ until the middle. For even $n$ the largest is at $r = \frac{n}{2}$ ($^8C_4 = 70$); for odd $n$ at $r = \frac{n-1}{2}$ and $\frac{n+1}{2}$, which are equal ($^{11}C_5 = {}^{11}C_6 = 462$).`,
+    intuition: [
+      t`Recall: $^nC_r$ counts the ways to choose $r$ things from $n$ different things.`,
+      t`**Row $n$** is the list $^nC_0, {}^nC_1, \ldots, {}^nC_n$; row $6$ is $1, 6, 15, 20, 15, 6, 1$.`,
+      t`Taking $2$ of $6$ things leaves $4$ behind, so $^6C_2 = {}^6C_4$: both are $15$.`,
+      t`In general, taking $r$ things leaves $n - r$, so $^nC_r = {}^nC_{n-r}$: equal values come in mirror pairs.`,
+      t`A row rises to the middle and falls again, so its largest value sits in the middle.`,
+      t`Two **neighbours**, side by side in one row, add up to an entry of the next row: that is **Pascal's rule**.`,
+    ],
+    figure: {
+      alt: "Row 6 drawn as seven bars, one for each of 6C0 to 6C6, with heights 1, 6, 15, 20, 15, 6, 1. The bars for 6C2 and 6C4 light up together: both are 15. Then the other mirror pairs light up, either side of a dashed line down the middle, and last the middle bar, 6C3 = 20, the tallest.",
+      axes: "none",
+      view: { x: [-3.8, 3.8], y: [-0.6, 3.6] },
+      elements: [
+        { kind: "segment", from: [-3.6, 0], to: [3.6, 0], tone: "muted" },
+        ...row6.flatMap((_, r) => bar(r, "muted", 2)),
+        ...row6.map((v, r): FigureElement => ({ kind: "label", at: [r - 3, v * H], label: String(v), labelAt: "n", step: 2 })),
+        ...row6.map((_, r): FigureElement => ({ kind: "label", at: [r - 3, 0], label: `⁶C${SUB[r]}`, labelAt: "s", tone: "muted", step: 2 })),
+        ...[2, 4].flatMap((r) => filledBar(r, "good", 3)),
+        ...[0, 1, 5, 6].flatMap((r) => filledBar(r, "good", 4)),
+        { kind: "segment", from: [0, 0], to: [0, 20 * H], dashed: true, tone: "muted", step: 4 },
+        ...filledBar(3, "accent", 5),
+      ],
+    },
+    formal: [
+      {
+        title: "The complement rule",
+        points: [
+          t`In $^nC_r$, $n$ is the **upper index** and $r$ is the **lower index**.`,
+          t`Each choice of $r$ things has a **complement**: the $n - r$ things it leaves out.`,
+          t`So $^nC_r = {}^nC_{n-r}$: the lower index $r$ can be swapped for $n - r$, with the upper index unchanged.`,
+          t`Use it to shorten work when $r$ is close to $n$.`,
+          t`For example, $^{100}C_{98} = {}^{100}C_2$, since $100 - 98 = 2$.`,
+          t`And $^{100}C_2$ equals $\frac{100 \times 99}{2}$, which is $4950$.`,
+        ],
+      },
+      {
+        title: "When two values are equal",
+        points: [
+          t`Suppose $^nC_x = {}^nC_y$, with the same upper index $n$.`,
+          t`Then either $x = y$, **or** $x + y = n$, a mirror pair.`,
+          t`Solve **both** cases: each one can give values of the unknown.`,
+          t`Recall: $^nC_r$ exists only when $r$ is a whole number from $0$ to $n$.`,
+          t`So put each value back into **both** lower indices.`,
+          t`Keep it only if each lower index is a whole number from $0$ to $n$.`,
+        ],
+      },
+      {
+        title: "Pascal's rule",
+        points: [
+          t`Add two neighbours of row $n$: $^nC_r + {}^nC_{r-1}$ equals $^{n+1}C_r$, the entry below them.`,
+          t`The upper index goes up by one, and the larger lower index stays: $^4C_2 + {}^4C_1 = {}^5C_2$.`,
+          t`Why: out of $n + 1$ things, mark one particular thing.`,
+          t`A choice of $r$ that leaves it out takes all $r$ from the other $n$: $^nC_r$ ways.`,
+          t`A choice of $r$ that takes it needs only $r - 1$ more from the other $n$: $^nC_{r-1}$ ways.`,
+          t`Every choice does one or the other, so the two counts add up to $^{n+1}C_r$.`,
+        ],
+        figure: {
+          alt: "Rows 0 to 5 of Pascal's triangle: 1; 1 1; 1 2 1; 1 3 3 1; 1 4 6 4 1; 1 5 10 10 5 1, each entry set below and between two entries of the row above. The neighbours 4 and 6 in row 4 are circled, with arrows down to the 10 between them in row 5. Then the label 4C2 + 4C1 = 5C2 appears.",
+          axes: "none",
+          view: { x: [-4.1, 3.4], y: [-0.35, 5.6] },
+          elements: [
+            ...[0, 1, 2, 3, 4, 5].map((k): FigureElement => ({ kind: "label", at: [-3.6, 5 - k], label: `row ${k}`, labelAt: "n", tone: "muted" })),
+            ...[0, 1, 2, 3, 4, 5].flatMap((k) =>
+              Array.from({ length: k + 1 }, (_, j): FigureElement => ({ kind: "label", at: pascalAt(k, j), label: String(choose(k, j)), labelAt: "n" })),
+            ),
+            ...[pascalAt(4, 1), pascalAt(4, 2), pascalAt(5, 2)].map((p): FigureElement => ({ kind: "circle", centre: [p[0], p[1] + LIFT], r: 0.3, tone: "good", step: 1 })),
+            { kind: "vector", from: [-0.866, 1.022], to: [-0.634, 0.558], tone: "good", step: 1 },
+            { kind: "vector", from: [-0.134, 1.022], to: [-0.366, 0.558], tone: "good", step: 1 },
+            { kind: "label", at: [0.7, 5.2], label: "⁴C₂ + ⁴C₁ = ⁵C₂", labelAt: "e", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Ratio of neighbours",
+        points: [
+          t`Divide an entry of row $n$ by its left neighbour: $\frac{{}^nC_r}{{}^nC_{r-1}}$ equals $\frac{n - r + 1}{r}$.`,
+          t`This comes from writing both with factorials and cancelling.`,
+          t`The ratio links $n$ and $r$, so a given ratio of entries gives equations in $n$ and $r$.`,
+        ],
+      },
+      {
+        title: "Finding n and r from ratios",
+        points: [
+          t`Suppose $^nC_{r-1} : {}^nC_r : {}^nC_{r+1}$ is $14 : 8 : 3$.`,
+          t`The first two give $\frac{n - r + 1}{r} = \frac{8}{14}$, so $7n - 11r = -7$.`,
+          t`The last two, by the same rule with $r + 1$ for $r$, give $\frac{n - r}{r + 1} = \frac{3}{8}$, so $8n - 11r = 3$.`,
+          t`Subtract the first equation from the second: $n = 10$.`,
+          t`Then $70 - 11r = -7$, so $r = 7$.`,
+          t`Check: $^{10}C_6 : {}^{10}C_7 : {}^{10}C_8$ is $210 : 120 : 45$, which is $14 : 8 : 3$.`,
+        ],
+      },
+      {
+        title: "The largest value in a row",
+        points: [
+          t`The ratio $\frac{n - r + 1}{r}$ is above $1$ while $r < \frac{n + 1}{2}$, so the row rises.`,
+          t`Past the middle the ratio is below $1$, so the row falls.`,
+          t`For even $n$, the largest value is at $r = \frac{n}{2}$, such as $^8C_4 = 70$.`,
+          t`For odd $n$, the two middle values tie for the largest, at $r = \frac{n - 1}{2}$ and $r = \frac{n + 1}{2}$.`,
+          t`For example, $^{11}C_5 = {}^{11}C_6 = 462$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find $r$ if $^{16}C_4 + {}^{16}C_5 + {}^{17}C_6 + {}^{18}C_7 = {}^{19}C_r$.`,
       steps: [
-        t`Pascal's rule on the first pair: $^{16}C_4 + {}^{16}C_5 = {}^{17}C_5$, the top up by one and the larger lower index kept.`,
+        t`Pascal's rule on the first pair: $^{16}C_4 + {}^{16}C_5 = {}^{17}C_5$, the upper index up by one and the larger lower index kept.`,
         t`Now $^{17}C_5 + {}^{17}C_6 = {}^{18}C_6$, and then $^{18}C_6 + {}^{18}C_7 = {}^{19}C_7$.`,
         t`So $^{19}C_7 = {}^{19}C_r$. Either $r = 7$, or $r + 7 = 19$, giving $r = 12$.`,
         t`Both $7$ and $12$ lie between $0$ and $19$, so both are valid.`,

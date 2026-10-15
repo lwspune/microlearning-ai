@@ -10,22 +10,63 @@ export const c13: Concept = {
     reveal: t`No, only $3$: AB with CD, AC with BD, AD with BC. Choosing AB leaves CD, and choosing CD leaves AB: that is the same split, counted twice. The two pairs have the same size and no names, so divide by $2! = 2$: $\frac{6}{2} = 3$.`,
   },
   explanation: {
-    intuition: t`To divide things into groups, fill the groups one at a time: choose the first group's members, then the next group's from those left, and multiply. The last group takes whatever is left, in $1$ way. Inside a group order doesn't matter, so each choice is an $^nC_r$. But when groups have the same size and no names, the same split turns up once for every order of picking the groups, so divide by that number of orders.`,
-    formal: t`**Groups of different sizes.** $n = p + q + r$ different things into groups of $p$, $q$ and $r$:
-$$^nC_p \times {}^{n-p}C_q \times {}^{r}C_r = \frac{n!}{p!\,q!\,r!}$$
-
-**Equal groups, no names.** $km$ things into $k$ groups of $m$ each: each split is counted $k!$ times, so
-$$\frac{(km)!}{(m!)^k\,k!}$$
-
-**Equal groups with names.** Groups given to named people, or a car group and a train group, are told apart. Don't divide by $k!$: $\dfrac{(km)!}{(m!)^k}$.
-
-**Some sizes repeated.** Divide only by the factorial of how many groups share a size. $7$ things into groups of $2$, $2$, $3$: $\dfrac{7!}{2!\,2!\,3!\,2!} = 105$.`,
+    intuition: [
+      t`To **divide** things into groups, or **split** them, is to put each thing into exactly one group.`,
+      t`Fill the groups one at a time, each from the things left; the last group takes what remains, in $1$ way.`,
+      t`Order inside a group doesn't matter, so each choice is a selection, counted by an $^nC_r$.`,
+      t`Filling one group and then the next is one task after another, so multiply the choices.`,
+      t`Groups with **no names** are told apart only by their members, not by a label such as "car" or "Asha's".`,
+      t`If equal-sized groups have no names, each split turns up once for every order of picking them, so divide by that number.`,
+    ],
+    formal: [
+      {
+        title: "Groups of different sizes",
+        points: [
+          t`Put $n$ different things, no two alike, into groups of different sizes $p$, $q$ and $r$, with $n = p + q + r$.`,
+          t`Choose the group of $p$ first: $^nC_p$ ways.`,
+          t`Choose the group of $q$ from the $n - p$ left: $^{n-p}C_q$ ways.`,
+          t`The last $r$ form the third group: $^{r}C_r = 1$ way.`,
+          t`Multiply the three; the $(n - p)!$ cancels, leaving $\frac{n!}{p!\,q!\,r!}$.`,
+          t`The sizes all differ, so each split is counted once: nothing to divide by.`,
+        ],
+      },
+      {
+        title: "Equal groups with no names",
+        points: [
+          t`Put $km$ different things into $k$ groups of $m$ each, the groups having no names.`,
+          t`Choosing the groups one after another gives $\frac{(km)!}{(m!)^k}$ ways.`,
+          t`But the same split is reached once for each order of picking the $k$ groups.`,
+          t`There are $k!$ such orders, so each split is counted $k!$ times.`,
+          t`So the number of splits is $\frac{(km)!}{(m!)^k\,k!}$.`,
+        ],
+      },
+      {
+        title: "Equal groups with names",
+        points: [
+          t`Now let the $k$ groups have names, such as three named children: then they are told apart.`,
+          t`Groups with different jobs, such as a car group and a train group, are told apart too.`,
+          t`Each split is then counted once, so don't divide by $k!$.`,
+          t`The number of ways is $\frac{(km)!}{(m!)^k}$.`,
+        ],
+      },
+      {
+        title: "Some sizes repeated",
+        points: [
+          t`Sometimes only some of the unnamed groups share a size.`,
+          t`Divide only by the factorial of how many groups share a size.`,
+          t`For example, split $7$ different things into groups of $2$, $2$ and $3$.`,
+          t`Choosing the groups in turn gives $\frac{7!}{2!\,2!\,3!}$ ways.`,
+          t`The two groups of $2$ share a size, so divide by $2!$.`,
+          t`That gives $\frac{7!}{2!\,2!\,3!\,2!} = 105$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the number of ways of dividing $20$ different objects into three groups of sizes $8$, $7$ and $5$.`,
       steps: [
         t`Choose the group of $8$ from all $20$: $^{20}C_8 = \frac{20!}{8!\,12!}$ ways.`,
         t`Choose the group of $7$ from the $12$ left: $^{12}C_7 = \frac{12!}{7!\,5!}$ ways. The last $5$ form the third group in $1$ way.`,
-        t`Multiply: $\frac{20!}{8!\,12!} \times \frac{12!}{7!\,5!} = \frac{20!}{8!\,7!\,5!}$.`,
+        t`Multiply: $\frac{20!}{8!\,12!} \times \frac{12!}{7!\,5!}$ $= \frac{20!}{8!\,7!\,5!}$.`,
         t`The three sizes are all different, so no split is counted twice: nothing to divide by.`,
       ],
       answer: t`$\dfrac{20!}{8!\,7!\,5!}$ ways.`,

@@ -1,6 +1,34 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** A box, one thing to decide, drawn as four segments; `at` is its lower-left corner. */
+const box = ([x, y]: Pt, w: number, h: number, step: number): FigureElement[] => [
+  { kind: "segment", from: [x, y], to: [x + w, y], step },
+  { kind: "segment", from: [x + w, y], to: [x + w, y + h], step },
+  { kind: "segment", from: [x + w, y + h], to: [x, y + h], step },
+  { kind: "segment", from: [x, y + h], to: [x, y], step },
+];
+
+/**
+ * Text centred on `at`, in a figure whose view is `width` units wide (drawn 400px wide): a label sits
+ * 10px above an "n" anchor, so the anchor drops 15px to centre the text's height on `at`.
+ */
+const mid = (width: number, [x, y]: Pt, label: string, step?: number): FigureElement => ({
+  kind: "label",
+  at: [x, y - (15 * width) / 400],
+  label,
+  labelAt: "n",
+  ...(step === undefined ? {} : { step }),
+});
+
+/** The selections of a, b and c, one column per size: [x, heading, the selections, step]. */
+const bySize: [number, string, string[], number][] = [
+  [1, "size 0", ["none"], 2],
+  [3, "size 1", ["a", "b", "c"], 3],
+  [5, "size 2", ["ab", "ac", "bc"], 4],
+  [7, "size 3", ["abc"], 5],
+];
 
 export const c14: Concept = {
   id: "C14",
@@ -10,14 +38,95 @@ export const c14: Concept = {
     reveal: t`$16$. Count by size: $1$ pizza with no topping, $4$ with one, $6$ with two, $4$ with three, $1$ with all four, and $1 + 4 + 6 + 4 + 1 = 16$. Quicker: each topping is either on or off, $2$ choices each, so $2 \times 2 \times 2 \times 2 = 2^4 = 16$.`,
   },
   explanation: {
-    intuition: t`When you may choose any number of things, don't count size by size: decide thing by thing. Each thing is either in the selection or out of it, $2$ choices, and every thing is decided on its own. By the multiplication principle, $n$ different things give $2 \times 2 \times \cdots \times 2 = 2^n$ selections. One of them is the empty selection, with nothing chosen. If the question needs at least one thing, remove it: $2^n - 1$.`,
-    formal: t`**Any number, even none.** From $n$ different things, each in or out: $$2 \times 2 \times \cdots \times 2 = 2^n \text{ selections.}$$
-
-**At least one.** Remove the one empty selection: $$2^n - 1.$$ Watch for it in words: "at least one", "the hall is lit" (some lamp is on), "he fails" (in at least one subject).
-
-**The same count, size by size.** Choosing $r$ things gives $^nC_r$ selections, for $r = 0, 1, \ldots, n$. So $$^nC_0 + {}^nC_1 + \ldots + {}^nC_n = 2^n, \qquad {}^nC_1 + {}^nC_2 + \ldots + {}^nC_n = 2^n - 1.$$
-
-**Check with $n = 3$.** $1 + 3 + 3 + 1 = 8 = 2^3$. Choosing nothing is one way: $^nC_0 = 1$, not $0$. And $2^n$ is neither $2n$ nor $n^2$: for $n = 3$ those give $6$ and $9$.`,
+    intuition: [
+      t`Recall: a **selection** is a choice of things where the order doesn't matter.`,
+      t`Here you may choose **any number** of $n$ different things: none, some or all of them.`,
+      t`Decide thing by thing: each thing is either **in** the selection or **out** of it, $2$ choices.`,
+      t`Each thing is decided on its own, so by the multiplication principle the choices multiply: $2^n$.`,
+      t`One of these is the **empty selection**, the one with nothing chosen.`,
+      t`If the question needs at least one thing, remove it: $2^n - 1$.`,
+    ],
+    figure: {
+      alt: "A row of n boxes, one for each thing, with dots standing for the boxes between. Each box holds 2, since each thing is in or out. Multiplication signs join the boxes, and the row equals 2 to the power n. Below, with at least one thing chosen, the count is 2 to the power n minus 1.",
+      axes: "none",
+      view: { x: [-0.4, 8.4], y: [-1.7, 1.8] },
+      elements: [
+        ...box([0, 0], 1.2, 1, 2),
+        ...box([2, 0], 1.2, 1, 2),
+        mid(8.8, [4.2, 0.5], "⋯", 2),
+        ...box([5.2, 0], 1.2, 1, 2),
+        { kind: "segment", from: [0, -0.3], to: [6.4, -0.3], tone: "muted", step: 2 },
+        { kind: "label", at: [3.2, -0.3], label: "n things", labelAt: "s", tone: "muted", step: 2 },
+        mid(8.8, [0.6, 0.5], "2", 3),
+        mid(8.8, [2.6, 0.5], "2", 3),
+        mid(8.8, [5.8, 0.5], "2", 3),
+        { kind: "label", at: [3.2, 1.05], label: "each: in or out", labelAt: "n", tone: "muted", step: 3 },
+        mid(8.8, [1.6, 0.5], "×", 4),
+        mid(8.8, [3.6, 0.5], "×", 4),
+        mid(8.8, [4.8, 0.5], "×", 4),
+        mid(8.8, [7.4, 0.5], "= 2ⁿ", 4),
+        mid(8.8, [3.2, -1.3], "at least one: 2ⁿ − 1", 6),
+      ],
+    },
+    formal: [
+      {
+        title: "Any number, even none",
+        points: [
+          t`Take $n$ different things, and choose any number of them, even none.`,
+          t`Each thing is either in the selection or out of it: $2$ choices.`,
+          t`Each thing is decided on its own, so the choices multiply.`,
+          t`That gives $2 \times 2 \times \cdots \times 2$, with $n$ factors.`,
+          t`So there are $2^n$ selections.`,
+          t`$2^n$ is neither $2n$ nor $n^2$: for $n = 3$ those give $6$ and $9$, not $8$.`,
+        ],
+      },
+      {
+        title: "At least one",
+        points: [
+          t`One of the $2^n$ selections is the empty one, with nothing chosen.`,
+          t`When at least one thing is needed, remove it: $2^n - 1$ selections.`,
+          t`Watch for it in the words "at least one".`,
+          t`"The hall is lit" means at least one lamp is on.`,
+          t`"He fails" means he falls short in at least one subject.`,
+        ],
+      },
+      {
+        title: "The same count, size by size",
+        points: [
+          t`Recall: choosing exactly $r$ of the $n$ things gives $^nC_r$ selections.`,
+          t`The **size** of a selection is the number of things in it, from $0$ up to $n$.`,
+          t`Adding $^nC_r$ over every size $r$ counts each selection exactly once.`,
+          t`So $^nC_0 + {}^nC_1 + \ldots + {}^nC_n$ equals $2^n$.`,
+          t`Choosing nothing is one way, so $^nC_0 = 1$, not $0$.`,
+          t`Leave it out for at least one: $^nC_1 + {}^nC_2 + \ldots + {}^nC_n$ equals $2^n - 1$.`,
+        ],
+      },
+      {
+        title: "A check with n = 3",
+        points: [
+          t`Take three things, $a$, $b$ and $c$, and list the selections by size.`,
+          t`Size $0$: only the empty selection, so $1$.`,
+          t`Size $1$: $a$, $b$ or $c$, so $3$.`,
+          t`Size $2$: $ab$, $ac$ or $bc$, so $3$.`,
+          t`Size $3$: $abc$ alone, so $1$.`,
+          t`In all, $1 + 3 + 3 + 1 = 8$, which is $2^3$.`,
+        ],
+        figure: {
+          alt: "The selections of a, b and c in four columns by size. Size 0: none, 1 way. Size 1: a, b, c, 3 ways. Size 2: ab, ac, bc, 3 ways. Size 3: abc, 1 way. Below a line, 1 + 3 + 3 + 1 = 8 = 2³.",
+          axes: "none",
+          view: { x: [-0.2, 8.2], y: [-1.1, 3.4] },
+          elements: [
+            ...bySize.flatMap(([x, heading, sets, step]): FigureElement[] => [
+              { ...mid(8.4, [x, 3], heading, step), tone: "muted" },
+              ...sets.map((s, i) => mid(8.4, [x, 2.3 - 0.6 * i], s, step)),
+              mid(8.4, [x, 0.1], String(sets.length), step),
+            ]),
+            { kind: "segment", from: [0, 0.5], to: [8, 0.5], tone: "muted", step: 2 },
+            mid(8.4, [4, -0.7], "1 + 3 + 3 + 1 = 8 = 2³", 6),
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`A shelf has $10$ different books. In how many ways can you choose at least one of them to take on a trip?`,
       steps: [

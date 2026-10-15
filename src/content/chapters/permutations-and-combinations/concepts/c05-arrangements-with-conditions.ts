@@ -1,6 +1,32 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+type Tone = FigureElement["tone"];
+
+/** Half the side of a letter tile. */
+const H = 0.4;
+
+/** The outline of the rectangle with corners (x0, y0) and (x1, y1). */
+const box = (x0: number, y0: number, x1: number, y1: number, tone: Tone, step: number): FigureElement[] => [
+  { kind: "segment", from: [x0, y0], to: [x1, y0], tone, step },
+  { kind: "segment", from: [x1, y0], to: [x1, y1], tone, step },
+  { kind: "segment", from: [x1, y1], to: [x0, y1], tone, step },
+  { kind: "segment", from: [x0, y1], to: [x0, y0], tone, step },
+];
+
+/** A square tile centred at (x, y) with its letter in the middle ("s" puts the text's centre 0.255 below the anchor). */
+const tile = (x: number, y: number, letter: string, tone: Tone, step: number): FigureElement[] => [
+  ...box(x - H, y - H, x + H, y + H, tone, step),
+  { kind: "label", at: [x, y + 0.255], label: letter, labelAt: "s", step },
+];
+
+/** Two tiles pushed side by side about x, boxed as one block. */
+const block = (x: number, y: number, [a, b]: [string, string], step: number): FigureElement[] => [
+  ...tile(x - H, y, a, "accent", step),
+  ...tile(x + H, y, b, "accent", step),
+  ...box(x - 2 * H - 0.1, y - H - 0.1, x + 2 * H + 0.1, y + H + 0.1, "good", step),
+];
 
 export const c05: Concept = {
   id: "C05",
@@ -10,16 +36,101 @@ export const c05: Concept = {
     reveal: t`No. The first two places are already filled, and the digits $4$ and $5$ are used up. The last four places are filled from the other $8$ digits: $8 \times 7 \times 6 \times 5 = 1680$. Deal with the condition first, then arrange only what is left.`,
   },
   explanation: {
-    intuition: t`A condition takes away some freedom, so deal with it first. Put the restricted things in their places, then arrange the rest from what is left: anything placed is used up. Things that must be together are glued into one block, which moves as a single unit while its members can still swap inside it. For 'never together', count the opposite and subtract it from the total.`,
-    formal: t`**Fill the restricted places first.** Arrangements of WORLD that begin with R: R is fixed, and the other $4$ letters fill $4$ places in $4! = 24$ ways. Those that begin with R and end with D: $3! = 6$.
-
-**Together: glue them into a block.** If $k$ particular things out of $n$ must be together, the block and the other $n - k$ things make $n - k + 1$ units. Arrange the units, then the inside of the block:
-$$(n - k + 1)! \times k!$$
-With several blocks, arrange the blocks, then inside each one. $3$ Marathi and $2$ Hindi books, each language together: $2! \times 3! \times 2! = 24$.
-
-**Never together $=$ all $-$ together.** $10$ examination papers, the best and the worst never together: $10! - 2! \times 9! = 9!\,(10 - 2) = 8 \times 9!$.
-
-**Alternate places.** With equal numbers of boys and girls there are two patterns, $BGBG\ldots$ and $GBGB\ldots$, so the count is $2 \times b! \times g!$. With $5$ boys and $4$ girls only $BGBGBGBGB$ works: $5! \times 4! = 2880$.`,
+    intuition: [
+      t`A **condition** is a rule every arrangement must obey; it takes away some freedom, so deal with it first.`,
+      t`The **restricted** things are the ones the condition names: put them in their places first.`,
+      t`Anything placed is used up, so arrange the rest only from what is left.`,
+      t`Things that must be **together**, side by side, are glued into one **block**.`,
+      t`The block moves as a single **unit**, while its members can still swap places inside it.`,
+      t`For **never together**, count the opposite, the arrangements with them together, and subtract that from the total.`,
+    ],
+    formal: [
+      {
+        title: "Fill the restricted places first",
+        points: [
+          t`Recall: $n$ different things fill $n$ places in a row in $n!$ ways.`,
+          t`Arrange the letters of WORLD so that the word begins with R.`,
+          t`R is fixed in the first place, so it is used up.`,
+          t`The other $4$ letters fill the other $4$ places in $4! = 24$ ways.`,
+          t`To begin with R and end with D, fix D in the last place as well.`,
+          t`The $3$ letters left fill the $3$ middle places in $3! = 6$ ways.`,
+        ],
+      },
+      {
+        title: "Together: glue into a block",
+        points: [
+          t`Suppose $k$ particular things out of $n$ must be together.`,
+          t`Glue them into one block, which moves as one unit, like a single thing.`,
+          t`The block and the other $n - k$ things make $n - k + 1$ units.`,
+          t`The units can be arranged in $(n - k + 1)!$ ways.`,
+          t`Inside the block, the $k$ things can swap places in $k!$ ways.`,
+          t`Each order of the units goes with each order inside, so multiply: $(n - k + 1)! \times k!$.`,
+        ],
+        figure: {
+          alt: "Five tiles A, B, C, D, E in a row, with B and C the two that must be together: n = 5, k = 2. Below, B and C are pushed side by side and boxed as one block, so the row is 4 units: A, the block, D and E. Next, the 4 units in another order, D, A, E and then the block: there are 4! orders. Last, the same order with the block flipped to C B: 2! orders inside. In all, 4! × 2! = 48 ways.",
+          axes: "none",
+          view: { x: [-0.6, 7.4], y: [-0.8, 5.9] },
+          elements: [
+            ...tile(0, 5.2, "A", "muted", 1),
+            ...tile(1, 5.2, "B", "accent", 1),
+            ...tile(2, 5.2, "C", "accent", 1),
+            ...tile(3, 5.2, "D", "muted", 1),
+            ...tile(4, 5.2, "E", "muted", 1),
+            { kind: "label", at: [4.55, 5.2], label: "n = 5, k = 2", labelAt: "e", step: 1 },
+            ...tile(0, 3.6, "A", "muted", 2),
+            ...block(1.5, 3.6, ["B", "C"], 2),
+            { kind: "label", at: [1.5, 4.1], label: "block", labelAt: "n", tone: "good", step: 2 },
+            ...tile(3, 3.6, "D", "muted", 2),
+            ...tile(4, 3.6, "E", "muted", 2),
+            { kind: "label", at: [4.55, 3.6], label: "4 units", labelAt: "e", step: 3 },
+            ...tile(0, 2, "D", "muted", 4),
+            ...tile(1, 2, "A", "muted", 4),
+            ...tile(2, 2, "E", "muted", 4),
+            ...block(3.5, 2, ["B", "C"], 4),
+            { kind: "label", at: [4.55, 2], label: "4! orders", labelAt: "e", step: 4 },
+            ...tile(0, 0.4, "D", "muted", 5),
+            ...tile(1, 0.4, "A", "muted", 5),
+            ...tile(2, 0.4, "E", "muted", 5),
+            ...block(3.5, 0.4, ["C", "B"], 5),
+            { kind: "label", at: [4.55, 0.4], label: "2! inside", labelAt: "e", step: 5 },
+            { kind: "label", at: [2, -0.15], label: "4! × 2! = 48 ways", labelAt: "s", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Several blocks at once",
+        points: [
+          t`With several blocks, each block is one unit.`,
+          t`Arrange the units first, then the inside of each block, and multiply.`,
+          t`Example: $3$ Marathi and $2$ Hindi books, the books of each language together.`,
+          t`The two blocks make $2$ units, arranged in $2!$ ways.`,
+          t`Inside, the Marathi books go in $3!$ ways and the Hindi books in $2!$ ways.`,
+          t`So there are $2! \times 3! \times 2! = 24$ ways.`,
+        ],
+      },
+      {
+        title: "Never together: all minus together",
+        points: [
+          t`**Never together** means the particular things are never all side by side.`,
+          t`Each arrangement has them either together or not, never both.`,
+          t`So never together $=$ all $-$ together.`,
+          t`Example: $10$ examination papers, with the best and the worst never together.`,
+          t`With no condition there are $10!$ orders; with the pair glued, $9$ units give $2! \times 9!$.`,
+          t`Never together: $10! - 2! \times 9!$ $= 9!\,(10 - 2) = 8 \times 9!$.`,
+        ],
+      },
+      {
+        title: "Alternate places",
+        points: [
+          t`Boys and girls sit at **alternate places** when no two boys and no two girls sit side by side.`,
+          t`With equal numbers, there are two patterns ($B$ a boy, $G$ a girl): $BGBG\ldots$ and $GBGB\ldots$.`,
+          t`In either pattern, the $b$ boys fill their places in $b!$ ways, and the $g$ girls theirs in $g!$.`,
+          t`So the count is $2 \times b! \times g!$.`,
+          t`With $5$ boys and $4$ girls, a boy must sit at each end: only $BGBGBGBGB$ works.`,
+          t`So the count is $5! \times 4! = 2880$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`In how many ways can $4$ boys and $4$ girls sit in a row so that boys and girls are at alternate places?`,
       steps: [

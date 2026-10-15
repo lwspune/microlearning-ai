@@ -1,6 +1,44 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** A shaded block of the list: x runs over word places (one unit a word), y over [y0, y0 + 1]. */
+const block = (x0: number, x1: number, y0: number, tone: FigureElement["tone"], step?: number): FigureElement => ({
+  kind: "region",
+  within: [
+    { kind: "halfPlane", through: [[x0, y0], [x1, y0]] },
+    { kind: "halfPlane", through: [[x1, y0], [x1, y0 + 1]] },
+    { kind: "halfPlane", through: [[x1, y0 + 1], [x0, y0 + 1]] },
+    { kind: "halfPlane", through: [[x0, y0 + 1], [x0, y0]] },
+  ],
+  tone,
+  step,
+});
+
+/**
+ * The idea slide's list of the 24 words of A, B, C, D: four blocks of 3! = 6 (point 2, sized at
+ * point 3), the A and B blocks skipped for CBAD (point 4), the C block opened into blocks of 2
+ * (point 5), and CBAD in its place (point 6).
+ */
+const blocks: FigureElement[] = [
+  ...["A", "B", "C", "D"].flatMap((c, i): FigureElement[] => [
+    block(6 * i + 0.15, 6 * i + 5.85, 5.6, "muted", 2),
+    { kind: "label", at: [6 * i + 3, 6.6], label: `${c}…`, step: 2 },
+    { kind: "label", at: [6 * i + 3, 5.6], label: "3! = 6", labelAt: "s", tone: "muted", step: 3 },
+  ]),
+  block(0.15, 5.85, 5.6, "bad", 4),
+  block(6.15, 11.85, 5.6, "bad", 4),
+  block(12.15, 17.85, 5.6, "good", 4),
+  { kind: "segment", from: [12.15, 5.6], to: [12.15, 3.4], dashed: true, tone: "muted", step: 5 },
+  { kind: "segment", from: [17.85, 5.6], to: [17.85, 3.4], dashed: true, tone: "muted", step: 5 },
+  ...[["CA", "bad"], ["CB", "good"], ["CD", "muted"]].flatMap(([c, tone], i): FigureElement[] => [
+    block(12 + 2 * i + 0.15, 12 + 2 * i + 1.85, 2.4, "muted", 5),
+    ...(tone === "muted" ? [] : [block(12 + 2 * i + 0.15, 12 + 2 * i + 1.85, 2.4, tone as FigureElement["tone"], 5)]),
+    { kind: "label", at: [13 + 2 * i, 2.4], label: c, labelAt: "s", step: 5 },
+  ]),
+  { kind: "point", at: [14.5, 2.9], tone: "good", step: 6 },
+  { kind: "label", at: [14.5, 0.9], label: "CBAD: 12 + 2 skipped, so rank 15", labelAt: "s", tone: "good", step: 6 },
+];
 
 export const c08: Concept = {
   id: "C08",
@@ -10,18 +48,64 @@ export const c08: Concept = {
     reveal: t`Near the start: it is **5th**. D and E are the two smallest letters and already sit first, so nothing is skipped there. With DE fixed, the third place holds L, but H and I are smaller: $2 \times 2! = 4$ words (DEHIL, DEHLI, DEIHL, DEILH) come first. DELHI is next.`,
   },
   explanation: {
-    intuition: t`A dictionary lists words in blocks: every word starting with the smallest letter, then every word starting with the next one, and so on. With $n$ different letters, each block holds $(n-1)!$ words, because the other letters can be arranged in any order. To reach your word, skip the whole blocks of the smaller first letters. Inside your own block the same thing happens with the second letter, then the third. Count what you skip, then add $1$ for the word itself.`,
-    formal: t`**Dictionary order**: compare the first letters; if they match, compare the second letters, and so on. $n$ different letters make $n!$ words.
-
-**Rank of a word**
-- **1.** Write its letters in alphabetical order.
-- **2.** At each place, from the left, count the **unused** letters smaller than the letter there. Each one starts a block of (letters after this place)$!$ words.
-- **3.** Add up these blocks: that is the number of words **before** the word.
-- **4.** Rank $=$ words before $+ 1$.
-
-**The $k$th word**: each first letter takes a block of $(n-1)!$ words. Find the block that holds $k$, fix its letter, count on from where that block starts, and repeat with blocks of $(n-2)!$, $(n-3)!$, ...
-
-**Numbers** in increasing order work the same way, with digits in place of letters.`,
+    intuition: [
+      t`**Dictionary order** lists words as a dictionary does: by the first letter, then the second, and so on.`,
+      t`So the list falls into **blocks**: the words starting with the smallest letter, then those with the next letter.`,
+      t`With $n$ different letters, each block holds $(n - 1)!$ words, as the other letters can come in any order.`,
+      t`To reach your word, skip the whole blocks of first letters smaller than yours.`,
+      t`Inside your own block, do the same with the second letter, then the third, and so on.`,
+      t`A word's **rank** is its place in the list: the words skipped, plus $1$ for the word itself.`,
+    ],
+    figure: {
+      alt: "The 24 words of the letters A, B, C, D in dictionary order, drawn as a bar of four blocks of 3! = 6 words, starting with A, B, C and D. To find CBAD, the A and B blocks, 12 words, are skipped and the C block is opened. Inside it are three blocks of 2 words, starting with CA, CB and CD. The CA block, 2 words, is skipped, and CBAD is the first word of the CB block: 12 + 2 words come before it, so its rank is 15.",
+      axes: "none",
+      view: { x: [-0.5, 24.5], y: [-0.9, 11.2] },
+      elements: [
+        { kind: "label", at: [12, 9.6], label: "Words of A, B, C, D: where is CBAD?", tone: "muted" },
+        ...blocks,
+      ],
+    },
+    formal: [
+      {
+        title: "Dictionary order",
+        points: [
+          t`Here a **word** is any arrangement of the given letters, with or without meaning.`,
+          t`Two words are compared by their first letters: the word with the smaller letter comes first.`,
+          t`If the first letters match, compare the second letters, and so on.`,
+          t`$n$ different letters make $n!$ words, so the list has $n!$ places.`,
+        ],
+      },
+      {
+        title: "Rank of a word",
+        points: [
+          t`Write the word's letters in alphabetical order.`,
+          t`Go through the word's places from the left, one at a time.`,
+          t`At each place, count the **unused** letters smaller than the one there: letters not fixed in an earlier place.`,
+          t`Each of them starts a block of $m!$ words, where $m$ is the number of places after this one.`,
+          t`Add up these blocks: that is the number of words **before** the word.`,
+          t`Rank $=$ words before $+ 1$.`,
+        ],
+      },
+      {
+        title: "Finding the kth word",
+        points: [
+          t`The **$k$th word** is the word in place $k$ of the list.`,
+          t`Each first letter takes a block of $(n - 1)!$ words, the letters in alphabetical order.`,
+          t`Find the block that holds place $k$, and fix its letter first.`,
+          t`Inside it, each second letter takes $(n - 2)!$ words, counted on from where the block starts.`,
+          t`Find the smaller block that holds place $k$, and fix its letter second.`,
+          t`Repeat with blocks of $(n - 3)!$, $(n - 4)!$, ... until every letter is fixed.`,
+        ],
+      },
+      {
+        title: "Numbers in increasing order",
+        points: [
+          t`Numbers in **increasing order** run from the smallest to the largest.`,
+          t`For numbers with the same count of digits, compare the first digits, then the second, and so on.`,
+          t`That is dictionary order with digits in place of letters, so ranks and $k$th numbers are found the same way.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`All the words made from the letters of MOTHER, each used once, are listed in dictionary order. Find the rank of MOTHER.`,
       steps: [

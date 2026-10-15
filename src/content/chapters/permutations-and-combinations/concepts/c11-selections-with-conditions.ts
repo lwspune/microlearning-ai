@@ -10,16 +10,73 @@ export const c11: Concept = {
     reveal: t`Ravi counts some teams more than once. A team with girls $G_1$ and $G_2$ is counted when $G_1$ is 'the girl' and again when $G_2$ is. Count the bad teams instead: with no girl, $^5C_3 = 10$. So the answer is $56 - 10 = 46$.`,
   },
   explanation: {
-    intuition: t`A condition splits a selection into parts. When you pick some people from one group **and** some from another, multiply the two counts. When the condition allows several cases (exactly $1$ doctor, exactly $2$, ...), count each case and add. For 'at least one', it's quicker to count the selections that break the rule (none at all) and subtract them from the total.`,
-    formal: t`**Pick from each group and multiply.** $3$ boys from $6$ and $2$ girls from $4$: $^6C_3 \times {}^4C_2 = 20 \times 6 = 120$.
-
-**Particular people.** If $k$ particular people must be in, choose the other $r - k$ from the remaining $n - k$: $^{n-k}C_{r-k}$. If they must be out: $^{n-k}C_r$. For $5$ from $11$ with two particular students: both in, $^9C_3 = 84$; both out, $^9C_5 = 126$.
-
-**'At least' means cases.** At least $k$ from a group: count exactly $k$, exactly $k + 1$, ..., up to what the group and the team allow, and add. Either-or cases add; the groups inside one case multiply.
-
-**At least one = all − none.** $^nC_r$ minus the selections with none from that group. This works only for 'at least one': for 'at least $2$' you must also remove the 'exactly one' case. A rule like 'take $B$ only if you take $A$' works the same way: all − (selections with $B$ but not $A$).
-
-**Don't fix one and fill freely.** Choosing 'the' required person first and then any of the rest counts a selection with two of them twice.`,
+    intuition: [
+      t`A **condition** is a rule a selection must obey, such as 'at least one doctor' or 'Asha must be in'.`,
+      t`Often the people come in **groups** that don't overlap, such as doctors and lawyers.`,
+      t`Picking some from one group **and** some from another: multiply the two counts.`,
+      t`The rule may allow several **cases**, such as exactly $1$ doctor or exactly $2$: count each case and add.`,
+      t`**At least one** means one or more, so the selections that break this rule are those with none at all.`,
+      t`It is often quicker to count those and subtract them from the total.`,
+    ],
+    formal: [
+      {
+        title: "Pick from each group, multiply",
+        points: [
+          t`Recall: $^nC_r$ is the number of ways to select $r$ things from $n$, when order doesn't matter.`,
+          t`To select $3$ boys from $6$ and $2$ girls from $4$, pick the boys, then the girls.`,
+          t`The boys can be picked in $^6C_3 = 20$ ways, and the girls in $^4C_2 = 6$ ways.`,
+          t`Every choice of boys goes with every choice of girls, so multiply.`,
+          t`So there are $^6C_3 \times {}^4C_2$ selections, which is $20 \times 6 = 120$.`,
+        ],
+      },
+      {
+        title: "Particular people in or out",
+        points: [
+          t`Sometimes $k$ **particular** people, named in advance, must be in a selection of $r$ from $n$.`,
+          t`They fill $k$ places, so choose the other $r - k$ from the remaining $n - k$: $^{n-k}C_{r-k}$ ways.`,
+          t`If those $k$ must be out, choose all $r$ from the remaining $n - k$: $^{n-k}C_r$ ways.`,
+          t`For example, select $5$ from $11$ students, with two particular students.`,
+          t`Both in: choose $3$ more from the other $9$, in $^9C_3 = 84$ ways.`,
+          t`Both out: choose all $5$ from the other $9$, in $^9C_5 = 126$ ways.`,
+        ],
+      },
+      {
+        title: "'At least' means cases",
+        points: [
+          t`**At least $k$** from a group means $k$ or more from it.`,
+          t`Count the case with exactly $k$, then exactly $k + 1$, and so on.`,
+          t`Stop at the most the group has, or the most the team has room for.`,
+          t`Either-or cases add: each selection is in exactly one case.`,
+          t`Inside one case, the choices from the different groups multiply.`,
+        ],
+      },
+      {
+        title: "At least one: all minus none",
+        points: [
+          t`**All** is the number of selections with no condition, $^nC_r$.`,
+          t`For 'at least one from a group', **none** is the number of selections with no one from it.`,
+          t`So the number with at least one from the group is all $-$ none.`,
+          t`This works only for 'at least one'.`,
+          t`For 'at least $2$', you must also remove the 'exactly one' case.`,
+        ],
+      },
+      {
+        title: "Take B only if A",
+        points: [
+          t`A rule like 'take $B$ only if you take $A$' is broken only when $B$ is in and $A$ is out.`,
+          t`So it works the same way: count all the selections, then remove the ones that break it.`,
+          t`The answer is all $-$ (selections with $B$ but not $A$).`,
+        ],
+      },
+      {
+        title: "Don't fix one, fill freely",
+        points: [
+          t`A tempting shortcut for 'at least one girl': choose 'the' girl first, then fill the other places from everyone left.`,
+          t`This counts a team with two girls twice, once with each of them as 'the' girl.`,
+          t`So the shortcut gives too many: use all $-$ none, or add the cases.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Ten students are to be selected for a project from a class of $30$. Four of them want to be together: either all four are in the project or none of them is. Find the number of possible selections.`,
       steps: [
