@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { RenderedInlineNodes } from "@/components/RenderedRichText";
 import { card } from "@/components/ui";
 import { chapters } from "@/content/chapters";
+import { LessonStage } from "@/lessons/LessonStage";
 import { SlideBody } from "@/lessons/SlideBody";
 import { buildDeck } from "@/lessons/deck";
 import { renderDeck } from "@/lessons/renderDeck";
@@ -35,7 +36,12 @@ async function SlidesPreviewContent({ params }: { params: PageProps<"/review/[ch
         ← {found.node.title}
       </Link>
       <h1 className="mt-4 text-2xl font-semibold">Slides preview</h1>
-      <ol className="mt-6 space-y-8">
+      <h2 className="mt-6 text-lg font-semibold">As learners click through</h2>
+      <div className="mt-3" data-stage>
+        <LessonStage slides={slides} label={`${found.node.title} preview`} />
+      </div>
+      <h2 className="mt-10 text-lg font-semibold">Every slide, whole</h2>
+      <ol className="mt-4 space-y-8">
         {slides.map((slide, i) => (
           <li key={slide.id} data-slide={slide.id} className={`${card} px-5 py-7 md:px-14 md:py-12`}>
             <p className="font-mono text-sm text-muted">
