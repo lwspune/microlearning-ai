@@ -1,0 +1,318 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c07: Concept = {
+  id: "C07",
+  status: "approved",
+  hook: {
+    prompt: t`An ellipse has vertices $(\pm 6, 0)$ and foci $(\pm 4, 0)$. **Is its equation $\frac{x^2}{36} + \frac{y^2}{16} = 1$?**`,
+    reveal: t`No. $16$ is $(ae)^2$, the focus's distance from the centre squared, not $b^2$. The ends of the minor axis sit farther out: $b^2 = a^2 - a^2e^2 = 36 - 16 = 20$, so the ellipse is $\frac{x^2}{36} + \frac{y^2}{20} = 1$.`,
+  },
+  explanation: {
+    intuition: t`The standard ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ has two unknowns, so two facts fix it. Each fact the question gives (vertices, foci, directrices, an axis, the latus rectum, a point on the curve) is one equation in $a$, $b$ and $e$. Translate each one, link them with $b^2 = a^2(1 - e^2)$, and solve. Then put $a^2$, the larger number, under $x^2$.`,
+    formal: t`**Translate each piece of data.**
+- Vertices $(\pm a, 0)$, or major axis $2a$: gives $a$.
+- Foci $(\pm ae, 0)$, or distance between the foci $2ae$: gives $ae$.
+- Directrices $x = \pm\frac{a}{e}$, distance between them $\frac{2a}{e}$: gives $\frac{a}{e}$.
+- Minor axis $2b$; latus rectum $\frac{2b^2}{a}$.
+- A point $(x_1, y_1)$ on it: $\frac{x_1^2}{a^2} + \frac{y_1^2}{b^2} = 1$.
+
+**Link them.** $b^2 = a^2(1 - e^2) = a^2 - (ae)^2$. In an ellipse $a$ is the longest of $a$, $b$ and $ae$, so you subtract.
+
+**Lengths are whole, coordinates are halves.** Foci $8$ apart means $2ae = 8$, so $ae = 4$. Halve every given length before you match it.
+
+**Write it down.** Foci on the X-axis: $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with $a^2 > b^2$. Vertices $(\pm 13, 0)$ and foci $(\pm 5, 0)$ give $b^2 = 169 - 25 = 144$: $\frac{x^2}{169} + \frac{y^2}{144} = 1$.
+
+**Eccentricity from a relation.** Write the relation as an equation and divide out $a$. Directrices three times as far apart as the foci: $\frac{2a}{e} = 3(2ae)$, so $e^2 = \frac{1}{3}$ and $e = \frac{1}{\sqrt{3}}$.`,
+    worked: {
+      prompt: t`Find the equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ whose latus rectum has length $6$ and whose foci are $(\pm 2, 0)$.`,
+      steps: [
+        t`Foci $(\pm 2, 0)$: $ae = 2$, so $b^2 = a^2 - a^2e^2 = a^2 - 4$.`,
+        t`Latus rectum $6$: $\frac{2b^2}{a} = 6$, so $b^2 = 3a$. Its ends are $\left(2, \pm\frac{b^2}{a}\right) = (2, \pm 3)$.`,
+        t`So $a^2 - 4 = 3a$, that is $(a - 4)(a + 1) = 0$. As $a > 0$, $a = 4$ and $b^2 = 12$.`,
+        t`$a^2 = 16$ goes under $x^2$: the ellipse is $\frac{x^2}{16} + \frac{y^2}{12} = 1$.`,
+      ],
+      answer: t`$\frac{x^2}{16} + \frac{y^2}{12} = 1$, that is $3x^2 + 4y^2 = 48$.`,
+      figure: {
+        alt: "The foci S(2, 0) and S′(−2, 0). The latus rectum through S runs from L(2, 3) to L′(2, −3), length 6. The vertices A(4, 0) and A′(−4, 0) fix the ellipse x²/16 + y²/12 = 1, drawn through L and L′.",
+        axes: "xy",
+        view: { x: [-7.5, 7.5], y: [-5, 5] },
+        elements: [
+          { kind: "point", at: [2, 0], label: "S", labelAt: "nw", step: 1 },
+          { kind: "point", at: [-2, 0], label: "S′", labelAt: "ne", step: 1 },
+          { kind: "segment", from: [2, -3], to: [2, 3], step: 2 },
+          { kind: "point", at: [2, 3], label: "L(2, 3)", labelAt: "ne", step: 2 },
+          { kind: "point", at: [2, -3], label: "L′(2, −3)", labelAt: "se", step: 2 },
+          { kind: "point", at: [4, 0], label: "A(4, 0)", labelAt: "ne", step: 3 },
+          { kind: "point", at: [-4, 0], label: "A′(−4, 0)", labelAt: "nw", step: 3 },
+          { kind: "ellipse", centre: [0, 0], rx: 4, ry: 3.464, tone: "good", step: 4 },
+          { kind: "label", at: [-7.2, -4.3], label: "x²/16 + y²/12 = 1", labelAt: "e", tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The ellipse x²/36 + y²/20 = 1 with each of its lengths marked. The vertices A(6, 0) and A′(−6, 0) are the major axis, 2a. The foci S(4, 0) and S′(−4, 0) are 2ae apart. The ends B and B′ of the minor axis are 2b apart. The directrices x = ±9 are 2a/e apart, outside the curve. The latus rectum LL′ through S, of length 2b²/a, is a chord across the ellipse.",
+      axes: "xy",
+      view: { x: [-11, 11], y: [-7.5, 7.5] },
+      elements: [
+        { kind: "ellipse", centre: [0, 0], rx: 6, ry: 4.472, tone: "accent", step: 1 },
+        { kind: "point", at: [6, 0], label: "A", labelAt: "ne", step: 1 },
+        { kind: "point", at: [-6, 0], label: "A′", labelAt: "nw", step: 1 },
+        { kind: "segment", from: [-6, -6.3], to: [6, -6.3], tone: "muted", label: "2a", labelAt: "se", step: 1 },
+        { kind: "point", at: [4, 0], label: "S", labelAt: "nw", step: 2 },
+        { kind: "point", at: [-4, 0], label: "S′", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [-4, -1.4], to: [4, -1.4], tone: "muted", label: "2ae", labelAt: "se", step: 2 },
+        { kind: "point", at: [0, 4.472], label: "B", labelAt: "ne", step: 3 },
+        { kind: "point", at: [0, -4.472], label: "B′", labelAt: "se", step: 3 },
+        { kind: "segment", from: [-7.7, -4.472], to: [-7.7, 4.472], tone: "muted", step: 3 },
+        { kind: "label", at: [-7.7, 2.2], label: "2b", labelAt: "e", tone: "muted", step: 3 },
+        { kind: "line", through: [[9, 0], [9, 1]], dashed: true, tone: "muted", step: 4 },
+        { kind: "line", through: [[-9, 0], [-9, 1]], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [9, 6.5], label: "x = a/e", labelAt: "w", tone: "muted", step: 4 },
+        { kind: "label", at: [-9, 6.5], label: "x = −a/e", labelAt: "e", tone: "muted", step: 4 },
+        { kind: "segment", from: [4, -3.333], to: [4, 3.333], tone: "good", step: 5 },
+        { kind: "point", at: [4, 3.333], label: "L", labelAt: "ne", step: 5, tone: "good" },
+        { kind: "point", at: [4, -3.333], label: "L′", labelAt: "se", step: 5, tone: "good" },
+        { kind: "label", at: [4, 1.9], label: "2b²/a", labelAt: "w", tone: "good", step: 5 },
+      ],
+    },
+    visualSpec: t`Drag sliders for $a$ and $e$: the foci, directrices, minor axis and latus rectum move and show their lengths, and the equation $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ updates beside them.`,
+  },
+  misconceptions: [
+    {
+      id: "C07-M1",
+      mistake: t`Uses $b^2 = a^2 + a^2e^2$: adds the squares, as for a hyperbola`,
+      remediation: t`In an ellipse $a$ is the longest length: the end of the minor axis is $a$ from each focus, so $b^2 + (ae)^2 = a^2$ and $b^2 = a^2 - a^2e^2$. Adding is the hyperbola's rule.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C07-M2",
+      mistake: t`Matches a whole length to a half-length: foci $8$ apart read as $ae = 8$, major axis $10$ as $a = 10$, directrices $18$ apart as $\frac{a}{e} = 18$, the latus rectum as $\frac{b^2}{a}$`,
+      remediation: t`The distance between the foci is $2ae$, the major axis $2a$, the minor axis $2b$, the distance between the directrices $\frac{2a}{e}$ and the latus rectum $\frac{2b^2}{a}$. Halve a given length before you match it to $ae$, $a$, $b$ or $\frac{a}{e}$.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C07-M3",
+      mistake: t`Finds $a^2$ and $b^2$ correctly, then writes $a^2$ under $y^2$ and $b^2$ under $x^2$`,
+      remediation: t`With the foci on the X-axis the major axis lies along $x$, so the larger number, $a^2$, goes under $x^2$. Check: the vertex $(a, 0)$ must satisfy your equation.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C07-M4",
+      mistake: t`Uses $e$ where $e^2$ belongs: writes $b^2 = a^2(1 - e)$, or stops at $e^2$ and gives it as $e$`,
+      remediation: t`The relation is $b^2 = a^2(1 - e^2)$: square $e$ before you use it. When you solve for $e$, you reach $e^2$ first; take its square root at the end.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C07-M5",
+      mistake: t`Takes $b = ae$: puts the end of the minor axis where the focus is, so reads $e$ as $\frac{b}{a}$`,
+      remediation: t`The focus and the end of the minor axis are different points: the focus is $ae$ from the centre, the end of the minor axis $b$. They are linked by $b^2 = a^2 - a^2e^2$, so $e^2 = 1 - \frac{b^2}{a^2}$, not $e = \frac{b}{a}$.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+  ],
+  engineNotes: [
+    t`C07-M5 gives the key when $e = \frac{1}{\sqrt{2}}$ (then $b = ae$): avoid that eccentricity.`,
+    t`C07-M2 needs a whole length in the data: it does not apply when the foci are given as points or the only other fact is a point on the ellipse. C07-M1 and C07-M3 do not apply to eccentricity-from-a-relation items (C07-M1 gives $e^2 < 0$ there).`,
+  ],
+  items: [
+    {
+      id: "C07-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.2 Q2(i)" },
+      stem: t`The equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with eccentricity $\frac{3}{8}$ and distance between its foci $6$ is:`,
+      verify: { kind: "locus", inputs: { e: "3/8", F: "6" }, params: { ask: "eq" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{64} + \frac{y^2}{40} = 1$`, correct: false, misconceptionId: "C07-M4", value: "40*x**2 + 64*y**2 - 2560" },
+        { key: "B", text: t`$\frac{x^2}{64} + \frac{y^2}{9} = 1$`, correct: false, misconceptionId: "C07-M5", value: "9*x**2 + 64*y**2 - 576" },
+        { key: "C", text: t`$\frac{x^2}{64} + \frac{y^2}{55} = 1$`, correct: true, value: "55*x**2 + 64*y**2 - 3520" },
+        { key: "D", text: t`$\frac{x^2}{256} + \frac{y^2}{220} = 1$`, correct: false, misconceptionId: "C07-M2", value: "220*x**2 + 256*y**2 - 56320" },
+      ],
+      solution: {
+        steps: [
+          t`Foci $6$ apart: $2ae = 6$, so $ae = 3$. With $e = \frac{3}{8}$, $a = 3 \div \frac{3}{8} = 8$.`,
+          t`$b^2 = a^2 - a^2e^2 = 64 - 9 = 55$.`,
+          t`$a^2 = 64$ goes under $x^2$: the ellipse is $\frac{x^2}{64} + \frac{y^2}{55} = 1$.`,
+        ],
+        figure: {
+          alt: "The foci S(3, 0) and S′(−3, 0), 6 apart, and the vertices A(8, 0) and A′(−8, 0). The end of the minor axis is B(0, √55). The ellipse x²/64 + y²/55 = 1 passes through them.",
+          axes: "xy",
+          view: { x: [-13.5, 12.5], y: [-9.5, 9.5] },
+          elements: [
+            { kind: "point", at: [3, 0], label: "S(3, 0)", labelAt: "n", step: 1 },
+            { kind: "point", at: [-3, 0], step: 1 },
+            { kind: "label", at: [-3.4, 0], label: "S′(−3, 0)", labelAt: "n", tone: "accent", step: 1 },
+            { kind: "point", at: [8, 0], label: "A(8, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [-8, 0], label: "A′(−8, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, 7.416], label: "B(0, √55)", labelAt: "ne", step: 2 },
+            { kind: "ellipse", centre: [0, 0], rx: 8, ry: 7.416, tone: "good", step: 3 },
+            { kind: "label", at: [-13, -8.4], label: "x²/64 + y²/55 = 1", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.2 Q2(ii)" },
+      stem: t`The equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ whose major axis has length $10$ and whose foci are $8$ apart is:`,
+      verify: { kind: "locus", inputs: { L: "10", F: "8" }, params: { ask: "eq" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{25} + \frac{y^2}{41} = 1$`, correct: false, misconceptionId: "C07-M1", value: "41*x**2 + 25*y**2 - 1025" },
+        { key: "B", text: t`$\frac{x^2}{100} + \frac{y^2}{36} = 1$`, correct: false, misconceptionId: "C07-M2", value: "36*x**2 + 100*y**2 - 3600" },
+        { key: "C", text: t`$\frac{x^2}{9} + \frac{y^2}{25} = 1$`, correct: false, misconceptionId: "C07-M3", value: "25*x**2 + 9*y**2 - 225" },
+        { key: "D", text: t`$\frac{x^2}{25} + \frac{y^2}{9} = 1$`, correct: true, value: "9*x**2 + 25*y**2 - 225" },
+      ],
+      solution: {
+        steps: [
+          t`Major axis $10$: $2a = 10$, so $a = 5$. Foci $8$ apart: $2ae = 8$, so $ae = 4$.`,
+          t`$b^2 = a^2 - a^2e^2 = 25 - 16 = 9$.`,
+          t`The foci are on the X-axis, so $a^2 = 25$ goes under $x^2$: $\frac{x^2}{25} + \frac{y^2}{9} = 1$.`,
+        ],
+        figure: {
+          alt: "The vertices A(5, 0) and A′(−5, 0), 10 apart, and the foci S(4, 0) and S′(−4, 0), 8 apart. The end of the minor axis is B(0, 3). The ellipse x²/25 + y²/9 = 1 passes through A, A′ and B.",
+          axes: "xy",
+          view: { x: [-8.5, 8.5], y: [-5, 5] },
+          elements: [
+            { kind: "point", at: [5, 0], label: "A(5, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [-5, 0], label: "A′(−5, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [4, 0], label: "S(4, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [-4, 0], label: "S′(−4, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 3], label: "B(0, 3)", labelAt: "ne", step: 2 },
+            { kind: "ellipse", centre: [0, 0], rx: 5, ry: 3, tone: "good", step: 3 },
+            { kind: "label", at: [-8.2, -4.1], label: "x²/25 + y²/9 = 1", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.2 Q2(iii)" },
+      stem: t`The equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with eccentricity $\frac{1}{3}$ whose directrices are $18$ apart is:`,
+      verify: { kind: "locus", inputs: { D: "18", e: "1/3" }, params: { ask: "eq" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{9} + \frac{y^2}{6} = 1$`, correct: false, misconceptionId: "C07-M4", value: "6*x**2 + 9*y**2 - 54" },
+        { key: "B", text: t`$\frac{x^2}{9} + \frac{y^2}{8} = 1$`, correct: true, value: "8*x**2 + 9*y**2 - 72" },
+        { key: "C", text: t`$\frac{x^2}{9} + \frac{y^2}{10} = 1$`, correct: false, misconceptionId: "C07-M1", value: "10*x**2 + 9*y**2 - 90" },
+        { key: "D", text: t`$\frac{x^2}{36} + \frac{y^2}{32} = 1$`, correct: false, misconceptionId: "C07-M2", value: "32*x**2 + 36*y**2 - 1152" },
+      ],
+      solution: {
+        steps: [
+          t`The directrices $x = \pm\frac{a}{e}$ are $18$ apart: $\frac{2a}{e} = 18$, so $\frac{a}{e} = 9$ and $a = 9 \times \frac{1}{3} = 3$.`,
+          t`$ae = 1$, so $b^2 = a^2 - a^2e^2 = 9 - 1 = 8$.`,
+          t`$a^2 = 9$ goes under $x^2$: the ellipse is $\frac{x^2}{9} + \frac{y^2}{8} = 1$.`,
+        ],
+        figure: {
+          alt: "The directrices x = 9 and x = −9, 18 apart, and the vertices A(3, 0) and A′(−3, 0). The end of the minor axis is B(0, 2√2). The ellipse x²/9 + y²/8 = 1 sits between the directrices.",
+          axes: "xy",
+          view: { x: [-11, 11], y: [-5, 5] },
+          elements: [
+            { kind: "line", through: [[9, 0], [9, 1]], dashed: true, tone: "muted", step: 1 },
+            { kind: "line", through: [[-9, 0], [-9, 1]], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [9, 4.1], label: "x = 9", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "label", at: [-9, 4.1], label: "x = −9", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "point", at: [3, 0], label: "A(3, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [-3, 0], label: "A′(−3, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, 2.828], label: "B(0, 2√2)", labelAt: "ne", step: 2 },
+            { kind: "ellipse", centre: [0, 0], rx: 3, ry: 2.828, tone: "good", step: 3 },
+            { kind: "label", at: [-8.4, -3.9], label: "x²/9 + y²/8 = 1", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.2 Q2(iv)" },
+      stem: t`The equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ ($a > b$) whose minor axis has length $16$ and whose eccentricity is $\frac{1}{3}$ is:`,
+      verify: { kind: "locus", inputs: { m: "16", e: "1/3" }, params: { ask: "eq" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{72} + \frac{y^2}{64} = 1$`, correct: true, value: "64*x**2 + 72*y**2 - 4608" },
+        { key: "B", text: t`$\frac{x^2}{64} + \frac{y^2}{72} = 1$`, correct: false, misconceptionId: "C07-M3", value: "72*x**2 + 64*y**2 - 4608" },
+        { key: "C", text: t`$\frac{x^2}{96} + \frac{y^2}{64} = 1$`, correct: false, misconceptionId: "C07-M4", value: "64*x**2 + 96*y**2 - 6144" },
+        { key: "D", text: t`$\frac{x^2}{576} + \frac{y^2}{64} = 1$`, correct: false, misconceptionId: "C07-M5", value: "64*x**2 + 576*y**2 - 36864" },
+      ],
+      solution: {
+        steps: [
+          t`Minor axis $16$: $2b = 16$, so $b = 8$ and $b^2 = 64$.`,
+          t`$b^2 = a^2(1 - e^2)$: $64 = a^2\left(1 - \frac{1}{9}\right) = \frac{8}{9}a^2$, so $a^2 = 72$.`,
+          t`$a^2 = 72$ is the larger, so it goes under $x^2$: $\frac{x^2}{72} + \frac{y^2}{64} = 1$.`,
+        ],
+        figure: {
+          alt: "The ends of the minor axis B(0, 8) and B′(0, −8), 16 apart, and the vertices A(6√2, 0) and A′(−6√2, 0). The ellipse x²/72 + y²/64 = 1 passes through all four.",
+          axes: "xy",
+          view: { x: [-12, 12], y: [-10, 10] },
+          elements: [
+            { kind: "point", at: [0, 8], label: "B(0, 8)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, -8], label: "B′(0, −8)", labelAt: "se", step: 1 },
+            { kind: "point", at: [8.485, 0], label: "A(6√2, 0)", labelAt: "nw", step: 2 },
+            { kind: "point", at: [-8.485, 0], label: "A′(−6√2, 0)", labelAt: "ne", step: 2 },
+            { kind: "ellipse", centre: [0, 0], rx: 8.485, ry: 8, tone: "good", step: 3 },
+            { kind: "label", at: [-11.6, -9], label: "x²/72 + y²/64 = 1", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc I Q13" },
+      stem: t`The equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ ($a > b$) with eccentricity $\frac{\sqrt{3}}{2}$ that passes through $(-8, 3)$ is:`,
+      verify: { kind: "locus", inputs: { e: "sqrt(3)/2", px: "-8", py: "3" }, params: { ask: "eq" } },
+      options: [
+        { key: "A", text: t`$7x^2 + 4y^2 = 484$`, correct: false, misconceptionId: "C07-M1", value: "121*x**2 + 484*y**2/7 - 58564/7" },
+        { key: "B", text: t`$4x^2 + y^2 = 100$`, correct: false, misconceptionId: "C07-M3", value: "100*x**2 + 25*y**2 - 2500" },
+        { key: "C", text: t`$3x^2 + 4y^2 = 228$`, correct: false, misconceptionId: "C07-M5", value: "57*x**2 + 76*y**2 - 4332" },
+        { key: "D", text: t`$x^2 + 4y^2 = 100$`, correct: true, value: "25*x**2 + 100*y**2 - 2500" },
+      ],
+      solution: {
+        steps: [
+          t`$b^2 = a^2(1 - e^2) = a^2\left(1 - \frac{3}{4}\right) = \frac{a^2}{4}$.`,
+          t`$(-8, 3)$ lies on it: $\frac{64}{a^2} + \frac{9}{a^2/4} = \frac{64 + 36}{a^2} = 1$, so $a^2 = 100$ and $b^2 = 25$.`,
+          t`The ellipse is $\frac{x^2}{100} + \frac{y^2}{25} = 1$, that is $x^2 + 4y^2 = 100$.`,
+        ],
+        figure: {
+          alt: "The point P(−8, 3) and the end of the minor axis B(0, 5), with a² = 100. The ellipse x² + 4y² = 100 reaches 10 along the x-axis and passes through P.",
+          axes: "xy",
+          view: { x: [-13, 13], y: [-7.5, 7.5] },
+          elements: [
+            { kind: "point", at: [-8, 3], label: "P(−8, 3)", labelAt: "nw", step: 2 },
+            { kind: "point", at: [0, 5], label: "B(0, 5)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [3, 1.2], label: "a² = 100", labelAt: "e", tone: "accent", step: 2 },
+            { kind: "ellipse", centre: [0, 0], rx: 10, ry: 5, tone: "good", step: 3 },
+            { kind: "label", at: [-12.6, -6.4], label: "x² + 4y² = 100", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C07-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.2 Q3" },
+      stem: t`The latus rectum of an ellipse is one third of its minor axis. Its eccentricity is:`,
+      verify: { kind: "value", inputs: { k: "1/3" }, params: { ask: "e" } },
+      options: [
+        { key: "A", text: t`$\frac{2 \sqrt{2}}{3}$`, correct: true, value: "2*sqrt(2)/3" },
+        { key: "B", text: t`$\frac{\sqrt{5}}{3}$`, correct: false, misconceptionId: "C07-M2", value: "sqrt(5)/3" },
+        { key: "C", text: t`$\frac{8}{9}$`, correct: false, misconceptionId: "C07-M4", value: "8/9" },
+        { key: "D", text: t`$\frac{1}{3}$`, correct: false, misconceptionId: "C07-M5", value: "1/3" },
+      ],
+      solution: {
+        steps: [
+          t`Latus rectum $\frac{2b^2}{a}$, minor axis $2b$: $\frac{2b^2}{a} = \frac{1}{3}(2b)$, so $\frac{b}{a} = \frac{1}{3}$.`,
+          t`$b^2 = a^2(1 - e^2)$ gives $e^2 = 1 - \frac{b^2}{a^2} = 1 - \frac{1}{9} = \frac{8}{9}$.`,
+          t`$0 < e < 1$, so $e = \frac{2\sqrt{2}}{3}$.`,
+        ],
+        figure: {
+          alt: "An example with b/a = 1/3: the ellipse x²/9 + y² = 1, with A(3, 0) and B(0, 1). Its focus S(2√2, 0) is far out, near the vertex, because e = 2√2/3 is close to 1. The latus rectum through S is short: 2/3, a third of the minor axis 2.",
+          axes: "xy",
+          view: { x: [-4, 4.5], y: [-1.6, 1.6] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 3, ry: 1, tone: "accent", step: 1 },
+            { kind: "point", at: [3, 0], label: "A(3, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 1], label: "B(0, 1)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [2.828, 0], step: 2, tone: "good" },
+            { kind: "label", at: [2.6, 0], label: "S(2√2, 0)", labelAt: "nw", tone: "good", step: 2 },
+            { kind: "segment", from: [2.828, -0.333], to: [2.828, 0.333], tone: "good", step: 2 },
+            { kind: "label", at: [-3.9, -1.25], label: "e = 2√2/3", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};

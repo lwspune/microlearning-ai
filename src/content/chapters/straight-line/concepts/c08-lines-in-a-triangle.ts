@@ -1,0 +1,332 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c08: Concept = {
+  id: "C08",
+  status: "approved",
+  hook: {
+    prompt: t`In $\triangle ABC$ with $A(4, 12)$, $B(2, 2)$, $C(22, 2)$, the median from $A$ and the altitude from $A$ both run from $A$ down to side $BC$. **Are they the same line?**`,
+    reveal: t`No. The median ends at the midpoint of $BC$, $D(12, 2)$. The altitude meets $BC$ at right angles: $BC$ is horizontal, so the altitude is the vertical line $x = 4$, landing at $(4, 2)$. They coincide only when $AB = AC$.`,
+  },
+  explanation: {
+    intuition: t`Each special line of a triangle is fixed by one point and one direction. A median joins a vertex to the midpoint of the opposite side: two points, so use the two-point form. An altitude goes through a vertex at right angles to the opposite side: turn that side's slope $m$ into $-\frac{1}{m}$. A perpendicular bisector goes through a side's midpoint at right angles to it. Two altitudes meet at the orthocentre; two perpendicular bisectors meet at the circumcentre.`,
+    formal: t`**Through $(x_1, y_1)$, given a line of slope $m$**
+
+- Parallel: $y - y_1 = m(x - x_1)$.
+- Perpendicular: $y - y_1 = -\frac{1}{m}(x - x_1)$. If the given line is vertical, the perpendicular is horizontal, and the other way round.
+
+**Foot of the perpendicular** from $P$ to a line: write the perpendicular through $P$, then solve it with the line.
+
+**Lines of $\triangle ABC$** (from $A$, with $D$ the midpoint of $BC$)
+
+- Median $AD$: through $A$ and $D$.
+- Altitude from $A$: through $A$, slope $-\frac{1}{m_{BC}}$.
+- Perpendicular bisector of $BC$: through $D$, slope $-\frac{1}{m_{BC}}$.
+
+**Meeting points.** Altitudes meet at the orthocentre. Perpendicular bisectors meet at the circumcentre, which is equally far from $A$, $B$ and $C$. Medians meet at the centroid $\left(\frac{x_1 + x_2 + x_3}{3}, \frac{y_1 + y_2 + y_3}{3}\right)$. Two of the three lines are enough: solve them together.`,
+    worked: {
+      prompt: t`Find the foot of the perpendicular from $P(3, 5)$ to the line $x - 2y + 2 = 0$.`,
+      steps: [
+        t`The line is $y = \frac{1}{2}x + 1$, so its slope is $m = \frac{1}{2}$.`,
+        t`The perpendicular from $P$ has slope $-\frac{1}{m} = -2$: $y - 5 = -2(x - 3)$, i.e. $2x + y - 11 = 0$.`,
+        t`Solve with the line: $y = 11 - 2x$ gives $x - 2(11 - 2x) + 2 = 0$, so $5x = 20$, $x = 4$ and $y = 3$.`,
+      ],
+      answer: t`The foot of the perpendicular is $(4, 3)$.`,
+      figure: {
+        alt: "The line x − 2y + 2 = 0, of slope 1/2, and the point P(3, 5) above it. The perpendicular from P, of slope −2, is 2x + y − 11 = 0; it meets the line at right angles at the foot F(4, 3).",
+        axes: "xy",
+        view: { x: [-1, 9], y: [-1, 7] },
+        elements: [
+          { kind: "line", through: [[-2, 0], [4, 3]], step: 1, tone: "muted" },
+          { kind: "label", at: [0.9, 0.9], label: "x − 2y + 2 = 0", labelAt: "se", step: 1, tone: "muted" },
+          { kind: "point", at: [3, 5], label: "P(3, 5)", labelAt: "e", step: 2 },
+          { kind: "line", through: [[3, 5], [4, 3]], dashed: true, step: 2 },
+          { kind: "label", at: [5.3, 1.3], label: "2x + y − 11 = 0", labelAt: "e", step: 2 },
+          { kind: "point", at: [4, 3], step: 3, tone: "good" },
+          { kind: "angle", at: [4, 3], from: 116.57, to: 206.57, step: 3, tone: "good" },
+          { kind: "label", at: [4.76, 2.75], label: "F(4, 3)", labelAt: "e", step: 3, tone: "good" },
+        ],
+      },
+    },
+    figure: {
+      alt: "Triangle ABC with A(4, 12), B(2, 2) and C(22, 2). The median from A runs to D(12, 2), the midpoint of BC. The altitude from A drops straight down to BC at (4, 2), at right angles. The perpendicular bisector of BC is the vertical line through D. All three are different lines.",
+      axes: "xy",
+      view: { x: [-1, 24], y: [-1, 13.5] },
+      elements: [
+        { kind: "segment", from: [4, 12], to: [2, 2], step: 1, tone: "muted" },
+        { kind: "segment", from: [2, 2], to: [22, 2], step: 1, tone: "muted" },
+        { kind: "segment", from: [22, 2], to: [4, 12], step: 1, tone: "muted" },
+        { kind: "point", at: [4, 12], label: "A(4, 12)", labelAt: "n", step: 1 },
+        { kind: "point", at: [2, 2], label: "B(2, 2)", labelAt: "s", step: 1 },
+        { kind: "point", at: [22, 2], label: "C(22, 2)", labelAt: "s", step: 1 },
+        { kind: "point", at: [12, 2], label: "D(12, 2)", labelAt: "se", step: 2 },
+        { kind: "segment", from: [4, 12], to: [12, 2], step: 2 },
+        { kind: "label", at: [7.93, 7.2], label: "median", labelAt: "e", step: 2 },
+        { kind: "segment", from: [4, 12], to: [4, 2], step: 3, tone: "good" },
+        { kind: "angle", at: [4, 2], from: 0, to: 90, step: 3, tone: "good" },
+        { kind: "label", at: [4.1, 5], label: "altitude", labelAt: "e", step: 3, tone: "good" },
+        { kind: "line", through: [[12, 2], [12, 3]], dashed: true, step: 4, tone: "bad" },
+        { kind: "label", at: [12.1, 12.9], label: "⊥ bisector", labelAt: "e", step: 4, tone: "bad" },
+      ],
+    },
+    visualSpec: t`Drag the vertices of a triangle; its median, altitude and perpendicular bisector from one vertex redraw, and the orthocentre and circumcentre move with them.`,
+  },
+  misconceptions: [
+    {
+      id: "C08-M1",
+      mistake: "Turns the slope m into −m for a perpendicular: changes the sign but doesn't invert",
+      remediation: t`A perpendicular slope is the negative reciprocal, $-\frac{1}{m}$, so the two slopes multiply to $-1$. Changing only the sign gives a line that is neither parallel nor perpendicular.`,
+      fallback: { kind: "concept", id: "C04" },
+    },
+    {
+      id: "C08-M2",
+      mistake: "Turns the slope m into 1/m for a perpendicular: inverts but keeps the sign",
+      remediation: t`Invert **and** change the sign: the perpendicular slope is $-\frac{1}{m}$. The slopes $m$ and $\frac{1}{m}$ multiply to $+1$, not $-1$.`,
+      fallback: { kind: "concept", id: "C04" },
+    },
+    {
+      id: "C08-M3",
+      mistake: "Uses the given line's own slope where a perpendicular is asked, so draws a parallel",
+      remediation: t`Equal slopes make a parallel line. A line perpendicular to one of slope $m$ has slope $-\frac{1}{m}$.`,
+      fallback: { kind: "concept", id: "C04" },
+    },
+    {
+      id: "C08-M4",
+      mistake: "Swaps median and altitude: runs the altitude to the midpoint of the opposite side, or the median at right angles to it (so two 'altitudes' meet at the centroid)",
+      remediation: "A median goes from a vertex to the **midpoint** of the opposite side. An altitude goes from a vertex at **right angles** to the opposite side. They are the same line only when the two sides at that vertex are equal.",
+      fallback: { kind: "ext", topic: "medians and altitudes of a triangle" },
+    },
+    {
+      id: "C08-M5",
+      mistake: "Takes the perpendicular bisector of the opposite side as the line from a vertex, as if the triangle were equilateral (so the altitudes become the perpendicular bisectors, and the orthocentre the circumcentre)",
+      remediation: t`The perpendicular bisector of $BC$ goes through the midpoint of $BC$ at right angles, and usually misses $A$. A line from $A$ must pass through $A$: to the midpoint for a median, at right angles for an altitude.`,
+      fallback: { kind: "ext", topic: "perpendicular bisectors and the circumcentre" },
+    },
+    {
+      id: "C08-M6",
+      mistake: "Takes the midpoint as (x1 + x2, y1 + y2), forgetting to halve",
+      remediation: t`The midpoint of $(x_1, y_1)$ and $(x_2, y_2)$ is $\left(\frac{x_1 + x_2}{2}, \frac{y_1 + y_2}{2}\right)$: add, then halve.`,
+      fallback: { kind: "ext", topic: "midpoint formula" },
+    },
+  ],
+  engineNotes: [
+    "C08-M1 and C08-M2 are undefined when the side or line to be turned is vertical, and C08-M2 when it is horizontal (1/0); draw diagnosing items with sloping sides. Ex 5.4 Q7 (C08-Q6) has C moved from (4, 3) to (1, 4) for this reason: the book's AC is horizontal. Its key (1, −1) is unchanged.",
+    "C08-M3 shows only on single perpendicular lines (perp, altitude); C08-M4 and C08-M5 only on triangle lines (median, altitude, orthocentre); C08-M6 only where a midpoint is used (median, circumcentre).",
+    "On a circumcentre item C08-M6 always gives twice the key (the point 2 × circumcentre), and on an orthocentre item C08-M4 gives the centroid and C08-M5 the circumcentre.",
+    "The orthocentre and circumcentre models follow the book: altitudes from A and B, perpendicular bisectors of AB and AC. A student who uses other pairs with C08-M1 or C08-M2 lands elsewhere.",
+  ],
+  items: [
+    {
+      id: "C08-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc I Q7" },
+      stem: t`A line passes through $(2, 2)$ and is perpendicular to the line $3x + y = 3$. Its $y$-intercept is:`,
+      verify: { kind: "value", inputs: { P: "2 + 2*I", a: "3", b: "1", c: "-3" }, params: { ask: "perp", out: "yint" } },
+      options: [
+        { key: "A", text: t`$\frac{4}{3}$`, correct: true, value: "4/3" },
+        { key: "B", text: t`$-4$`, correct: false, misconceptionId: "C08-M1", value: "-4" },
+        { key: "C", text: t`$\frac{8}{3}$`, correct: false, misconceptionId: "C08-M2", value: "8/3" },
+        { key: "D", text: t`$8$`, correct: false, misconceptionId: "C08-M3", value: "8" },
+      ],
+      solution: {
+        steps: [
+          t`The line $3x + y = 3$ is $y = -3x + 3$, so its slope is $m = -3$.`,
+          t`A perpendicular has slope $-\frac{1}{m} = \frac{1}{3}$. Through $(2, 2)$: $y - 2 = \frac{1}{3}(x - 2)$, so $y = \frac{1}{3}x + \frac{4}{3}$.`,
+          t`Put $x = 0$: the $y$-intercept is $\frac{4}{3}$.`,
+        ],
+        figure: {
+          alt: "The line 3x + y = 3, of slope −3, and the perpendicular to it through (2, 2), of slope 1/3. The perpendicular crosses the y-axis at (0, 4/3).",
+          axes: "xy",
+          view: { x: [-4.5, 4.5], y: [-1.5, 5] },
+          elements: [
+            { kind: "line", through: [[0, 3], [1, 0]], step: 1, tone: "muted" },
+            { kind: "label", at: [1.6, -1], label: "3x + y = 3", labelAt: "e", step: 1, tone: "muted" },
+            { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "se", step: 2 },
+            { kind: "line", through: [[-4, 0], [2, 2]], step: 2 },
+            { kind: "point", at: [0, 1.333], step: 3, tone: "good" },
+            { kind: "label", at: [-0.15, 1.75], label: "(0, 4/3)", labelAt: "nw", step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc II Q28" },
+      stem: t`The perpendicular from the origin to a line meets it at $(-2, 9)$. The equation of the line is:`,
+      verify: { kind: "locus", inputs: { P: "-2 + 9*I", S: "0", T: "-2 + 9*I" }, params: { ask: "perp" } },
+      options: [
+        { key: "A", text: t`$9x - 2y + 36 = 0$`, correct: false, misconceptionId: "C08-M1", value: "-9*x/2 + y - 18" },
+        { key: "B", text: t`$2x + 9y - 77 = 0$`, correct: false, misconceptionId: "C08-M2", value: "2*x/9 + y - 77/9" },
+        { key: "C", text: t`$9x + 2y = 0$`, correct: false, misconceptionId: "C08-M3", value: "9*x/2 + y" },
+        { key: "D", text: t`$2x - 9y + 85 = 0$`, correct: true, value: "-2*x + 9*y - 85" },
+      ],
+      solution: {
+        steps: [
+          t`Let $M(-2, 9)$ be the foot. Slope of $OM = \frac{9 - 0}{-2 - 0} = -\frac{9}{2}$.`,
+          t`The line is perpendicular to $OM$, so its slope is $-\frac{1}{m} = \frac{2}{9}$, and it passes through $M(-2, 9)$.`,
+          t`$y - 9 = \frac{2}{9}(x + 2)$, so $9y - 81 = 2x + 4$: the line is $2x - 9y + 85 = 0$.`,
+        ],
+        figure: {
+          alt: "The segment from the origin O to M(−2, 9), of slope −9/2. The required line passes through M at right angles to OM, with slope 2/9: 2x − 9y + 85 = 0.",
+          axes: "xy",
+          view: { x: [-8, 6], y: [-1, 12] },
+          elements: [
+            { kind: "point", at: [0, 0], label: "O", labelAt: "se", step: 1 },
+            { kind: "point", at: [-2, 9], label: "M(−2, 9)", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-2, 9], step: 1, tone: "muted" },
+            { kind: "line", through: [[-2, 9], [7, 11]], step: 2, tone: "good" },
+            { kind: "angle", at: [-2, 9], from: -77.47, to: 12.53, step: 2, tone: "good" },
+            { kind: "label", at: [1.6, 9], label: "2x − 9y + 85 = 0", labelAt: "e", step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc I Q3" },
+      stem: t`$A(1, -2)$, $B(-2, 3)$ and $C(2, -5)$ are the vertices of $\triangle ABC$. The equation of the median $BE$ is:`,
+      verify: { kind: "locus", inputs: { A: "1 - 2*I", B: "-2 + 3*I", C: "2 - 5*I" }, params: { ask: "median", at: "B" } },
+      options: [
+        { key: "A", text: t`$x - 3y + 11 = 0$`, correct: false, misconceptionId: "C08-M4", value: "x - 3*y + 11" },
+        { key: "B", text: t`$x - 3y - 12 = 0$`, correct: false, misconceptionId: "C08-M5", value: "x - 3*y - 12" },
+        { key: "C", text: t`$2x + y + 1 = 0$`, correct: false, misconceptionId: "C08-M6", value: "-10*x - 5*y - 5" },
+        { key: "D", text: t`$13x + 7y + 5 = 0$`, correct: true, value: "-13*x/2 - 7*y/2 - 5/2" },
+      ],
+      solution: {
+        steps: [
+          t`$E$ is the midpoint of $AC$: $E = \left(\frac{1 + 2}{2}, \frac{-2 - 5}{2}\right) = \left(\frac{3}{2}, -\frac{7}{2}\right)$.`,
+          t`Slope of $BE = \frac{-\frac{7}{2} - 3}{\frac{3}{2} + 2} = \frac{-\frac{13}{2}}{\frac{7}{2}} = -\frac{13}{7}$.`,
+          t`Through $B(-2, 3)$: $y - 3 = -\frac{13}{7}(x + 2)$, so $7y - 21 = -13x - 26$: the median is $13x + 7y + 5 = 0$.`,
+        ],
+        figure: {
+          alt: "Triangle ABC with A(1, −2), B(−2, 3) and C(2, −5). E(3/2, −7/2) is the midpoint of AC, and the median BE joins B to it: 13x + 7y + 5 = 0.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-6.5, 4.5] },
+          elements: [
+            { kind: "segment", from: [1, -2], to: [-2, 3], tone: "muted" },
+            { kind: "segment", from: [-2, 3], to: [2, -5], tone: "muted" },
+            { kind: "segment", from: [2, -5], to: [1, -2], tone: "muted" },
+            { kind: "point", at: [1, -2], label: "A(1, −2)", labelAt: "e" },
+            { kind: "point", at: [-2, 3], label: "B(−2, 3)", labelAt: "w" },
+            { kind: "point", at: [2, -5], label: "C(2, −5)", labelAt: "e" },
+            { kind: "point", at: [1.5, -3.5], label: "E(3/2, −7/2)", labelAt: "e", step: 1 },
+            { kind: "segment", from: [-2, 3], to: [1.5, -3.5], step: 2, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.3 Q12" },
+      stem: t`$A(2, 5)$, $B(6, -1)$ and $C(-4, -3)$ are the vertices of $\triangle ABC$. The equation of the altitude through $B$ is:`,
+      verify: { kind: "locus", inputs: { A: "2 + 5*I", B: "6 - I", C: "-4 - 3*I" }, params: { ask: "altitude", at: "B" } },
+      options: [
+        { key: "A", text: t`$2x + 7y - 5 = 0$`, correct: false, misconceptionId: "C08-M4", value: "2*x + 7*y - 5" },
+        { key: "B", text: t`$3x + 4y - 1 = 0$`, correct: false, misconceptionId: "C08-M5", value: "-6*x - 8*y + 2" },
+        { key: "C", text: t`$3x + 4y - 14 = 0$`, correct: true, value: "-6*x - 8*y + 28" },
+        { key: "D", text: t`$3x - 4y - 22 = 0$`, correct: false, misconceptionId: "C08-M2", value: "-3*x/4 + y + 11/2" },
+      ],
+      solution: {
+        steps: [
+          t`The altitude through $B$ is perpendicular to the opposite side $AC$. Slope of $AC = \frac{-3 - 5}{-4 - 2} = \frac{4}{3}$.`,
+          t`So the altitude has slope $-\frac{1}{m} = -\frac{3}{4}$, and it passes through $B(6, -1)$.`,
+          t`$y + 1 = -\frac{3}{4}(x - 6)$, so $4y + 4 = -3x + 18$: the altitude is $3x + 4y - 14 = 0$.`,
+        ],
+        figure: {
+          alt: "Triangle ABC with A(2, 5), B(6, −1) and C(−4, −3). Side AC has slope 4/3. The altitude from B meets AC at right angles, with slope −3/4: 3x + 4y − 14 = 0.",
+          axes: "xy",
+          view: { x: [-6, 9.5], y: [-5, 7] },
+          elements: [
+            { kind: "segment", from: [2, 5], to: [6, -1], tone: "muted" },
+            { kind: "segment", from: [6, -1], to: [-4, -3], tone: "muted" },
+            { kind: "segment", from: [-4, -3], to: [2, 5], step: 1 },
+            { kind: "point", at: [2, 5], label: "A(2, 5)", labelAt: "e" },
+            { kind: "point", at: [6, -1], label: "B(6, −1)", labelAt: "e" },
+            { kind: "point", at: [-4, -3], label: "C(−4, −3)", labelAt: "s" },
+            { kind: "segment", from: [6, -1], to: [-4, 6.5], step: 2, tone: "good" },
+            { kind: "angle", at: [0.56, 3.08], from: -36.87, to: 53.13, step: 2, tone: "good" },
+            { kind: "label", at: [-1, 3.4], label: "3x + 4y − 14 = 0", labelAt: "w", step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.4 Q8" },
+      stem: t`The orthocentre of the triangle with vertices $A(3, -2)$, $B(7, 6)$ and $C(-1, 2)$ is:`,
+      verify: { kind: "value", inputs: { A: "3 - 2*I", B: "7 + 6*I", C: "-1 + 2*I" }, params: { ask: "orthocentre" } },
+      options: [
+        { key: "A", text: t`$(\frac{11}{3}, \frac{8}{3})$`, correct: false, misconceptionId: "C08-M5", value: "(11/3, 8/3)" },
+        { key: "B", text: t`$(\frac{5}{3}, \frac{2}{3})$`, correct: true, value: "(5/3, 2/3)" },
+        { key: "C", text: t`$(\frac{1}{3}, - \frac{2}{3})$`, correct: false, misconceptionId: "C08-M1", value: "(1/3, -2/3)" },
+        { key: "D", text: t`$(3, 2)$`, correct: false, misconceptionId: "C08-M4", value: "(3, 2)" },
+      ],
+      solution: {
+        steps: [
+          t`Altitude from $A$: slope of $BC = \frac{2 - 6}{-1 - 7} = \frac{1}{2}$, so the altitude has slope $-2$: $y + 2 = -2(x - 3)$, i.e. $2x + y - 4 = 0$.`,
+          t`Altitude from $B$: slope of $AC = \frac{2 + 2}{-1 - 3} = -1$, so the altitude has slope $1$: $y - 6 = x - 7$, i.e. $x - y - 1 = 0$.`,
+          t`Solve: $y = x - 1$ in $2x + y - 4 = 0$ gives $3x = 5$, so $x = \frac{5}{3}$ and $y = \frac{2}{3}$. The orthocentre is $\left(\frac{5}{3}, \frac{2}{3}\right)$.`,
+        ],
+        figure: {
+          alt: "Triangle ABC with A(3, −2), B(7, 6) and C(−1, 2). The altitude from A, 2x + y − 4 = 0, meets BC at right angles; the altitude from B, x − y − 1 = 0, meets AC at right angles. They cross at H(5/3, 2/3), the orthocentre.",
+          axes: "xy",
+          view: { x: [-3.2, 7.8], y: [-3, 7] },
+          elements: [
+            { kind: "segment", from: [3, -2], to: [7, 6], tone: "muted" },
+            { kind: "segment", from: [7, 6], to: [-1, 2], tone: "muted" },
+            { kind: "segment", from: [-1, 2], to: [3, -2], tone: "muted" },
+            { kind: "point", at: [3, -2], label: "A(3, −2)", labelAt: "e" },
+            { kind: "point", at: [7, 6], label: "B(7, 6)", labelAt: "n" },
+            { kind: "point", at: [-1, 2], label: "C(−1, 2)", labelAt: "w" },
+            { kind: "segment", from: [3, -2], to: [0.6, 2.8], step: 1 },
+            { kind: "angle", at: [0.6, 2.8], from: -63.43, to: 26.57, step: 1 },
+            { kind: "segment", from: [7, 6], to: [1, 0], step: 2 },
+            { kind: "angle", at: [1, 0], from: -45, to: 45, step: 2 },
+            { kind: "point", at: [1.667, 0.667], step: 3, tone: "good" },
+            { kind: "label", at: [1.77, 0.67], label: "(5/3, 2/3)", labelAt: "e", step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C08-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.4 Q7" },
+      stem: t`The circumcentre of the triangle with vertices $A(-2, 3)$, $B(6, -1)$ and $C(1, 4)$ is:`,
+      verify: { kind: "value", inputs: { A: "-2 + 3*I", B: "6 - I", C: "1 + 4*I" }, params: { ask: "circumcentre" } },
+      options: [
+        { key: "A", text: t`$(0, 5)$`, correct: false, misconceptionId: "C08-M2", value: "(0, 5)" },
+        { key: "B", text: t`$(2, -2)$`, correct: false, misconceptionId: "C08-M6", value: "(2, -2)" },
+        { key: "C", text: t`$(1, -1)$`, correct: true, value: "(1, -1)" },
+        { key: "D", text: t`$(4, 2)$`, correct: false, misconceptionId: "C08-M1", value: "(4, 2)" },
+      ],
+      solution: {
+        steps: [
+          t`Perpendicular bisector of $AB$: midpoint $(2, 1)$; slope of $AB = \frac{-1 - 3}{6 + 2} = -\frac{1}{2}$, so the bisector has slope $2$: $y - 1 = 2(x - 2)$, i.e. $y = 2x - 3$.`,
+          t`Perpendicular bisector of $AC$: midpoint $\left(-\frac{1}{2}, \frac{7}{2}\right)$; slope of $AC = \frac{4 - 3}{1 + 2} = \frac{1}{3}$, so the bisector has slope $-3$: $y - \frac{7}{2} = -3\left(x + \frac{1}{2}\right)$, i.e. $y = -3x + 2$.`,
+          t`Solve $2x - 3 = -3x + 2$: $x = 1$, $y = -1$. The circumcentre is $(1, -1)$; it is $5$ from each vertex.`,
+        ],
+        figure: {
+          alt: "Triangle ABC with A(−2, 3), B(6, −1) and C(1, 4). The perpendicular bisector of AB passes through its midpoint (2, 1) with slope 2; that of AC passes through (−1/2, 7/2) with slope −3. They meet at (1, −1), the centre of the circle through A, B and C, of radius 5.",
+          axes: "xy",
+          view: { x: [-6, 9], y: [-6.5, 5.5] },
+          elements: [
+            { kind: "segment", from: [-2, 3], to: [6, -1], tone: "muted" },
+            { kind: "segment", from: [6, -1], to: [1, 4], tone: "muted" },
+            { kind: "segment", from: [1, 4], to: [-2, 3], tone: "muted" },
+            { kind: "point", at: [-2, 3], label: "A(−2, 3)", labelAt: "nw" },
+            { kind: "point", at: [6, -1], label: "B(6, −1)", labelAt: "e" },
+            { kind: "point", at: [1, 4], label: "C(1, 4)", labelAt: "ne" },
+            { kind: "point", at: [2, 1], step: 1 },
+            { kind: "label", at: [1.5, 1.7], label: "(2, 1)", labelAt: "n", step: 1 },
+            { kind: "line", through: [[2, 1], [0, -3]], dashed: true, step: 1 },
+            { kind: "point", at: [-0.5, 3.5], step: 2 },
+            { kind: "line", through: [[-0.5, 3.5], [0.5, 0.5]], dashed: true, step: 2 },
+            { kind: "point", at: [1, -1], step: 3, tone: "good" },
+            { kind: "label", at: [1.2, -1.2], label: "(1, −1)", labelAt: "e", step: 3, tone: "good" },
+            { kind: "circle", centre: [1, -1], r: 5, tone: "good", dashed: true, step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};

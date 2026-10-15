@@ -1,0 +1,323 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c12: Concept = {
+  id: "C12",
+  status: "approved",
+  hook: {
+    prompt: t`A hyperbola has vertices $(\pm 1, 0)$ and foci $(\pm 3, 0)$. The ellipse rule $b^2 = a^2 - a^2e^2$ gives $1 - 9 = -8$. **So what is $b^2$ here?**`,
+    reveal: t`For a hyperbola the foci lie beyond the vertices, so $ae > a$ and the rule flips: $a^2e^2 = a^2 + b^2$. Then $b^2 = 9 - 1 = 8$, and the hyperbola is $x^2 - \frac{y^2}{8} = 1$.`,
+  },
+  explanation: {
+    intuition: t`Every fact about a hyperbola is a distance from its centre: a vertex is $a$ away, a focus $ae$, a directrix $\frac{a}{e}$, an end of the conjugate axis $b$. Turn each given fact into one of these. Two facts fix the two unknowns, tied together by one relation, $a^2e^2 = a^2 + b^2$. It is the ellipse's relation with the sign flipped, because a hyperbola's foci lie beyond its vertices.`,
+    formal: t`**Read each fact as a distance from the centre**
+
+- vertices $(\pm a, 0)$; transverse axis $2a$
+- ends of the conjugate axis $(0, \pm b)$; conjugate axis $2b$
+- foci $(\pm ae, 0)$; distance between the foci $2ae$
+- directrices $x = \pm\frac{a}{e}$; distance between the directrices $\frac{2a}{e}$
+
+**Halve the lengths first.** An axis, or the distance between the foci or the directrices, spans both sides of the centre.
+
+**Link them with one relation**
+
+$$a^2e^2 = a^2 + b^2, \quad\text{that is,}\quad b^2 = a^2(e^2 - 1)$$
+
+**A point on the curve** satisfies the equation. Through $(3, 0)$ and $(6, 9)$: $(3, 0)$ is a vertex, so $a^2 = 9$; then $\frac{36}{9} - \frac{81}{b^2} = 1$ gives $b^2 = 27$.
+
+**Then write** $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ with the $a^2$ and $b^2$ you found.`,
+    worked: {
+      prompt: t`Find the equation of the hyperbola with centre at the origin, transverse axis $12$ and one focus at $(3\sqrt{5}, 0)$.`,
+      steps: [
+        t`The transverse axis is $2a = 12$, so $a = 6$ and $a^2 = 36$. The vertices are $(\pm 6, 0)$.`,
+        t`The focus $(ae, 0)$ is $(3\sqrt{5}, 0)$, so $ae = 3\sqrt{5}$ and $a^2e^2 = 45$.`,
+        t`$a^2 + b^2 = a^2e^2$: $36 + b^2 = 45$, so $b^2 = 9$. The ends of the conjugate axis are $(0, \pm 3)$.`,
+        t`The hyperbola is $\frac{x^2}{36} - \frac{y^2}{9} = 1$.`,
+      ],
+      answer: t`$\frac{x^2}{36} - \frac{y^2}{9} = 1$`,
+      figure: {
+        alt: "The hyperbola x²/36 − y²/9 = 1 built from its data. The transverse axis 12 puts the vertices at (±6, 0); the focus (3√5, 0) and its mirror image (−3√5, 0) lie beyond them; b² = 45 − 36 = 9 puts the ends of the conjugate axis at (0, ±3); then the two branches pass through the vertices.",
+        axes: "xy",
+        view: { x: [-10.5, 10.5], y: [-6.5, 6.5] },
+        elements: [
+          { kind: "point", at: [6, 0], step: 1, label: "(6, 0)", labelAt: "nw" },
+          { kind: "point", at: [-6, 0], step: 1, label: "(−6, 0)", labelAt: "ne" },
+          { kind: "point", at: [6.708, 0], tone: "good", step: 2, label: "(3√5, 0)", labelAt: "ne" },
+          { kind: "point", at: [-6.708, 0], tone: "good", step: 2, label: "(−3√5, 0)", labelAt: "nw" },
+          { kind: "segment", from: [0, -3], to: [0, 3], dashed: true, tone: "muted", step: 3 },
+          { kind: "point", at: [0, 3], step: 3, label: "(0, 3)", labelAt: "e" },
+          { kind: "point", at: [0, -3], step: 3 },
+          { kind: "hyperbola", centre: [0, 0], a: 6, b: 3, axis: "x", branch: 1, step: 4, tone: "good" },
+          { kind: "hyperbola", centre: [0, 0], a: 6, b: 3, axis: "x", branch: -1, step: 4, tone: "good" },
+        ],
+      },
+    },
+    figure: {
+      alt: "The hyperbola x²/4 − y²/12 = 1. Its vertices are (±2, 0) and the ends of its conjugate axis are (0, ±2√3). The segment from the vertex (2, 0) to the end (0, −2√3) has length √(4 + 12) = 4, the same as the distance from the centre to the foci (±4, 0): a²e² = a² + b².",
+      axes: "xy",
+      view: { x: [-5.6, 5.6], y: [-4.6, 4.6] },
+      elements: [
+        { kind: "hyperbola", centre: [0, 0], a: 2, b: 3.464, axis: "x", branch: 1, step: 1 },
+        { kind: "hyperbola", centre: [0, 0], a: 2, b: 3.464, axis: "x", branch: -1, step: 1 },
+        { kind: "point", at: [2, 0], step: 2, label: "(2, 0)", labelAt: "nw" },
+        { kind: "point", at: [-2, 0], step: 2, label: "(−2, 0)", labelAt: "ne" },
+        { kind: "segment", from: [0, -3.464], to: [0, 3.464], dashed: true, tone: "muted", step: 3 },
+        { kind: "point", at: [0, 3.464], step: 3, label: "(0, 2√3)", labelAt: "e" },
+        { kind: "point", at: [0, -3.464], step: 3 },
+        { kind: "segment", from: [2, 0], to: [0, -3.464], tone: "good", step: 4 },
+        { kind: "point", at: [4, 0], tone: "good", step: 4, label: "(4, 0)", labelAt: "ne" },
+        { kind: "point", at: [-4, 0], tone: "good", step: 4, label: "(−4, 0)", labelAt: "nw" },
+        { kind: "label", at: [1.15, -1.75], label: "4", labelAt: "se", tone: "good", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag a focus along the $x$-axis with the vertices fixed: the ends of the conjugate axis slide so that $a^2e^2 = a^2 + b^2$ stays true, and the branches open or close.`,
+  },
+  misconceptions: [
+    {
+      id: "C12-M1",
+      mistake: t`Uses the ellipse's relation $b^2 = a^2(1 - e^2)$, that is $a^2e^2 = a^2 - b^2$, for a hyperbola`,
+      remediation: t`A hyperbola's foci lie beyond its vertices, so $ae > a$ and $a^2e^2 = a^2 + b^2$, that is $b^2 = a^2(e^2 - 1)$. The ellipse's minus sign does not carry over.`,
+      fallback: { kind: "concept", id: "C11" },
+    },
+    {
+      id: "C12-M2",
+      mistake: "Takes a given length (an axis, or the distance between the foci or the directrices) as the half-length",
+      remediation: t`These lengths span both sides of the centre: transverse axis $2a$, conjugate axis $2b$, foci $2ae$ apart, directrices $\frac{2a}{e}$ apart. Halve the length before you use it.`,
+      fallback: { kind: "concept", id: "C11" },
+    },
+    {
+      id: "C12-M3",
+      mistake: t`Takes the focus as a vertex, so $a = ae$`,
+      remediation: t`The vertices $(\pm a, 0)$ are on the curve; the foci $(\pm ae, 0)$ lie further out, since $e > 1$. A focus gives $ae$, not $a$.`,
+      fallback: { kind: "concept", id: "C11" },
+    },
+    {
+      id: "C12-M4",
+      mistake: "Reads the conjugate axis as the transverse axis (or the other way round)",
+      remediation: t`The transverse axis joins the vertices and lies along the line of the foci, so its length is $2a$; the conjugate axis, across it, has length $2b$.`,
+      fallback: { kind: "concept", id: "C11" },
+    },
+    {
+      id: "C12-M5",
+      mistake: t`Drops the $-1$ and takes $b^2 = a^2e^2$`,
+      remediation: t`$b^2 = a^2(e^2 - 1) = a^2e^2 - a^2$: subtract $a^2$ from the square of the focal distance $ae$.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  engineNotes: [
+    t`C12-M1 gives an ellipse (a negative $b^2$) except when the data are $b$ and $ae$; then it gives a different hyperbola. Both are detectable.`,
+    "C12-M3 needs a focus among the data and no transverse axis; C12-M4 needs an axis length; C12-M2 needs a length to halve (not a focus coordinate).",
+    t`C12-M5 cannot be detected when $b$ and $ae$ are the data: it would force $b = ae$.`,
+  ],
+  items: [
+    {
+      id: "C12-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.3 Q2" },
+      stem: t`The hyperbola with centre at the origin, length of conjugate axis $10$ and one focus at $(-7, 0)$ is:`,
+      verify: { kind: "locus", inputs: { B: "10", f: "-7" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{74} - \frac{y^2}{25} = 1$`, correct: false, misconceptionId: "C12-M1", value: "x**2/74 - y**2/25 - 1" },
+        { key: "B", text: t`$\frac{x^2}{49} - \frac{y^2}{25} = 1$`, correct: false, misconceptionId: "C12-M3", value: "x**2/49 - y**2/25 - 1" },
+        { key: "C", text: t`$\frac{x^2}{25} - \frac{y^2}{24} = 1$`, correct: false, misconceptionId: "C12-M4", value: "x**2/25 - y**2/24 - 1" },
+        { key: "D", text: t`$\frac{x^2}{24} - \frac{y^2}{25} = 1$`, correct: true, value: "x**2/24 - y**2/25 - 1" },
+      ],
+      solution: {
+        steps: [
+          t`The focus $(-7, 0)$ gives $ae = 7$ (the foci are $(\pm 7, 0)$), so $a^2e^2 = 49$. The conjugate axis $2b = 10$ gives $b = 5$, so $b^2 = 25$.`,
+          t`For a hyperbola $a^2e^2 = a^2 + b^2$: $49 = a^2 + 25$, so $a^2 = 24$ and the vertices are $(\pm 2\sqrt{6}, 0)$.`,
+          t`The hyperbola is $\frac{x^2}{24} - \frac{y^2}{25} = 1$.`,
+        ],
+        figure: {
+          alt: "The foci (±7, 0) and the ends of the conjugate axis (0, ±5) are given. a² = 49 − 25 = 24 puts the vertices at (±2√6, 0), between the centre and the foci, and the hyperbola x²/24 − y²/25 = 1 passes through them.",
+          axes: "xy",
+          view: { x: [-10.5, 10.5], y: [-7.5, 7.5] },
+          elements: [
+            { kind: "point", at: [7, 0], tone: "good", step: 1, label: "(7, 0)", labelAt: "ne" },
+            { kind: "point", at: [-7, 0], tone: "good", step: 1, label: "(−7, 0)", labelAt: "nw" },
+            { kind: "segment", from: [0, -5], to: [0, 5], dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [0, 5], step: 1, label: "(0, 5)", labelAt: "e" },
+            { kind: "point", at: [0, -5], step: 1 },
+            { kind: "point", at: [4.899, 0], step: 2, label: "(2√6, 0)", labelAt: "nw" },
+            { kind: "point", at: [-4.899, 0], step: 2, label: "(−2√6, 0)", labelAt: "ne" },
+            { kind: "hyperbola", centre: [0, 0], a: 4.899, b: 5, axis: "x", branch: 1, step: 3, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 4.899, b: 5, axis: "x", branch: -1, step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C12-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.3 Q5(ii)" },
+      stem: t`The hyperbola referred to its principal axes, with its foci on the $x$-axis, whose distance between the foci is $10$ and length of conjugate axis is $6$, is:`,
+      verify: { kind: "locus", inputs: { F: "10", B: "6" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{25} - \frac{y^2}{9} = 1$`, correct: false, misconceptionId: "C12-M3", value: "x**2/25 - y**2/9 - 1" },
+        { key: "B", text: t`$\frac{x^2}{16} - \frac{y^2}{9} = 1$`, correct: true, value: "x**2/16 - y**2/9 - 1" },
+        { key: "C", text: t`$\frac{x^2}{34} - \frac{y^2}{9} = 1$`, correct: false, misconceptionId: "C12-M1", value: "x**2/34 - y**2/9 - 1" },
+        { key: "D", text: t`$\frac{x^2}{64} - \frac{y^2}{36} = 1$`, correct: false, misconceptionId: "C12-M2", value: "x**2/64 - y**2/36 - 1" },
+      ],
+      solution: {
+        steps: [
+          t`The foci are $2ae = 10$ apart, so $ae = 5$. The conjugate axis is $2b = 6$, so $b = 3$.`,
+          t`$a^2 = a^2e^2 - b^2 = 25 - 9 = 16$, so the vertices are $(\pm 4, 0)$.`,
+          t`The hyperbola is $\frac{x^2}{16} - \frac{y^2}{9} = 1$.`,
+        ],
+        figure: {
+          alt: "The foci (±5, 0) and the ends of the conjugate axis (0, ±3) come from halving 10 and 6. a² = 25 − 9 = 16 puts the vertices at (±4, 0), and the hyperbola x²/16 − y²/9 = 1 passes through them.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-5.5, 5.5] },
+          elements: [
+            { kind: "point", at: [5, 0], tone: "good", step: 1, label: "(5, 0)", labelAt: "ne" },
+            { kind: "point", at: [-5, 0], tone: "good", step: 1, label: "(−5, 0)", labelAt: "nw" },
+            { kind: "segment", from: [0, -3], to: [0, 3], dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [0, 3], step: 1, label: "(0, 3)", labelAt: "e" },
+            { kind: "point", at: [0, -3], step: 1 },
+            { kind: "point", at: [4, 0], step: 2, label: "(4, 0)", labelAt: "nw" },
+            { kind: "point", at: [-4, 0], step: 2, label: "(−4, 0)", labelAt: "ne" },
+            { kind: "hyperbola", centre: [0, 0], a: 4, b: 3, axis: "x", branch: 1, step: 3, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 4, b: 3, axis: "x", branch: -1, step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C12-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/7.3.3 SolvedEx.3" },
+      stem: t`The hyperbola referred to its principal axes, with its foci on the $x$-axis, whose distance between the directrices is $\frac{18}{5}$ and eccentricity is $\frac{5}{3}$, is:`,
+      verify: { kind: "locus", inputs: { D: "18/5", e: "5/3" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{9} - \frac{y^2}{25} = 1$`, correct: false, misconceptionId: "C12-M5", value: "x**2/9 - y**2/25 - 1" },
+        { key: "B", text: t`$\frac{x^2}{9} - \frac{y^2}{16} = 1$`, correct: true, value: "x**2/9 - y**2/16 - 1" },
+        { key: "C", text: t`$\frac{x^2}{9} + \frac{y^2}{16} = 1$`, correct: false, misconceptionId: "C12-M1", value: "x**2/9 + y**2/16 - 1" },
+        { key: "D", text: t`$\frac{x^2}{36} - \frac{y^2}{64} = 1$`, correct: false, misconceptionId: "C12-M2", value: "x**2/36 - y**2/64 - 1" },
+      ],
+      solution: {
+        steps: [
+          t`The directrices are $x = \pm\frac{a}{e}$, so $\frac{2a}{e} = \frac{18}{5}$ gives $\frac{a}{e} = \frac{9}{5}$.`,
+          t`$a = \frac{9}{5} \times \frac{5}{3} = 3$, so $a^2 = 9$. The vertices are $(\pm 3, 0)$ and the foci $(\pm ae, 0) = (\pm 5, 0)$.`,
+          t`$b^2 = a^2(e^2 - 1) = 9\left(\frac{25}{9} - 1\right) = 16$. The hyperbola is $\frac{x^2}{9} - \frac{y^2}{16} = 1$.`,
+        ],
+        figure: {
+          alt: "The directrices x = ±9/5 are drawn dashed. a = 3 puts the foci at (±5, 0); b² = 16 gives the hyperbola x²/9 − y²/16 = 1, whose branches cross the x-axis at the vertices (±3, 0), outside the directrices.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            { kind: "line", through: [[1.8, 0], [1.8, 1]], dashed: true, tone: "muted", step: 1 },
+            { kind: "line", through: [[-1.8, 0], [-1.8, 1]], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [1.8, 5], label: "x = 9/5", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "label", at: [-1.8, 5], label: "x = −9/5", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "point", at: [5, 0], tone: "good", step: 2, label: "(5, 0)", labelAt: "ne" },
+            { kind: "point", at: [-5, 0], tone: "good", step: 2, label: "(−5, 0)", labelAt: "nw" },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: 1, step: 3, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: -1, step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C12-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.3 Q5(vii)" },
+      stem: t`The hyperbola referred to its principal axes whose foci are at $(\pm 2, 0)$ and eccentricity is $\frac{3}{2}$ is:`,
+      verify: { kind: "locus", inputs: { f: "2", e: "3/2" } },
+      options: [
+        { key: "A", text: t`$\frac{9x^2}{16} - \frac{y^2}{4} = 1$`, correct: false, misconceptionId: "C12-M5", value: "9*x**2/16 - y**2/4 - 1" },
+        { key: "B", text: t`$\frac{9x^2}{16} - \frac{9y^2}{20} = 1$`, correct: true, value: "9*x**2/16 - 9*y**2/20 - 1" },
+        { key: "C", text: t`$\frac{9x^2}{16} + \frac{9y^2}{20} = 1$`, correct: false, misconceptionId: "C12-M1", value: "9*x**2/16 + 9*y**2/20 - 1" },
+        { key: "D", text: t`$\frac{x^2}{4} - \frac{y^2}{5} = 1$`, correct: false, misconceptionId: "C12-M3", value: "x**2/4 - y**2/5 - 1" },
+      ],
+      solution: {
+        steps: [
+          t`The foci $(\pm ae, 0)$ are $(\pm 2, 0)$, so $ae = 2$.`,
+          t`$a = \frac{2}{3/2} = \frac{4}{3}$, so $a^2 = \frac{16}{9}$ and the vertices are $\left(\pm\frac{4}{3}, 0\right)$.`,
+          t`$b^2 = a^2e^2 - a^2 = 4 - \frac{16}{9} = \frac{20}{9}$. The hyperbola is $\frac{x^2}{16/9} - \frac{y^2}{20/9} = 1$, that is, $\frac{9x^2}{16} - \frac{9y^2}{20} = 1$.`,
+        ],
+        figure: {
+          alt: "The foci (±2, 0) are given. With e = 3/2 the vertices are at (±4/3, 0), closer to the centre than the foci; b² = 4 − 16/9 = 20/9 gives the hyperbola 9x²/16 − 9y²/20 = 1 through the vertices.",
+          axes: "xy",
+          view: { x: [-3, 3], y: [-2.4, 2.4] },
+          elements: [
+            { kind: "point", at: [2, 0], tone: "good", step: 1, label: "(2, 0)", labelAt: "ne" },
+            { kind: "point", at: [-2, 0], tone: "good", step: 1, label: "(−2, 0)", labelAt: "nw" },
+            { kind: "point", at: [1.333, 0], step: 2, label: "(4/3, 0)", labelAt: "nw" },
+            { kind: "point", at: [-1.333, 0], step: 2, label: "(−4/3, 0)", labelAt: "ne" },
+            { kind: "hyperbola", centre: [0, 0], a: 1.333, b: 1.491, axis: "x", branch: 1, step: 3, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 1.333, b: 1.491, axis: "x", branch: -1, step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C12-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc II Q22(i)" },
+      stem: t`In the standard form $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, the hyperbola whose length of conjugate axis is $5$ and distance between the foci is $13$ is:`,
+      verify: { kind: "locus", inputs: { B: "5", F: "13" } },
+      options: [
+        { key: "A", text: t`$\frac{4x^2}{169} - \frac{4y^2}{25} = 1$`, correct: false, misconceptionId: "C12-M3", value: "4*x**2/169 - 4*y**2/25 - 1" },
+        { key: "B", text: t`$\frac{4x^2}{25} - \frac{y^2}{36} = 1$`, correct: false, misconceptionId: "C12-M4", value: "4*x**2/25 - y**2/36 - 1" },
+        { key: "C", text: t`$\frac{x^2}{36} - \frac{4y^2}{25} = 1$`, correct: true, value: "x**2/36 - 4*y**2/25 - 1" },
+        { key: "D", text: t`$\frac{x^2}{144} - \frac{y^2}{25} = 1$`, correct: false, misconceptionId: "C12-M2", value: "x**2/144 - y**2/25 - 1" },
+      ],
+      solution: {
+        steps: [
+          t`The conjugate axis is $2b = 5$, so $b = \frac{5}{2}$. The foci are $2ae = 13$ apart, so $ae = \frac{13}{2}$.`,
+          t`$a^2 = a^2e^2 - b^2 = \frac{169}{4} - \frac{25}{4} = 36$, so the vertices are $(\pm 6, 0)$.`,
+          t`The hyperbola is $\frac{x^2}{36} - \frac{y^2}{25/4} = 1$, that is, $\frac{x^2}{36} - \frac{4y^2}{25} = 1$.`,
+        ],
+        figure: {
+          alt: "The foci (±13/2, 0) and the ends of the conjugate axis (0, ±5/2) come from halving 13 and 5. a² = 36 puts the vertices at (±6, 0), just inside the foci, and the hyperbola x²/36 − 4y²/25 = 1 passes through them.",
+          axes: "xy",
+          view: { x: [-12.5, 12.5], y: [-6, 6] },
+          elements: [
+            { kind: "point", at: [6.5, 0], tone: "good", step: 1 },
+            { kind: "point", at: [-6.5, 0], tone: "good", step: 1 },
+            { kind: "label", at: [7.4, 0], label: "(13/2, 0)", labelAt: "ne", tone: "good", step: 1 },
+            { kind: "label", at: [-7.4, 0], label: "(−13/2, 0)", labelAt: "nw", tone: "good", step: 1 },
+            { kind: "segment", from: [0, -2.5], to: [0, 2.5], dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [0, 2.5], step: 1, label: "(0, 5/2)", labelAt: "e" },
+            { kind: "point", at: [0, -2.5], step: 1 },
+            { kind: "point", at: [6, 0], step: 2, label: "(6, 0)", labelAt: "nw" },
+            { kind: "point", at: [-6, 0], step: 2, label: "(−6, 0)", labelAt: "ne" },
+            { kind: "hyperbola", centre: [0, 0], a: 6, b: 2.5, axis: "x", branch: 1, step: 3, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 6, b: 2.5, axis: "x", branch: -1, step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C12-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc II Q22(ii)" },
+      stem: t`In the standard form $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, the hyperbola whose eccentricity is $\frac{3}{2}$ and distance between the foci is $12$ is:`,
+      verify: { kind: "locus", inputs: { e: "3/2", F: "12" } },
+      options: [
+        { key: "A", text: t`$\frac{x^2}{64} - \frac{y^2}{80} = 1$`, correct: false, misconceptionId: "C12-M2", value: "x**2/64 - y**2/80 - 1" },
+        { key: "B", text: t`$\frac{x^2}{36} - \frac{y^2}{45} = 1$`, correct: false, misconceptionId: "C12-M3", value: "x**2/36 - y**2/45 - 1" },
+        { key: "C", text: t`$\frac{x^2}{16} - \frac{y^2}{36} = 1$`, correct: false, misconceptionId: "C12-M5", value: "x**2/16 - y**2/36 - 1" },
+        { key: "D", text: t`$\frac{x^2}{16} - \frac{y^2}{20} = 1$`, correct: true, value: "x**2/16 - y**2/20 - 1" },
+      ],
+      solution: {
+        steps: [
+          t`The foci are $2ae = 12$ apart, so $ae = 6$ and the foci are $(\pm 6, 0)$.`,
+          t`$a = \frac{6}{3/2} = 4$, so $a^2 = 16$ and the vertices are $(\pm 4, 0)$.`,
+          t`$b^2 = a^2e^2 - a^2 = 36 - 16 = 20$. The hyperbola is $\frac{x^2}{16} - \frac{y^2}{20} = 1$.`,
+        ],
+        figure: {
+          alt: "Halving 12 puts the foci at (±6, 0). Dividing by e = 3/2 puts the vertices at (±4, 0). b² = 20 gives the ends of the conjugate axis (0, ±2√5) and the hyperbola x²/16 − y²/20 = 1.",
+          axes: "xy",
+          view: { x: [-10, 10], y: [-7, 7] },
+          elements: [
+            { kind: "point", at: [6, 0], tone: "good", step: 1, label: "(6, 0)", labelAt: "ne" },
+            { kind: "point", at: [-6, 0], tone: "good", step: 1, label: "(−6, 0)", labelAt: "nw" },
+            { kind: "point", at: [4, 0], step: 2, label: "(4, 0)", labelAt: "nw" },
+            { kind: "point", at: [-4, 0], step: 2, label: "(−4, 0)", labelAt: "ne" },
+            { kind: "segment", from: [0, -4.472], to: [0, 4.472], dashed: true, tone: "muted", step: 3 },
+            { kind: "point", at: [0, 4.472], step: 3, label: "(0, 2√5)", labelAt: "e" },
+            { kind: "point", at: [0, -4.472], step: 3 },
+            { kind: "hyperbola", centre: [0, 0], a: 4, b: 4.472, axis: "x", branch: 1, step: 3, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 4, b: 4.472, axis: "x", branch: -1, step: 3, tone: "good" },
+          ],
+        },
+      },
+    },
+  ],
+};

@@ -1,0 +1,312 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c01: Concept = {
+  id: "C01",
+  status: "approved",
+  hook: {
+    prompt: t`$A(3, 2)$ and $B(7, 4)$. The points $(3, 7)$ and $(6, 1)$ are each as far from $A$ as from $B$. **Is there one equation that every such point satisfies?**`,
+    reveal: t`Yes. For $P(x, y)$, $PA^2 = PB^2$ gives $(x - 3)^2 + (y - 2)^2 = (x - 7)^2 + (y - 4)^2$. The $x^2$ and $y^2$ cancel, leaving $2x + y = 13$. Both points fit: $6 + 7 = 13$ and $12 + 1 = 13$. That equation is the **locus**: here, the perpendicular bisector of $AB$.`,
+  },
+  explanation: {
+    intuition: t`A locus is the path of a point that moves by a rule, such as "always 4 units from $O$" or "always as far from $A$ as from $B$". To get its equation, call the moving point $P(x, y)$ and write the rule in $x$ and $y$, usually with the distance formula. Every point on the path satisfies that equation, and no other point does. So the equation **is** the locus.`,
+    formal: t`**Locus.** The set of all points that satisfy a condition, and no others. Its **equation** is satisfied by the coordinates of every point on the locus and by no other point. The $X$-axis is $y = 0$; $\{P \mid OP = 4\}$ is $x^2 + y^2 = 16$, a circle.
+
+**Finding the equation**
+
+- **1.** Take any point $P(x, y)$ on the locus.
+- **2.** Write the condition with the distance formula, $PA^2 = (x - x_1)^2 + (y - y_1)^2$ for $A(x_1, y_1)$. Square to clear the roots, numbers included: $AP = 3BP$ gives $AP^2 = 9BP^2$.
+- **3.** Expand, and collect everything on one side.
+
+**What shape you get**
+
+- $PA = PB$: $x^2$ and $y^2$ cancel. A line, the perpendicular bisector of $AB$.
+- $PA^2 - PB^2 = c$: they cancel again. A line at right angles to $AB$.
+- $PA = k\,PB$ with $k \ne 1$, $PA = r$, or $\angle APB = 90^\circ$ (use $PA^2 + PB^2 = AB^2$): $x^2$ and $y^2$ stay, with equal coefficients. A circle.`,
+    worked: {
+      prompt: t`$A(-5, 2)$ and $B(4, 1)$ are two points. Find the equation of the locus of a point $P$ that is equidistant from $A$ and $B$, and identify the locus.`,
+      steps: [
+        t`Let $P(x, y)$ be any point on the locus. $PA = PB$, so $PA^2 = PB^2$.`,
+        t`By the distance formula: $(x + 5)^2 + (y - 2)^2 = (x - 4)^2 + (y - 1)^2$.`,
+        t`Expand: $x^2 + 10x + 25 + y^2 - 4y + 4 = x^2 - 8x + 16 + y^2 - 2y + 1$. The $x^2$ and $y^2$ cancel: $18x - 2y + 12 = 0$, so $9x - y + 6 = 0$.`,
+        t`Check: the midpoint of $AB$ is $\left(-\frac{1}{2}, \frac{3}{2}\right)$, and $9\left(-\frac{1}{2}\right) - \frac{3}{2} + 6 = 0$. The locus is the perpendicular bisector of $AB$.`,
+      ],
+      answer: t`$9x - y + 6 = 0$, the perpendicular bisector of $AB$.`,
+      figure: {
+        alt: "Points A(−5, 2) and B(4, 1), and a point P(x, y) with dashed segments PA and PB of equal length. The locus 9x − y + 6 = 0 is a steep line through P that crosses AB at its midpoint (−0.5, 1.5) at right angles: the perpendicular bisector of AB.",
+        axes: "xy",
+        view: { x: [-7, 6.5], y: [-4, 7.5] },
+        elements: [
+          { kind: "point", at: [-5, 2], label: "A(−5, 2)", labelAt: "n", step: 1 },
+          { kind: "point", at: [4, 1], label: "B(4, 1)", labelAt: "ne", step: 1 },
+          { kind: "segment", from: [-1, -3], to: [-5, 2], dashed: true, step: 1 },
+          { kind: "segment", from: [-1, -3], to: [4, 1], dashed: true, step: 1 },
+          { kind: "point", at: [-1, -3], label: "P(x, y)", labelAt: "w", step: 1 },
+          { kind: "line", through: [[-1, -3], [0, 6]], tone: "good", step: 3 },
+          { kind: "label", at: [0.1, 6.9], label: "9x − y + 6 = 0", labelAt: "se", tone: "good", step: 3 },
+          { kind: "segment", from: [-5, 2], to: [4, 1], tone: "muted", step: 4 },
+          { kind: "angle", at: [-0.5, 1.5], from: -6.34, to: 83.66, step: 4 },
+          { kind: "point", at: [-0.5, 1.5], label: "(−0.5, 1.5)", labelAt: "sw", tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "Points A(3, 2) and B(7, 4). The point P(3, 7) is 5 units from both, and Q(6, 1) is √10 units from both. Every point that is as far from A as from B lies on one line, 2x + y = 13, the perpendicular bisector of AB.",
+      axes: "xy",
+      view: { x: [-1, 10], y: [-1, 10] },
+      elements: [
+        { kind: "segment", from: [3, 2], to: [7, 4], tone: "muted", step: 1 },
+        { kind: "point", at: [3, 2], label: "A(3, 2)", labelAt: "w", step: 1 },
+        { kind: "point", at: [7, 4], label: "B(7, 4)", labelAt: "e", step: 1 },
+        { kind: "segment", from: [3, 7], to: [3, 2], dashed: true, label: "5", labelAt: "w", step: 2 },
+        { kind: "segment", from: [3, 7], to: [7, 4], dashed: true, label: "5", labelAt: "ne", step: 2 },
+        { kind: "point", at: [3, 7], label: "P(3, 7)", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [6, 1], to: [3, 2], dashed: true, label: "√10", labelAt: "s", step: 3 },
+        { kind: "segment", from: [6, 1], to: [7, 4], dashed: true, label: "√10", labelAt: "e", step: 3 },
+        { kind: "point", at: [6, 1], label: "Q(6, 1)", labelAt: "e", step: 3 },
+        { kind: "line", through: [[5, 3], [3, 7]], tone: "good", step: 4 },
+        { kind: "label", at: [2.25, 8.5], label: "2x + y = 13", labelAt: "ne", tone: "good", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag $P$ around the plane: $PA$ and $PB$ update live, and $P$ leaves a trail only where it meets the chosen rule ($PA = PB$, $PA = 2PB$, $\angle APB = 90^\circ$), tracing the line or circle whose equation is shown.`,
+  },
+  misconceptions: [
+    {
+      id: "C01-M1",
+      mistake: t`Squares the distances but not the number: $AP = 3BP$ becomes $AP^2 = 3BP^2$, and $PA = 5$ becomes $PA^2 = 5$.`,
+      remediation: t`Square both sides completely, numbers included: $AP = 3BP$ gives $AP^2 = 9BP^2$, and $PA = 5$ gives $PA^2 = 25$.`,
+      fallback: { kind: "ext", topic: "squaring both sides of an equation" },
+    },
+    {
+      id: "C01-M2",
+      mistake: t`Writes the distance from $(a, b)$ with plus signs, as $\sqrt{(x + a)^2 + (y + b)^2}$.`,
+      remediation: t`The distance from $P(x, y)$ to $A(x_1, y_1)$ is $\sqrt{(x - x_1)^2 + (y - y_1)^2}$: subtract the coordinates. For $A(2, -5)$ that gives $(x - 2)^2 + (y + 5)^2$.`,
+      fallback: { kind: "ext", topic: "distance formula" },
+    },
+    {
+      id: "C01-M3",
+      mistake: t`Takes the points equidistant from $A$ and $B$ to be the line through $A$ and $B$.`,
+      remediation: t`Points equidistant from $A$ and $B$ lie on the perpendicular bisector of $AB$: through its midpoint, at right angles to $AB$. Write $PA^2 = PB^2$ and simplify to find it.`,
+      fallback: { kind: "ext", topic: "perpendicular bisector of a segment" },
+    },
+    {
+      id: "C01-M4",
+      mistake: t`Attaches the condition to the wrong point: reads $AP = 3BP$ as $BP = 3AP$, or $PA^2 - PB^2$ as $PB^2 - PA^2$.`,
+      remediation: t`Keep each distance with its own point. In $AP = 3BP$ the $3$ multiplies $BP$, so $P$ is farther from $A$; in $PA^2 - PB^2$, $A$'s distance comes first.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M5",
+      mistake: t`Expects $x^2$ and $y^2$ always to cancel, as they do for $PA = PB$, and strikes them out.`,
+      remediation: t`$x^2$ and $y^2$ cancel only when they have the same coefficient on both sides. In $PA^2 = 4PB^2$ or $PA^2 + PB^2 = AB^2$ they stay, and the locus is a circle.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M6",
+      mistake: t`Expands $(x - a)^2$ as $x^2 - 2ax$, dropping the $a^2$.`,
+      remediation: t`$(x - a)^2 = x^2 - 2ax + a^2$. Keep the constant term: it decides where the locus sits.`,
+      fallback: { kind: "ext", topic: "expanding (a − b)²" },
+    },
+  ],
+  engineNotes: [
+    t`C01-M4 gives the key whenever the condition is symmetric in $A$ and $B$ ($PA = PB$, $\angle APB = 90^\circ$): diagnose it with $AP = k\,BP$, $PA^2 = k\,PB^2$ or $PA^2 - PB^2 = c$.`,
+    t`C01-M1 needs a number to square ($AP = k\,BP$ with $k \ne 1$, or $PA = r$); C01-M5 needs a circle locus; C01-M3 applies only to $PA = PB$.`,
+    t`C01-M2 gives the key when the condition is unchanged by $P \to -P$ (e.g. $OP = r$ about the origin).`,
+  ],
+  items: [
+    {
+      id: "C01-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.1 Q1" },
+      stem: t`$A(1, 3)$ and $B(2, 1)$ are two points. The equation of the locus of a point $P$ such that $PA = PB$ is:`,
+      verify: { kind: "locus", inputs: { ax: "1", ay: "3", bx: "2", by: "1" }, params: { cond: "eq" } },
+      options: [
+        { key: "A", text: t`$2x - 4y + 5 = 0$`, correct: true, value: "2*x - 4*y + 5" },
+        { key: "B", text: t`$2x - 4y - 5 = 0$`, correct: false, misconceptionId: "C01-M2", value: "2*x - 4*y - 5" },
+        { key: "C", text: t`$2x + y - 5 = 0$`, correct: false, misconceptionId: "C01-M3", value: "2*x + y - 5" },
+        { key: "D", text: t`$x - 2y = 0$`, correct: false, misconceptionId: "C01-M6", value: "x - 2*y" },
+      ],
+      solution: {
+        steps: [
+          t`Let $P(x, y)$. $PA = PB$, so $PA^2 = PB^2$: $(x - 1)^2 + (y - 3)^2 = (x - 2)^2 + (y - 1)^2$.`,
+          t`Expand: $x^2 - 2x + 1 + y^2 - 6y + 9 = x^2 - 4x + 4 + y^2 - 2y + 1$. The $x^2$ and $y^2$ cancel.`,
+          t`$-2x - 6y + 10 = -4x - 2y + 5$, so $2x - 4y + 5 = 0$: the perpendicular bisector of $AB$, through its midpoint $\left(\frac{3}{2}, 2\right)$.`,
+        ],
+        figure: {
+          alt: "Points A(1, 3) and B(2, 1) joined by a segment. The locus 2x − 4y + 5 = 0 is a line through the midpoint (1.5, 2) of AB, at right angles to AB.",
+          axes: "xy",
+          view: { x: [-2, 6.5], y: [-1, 5] },
+          elements: [
+            { kind: "segment", from: [1, 3], to: [2, 1], tone: "muted", step: 1 },
+            { kind: "point", at: [1, 3], label: "A(1, 3)", labelAt: "n", step: 1 },
+            { kind: "point", at: [2, 1], label: "B(2, 1)", labelAt: "e", step: 1 },
+            { kind: "line", through: [[1.5, 2], [3.5, 3]], tone: "good", step: 3 },
+            { kind: "label", at: [3.4, 2.95], label: "2x − 4y + 5 = 0", labelAt: "se", tone: "good", step: 3 },
+            { kind: "point", at: [1.5, 2], tone: "good", step: 3 },
+            { kind: "label", at: [1.7, 1.75], label: "(1.5, 2)", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.1 Q3" },
+      stem: t`$A(2, 0)$ and $B(0, 3)$ are two points. The equation of the locus of a point $P$ such that $AP = 2BP$ is:`,
+      verify: { kind: "locus", inputs: { ax: "2", ay: "0", bx: "0", by: "3", k: "2" }, params: { cond: "ratio" } },
+      options: [
+        { key: "A", text: t`$3x^2 + 3y^2 + 4x - 24y + 32 = 0$`, correct: true, value: "3*x**2 + 4*x + 3*y**2 - 24*y + 32" },
+        { key: "B", text: t`$x^2 + y^2 + 4x - 12y + 14 = 0$`, correct: false, misconceptionId: "C01-M1", value: "x**2 + 4*x + y**2 - 12*y + 14" },
+        { key: "C", text: t`$3x^2 + 3y^2 - 16x + 6y + 7 = 0$`, correct: false, misconceptionId: "C01-M4", value: "3*x**2 - 16*x + 3*y**2 + 6*y + 7" },
+        { key: "D", text: t`$x - 6y + 8 = 0$`, correct: false, misconceptionId: "C01-M5", value: "x - 6*y + 8" },
+      ],
+      solution: {
+        steps: [
+          t`Let $P(x, y)$. $AP = 2BP$, so $AP^2 = 4BP^2$: $(x - 2)^2 + y^2 = 4\left[x^2 + (y - 3)^2\right]$.`,
+          t`Expand: $x^2 - 4x + 4 + y^2 = 4x^2 + 4y^2 - 24y + 36$.`,
+          t`Collect on one side: $3x^2 + 3y^2 + 4x - 24y + 32 = 0$. The $x^2$ and $y^2$ don't cancel: the locus is a circle, centre $\left(-\frac{2}{3}, 4\right)$.`,
+        ],
+        figure: {
+          alt: "Points A(2, 0) and B(0, 3). The locus AP = 2BP is a circle with centre (−2/3, 4) and radius about 2.4; B lies inside it and A outside, since every point of the circle is nearer B.",
+          axes: "xy",
+          view: { x: [-4, 3.5], y: [-1, 7.2] },
+          elements: [
+            { kind: "point", at: [2, 0], label: "A(2, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 3], label: "B(0, 3)", labelAt: "e", step: 1 },
+            { kind: "circle", centre: [-0.667, 4], r: 2.404, tone: "good", label: "AP = 2BP", labelAt: "ne", step: 3 },
+            { kind: "point", at: [-0.667, 4], label: "(−2/3, 4)", labelAt: "w", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.1 Q4" },
+      stem: t`$A(4, 1)$ and $B(5, 4)$ are two points. The equation of the locus of a point $P$ such that $PA^2 = 3PB^2$ is:`,
+      verify: { kind: "locus", inputs: { ax: "4", ay: "1", bx: "5", by: "4", s: "3" }, params: { cond: "sqratio" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 7x + y + 5 = 0$`, correct: false, misconceptionId: "C01-M4", value: "x**2 - 7*x + y**2 + y + 5" },
+        { key: "B", text: t`$11x + 11y - 53 = 0$`, correct: false, misconceptionId: "C01-M5", value: "11*x + 11*y - 53" },
+        { key: "C", text: t`$x^2 + y^2 - 11x - 11y + 53 = 0$`, correct: true, value: "x**2 - 11*x + y**2 - 11*y + 53" },
+        { key: "D", text: t`$x^2 + y^2 + 11x + 11y + 53 = 0$`, correct: false, misconceptionId: "C01-M2", value: "x**2 + 11*x + y**2 + 11*y + 53" },
+      ],
+      solution: {
+        steps: [
+          t`Let $P(x, y)$. $PA^2 = 3PB^2$: $(x - 4)^2 + (y - 1)^2 = 3\left[(x - 5)^2 + (y - 4)^2\right]$.`,
+          t`Expand: $x^2 + y^2 - 8x - 2y + 17 = 3x^2 + 3y^2 - 30x - 24y + 123$.`,
+          t`Collect: $2x^2 + 2y^2 - 22x - 22y + 106 = 0$. Divide by $2$: $x^2 + y^2 - 11x - 11y + 53 = 0$, a circle with centre $\left(\frac{11}{2}, \frac{11}{2}\right)$.`,
+        ],
+        figure: {
+          alt: "Points A(4, 1) and B(5, 4). The locus PA² = 3PB² is a circle with centre (5.5, 5.5) and radius about 2.7, with B inside it and A outside.",
+          axes: "xy",
+          view: { x: [-1, 10], y: [-1, 9] },
+          elements: [
+            { kind: "point", at: [4, 1], label: "A(4, 1)", labelAt: "e", step: 1 },
+            { kind: "point", at: [5, 4], label: "B(5, 4)", labelAt: "e", step: 1 },
+            { kind: "circle", centre: [5.5, 5.5], r: 2.739, tone: "good", label: "PA² = 3PB²", labelAt: "ne", step: 3 },
+            { kind: "point", at: [5.5, 5.5], label: "(5.5, 5.5)", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.1 Q5" },
+      stem: t`$A(2, 4)$ and $B(5, 8)$ are two points. The equation of the locus of a point $P$ such that $PA^2 - PB^2 = 13$ is:`,
+      verify: { kind: "locus", inputs: { ax: "2", ay: "4", bx: "5", by: "8", c: "13" }, params: { cond: "diff" } },
+      options: [
+        { key: "A", text: t`$3x + 4y - 41 = 0$`, correct: true, value: "3*x + 4*y - 41" },
+        { key: "B", text: t`$3x + 4y + 41 = 0$`, correct: false, misconceptionId: "C01-M2", value: "3*x + 4*y + 41" },
+        { key: "C", text: t`$3x + 4y - 28 = 0$`, correct: false, misconceptionId: "C01-M4", value: "3*x + 4*y - 28" },
+        { key: "D", text: t`$6x + 8y - 13 = 0$`, correct: false, misconceptionId: "C01-M6", value: "6*x + 8*y - 13" },
+      ],
+      solution: {
+        steps: [
+          t`Let $P(x, y)$. $PA^2 - PB^2 = 13$: $(x - 2)^2 + (y - 4)^2 - \left[(x - 5)^2 + (y - 8)^2\right] = 13$.`,
+          t`Expand: $(x^2 + y^2 - 4x - 8y + 20) - (x^2 + y^2 - 10x - 16y + 89) = 13$. The $x^2$ and $y^2$ cancel.`,
+          t`$6x + 8y - 69 = 13$, so $6x + 8y - 82 = 0$, that is $3x + 4y - 41 = 0$: a line at right angles to $AB$.`,
+          t`Check with $(7, 5)$: $21 + 20 = 41$, and $PA^2 - PB^2 = 26 - 13 = 13$.`,
+        ],
+        figure: {
+          alt: "Points A(2, 4) and B(5, 8) joined by a segment. The locus 3x + 4y − 41 = 0 is a line crossing AB at right angles, between the midpoint and B. The point P(7, 5) on it has PA² = 26 and PB² = 13.",
+          axes: "xy",
+          view: { x: [-1, 11], y: [-1, 11] },
+          elements: [
+            { kind: "segment", from: [2, 4], to: [5, 8], tone: "muted", step: 1 },
+            { kind: "point", at: [2, 4], label: "A(2, 4)", labelAt: "se", step: 1 },
+            { kind: "point", at: [5, 8], label: "B(5, 8)", labelAt: "e", step: 1 },
+            { kind: "line", through: [[7, 5], [3, 8]], tone: "good", step: 3 },
+            { kind: "angle", at: [4.28, 7.04], from: 53.13, to: 143.13, step: 3 },
+            { kind: "label", at: [2.2, 8.6], label: "3x + 4y − 41 = 0", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "point", at: [7, 5], label: "P(7, 5)", labelAt: "ne", tone: "good", step: 4 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.1 Q6" },
+      stem: t`$A(1, 6)$ and $B(3, 5)$ are two points. The equation of the locus of a point $P$ such that segment $AB$ subtends a right angle at $P$ ($\angle APB = 90^\circ$) is:`,
+      verify: { kind: "locus", inputs: { ax: "1", ay: "6", bx: "3", by: "5" }, params: { cond: "right" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 - 4x - 11y + 33 = 0$`, correct: true, value: "x**2 - 4*x + y**2 - 11*y + 33" },
+        { key: "B", text: t`$x^2 + y^2 + 4x + 11y + 33 = 0$`, correct: false, misconceptionId: "C01-M2", value: "x**2 + 4*x + y**2 + 11*y + 33" },
+        { key: "C", text: t`$4x + 11y - 33 = 0$`, correct: false, misconceptionId: "C01-M5", value: "4*x + 11*y - 33" },
+        { key: "D", text: t`$2x^2 + 2y^2 - 8x - 22y - 5 = 0$`, correct: false, misconceptionId: "C01-M6", value: "2*x**2 - 8*x + 2*y**2 - 22*y - 5" },
+      ],
+      solution: {
+        steps: [
+          t`$\angle APB = 90^\circ$, so by Pythagoras $PA^2 + PB^2 = AB^2$, and $AB^2 = (3 - 1)^2 + (5 - 6)^2 = 5$.`,
+          t`With $P(x, y)$: $(x - 1)^2 + (y - 6)^2 + (x - 3)^2 + (y - 5)^2 = 5$, that is $2x^2 + 2y^2 - 8x - 22y + 71 = 5$.`,
+          t`So $2x^2 + 2y^2 - 8x - 22y + 66 = 0$. Divide by $2$: $x^2 + y^2 - 4x - 11y + 33 = 0$, the circle on $AB$ as diameter, centre $\left(2, \frac{11}{2}\right)$. For example, $(1, 5)$ is on it: $1 + 25 - 4 - 55 + 33 = 0$.`,
+        ],
+        figure: {
+          alt: "Points A(1, 6) and B(3, 5) joined by a segment. The locus is the circle with AB as diameter, centre (2, 5.5). The point P(1, 5) on it sees AB at a right angle: PA is vertical and PB horizontal.",
+          axes: "xy",
+          view: { x: [-0.6, 4.4], y: [3.2, 7.4] },
+          elements: [
+            { kind: "segment", from: [1, 6], to: [3, 5], tone: "muted", step: 1 },
+            { kind: "point", at: [1, 6], label: "A(1, 6)", labelAt: "w", step: 1 },
+            { kind: "point", at: [3, 5], label: "B(3, 5)", labelAt: "e", step: 1 },
+            { kind: "circle", centre: [2, 5.5], r: 1.118, tone: "good", step: 3 },
+            { kind: "point", at: [2, 5.5], label: "(2, 5.5)", labelAt: "sw", tone: "good", step: 3 },
+            { kind: "label", at: [2, 6.75], label: "x² + y² − 4x − 11y + 33 = 0", labelAt: "n", tone: "good", step: 3 },
+            { kind: "segment", from: [1, 5], to: [1, 6], dashed: true, step: 3 },
+            { kind: "segment", from: [1, 5], to: [3, 5], dashed: true, step: 3 },
+            { kind: "angle", at: [1, 5], from: 0, to: 90, step: 3 },
+            { kind: "point", at: [1, 5], label: "P(1, 5)", labelAt: "sw", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q6",
+      source: { kind: "authored" },
+      stem: t`The equation of the locus of a point $P$ that is always at a distance of $3$ units from $A(1, -2)$ is:`,
+      verify: { kind: "locus", inputs: { ax: "1", ay: "-2", r: "3" }, params: { cond: "dist" } },
+      options: [
+        { key: "A", text: t`$x^2 + y^2 + 2x - 4y - 4 = 0$`, correct: false, misconceptionId: "C01-M2", value: "x**2 + 2*x + y**2 - 4*y - 4" },
+        { key: "B", text: t`$x^2 + y^2 - 2x + 4y - 9 = 0$`, correct: false, misconceptionId: "C01-M6", value: "x**2 - 2*x + y**2 + 4*y - 9" },
+        { key: "C", text: t`$x^2 + y^2 - 2x + 4y - 4 = 0$`, correct: true, value: "x**2 - 2*x + y**2 + 4*y - 4" },
+        { key: "D", text: t`$x^2 + y^2 - 2x + 4y + 2 = 0$`, correct: false, misconceptionId: "C01-M1", value: "x**2 - 2*x + y**2 + 4*y + 2" },
+      ],
+      solution: {
+        steps: [
+          t`Let $P(x, y)$. $PA = 3$, so $PA^2 = 9$: $(x - 1)^2 + (y + 2)^2 = 9$.`,
+          t`Expand: $x^2 - 2x + 1 + y^2 + 4y + 4 = 9$.`,
+          t`So $x^2 + y^2 - 2x + 4y - 4 = 0$: a circle with centre $A(1, -2)$ and radius $3$.`,
+        ],
+        figure: {
+          alt: "The point A(1, −2) and a point P(x, y) 3 units from it. The locus is the circle with centre A and radius 3.",
+          axes: "xy",
+          view: { x: [-3, 6], y: [-5.8, 2] },
+          elements: [
+            { kind: "point", at: [1, -2], label: "A(1, −2)", labelAt: "n", step: 1 },
+            { kind: "segment", from: [1, -2], to: [4, -2], dashed: true, label: "3", labelAt: "s", step: 1 },
+            { kind: "point", at: [4, -2], label: "P(x, y)", labelAt: "e", step: 1 },
+            { kind: "circle", centre: [1, -2], r: 3, tone: "good", label: "PA = 3", labelAt: "ne", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};

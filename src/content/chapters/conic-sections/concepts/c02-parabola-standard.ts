@@ -1,0 +1,291 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c02: Concept = {
+  id: "C02",
+  status: "approved",
+  hook: {
+    prompt: t`A torch's parabolic reflector is $20$ cm across and $5$ cm deep. **Where must the bulb go so that the beam comes out parallel?**`,
+    reveal: t`At the focus. Put the vertex at the origin and the axis along the x-axis: the rim point $(5, 10)$ is on $y^2 = 4ax$, so $100 = 20a$ and $a = 5$. The focus $(5, 0)$ is $5$ cm from the vertex, exactly level with the rim. The rim is the latus rectum: $4a = 20$ cm across.`,
+  },
+  explanation: {
+    intuition: t`Put the focus at $S(a, 0)$ and the directrix at $x = -a$. The vertex is then at the origin, midway between them, and the rule $SP = PM$ simplifies to $y^2 = 4ax$. Everything about the curve sits in the one number $a$: the focus, the directrix, and how wide the curve is at the focus. Only $y$ is squared, so $y$ and $-y$ give the same $x$: the curve is symmetric about the x-axis, which is its axis, and it opens to the right, round the focus.`,
+    formal: t`**The equation.** Focus $S(a, 0)$, directrix $x = -a$, $a > 0$. For $P(x, y)$, $SP^2 = (x - a)^2 + y^2$ and $PM^2 = (x + a)^2$. Setting $SP = PM$ gives
+$$y^2 = 4ax$$
+
+**Read it off.** Vertex $O(0, 0)$; focus $S(a, 0)$; directrix $x + a = 0$; axis $y = 0$ (the x-axis, across the squared $y$); tangent at the vertex $x = 0$.
+
+**Latus rectum.** The chord through $S$ at right angles to the axis. Put $x = a$: $y^2 = 4a^2$, so its ends are $(a, \pm 2a)$ and its length is $4a$.
+
+**From $ky^2 = lx$.** Divide by $k$ first: $y^2 = \frac{l}{k}x$, so $4a = \frac{l}{k}$. Then $a$ is a quarter of that.
+
+**Finding the equation.** Get $a$ from what is given: the focus $(a, 0)$, the directrix $x = -a$, an end $(a, \pm 2a)$ of the latus rectum, or a point on the curve (substitute it). Then write $y^2 = 4ax$.`,
+    worked: {
+      prompt: t`Find the focus, the directrix, and the length and ends of the latus rectum of the parabola $3y^2 = 36x$.`,
+      steps: [
+        t`Divide by $3$ so that $y^2$ stands alone: $y^2 = 12x$. Compare with $y^2 = 4ax$: $4a = 12$, so $a = 3$.`,
+        t`The axis is the x-axis. The focus is $S(a, 0) = (3, 0)$, and the directrix is $x = -a$, that is, $x + 3 = 0$.`,
+        t`The latus rectum is the chord through $S$ at right angles to the axis. Put $x = 3$: $y^2 = 36$, so $y = \pm 6$.`,
+        t`Its ends are $(3, 6)$ and $(3, -6)$, which is $(a, \pm 2a)$, and its length is $12 = 4a$.`,
+      ],
+      answer: t`Focus $(3, 0)$; directrix $x + 3 = 0$; latus rectum of length $12$, with ends $(3, \pm 6)$.`,
+      figure: {
+        alt: "The parabola y² = 12x opening to the right about the x-axis. Its focus is S(3, 0) and its directrix is the dashed line x = −3. The latus rectum runs through S from L(3, 6) to L′(3, −6).",
+        axes: "xy",
+        view: { x: [-6, 10], y: [-8, 8] },
+        elements: [
+          { kind: "curve", points: [[5.333, -8], [5.07, -7.8], [4.813, -7.6], [4.563, -7.4], [4.32, -7.2], [4.083, -7], [3.853, -6.8], [3.63, -6.6], [3.413, -6.4], [3.203, -6.2], [3, -6], [2.803, -5.8], [2.613, -5.6], [2.43, -5.4], [2.253, -5.2], [2.083, -5], [1.92, -4.8], [1.763, -4.6], [1.613, -4.4], [1.47, -4.2], [1.333, -4], [1.203, -3.8], [1.08, -3.6], [0.963, -3.4], [0.853, -3.2], [0.75, -3], [0.653, -2.8], [0.563, -2.6], [0.48, -2.4], [0.403, -2.2], [0.333, -2], [0.27, -1.8], [0.213, -1.6], [0.163, -1.4], [0.12, -1.2], [0.083, -1], [0.053, -0.8], [0.03, -0.6], [0.013, -0.4], [0.003, -0.2], [0, 0], [0.003, 0.2], [0.013, 0.4], [0.03, 0.6], [0.053, 0.8], [0.083, 1], [0.12, 1.2], [0.163, 1.4], [0.213, 1.6], [0.27, 1.8], [0.333, 2], [0.403, 2.2], [0.48, 2.4], [0.563, 2.6], [0.653, 2.8], [0.75, 3], [0.853, 3.2], [0.963, 3.4], [1.08, 3.6], [1.203, 3.8], [1.333, 4], [1.47, 4.2], [1.613, 4.4], [1.763, 4.6], [1.92, 4.8], [2.083, 5], [2.253, 5.2], [2.43, 5.4], [2.613, 5.6], [2.803, 5.8], [3, 6], [3.203, 6.2], [3.413, 6.4], [3.63, 6.6], [3.853, 6.8], [4.083, 7], [4.32, 7.2], [4.563, 7.4], [4.813, 7.6], [5.07, 7.8], [5.333, 8]], step: 1 },
+          { kind: "label", at: [6, 2.6], label: "y² = 12x", labelAt: "e", step: 1 },
+          { kind: "point", at: [3, 0], label: "S(3, 0)", labelAt: "ne", step: 2 },
+          { kind: "line", through: [[-3, 0], [-3, 1]], dashed: true, tone: "muted", step: 2 },
+          { kind: "label", at: [-3, 7], label: "x = −3", labelAt: "w", tone: "muted", step: 2 },
+          { kind: "segment", from: [3, -6], to: [3, 6], tone: "good", step: 3 },
+          { kind: "point", at: [3, 6], label: "L(3, 6)", labelAt: "se", tone: "good", step: 4 },
+          { kind: "point", at: [3, -6], label: "L′(3, −6)", labelAt: "ne", tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The parabola y² = 4x, with vertex O at the origin, opening to the right about the x-axis. Its focus is S(1, 0) and its directrix is the dashed line x = −1. The latus rectum is the vertical chord through S, from L(1, 2) to L′(1, −2), of length 4.",
+      axes: "xy",
+      view: { x: [-3, 7], y: [-5, 5] },
+      elements: [
+        { kind: "curve", points: [[6.25, -5], [5.941, -4.875], [5.641, -4.75], [5.348, -4.625], [5.062, -4.5], [4.785, -4.375], [4.516, -4.25], [4.254, -4.125], [4, -4], [3.754, -3.875], [3.516, -3.75], [3.285, -3.625], [3.062, -3.5], [2.848, -3.375], [2.641, -3.25], [2.441, -3.125], [2.25, -3], [2.066, -2.875], [1.891, -2.75], [1.723, -2.625], [1.562, -2.5], [1.41, -2.375], [1.266, -2.25], [1.129, -2.125], [1, -2], [0.879, -1.875], [0.766, -1.75], [0.66, -1.625], [0.562, -1.5], [0.473, -1.375], [0.391, -1.25], [0.316, -1.125], [0.25, -1], [0.191, -0.875], [0.141, -0.75], [0.098, -0.625], [0.062, -0.5], [0.035, -0.375], [0.016, -0.25], [0.004, -0.125], [0, 0], [0.004, 0.125], [0.016, 0.25], [0.035, 0.375], [0.062, 0.5], [0.098, 0.625], [0.141, 0.75], [0.191, 0.875], [0.25, 1], [0.316, 1.125], [0.391, 1.25], [0.473, 1.375], [0.562, 1.5], [0.66, 1.625], [0.766, 1.75], [0.879, 1.875], [1, 2], [1.129, 2.125], [1.266, 2.25], [1.41, 2.375], [1.562, 2.5], [1.723, 2.625], [1.891, 2.75], [2.066, 2.875], [2.25, 3], [2.441, 3.125], [2.641, 3.25], [2.848, 3.375], [3.062, 3.5], [3.285, 3.625], [3.516, 3.75], [3.754, 3.875], [4, 4], [4.254, 4.125], [4.516, 4.25], [4.785, 4.375], [5.062, 4.5], [5.348, 4.625], [5.641, 4.75], [5.941, 4.875], [6.25, 5]], step: 1 },
+        { kind: "label", at: [3.2, 1], label: "y² = 4x", labelAt: "e", step: 1 },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted", step: 2 },
+        { kind: "point", at: [1, 0], label: "S(1, 0)", labelAt: "ne", step: 2 },
+        { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 3 },
+        { kind: "label", at: [-1, 4.3], label: "x = −1", labelAt: "w", tone: "muted", step: 3 },
+        { kind: "segment", from: [1, -2], to: [1, 2], tone: "good", step: 4 },
+        { kind: "point", at: [1, 2], label: "L(1, 2)", labelAt: "se", tone: "good", step: 4 },
+        { kind: "point", at: [1, -2], label: "L′(1, −2)", labelAt: "ne", tone: "good", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag the focus $S(a, 0)$ along the x-axis: the directrix $x = -a$ moves the other way, the parabola $y^2 = 4ax$ widens or narrows, and the latus rectum's ends $(a, \pm 2a)$ and length $4a$ update.`,
+  },
+  misconceptions: [
+    {
+      id: "C02-M1",
+      mistake: t`Drops the 4: treats the standard parabola as $y^2 = ax$, so reads $a$ as the whole coefficient of $x$, and from given data writes $y^2 = ax$`,
+      remediation: t`In $y^2 = 4ax$ the coefficient of $x$ is $4a$, not $a$: divide it by $4$ to get $a$. Going the other way, put $4a$ back: $a = 3$ gives $y^2 = 12x$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C02-M2",
+      mistake: t`Reads $4a$ off $ky^2 = lx$ as $l$, without first dividing by $k$`,
+      remediation: t`Make the coefficient of $y^2$ equal to $1$ first: $3y^2 = 8x$ is $y^2 = \frac{8}{3}x$, so $4a = \frac{8}{3}$, not $8$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C02-M3",
+      mistake: t`Takes the half-length of the latus rectum as $a$, not $2a$: ends $(a, \pm a)$, length $2a$, and reads $a$ off the ordinate of an end`,
+      remediation: t`Put $x = a$ in $y^2 = 4ax$: $y^2 = 4a^2$, so $y = \pm 2a$. The ends are $(a, \pm 2a)$ and the latus rectum is $4a$ long; $a$ is the abscissa of an end.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C02-M4",
+      mistake: t`Swaps the sides: puts the focus at $(-a, 0)$ and the directrix at $x = a$`,
+      remediation: t`For $y^2 = 4ax$ with $a > 0$ the curve opens to the right, round the focus $(a, 0)$. The directrix $x = -a$ is on the other side of the vertex, the same distance away.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C02-M5",
+      mistake: t`Puts the axis along the squared variable: reads $y^2 = 4ax$ as having focus $(0, a)$ and directrix $y = -a$, and writes a parabola with its axis along the x-axis as $x^2 = 4ay$`,
+      remediation: t`In $y^2 = 4ax$ the squared variable is $y$, and the axis is the other one: $y$ and $-y$ give the same $x$, so the curve is symmetric about the x-axis. Its focus $(a, 0)$ and the ends $(a, \pm 2a)$ follow from that.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  engineNotes: [
+    t`C02-M1 gives the key when the equation is found from a point on the curve (Ex 7.1 Q3, Q5): solving $y_1^2 = ax_1$ and writing $y^2 = ax$ lands on the right parabola. Diagnose it with read-off items, or with the equation from a directrix or a latus-rectum end.`,
+    t`C02-M2 applies only when $y^2$ has a coefficient other than $1$.`,
+    "C02-M3 plays no part in the focus or directrix; C02-M4 gives the key for the latus rectum's length; C02-M5 gives the key for the length read off an equation and does not apply to latus-rectum-end items (their models raise there).",
+  ],
+  items: [
+    {
+      id: "C02-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Ex 7.1 Q1(i)" },
+      stem: t`The focus of the parabola $5y^2 = 24x$ is:`,
+      verify: { kind: "value", inputs: { k: "5", l: "24" }, params: { ask: "focus" } },
+      options: [
+        { key: "A", text: t`$\left(\frac{6}{5}, 0\right)$`, correct: true, value: "(6/5, 0)" },
+        { key: "B", text: t`$\left(\frac{24}{5}, 0\right)$`, correct: false, misconceptionId: "C02-M1", value: "(24/5, 0)" },
+        { key: "C", text: t`$(6, 0)$`, correct: false, misconceptionId: "C02-M2", value: "(6, 0)" },
+        { key: "D", text: t`$\left(0, \frac{6}{5}\right)$`, correct: false, misconceptionId: "C02-M5", value: "(0, 6/5)" },
+      ],
+      solution: {
+        steps: [
+          t`Divide by $5$ so that $y^2$ stands alone: $y^2 = \frac{24}{5}x$.`,
+          t`Compare with $y^2 = 4ax$: $4a = \frac{24}{5}$, so $a = \frac{6}{5}$.`,
+          t`Only $y$ is squared, so the axis is the x-axis and the focus is $(a, 0) = \left(\frac{6}{5}, 0\right)$. The directrix is $x = -\frac{6}{5}$.`,
+        ],
+        figure: {
+          alt: "The parabola 5y² = 24x opening to the right about the x-axis, with focus S(6/5, 0) and the dashed directrix x = −6/5.",
+          axes: "xy",
+          view: { x: [-3.5, 5.5], y: [-4.5, 4.5] },
+          elements: [
+            { kind: "curve", points: [[4.219, -4.5], [4.01, -4.388], [3.807, -4.275], [3.61, -4.162], [3.417, -4.05], [3.23, -3.938], [3.048, -3.825], [2.871, -3.712], [2.7, -3.6], [2.534, -3.487], [2.373, -3.375], [2.217, -3.263], [2.067, -3.15], [1.922, -3.038], [1.782, -2.925], [1.648, -2.812], [1.519, -2.7], [1.395, -2.587], [1.276, -2.475], [1.163, -2.362], [1.055, -2.25], [0.952, -2.138], [0.854, -2.025], [0.762, -1.913], [0.675, -1.8], [0.593, -1.688], [0.517, -1.575], [0.446, -1.462], [0.38, -1.35], [0.319, -1.237], [0.264, -1.125], [0.214, -1.013], [0.169, -0.9], [0.129, -0.788], [0.095, -0.675], [0.066, -0.562], [0.042, -0.45], [0.024, -0.338], [0.011, -0.225], [0.003, -0.112], [0, 0], [0.003, 0.112], [0.011, 0.225], [0.024, 0.338], [0.042, 0.45], [0.066, 0.562], [0.095, 0.675], [0.129, 0.787], [0.169, 0.9], [0.214, 1.013], [0.264, 1.125], [0.319, 1.237], [0.38, 1.35], [0.446, 1.463], [0.517, 1.575], [0.593, 1.688], [0.675, 1.8], [0.762, 1.912], [0.854, 2.025], [0.952, 2.138], [1.055, 2.25], [1.163, 2.362], [1.276, 2.475], [1.395, 2.588], [1.519, 2.7], [1.648, 2.812], [1.782, 2.925], [1.922, 3.037], [2.067, 3.15], [2.217, 3.263], [2.373, 3.375], [2.534, 3.487], [2.7, 3.6], [2.871, 3.713], [3.048, 3.825], [3.23, 3.938], [3.417, 4.05], [3.61, 4.162], [3.807, 4.275], [4.01, 4.387], [4.219, 4.5]], step: 1 },
+            { kind: "point", at: [1.2, 0], label: "S(6/5, 0)", labelAt: "ne", step: 3 },
+            { kind: "line", through: [[-1.2, 0], [-1.2, 1]], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [-1.2, 3.8], label: "x = −6/5", labelAt: "w", tone: "muted", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc I Q5" },
+      stem: t`The ends of the latus rectum of the parabola $y^2 = 24x$ are:`,
+      verify: { kind: "value", inputs: { k: "1", l: "24" }, params: { ask: "ends" } },
+      options: [
+        { key: "A", text: t`$(24, 48)$ and $(24, -48)$`, correct: false, misconceptionId: "C02-M1", value: "{(24, -48), (24, 48)}" },
+        { key: "B", text: t`$(6, 6)$ and $(6, -6)$`, correct: false, misconceptionId: "C02-M3", value: "{(6, -6), (6, 6)}" },
+        { key: "C", text: t`$(12, 6)$ and $(-12, 6)$`, correct: false, misconceptionId: "C02-M5", value: "{(-12, 6), (12, 6)}" },
+        { key: "D", text: t`$(6, 12)$ and $(6, -12)$`, correct: true, value: "{(6, -12), (6, 12)}" },
+      ],
+      solution: {
+        steps: [
+          t`Compare with $y^2 = 4ax$: $4a = 24$, so $a = 6$ and the focus is $S(6, 0)$.`,
+          t`The latus rectum is the chord through $S$ at right angles to the axis, so put $x = 6$: $y^2 = 144$ and $y = \pm 12$.`,
+          t`The ends are $(6, 12)$ and $(6, -12)$, which is $(a, \pm 2a)$. The length is $24 = 4a$.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 24x with focus S(6, 0). The latus rectum is the vertical chord through S, from L(6, 12) to L′(6, −12).",
+          axes: "xy",
+          view: { x: [-4, 20], y: [-15, 15] },
+          elements: [
+            { kind: "curve", points: [[9.375, -15], [8.912, -14.625], [8.461, -14.25], [8.021, -13.875], [7.594, -13.5], [7.178, -13.125], [6.773, -12.75], [6.381, -12.375], [6, -12], [5.631, -11.625], [5.273, -11.25], [4.928, -10.875], [4.594, -10.5], [4.271, -10.125], [3.961, -9.75], [3.662, -9.375], [3.375, -9], [3.1, -8.625], [2.836, -8.25], [2.584, -7.875], [2.344, -7.5], [2.115, -7.125], [1.898, -6.75], [1.693, -6.375], [1.5, -6], [1.318, -5.625], [1.148, -5.25], [0.99, -4.875], [0.844, -4.5], [0.709, -4.125], [0.586, -3.75], [0.475, -3.375], [0.375, -3], [0.287, -2.625], [0.211, -2.25], [0.146, -1.875], [0.094, -1.5], [0.053, -1.125], [0.023, -0.75], [0.006, -0.375], [0, 0], [0.006, 0.375], [0.023, 0.75], [0.053, 1.125], [0.094, 1.5], [0.146, 1.875], [0.211, 2.25], [0.287, 2.625], [0.375, 3], [0.475, 3.375], [0.586, 3.75], [0.709, 4.125], [0.844, 4.5], [0.99, 4.875], [1.148, 5.25], [1.318, 5.625], [1.5, 6], [1.693, 6.375], [1.898, 6.75], [2.115, 7.125], [2.344, 7.5], [2.584, 7.875], [2.836, 8.25], [3.1, 8.625], [3.375, 9], [3.662, 9.375], [3.961, 9.75], [4.271, 10.125], [4.594, 10.5], [4.928, 10.875], [5.273, 11.25], [5.631, 11.625], [6, 12], [6.381, 12.375], [6.773, 12.75], [7.178, 13.125], [7.594, 13.5], [8.021, 13.875], [8.461, 14.25], [8.912, 14.625], [9.375, 15]] },
+            { kind: "point", at: [6, 0], label: "S(6, 0)", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [6, -12], to: [6, 12], tone: "good", step: 2 },
+            { kind: "point", at: [6, 12], label: "L(6, 12)", labelAt: "se", tone: "good", step: 3 },
+            { kind: "point", at: [6, -12], label: "L′(6, −12)", labelAt: "ne", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc II Q1(i)" },
+      stem: t`The directrix of the parabola $2y^2 = 17x$ is:`,
+      verify: { kind: "locus", inputs: { k: "2", l: "17" }, params: { ask: "directrix" } },
+      options: [
+        { key: "A", text: t`$8y + 17 = 0$`, correct: false, misconceptionId: "C02-M5", value: "y + 17/8" },
+        { key: "B", text: t`$8x + 17 = 0$`, correct: true, value: "x + 17/8" },
+        { key: "C", text: t`$4x + 17 = 0$`, correct: false, misconceptionId: "C02-M2", value: "x + 17/4" },
+        { key: "D", text: t`$8x - 17 = 0$`, correct: false, misconceptionId: "C02-M4", value: "x - 17/8" },
+      ],
+      solution: {
+        steps: [
+          t`Divide by $2$: $y^2 = \frac{17}{2}x$. So $4a = \frac{17}{2}$ and $a = \frac{17}{8}$.`,
+          t`The focus is $\left(\frac{17}{8}, 0\right)$, and the directrix is on the other side of the vertex, the same distance away: $x = -\frac{17}{8}$.`,
+          t`Multiply by $8$: the directrix is $8x + 17 = 0$.`,
+        ],
+        figure: {
+          alt: "The parabola 2y² = 17x opening to the right, with focus S(17/8, 0) and the dashed directrix 8x + 17 = 0 on the other side of the vertex.",
+          axes: "xy",
+          view: { x: [-6, 8], y: [-7, 7] },
+          elements: [
+            { kind: "curve", points: [[5.765, -7], [5.48, -6.825], [5.203, -6.65], [4.932, -6.475], [4.669, -6.3], [4.414, -6.125], [4.165, -5.95], [3.924, -5.775], [3.689, -5.6], [3.462, -5.425], [3.243, -5.25], [3.03, -5.075], [2.825, -4.9], [2.627, -4.725], [2.436, -4.55], [2.252, -4.375], [2.075, -4.2], [1.906, -4.025], [1.744, -3.85], [1.589, -3.675], [1.441, -3.5], [1.301, -3.325], [1.167, -3.15], [1.041, -2.975], [0.922, -2.8], [0.811, -2.625], [0.706, -2.45], [0.609, -2.275], [0.519, -2.1], [0.436, -1.925], [0.36, -1.75], [0.292, -1.575], [0.231, -1.4], [0.177, -1.225], [0.13, -1.05], [0.09, -0.875], [0.058, -0.7], [0.032, -0.525], [0.014, -0.35], [0.004, -0.175], [0, 0], [0.004, 0.175], [0.014, 0.35], [0.032, 0.525], [0.058, 0.7], [0.09, 0.875], [0.13, 1.05], [0.177, 1.225], [0.231, 1.4], [0.292, 1.575], [0.36, 1.75], [0.436, 1.925], [0.519, 2.1], [0.609, 2.275], [0.706, 2.45], [0.811, 2.625], [0.922, 2.8], [1.041, 2.975], [1.167, 3.15], [1.301, 3.325], [1.441, 3.5], [1.589, 3.675], [1.744, 3.85], [1.906, 4.025], [2.075, 4.2], [2.252, 4.375], [2.436, 4.55], [2.627, 4.725], [2.825, 4.9], [3.03, 5.075], [3.243, 5.25], [3.462, 5.425], [3.689, 5.6], [3.924, 5.775], [4.165, 5.95], [4.414, 6.125], [4.669, 6.3], [4.932, 6.475], [5.203, 6.65], [5.48, 6.825], [5.765, 7]], step: 1 },
+            { kind: "point", at: [2.125, 0], label: "S(17/8, 0)", labelAt: "ne", step: 2 },
+            { kind: "line", through: [[-2.125, 0], [-2.125, 1]], dashed: true, tone: "good", step: 2 },
+            { kind: "label", at: [-2.125, 6], label: "8x + 17 = 0", labelAt: "w", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc I Q10" },
+      stem: t`A parabola has its vertex at the origin and its axis along the x-axis, and it passes through the point $(3, 2)$. The length of its latus rectum is:`,
+      verify: { kind: "value", inputs: { x1: "3", y1: "2" }, params: { ask: "lr" } },
+      options: [
+        { key: "A", text: t`$\frac{9}{2}$`, correct: false, misconceptionId: "C02-M5", value: "9/2" },
+        { key: "B", text: t`$\frac{4}{3}$`, correct: true, value: "4/3" },
+        { key: "C", text: t`$\frac{16}{3}$`, correct: false, misconceptionId: "C02-M1", value: "16/3" },
+        { key: "D", text: t`$\frac{2}{3}$`, correct: false, misconceptionId: "C02-M3", value: "2/3" },
+      ],
+      solution: {
+        steps: [
+          t`Vertex at the origin and axis along the x-axis: the parabola is $y^2 = 4ax$, with $y$ squared. The point $(3, 2)$ is on it: $2^2 = 4a(3)$, so $12a = 4$ and $a = \frac{1}{3}$.`,
+          t`The parabola is $y^2 = \frac{4}{3}x$, with focus $\left(\frac{1}{3}, 0\right)$.`,
+          t`The latus rectum has length $4a = \frac{4}{3}$: its ends $\left(\frac{1}{3}, \pm\frac{2}{3}\right)$ are $\frac{4}{3}$ apart.`,
+        ],
+        figure: {
+          alt: "The parabola y² = (4/3)x through the point P(3, 2), with focus S(1/3, 0). The short vertical chord through S is the latus rectum, of length 4/3.",
+          axes: "xy",
+          view: { x: [-1.5, 4.5], y: [-3, 3] },
+          elements: [
+            { kind: "curve", points: [[6.75, -3], [6.417, -2.925], [6.092, -2.85], [5.775, -2.775], [5.468, -2.7], [5.168, -2.625], [4.877, -2.55], [4.594, -2.475], [4.32, -2.4], [4.054, -2.325], [3.797, -2.25], [3.548, -2.175], [3.308, -2.1], [3.075, -2.025], [2.852, -1.95], [2.637, -1.875], [2.43, -1.8], [2.232, -1.725], [2.042, -1.65], [1.86, -1.575], [1.688, -1.5], [1.523, -1.425], [1.367, -1.35], [1.219, -1.275], [1.08, -1.2], [0.949, -1.125], [0.827, -1.05], [0.713, -0.975], [0.607, -0.9], [0.51, -0.825], [0.422, -0.75], [0.342, -0.675], [0.27, -0.6], [0.207, -0.525], [0.152, -0.45], [0.105, -0.375], [0.067, -0.3], [0.038, -0.225], [0.017, -0.15], [0.004, -0.075], [0, 0], [0.004, 0.075], [0.017, 0.15], [0.038, 0.225], [0.067, 0.3], [0.105, 0.375], [0.152, 0.45], [0.207, 0.525], [0.27, 0.6], [0.342, 0.675], [0.422, 0.75], [0.51, 0.825], [0.607, 0.9], [0.713, 0.975], [0.827, 1.05], [0.949, 1.125], [1.08, 1.2], [1.219, 1.275], [1.367, 1.35], [1.523, 1.425], [1.688, 1.5], [1.86, 1.575], [2.042, 1.65], [2.232, 1.725], [2.43, 1.8], [2.637, 1.875], [2.852, 1.95], [3.075, 2.025], [3.307, 2.1], [3.548, 2.175], [3.797, 2.25], [4.054, 2.325], [4.32, 2.4], [4.594, 2.475], [4.877, 2.55], [5.168, 2.625], [5.468, 2.7], [5.775, 2.775], [6.092, 2.85], [6.417, 2.925], [6.75, 3]], step: 1 },
+            { kind: "point", at: [3, 2], label: "P(3, 2)", labelAt: "se", step: 1 },
+            { kind: "point", at: [0.3333, 0], label: "S(1/3, 0)", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [0.3333, -0.6667], to: [0.3333, 0.6667], tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc I Q6" },
+      stem: t`The equation of the parabola with vertex at the origin and directrix $x + 8 = 0$ is:`,
+      verify: { kind: "locus", inputs: { d: "-8" }, params: { ask: "eq_dir" } },
+      options: [
+        { key: "A", text: t`$x^2 = 32y$`, correct: false, misconceptionId: "C02-M5", value: "x**2 - 32*y" },
+        { key: "B", text: t`$y^2 = 32x$`, correct: true, value: "-32*x + y**2" },
+        { key: "C", text: t`$y^2 = 8x$`, correct: false, misconceptionId: "C02-M1", value: "-8*x + y**2" },
+        { key: "D", text: t`$y^2 = -32x$`, correct: false, misconceptionId: "C02-M4", value: "32*x + y**2" },
+      ],
+      solution: {
+        steps: [
+          t`The vertex $O$ is midway between the focus and the directrix $x = -8$, so the focus is $S(8, 0)$ and $a = 8$.`,
+          t`The axis is the x-axis (through $S$, at right angles to the directrix), so the equation has the form $y^2 = 4ax$, opening towards $S$.`,
+          t`$y^2 = 4(8)x$, that is, $y^2 = 32x$.`,
+        ],
+        figure: {
+          alt: "The dashed directrix x + 8 = 0 and the vertex O at the origin; the focus S(8, 0) is the same distance on the other side. The parabola y² = 32x opens to the right, round S.",
+          axes: "xy",
+          view: { x: [-11, 14], y: [-14, 14] },
+          elements: [
+            { kind: "line", through: [[-8, 0], [-8, 1]], dashed: true, tone: "muted" },
+            { kind: "label", at: [-8, 12], label: "x + 8 = 0", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted" },
+            { kind: "point", at: [8, 0], label: "S(8, 0)", labelAt: "ne", step: 1 },
+            { kind: "curve", points: [[6.125, -14], [5.823, -13.65], [5.528, -13.3], [5.241, -12.95], [4.961, -12.6], [4.689, -12.25], [4.425, -11.9], [4.169, -11.55], [3.92, -11.2], [3.679, -10.85], [3.445, -10.5], [3.219, -10.15], [3.001, -9.8], [2.791, -9.45], [2.588, -9.1], [2.393, -8.75], [2.205, -8.4], [2.025, -8.05], [1.853, -7.7], [1.688, -7.35], [1.531, -7], [1.382, -6.65], [1.24, -6.3], [1.106, -5.95], [0.98, -5.6], [0.861, -5.25], [0.75, -4.9], [0.647, -4.55], [0.551, -4.2], [0.463, -3.85], [0.383, -3.5], [0.31, -3.15], [0.245, -2.8], [0.188, -2.45], [0.138, -2.1], [0.096, -1.75], [0.061, -1.4], [0.034, -1.05], [0.015, -0.7], [0.004, -0.35], [0, 0], [0.004, 0.35], [0.015, 0.7], [0.034, 1.05], [0.061, 1.4], [0.096, 1.75], [0.138, 2.1], [0.188, 2.45], [0.245, 2.8], [0.31, 3.15], [0.383, 3.5], [0.463, 3.85], [0.551, 4.2], [0.647, 4.55], [0.75, 4.9], [0.861, 5.25], [0.98, 5.6], [1.106, 5.95], [1.24, 6.3], [1.382, 6.65], [1.531, 7], [1.688, 7.35], [1.853, 7.7], [2.025, 8.05], [2.205, 8.4], [2.393, 8.75], [2.588, 9.1], [2.791, 9.45], [3.001, 9.8], [3.219, 10.15], [3.445, 10.5], [3.679, 10.85], [3.92, 11.2], [4.169, 11.55], [4.425, 11.9], [4.689, 12.25], [4.961, 12.6], [5.241, 12.95], [5.528, 13.3], [5.823, 13.65], [6.125, 14]], step: 2 },
+            { kind: "label", at: [6, 5], label: "y² = 32x", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/conic-sections-11/Misc I Q9" },
+      stem: t`A parabola has its vertex at the origin, and $(2, 4)$ and $(2, -4)$ are the ends of its latus rectum. Its equation is:`,
+      verify: { kind: "locus", inputs: { ex: "2", ey: "4" }, params: { ask: "eq_end" } },
+      options: [
+        { key: "A", text: t`$y^2 = 8x$`, correct: true, value: "-8*x + y**2" },
+        { key: "B", text: t`$y^2 = 2x$`, correct: false, misconceptionId: "C02-M1", value: "-2*x + y**2" },
+        { key: "C", text: t`$y^2 = 16x$`, correct: false, misconceptionId: "C02-M3", value: "-16*x + y**2" },
+        { key: "D", text: t`$y^2 = -8x$`, correct: false, misconceptionId: "C02-M4", value: "8*x + y**2" },
+      ],
+      solution: {
+        steps: [
+          t`The ends $(2, 4)$ and $(2, -4)$ are mirror images in the x-axis, so the axis is the x-axis. The latus rectum crosses it at the focus, the midpoint $S(2, 0)$.`,
+          t`With the vertex at the origin, $a = OS = 2$. Check: the ends should be $(a, \pm 2a) = (2, \pm 4)$, and they are.`,
+          t`So the parabola is $y^2 = 4ax = 8x$.`,
+        ],
+        figure: {
+          alt: "The latus rectum from L(2, 4) to L′(2, −4) crosses the x-axis at the focus S(2, 0). With the vertex at the origin, the parabola y² = 8x passes through both ends.",
+          axes: "xy",
+          view: { x: [-4, 8], y: [-6, 6] },
+          elements: [
+            { kind: "segment", from: [2, -4], to: [2, 4], tone: "muted", step: 1 },
+            { kind: "point", at: [2, 4], label: "L(2, 4)", labelAt: "se", step: 1 },
+            { kind: "point", at: [2, -4], label: "L′(2, −4)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [2, 0], label: "S(2, 0)", labelAt: "ne", step: 1 },
+            { kind: "curve", points: [[4.5, -6], [4.278, -5.85], [4.061, -5.7], [3.85, -5.55], [3.645, -5.4], [3.445, -5.25], [3.251, -5.1], [3.063, -4.95], [2.88, -4.8], [2.703, -4.65], [2.531, -4.5], [2.365, -4.35], [2.205, -4.2], [2.05, -4.05], [1.901, -3.9], [1.758, -3.75], [1.62, -3.6], [1.488, -3.45], [1.361, -3.3], [1.24, -3.15], [1.125, -3], [1.015, -2.85], [0.911, -2.7], [0.813, -2.55], [0.72, -2.4], [0.633, -2.25], [0.551, -2.1], [0.475, -1.95], [0.405, -1.8], [0.34, -1.65], [0.281, -1.5], [0.228, -1.35], [0.18, -1.2], [0.138, -1.05], [0.101, -0.9], [0.07, -0.75], [0.045, -0.6], [0.025, -0.45], [0.011, -0.3], [0.003, -0.15], [0, 0], [0.003, 0.15], [0.011, 0.3], [0.025, 0.45], [0.045, 0.6], [0.07, 0.75], [0.101, 0.9], [0.138, 1.05], [0.18, 1.2], [0.228, 1.35], [0.281, 1.5], [0.34, 1.65], [0.405, 1.8], [0.475, 1.95], [0.551, 2.1], [0.633, 2.25], [0.72, 2.4], [0.813, 2.55], [0.911, 2.7], [1.015, 2.85], [1.125, 3], [1.24, 3.15], [1.361, 3.3], [1.488, 3.45], [1.62, 3.6], [1.758, 3.75], [1.901, 3.9], [2.05, 4.05], [2.205, 4.2], [2.365, 4.35], [2.531, 4.5], [2.703, 4.65], [2.88, 4.8], [3.063, 4.95], [3.251, 5.1], [3.445, 5.25], [3.645, 5.4], [3.85, 5.55], [4.061, 5.7], [4.278, 5.85], [4.5, 6]], step: 2 },
+            { kind: "label", at: [5, 1.9], label: "y² = 8x", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};

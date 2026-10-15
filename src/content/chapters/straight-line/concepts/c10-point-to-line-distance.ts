@@ -1,0 +1,314 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c10: Concept = {
+  id: "C10",
+  status: "approved",
+  hook: {
+    prompt: t`The line $3x + 4y = 12$ meets the axes at $(4, 0)$ and $(0, 3)$. **How far is the origin from this line: $4$, $3$, or something else?**`,
+    reveal: t`Something else. The distance from a point to a line is the **shortest** one, along the perpendicular. The triangle with corners $O$, $(4, 0)$, $(0, 3)$ has area $\frac{1}{2}(4)(3) = 6$, and its long side is $5$. So $\frac{1}{2}(5)d = 6$ gives $d = \frac{12}{5} = 2.4$, shorter than both $3$ and $4$.`,
+  },
+  explanation: {
+    intuition: t`The distance from a point to a line always means the shortest distance: drop a perpendicular and measure it. Put the point into $ax + by + c$: the value is $0$ on the line and grows as you move away, but it also grows if you double the whole equation. Dividing by $\sqrt{a^2 + b^2}$ removes that scaling and leaves the true distance. The sign only tells you which side of the line the point is on, so take the modulus.`,
+    formal: t`**Distance of $P(x_1, y_1)$ from $ax + by + c = 0$**
+
+$$p = \frac{|ax_1 + by_1 + c|}{\sqrt{a^2 + b^2}}$$
+
+**From the origin** put $x_1 = y_1 = 0$: $p = \frac{|c|}{\sqrt{a^2 + b^2}}$. For $3x + 4y + 15 = 0$, $p = \frac{15}{5} = 3$. For $x = -2$, that is $x + 2 = 0$, $p = \frac{2}{1} = 2$.
+
+**General form first.** Take every term to the left, changing the sign of each term you move, and clear fractions: $\frac{x}{2} + \frac{y}{5} = 1$ becomes $5x + 2y - 10 = 0$.
+
+**Points at a given distance $k$.** Write the point with one unknown, then solve $|u| = k$ as $u = k$ or $u = -k$. Expect two answers, one on each side of the line.`,
+    worked: {
+      prompt: t`Find the distance of the point $P(2, 5)$ from the line $3x + 4y + 14 = 0$.`,
+      steps: [
+        t`The line is already $ax + by + c = 0$ with $a = 3$, $b = 4$, $c = 14$; the point is $(x_1, y_1) = (2, 5)$.`,
+        t`Substitute the point: $ax_1 + by_1 + c = 3(2) + 4(5) + 14 = 40$.`,
+        t`Divide by $\sqrt{a^2 + b^2} = \sqrt{9 + 16} = 5$.`,
+        t`$p = \frac{|40|}{5} = 8$.`,
+      ],
+      answer: t`$P$ is $8$ units from the line.`,
+      figure: {
+        alt: "The line 3x + 4y + 14 = 0 and the point P(2, 5) above it. The perpendicular from P meets the line at N; its length is 8.",
+        axes: "xy",
+        view: { x: [-6.5, 4.5], y: [-5, 6.5] },
+        elements: [
+          { kind: "line", through: [[-2, -2], [2, -5]], step: 1 },
+          { kind: "label", at: [0.5, -2.6], label: "3x + 4y + 14 = 0", labelAt: "e", step: 1 },
+          { kind: "point", at: [2, 5], label: "P(2, 5)", labelAt: "e", step: 1 },
+          { kind: "segment", from: [2, 5], to: [-2.8, -1.4], tone: "good", step: 4 },
+          { kind: "angle", at: [-2.8, -1.4], from: 323.13, to: 413.13, tone: "good", step: 4 },
+          { kind: "point", at: [-2.8, -1.4], label: "N", labelAt: "sw", tone: "good", step: 4 },
+          { kind: "label", at: [0.8, 3.4], label: "d = 8", labelAt: "se", tone: "good", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The line 3x + 4y = 12 cuts the axes at (4, 0) and (0, 3). Measured along the axes, the origin is 4 and 3 units from those points, but the shortest distance is the perpendicular ON to the line, of length 12/5 = 2.4.",
+      axes: "xy",
+      view: { x: [-1.5, 5.5], y: [-1, 4.5] },
+      elements: [
+        { kind: "line", through: [[0, 3], [4, 0]], step: 1 },
+        { kind: "label", at: [2.6, 2.4], label: "3x + 4y = 12", labelAt: "ne", step: 1 },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "nw", step: 1 },
+        { kind: "segment", from: [0, 0], to: [4, 0], dashed: true, tone: "muted", label: "4", labelAt: "n", step: 2 },
+        { kind: "segment", from: [0, 0], to: [0, 3], dashed: true, tone: "muted", label: "3", labelAt: "e", step: 2 },
+        { kind: "point", at: [4, 0], label: "(4, 0)", labelAt: "ne", step: 2 },
+        { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [0, 0], to: [1.44, 1.92], tone: "good", step: 3 },
+        { kind: "angle", at: [1.44, 1.92], from: 143.13, to: 233.13, tone: "good", step: 3 },
+        { kind: "point", at: [1.44, 1.92], label: "N", labelAt: "ne", tone: "good", step: 3 },
+        { kind: "label", at: [0.72, 0.96], label: "d = 2.4", labelAt: "se", tone: "good", step: 3 },
+      ],
+    },
+    visualSpec: t`Drag the point $P$ anywhere; the perpendicular to the line follows it, showing the foot $N$, the length $PN$ and the value of $ax_1 + by_1 + c$, whose sign flips as $P$ crosses the line.`,
+  },
+  misconceptions: [
+    {
+      id: "C10-M1",
+      mistake: t`Takes the value of $ax_1 + by_1 + c$ itself as the distance, without dividing by $\sqrt{a^2 + b^2}$`,
+      remediation: t`The value of $ax_1 + by_1 + c$ is not yet a distance: doubling the equation doubles it. Dividing by $\sqrt{a^2 + b^2}$ is what turns it into one, so $p = \frac{|ax_1 + by_1 + c|}{\sqrt{a^2 + b^2}}$.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C10-M2",
+      mistake: t`Divides by $a^2 + b^2$, forgetting the square root`,
+      remediation: t`The denominator is the square root, $\sqrt{a^2 + b^2}$. For $3x + 4y + c = 0$ it is $5$, not $25$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C10-M3",
+      mistake: t`Carries terms across the equals sign without changing their signs before reading off $a$, $b$, $c$`,
+      remediation: t`Bring the line to $ax + by + c = 0$ first, changing the sign of every term you move across: $2(x - 1) = 3(y + 2)$ becomes $2x - 3y - 8 = 0$. Then use the formula.`,
+      fallback: { kind: "concept", id: "C07" },
+    },
+    {
+      id: "C10-M4",
+      mistake: t`Drops the modulus: gives a negative distance, or keeps only the $+$ case of $|u| = k$`,
+      remediation: t`A distance is never negative, so keep the modulus in $|ax_1 + by_1 + c|$. When the distance is given, $|u| = k$ means $u = k$ or $u = -k$: look for a point on each side of the line.`,
+      fallback: { kind: "ext", topic: "modulus (absolute value)" },
+    },
+    {
+      id: "C10-M5",
+      mistake: t`Measures the distance horizontally, along the $x$-direction, dividing by $|a|$ instead of $\sqrt{a^2 + b^2}$`,
+      remediation: t`The distance from a point to a line is the shortest one, along the perpendicular. Going straight across horizontally is longer unless the line is vertical, so divide by $\sqrt{a^2 + b^2}$, not by $|a|$.`,
+      fallback: { kind: "concept", id: "C07" },
+    },
+  ],
+  engineNotes: [
+    t`C10-M3 (signs not changed when moving terms) needs a line not written as $\ldots = 0$, and from the origin it gives the key ($|c|$ is unchanged): draw it only with a point other than the origin.`,
+    t`C10-M4 (modulus dropped) gives the key when $ax_1 + by_1 + c > 0$; on a distance item draw it only when that value is negative. On a points-at-distance-$k$ item it always differs (one point instead of two).`,
+    "C10-M5 (horizontal distance) does not apply to a line parallel to an axis.",
+  ],
+  items: [
+    {
+      id: "C10-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.4 Q11" },
+      stem: t`The distance of the origin from the line $7x + 24y - 50 = 0$ is:`,
+      verify: { kind: "value", inputs: { px: "0", py: "0" }, params: { line: "7*x + 24*y - 50 = 0" } },
+      options: [
+        { key: "A", text: t`$50$`, correct: false, misconceptionId: "C10-M1", value: "50" },
+        { key: "B", text: t`$\frac{2}{25}$`, correct: false, misconceptionId: "C10-M2", value: "2/25" },
+        { key: "C", text: t`$-2$`, correct: false, misconceptionId: "C10-M4", value: "-2" },
+        { key: "D", text: t`$2$`, correct: true, value: "2" },
+      ],
+      solution: {
+        steps: [
+          t`In $7x + 24y - 50 = 0$, $a = 7$, $b = 24$, $c = -50$. At the origin $ax_1 + by_1 + c = -50$.`,
+          t`$\sqrt{a^2 + b^2} = \sqrt{49 + 576} = \sqrt{625} = 25$.`,
+          t`Distance $= \frac{|-50|}{25} = 2$. The modulus keeps it positive.`,
+        ],
+        figure: {
+          alt: "The line 7x + 24y − 50 = 0 crossing the axes near (7.1, 0) and (0, 2.1). The perpendicular from the origin O meets it at N; its length is 2.",
+          axes: "xy",
+          view: { x: [-1.5, 8], y: [-1, 4] },
+          elements: [
+            { kind: "line", through: [[2, 1.5], [-10, 5]] },
+            { kind: "label", at: [4.2, 1.6], label: "7x + 24y − 50 = 0", labelAt: "ne" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [0, 0], to: [0.56, 1.92], tone: "good", step: 3 },
+            { kind: "angle", at: [0.56, 1.92], from: 163.74, to: 253.74, tone: "good", step: 3 },
+            { kind: "point", at: [0.56, 1.92], label: "N", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [0.28, 0.96], label: "2", labelAt: "se", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C10-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.4 Q12" },
+      stem: t`The distance of the point $A(-2, 3)$ from the line $12x - 5y - 13 = 0$ is:`,
+      verify: { kind: "value", inputs: { px: "-2", py: "3" }, params: { line: "12*x - 5*y - 13 = 0" } },
+      options: [
+        { key: "A", text: t`$4$`, correct: true, value: "4" },
+        { key: "B", text: t`$\frac{13}{3}$`, correct: false, misconceptionId: "C10-M5", value: "13/3" },
+        { key: "C", text: t`$\frac{4}{13}$`, correct: false, misconceptionId: "C10-M2", value: "4/13" },
+        { key: "D", text: t`$-4$`, correct: false, misconceptionId: "C10-M4", value: "-4" },
+      ],
+      solution: {
+        steps: [
+          t`At $A(-2, 3)$: $12(-2) - 5(3) - 13 = -24 - 15 - 13 = -52$.`,
+          t`$\sqrt{12^2 + (-5)^2} = \sqrt{169} = 13$.`,
+          t`Distance $= \frac{|-52|}{13} = 4$ units.`,
+        ],
+        figure: {
+          alt: "The line 12x − 5y − 13 = 0 and the point A(−2, 3) to its left. The perpendicular from A meets the line at N; its length is 4.",
+          axes: "xy",
+          view: { x: [-5, 8], y: [-5, 7] },
+          elements: [
+            { kind: "line", through: [[-1, -5], [4, 7]] },
+            { kind: "label", at: [2.6, 0.6], label: "12x − 5y − 13 = 0", labelAt: "e" },
+            { kind: "point", at: [-2, 3], label: "A(−2, 3)", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [-2, 3], to: [1.692, 1.462], tone: "good", step: 3 },
+            { kind: "angle", at: [1.692, 1.462], from: 67.385, to: 157.385, tone: "good", step: 3 },
+            { kind: "point", at: [1.692, 1.462], label: "N", labelAt: "se", tone: "good", step: 3 },
+            { kind: "label", at: [-0.892, 2.539], label: "4", labelAt: "sw", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C10-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc II Q18" },
+      stem: t`The distance of $P(-1, 1)$ from the line $12(x + 6) = 5(y - 2)$ is:`,
+      verify: { kind: "value", inputs: { px: "-1", py: "1" }, params: { line: "12*(x + 6) = 5*(y - 2)" } },
+      options: [
+        { key: "A", text: t`$\frac{65}{12}$`, correct: false, misconceptionId: "C10-M5", value: "65/12" },
+        { key: "B", text: t`$5$`, correct: true, value: "5" },
+        { key: "C", text: t`$\frac{55}{13}$`, correct: false, misconceptionId: "C10-M3", value: "55/13" },
+        { key: "D", text: t`$65$`, correct: false, misconceptionId: "C10-M1", value: "65" },
+      ],
+      solution: {
+        steps: [
+          t`General form first: $12x + 72 = 5y - 10$, so $12x - 5y + 82 = 0$ (each term changes sign as it moves).`,
+          t`At $P(-1, 1)$: $12(-1) - 5(1) + 82 = 65$, and $\sqrt{144 + 25} = 13$.`,
+          t`Distance $= \frac{|65|}{13} = 5$ units.`,
+        ],
+        figure: {
+          alt: "The line 12x − 5y + 82 = 0, which is 12(x + 6) = 5(y − 2), and the point P(−1, 1) to its right. The perpendicular from P meets the line at N; its length is 5.",
+          axes: "xy",
+          view: { x: [-12, 3], y: [-3, 8] },
+          elements: [
+            { kind: "line", through: [[-6, 2], [-1, 14]], step: 1 },
+            { kind: "label", at: [-11.5, 6], label: "12x − 5y + 82 = 0", labelAt: "e", step: 1 },
+            { kind: "point", at: [-1, 1], label: "P(−1, 1)", labelAt: "sw", step: 2 },
+            { kind: "segment", from: [-1, 1], to: [-5.615, 2.923], tone: "good", step: 3 },
+            { kind: "angle", at: [-5.615, 2.923], from: 247.379, to: 337.379, tone: "good", step: 3 },
+            { kind: "point", at: [-5.615, 2.923], label: "N", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "label", at: [-3.308, 1.962], label: "5", labelAt: "sw", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C10-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc II Q27" },
+      stem: t`The points on the $X$-axis whose distance from the line $\frac{x}{3} + \frac{y}{4} = 1$ is $4$ units are:`,
+      verify: { kind: "value", inputs: { k: "4" }, params: { line: "x/3 + y/4 = 1", on: "y = 0" } },
+      options: [
+        { key: "A", text: t`$(8, 0)$ only`, correct: false, misconceptionId: "C10-M4", value: "{(8, 0)}" },
+        { key: "B", text: t`$(4, 0)$ and $(2, 0)$`, correct: false, misconceptionId: "C10-M1", value: "{(2, 0), (4, 0)}" },
+        { key: "C", text: t`$(8, 0)$ and $(-2, 0)$`, correct: true, value: "{(-2, 0), (8, 0)}" },
+        { key: "D", text: t`$(2, 0)$ and $(-8, 0)$`, correct: false, misconceptionId: "C10-M3", value: "{(-8, 0), (2, 0)}" },
+      ],
+      solution: {
+        steps: [
+          t`Clear fractions: $\frac{x}{3} + \frac{y}{4} = 1$ is $4x + 3y - 12 = 0$. A point on the $X$-axis is $(h, 0)$; its distance is $\frac{|4h - 12|}{5}$.`,
+          t`$\frac{|4h - 12|}{5} = 4$ gives $|4h - 12| = 20$, so $4h - 12 = 20$ or $4h - 12 = -20$.`,
+          t`$h = 8$ or $h = -2$: the points are $(8, 0)$ and $(-2, 0)$, one on each side of the line.`,
+        ],
+        figure: {
+          alt: "The line 4x + 3y − 12 = 0 through (3, 0) and (0, 4). The points (8, 0) and (−2, 0) on the x-axis, one on each side of the line, are each 4 units from it along the perpendicular.",
+          axes: "xy",
+          view: { x: [-4, 10], y: [-4, 6] },
+          elements: [
+            { kind: "line", through: [[3, 0], [0, 4]], step: 1 },
+            { kind: "label", at: [3.5, 1.5], label: "4x + 3y − 12 = 0", labelAt: "ne", step: 1 },
+            { kind: "point", at: [8, 0], label: "(8, 0)", labelAt: "ne", step: 3 },
+            { kind: "point", at: [-2, 0], label: "(−2, 0)", labelAt: "nw", step: 3 },
+            { kind: "segment", from: [8, 0], to: [4.8, -2.4], tone: "good", step: 3 },
+            { kind: "angle", at: [4.8, -2.4], from: 306.87, to: 396.87, tone: "good", step: 3 },
+            { kind: "point", at: [4.8, -2.4], tone: "good", step: 3 },
+            { kind: "label", at: [6.4, -1.2], label: "4", labelAt: "se", tone: "good", step: 3 },
+            { kind: "segment", from: [-2, 0], to: [1.2, 2.4], tone: "good", step: 3 },
+            { kind: "angle", at: [1.2, 2.4], from: 126.87, to: 216.87, tone: "good", step: 3 },
+            { kind: "point", at: [1.2, 2.4], tone: "good", step: 3 },
+            { kind: "label", at: [-0.4, 1.2], label: "4", labelAt: "nw", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C10-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Ex 5.4 Q15" },
+      stem: t`The points on the line $x + y - 4 = 0$ that are at a distance of one unit from the line $4x + 3y - 10 = 0$ are:`,
+      verify: { kind: "value", inputs: { k: "1" }, params: { line: "4*x + 3*y - 10 = 0", on: "x + y - 4 = 0" } },
+      options: [
+        { key: "A", text: t`$(3, 1)$ and $(-7, 11)$`, correct: true, value: "{(-7, 11), (3, 1)}" },
+        { key: "B", text: t`$(23, -19)$ and $(-27, 31)$`, correct: false, misconceptionId: "C10-M2", value: "{(-27, 31), (23, -19)}" },
+        { key: "C", text: t`$(3, 1)$ only`, correct: false, misconceptionId: "C10-M4", value: "{(3, 1)}" },
+        { key: "D", text: t`$(2, 2)$ and $(-6, 10)$`, correct: false, misconceptionId: "C10-M5", value: "{(-6, 10), (2, 2)}" },
+      ],
+      solution: {
+        steps: [
+          t`A point on $x + y - 4 = 0$ is $(h, 4 - h)$. Then $4h + 3(4 - h) - 10 = h + 2$, and $\sqrt{16 + 9} = 5$.`,
+          t`$\frac{|h + 2|}{5} = 1$ gives $h + 2 = 5$ or $h + 2 = -5$.`,
+          t`$h = 3$ or $h = -7$: the points are $(3, 1)$ and $(-7, 11)$.`,
+        ],
+        figure: {
+          alt: "The lines 4x + 3y − 10 = 0 and x + y − 4 = 0, crossing at (−2, 6). On x + y − 4 = 0, the points (3, 1) and (−7, 11) are each 1 unit from 4x + 3y − 10 = 0, one on each side of it.",
+          axes: "xy",
+          view: { x: [-11, 6], y: [-1.5, 13] },
+          elements: [
+            { kind: "line", through: [[1, 2], [-5, 10]], step: 1 },
+            { kind: "label", at: [-0.8, 2.6], label: "4x + 3y − 10 = 0", labelAt: "w", step: 1 },
+            { kind: "line", through: [[0, 4], [4, 0]], tone: "muted", step: 1 },
+            { kind: "label", at: [-5.3, 8.6], label: "x + y − 4 = 0", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "point", at: [3, 1], label: "(3, 1)", labelAt: "ne", step: 3 },
+            { kind: "point", at: [-7, 11], label: "(−7, 11)", labelAt: "sw", step: 3 },
+            { kind: "segment", from: [3, 1], to: [2.2, 0.4], tone: "good", step: 3 },
+            { kind: "angle", at: [2.2, 0.4], from: 306.87, to: 396.87, tone: "good", step: 3 },
+            { kind: "point", at: [2.2, 0.4], tone: "good", step: 3 },
+            { kind: "segment", from: [-7, 11], to: [-6.2, 11.6], tone: "good", step: 3 },
+            { kind: "angle", at: [-6.2, 11.6], from: 126.87, to: 216.87, tone: "good", step: 3 },
+            { kind: "point", at: [-6.2, 11.6], tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C10-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/straight-line-11/Misc II Q10" },
+      stem: t`The distance of the origin from the line $12x + 5y + 78 = 0$ is:`,
+      verify: { kind: "value", inputs: { px: "0", py: "0" }, params: { line: "12*x + 5*y + 78 = 0" } },
+      options: [
+        { key: "A", text: t`$6$`, correct: true, value: "6" },
+        { key: "B", text: t`$78$`, correct: false, misconceptionId: "C10-M1", value: "78" },
+        { key: "C", text: t`$\frac{6}{13}$`, correct: false, misconceptionId: "C10-M2", value: "6/13" },
+        { key: "D", text: t`$\frac{13}{2}$`, correct: false, misconceptionId: "C10-M5", value: "13/2" },
+      ],
+      solution: {
+        steps: [
+          t`From the origin the distance is $\frac{|c|}{\sqrt{a^2 + b^2}}$, with $a = 12$, $b = 5$, $c = 78$.`,
+          t`$\sqrt{144 + 25} = 13$.`,
+          t`Distance $= \frac{78}{13} = 6$ units.`,
+        ],
+        figure: {
+          alt: "The line 12x + 5y + 78 = 0 crossing the x-axis at (−6.5, 0), below and left of the origin. The perpendicular from the origin O meets it at N; its length is 6.",
+          axes: "xy",
+          view: { x: [-11, 3], y: [-7.5, 3] },
+          elements: [
+            { kind: "line", through: [[-6.5, 0], [-4, -6]] },
+            { kind: "label", at: [-5.5, -6], label: "12x + 5y + 78 = 0", labelAt: "sw" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [0, 0], to: [-5.538, -2.308], tone: "good", step: 3 },
+            { kind: "angle", at: [-5.538, -2.308], from: 292.624, to: 382.624, tone: "good", step: 3 },
+            { kind: "point", at: [-5.538, -2.308], label: "N", labelAt: "w", tone: "good", step: 3 },
+            { kind: "label", at: [-2.769, -1.154], label: "6", labelAt: "se", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};
