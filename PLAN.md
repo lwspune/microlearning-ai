@@ -478,10 +478,11 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   figures only where a picture teaches (C01, C03–C08, C10); no misconception
   split. Sets and Relations (C01–C16) done 2026-10-15: figures on every
   formal slide of C03–C11, arrow diagrams and grids in C12–C16; no split
-  (C02-M4 and C12-M2 are borderline, left for the owner). Sequences and
+  (owner's call 2026-10-15: C02-M4 split into M4 and M5; C12-M2 feedback
+  extended). Sequences and
   Series (C01–C14) done 2026-10-15, at most 10 agents at once; figures in
-  12 concepts where they teach; no split (C06-M2 borderline, left for the
-  owner).
+  12 concepts where they teach; C06-M2 feedback extended to name
+  t₁ = S₁ (owner's call).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
