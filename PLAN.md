@@ -567,6 +567,23 @@ every chapter from Circle on.
 - **Recommendation:** do, as one `fix:` commit on the next chapter's branch,
   once the owner agrees.
 
+### 9. Feedback a student sees is wrong or uses untaught terms (logged 2026-10-16, open)
+Learning: slide agents read each misconception's feedback closely, and in
+Complex Numbers they found shipped feedback that the rework may not touch.
+- **Scope:** (a) C27-M1 says "on the other half of the circle it is $-\theta$".
+  That holds only for $\theta = \pm\frac{\pi}{2}$; on the other arc the
+  argument is $\theta - \pi$. A student who picks "the whole circle" (Q1, Q2)
+  reads a false statement. (b) C09-M3's feedback uses $|z|$, which C11
+  teaches; C11 is not a prerequisite of C09. (c) C04's worked-example figure
+  crowds its "− (1 + 2i)" label between "11 + 10i" and "10 + 8i".
+- **Blast radius:** text of two remediations and one label; no item, key or
+  model changes. (a) and (b) show only after a wrong answer.
+- **Does it really apply:** (a) yes, it is false. (b) yes, but mild: the
+  rest of the feedback still works. (c) cosmetic.
+- **Risk and cost:** low and reversible; minutes, plus a reseed.
+- **Recommendation:** do (a) now: "on the other arc the argument is
+  negative ($\theta - \pi$)". (b) reword without $|z|$. (c) with backfill 8.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
