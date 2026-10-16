@@ -488,7 +488,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   concepts; no split. Determinants and Matrices (C01–C12) done 2026-10-16:
   figures on every slide of C06 and in 10 others; no split; 41 matrix row
   breaks mangled to `\ ` by agents' scripts were fixed, and the validator
-  now rejects them.
+  now rejects them. Straight Line (C01–C12) done 2026-10-16: every concept
+  is visual, so figures on every formal slide; no split (C06-M2 is one rule,
+  "match the form before reading it", with feedback for both forms).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
