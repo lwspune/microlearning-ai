@@ -10,18 +10,176 @@ export const c04: Concept = {
     reveal: t`Through two points: infinitely many. Any point of their perpendicular bisector $x = 4$ is equally far from both, so it can be a centre. A third point pins the centre down: it must also lie on $y = 3$, the bisector of $(2, 1)$ and $(2, 5)$. So the centre is $(4, 3)$, and exactly one circle passes through all three: $x^2 + y^2 - 8x - 6y + 17 = 0$.`,
   },
   explanation: {
-    intuition: t`A circle has three unknowns: two for the centre and one for the radius. So it takes three facts to pin one down. Through two points there is a whole family of circles, their centres strung along the perpendicular bisector; a third point picks one. Whatever its wording, each condition becomes one equation in $g$, $f$ and $c$.`,
-    formal: t`**Three unknowns, three conditions.** The circle $x^2 + y^2 + 2gx + 2fy + c = 0$ has centre $(-g, -f)$ and radius $\sqrt{g^2 + f^2 - c}$. Three independent conditions fix $g$, $f$ and $c$.
-
-**Each condition is one equation**
-
-- Passes through $(x_1, y_1)$: $x_1^2 + y_1^2 + 2gx_1 + 2fy_1 + c = 0$.
-- Centre $(h, k)$: $g = -h$, $f = -k$. Centre on a line: put $(-g, -f)$ into the line.
-- Radius $r$: $g^2 + f^2 - c = r^2$. Two diameters: the centre is where they meet.
-
-**Through three points.** Substitute all three, subtract pairs to remove $c$, solve for $g$ and $f$, then find $c$. Four points are **concyclic** when the fourth lies on the circle through the other three.
-
-**Chords.** The centre lies on the perpendicular bisector of every chord, and the perpendicular from the centre cuts the chord in half. A chord of length $l$ at distance $d$ from the centre gives $r^2 = d^2 + \left(\frac{l}{2}\right)^2$. A chord is a diameter only if it passes through the centre.`,
+    intuition: [
+      t`A circle has three unknowns: the two coordinates of its centre, and its radius.`,
+      t`Take two points, $(2, 1)$ and $(6, 1)$.`,
+      t`Their **perpendicular bisector**, $x = 4$, is the line through their midpoint at right angles to the segment joining them.`,
+      t`Every point on it is equally far from both, so each is the centre of a circle through them.`,
+      t`A third point, $(2, 5)$, adds a second bisector, $y = 3$, which meets $x = 4$ only at $(4, 3)$.`,
+      t`So three **conditions**, facts the circle must satisfy, pin down exactly one circle.`,
+    ],
+    formal: [
+      {
+        title: "Three unknowns, three conditions",
+        points: [
+          t`Recall: $x^2 + y^2 + 2gx + 2fy + c = 0$ is the general equation of a circle.`,
+          t`Its centre is $(-g, -f)$.`,
+          t`Its radius is $\sqrt{g^2 + f^2 - c}$.`,
+          t`So the three unknowns are $g$, $f$ and $c$.`,
+          t`Three **independent** conditions, none of which follows from the others, fix all three.`,
+          t`Each condition, whatever its wording, becomes one equation in $g$, $f$ and $c$.`,
+        ],
+        figure: {
+          alt: "A circle in the xy-plane, then its centre, labelled (−g, −f), then a radius running right from the centre, labelled √(g² + f² − c).",
+          axes: "xy",
+          view: { x: [-1.5, 8.5], y: [-2, 6.5] },
+          elements: [
+            { kind: "circle", centre: [3, 2], r: 3, step: 1 },
+            { kind: "point", at: [3, 2], label: "(−g, −f)", labelAt: "sw", tone: "good", step: 2 },
+            { kind: "segment", from: [3, 2], to: [6, 2], step: 3 },
+            { kind: "label", at: [4.5, 2], label: "√(g² + f² − c)", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "A point or a centre given",
+        points: [
+          t`If the circle passes through $(x_1, y_1)$, that point satisfies its equation:`,
+          t`$x_1^2 + y_1^2 + 2gx_1$ $+ 2fy_1 + c = 0$.`,
+          t`If the centre is $(h, k)$, then $g = -h$ and $f = -k$: the signs flip.`,
+          t`If the centre lies on a given line, put $(-g, -f)$ into the line's equation.`,
+        ],
+        figure: {
+          alt: "A circle in the xy-plane. A point on it is labelled (x₁, y₁). Then its centre is labelled (h, k). Then a dashed given line passes through the centre.",
+          axes: "xy",
+          view: { x: [-1.5, 8.5], y: [-2, 6.5] },
+          elements: [
+            { kind: "circle", centre: [3, 2], r: 3 },
+            { kind: "point", at: [4.5, 4.598], label: "(x₁, y₁)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [3, 2], label: "(h, k)", labelAt: "sw", tone: "good", step: 3 },
+            { kind: "line", through: [[3, 2], [6, -1]], dashed: true, tone: "muted", step: 4 },
+            { kind: "label", at: [6.5, -1.5], label: "given line", labelAt: "e", tone: "muted", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "A radius or diameters given",
+        points: [
+          t`If the radius is $r$, then $g^2 + f^2 - c = r^2$.`,
+          t`A **diameter** is a segment across the circle through its centre.`,
+          t`If two diameters are given, the centre is the point where they meet.`,
+        ],
+        figure: {
+          alt: "A circle in the xy-plane with its centre. A radius r runs up and right from the centre. Then a diameter d₁ crosses the circle through the centre, then a second diameter d₂; the centre is where d₁ and d₂ meet.",
+          axes: "xy",
+          view: { x: [-1.5, 8.5], y: [-2, 6.5] },
+          elements: [
+            { kind: "circle", centre: [3, 2], r: 3 },
+            { kind: "point", at: [3, 2], tone: "muted" },
+            { kind: "segment", from: [3, 2], to: [5.121, 4.121], label: "r", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [0, 2], to: [6, 2], tone: "accent", step: 2 },
+            { kind: "label", at: [6, 2], label: "d₁", labelAt: "e", step: 2 },
+            { kind: "segment", from: [1.5, 4.598], to: [4.5, -0.598], tone: "accent", step: 3 },
+            { kind: "label", at: [1.5, 4.598], label: "d₂", labelAt: "nw", step: 3 },
+            { kind: "point", at: [3, 2], label: "centre", labelAt: "sw", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "The circle through three points",
+        points: [
+          t`Put each of the three points into the general equation: that gives three equations.`,
+          t`Subtract one equation from another, in two pairs: $c$ cancels each time.`,
+          t`That leaves two equations in $g$ and $f$: solve them to find the centre $(-g, -f)$.`,
+          t`Put $g$ and $f$ into any one of the three equations to find $c$.`,
+        ],
+        figure: {
+          alt: "The points (2, 1), (6, 1) and (2, 5). Then the centre found from them, (4, 3). Then the circle through all three points about that centre.",
+          axes: "xy",
+          view: { x: [-0.5, 9], y: [-2.8, 7] },
+          elements: [
+            { kind: "point", at: [2, 1], label: "(2, 1)", labelAt: "sw", step: 1 },
+            { kind: "point", at: [6, 1], label: "(6, 1)", labelAt: "se", step: 1 },
+            { kind: "point", at: [2, 5], label: "(2, 5)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [4, 3], label: "(4, 3)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "circle", centre: [4, 3], r: 2.828, tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Four concyclic points",
+        points: [
+          t`Points are **concyclic** when they all lie on one circle.`,
+          t`To test four points, find the circle through three of them.`,
+          t`Then put the fourth point into that circle's equation.`,
+          t`If it gives $0$, the fourth point lies on the circle, and all four are concyclic.`,
+        ],
+        figure: {
+          alt: "The points (2, 1), (6, 1), (2, 5) and (6, 5). Then the circle through the first three, centred at (4, 3). The fourth point, (6, 5), lies on that circle, so the four points are concyclic.",
+          axes: "xy",
+          view: { x: [-0.5, 9], y: [-2.8, 7] },
+          elements: [
+            { kind: "point", at: [2, 1], label: "(2, 1)", labelAt: "sw", step: 1 },
+            { kind: "point", at: [6, 1], label: "(6, 1)", labelAt: "se", step: 1 },
+            { kind: "point", at: [2, 5], label: "(2, 5)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [6, 5], label: "(6, 5)", labelAt: "ne", step: 1 },
+            { kind: "circle", centre: [4, 3], r: 2.828, step: 2 },
+            { kind: "point", at: [6, 5], tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The centre and a chord",
+        points: [
+          t`A **chord** is a segment joining two points of a circle.`,
+          t`The centre lies on the perpendicular bisector of every chord.`,
+          t`So the perpendicular from the centre meets the chord at its midpoint $M$, cutting it in half.`,
+          t`A chord is a diameter only if it passes through the centre.`,
+        ],
+        figure: {
+          alt: "A circle with centre C. A chord AB runs across its lower part. Then the dashed perpendicular bisector of AB, which passes through C. It meets the chord at its midpoint M. Then a dashed diameter through C, parallel to AB: AB misses the centre, so it is not a diameter.",
+          axes: "xy",
+          view: { x: [-1.5, 11.5], y: [-2, 10.5] },
+          elements: [
+            { kind: "circle", centre: [5, 4], r: 5 },
+            { kind: "segment", from: [1, 1], to: [9, 1], step: 1 },
+            { kind: "point", at: [1, 1], label: "B", labelAt: "sw", step: 1 },
+            { kind: "point", at: [9, 1], label: "A", labelAt: "se", step: 1 },
+            { kind: "line", through: [[5, 1], [5, 4]], dashed: true, tone: "muted", step: 2 },
+            { kind: "point", at: [5, 4], label: "C", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "point", at: [5, 1], label: "M", labelAt: "se", step: 3 },
+            { kind: "segment", from: [0, 4], to: [10, 4], dashed: true, tone: "muted", step: 4 },
+            { kind: "label", at: [7.5, 4], label: "diameter", labelAt: "n", tone: "muted", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Radius from a chord",
+        points: [
+          t`Take a chord of length $l$: each half is $\frac{l}{2}$.`,
+          t`Let $d$ be its distance from the centre, the length $CM$.`,
+          t`The radius $CA$ to one end closes a right triangle $CMA$.`,
+          t`By Pythagoras, $r^2 = d^2 + \left(\frac{l}{2}\right)^2$.`,
+        ],
+        figure: {
+          alt: "A circle with centre C and a chord BA, midpoint M. Each half of the chord is labelled l/2. Then the perpendicular CM from the centre, labelled d. Then the radius CA, labelled r, closes the right triangle CMA.",
+          axes: "xy",
+          view: { x: [-1.5, 11.5], y: [-2, 10.5] },
+          elements: [
+            { kind: "circle", centre: [5, 4], r: 5 },
+            { kind: "segment", from: [1, 1], to: [9, 1] },
+            { kind: "point", at: [1, 1], label: "B", labelAt: "sw" },
+            { kind: "point", at: [9, 1], label: "A", labelAt: "se" },
+            { kind: "point", at: [5, 4], label: "C", labelAt: "nw", tone: "good" },
+            { kind: "point", at: [5, 1], label: "M", labelAt: "s" },
+            { kind: "label", at: [3, 1], label: "l/2", labelAt: "n", step: 1 },
+            { kind: "label", at: [7, 1], label: "l/2", labelAt: "n", step: 1 },
+            { kind: "segment", from: [5, 4], to: [5, 1], dashed: true, label: "d", labelAt: "w", step: 2 },
+            { kind: "segment", from: [5, 4], to: [9, 1], tone: "good", label: "r", labelAt: "ne", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Show that the points $(5, 5)$, $(6, 4)$, $(-2, 4)$ and $(7, 1)$ are concyclic.`,
       steps: [
@@ -50,18 +208,18 @@ export const c04: Concept = {
       axes: "xy",
       view: { x: [-0.5, 9], y: [-2.8, 7] },
       elements: [
-        { kind: "point", at: [2, 1], step: 1 },
-        { kind: "label", at: [1.6, 1], label: "(2, 1)", labelAt: "w", step: 1 },
-        { kind: "point", at: [6, 1], step: 1 },
-        { kind: "label", at: [6.4, 1], label: "(6, 1)", labelAt: "e", step: 1 },
-        { kind: "line", through: [[4, 0], [4, 1]], dashed: true, tone: "muted", step: 2 },
-        { kind: "label", at: [4, 6.3], label: "x = 4", labelAt: "e", tone: "muted", step: 2 },
-        { kind: "circle", centre: [4, 0], r: 2.236, tone: "muted", step: 2 },
-        { kind: "point", at: [2, 5], label: "(2, 5)", labelAt: "nw", step: 3 },
-        { kind: "line", through: [[0, 3], [1, 3]], dashed: true, tone: "muted", step: 4 },
-        { kind: "label", at: [8.2, 3], label: "y = 3", labelAt: "n", tone: "muted", step: 4 },
-        { kind: "circle", centre: [4, 3], r: 2.828, tone: "good", step: 4 },
-        { kind: "point", at: [4, 3], label: "(4, 3)", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "point", at: [2, 1], step: 2 },
+        { kind: "label", at: [1.6, 1], label: "(2, 1)", labelAt: "w", step: 2 },
+        { kind: "point", at: [6, 1], step: 2 },
+        { kind: "label", at: [6.4, 1], label: "(6, 1)", labelAt: "e", step: 2 },
+        { kind: "line", through: [[4, 0], [4, 1]], dashed: true, tone: "muted", step: 3 },
+        { kind: "label", at: [4, 6.3], label: "x = 4", labelAt: "e", tone: "muted", step: 3 },
+        { kind: "circle", centre: [4, 0], r: 2.236, tone: "muted", step: 4 },
+        { kind: "point", at: [2, 5], label: "(2, 5)", labelAt: "nw", step: 5 },
+        { kind: "line", through: [[0, 3], [1, 3]], dashed: true, tone: "muted", step: 5 },
+        { kind: "label", at: [8.2, 3], label: "y = 3", labelAt: "n", tone: "muted", step: 5 },
+        { kind: "point", at: [4, 3], label: "(4, 3)", labelAt: "ne", tone: "good", step: 5 },
+        { kind: "circle", centre: [4, 3], r: 2.828, tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag three points around the plane; the perpendicular bisectors of two chords move with them, their crossing marks the centre, and the circle and its equation $x^2 + y^2 + 2gx + 2fy + c = 0$ update live.`,

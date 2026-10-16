@@ -10,26 +10,186 @@ export const c03: Concept = {
     reveal: t`Complete the squares: $(x + 1)^2 + (y - 4)^2 = 1 + 16 - 17 = 0$. A sum of two squares is $0$ only when both are $0$, so the only point on it is $(-1, 4)$: a circle of radius $0$, a **point circle**. Change $17$ to $18$ and the right side is $-1$: no point at all. Whether you get a real circle depends on the sign of $g^2 + f^2 - c$.`,
   },
   explanation: {
-    intuition: t`The general equation is the centre–radius form multiplied out. Expand $(x - h)^2 + (y - k)^2 = r^2$ and you get $x^2 + y^2 - 2hx - 2ky + (h^2 + k^2 - r^2) = 0$. So the coefficient of $x$ is $-2h$: halve it and flip its sign to get $h$, and the same for $y$. Whatever is left in the constant tells you $r$. For $x^2 + y^2 - 6x + 4y - 3 = 0$: the centre is $(3, -2)$, and $r^2 = 9 + 4 + 3 = 16$, so $r = 4$.`,
-    formal: t`**The general equation** $x^2 + y^2 + 2gx + 2fy + c = 0$. Completing the squares gives $(x + g)^2 + (y + f)^2 = g^2 + f^2 - c$, so
-
-- centre $(-g, -f)$: half the coefficient of $x$ (and of $y$), sign flipped;
-- radius $r = \sqrt{g^2 + f^2 - c}$.
-
-**First make the coefficients of $x^2$ and $y^2$ equal to $1$.** In $2x^2 + 2y^2 + 8x - 4y - 10 = 0$, divide by $2$: $x^2 + y^2 + 4x - 2y - 5 = 0$. Now $g = 2$, $f = -1$, $c = -5$: centre $(-2, 1)$, $r = \sqrt{4 + 1 + 5} = \sqrt{10}$.
-
-**Is it a real circle?** If $g^2 + f^2 - c > 0$, yes. If it is $0$, the equation is the single point $(-g, -f)$ (a point circle). If it is negative, no point satisfies it.
-
-**Concentric circles** share a centre: same $g$ and $f$, a different $c$. They are $x^2 + y^2 + 2gx + 2fy + k = 0$.
-
-**Intercepts on the axes.** Put $y = 0$: $x^2 + 2gx + c = 0$. Its two roots are where the circle meets the $x$-axis, and the chord between them has length $2\sqrt{g^2 - c}$. On the $y$-axis it is $2\sqrt{f^2 - c}$. The chord is a diameter only when the centre lies on that axis.`,
+    intuition: [
+      t`Recall: the circle with centre $(h, k)$ and radius $r$ is $(x - h)^2 + (y - k)^2 = r^2$.`,
+      t`Multiplied out, with $0$ on the right, it is the **general equation**: $x^2 + y^2 - 2hx - 2ky$ $+ (h^2 + k^2 - r^2) = 0$.`,
+      t`The **coefficient** of $x$, the number in front of it, is $-2h$: halve it and flip its sign to get $h$.`,
+      t`In $x^2 + y^2 - 6x + 4y - 3 = 0$, do that to $-6$ and to $4$: the centre is $(3, -2)$.`,
+      t`The **constant**, the term with no $x$ or $y$, is $h^2 + k^2 - r^2$, so it holds $r$.`,
+      t`Here $-3 = 9 + 4 - r^2$, so $r^2 = 16$ and $r = 4$.`,
+    ],
+    formal: [
+      {
+        title: "The general equation",
+        points: [
+          t`The general equation is usually written $x^2 + y^2 + 2gx + 2fy + c = 0$, for fixed numbers $g$, $f$, $c$.`,
+          t`Its $x^2$ and $y^2$ have the same coefficient, $1$, and there is no $xy$ term.`,
+          t`The $2$s mean $g$ is half the coefficient of $x$, and $f$ is half that of $y$.`,
+          t`So $x^2 + y^2 + 4x - 6y - 3 = 0$ has $g = 2$, $f = -3$ and $c = -3$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² + 4x − 6y − 3 = 0, centred left of the y-axis, labelled with its values g = 2, f = −3, c = −3.",
+          axes: "xy",
+          view: { x: [-7.5, 3.5], y: [-2.5, 8.5] },
+          elements: [
+            { kind: "circle", centre: [-2, 3], r: 4, step: 1 },
+            { kind: "label", at: [-2.7, 7], label: "x² + y² + 4x − 6y − 3 = 0", labelAt: "n", step: 4 },
+            { kind: "label", at: [-2.7, -1], label: "g = 2, f = −3, c = −3", labelAt: "s", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Reading off centre and radius",
+        points: [
+          t`**Completing the square** writes $x^2 + 2gx$ as $(x + g)^2 - g^2$; do the same for $y$.`,
+          t`Then the equation becomes $(x + g)^2 + (y + f)^2$ $= g^2 + f^2 - c$.`,
+          t`Compare with the centre–radius form: the centre is $(-g, -f)$.`,
+          t`In words: halve each coefficient of $x$ and $y$, and flip its sign.`,
+          t`The radius is $r = \sqrt{g^2 + f^2 - c}$.`,
+          t`Here the centre is $(-2, 3)$ and $r = \sqrt{4 + 9 + 3} = 4$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² + 4x − 6y − 3 = 0. Completing the squares gives (x + 2)² + (y − 3)² = 16, so its centre is (−2, 3) and a radius of 4 runs from the centre to the left.",
+          axes: "xy",
+          view: { x: [-7.5, 3.5], y: [-2.5, 8.5] },
+          elements: [
+            { kind: "circle", centre: [-2, 3], r: 4 },
+            { kind: "label", at: [-2.7, 7], label: "x² + y² + 4x − 6y − 3 = 0", labelAt: "n" },
+            { kind: "label", at: [-2.7, -1], label: "(x + 2)² + (y − 3)² = 16", labelAt: "s", step: 2 },
+            { kind: "point", at: [-2, 3], step: 3 },
+            { kind: "segment", from: [-2, 3], to: [-6, 3], step: 5 },
+            { kind: "label", at: [-2, 3], label: "(−2, 3)", labelAt: "s", step: 6 },
+            { kind: "label", at: [-4, 3], label: "r = 4", labelAt: "n", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "First make the x² coefficient 1",
+        points: [
+          t`These formulas need $x^2$ and $y^2$ with coefficient $1$.`,
+          t`If $x^2$ and $y^2$ share some other coefficient, divide the whole equation by it first.`,
+          t`Take $2x^2 + 2y^2 + 8x - 4y - 10 = 0$ and divide every term by $2$.`,
+          t`That gives $x^2 + y^2 + 4x - 2y - 5 = 0$: the same circle.`,
+          t`Now $g = 2$, $f = -1$, $c = -5$, so the centre is $(-2, 1)$.`,
+          t`The radius is $\sqrt{4 + 1 + 5} = \sqrt{10}$.`,
+        ],
+        figure: {
+          alt: "The circle 2x² + 2y² + 8x − 4y − 10 = 0, which divided by 2 is x² + y² + 4x − 2y − 5 = 0: the same circle, with centre (−2, 1) and a radius of √10 drawn to the left of the centre.",
+          axes: "xy",
+          view: { x: [-7.5, 3.5], y: [-3.8, 5.8] },
+          elements: [
+            { kind: "circle", centre: [-2, 1], r: 3.1623, step: 3 },
+            { kind: "label", at: [-2.9, 4.2], label: "2x² + 2y² + 8x − 4y − 10 = 0", labelAt: "n", step: 3 },
+            { kind: "label", at: [-2.8, -2.2], label: "x² + y² + 4x − 2y − 5 = 0", labelAt: "s", tone: "good", step: 4 },
+            { kind: "point", at: [-2, 1], label: "(−2, 1)", labelAt: "ne", step: 5 },
+            { kind: "segment", from: [-2, 1], to: [-5.1623, 1], label: "r = √10", labelAt: "n", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Is it a real circle?",
+        points: [
+          t`Completing the squares gave $(x + g)^2 + (y + f)^2$ $= g^2 + f^2 - c$.`,
+          t`The left side is a sum of squares, so it is never negative.`,
+          t`If $g^2 + f^2 - c > 0$, it is a real circle, like $x^2 + y^2 - 6x + 4y - 3 = 0$.`,
+          t`If $g^2 + f^2 - c = 0$, both squares must be $0$, so only the point $(-g, -f)$ fits.`,
+          t`That point is a **point circle**, a circle of radius $0$: $c = 13$ gives $9 + 4 - 13 = 0$.`,
+          t`If $g^2 + f^2 - c < 0$, no point fits: $c = 18$ gives $9 + 4 - 18 = -5$.`,
+        ],
+        figure: {
+          alt: "Three equations x² + y² − 6x + 4y + c = 0 with the same g and f. With c = −3 it is a real circle of radius 4 about (3, −2). With c = 13 it is only the point (3, −2), a point circle. With c = 18 no point fits.",
+          axes: "xy",
+          view: { x: [-2.5, 8.5], y: [-7, 3] },
+          elements: [
+            { kind: "circle", centre: [3, -2], r: 4, step: 3 },
+            { kind: "label", at: [3, 2], label: "c = −3: r = 4", labelAt: "n", step: 3 },
+            { kind: "point", at: [3, -2], label: "(3, −2)", labelAt: "n", tone: "good", step: 4 },
+            { kind: "label", at: [3, -2], label: "c = 13: point circle", labelAt: "s", tone: "good", step: 5 },
+            { kind: "label", at: [3, -6.1], label: "c = 18: no point", labelAt: "s", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Concentric circles",
+        points: [
+          t`**Concentric** circles share a centre but have different radii.`,
+          t`The centre $(-g, -f)$ uses only $g$ and $f$, so concentric circles share those too.`,
+          t`Only $c$ differs, and it sets the radius through $r^2 = g^2 + f^2 - c$.`,
+          t`In $x^2 + y^2 - 6x + 4y + c = 0$, $c = -3$ gives $r = 4$ and $c = 9$ gives $r = 2$.`,
+          t`So the circles concentric with $x^2 + y^2 + 2gx + 2fy + c = 0$ are $x^2 + y^2 + 2gx + 2fy + k = 0$, for a new constant $k$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² − 6x + 4y − 3 = 0, with c = −3 and radius 4, and a smaller dashed circle x² + y² − 6x + 4y + 9 = 0, with c = 9 and radius 2. Both have the centre (3, −2): same g and f, a different c.",
+          axes: "xy",
+          view: { x: [-2.5, 8.5], y: [-7, 3] },
+          elements: [
+            { kind: "circle", centre: [3, -2], r: 4, step: 1 },
+            { kind: "circle", centre: [3, -2], r: 2, dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [3, -2], step: 1 },
+            { kind: "label", at: [3, -2], label: "(3, −2)", labelAt: "n", step: 2 },
+            { kind: "label", at: [3, 2], label: "c = −3, r = 4", labelAt: "n", step: 4 },
+            { kind: "label", at: [3, -4.2], label: "c = 9, r = 2", labelAt: "s", tone: "muted", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The chord on the x-axis",
+        points: [
+          t`A **chord** is a segment joining two points of a circle.`,
+          t`On the $x$-axis $y = 0$, so the circle meets it where $x^2 + 2gx + c = 0$.`,
+          t`The two **roots** (solutions) $x = -g \pm \sqrt{g^2 - c}$ are where it meets the axis.`,
+          t`The chord between them, the **intercept** on the $x$-axis, is $2\sqrt{g^2 - c}$ long.`,
+          t`Here $g = -3$ and $c = -3$, so it is $2\sqrt{9 + 3} = 4\sqrt{3}$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² − 6x + 4y − 3 = 0 meets the x-axis at x = 3 − 2√3 and x = 3 + 2√3. The chord between them, its intercept on the x-axis, has length 4√3.",
+          axes: "xy",
+          view: { x: [-2.5, 8.5], y: [-7, 3] },
+          elements: [
+            { kind: "circle", centre: [3, -2], r: 4 },
+            { kind: "label", at: [3, 2], label: "x² + y² − 6x + 4y − 3 = 0", labelAt: "n" },
+            { kind: "point", at: [-0.4641, 0], tone: "good", step: 3 },
+            { kind: "point", at: [6.4641, 0], tone: "good", step: 3 },
+            { kind: "segment", from: [-0.4641, 0], to: [6.4641, 0], tone: "good", step: 4 },
+            { kind: "label", at: [3, 0], label: "4√3", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The y-axis chord and diameters",
+        points: [
+          t`Put $x = 0$ instead: the chord on the $y$-axis is $2\sqrt{f^2 - c}$ long.`,
+          t`Here $f = 2$, so it is $2\sqrt{4 + 3} = 2\sqrt{7}$.`,
+          t`A **diameter** is a chord through the centre; it is the longest chord, $2r$ long.`,
+          t`A chord on an axis is a diameter only when the centre lies on that axis.`,
+          t`This centre, $(3, -2)$, is on neither axis, so both chords are shorter than $8$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² − 6x + 4y − 3 = 0 cuts a chord of length 2√7 on the y-axis. A dashed diameter through the centre (3, −2) has length 2r = 8. The centre is on neither axis, so neither axis chord is a diameter.",
+          axes: "xy",
+          view: { x: [-2.5, 8.5], y: [-7, 3] },
+          elements: [
+            { kind: "circle", centre: [3, -2], r: 4 },
+            { kind: "label", at: [3, 2], label: "x² + y² − 6x + 4y − 3 = 0", labelAt: "n" },
+            { kind: "point", at: [0, 0.6458], tone: "good", step: 1 },
+            { kind: "point", at: [0, -4.6458], tone: "good", step: 1 },
+            { kind: "segment", from: [0, 0.6458], to: [0, -4.6458], tone: "good", step: 1 },
+            { kind: "label", at: [0, -1], label: "2√7", labelAt: "e", tone: "good", step: 2 },
+            { kind: "point", at: [3, -2], step: 3 },
+            { kind: "segment", from: [-1, -2], to: [7, -2], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [5.5, -2], label: "2r = 8", labelAt: "n", tone: "muted", step: 3 },
+            { kind: "label", at: [3, -2], label: "(3, −2)", labelAt: "s", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Show that $3x^2 + 3y^2 - 6x + 4y - 1 = 0$ represents a circle, and find its centre and radius.`,
       steps: [
-        t`The coefficient of $x^2$ and $y^2$ is $3$, so divide by $3$: $x^2 + y^2 - 2x + \frac{4}{3}y - \frac{1}{3} = 0$.`,
+        t`The coefficient of $x^2$ and $y^2$ is $3$, so divide by $3$: $x^2 + y^2 - 2x$ $+ \frac{4}{3}y - \frac{1}{3} = 0$.`,
         t`Compare with $x^2 + y^2 + 2gx + 2fy + c = 0$: $2g = -2$, $2f = \frac{4}{3}$, so $g = -1$, $f = \frac{2}{3}$, $c = -\frac{1}{3}$.`,
-        t`$g^2 + f^2 - c = 1 + \frac{4}{9} + \frac{1}{3} = \frac{16}{9} > 0$, so the equation is a real circle.`,
-        t`Centre $(-g, -f) = \left(1, -\frac{2}{3}\right)$; radius $\sqrt{\frac{16}{9}} = \frac{4}{3}$.`,
+        t`$g^2 + f^2 - c$ $= 1 + \frac{4}{9} + \frac{1}{3}$ $= \frac{16}{9} > 0$, so the equation is a real circle.`,
+        t`Centre $(-g, -f)$ $= \left(1, -\frac{2}{3}\right)$; radius $\sqrt{\frac{16}{9}} = \frac{4}{3}$.`,
       ],
       answer: t`A circle with centre $\left(1, -\frac{2}{3}\right)$ and radius $\frac{4}{3}$.`,
       figure: {
@@ -46,17 +206,15 @@ export const c03: Concept = {
       },
     },
     figure: {
-      alt: "The circle x² + y² − 6x + 4y − 3 = 0, labelled c = −3, with its centre (3, −2) and a radius of length 4 drawn to the right. A smaller dashed circle with the same centre, x² + y² − 6x + 4y + 9 = 0, has radius 2: same g and f, a different c, so the circles are concentric.",
+      alt: "The circle x² + y² − 6x + 4y − 3 = 0. Halving −6 and 4 and flipping their signs gives its centre (3, −2); the constant −3 gives a radius of 4, drawn to the right of the centre.",
       axes: "xy",
       view: { x: [-2.5, 8.5], y: [-7, 3] },
       elements: [
-        { kind: "circle", centre: [3, -2], r: 4, step: 1 },
-        { kind: "label", at: [3, 2], label: "c = −3", labelAt: "n", step: 1 },
-        { kind: "point", at: [3, -2], label: "(3, −2)", labelAt: "n", step: 2 },
-        { kind: "segment", from: [3, -2], to: [7, -2], step: 3 },
-        { kind: "label", at: [6, -2], label: "r = 4", labelAt: "n", step: 3 },
-        { kind: "circle", centre: [3, -2], r: 2, dashed: true, tone: "muted", step: 4 },
-        { kind: "label", at: [3, -4.2], label: "c = 9, r = 2", labelAt: "s", tone: "muted", step: 4 },
+        { kind: "circle", centre: [3, -2], r: 4 },
+        { kind: "label", at: [3, 2], label: "x² + y² − 6x + 4y − 3 = 0", labelAt: "n", step: 4 },
+        { kind: "point", at: [3, -2], label: "(3, −2)", labelAt: "n", step: 4 },
+        { kind: "segment", from: [3, -2], to: [7, -2], step: 6 },
+        { kind: "label", at: [6, -2], label: "r = 4", labelAt: "n", step: 6 },
       ],
     },
     visualSpec: t`Drag the sliders for $g$, $f$ and $c$ and watch the circle move: its centre sits at $(-g, -f)$, and as $c$ grows the circle shrinks to a point and then vanishes.`,

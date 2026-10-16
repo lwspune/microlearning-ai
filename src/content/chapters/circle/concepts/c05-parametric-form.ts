@@ -1,6 +1,12 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The point r from the centre c, along the arm at `deg` degrees from the positive x-direction. */
+const on = (c: Pt, r: number, deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(c[0] + r * Math.cos(a)).toFixed(3), +(c[1] + r * Math.sin(a)).toFixed(3)];
+};
 
 export const c05: Concept = {
   id: "C05",
@@ -10,20 +16,136 @@ export const c05: Concept = {
     reveal: t`Yes: the angle $\theta$ that the radius to the bead makes with the positive $x$-direction. The bead is at $(2 + 5\cos\theta,\ 1 + 5\sin\theta)$, and as $\theta$ runs from $0$ to $2\pi$ it goes round the wire once.`,
   },
   explanation: {
-    intuition: t`Stand at the centre $C(h, k)$, face the positive $x$-direction and turn through an angle $\theta$. Walk $r$ units: you land on the circle. On the way you moved $r\cos\theta$ across and $r\sin\theta$ up. So the point is $(h + r\cos\theta,\ k + r\sin\theta)$: one $\theta$, one point, and as $\theta$ goes from $0$ to $2\pi$ the point goes round once.`,
-    formal: t`**Parametric equations.** The circle with centre $(h, k)$ and radius $r$ is
-$$x = h + r\cos\theta,\quad y = k + r\sin\theta,\qquad 0 \le \theta < 2\pi.$$
-$\theta$ is the **parameter**. For $x^2 + y^2 = r^2$ the centre is the origin: $x = r\cos\theta$, $y = r\sin\theta$.
-
-**Why it works.** $(x - h)^2 + (y - k)^2 = r^2(\cos^2\theta + \sin^2\theta) = r^2$ for every $\theta$.
-
-**From an equation.** First get the centre and the radius: divide by the coefficient of $x^2$ if it isn't $1$, then complete the squares. The number in front of $\cos\theta$ is $r$, not $r^2$.
-
-**Back to the centre and radius.** Isolate the trigonometric terms, square and add. Minus signs, or $\sin$ in the $x$-equation, change nothing: in $x = h - r\sin\theta$, $y = k - r\cos\theta$ the centre is still $(h, k)$ and the radius $r$.`,
+    intuition: [
+      t`Recall: a circle is every point at one distance $r$, its **radius**, from its **centre** $C(h, k)$.`,
+      t`Stand at $C$ and face the **positive $x$-direction**, the way the $x$-axis points.`,
+      t`Turn anticlockwise through an angle $\theta$, then walk $r$ units: you reach $P(x, y)$ on the circle.`,
+      t`On the way you moved $r\cos\theta$ across and $r\sin\theta$ up.`,
+      t`So $x = h + r\cos\theta$ and $y = k + r\sin\theta$.`,
+      t`Each $\theta$ gives one point, and as $\theta$ goes from $0$ to $2\pi$, $P$ goes round once.`,
+    ],
+    formal: [
+      {
+        title: "Parametric equations",
+        points: [
+          t`Turn the radius $CP$ through an angle $\theta$ from the positive $x$-direction.`,
+          t`Then $P$ has $x = h + r\cos\theta$ and $y = k + r\sin\theta$.`,
+          t`A **parameter** is one number that fixes the point: here it is $\theta$.`,
+          t`Equations that give $x$ and $y$ in terms of a parameter are **parametric equations**.`,
+          t`Taking $0 \le \theta < 2\pi$ takes $P$ round the circle once.`,
+          t`For $x^2 + y^2 = r^2$, centred at the origin, they are $x = r\cos\theta$, $y = r\sin\theta$.`,
+        ],
+        figure: {
+          alt: "A circle with centre C(h, k) and radius r. From the initial arm, pointing in the positive x-direction, the radius CP turns through θ to P(x, y), where x = h + r cos θ and y = k + r sin θ. Then the radius turns a whole turn, θ from 0 to 2π, taking P round the circle once. A second circle of radius r, centred at the origin, has x = r cos θ, y = r sin θ.",
+          axes: "xy",
+          view: { x: [-3.5, 10], y: [-3.5, 8] },
+          elements: [
+            { kind: "circle", centre: [5.5, 3.5], r: 2.5 },
+            { kind: "point", at: [5.5, 3.5], label: "C(h, k)", labelAt: "sw" },
+            { kind: "segment", from: [5.5, 3.5], to: [8, 3.5], tone: "good" },
+            { kind: "label", at: [7.4, 3.5], label: "initial arm", labelAt: "s", tone: "good" },
+            { kind: "turn", centre: [5.5, 3.5], r: 2.5, to: 120, label: "P(x, y)", labelAt: "nw", step: 1 },
+            { kind: "label", at: on([5.5, 3.5], 1.15, 60), label: "θ", labelAt: "ne", step: 1 },
+            { kind: "label", at: [7.3, 7.0], label: "x = h + r cos θ", labelAt: "n", tone: "good", step: 2 },
+            { kind: "label", at: [7.3, 6.35], label: "y = k + r sin θ", labelAt: "n", tone: "good", step: 2 },
+            { kind: "turn", centre: [5.5, 3.5], r: 2.5, to: 360, label: "0 to 2π", labelAt: "e", tone: "muted", step: 5 },
+            { kind: "circle", centre: [0, 0], r: 2.5, tone: "good", step: 6 },
+            { kind: "label", at: [2.4, -1.8], label: "x = r cos θ", labelAt: "e", tone: "good", step: 6 },
+            { kind: "label", at: [2.4, -2.5], label: "y = r sin θ", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Why every θ fits",
+        points: [
+          t`From $C$ to $P$ is $r\cos\theta$ across and $r\sin\theta$ up.`,
+          t`So $x - h = r\cos\theta$ and $y - k = r\sin\theta$; square and add.`,
+          t`That gives $(x - h)^2 + (y - k)^2$ $= r^2(\cos^2\theta + \sin^2\theta)$.`,
+          t`Recall: $\cos^2\theta + \sin^2\theta = 1$ for every angle $\theta$.`,
+          t`So $(x - h)^2 + (y - k)^2 = r^2$: $P$ is on the circle for every $\theta$.`,
+        ],
+        figure: {
+          alt: "A circle with centre C(h, k) and radius r. The radius CP has turned through θ from the initial arm. Dashed legs from C go r cos θ across and r sin θ up to P. Squaring and adding gives CP² = r²(cos²θ + sin²θ) = r² × 1 = r². The radius then turns on to another θ and still ends on the circle.",
+          axes: "xy",
+          view: { x: [-1, 10.8], y: [-1, 10.9] },
+          elements: [
+            { kind: "circle", centre: [4.5, 4], r: 3.5 },
+            { kind: "point", at: [4.5, 4], label: "C(h, k)", labelAt: "w" },
+            { kind: "segment", from: [4.5, 4], to: [8, 4], tone: "good" },
+            { kind: "label", at: [8, 4], label: "initial arm", labelAt: "se", tone: "good" },
+            { kind: "turn", centre: [4.5, 4], r: 3.5, to: 40, label: "P(x, y)", labelAt: "ne" },
+            { kind: "label", at: on([4.5, 4], 1.45, 20), label: "θ", labelAt: "e" },
+            { kind: "segment", from: [4.5, 4], to: [on([4.5, 4], 3.5, 40)[0], 4], dashed: true, tone: "muted", label: "r cos θ", labelAt: "s", step: 1 },
+            { kind: "segment", from: [on([4.5, 4], 3.5, 40)[0], 4], to: on([4.5, 4], 3.5, 40), dashed: true, tone: "muted", label: "r sin θ", labelAt: "e", step: 1 },
+            { kind: "label", at: [4.8, 9.9], label: "CP² = r²cos²θ + r²sin²θ", labelAt: "n", step: 2 },
+            { kind: "label", at: [4.8, 9.2], label: "= r²(cos²θ + sin²θ)", labelAt: "n", step: 3 },
+            { kind: "label", at: [4.8, 8.5], label: "= r² × 1 = r²", labelAt: "n", step: 4 },
+            { kind: "turn", centre: [4.5, 4], r: 3.5, from: 40, to: 130, label: "on the circle too", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "From an equation",
+        points: [
+          t`To write a circle in parametric form, first find its centre and radius.`,
+          t`If $x^2$ has a coefficient other than $1$, divide by it: here, by $2$.`,
+          t`Then complete the squares: $(x - 2)^2 + (y + 1)^2 = 9$.`,
+          t`So the centre is $(2, -1)$ and $r^2 = 9$, so $r = 3$.`,
+          t`The number in front of $\cos\theta$ is $r = 3$, not $r^2 = 9$.`,
+          t`So $x = 2 + 3\cos\theta$ and $y = -1 + 3\sin\theta$.`,
+        ],
+        figure: {
+          alt: "The equation 2x² + 2y² − 8x + 4y − 8 = 0, divided by 2: x² + y² − 4x + 2y − 4 = 0. Completing the squares gives (x − 2)² + (y + 1)² = 9: the circle with centre C(2, −1) and radius 3. The radius, not 9, goes in front of cos θ: the radius turns through θ from the initial arm to P, so x = 2 + 3 cos θ, y = −1 + 3 sin θ.",
+          axes: "xy",
+          view: { x: [-3, 9.8], y: [-6, 4.6] },
+          elements: [
+            { kind: "label", at: [3.9, 3.9], label: "2x² + 2y² − 8x + 4y − 8 = 0", labelAt: "n" },
+            { kind: "label", at: [3.9, 3.2], label: "x² + y² − 4x + 2y − 4 = 0", labelAt: "n", step: 2 },
+            { kind: "label", at: [3.9, 2.5], label: "(x − 2)² + (y + 1)² = 9", labelAt: "n", tone: "good", step: 3 },
+            { kind: "circle", centre: [2, -1], r: 3, step: 3 },
+            { kind: "point", at: [2, -1], label: "C(2, −1)", labelAt: "w", step: 4 },
+            { kind: "segment", from: [2, -1], to: [2, -4], label: "r = 3", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "label", at: [5.4, -2.4], label: "3cos θ, not 9cos θ", labelAt: "e", tone: "bad", step: 5 },
+            { kind: "segment", from: [2, -1], to: [5, -1], tone: "good", step: 6 },
+            { kind: "label", at: [4.2, -1], label: "initial arm", labelAt: "s", tone: "good", step: 6 },
+            { kind: "turn", centre: [2, -1], r: 3, to: 120, label: "P", labelAt: "n", step: 6 },
+            { kind: "label", at: [2.6, -4.5], label: "x = 2 + 3cos θ", labelAt: "s", tone: "good", step: 6 },
+            { kind: "label", at: [2.6, -5.2], label: "y = −1 + 3sin θ", labelAt: "s", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Back to centre and radius",
+        points: [
+          t`Take $x = h - r\sin\theta$, $y = k - r\cos\theta$: minus signs, and $\sin$ in the $x$-equation.`,
+          t`To go back, isolate the terms in $\sin\theta$ and $\cos\theta$: $x - h = -r\sin\theta$, $y - k = -r\cos\theta$.`,
+          t`Square and add: $\sin^2\theta + \cos^2\theta = 1$ removes $\theta$.`,
+          t`That leaves $(x - h)^2 + (y - k)^2 = r^2$.`,
+          t`So the centre is still $(h, k)$ and the radius still $r$.`,
+          t`The signs and the swap change only where $P$ starts and which way it turns.`,
+        ],
+        figure: {
+          alt: "The equations x = h − r sin θ, y = k − r cos θ. Squaring and adding gives (x − h)² + (y − k)² = r²: the circle with centre C(h, k) and radius r. At θ = 0, P is straight below C, so the initial arm points down; as θ grows to π/2, the radius turns clockwise to the point straight left of C.",
+          axes: "xy",
+          view: { x: [-1, 11], y: [-1, 10.9] },
+          elements: [
+            { kind: "label", at: [5.5, 9.9], label: "x = h − r sin θ", labelAt: "n" },
+            { kind: "label", at: [5.5, 9.2], label: "y = k − r cos θ", labelAt: "n" },
+            { kind: "circle", centre: [5.5, 4], r: 3.5, step: 4 },
+            { kind: "label", at: [5.5, 7.9], label: "(x − h)² + (y − k)² = r²", labelAt: "n", tone: "good", step: 4 },
+            { kind: "point", at: [5.5, 4], label: "C(h, k)", labelAt: "nw", step: 5 },
+            { kind: "segment", from: [5.5, 4], to: [9, 4], label: "r", labelAt: "n", tone: "muted", step: 5 },
+            { kind: "segment", from: [5.5, 4], to: [5.5, 0.5], tone: "good", step: 6 },
+            { kind: "label", at: [5.5, 2.2], label: "θ = 0", labelAt: "e", tone: "good", step: 6 },
+            { kind: "turn", centre: [5.5, 4], r: 3.5, from: 270, to: 180, label: "θ = π/2", labelAt: "n", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the parametric equations of the circle $x^2 + y^2 - 6x + 4y - 3 = 0$.`,
       steps: [
-        t`Complete the squares: $(x^2 - 6x + 9) + (y^2 + 4y + 4) = 3 + 9 + 4$, so $(x - 3)^2 + (y + 2)^2 = 16$.`,
+        t`Complete the squares: $(x^2 - 6x + 9) + (y^2 + 4y + 4)$ equals $3 + 9 + 4$, so $(x - 3)^2 + (y + 2)^2 = 16$.`,
         t`The centre is $C(3, -2)$ and $r^2 = 16$, so $r = 4$.`,
         t`Let CP make the angle $\theta$ with the positive $x$-direction. Then $x - 3 = 4\cos\theta$ and $y + 2 = 4\sin\theta$.`,
         t`So $x = 3 + 4\cos\theta$ and $y = -2 + 4\sin\theta$.`,
@@ -37,26 +159,30 @@ $\theta$ is the **parameter**. For $x^2 + y^2 = r^2$ the centre is the origin: $
           { kind: "circle", centre: [3, -2], r: 4, step: 1 },
           { kind: "point", at: [3, -2], label: "C(3, −2)", labelAt: "w", step: 2 },
           { kind: "segment", from: [3, -2], to: [7, -2], label: "r = 4", labelAt: "s", tone: "muted", step: 2 },
-          { kind: "segment", from: [3, -2], to: [1, 1.464], dashed: true, step: 3 },
-          { kind: "angle", at: [3, -2], from: 0, to: 120, label: "θ", labelAt: "ne", step: 3 },
-          { kind: "point", at: [1, 1.464], label: "P", labelAt: "nw", step: 3 },
+          { kind: "segment", from: [3, -2], to: [7, -2], tone: "good", step: 3 },
+          { kind: "label", at: [5.6, -2], label: "initial arm", labelAt: "n", tone: "good", step: 3 },
+          { kind: "turn", centre: [3, -2], r: 4, to: 120, label: "P", labelAt: "nw", step: 3 },
+          { kind: "label", at: on([3, -2], 1.7, 35), label: "θ", labelAt: "e", step: 3 },
           { kind: "label", at: [4.6, -7.2], label: "x = 3 + 4cos θ, y = −2 + 4sin θ", labelAt: "n", tone: "good", step: 4 },
         ],
       },
     },
     figure: {
-      alt: "A circle with centre C(h, k) and radius r. A point P(x, y) on it makes an angle θ at C with the positive x-direction. From C, go r cos θ across and r sin θ up to reach P, so x = h + r cos θ and y = k + r sin θ.",
+      alt: "A circle with centre C(h, k) and radius r. From C, the initial arm points in the positive x-direction. The radius turns anticlockwise through θ from it to P(x, y) on the circle. From C, go r cos θ across and r sin θ up to reach P, so x = h + r cos θ and y = k + r sin θ. Then the radius turns a whole turn, θ from 0 to 2π, and P goes round the circle once.",
       axes: "xy",
       view: { x: [-1, 9.5], y: [-1, 9.6] },
       elements: [
         { kind: "circle", centre: [4.5, 4], r: 3.5, step: 1 },
         { kind: "point", at: [4.5, 4], label: "C(h, k)", labelAt: "nw", step: 1 },
-        { kind: "segment", from: [4.5, 4], to: [5.406, 7.381], label: "r", labelAt: "nw", step: 2 },
-        { kind: "angle", at: [4.5, 4], from: 0, to: 75, label: "θ", labelAt: "n", step: 2 },
-        { kind: "point", at: [5.406, 7.381], label: "P(x, y)", labelAt: "ne", step: 2 },
-        { kind: "segment", from: [4.5, 4], to: [5.406, 4], dashed: true, tone: "muted", label: "r cos θ", labelAt: "s", step: 3 },
-        { kind: "segment", from: [5.406, 4], to: [5.406, 7.381], dashed: true, tone: "muted", label: "r sin θ", labelAt: "e", step: 3 },
-        { kind: "label", at: [4.5, 8.7], label: "x = h + r cos θ,  y = k + r sin θ", labelAt: "n", tone: "good", step: 4 },
+        { kind: "segment", from: [4.5, 4], to: [8, 4], tone: "good", step: 2 },
+        { kind: "label", at: [6.9, 4], label: "initial arm", labelAt: "s", tone: "good", step: 2 },
+        { kind: "turn", centre: [4.5, 4], r: 3.5, to: 75, label: "P(x, y)", labelAt: "ne", step: 3 },
+        { kind: "label", at: on([4.5, 4], 1.45, 37), label: "θ", labelAt: "e", step: 3 },
+        { kind: "label", at: on([4.5, 4], 1.75, 75), label: "r", labelAt: "w", step: 3 },
+        { kind: "segment", from: [4.5, 4], to: [5.406, 4], dashed: true, tone: "muted", label: "r cos θ", labelAt: "s", step: 4 },
+        { kind: "segment", from: [5.406, 4], to: [5.406, 7.381], dashed: true, tone: "muted", label: "r sin θ", labelAt: "e", step: 4 },
+        { kind: "label", at: [4.5, 8.7], label: "x = h + r cos θ,  y = k + r sin θ", labelAt: "n", tone: "good", step: 5 },
+        { kind: "turn", centre: [4.5, 4], r: 3.5, to: 360, label: "θ = 2π", labelAt: "se", tone: "muted", step: 6 },
       ],
     },
     visualSpec: t`Drag $\theta$ round from $0$ to $2\pi$: P moves on the circle while the dashed legs $r\cos\theta$ and $r\sin\theta$ stretch, shrink and change sign, and the readout shows $x = h + r\cos\theta$, $y = k + r\sin\theta$ updating. Sliders for $h$, $k$ and $r$ move and resize the circle.`,

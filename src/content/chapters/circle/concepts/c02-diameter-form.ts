@@ -10,22 +10,150 @@ export const c02: Concept = {
     reveal: t`$\angle APB = 90^\circ$: the angle in a semicircle. So $PA \perp PB$, and the product of their slopes is $-1$: $\dfrac{y}{x + 3} \cdot \dfrac{y}{x - 3} = -1$. Clear the fractions: $(x + 3)(x - 3) + y \cdot y = 0$, that is $x^2 + y^2 = 9$. You have the circle without finding its centre or radius.`,
   },
   explanation: {
-    intuition: t`The two ends of a diameter fix the circle. You could find the centre (the midpoint) and the radius (half of $AB$), then use the centre–radius form. There is a shorter way. From every point $P$ on the circle, the diameter $AB$ is seen at a right angle. So $PA \perp PB$, and that one condition, written in $x$ and $y$, is the equation of the circle.`,
-    formal: t`**Diameter form.** If $A(x_1, y_1)$ and $B(x_2, y_2)$ are the ends of a diameter, the circle is
-$$(x - x_1)(x - x_2) + (y - y_1)(y - y_2) = 0$$
-
-**Why.** For $P(x, y)$ on the circle, $\angle APB = 90^\circ$, so (slope of $PA$) $\times$ (slope of $PB$) $= -1$: $\dfrac{y - y_1}{x - x_1} \cdot \dfrac{y - y_2}{x - x_2} = -1$. Clearing the fractions gives the form; $A$ and $B$ satisfy it too.
-
-**Pair the coordinates.** $x$ goes with both $x$-coordinates and $y$ with both $y$-coordinates, each subtracted; then **add** the two products.
-
-**A chord as a diameter.** First find the chord's ends: solve the line with the circle. Then use the form.
-
-**Through the origin, with intercepts $a$ and $b$.** The circle cuts the axes at $A(a, 0)$ and $B(0, b)$. Since $\angle AOB = 90^\circ$, $AB$ is a diameter.`,
+    intuition: [
+      t`A **diameter** is a segment through the centre of a circle, with both its ends on the circle.`,
+      t`So its ends $A$ and $B$ fix the circle: the centre is their **midpoint**, halfway between them, and the radius is half of $AB$.`,
+      t`You could find both and use the centre–radius form, but there is a shorter way.`,
+      t`Take any point $P(x, y)$ on the circle, and join it to $A$ and to $B$.`,
+      t`From every such $P$, the angle $APB$ is a **right angle**, $90^\circ$: the angle in a **semicircle**, half the circle.`,
+      t`So $PA \perp PB$ ($\perp$: **perpendicular**, at right angles), and that one condition in $x$ and $y$ is the circle's equation.`,
+    ],
+    formal: [
+      {
+        title: "The diameter form",
+        points: [
+          t`Let $A(x_1, y_1)$ and $B(x_2, y_2)$ be the ends of a diameter.`,
+          t`The circle on it is $(x - x_1)(x - x_2)$ $+ (y - y_1)(y - y_2) = 0$.`,
+          t`This is the **diameter form**: it needs only the two ends, not the centre or the radius.`,
+          t`$A$ and $B$ lie on it: at $A$, both $x - x_1$ and $y - y_1$ are $0$, and likewise at $B$.`,
+        ],
+        figure: {
+          alt: "A diameter AB with ends A(x₁, y₁) and B(x₂, y₂), and the circle drawn on it: (x − x₁)(x − x₂) + (y − y₁)(y − y₂) = 0. Both ends are marked as lying on the circle.",
+          axes: "xy",
+          view: { x: [-0.6, 11], y: [-2, 6.4] },
+          elements: [
+            { kind: "segment", from: [2, 1], to: [8, 3], step: 1 },
+            { kind: "point", at: [2, 1], label: "A(x₁, y₁)", labelAt: "sw", step: 1 },
+            { kind: "point", at: [8, 3], label: "B(x₂, y₂)", labelAt: "e", step: 1 },
+            { kind: "circle", centre: [5, 2], r: 3.162, step: 2 },
+            { kind: "point", at: [2, 1], tone: "good", step: 4 },
+            { kind: "point", at: [8, 3], tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Why the form works",
+        points: [
+          t`Take any point $P(x, y)$ on the circle, other than $A$ and $B$.`,
+          t`The angle in a semicircle is $90^\circ$, so $PA \perp PB$.`,
+          t`Recall: when two lines are perpendicular, the product of their slopes is $-1$.`,
+          t`Slope of $PA$: $m_1 = \frac{y - y_1}{x - x_1}$; slope of $PB$: $m_2 = \frac{y - y_2}{x - x_2}$.`,
+          t`So $m_1 m_2 = -1$; multiply both sides by $(x - x_1)(x - x_2)$.`,
+          t`That gives $(y - y_1)(y - y_2)$ $= -(x - x_1)(x - x_2)$: the diameter form, rearranged.`,
+        ],
+        figure: {
+          alt: "The circle on the diameter AB, with A(x₁, y₁) and B(x₂, y₂). A point P(x, y) on it is joined to A and B; the angle APB is 90°. The slopes m₁ of PA and m₂ of PB multiply to −1.",
+          axes: "xy",
+          view: { x: [-0.6, 11], y: [-2, 6.4] },
+          elements: [
+            { kind: "circle", centre: [5, 2], r: 3.162 },
+            { kind: "segment", from: [2, 1], to: [8, 3] },
+            { kind: "point", at: [2, 1], label: "A(x₁, y₁)", labelAt: "sw" },
+            { kind: "point", at: [8, 3], label: "B(x₂, y₂)", labelAt: "e" },
+            { kind: "segment", from: [4, 5], to: [2, 1], dashed: true, step: 1 },
+            { kind: "segment", from: [4, 5], to: [8, 3], dashed: true, step: 1 },
+            { kind: "point", at: [4, 5], label: "P(x, y)", labelAt: "n", step: 1 },
+            { kind: "angle", at: [4, 5], from: 243.43, to: 333.43, label: "90°", labelAt: "s", tone: "good", step: 2 },
+            { kind: "label", at: [3, 3], label: "m₁", labelAt: "w", step: 4 },
+            { kind: "label", at: [6, 4], label: "m₂", labelAt: "ne", step: 4 },
+            { kind: "label", at: [7.6, 5.6], label: "m₁m₂ = −1", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Pair the coordinates",
+        points: [
+          t`Take the ends $A(-2, -1)$ and $B(4, 3)$ of a diameter.`,
+          t`Pair $x$ with both $x$-coordinates, subtracting each: $(x + 2)(x - 4)$.`,
+          t`Pair $y$ with both $y$-coordinates, subtracting each: $(y + 1)(y - 3)$.`,
+          t`Subtracting a negative gives a plus: $x - (-2) = x + 2$ and $y - (-1) = y + 1$.`,
+          t`Then **add** the two products: $(x + 2)(x - 4)$ $+ (y + 1)(y - 3) = 0$.`,
+          t`Never subtract them: with a minus, $y^2$ turns negative and the curve is not a circle.`,
+        ],
+        figure: {
+          alt: "A diameter with ends A(−2, −1) and B(4, 3). Dashed lines drop from A and B to the x-axis at −2 and 4, and run across to the y-axis at −1 and 3. The circle on AB is (x + 2)(x − 4) + (y + 1)(y − 3) = 0.",
+          axes: "xy",
+          view: { x: [-4.4, 6.8], y: [-3.4, 5.4] },
+          elements: [
+            { kind: "segment", from: [-2, -1], to: [4, 3], step: 1 },
+            { kind: "point", at: [-2, -1], label: "A(−2, −1)", labelAt: "w", step: 1 },
+            { kind: "point", at: [4, 3], label: "B(4, 3)", labelAt: "e", step: 1 },
+            { kind: "segment", from: [-2, -1], to: [-2, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [4, 3], to: [4, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [-2, -1], to: [0, -1], dashed: true, tone: "muted", step: 3 },
+            { kind: "segment", from: [4, 3], to: [0, 3], dashed: true, tone: "muted", step: 3 },
+            { kind: "circle", centre: [1, 1], r: 3.606, step: 5 },
+          ],
+        },
+      },
+      {
+        title: "A chord as a diameter",
+        points: [
+          t`The line $2x + y = 10$ cuts the circle $x^2 + y^2 = 25$ in a **chord**, a segment joining two of its points.`,
+          t`To draw the circle on this chord as diameter, first find the chord's ends.`,
+          t`Solve the line with the circle: put $y = 10 - 2x$ to get $5x^2 - 40x + 75 = 0$.`,
+          t`So $x^2 - 8x + 15 = 0$: $x = 3$ or $5$, and the ends are $(3, 4)$ and $(5, 0)$.`,
+          t`Then use the diameter form: $(x - 3)(x - 5)$ $+ (y - 4)(y - 0) = 0$.`,
+          t`So the circle is $x^2 + y^2 - 8x - 4y + 15 = 0$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² = 25 and the line 2x + y = 10, which cuts it in the chord from (3, 4) to (5, 0). The small circle on that chord as diameter is x² + y² − 8x − 4y + 15 = 0, centre (4, 2).",
+          axes: "xy",
+          view: { x: [-5.8, 7.8], y: [-6.4, 6.6] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 5, tone: "muted" },
+            { kind: "label", at: [0, -5], label: "x² + y² = 25", labelAt: "s", tone: "muted" },
+            { kind: "line", through: [[3, 4], [5, 0]], tone: "muted", step: 1 },
+            { kind: "label", at: [2.1, 5.8], label: "2x + y = 10", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "segment", from: [3, 4], to: [5, 0], step: 1 },
+            { kind: "point", at: [3, 4], label: "(3, 4)", labelAt: "w", step: 4 },
+            { kind: "point", at: [5, 0], step: 4 },
+            { kind: "label", at: [4.6, -0.9], label: "(5, 0)", labelAt: "w", step: 4 },
+            { kind: "circle", centre: [4, 2], r: 2.236, step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Circle through the origin",
+        points: [
+          t`Take a circle through the origin $O$.`,
+          t`It cuts the $X$-axis again at $A(a, 0)$: its **intercept** on that axis is $a$.`,
+          t`It cuts the $Y$-axis again at $B(0, b)$: its intercept on that axis is $b$.`,
+          t`The axes are perpendicular, so $\angle AOB = 90^\circ$.`,
+          t`A right angle at a point of the circle is an angle in a semicircle, so $AB$ is a diameter.`,
+          t`Diameter form: $(x - a)x + y(y - b) = 0$, that is $x^2 + y^2 - ax - by = 0$.`,
+        ],
+        figure: {
+          alt: "A circle through the origin O that cuts the x-axis again at A(a, 0) and the y-axis again at B(0, b). The angle AOB is 90°, so AB is a diameter of the circle.",
+          axes: "xy",
+          view: { x: [-2, 6.4], y: [-2, 4.8] },
+          elements: [
+            { kind: "circle", centre: [2, 1.5], r: 2.5, step: 1 },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw", step: 1 },
+            { kind: "point", at: [4, 0], step: 2 },
+            { kind: "label", at: [4.4, 0.4], label: "A(a, 0)", labelAt: "e", step: 2 },
+            { kind: "point", at: [0, 3], label: "B(0, b)", labelAt: "nw", step: 3 },
+            { kind: "angle", at: [0, 0], from: 0, to: 90, label: "90°", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "segment", from: [4, 0], to: [0, 3], step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the circle with $A(3, 1)$ and $B(-1, 5)$ as the ends of a diameter.`,
       steps: [
         t`Take $(x_1, y_1) = (3, 1)$ and $(x_2, y_2) = (-1, 5)$.`,
-        t`Diameter form: $(x - 3)(x + 1) + (y - 1)(y - 5) = 0$.`,
+        t`Diameter form: $(x - 3)(x + 1)$ $+ (y - 1)(y - 5) = 0$.`,
         t`Expand: $x^2 - 2x - 3 + y^2 - 6y + 5 = 0$, so $x^2 + y^2 - 2x - 6y + 2 = 0$.`,
         t`Check: this is $(x - 1)^2 + (y - 3)^2 = 8$. The centre $(1, 3)$ is the midpoint of $AB$, and $r^2 = 8 = \tfrac{1}{4}AB^2$, since $AB^2 = 4^2 + 4^2 = 32$.`,
       ],
@@ -53,10 +181,10 @@ $$(x - x_1)(x - x_2) + (y - y_1)(y - y_2) = 0$$
         { kind: "point", at: [8, 3], label: "B(8, 3)", labelAt: "e", step: 1 },
         { kind: "circle", centre: [5, 2], r: 3.162, step: 2 },
         { kind: "point", at: [5, 2], label: "C(5, 2)", labelAt: "se", step: 2 },
-        { kind: "segment", from: [2, 3], to: [2, 1], dashed: true, step: 3 },
-        { kind: "segment", from: [2, 3], to: [8, 3], dashed: true, step: 3 },
-        { kind: "point", at: [2, 3], label: "P(x, y)", labelAt: "nw", step: 3 },
-        { kind: "angle", at: [2, 3], from: 270, to: 360, label: "90°", labelAt: "se", tone: "good", step: 4 },
+        { kind: "segment", from: [2, 3], to: [2, 1], dashed: true, step: 4 },
+        { kind: "segment", from: [2, 3], to: [8, 3], dashed: true, step: 4 },
+        { kind: "point", at: [2, 3], label: "P(x, y)", labelAt: "nw", step: 4 },
+        { kind: "angle", at: [2, 3], from: 270, to: 360, label: "90°", labelAt: "se", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag $P$ round the circle on $AB$: $\angle APB$ stays $90^\circ$ and $(x - x_1)(x - x_2) + (y - y_1)(y - y_2)$ stays $0$; drag $A$ or $B$ and the circle redraws.`,

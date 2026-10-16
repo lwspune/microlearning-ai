@@ -10,22 +10,149 @@ export const c06: Concept = {
     reveal: t`Yes. Replace $x^2$ by $3x$ and $y^2$ by $4y$: the tangent is $3x + 4y = 25$. Check: the radius to $(3, 4)$ has slope $\frac{4}{3}$, this line has slope $-\frac{3}{4}$, and their product is $-1$.`,
   },
   explanation: {
-    intuition: t`The tangent at a point $P$ of a circle touches it only at $P$, and it is perpendicular to the radius there. You could find the radius's slope and turn it into the perpendicular slope, but there is a shortcut. Write $x^2$ as $x \cdot x$ and $2x$ as $x + x$, then change one copy of $x$ into $x_1$ (and $y$ into $y_1$). The second-degree equation turns into a linear one, and that line is the tangent at $P$.`,
-    formal: t`**The tangent at $P(x_1, y_1)$** on $x^2 + y^2 + 2gx + 2fy + c = 0$:
-$$xx_1 + yy_1 + g(x + x_1) + f(y + y_1) + c = 0$$
-
-**The substitution.** Replace $x^2$ by $xx_1$, $y^2$ by $yy_1$, $2x$ by $x + x_1$, $2y$ by $y + y_1$, and keep $c$. So $2gx$ becomes $g(x + x_1)$: $g$ is **half** the coefficient of $x$.
-
-**Centre at the origin.** For $x^2 + y^2 = a^2$ the tangent at $(x_1, y_1)$ is $xx_1 + yy_1 = a^2$. At $P(\theta) = (a\cos\theta, a\sin\theta)$, dividing by $a$ gives $x\cos\theta + y\sin\theta = a$.
-
-**Why it works.** The tangent is the line through $P$ perpendicular to the radius from $C(-g, -f)$: $(x_1 + g)(x - x_1) + (y_1 + f)(y - y_1) = 0$. Expand it and use the fact that $P$ is on the circle; the formula above comes out.
-
-**Does a line touch at $P$?** Check that $P$ is on the circle, write the tangent at $P$, and see whether the given line is the same equation (or a multiple of it).`,
+    intuition: [
+      t`A **tangent** to a circle is a line that touches it at exactly one point, without cutting through it.`,
+      t`That point is the **point of contact**: here, $P(3, 4)$ on the circle $x^2 + y^2 = 25$.`,
+      t`The tangent is **perpendicular** to the radius $OP$: the two meet at a right angle.`,
+      t`So you could get the tangent's slope from the radius's slope, but a shortcut skips slopes.`,
+      t`Write $x^2$ as $x \cdot x$ and $2x$ as $x + x$; then turn one $x$ into $x_1$ and one $y$ into $y_1$, for $P(x_1, y_1)$.`,
+      t`Here $x_1 = 3$, $y_1 = 4$: $x^2 + y^2 = 25$ becomes $3x + 4y = 25$, a straight line, the tangent at $P$.`,
+    ],
+    formal: [
+      {
+        title: "The tangent rule",
+        points: [
+          t`Recall: the circle $x^2 + y^2 + 2gx + 2fy + c = 0$ has centre $C(-g, -f)$.`,
+          t`Take a point $P(x_1, y_1)$ on the circle.`,
+          t`The tangent at $P$ is $xx_1 + yy_1 + g(x + x_1)$ $+ f(y + y_1) + c = 0$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² + 2gx + 2fy + c = 0 with centre C(−g, −f). The point P(x₁, y₁) is on it, and the tangent at P touches the circle there.",
+          axes: "xy",
+          view: { x: [-4.5, 11.5], y: [-5.5, 8.5] },
+          elements: [
+            { kind: "circle", centre: [2, 1], r: 5, tone: "muted" },
+            { kind: "label", at: [2, -4], label: "x² + y² + 2gx + 2fy + c = 0", labelAt: "s", tone: "muted" },
+            { kind: "point", at: [2, 1], label: "C(−g, −f)", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "point", at: [5, 5], label: "P(x₁, y₁)", labelAt: "ne", step: 2 },
+            { kind: "line", through: [[5, 5], [9, 2]], tone: "good", step: 3 },
+            { kind: "label", at: [7, 3.5], label: "tangent at P", labelAt: "ne", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Replacing term by term",
+        points: [
+          t`For the tangent at $P(x_1, y_1)$, replace $x^2$ by $xx_1$, and $y^2$ by $yy_1$.`,
+          t`Replace $2x$ by $x + x_1$, and $2y$ by $y + y_1$.`,
+          t`Keep the constant $c$ as it is.`,
+          t`So $2gx$ becomes $g(x + x_1)$: $g$ is **half** the coefficient of $x$, and $f$ half that of $y$.`,
+          t`On $x^2 + y^2 - 4x - 2y - 20 = 0$ at $P(5, 5)$, $-4x$ becomes $-2(x + 5)$, and $-2y$ becomes $-(y + 5)$.`,
+          t`The tangent is $5x + 5y - 2(x + 5)$ $- (y + 5) - 20 = 0$, that is, $3x + 4y = 35$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² − 4x − 2y − 20 = 0. The point P(5, 5) is on it, and the tangent there, found by replacing term by term, is 3x + 4y = 35.",
+          axes: "xy",
+          view: { x: [-4.5, 11.5], y: [-5.5, 8.5] },
+          elements: [
+            { kind: "circle", centre: [2, 1], r: 5, tone: "muted" },
+            { kind: "label", at: [2, -4], label: "x² + y² − 4x − 2y − 20 = 0", labelAt: "s", tone: "muted" },
+            { kind: "point", at: [5, 5], label: "P(5, 5)", labelAt: "ne", step: 5 },
+            { kind: "line", through: [[5, 5], [9, 2]], tone: "good", step: 6 },
+            { kind: "label", at: [7, 3.5], label: "3x + 4y = 35", labelAt: "ne", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Centre at the origin",
+        points: [
+          t`For $x^2 + y^2 = a^2$, the centre is the origin $O$, so $g = f = 0$ and $c = -a^2$.`,
+          t`So the tangent at $(x_1, y_1)$ is $xx_1 + yy_1 = a^2$.`,
+          t`Recall: the point at angle $\theta$ from the positive X-axis is $P(\theta)$, that is, $(a\cos\theta, a\sin\theta)$.`,
+          t`There $x_1 = a\cos\theta$ and $y_1 = a\sin\theta$, so the tangent is $ax\cos\theta + ay\sin\theta = a^2$.`,
+          t`Divide by $a$: the tangent at $P(\theta)$ is $x\cos\theta + y\sin\theta = a$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² = a² with centre O. The tangent at P(x₁, y₁) is xx₁ + yy₁ = a². An arm turns through θ from the initial arm along the positive X-axis and stops at P, so P is P(θ), and the same tangent is x cos θ + y sin θ = a.",
+          axes: "xy",
+          view: { x: [-5.5, 9], y: [-5.5, 6] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 4, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted" },
+            { kind: "label", at: [0, -4], label: "x² + y² = a²", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "point", at: [2.5712, 3.0642], label: "P(x₁, y₁)", labelAt: "ne", step: 2 },
+            { kind: "line", through: [[2.5712, 3.0642], [5.6354, 0.493]], tone: "good", step: 2 },
+            { kind: "label", at: [4.1033, 1.7786], label: "xx₁ + yy₁ = a²", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "segment", from: [0, 0], to: [4, 0], tone: "good", step: 3 },
+            { kind: "label", at: [3.3, 0], label: "initial arm", labelAt: "n", tone: "good", step: 3 },
+            { kind: "turn", r: 4, to: 50, step: 3 },
+            { kind: "label", at: [0.3, 0.28], label: "θ", labelAt: "e", step: 3 },
+            { kind: "label", at: [0.7327, 4.6069], label: "x cos θ + y sin θ = a", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Why the rule works",
+        points: [
+          t`The tangent is the line through $P$ at right angles to the radius $CP$.`,
+          t`From $C(-g, -f)$ to $P(x_1, y_1)$, the radius runs $x_1 + g$ across and $y_1 + f$ up.`,
+          t`The line through $P$ at right angles to it is $(x_1 + g)(x - x_1)$ $+ (y_1 + f)(y - y_1) = 0$.`,
+          t`Check, when neither is $0$: its slope $-\frac{x_1 + g}{y_1 + f}$ times the radius's slope $\frac{y_1 + f}{x_1 + g}$ is $-1$.`,
+          t`$P$ is on the circle, so $x_1^2 + y_1^2 + 2gx_1$ $+ 2fy_1 + c = 0$.`,
+          t`Add the two equations: the squares cancel, leaving $xx_1 + yy_1 + g(x + x_1)$ $+ f(y + y_1) + c = 0$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² + 2gx + 2fy + c = 0 with centre C(−g, −f) and a point P(x₁, y₁) on it. From C, the radius runs x₁ + g across and y₁ + f up to P. The tangent passes through P at right angles to the radius CP.",
+          axes: "xy",
+          view: { x: [-4.5, 11.5], y: [-5.5, 8.5] },
+          elements: [
+            { kind: "circle", centre: [2, 1], r: 5, tone: "muted" },
+            { kind: "label", at: [2, -4], label: "x² + y² + 2gx + 2fy + c = 0", labelAt: "s", tone: "muted" },
+            { kind: "point", at: [5, 5], label: "P(x₁, y₁)", labelAt: "ne" },
+            { kind: "point", at: [2, 1], label: "C(−g, −f)", labelAt: "s", tone: "muted", step: 1 },
+            { kind: "segment", from: [2, 1], to: [5, 5], tone: "muted", step: 1 },
+            { kind: "segment", from: [2, 1], to: [5, 1], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [3.6, 1], label: "x₁ + g", labelAt: "n", step: 2 },
+            { kind: "segment", from: [5, 1], to: [5, 5], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [5, 2.2], label: "y₁ + f", labelAt: "e", step: 2 },
+            { kind: "line", through: [[5, 5], [9, 2]], tone: "good", step: 3 },
+            { kind: "angle", at: [5, 5], from: 233.13, to: 323.13, step: 4 },
+            { kind: "label", at: [7, 3.5], label: "tangent at P", labelAt: "ne", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Does a line touch at P?",
+        points: [
+          t`To test whether a line touches the circle at $P$, first check that $P$ is on the circle.`,
+          t`Then write the tangent at $P$ by the rule.`,
+          t`The line touches at $P$ only if it is the same equation, or a multiple of it.`,
+          t`On $x^2 + y^2 - 4x - 2y - 20 = 0$, $6x + 8y = 70$ is $2(3x + 4y) = 2 \times 35$: it touches at $P(5, 5)$.`,
+          t`$y = 5$ also passes through $P$, but it is no multiple: it cuts the circle again at $(-1, 5)$.`,
+        ],
+        figure: {
+          alt: "The circle x² + y² − 4x − 2y − 20 = 0 with the point P(5, 5) on it. The tangent there is 3x + 4y = 35, and 6x + 8y = 70, twice it, is the same line. The line y = 5 also passes through P but cuts the circle again at (−1, 5).",
+          axes: "xy",
+          view: { x: [-4.5, 11.5], y: [-5.5, 8.5] },
+          elements: [
+            { kind: "circle", centre: [2, 1], r: 5, tone: "muted" },
+            { kind: "label", at: [2, -4], label: "x² + y² − 4x − 2y − 20 = 0", labelAt: "s", tone: "muted" },
+            { kind: "point", at: [5, 5], label: "P(5, 5)", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[5, 5], [9, 2]], tone: "good", step: 2 },
+            { kind: "label", at: [7, 3.5], label: "3x + 4y = 35", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "label", at: [1.4, 7.7], label: "6x + 8y = 70", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "line", through: [[-1, 5], [5, 5]], tone: "bad", step: 5 },
+            { kind: "point", at: [-1, 5], label: "(−1, 5)", labelAt: "n", tone: "bad", step: 5 },
+            { kind: "label", at: [-3.5, 5], label: "y = 5", labelAt: "n", tone: "bad", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the tangent to the circle $x^2 + y^2 - 2x - 4y - 5 = 0$ at the point $(2, 5)$.`,
       steps: [
         t`Read off $2g = -2$, $2f = -4$, $c = -5$, so $g = -1$, $f = -2$: the centre is $(1, 2)$.`,
-        t`The point is on the circle: $4 + 25 - 4 - 20 - 5 = 0$. Substitute $(x_1, y_1) = (2, 5)$ in $xx_1 + yy_1 + g(x + x_1) + f(y + y_1) + c = 0$: $2x + 5y - (x + 2) - 2(y + 5) - 5 = 0$.`,
+        t`The point is on the circle: $4 + 25 - 4 - 20 - 5 = 0$. Substitute $(x_1, y_1) = (2, 5)$ in $xx_1 + yy_1 + g(x + x_1)$ $+ f(y + y_1) + c = 0$: $2x + 5y - (x + 2)$ $- 2(y + 5) - 5 = 0$.`,
         t`Collect terms: $x + 3y - 17 = 0$.`,
         t`Check: the radius from $(1, 2)$ to $(2, 5)$ has slope $3$. The tangent has slope $-\frac{1}{3}$, and $3 \times \left(-\frac{1}{3}\right) = -1$.`,
       ],
@@ -50,13 +177,13 @@ $$xx_1 + yy_1 + g(x + x_1) + f(y + y_1) + c = 0$$
       axes: "xy",
       view: { x: [-6.5, 10], y: [-6, 7.5] },
       elements: [
-        { kind: "circle", centre: [0, 0], r: 5, tone: "muted", step: 1 },
-        { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted", step: 1 },
+        { kind: "circle", centre: [0, 0], r: 5, tone: "muted" },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted" },
+        { kind: "line", through: [[3, 4], [7, 1]], tone: "good", step: 1 },
         { kind: "point", at: [3, 4], label: "P(3, 4)", labelAt: "ne", step: 2 },
         { kind: "segment", from: [0, 0], to: [3, 4], tone: "muted", step: 3 },
-        { kind: "line", through: [[3, 4], [7, 1]], tone: "good", step: 4 },
-        { kind: "angle", at: [3, 4], from: 233.13, to: 323.13, step: 4 },
-        { kind: "label", at: [5.8, 2.5], label: "3x + 4y = 25", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "angle", at: [3, 4], from: 233.13, to: 323.13, step: 3 },
+        { kind: "label", at: [5.8, 2.5], label: "3x + 4y = 25", labelAt: "ne", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag the point $P$ round the circle; the tangent from the $xx_1$ rule follows it, always at right angles to the radius $CP$, and its equation updates as $P$ moves.`,

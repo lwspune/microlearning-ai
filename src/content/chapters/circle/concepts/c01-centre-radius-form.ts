@@ -10,22 +10,151 @@ export const c01: Concept = {
     reveal: t`Neither. $x + 1 = x - (-1)$, so the centre is $(-1, 5)$: the signs inside are opposite to the centre's. The right side is $r^2 = 4$, so the radius is $2$.`,
   },
   explanation: {
-    intuition: t`A circle is every point at the same distance $r$ from its centre. Write that distance with the distance formula, square both sides, and you have the circle's equation. Inside the brackets you subtract the centre's coordinates, so a centre at $(-3, 2)$ shows up as $x + 3$ and $y - 2$. On the right sits $r^2$, never $r$.`,
-    formal: t`**Centre–radius form.** The circle with centre $C(h, k)$ and radius $r$ is
-$$(x - h)^2 + (y - k)^2 = r^2$$
-A point $P(x, y)$ is on it exactly when $CP = r$. Centre at the origin: $x^2 + y^2 = r^2$.
-
-**Reading an equation.** The centre's signs are opposite to the ones you see, and the radius is the square root of the right side: $(x + 4)^2 + (y - 1)^2 = 9$ has centre $(-4, 1)$ and radius $3$.
-
-**Centre and a point.** If the circle passes through $P$, then $r^2 = CP^2$ by the distance formula. The equation needs $r^2$, and so does the area $\pi r^2$: no square root needed.
-
-**Touching an axis.** The radius is the centre's distance from that axis: touching the X-axis, $r = |k|$; touching the Y-axis, $r = |h|$.
-
-**Touching both axes.** $|h| = |k| = r$, with the signs set by the quadrant: $(r, r)$, $(-r, r)$, $(-r, -r)$, $(r, -r)$ in quadrants I to IV.`,
+    intuition: [
+      t`A **circle** is every point at one fixed distance from a fixed point, its **centre** $C(h, k)$.`,
+      t`That fixed distance is the **radius** $r$: each point $P(x, y)$ on the circle has $CP = r$.`,
+      t`By the **distance formula**, $CP^2$ is the square across, $(x - h)^2$, plus the square up, $(y - k)^2$.`,
+      t`So every point on the circle fits $(x - h)^2 + (y - k)^2 = r^2$: the circle's **equation**.`,
+      t`The brackets subtract the centre's coordinates: centre $(-3, 2)$ gives $x + 3$ and $y - 2$.`,
+      t`On the right sits $r^2$, never $r$.`,
+    ],
+    formal: [
+      {
+        title: "Centre–radius form",
+        points: [
+          t`The **centre–radius form** writes a circle from its centre $C(h, k)$ and its radius $r$.`,
+          t`It reads $(x - h)^2 + (y - k)^2 = r^2$.`,
+          t`A point $P(x, y)$ lies on the circle exactly when $CP = r$.`,
+          t`With the centre at the origin, $h = k = 0$, and the circle is $x^2 + y^2 = r^2$.`,
+        ],
+        figure: {
+          alt: "A circle with centre C(h, k) and a radius r drawn across to the right, with its equation (x − h)² + (y − k)² = r² above it. A point P(x, y) on the circle is joined to C by a dashed segment CP = r. A second circle, of the same radius, has its centre at the origin: x² + y² = r².",
+          axes: "xy",
+          view: { x: [-4.5, 10.5], y: [-4.5, 9] },
+          elements: [
+            { kind: "point", at: [6, 4], label: "C(h, k)", labelAt: "s", step: 1 },
+            { kind: "segment", from: [6, 4], to: [9, 4], label: "r", labelAt: "n", step: 1 },
+            { kind: "circle", centre: [6, 4], r: 3, tone: "accent", step: 1 },
+            { kind: "label", at: [6, 7.4], label: "(x − h)² + (y − k)² = r²", labelAt: "n", tone: "good", step: 2 },
+            { kind: "point", at: [3.879, 6.121], label: "P(x, y)", labelAt: "nw", step: 3 },
+            { kind: "segment", from: [6, 4], to: [3.879, 6.121], dashed: true, label: "CP = r", labelAt: "ne", step: 3 },
+            { kind: "circle", centre: [0, 0], r: 3, tone: "good", step: 4 },
+            { kind: "label", at: [2.6, -2.6], label: "x² + y² = r²", labelAt: "se", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Reading an equation",
+        points: [
+          t`The centre's signs are opposite to the signs in the brackets.`,
+          t`The radius is the square root of the right side.`,
+          t`In $(x + 4)^2 + (y - 1)^2 = 9$, write $x + 4$ as $x - (-4)$.`,
+          t`So the centre is $(-4, 1)$: its signs are opposite to $+4$ and $-1$.`,
+          t`The right side is $9 = 3^2$, so the radius is $3$.`,
+        ],
+        figure: {
+          alt: "The equation (x + 4)² + (y − 1)² = 9 read off: x + 4 is x − (−4), so its centre is C(−4, 1), with signs opposite to those in the brackets, and a radius of 3, the square root of 9, drawn across to the right. The circle is drawn around C.",
+          axes: "xy",
+          view: { x: [-9, 2.5], y: [-3.5, 6.5] },
+          elements: [
+            { kind: "label", at: [-4, 4.4], label: "(x + 4)² + (y − 1)² = 9", labelAt: "n" },
+            { kind: "label", at: [-4, -2.4], label: "x + 4 = x − (−4)", labelAt: "s", tone: "accent", step: 3 },
+            { kind: "point", at: [-4, 1], label: "C(−4, 1)", labelAt: "s", step: 4 },
+            { kind: "segment", from: [-4, 1], to: [-1, 1], label: "r = 3", labelAt: "n", step: 5 },
+            { kind: "circle", centre: [-4, 1], r: 3, tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Centre and a point",
+        points: [
+          t`If the circle passes through a point $P$, its radius is $CP$.`,
+          t`For $C(2, 1)$ and $P(4, 4)$, the distance formula gives $CP^2 = 2^2 + 3^2 = 13$.`,
+          t`The equation needs only $r^2$, so no square root: $(x - 2)^2 + (y - 1)^2 = 13$.`,
+          t`So does the area $\pi r^2$: here it is $13\pi$.`,
+        ],
+        figure: {
+          alt: "The centre C(2, 1) and the point P(4, 4) on the circle, joined by the radius CP. Dashed legs from C go 2 across and 3 up to P, so r² = CP² = 13. The circle (x − 2)² + (y − 1)² = 13 is drawn through P, and its area is 13π.",
+          axes: "xy",
+          view: { x: [-4, 8.5], y: [-5, 6.5] },
+          elements: [
+            { kind: "point", at: [2, 1], label: "C(2, 1)", labelAt: "sw", step: 1 },
+            { kind: "point", at: [4, 4], label: "P(4, 4)", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [2, 1], to: [4, 4], step: 1 },
+            { kind: "segment", from: [2, 1], to: [4, 1], dashed: true, tone: "muted", label: "2", labelAt: "s", step: 2 },
+            { kind: "segment", from: [4, 1], to: [4, 4], dashed: true, tone: "muted", label: "3", labelAt: "e", step: 2 },
+            { kind: "label", at: [3, 2.5], label: "r² = 13", labelAt: "nw", step: 2 },
+            { kind: "circle", centre: [2, 1], r: 3.606, tone: "good", step: 3 },
+            { kind: "label", at: [3, -3.3], label: "(x − 2)² + (y − 1)² = 13", labelAt: "s", tone: "good", step: 3 },
+            { kind: "label", at: [-1.8, 4.6], label: "area = 13π", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Touching an axis",
+        points: [
+          t`A circle **touches** an axis when it meets the axis at exactly one point.`,
+          t`The radius to that point is at right angles to the axis.`,
+          t`So the radius equals the centre's distance from that axis.`,
+          t`Touching the X-axis, $r = |k|$, the centre's height: centre $(4, 3)$ gives $r = 3$.`,
+          t`Touching the Y-axis, $r = |h|$: centre $(-4, 5)$ gives $r = 4$.`,
+        ],
+        figure: {
+          alt: "A circle with centre C(4, 3) touches the X-axis at (4, 0); the radius down to that point is at right angles to the axis, so r = |k| = 3. A second circle with centre C(−4, 5) touches the Y-axis at (0, 5); its radius across to that point is at right angles to the axis, so r = |h| = 4.",
+          axes: "xy",
+          view: { x: [-8.5, 8], y: [-1.5, 9.5] },
+          elements: [
+            { kind: "circle", centre: [4, 3], r: 3, tone: "good", step: 1 },
+            { kind: "point", at: [4, 3], label: "C(4, 3)", labelAt: "n", step: 1 },
+            { kind: "point", at: [4, 0], tone: "good", step: 1 },
+            { kind: "segment", from: [4, 3], to: [4, 0], step: 2 },
+            { kind: "angle", at: [4, 0], from: 0, to: 90, step: 2 },
+            { kind: "label", at: [4, 1.5], label: "r = |k|", labelAt: "e", step: 4 },
+            { kind: "circle", centre: [-4, 5], r: 4, tone: "accent", step: 5 },
+            { kind: "point", at: [-4, 5], label: "C(−4, 5)", labelAt: "s", step: 5 },
+            { kind: "point", at: [0, 5], tone: "accent", step: 5 },
+            { kind: "segment", from: [-4, 5], to: [0, 5], label: "r = |h|", labelAt: "n", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Touching both axes",
+        points: [
+          t`A circle touching both axes is $r$ from each, so $|h| = |k| = r$.`,
+          t`The centre's **quadrant**, one of the four quarters the axes make, sets the signs of $h$ and $k$.`,
+          t`In Quadrant I the centre is $(r, r)$.`,
+          t`In Quadrant II it is $(-r, r)$.`,
+          t`In Quadrant III it is $(-r, -r)$.`,
+          t`In Quadrant IV it is $(r, -r)$.`,
+        ],
+        figure: {
+          alt: "Four circles of radius r, each touching both axes, one in each quadrant I to IV. The first has dashed segments of length r from its centre to each axis. Their centres are (r, r) in Quadrant I, (−r, r) in Quadrant II, (−r, −r) in Quadrant III and (r, −r) in Quadrant IV.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-5, 5] },
+          elements: [
+            { kind: "circle", centre: [2, 2], r: 2, tone: "accent", step: 1 },
+            { kind: "point", at: [2, 2], step: 1 },
+            { kind: "segment", from: [2, 2], to: [2, 0], dashed: true, label: "r", labelAt: "e", step: 1 },
+            { kind: "segment", from: [2, 2], to: [0, 2], dashed: true, label: "r", labelAt: "n", step: 1 },
+            { kind: "label", at: [3.9, 3.9], label: "I", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "label", at: [-3.9, 3.9], label: "II", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "label", at: [-3.9, -3.9], label: "III", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "label", at: [3.9, -3.9], label: "IV", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "label", at: [2, 2], label: "(r, r)", labelAt: "ne", tone: "accent", step: 3 },
+            { kind: "circle", centre: [-2, 2], r: 2, tone: "good", step: 4 },
+            { kind: "point", at: [-2, 2], label: "(−r, r)", labelAt: "nw", tone: "good", step: 4 },
+            { kind: "circle", centre: [-2, -2], r: 2, tone: "good", step: 5 },
+            { kind: "point", at: [-2, -2], label: "(−r, −r)", labelAt: "sw", tone: "good", step: 5 },
+            { kind: "circle", centre: [2, -2], r: 2, tone: "good", step: 6 },
+            { kind: "point", at: [2, -2], label: "(r, −r)", labelAt: "se", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the circle with centre $(-3, 1)$ that passes through the point $(5, 2)$.`,
       steps: [
-        t`With $C(-3, 1)$ and $P(5, 2)$: $r^2 = CP^2 = (5 - (-3))^2 + (2 - 1)^2 = 64 + 1 = 65$.`,
+        t`With $C(-3, 1)$ and $P(5, 2)$: $r^2 = CP^2$ $= (5 - (-3))^2 + (2 - 1)^2$ $= 64 + 1 = 65$.`,
         t`With $h = -3$ and $k = 1$: $x - h = x + 3$ and $y - k = y - 1$.`,
         t`So the circle is $(x + 3)^2 + (y - 1)^2 = 65$. Expanded, $x^2 + y^2 + 6x - 2y - 55 = 0$.`,
       ],
@@ -55,7 +184,7 @@ A point $P(x, y)$ is on it exactly when $CP = r$. Centre at the origin: $x^2 + y
         { kind: "segment", from: [3, 2], to: [6, 2], dashed: true, tone: "muted", label: "x − h", labelAt: "s", step: 3 },
         { kind: "segment", from: [6, 2], to: [6, 6], dashed: true, tone: "muted", step: 3 },
         { kind: "label", at: [6, 2.9], label: "y − k", labelAt: "e", tone: "muted", step: 3 },
-        { kind: "circle", centre: [3, 2], r: 5, tone: "accent", step: 4 },
+        { kind: "circle", centre: [3, 2], r: 5, tone: "accent", step: 1 },
         { kind: "label", at: [4, -3.4], label: "(x − h)² + (y − k)² = r²", labelAt: "s", tone: "good", step: 4 },
       ],
     },
