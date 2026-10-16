@@ -494,7 +494,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   "match the form before reading it", with feedback for both forms).
   Circle (C01–C08) done 2026-10-16: all visual, figures on every formal
   slide; no split; its C05 formula that ran off a phone led to
-  `scripts/overflow-probe.mjs` (backfill 8).
+  `scripts/overflow-probe.mjs` (backfill 8). Conic Sections (C01–C14) done
+  2026-10-16: all visual, figures on every formal slide, the eccentric
+  angle drawn as a turn (C09, C10, C13); no split; 0 phone overflows.
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
