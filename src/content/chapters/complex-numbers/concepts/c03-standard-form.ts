@@ -41,7 +41,7 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
     },
     {
       id: "C03-M3",
-      mistake: "Losing the sign of the imaginary part",
+      mistake: t`Dropping the minus sign of the imaginary part: $\operatorname{Im}(3 - 4i) = 4$`,
       remediation: t`The imaginary part keeps its sign: $\operatorname{Im}(3 - 4i) = -4$.`,
       fallback: { kind: "ext", topic: "signs" },
     },
@@ -57,6 +57,15 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
       remediation: t`To solve $x + p = c$, subtract $p$ from both sides: $x = c - p$.`,
       fallback: { kind: "ext", topic: "solving linear equations" },
     },
+    {
+      id: "C03-M6",
+      mistake: t`Putting a minus sign on a positive imaginary part: matching $y - 1$ in $5 + 3i$ with $-3$`,
+      remediation: t`Copy each part with the sign it has. In $5 + 3i$ the imaginary part is $+3$, so $y - 1 = 3$.`,
+      fallback: { kind: "ext", topic: "signs" },
+    },
+  ],
+  engineNotes: [
+    t`C03-M3 applies only when the imaginary part is negative, and C03-M6 only when it is positive; otherwise each gives the key.`,
   ],
   items: [
     {
@@ -103,7 +112,7 @@ Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) 
       options: [
         { key: "A", text: t`$x = 1,\ y = 6$`, correct: false, misconceptionId: "C03-M4", value: "1 + 6*I" },
         { key: "B", text: t`$x = 7,\ y = 2$`, correct: false, misconceptionId: "C03-M5", value: "7 + 2*I" },
-        { key: "C", text: t`$x = 3,\ y = -2$`, correct: false, misconceptionId: "C03-M3", value: "3 - 2*I" },
+        { key: "C", text: t`$x = 3,\ y = -2$`, correct: false, misconceptionId: "C03-M6", value: "3 - 2*I" },
         { key: "D", text: t`$x = 3,\ y = 4$`, correct: true, value: "3 + 4*I" },
       ],
       solution: {

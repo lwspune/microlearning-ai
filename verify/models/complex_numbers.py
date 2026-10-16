@@ -342,20 +342,22 @@ def _c03(kind):
             raise ValueError(kind)
         if op == "equate":  # (a1 x + p) + i(a2 y + q) = c + i d, x and y real
             a1, pp, c, a2, q, d = (v[k] for k in ("a1", "p", "c", "a2", "q", "d"))
-            if kind == "C03-M3":
-                d = -d
+            if kind == "C03-M3":  # drops the minus sign of a negative imaginary part
+                d = Abs(d)
+            if kind == "C03-M6":  # puts a minus sign on a positive imaginary part
+                d = -Abs(d)
             if kind == "C03-M4":  # equates real with imaginary
                 c, d = d, c
             if kind == "C03-M5":  # moves the constant without changing its sign
                 return (c + pp) / a1 + I * (d + q) / a2
-            if kind not in ("key", "C03-M3", "C03-M4"):
+            if kind not in ("key", "C03-M3", "C03-M4", "C03-M6"):
                 raise ValueError(kind)
             return (c - pp) / a1 + I * (d - q) / a2
         raise ValueError(op)
     return model
 
 
-C03 = {k: _c03(k) for k in ["key", "C03-M1", "C03-M2", "C03-M3", "C03-M4", "C03-M5"]}
+C03 = {k: _c03(k) for k in ["key", "C03-M1", "C03-M2", "C03-M3", "C03-M4", "C03-M5", "C03-M6"]}
 
 
 # ---------- C07 Purely real / purely imaginary (find real x) ----------
