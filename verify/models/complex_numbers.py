@@ -109,8 +109,17 @@ def _circle_on_diameter(a, b):
     return expand((x - re(c)) ** 2 + (y - im(c)) ** 2 - Abs(a - b) ** 2 / 4)
 
 
-def _c25_m2(v, p):  # sign of the listed point(s) misread
+def _written_with_plus(c):  # |z - c| is written |z + ...| when c's leading part is negative
+    lead = re(c) if re(c) != 0 else im(c)
+    return lead < 0
+
+
+def _c25_flip(v, p, plus):  # the listed point(s) read with the wrong sign
     flip = p.get("flip", [])
+    for k in flip:
+        if _written_with_plus(v[k]) != plus:
+            form = "|z + a|" if plus else "|z - a|"
+            raise ValueError(f"point {k} is not written as {form}")
     a = -v["a"] if "a" in flip else v["a"]
     b = -v["b"] if "b" in flip else v["b"]
     return _bisector(a, b)
@@ -119,8 +128,9 @@ def _c25_m2(v, p):  # sign of the listed point(s) misread
 C25 = {
     "key": lambda v, p: _bisector(v["a"], v["b"]),
     "C25-M1": lambda v, p: _circle_on_diameter(v["a"], v["b"]),
-    "C25-M2": _c25_m2,
+    "C25-M2": lambda v, p: _c25_flip(v, p, plus=True),  # |z + a| read as from +a
     "C25-M3": lambda v, p: _line_through(v["a"], v["b"]),
+    "C25-M4": lambda v, p: _c25_flip(v, p, plus=False),  # |z - a| read as from -a
 }
 
 

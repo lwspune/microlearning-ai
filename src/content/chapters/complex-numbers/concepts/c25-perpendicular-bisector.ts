@@ -64,7 +64,7 @@ Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a rat
     },
     {
       id: "C25-M2",
-      mistake: t`Misreading the sign of a point: $|z + a|$ as the distance from $+a$ (or $|z - a|$ as from $-a$)`,
+      mistake: t`Reading $|z + a|$ as the distance from $+a$`,
       remediation: t`$|z - p|$ is the distance from $p$, so $|z + a| = |z - (-a)|$ is the distance from $-a$. Rewrite each term as $|z - \text{point}|$ before plotting.`,
       fallback: { kind: "concept", id: "C11" },
     },
@@ -72,6 +72,12 @@ Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a rat
       id: "C25-M3",
       mistake: t`Giving the line **through** $a$ and $b$ instead of the bisector`,
       remediation: t`The points equidistant from $a$ and $b$ cross segment $ab$ at its midpoint, at right angles. They don't run along it.`,
+      fallback: { kind: "concept", id: "C11" },
+    },
+    {
+      id: "C25-M4",
+      mistake: t`Reading $|z - a|$ as the distance from $-a$, carrying the minus sign into the point`,
+      remediation: t`In $|z - a|$ the minus belongs to the subtraction, not to the point: $|z - 3|$ is the distance from $3$, not from $-3$. Only a plus sign, as in $|z + 3| = |z - (-3)|$, flips the point.`,
       fallback: { kind: "concept", id: "C11" },
     },
   ],
@@ -114,7 +120,7 @@ Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a rat
         { key: "A", text: t`the line $y = x$`, correct: true, value: "y-x" },
         { key: "B", text: t`the line $x + y = 2$`, correct: false, misconceptionId: "C25-M3", value: "x+y-2" },
         { key: "C", text: t`the circle $|z - (1 + i)| = \sqrt2$`, correct: false, misconceptionId: "C25-M1", value: "(x-1)**2+(y-1)**2-2" },
-        { key: "D", text: t`the line $y = -x$`, correct: false, misconceptionId: "C25-M2", value: "x+y" },
+        { key: "D", text: t`the line $y = -x$`, correct: false, misconceptionId: "C25-M4", value: "x+y" },
       ],
       solution: {
         steps: [
@@ -144,7 +150,7 @@ Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a rat
         { key: "A", text: t`the line $x = 2$`, correct: true, value: "x-2" },
         { key: "B", text: "a circle", correct: false, misconceptionId: "C25-M1", value: "(x-2)**2+y**2-1" },
         { key: "C", text: "the real axis", correct: false, misconceptionId: "C25-M3", value: "y" },
-        { key: "D", text: t`the line $x = -2$`, correct: false, misconceptionId: "C25-M2", value: "x+2" },
+        { key: "D", text: t`the line $x = -2$`, correct: false, misconceptionId: "C25-M4", value: "x+2" },
       ],
       solution: {
         steps: [
@@ -224,5 +230,9 @@ Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a rat
         },
       },
     },
+  ],
+  engineNotes: [
+    "C25-M4 (the minus of |z − a| carried into the point) was split from C25-M2 (|z + a| read as from +a), which had covered it on Q2 and Q3: a student who never sees a plus sign gets nothing from M2's |z + a| = |z − (−a)| feedback.",
+    "C25-M4 on Q2 models flipping only 2i; flipping both 2 and 2i gives the key y = x, so a diagnosing item for M4 needs one point that is not flipped, or one point in |z + a| form.",
   ],
 };
