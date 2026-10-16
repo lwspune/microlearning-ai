@@ -1,6 +1,13 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The formal slides draw x²/a² − y²/b² = 1 as x²/16 − y²/9 = 1 (a = 4, b = 3), both branches. */
+const hyperbola43: FigureElement[] = [
+  { kind: "hyperbola", centre: [0, 0], a: 4, b: 3, axis: "x", branch: 1 },
+  { kind: "hyperbola", centre: [0, 0], a: 4, b: 3, axis: "x", branch: -1 },
+  { kind: "label", at: [0.3, -5.8], label: "x²/a² − y²/b² = 1", labelAt: "e" },
+];
 
 export const c13: Concept = {
   id: "C13",
@@ -10,23 +17,150 @@ export const c13: Concept = {
     reveal: t`No. The line $y = \frac14 x + c$ touches only if $c^2 = a^2m^2 - b^2 = 4 \cdot \frac{1}{16} - 1 = -\frac34$, and no real $c$ does that. Every line of slope $\frac14$ cuts the hyperbola, once on each branch. A tangent has to be steeper than $\frac{b}{a} = \frac12$.`,
   },
   explanation: {
-    intuition: t`A tangent meets the hyperbola at one point, counted twice. Put $y = mx + c$ into $\dfrac{x^2}{a^2} - \dfrac{y^2}{b^2} = 1$: you get a quadratic in $x$, and the line touches when its two roots coincide. That happens when $c^2 = a^2m^2 - b^2$. The minus sign of the hyperbola stays in every formula, and it has a new effect: when $a^2m^2 < b^2$ there is no tangent of that slope at all.`,
-    formal: t`**Read $a^2$ and $b^2$ first.** Divide by the constant: $16x^2 - 25y^2 = 400$ is $\dfrac{x^2}{25} - \dfrac{y^2}{16} = 1$, so $a^2 = 25$ and $b^2 = 16$.
-
-**Tangent at a point.** At $P(x_1, y_1)$ on $\dfrac{x^2}{a^2} - \dfrac{y^2}{b^2} = 1$: $$\frac{xx_1}{a^2} - \frac{yy_1}{b^2} = 1.$$ Replace $x^2$ by $xx_1$ and $y^2$ by $yy_1$, and keep the minus sign.
-
-**At the point $\theta$.** $P(a\sec\theta, b\tan\theta)$ is on the hyperbola, because $\sec^2\theta - \tan^2\theta = 1$. The tangent there is $\dfrac{x\sec\theta}{a} - \dfrac{y\tan\theta}{b} = 1$.
-
-**Condition of tangency.** $y = mx + c$ touches when $$c^2 = a^2m^2 - b^2.$$ So the tangents of slope $m$ are $y = mx \pm \sqrt{a^2m^2 - b^2}$: two of them, or none if $a^2m^2 < b^2$.
-
-**Point of contact.** $y = mx + c$ touches at $\left(-\dfrac{a^2m}{c}, -\dfrac{b^2}{c}\right)$. Write the line as $y = mx + c$ before reading $m$ and $c$.`,
+    intuition: [
+      t`Recall: a **tangent** is a line that touches a curve at one point without crossing it.`,
+      t`Put a line $y = mx + c$ into $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$: a quadratic in $x$, whose roots are where they meet.`,
+      t`The line is a tangent when the two roots are equal: one meeting point, counted twice.`,
+      t`That happens exactly when $c^2 = a^2m^2 - b^2$: the hyperbola's minus sign stays in.`,
+      t`For $\frac{x^2}{9} - \frac{y^2}{5} = 1$ and slope $1$: $c^2 = 9 - 5 = 4$, so the tangents are $y = x \pm 2$.`,
+      t`If $a^2m^2 < b^2$, no line of slope $m$ touches: here slope $-\frac12$ fails, as $\frac94 < 5$.`,
+    ],
+    formal: [
+      {
+        title: "Read a² and b² first",
+        points: [
+          t`The tangent formulas need the **standard form** $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, with $1$ on the right.`,
+          t`So take $16x^2 - 25y^2 = 400$, and divide both sides by the constant $400$.`,
+          t`That gives $\frac{x^2}{25} - \frac{y^2}{16} = 1$.`,
+          t`So $a^2 = 25$ and $b^2 = 16$, not the coefficients $16$ and $25$.`,
+        ],
+        figure: {
+          alt: "The hyperbola 16x² − 25y² = 400, which is x²/25 − y²/16 = 1 once divided by 400. A segment along the x-axis from O marks a = 5, out to the vertex, and one up the y-axis marks b = 4.",
+          axes: "xy",
+          view: { x: [-12, 12], y: [-8.5, 8.5] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 5, b: 4, axis: "x", branch: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 5, b: 4, axis: "x", branch: -1 },
+            { kind: "label", at: [-1, 7.96], label: "16x² − 25y² = 400", labelAt: "w" },
+            { kind: "label", at: [1, -7.6], label: "x²/25 − y²/16 = 1", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [0, 0], to: [5, 0], tone: "good", step: 4 },
+            { kind: "label", at: [2.5, 0], label: "a = 5", labelAt: "n", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [0, 4], tone: "good", step: 4 },
+            { kind: "label", at: [0, 3], label: "b = 4", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The tangent at a point",
+        points: [
+          t`Take a point $P(x_1, y_1)$ on the hyperbola: the rule needs $P$ on the curve.`,
+          t`Replace $x^2$ by $xx_1$, and $y^2$ by $yy_1$.`,
+          t`Keep the minus sign, and the $1$ on the right.`,
+          t`The tangent at $P$ is $\frac{xx_1}{a^2} - \frac{yy_1}{b^2} = 1$.`,
+          t`At $\left(5, \frac94\right)$ on $\frac{x^2}{16} - \frac{y^2}{9} = 1$: $\frac{5x}{16} - \frac{y}{4} = 1$, that is $5x - 4y = 16$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 4 and b = 3. The point P(x₁, y₁) is on the right branch, and the tangent at P, xx₁/a² − yy₁/b² = 1, touches the curve only at P.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-6.5, 6.5] },
+          elements: [
+            ...hyperbola43,
+            { kind: "point", at: [5, 2.25], label: "P(x₁, y₁)", labelAt: "se", step: 1 },
+            { kind: "line", through: [[3.2, 0], [5, 2.25]], tone: "good", step: 4 },
+            { kind: "label", at: [-1.2, -5], label: "xx₁/a² − yy₁/b² = 1", labelAt: "w", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The tangent at the point θ",
+        points: [
+          t`The **auxiliary circle** $x^2 + y^2 = a^2$ is the circle centred at $O$ through the two vertices.`,
+          t`An arm turns from the $x$-axis through an angle $\theta$, to the point $Q$ on this circle.`,
+          t`The tangent to the circle at $Q$ meets the $x$-axis at $N(a\sec\theta, 0)$.`,
+          t`Straight above $N$ is $P(a\sec\theta, b\tan\theta)$, for an acute $\theta$: $\theta$ is the **eccentric angle** of $P$.`,
+          t`$P$ is on the hyperbola, because $\sec^2\theta - \tan^2\theta = 1$.`,
+          t`Put $x_1 = a\sec\theta$ and $y_1 = b\tan\theta$ in: the tangent is $\frac{x\sec\theta}{a} - \frac{y\tan\theta}{b} = 1$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 4 and b = 3, and its auxiliary circle x² + y² = a², dashed. An arm turns from the initial arm along the x-axis through θ to the point Q on the circle. The tangent to the circle at Q meets the x-axis at N(a sec θ, 0), and straight above N is P(a sec θ, b tan θ) on the hyperbola. The tangent to the hyperbola at P is x sec θ/a − y tan θ/b = 1.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-6.5, 6.5] },
+          elements: [
+            ...hyperbola43,
+            { kind: "circle", centre: [0, 0], r: 4, dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [0, 4], label: "x² + y² = a²", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [4, 0], tone: "good", step: 2 },
+            { kind: "label", at: [1.6, 0], label: "initial arm", labelAt: "n", tone: "good", step: 2 },
+            { kind: "turn", r: 4, to: 36.87, label: "Q", labelAt: "nw", step: 2 },
+            { kind: "label", at: [2.6, 1.3], label: "θ", labelAt: "e", step: 2 },
+            { kind: "segment", from: [3.2, 2.4], to: [5, 0], tone: "muted", step: 3 },
+            { kind: "point", at: [5, 0], label: "N", labelAt: "ne", step: 3 },
+            { kind: "segment", from: [5, 0], to: [5, 2.25], dashed: true, tone: "muted", step: 4 },
+            { kind: "point", at: [5, 2.25], label: "P", labelAt: "se", step: 4 },
+            { kind: "line", through: [[3.2, 0], [5, 2.25]], tone: "good", step: 6 },
+            { kind: "label", at: [-1.2, -5], label: "x sec θ/a − y tan θ/b = 1", labelAt: "w", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The tangents of slope m",
+        points: [
+          t`A line $y = mx + c$ of slope $m$ touches the hyperbola exactly when $c^2 = a^2m^2 - b^2$.`,
+          t`Take the square root both ways: $c = \pm\sqrt{a^2m^2 - b^2}$.`,
+          t`So the tangents of slope $m$ are $y = mx \pm \sqrt{a^2m^2 - b^2}$.`,
+          t`There are two of them, one touching each branch.`,
+          t`If $a^2m^2 < b^2$, the root is not real: no tangent has slope $m$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 4 and b = 3, and its two tangents of slope 5/4: c = √(a²m² − b²) = 4 touches the left branch and c = −4 touches the right branch. A dashed line of slope 1/2, where a²m² < b², crosses both branches and touches neither.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-6.5, 6.5] },
+          elements: [
+            ...hyperbola43,
+            { kind: "line", through: [[3.2, 0], [5, 2.25]], tone: "good", step: 1 },
+            { kind: "line", through: [[-3.2, 0], [-5, -2.25]], tone: "good", step: 2 },
+            { kind: "label", at: [0.3, -4.4], label: "c = −√(a²m² − b²)", labelAt: "e", tone: "good", step: 3 },
+            { kind: "label", at: [-0.3, 4.4], label: "c = √(a²m² − b²)", labelAt: "w", tone: "good", step: 3 },
+            { kind: "point", at: [5, 2.25], step: 4 },
+            { kind: "point", at: [-5, -2.25], step: 4 },
+            { kind: "line", through: [[0, 0], [2, 1]], dashed: true, tone: "bad", step: 5 },
+            { kind: "label", at: [3.2, 1.6], label: "a²m² < b²", labelAt: "nw", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The point of contact",
+        points: [
+          t`The **point of contact** is the one point where a tangent touches the curve.`,
+          t`The tangent $y = mx + c$ touches at $\left(-\frac{a^2m}{c}, -\frac{b^2}{c}\right)$.`,
+          t`Read $m$ and $c$ only after writing the line as $y = mx + c$.`,
+          t`For example, $5x - 4y = 16$ is $y = \frac54 x - 4$: so $m = \frac54$ and $c = -4$.`,
+          t`On $\frac{x^2}{16} - \frac{y^2}{9} = 1$ it touches at $\left(\frac{-20}{-4}, \frac{-9}{-4}\right)$, that is $\left(5, \frac94\right)$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/16 − y²/9 = 1 and its tangent 5x − 4y = 16, which touches the right branch at the point of contact (−a²m/c, −b²/c) = (5, 9/4).",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-6.5, 6.5] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 4, b: 3, axis: "x", branch: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 4, b: 3, axis: "x", branch: -1 },
+            { kind: "label", at: [0.3, -5.8], label: "x²/16 − y²/9 = 1", labelAt: "e" },
+            { kind: "line", through: [[3.2, 0], [5, 2.25]], tone: "good", step: 1 },
+            { kind: "point", at: [5, 2.25], step: 1 },
+            { kind: "label", at: [4.3, 2.6], label: "(−a²m/c, −b²/c)", labelAt: "w", step: 2 },
+            { kind: "label", at: [0.3, -4.4], label: "5x − 4y = 16", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [4.3, 1.9], label: "= (5, 9/4)", labelAt: "w", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Show that the line $4x - 3y = 16$ touches the hyperbola $16x^2 - 25y^2 = 400$, and find the point of contact.`,
       steps: [
         t`Divide by $400$: $\dfrac{x^2}{25} - \dfrac{y^2}{16} = 1$, so $a^2 = 25$, $b^2 = 16$.`,
         t`Write the line as $y = \frac43 x - \frac{16}{3}$: $m = \frac43$, $c = -\frac{16}{3}$.`,
-        t`$a^2m^2 - b^2 = 25 \cdot \frac{16}{9} - 16 = \frac{256}{9}$, and $c^2 = \frac{256}{9}$. They are equal, so the line is a tangent.`,
-        t`Point of contact: $\left(-\dfrac{a^2m}{c}, -\dfrac{b^2}{c}\right) = \left(\dfrac{-25 \cdot \frac43}{-\frac{16}{3}}, \dfrac{-16}{-\frac{16}{3}}\right) = \left(\dfrac{25}{4}, 3\right)$. Check: $16 \cdot \frac{625}{16} - 25 \cdot 9 = 625 - 225 = 400$.`,
+        t`$a^2m^2 - b^2$ $= 25 \cdot \frac{16}{9} - 16$ $= \frac{256}{9}$, and $c^2 = \frac{256}{9}$. They are equal, so the line is a tangent.`,
+        t`Point of contact: $\left(-\dfrac{a^2m}{c}, -\dfrac{b^2}{c}\right)$, with $x = \dfrac{-25 \cdot \frac43}{-\frac{16}{3}}$ $= \dfrac{25}{4}$ and $y = \dfrac{-16}{-\frac{16}{3}}$ $= 3$: the point $\left(\dfrac{25}{4}, 3\right)$. Check: $16 \cdot \frac{625}{16} - 25 \cdot 9$ $= 625 - 225 = 400$.`,
       ],
       answer: t`The line is a tangent; it touches at $\left(\frac{25}{4}, 3\right)$.`,
       figure: {
@@ -44,21 +178,26 @@ export const c13: Concept = {
       },
     },
     figure: {
-      alt: "The hyperbola x²/9 − y²/5 = 1 and its two tangents of slope 1: y = x + 2, touching the left branch at (−9/2, −5/2), and y = x − 2, touching the right branch at (9/2, 5/2).",
+      alt: "The hyperbola x²/9 − y²/5 = 1. A dashed line y = mx + c of slope −1/2 meets it twice, once on each branch. The two tangents of slope 1 each meet it once: y = x + 2, touching the left branch at (−9/2, −5/2), and y = x − 2, touching the right branch at (9/2, 5/2). No line of slope −1/2 touches.",
       axes: "xy",
       view: { x: [-9, 9], y: [-6.5, 6.5] },
       elements: [
-        { kind: "hyperbola", centre: [0, 0], a: 3, b: 2.236, axis: "x", branch: 1, step: 1 },
-        { kind: "hyperbola", centre: [0, 0], a: 3, b: 2.236, axis: "x", branch: -1, step: 1 },
-        { kind: "label", at: [0.3, -5.6], label: "x²/9 − y²/5 = 1", labelAt: "e", step: 1 },
-        { kind: "line", through: [[-2, 0], [0, 2]], tone: "good", step: 2 },
-        { kind: "line", through: [[2, 0], [0, -2]], tone: "good", step: 2 },
-        { kind: "label", at: [-0.86, 3.71], label: "y = x + 2", labelAt: "w", tone: "good", step: 2 },
-        { kind: "label", at: [0.3, -2.3], label: "y = x − 2", labelAt: "e", tone: "good", step: 2 },
+        { kind: "hyperbola", centre: [0, 0], a: 3, b: 2.236, axis: "x", branch: 1 },
+        { kind: "hyperbola", centre: [0, 0], a: 3, b: 2.236, axis: "x", branch: -1 },
+        { kind: "label", at: [0.3, -5.6], label: "x²/9 − y²/5 = 1", labelAt: "e" },
+        { kind: "line", through: [[0, 1], [2, 0]], dashed: true, tone: "muted", step: 2 },
+        { kind: "point", at: [-6.36, 4.18], tone: "muted", step: 2 },
+        { kind: "point", at: [3.087, -0.544], tone: "muted", step: 2 },
+        { kind: "label", at: [5, -1.5], label: "y = mx + c", labelAt: "ne", tone: "muted", step: 2 },
+        { kind: "line", through: [[-2, 0], [0, 2]], tone: "good", step: 3 },
+        { kind: "line", through: [[2, 0], [0, -2]], tone: "good", step: 3 },
         { kind: "point", at: [4.5, 2.5], step: 3 },
         { kind: "point", at: [-4.5, -2.5], step: 3 },
         { kind: "label", at: [5, 1.6], label: "(9/2, 5/2)", labelAt: "e", step: 3 },
         { kind: "label", at: [-5, -1.6], label: "(−9/2, −5/2)", labelAt: "w", step: 3 },
+        { kind: "label", at: [-1.5, 4.4], label: "y = x + 2", labelAt: "w", tone: "good", step: 5 },
+        { kind: "label", at: [0.3, -2.3], label: "y = x − 2", labelAt: "e", tone: "good", step: 5 },
+        { kind: "label", at: [-6.5, 5.6], label: "slope −½", labelAt: "e", tone: "bad", step: 6 },
       ],
     },
     visualSpec: t`Drag $P$ along the hyperbola and its tangent follows, with $\frac{xx_1}{a^2} - \frac{yy_1}{b^2} = 1$ updating; a slider sets the slope $m$ and draws the two tangents $y = mx \pm \sqrt{a^2m^2 - b^2}$, which vanish once $|m| \le \frac{b}{a}$.`,

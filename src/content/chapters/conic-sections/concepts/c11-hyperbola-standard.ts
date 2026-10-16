@@ -1,6 +1,14 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/**
+ * The hyperbola x²/9 − y²/16 = 1 that the idea slide and most formal slides draw: a = 3, b = 4,
+ * e = 5/3, foci (±5, 0), directrices x = ±9/5, latus rectum ends (5, ±16/3). Its branches appear
+ * at `step`, or are there from the start.
+ */
+const standard = (step?: number): FigureElement[] =>
+  ([1, -1] as const).map((branch): FigureElement => ({ kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch, ...(step ? { step } : {}) }));
 
 export const c11: Concept = {
   id: "C11",
@@ -10,14 +18,258 @@ export const c11: Concept = {
     reveal: t`Sideways, along the $x$-axis. Put $y = 0$: $x^2 = 9$, so it cuts the $x$-axis at $(\pm 3, 0)$. Put $x = 0$: $-\frac{y^2}{16} = 1$ has no real solution, so it never meets the $y$-axis. In a hyperbola the **positive** term picks the axis; the sizes of the denominators don't.`,
   },
   explanation: {
-    intuition: t`A hyperbola is the conic with $e > 1$: every point is farther from the focus than from the directrix, in the fixed ratio $e$. Its two branches open away from each other along the **transverse axis**, and the curve never crosses the other axis. In $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ the minus sign does the work of the ellipse's plus: now $a^2e^2 = a^2 + b^2$, so the foci lie outside the vertices. Read $a$ and $b$ off the equation, find $e$, and every other part follows from the same few formulas.`,
-    formal: t`**The standard hyperbola** $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ is the locus $SP = e \cdot PM$ with focus $S(ae, 0)$, directrix $x = \frac{a}{e}$ and $e > 1$. Here $b^2 = a^2(e^2 - 1)$, so $a^2e^2 = a^2 + b^2$ and $e = \frac{\sqrt{a^2 + b^2}}{a}$.
-
-**Its parts.** Vertices $(\pm a, 0)$; transverse axis $2a$ along the $x$-axis; conjugate axis $2b$ along the $y$-axis; foci $(\pm ae, 0)$; directrices $x = \pm\frac{a}{e}$; latus rectum $\frac{2b^2}{a}$, the chord through a focus at right angles to the transverse axis, from $\left(ae, -\frac{b^2}{a}\right)$ to $\left(ae, \frac{b^2}{a}\right)$.
-
-**The minus sign picks the axis.** In $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1$ (the same as $\frac{x^2}{a^2} - \frac{y^2}{b^2} = -1$) the positive term is $y^2$, so the transverse axis $2b$ is on the $y$-axis: $a^2 = b^2(e^2 - 1)$, foci $(0, \pm be)$, directrices $y = \pm\frac{b}{e}$, latus rectum $\frac{2a^2}{b}$. Which denominator is bigger does not matter. A shifted hyperbola $\frac{(x - h)^2}{a^2} - \frac{(y - k)^2}{b^2} = 1$ has centre $(h, k)$: complete the squares, then read $a$ and $b$ as before.
-
-**Rectangular and conjugate hyperbolas.** If $a = b$ (as in $x^2 - y^2 = a^2$), $e^2 = 2$ and $e = \sqrt{2}$. The **conjugate** of $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ is $\frac{x^2}{a^2} - \frac{y^2}{b^2} = -1$: the two axes swap roles. With $a^2e^2 = a^2 + b^2$ and $b^2e'^2 = a^2 + b^2$, their eccentricities satisfy $\frac{1}{e^2} + \frac{1}{e'^2} = 1$.`,
+    intuition: [
+      t`Recall: a **hyperbola** is a conic with $e > 1$, so each point is farther from the focus than from the directrix.`,
+      t`It comes in two pieces, its **branches**, opening away from its **centre** $O$, the point midway between them.`,
+      t`This one is $\frac{x^2}{9} - \frac{y^2}{16} = 1$: it cuts the $x$-axis at $(\pm 3, 0)$, but never meets the $y$-axis.`,
+      t`Here $a^2 = 9$ and $b^2 = 16$, and a hyperbola's rule $a^2e^2 = a^2 + b^2$ gives $ae = 5$.`,
+      t`So its foci $(\pm 5, 0)$ lie outside the points $(\pm 3, 0)$, and $e = \frac{5}{3}$.`,
+      t`Read $a$ and $b$ off the equation and find $e$: every other part follows from the same few formulas.`,
+    ],
+    formal: [
+      {
+        title: "The standard hyperbola",
+        points: [
+          t`The **standard hyperbola** is $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, where $a > 0$ and $b > 0$.`,
+          t`Its focus is $S(ae, 0)$ and its directrix is the line $x = \frac{a}{e}$, where $e > 1$.`,
+          t`Each point $P$ on it has $SP = e \cdot PM$, where $PM$ runs straight across to the directrix.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 3 and b = 4: two branches opening left and right. Its focus S(ae, 0) lies to the right of the right vertex and its dashed directrix x = a/e between the centre and that vertex. A point P on the right branch, straight above S, is joined to S, and straight across to M on the directrix, with a right angle at M: SP is longer than PM.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-8, 8] },
+          elements: [
+            ...standard(1),
+            { kind: "label", at: [-0.6, 7.3], label: "x²/a² − y²/b² = 1", labelAt: "w", step: 1 },
+            { kind: "point", at: [5, 0], label: "S(ae, 0)", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "line", through: [[1.8, -8], [1.8, 8]], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [1.8, 7.3], label: "x = a/e", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "point", at: [5, 5.3333], label: "P", labelAt: "e", step: 3 },
+            { kind: "segment", from: [5, 0], to: [5, 5.3333], step: 3 },
+            { kind: "label", at: [5, 2.6667], label: "SP", labelAt: "e", step: 3 },
+            { kind: "point", at: [1.8, 5.3333], label: "M", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "angle", at: [1.8, 5.3333], from: 0, to: 90, step: 3 },
+            { kind: "segment", from: [5, 5.3333], to: [1.8, 5.3333], tone: "muted", step: 3 },
+            { kind: "label", at: [3.4, 5.3333], label: "PM", labelAt: "s", tone: "muted", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Vertices and axes",
+        points: [
+          t`Its **vertices**, where it meets the $x$-axis, are $(a, 0)$ and $(-a, 0)$.`,
+          t`It never meets the $y$-axis: putting $x = 0$ gives $y^2 = -b^2$, which has no real solution.`,
+          t`The **transverse axis** joins the vertices: it lies on the $x$-axis, and its length is $2a$.`,
+          t`The **conjugate axis** joins $(0, -b)$ to $(0, b)$ on the $y$-axis: its length is $2b$.`,
+          t`The branches open away from each other along the transverse axis.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1 with its vertices (a, 0) and (−a, 0) on the x-axis. The transverse axis joins them, length 2a; the conjugate axis runs up the y-axis from (0, −b) to (0, b), length 2b, which the curve never meets.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-8, 8] },
+          elements: [
+            ...standard(),
+            { kind: "point", at: [3, 0], label: "(a, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [-3, 0], label: "(−a, 0)", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [-3, 0], to: [3, 0], tone: "good", step: 3 },
+            { kind: "label", at: [0.6, 0], label: "2a", labelAt: "s", tone: "good", step: 3 },
+            { kind: "segment", from: [0, -4], to: [0, 4], tone: "good", step: 4 },
+            { kind: "point", at: [0, 4], label: "(0, b)", labelAt: "e", tone: "good", step: 4 },
+            { kind: "point", at: [0, -4], label: "(0, −b)", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [0, 2], label: "2b", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "The eccentricity from a and b",
+        points: [
+          t`For a hyperbola, $a$, $b$ and the eccentricity $e$ are linked by $b^2 = a^2(e^2 - 1)$.`,
+          t`Expand and rearrange: $a^2e^2 = a^2 + b^2$, so add the squares.`,
+          t`An ellipse subtracts them instead: there, $a^2e^2 = a^2 - b^2$.`,
+          t`So $ae = \sqrt{a^2 + b^2}$: swing that length onto the $x$-axis to reach the focus $S(ae, 0)$.`,
+          t`Divide by $a$: $e = \frac{\sqrt{a^2 + b^2}}{a}$.`,
+          t`Since $e > 1$, $ae > a$: the focus lies beyond the vertex $(a, 0)$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1. A right triangle has the side a along the x-axis from O and the side b straight down from there, so its slanting side, from O to (a, −b), has length ae = √(a² + b²). That side turns anticlockwise up onto the x-axis, ending at the focus S(ae, 0), beyond the vertex (a, 0).",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-8, 8] },
+          elements: [
+            ...standard(),
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "muted", step: 1 },
+            { kind: "label", at: [0.7, 0], label: "a", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "segment", from: [3, 0], to: [3, -4], tone: "muted", step: 1 },
+            { kind: "label", at: [3, -2], label: "b", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [3, -4], tone: "good", step: 2 },
+            { kind: "label", at: [1.5, -2], label: "ae", labelAt: "sw", tone: "good", step: 2 },
+            { kind: "turn", r: 5, from: -53.13, to: 0, step: 4 },
+            { kind: "point", at: [5, 0], label: "S(ae, 0)", labelAt: "ne", step: 4 },
+            { kind: "point", at: [3, 0], label: "(a, 0)", labelAt: "nw", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Foci and directrices",
+        points: [
+          t`The **foci** are $S(ae, 0)$ and $S'(-ae, 0)$, on the transverse axis.`,
+          t`They are $2ae$ apart, outside the vertices, since $ae > a$.`,
+          t`The **directrices** are the lines $x = \frac{a}{e}$ and $x = -\frac{a}{e}$, one for each focus.`,
+          t`They lie between the centre and the vertices, since $\frac{a}{e} < a$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1 with its vertices (±a, 0). The foci S(ae, 0) and S′(−ae, 0) lie outside the vertices, 2ae apart; the dashed directrices x = ±a/e lie between the centre and the vertices.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-8, 8] },
+          elements: [
+            ...standard(),
+            { kind: "point", at: [3, 0], tone: "muted" },
+            { kind: "point", at: [-3, 0], tone: "muted" },
+            { kind: "point", at: [5, 0], label: "S(ae, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [-5, 0], label: "S′(−ae, 0)", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [-5, -7], to: [5, -7], tone: "good", step: 2 },
+            { kind: "label", at: [3.6, -7], label: "2ae", labelAt: "n", tone: "good", step: 2 },
+            { kind: "line", through: [[1.8, -8], [1.8, 8]], dashed: true, tone: "muted", step: 3 },
+            { kind: "line", through: [[-1.8, -8], [-1.8, 8]], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [1.8, 7.3], label: "x = a/e", labelAt: "e", step: 3 },
+            { kind: "label", at: [-1.8, 7.3], label: "x = −a/e", labelAt: "w", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "The latus rectum",
+        points: [
+          t`A **chord** is a segment joining two points of the hyperbola.`,
+          t`A **latus rectum** is a chord through a focus, at right angles to the transverse axis.`,
+          t`Put $x = ae$ in the equation: $\frac{y^2}{b^2} = e^2 - 1$, which is $\frac{b^2}{a^2}$.`,
+          t`So $y = \pm\frac{b^2}{a}$, and its ends are $\left(ae, \pm\frac{b^2}{a}\right)$.`,
+          t`Its length is $\frac{2b^2}{a}$: twice the height $\frac{b^2}{a}$ of its end.`,
+          t`There is one through each focus, and both have that length.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1 with its foci S and S′. A chord joins two points of the curve, one on each branch. The latus rectum through S is the vertical chord from (ae, −b²/a) to (ae, b²/a), of length 2b²/a; a second one runs through S′.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-8, 8] },
+          elements: [
+            ...standard(),
+            { kind: "point", at: [5, 0], label: "S", labelAt: "nw", tone: "muted" },
+            { kind: "point", at: [-5, 0], label: "S′", labelAt: "ne", tone: "muted" },
+            { kind: "segment", from: [-3.75, 3], to: [3.75, 3], tone: "muted", step: 1 },
+            { kind: "segment", from: [5, -5.3333], to: [5, 5.3333], tone: "good", step: 2 },
+            { kind: "point", at: [5, 5.3333], label: "(ae, b²/a)", labelAt: "nw", tone: "good", step: 4 },
+            { kind: "point", at: [5, -5.3333], label: "(ae, −b²/a)", labelAt: "sw", tone: "good", step: 4 },
+            { kind: "label", at: [5, 2.6667], label: "2b²/a", labelAt: "e", tone: "good", step: 5 },
+            { kind: "segment", from: [-5, -5.3333], to: [-5, 5.3333], tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The positive term picks the axis",
+        points: [
+          t`In $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1$ the positive term is $y^2$, so the branches open up and down.`,
+          t`This is the same curve as $\frac{x^2}{a^2} - \frac{y^2}{b^2} = -1$.`,
+          t`Its transverse axis, of length $2b$, lies on the $y$-axis, even when $a^2 > b^2$.`,
+          t`Now $a$ and $b$ swap roles: $a^2 = b^2(e^2 - 1)$.`,
+          t`Its foci are $(0, \pm be)$, and its directrices are the lines $y = \pm\frac{b}{e}$.`,
+          t`Its latus rectum has length $\frac{2a^2}{b}$.`,
+        ],
+        figure: {
+          alt: "The hyperbola y²/b² − x²/a² = 1, drawn with b = 3 and a = 4, so a² is the bigger denominator: its branches still open up and down. The transverse axis, length 2b, runs up the y-axis between the vertices (0, ±b). The foci (0, ±be) lie beyond them, the dashed directrices y = ±b/e between them, and the latus rectum, length 2a²/b, crosses the upper focus.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-8, 8] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "y", branch: 1, step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "y", branch: -1, step: 1 },
+            { kind: "label", at: [-8.8, 0.9], label: "y²/b² − x²/a² = 1", labelAt: "e", step: 1 },
+            { kind: "segment", from: [0, -3], to: [0, 3], tone: "good", step: 3 },
+            { kind: "point", at: [0, 3], label: "(0, b)", labelAt: "se", tone: "good", step: 3 },
+            { kind: "point", at: [0, -3], label: "(0, −b)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [0, 1], label: "2b", labelAt: "w", tone: "good", step: 3 },
+            { kind: "point", at: [0, 5], label: "S(0, be)", labelAt: "se", step: 5 },
+            { kind: "point", at: [0, -5], label: "S′(0, −be)", labelAt: "ne", step: 5 },
+            { kind: "line", through: [[-9, 1.8], [9, 1.8]], dashed: true, tone: "muted", step: 5 },
+            { kind: "line", through: [[-9, -1.8], [9, -1.8]], dashed: true, tone: "muted", step: 5 },
+            { kind: "label", at: [8.8, 1.8], label: "y = b/e", labelAt: "nw", step: 5 },
+            { kind: "label", at: [8.8, -1.8], label: "y = −b/e", labelAt: "sw", step: 5 },
+            { kind: "segment", from: [-5.3333, 5], to: [5.3333, 5], tone: "good", step: 6 },
+            { kind: "label", at: [-2.6667, 5], label: "2a²/b", labelAt: "n", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "A hyperbola with centre (h, k)",
+        points: [
+          t`Some hyperbolas are centred away from the origin; their equations have $x$ and $y$ terms too.`,
+          t`Complete the squares to write it as $\frac{(x - h)^2}{a^2} - \frac{(y - k)^2}{b^2} = 1$.`,
+          t`Its centre is $(h, k)$, where both brackets are $0$.`,
+          t`Read $a$ and $b$ from the denominators, and find $e$ as before.`,
+          t`Then measure from the centre: the foci are $(h \pm ae, k)$.`,
+        ],
+        figure: {
+          alt: "A hyperbola with centre (h, k) = (4, 2), away from the origin, opening left and right. Dashed lines through the centre, parallel to the axes, are its own axes. The semi-transverse axis a runs from the centre to the right vertex, and the foci (h + ae, k) and (h − ae, k) lie on the line y = k, outside the vertices.",
+          axes: "xy",
+          view: { x: [-6, 14], y: [-6, 10] },
+          elements: [
+            { kind: "hyperbola", centre: [4, 2], a: 3, b: 4, axis: "x", branch: 1, step: 1 },
+            { kind: "hyperbola", centre: [4, 2], a: 3, b: 4, axis: "x", branch: -1, step: 1 },
+            { kind: "line", through: [[4, -6], [4, 10]], dashed: true, tone: "muted", step: 3 },
+            { kind: "line", through: [[-6, 2], [14, 2]], dashed: true, tone: "muted", step: 3 },
+            { kind: "point", at: [4, 2], label: "(h, k)", labelAt: "nw", step: 3 },
+            { kind: "segment", from: [4, 2], to: [7, 2], tone: "good", step: 4 },
+            { kind: "label", at: [5.5, 2], label: "a", labelAt: "s", tone: "good", step: 4 },
+            { kind: "point", at: [9, 2], label: "(h + ae, k)", labelAt: "ne", step: 5 },
+            { kind: "point", at: [-1, 2], label: "(h − ae, k)", labelAt: "nw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The rectangular hyperbola",
+        points: [
+          t`When $a = b$, the equation becomes $x^2 - y^2 = a^2$.`,
+          t`Then $b^2 = a^2(e^2 - 1)$ gives $e^2 - 1 = 1$, so $e^2 = 2$ and $e = \sqrt{2}$.`,
+          t`Recall: this is a **rectangular hyperbola**, whose branches open at right angles.`,
+        ],
+        figure: {
+          alt: "The hyperbola x² − y² = a², drawn with a = 3, with equal semi-axes a and b drawn from the centre. Dashed lines y = x and y = −x through the centre, which the branches spread along, meet at a right angle.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-7, 7] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 3, axis: "x", branch: 1, step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 3, axis: "x", branch: -1, step: 1 },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "a", labelAt: "n", tone: "good", step: 1 },
+            { kind: "segment", from: [0, 0], to: [0, 3], label: "b", labelAt: "e", tone: "good", step: 1 },
+            { kind: "line", through: [[-7, -7], [7, 7]], dashed: true, tone: "muted", step: 3 },
+            { kind: "line", through: [[-7, 7], [7, -7]], dashed: true, tone: "muted", step: 3 },
+            { kind: "angle", at: [0, 0], from: 135, to: 225, step: 3 },
+          ],
+        },
+      },
+      {
+        title: "The conjugate hyperbola",
+        points: [
+          t`Take the hyperbola $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, with eccentricity $e$.`,
+          t`Its **conjugate hyperbola** is $\frac{x^2}{a^2} - \frac{y^2}{b^2} = -1$: the two axes swap roles.`,
+          t`The hyperbola has $a^2e^2 = a^2 + b^2$, and foci $(\pm ae, 0)$.`,
+          t`Its conjugate, with eccentricity $e'$, has $b^2e'^2 = a^2 + b^2$, and foci $(0, \pm be')$.`,
+          t`Divide each by $a^2 + b^2$ and add: $\frac{1}{e^2} + \frac{1}{e'^2} = 1$.`,
+          t`So the two eccentricities are equal only when $a = b$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 3 and b = 2, opening left and right with foci (±ae, 0); then its conjugate x²/a² − y²/b² = −1, opening up and down, with foci (0, ±be′). All four foci are the same distance, √(a² + b²), from the centre.",
+          axes: "xy",
+          view: { x: [-7, 7], y: [-6, 6] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 2, axis: "x", branch: 1, step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 2, axis: "x", branch: -1, step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 2, b: 3, axis: "y", branch: 1, tone: "good", step: 2 },
+            { kind: "hyperbola", centre: [0, 0], a: 2, b: 3, axis: "y", branch: -1, tone: "good", step: 2 },
+            { kind: "point", at: [3.6056, 0], label: "(ae, 0)", labelAt: "ne", step: 3 },
+            { kind: "point", at: [-3.6056, 0], label: "(−ae, 0)", labelAt: "nw", step: 3 },
+            { kind: "point", at: [0, 3.6056], label: "(0, be′)", labelAt: "e", tone: "good", step: 4 },
+            { kind: "point", at: [0, -3.6056], label: "(0, −be′)", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`For the hyperbola $\frac{x^2}{4} - \frac{y^2}{12} = 1$, find the lengths of the axes, the eccentricity, the foci, the directrices and the length of the latus rectum.`,
       steps: [
@@ -45,18 +297,18 @@ export const c11: Concept = {
       },
     },
     figure: {
-      alt: "The hyperbola x²/9 − y²/16 = 1: two branches opening left and right. The vertices (3, 0) and (−3, 0) appear first, then the foci (5, 0) and (−5, 0) outside them, then the latus rectum through (5, 0), a vertical chord of length 2b²/a = 32/3.",
+      alt: "The hyperbola x²/9 − y²/16 = 1: two branches opening left and right, either side of the centre O. The points (3, 0) and (−3, 0), where it cuts the x-axis, appear next, then the foci (5, 0) and (−5, 0) outside them.",
       axes: "xy",
       view: { x: [-9, 9], y: [-8, 8] },
       elements: [
-        { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: 1, step: 1 },
-        { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: -1, step: 1 },
-        { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "nw", step: 2 },
-        { kind: "point", at: [-3, 0], label: "(−3, 0)", labelAt: "ne", step: 2 },
-        { kind: "point", at: [5, 0], label: "S(5, 0)", labelAt: "ne", tone: "good", step: 3 },
-        { kind: "point", at: [-5, 0], label: "S′(−5, 0)", labelAt: "nw", tone: "good", step: 3 },
-        { kind: "segment", from: [5, -5.3333], to: [5, 5.3333], tone: "good", step: 4 },
-        { kind: "label", at: [5, 5.3333], label: "LR = 32/3", labelAt: "e", tone: "good", step: 4 },
+        ...standard(1),
+        { kind: "label", at: [-6.2, -6.5], label: "branch", labelAt: "w", tone: "muted", step: 2 },
+        { kind: "label", at: [6.2, -6.5], label: "branch", labelAt: "e", tone: "muted", step: 2 },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "sw", tone: "muted", step: 2 },
+        { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "nw", step: 3 },
+        { kind: "point", at: [-3, 0], label: "(−3, 0)", labelAt: "ne", step: 3 },
+        { kind: "point", at: [5, 0], label: "S(5, 0)", labelAt: "ne", tone: "good", step: 5 },
+        { kind: "point", at: [-5, 0], label: "S′(−5, 0)", labelAt: "nw", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag sliders for $a$ and $b$ and watch both branches, the foci $(\pm ae, 0)$, the directrices and the latus rectum move; flip the sign on the right-hand side to swap to the conjugate hyperbola opening along the $y$-axis.`,

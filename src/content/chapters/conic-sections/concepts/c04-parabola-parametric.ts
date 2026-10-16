@@ -1,6 +1,13 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The parabola y² = 4ax drawn from y = −ymax to ymax, as 61 points. */
+const parabola = (a: number, ymax: number): Pt[] =>
+  Array.from({ length: 61 }, (_, i) => {
+    const y = -ymax + (i * ymax) / 30;
+    return [+((y * y) / (4 * a)).toFixed(3), +y.toFixed(3)];
+  });
 
 export const c04: Concept = {
   id: "C04",
@@ -10,23 +17,170 @@ export const c04: Concept = {
     reveal: t`$4$ units. The focus is $S(5, 0)$ and the directrix is $x = -5$. On a parabola $SP = PM$, the distance to the directrix, and that distance is $x_1 + 5$. So $x_1 + 5 = 9$ and $x_1 = 4$. (Only now do you need a root: $y_1^2 = 80$, so $P$ is $(4, \pm 4\sqrt{5})$.)`,
   },
   explanation: {
-    intuition: t`One number $t$ is enough to name any point of $y^2 = 4ax$: the point $(at^2, 2at)$. As $t$ runs through the reals, the point slides along the whole parabola: above the axis for $t > 0$, below it for $t < 0$, at the vertex for $t = 0$. And because every point is as far from the focus as from the directrix $x = -a$, its focal distance is just $x_1 + a$: no distance formula needed.`,
-    formal: t`**The parametric point.** For every real $t$, $P(at^2, 2at)$ lies on $y^2 = 4ax$, since $(2at)^2 = 4a \cdot at^2$. So $x = at^2$, $y = 2at$ are the parametric equations, and $t$ is the **parameter** of $P$.
-
-**The parameter of a point** $(x_1, y_1)$: from $y_1 = 2at$, $t = \dfrac{y_1}{2a}$. Use $y$, not $x$: $x_1 = at^2$ fixes only $t^2$ and loses the sign. $t$ has the sign of $y_1$.
-
-**Focal distance.** $SP = PM$, the distance from $P$ to the directrix $x = -a$. So $$SP = a + x_1 = a(1 + t^2).$$
-
-**Points with focal distance $d$:** $x_1 = d - a$, then $y_1^2 = 4ax_1$ gives two points $(x_1, \pm y_1)$, mirror images in the axis.
-
-**First read $a$ correctly.** Make the coefficient of $y^2$ equal to 1, then compare the coefficient of $x$ with $4a$: $5y^2 = 24x$ is $y^2 = \frac{24}{5}x$, so $4a = \frac{24}{5}$ and $a = \frac{6}{5}$.`,
+    intuition: [
+      t`Recall: every point of the parabola $y^2 = 4ax$ is as far from the focus $S(a, 0)$ as from the directrix $x = -a$.`,
+      t`One number $t$ is enough to name any point of it: the point $(at^2, 2at)$.`,
+      t`On $y^2 = 4x$, $a = 1$: $t = 2$ gives $P(4, 4)$, and $t = -1$ gives $Q(1, -2)$.`,
+      t`As $t$ runs through all the real numbers, the point slides along the whole parabola.`,
+      t`It is below the axis, the $x$-axis, for $t < 0$, at the vertex $O$ for $t = 0$, and above it for $t > 0$.`,
+      t`So the point $(x_1, y_1)$ is $x_1 + a$ from the focus, with no distance formula: for $P$, $4 + 1 = 5$.`,
+    ],
+    formal: [
+      {
+        title: "The parametric point",
+        points: [
+          t`Take any real number $t$, and the point $P(at^2, 2at)$.`,
+          t`Square its $y$-coordinate: $(2at)^2 = 4a^2t^2$.`,
+          t`Multiply its $x$-coordinate by $4a$: $4a \cdot at^2 = 4a^2t^2$, the same.`,
+          t`So $P$ lies on $y^2 = 4ax$, whatever $t$ is.`,
+          t`A **parameter** is one number that fixes a point: here it is $t$, the parameter of $P$.`,
+          t`Equations giving $x$ and $y$ in terms of a parameter are **parametric equations**: here $x = at^2$, $y = 2at$.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 4ax with the point P(at², 2at). Squaring its y-coordinate gives (2at)² = 4a²t², and 4a times its x-coordinate gives 4a · at² = 4a²t², the same, so P is on the parabola. Other values of t give other points on it: t = −1 below the axis and t = 0 at the vertex. The number t is the parameter of P, and x = at², y = 2at are the parametric equations.",
+          axes: "xy",
+          view: { x: [-2, 8], y: [-4.8, 4.8] },
+          elements: [
+            { kind: "curve", points: parabola(1, 4.5) },
+            { kind: "label", at: [5.06, 4.5], label: "y² = 4ax", labelAt: "e" },
+            { kind: "point", at: [2.25, 3], label: "P(at², 2at)", labelAt: "nw", step: 1 },
+            { kind: "label", at: [5.3, 1.5], label: "(2at)² = 4a²t²", labelAt: "n", tone: "good", step: 2 },
+            { kind: "label", at: [5.3, 0.7], label: "4a · at² = 4a²t²", labelAt: "n", tone: "good", step: 3 },
+            { kind: "point", at: [1, -2], label: "t = −1", labelAt: "e", tone: "good", step: 4 },
+            { kind: "point", at: [0, 0], label: "t = 0", labelAt: "nw", tone: "good", step: 4 },
+            { kind: "label", at: [2.25, 3], label: "parameter t", labelAt: "se", tone: "good", step: 5 },
+            { kind: "label", at: [5.3, -1.2], label: "x = at²", labelAt: "n", tone: "good", step: 6 },
+            { kind: "label", at: [5.3, -2], label: "y = 2at", labelAt: "n", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The parameter of a point",
+        points: [
+          t`To find the parameter of a point $(x_1, y_1)$, solve $y_1 = 2at$: $t = \frac{y_1}{2a}$.`,
+          t`On $y^2 = 8x$, $a = 2$, so $P(8, 8)$ has $t = \frac{8}{4} = 2$.`,
+          t`Don't use $x_1 = at^2$: it fixes only $t^2$, so it loses the sign of $t$.`,
+          t`$Q(8, -8)$ has the same $x_1$, but $t = \frac{-8}{4} = -2$.`,
+          t`So $t$ has the sign of $y_1$: positive above the axis, negative below it.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 8x, where a = 2. The parameter of a point is t = y₁/(2a). The point P(8, 8) has t = 2. The dashed line x = 8 through P also meets the parabola at Q(8, −8): x = 8 fixes only t² = 4, and from its y-coordinate Q has t = −2. Points above the axis have positive t, points below it negative t.",
+          axes: "xy",
+          view: { x: [-4, 14], y: [-10, 10] },
+          elements: [
+            { kind: "curve", points: parabola(2, 9.4) },
+            { kind: "label", at: [2.5, -2.5], label: "y² = 8x", labelAt: "e" },
+            { kind: "label", at: [-0.5, 8.6], label: "t = y₁/(2a)", labelAt: "w", tone: "good", step: 1 },
+            { kind: "point", at: [8, 8], label: "P(8, 8), t = 2", labelAt: "se", tone: "good", step: 2 },
+            { kind: "segment", from: [8, 8], to: [8, -8], tone: "bad", dashed: true, step: 3 },
+            { kind: "label", at: [7.7, 2], label: "x = 8: t² = 4 only", labelAt: "w", tone: "bad", step: 3 },
+            { kind: "point", at: [8, -8], label: "Q(8, −8), t = −2", labelAt: "ne", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Focal distance",
+        points: [
+          t`The **focal distance** of a point $P(x_1, y_1)$ on the parabola is $SP$, its distance from the focus.`,
+          t`Recall: on a parabola $SP = PM$, the distance from $P$ to the directrix.`,
+          t`The directrix $x = -a$ is $a$ to the left of the $y$-axis, and $P$ is $x_1$ to the right of it.`,
+          t`So $PM = a + x_1$, and so $SP = a + x_1$ too.`,
+          t`Put $x_1 = at^2$: $SP = a + at^2 = a(1 + t^2)$.`,
+          t`It is not just $x_1$: that is the distance to the $y$-axis, not to the directrix.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 4ax with focus S(a, 0) and the dashed directrix x = −a. The point P(x₁, y₁) is joined to the focus by SP and to M(−a, y₁) on the directrix by the dashed PM. PM is a from the directrix to the y-axis, then x₁ on to P, so PM = a + x₁, and SP equals it: SP = a + x₁ = a(1 + t²). The x₁ part alone, marked from the y-axis to P, is only the distance to the y-axis.",
+          axes: "xy",
+          view: { x: [-2.5, 7], y: [-4.8, 4.8] },
+          elements: [
+            { kind: "curve", points: parabola(1, 4.5) },
+            { kind: "label", at: [5.06, -4.5], label: "y² = 4ax", labelAt: "w" },
+            { kind: "line", through: [[-1, 0], [-1, 1]], tone: "muted", dashed: true },
+            { kind: "label", at: [-1, -3.8], label: "x = −a", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [1, 0] },
+            { kind: "label", at: [1, -0.55], label: "S(a, 0)", labelAt: "se" },
+            { kind: "point", at: [3.063, 3.5], label: "P(x₁, y₁)", labelAt: "e" },
+            { kind: "segment", from: [1, 0], to: [3.063, 3.5], tone: "good", step: 1 },
+            { kind: "label", at: [2.03, 1.75], label: "SP", labelAt: "w", tone: "good", step: 1 },
+            { kind: "segment", from: [-1, 3.5], to: [3.063, 3.5], tone: "good", dashed: true, step: 2 },
+            { kind: "point", at: [-1, 3.5], label: "M", labelAt: "w", step: 2 },
+            { kind: "label", at: [-0.5, 3.5], label: "a", labelAt: "n", tone: "good", step: 3 },
+            { kind: "label", at: [1.53, 3.5], label: "x₁", labelAt: "n", tone: "good", step: 3 },
+            { kind: "label", at: [2.6, 1.6], label: "SP = PM = a + x₁", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [2.6, 0.9], label: "= a(1 + t²)", labelAt: "e", tone: "good", step: 5 },
+            { kind: "segment", from: [0, 3.5], to: [3.063, 3.5], tone: "bad", step: 6 },
+            { kind: "label", at: [2.9, -2.2], label: "x₁ alone: to the y-axis", labelAt: "e", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Points at a given focal distance",
+        points: [
+          t`To find the points whose focal distance is $d$, set $a + x_1 = d$.`,
+          t`So $x_1 = d - a$: the points lie on the line $x = d - a$.`,
+          t`Put it in $y_1^2 = 4ax_1$: that gives two values, $y_1$ and $-y_1$.`,
+          t`Each point is $d$ from the directrix, so $d$ from the focus too.`,
+          t`So there are two points, $(x_1, \pm y_1)$, mirror images in the axis.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 4ax with focus S(a, 0) and the dashed directrix x = −a. The dashed line x = d − a meets the parabola at two points, (x₁, y₁) above the axis and (x₁, −y₁) below it. Each is d from the directrix and d from the focus. They are mirror images in the axis.",
+          axes: "xy",
+          view: { x: [-3, 8.5], y: [-5.8, 5.8] },
+          elements: [
+            { kind: "curve", points: parabola(1, 5.4) },
+            { kind: "label", at: [7.29, -5.4], label: "y² = 4ax", labelAt: "w" },
+            { kind: "line", through: [[-1, 0], [-1, 1]], tone: "muted", dashed: true },
+            { kind: "label", at: [-1, -2], label: "x = −a", labelAt: "w", tone: "muted" },
+            { kind: "point", at: [1, 0], label: "S", labelAt: "sw" },
+            { kind: "line", through: [[4, 0], [4, 1]], tone: "muted", dashed: true, step: 2 },
+            { kind: "label", at: [4, 5.3], label: "x = d − a", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "point", at: [4, 4], label: "(x₁, y₁)", labelAt: "e", tone: "good", step: 3 },
+            { kind: "point", at: [4, -4], label: "(x₁, −y₁)", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [-1, 4], to: [4, 4], tone: "good", dashed: true, step: 4 },
+            { kind: "label", at: [1.5, 4], label: "d", labelAt: "n", tone: "good", step: 4 },
+            { kind: "segment", from: [-1, -4], to: [4, -4], tone: "good", dashed: true, step: 4 },
+            { kind: "label", at: [1.5, -4], label: "d", labelAt: "s", tone: "good", step: 4 },
+            { kind: "segment", from: [1, 0], to: [4, 4], tone: "good", step: 4 },
+            { kind: "label", at: [2.5, 2], label: "d", labelAt: "se", tone: "good", step: 4 },
+            { kind: "segment", from: [1, 0], to: [4, -4], tone: "good", step: 4 },
+            { kind: "label", at: [2.5, -2], label: "d", labelAt: "ne", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "First read off a",
+        points: [
+          t`Every result here uses $a$, so find $a$ correctly first.`,
+          t`The **coefficient** of $y^2$ is the number multiplying it: divide through to make it $1$.`,
+          t`$5y^2 = 24x$ divided by $5$ is $y^2 = \frac{24}{5}x$.`,
+          t`Now compare with $y^2 = 4ax$: the coefficient of $x$ is $4a$, so $4a = \frac{24}{5}$.`,
+          t`So $a$ is a quarter of it: $a = \frac{6}{5}$, the distance from the vertex to the focus.`,
+        ],
+        figure: {
+          alt: "The parabola 5y² = 24x. Divided by 5 it is y² = (24/5)x, so 4a = 24/5 and a = 6/5: the focus S is 6/5 from the vertex O, and the dashed directrix is x = −6/5.",
+          axes: "xy",
+          view: { x: [-3, 7], y: [-5, 5] },
+          elements: [
+            { kind: "curve", points: parabola(1.2, 4.6) },
+            { kind: "label", at: [4.41, 4.6], label: "5y² = 24x", labelAt: "e" },
+            { kind: "label", at: [4.6, 2.4], label: "y² = (24/5)x", labelAt: "n", tone: "good", step: 3 },
+            { kind: "label", at: [4.6, 1.6], label: "4a = 24/5", labelAt: "n", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [1.2, 0], tone: "good", step: 5 },
+            { kind: "point", at: [1.2, 0], label: "S", labelAt: "n", step: 5 },
+            { kind: "label", at: [4.6, 0.8], label: "a = 6/5", labelAt: "n", tone: "good", step: 5 },
+            { kind: "line", through: [[-1.2, 0], [-1.2, 1]], tone: "muted", dashed: true, step: 5 },
+            { kind: "label", at: [-1.2, -3.8], label: "x = −6/5", labelAt: "w", tone: "muted", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the point on the parabola $y^2 = 12x$ whose parameter is $t = -3$, and its focal distance.`,
       steps: [
         t`Compare with $y^2 = 4ax$: $4a = 12$, so $a = 3$. The focus is $S(3, 0)$ and the directrix is $x = -3$.`,
         t`The point is $(at^2, 2at)$: $x = 3 \cdot 9 = 27$ and $y = 2 \cdot 3 \cdot (-3) = -18$. So $P = (27, -18)$, below the axis because $t < 0$.`,
-        t`Focal distance: $SP = PM = a + x_1 = 3 + 27 = 30$.`,
-        t`Check with the distance formula: $SP = \sqrt{(27 - 3)^2 + (-18)^2} = \sqrt{576 + 324} = \sqrt{900} = 30$.`,
+        t`Focal distance: $SP = PM = a + x_1$ $= 3 + 27 = 30$.`,
+        t`Check with the distance formula: $SP = \sqrt{(27 - 3)^2 + (-18)^2}$ $= \sqrt{576 + 324}$ $= \sqrt{900} = 30$.`,
       ],
       answer: t`$P = (27, -18)$, and its focal distance is $30$.`,
       figure: {
@@ -50,7 +204,7 @@ export const c04: Concept = {
       },
     },
     figure: {
-      alt: "The parabola y² = 4x with focus S(1, 0) and the dashed directrix x = −1. The point P(4, 4) has parameter t = 2 and the point Q(1, −2) has parameter t = −1, below the axis. From P, the segment PM to M(−1, 4) on the directrix and the segment SP to the focus are both 5 long.",
+      alt: "The parabola y² = 4x with focus S(1, 0) and the dashed directrix x = −1. The point P(4, 4) has parameter t = 2 and the point Q(1, −2) has parameter t = −1, below the axis. The vertex O has t = 0. From P, the segment PM to M(−1, 4) on the directrix and the segment SP to the focus are both 5 long.",
       axes: "xy",
       view: { x: [-3.5, 8], y: [-5.5, 5.5] },
       elements: [
@@ -60,13 +214,14 @@ export const c04: Concept = {
         { kind: "label", at: [-1, -4.8], label: "x = −1", labelAt: "w", tone: "muted", step: 1 },
         { kind: "point", at: [1, 0], step: 1 },
         { kind: "label", at: [1, -0.55], label: "S(1, 0)", labelAt: "se", step: 1 },
-        { kind: "point", at: [4, 4], label: "P(4, 4), t = 2", labelAt: "se", step: 2 },
-        { kind: "point", at: [1, -2], label: "Q(1, −2), t = −1", labelAt: "ne", step: 2 },
-        { kind: "segment", from: [-1, 4], to: [4, 4], tone: "good", dashed: true, step: 3 },
-        { kind: "point", at: [-1, 4], label: "M(−1, 4)", labelAt: "w", step: 3 },
-        { kind: "label", at: [1.5, 4], label: "PM = 5", labelAt: "n", tone: "good", step: 3 },
-        { kind: "segment", from: [1, 0], to: [4, 4], tone: "good", step: 3 },
-        { kind: "label", at: [2.5, 2], label: "SP = 5", labelAt: "se", tone: "good", step: 3 },
+        { kind: "point", at: [4, 4], label: "P(4, 4), t = 2", labelAt: "se", step: 3 },
+        { kind: "point", at: [1, -2], label: "Q(1, −2), t = −1", labelAt: "ne", step: 3 },
+        { kind: "point", at: [0, 0], label: "t = 0", labelAt: "nw", tone: "good", step: 5 },
+        { kind: "segment", from: [-1, 4], to: [4, 4], tone: "good", dashed: true, step: 6 },
+        { kind: "point", at: [-1, 4], label: "M(−1, 4)", labelAt: "w", step: 6 },
+        { kind: "label", at: [1.5, 4], label: "PM = 5", labelAt: "n", tone: "good", step: 6 },
+        { kind: "segment", from: [1, 0], to: [4, 4], tone: "good", step: 6 },
+        { kind: "label", at: [2.5, 2], label: "SP = 5", labelAt: "se", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag the parameter $t$ to slide $P(at^2, 2at)$ along $y^2 = 4ax$; the segments $SP$ and $PM$ to the directrix stay equal, and a readout shows $SP = a + x_1 = a(1 + t^2)$.`,

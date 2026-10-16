@@ -1,6 +1,36 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+const r3 = (v: number) => Math.round(v * 1000) / 1000;
+
+/** The parabola y² = 4x (focus S(1, 0), directrix x = −1, e = 1) out to x = 5.5: the upper half for `s = 1`, the lower for `s = −1`. */
+const parabola = (s: 1 | -1): Pt[] =>
+  Array.from({ length: 61 }, (_, i) => {
+    const x = (5.5 * i) / 60;
+    return [r3(x), r3(s * 2 * Math.sqrt(x))];
+  });
+
+/**
+ * The ellipse (e < 1) with focus `S` that is `p` from its directrix, `dir` being the direction (degrees)
+ * from the directrix to the focus: the points S + r(cos, sin) with r = ep / (1 − e cos φ).
+ */
+function focalEllipse(S: Pt, dir: number, p: number, e: number): Pt[] {
+  return Array.from({ length: 121 }, (_, i) => {
+    const phi = (2 * Math.PI * i) / 120;
+    const r = (e * p) / (1 - e * Math.cos(phi));
+    const a = phi + (dir * Math.PI) / 180;
+    return [r3(S[0] + r * Math.cos(a)), r3(S[1] + r * Math.sin(a))];
+  });
+}
+
+/** The focus S(1, 0) and directrix x = −1 that the idea slide and three formal slides share. */
+const directrix: FigureElement = { kind: "line", through: [[-1, -1], [-1, 1]], tone: "muted" };
+const directrixLabel = (at: Pt = [-1, 3.6]): FigureElement => ({ kind: "label", at, label: "x = −1", labelAt: "w", tone: "muted" });
+const focus: FigureElement = { kind: "point", at: [1, 0], label: "S(1, 0)", labelAt: "ne" };
+/** The three curves from S(1, 0) and x = −1: e = ½, 1, 2. */
+const ellipseHalf: FigureElement = { kind: "ellipse", centre: [1.667, 0], rx: 1.333, ry: 1.155 };
+const hyperbolaTwo = (branch: 1 | -1, step: number): FigureElement =>
+  ({ kind: "hyperbola", centre: [-1.667, 0], a: 1.333, b: 2.309, axis: "x", branch, tone: "bad", step });
 
 export const c01: Concept = {
   id: "C01",
@@ -10,24 +40,140 @@ export const c01: Concept = {
     reveal: t`A parabola. For $P(x, y)$: $SP^2 = x^2 + (y + 3)^2$ and the distance to $y = 3$ is $|y - 3|$. Setting them equal and squaring, $x^2 + y^2 + 6y + 9 = y^2 - 6y + 9$, so $x^2 = -12y$. A fixed point, a fixed line and a fixed ratio of distances: that is every conic. Here the ratio is $1$.`,
   },
   explanation: {
-    intuition: t`Fix a point $S$, the **focus**, and a line, the **directrix**. Let $P$ move so that its distance from $S$ is always $e$ times its distance from the line: $SP = e \cdot PM$. If $e = 1$ the two distances are equal and $P$ traces a parabola. If $e < 1$, $P$ stays nearer the focus and the curve closes up into an ellipse. If $e > 1$, $P$ is allowed farther from the focus than from the line, and the curve opens into the two branches of a hyperbola.`,
-    formal: t`**Definition.** A conic is the path of a point $P$ that moves so that
-$$\frac{SP}{PM} = e,$$
-where $S$ is the focus, $M$ is the foot of the perpendicular from $P$ to the directrix, and the constant $e > 0$ is the eccentricity: the distance from the focus on top, the distance from the directrix below.
-
-**Naming by $e$.** $e = 1$: parabola. $0 < e < 1$: ellipse. $e > 1$: hyperbola. A rectangular hyperbola has $e = \sqrt{2}$.
-
-**The equation.** For the focus $S(x_1, y_1)$ and the directrix $lx + my + n = 0$, take $P(x, y)$:
-$$SP^2 = (x - x_1)^2 + (y - y_1)^2, \qquad PM = \frac{|lx + my + n|}{\sqrt{l^2 + m^2}}.$$
-Square $SP = e \cdot PM$: $(x - x_1)^2 + (y - y_1)^2 = e^2 \cdot \dfrac{(lx + my + n)^2}{l^2 + m^2}$. Then clear the fractions and expand.
-
-**Finding $e$.** If a point $P$ on the conic is known, measure both distances: $e = \dfrac{SP}{PM}$.`,
+    intuition: [
+      t`Fix a point $S$, the **focus**, and a line, the **directrix**.`,
+      t`A point $P$ moves: $SP$ is its distance from the focus, $PM$ its distance straight across to the directrix.`,
+      t`It always keeps $SP = e \cdot PM$, where $e$ is a fixed number, the **eccentricity**.`,
+      t`If $e = 1$, the two distances are equal, and $P$ traces a **parabola**.`,
+      t`If $e < 1$, $P$ stays nearer the focus than the line, and its path closes up into an **ellipse**.`,
+      t`If $e > 1$, $P$ is farther from the focus than the line, and its path opens into a **hyperbola**, in two pieces.`,
+    ],
+    formal: [
+      {
+        title: "The focus–directrix rule",
+        points: [
+          t`$SP$ is the distance from the moving point $P$ to the focus $S$: here $SP = 1$.`,
+          t`$M$, the **foot of the perpendicular**, is where a line from $P$ at right angles to the directrix meets it.`,
+          t`$PM$ is $P$'s distance from the directrix: here $PM = 2$.`,
+          t`A **conic** is the path of a point $P$ for which $\frac{SP}{PM}$ is a fixed number $e$.`,
+          t`That fixed number, the eccentricity, is always positive: $e > 0$.`,
+          t`The focus distance goes on top, the directrix distance below: here $e = \frac{1}{2}$.`,
+        ],
+        figure: {
+          alt: "The focus S(1, 0) and the directrix x = −1. A point P(1, 1) is 1 above S, so SP = 1. The foot of the perpendicular from P to the directrix is M(−1, 1), with a right angle marked there, and PM = 2. The path of P with SP/PM = ½ is an ellipse round S, drawn at the end.",
+          axes: "xy",
+          view: { x: [-2.5, 4.2], y: [-2, 2.5] },
+          elements: [
+            directrix,
+            directrixLabel([-1, 2.1]),
+            focus,
+            { kind: "point", at: [1, 1], label: "P(1, 1)", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [1, 0], to: [1, 1], step: 1 },
+            { kind: "label", at: [1, 0.62], label: "SP = 1", labelAt: "e", step: 1 },
+            { kind: "point", at: [-1, 1], label: "M", labelAt: "w", tone: "muted", step: 2 },
+            { kind: "angle", at: [-1, 1], from: 0, to: 90, step: 2 },
+            { kind: "segment", from: [1, 1], to: [-1, 1], tone: "muted", step: 3 },
+            { kind: "label", at: [-0.6, 1], label: "PM = 2", labelAt: "s", tone: "muted", step: 3 },
+            { ...ellipseHalf, tone: "good", step: 4 },
+            { kind: "label", at: [3, 0], label: "e = ½", labelAt: "ne", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The eccentricity names the conic",
+        points: [
+          t`$e = 1$: the conic is a **parabola**.`,
+          t`$0 < e < 1$: the conic is an **ellipse**.`,
+          t`$e > 1$: the conic is a **hyperbola**.`,
+          t`A **rectangular hyperbola** is one whose branches open at right angles, like $x^2 - y^2 = 4$.`,
+          t`Every rectangular hyperbola has $e = \sqrt{2}$, about $1.41$.`,
+        ],
+        figure: {
+          alt: "One focus S(1, 0) and one directrix x = −1 give a conic for each e. With e = 1 it is the parabola y² = 4x, opening to the right. With e = ½ it is an ellipse round S. With e = 2 it is a hyperbola: one branch curls round S, the other lies left of the directrix. With e = √2 it is a rectangular hyperbola, dashed, whose right branch lies between the parabola and the e = 2 branch.",
+          axes: "xy",
+          view: { x: [-5.5, 4.5], y: [-4.5, 4.5] },
+          elements: [
+            directrix,
+            directrixLabel(),
+            focus,
+            { kind: "curve", points: parabola(1), tone: "good", step: 1 },
+            { kind: "curve", points: parabola(-1), tone: "good", step: 1 },
+            { kind: "label", at: [3.4, 2.6], label: "e = 1", labelAt: "e", tone: "good", step: 1 },
+            { ...ellipseHalf, step: 2 },
+            { kind: "label", at: [3, 0], label: "e = ½", labelAt: "ne", step: 2 },
+            hyperbolaTwo(1, 3),
+            hyperbolaTwo(-1, 3),
+            { kind: "label", at: [-4.3, 0.8], label: "e = 2", labelAt: "w", tone: "bad", step: 3 },
+            { kind: "hyperbola", centre: [-3, 0], a: 2.828, b: 2.828, axis: "x", branch: 1, tone: "muted", dashed: true, step: 4 },
+            { kind: "label", at: [1.5, -3.5], label: "e = √2", labelAt: "e", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Equation of a conic",
+        points: [
+          t`Take the focus $S(x_1, y_1)$ and the directrix $lx + my + n = 0$.`,
+          t`For a point $P(x, y)$, the distance formula gives $SP^2 = (x - x_1)^2 + (y - y_1)^2$.`,
+          t`The distance from a point to a line gives $PM = \frac{|lx + my + n|}{\sqrt{l^2 + m^2}}$.`,
+          t`Square $SP = e \cdot PM$, and square $e$ too: $SP^2 = e^2 \cdot PM^2$.`,
+          t`So $(x - x_1)^2 + (y - y_1)^2$ equals $e^2 \cdot \frac{(lx + my + n)^2}{l^2 + m^2}$.`,
+          t`Clear the fractions and expand: that is the conic's equation.`,
+        ],
+        figure: {
+          alt: "A focus S(x₁, y₁) and a sloping directrix lx + my + n = 0. A point P(x, y) is joined to S, and to M, the foot of the perpendicular on the directrix, with a right angle at M. The rule SP² = e² · PM² is written at the top, and the conic it gives, here an ellipse round S, stretched away from the directrix, is drawn at the end.",
+          axes: "xy",
+          view: { x: [-1.5, 5.8], y: [-1.6, 4.6] },
+          elements: [
+            { kind: "line", through: [[2, 0], [0, 2]], tone: "muted", step: 1 },
+            { kind: "label", at: [3.2, -1.2], label: "lx + my + n = 0", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "point", at: [3, 2], label: "S(x₁, y₁)", labelAt: "se", step: 1 },
+            { kind: "point", at: [2.25, 2.75], label: "P(x, y)", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [3, 2], to: [2.25, 2.75], step: 2 },
+            { kind: "label", at: [2.625, 2.375], label: "SP", labelAt: "ne", step: 2 },
+            { kind: "point", at: [0.75, 1.25], label: "M", labelAt: "sw", tone: "muted", step: 3 },
+            { kind: "angle", at: [0.75, 1.25], from: 45, to: 135, step: 3 },
+            { kind: "segment", from: [2.25, 2.75], to: [0.75, 1.25], tone: "muted", step: 3 },
+            { kind: "label", at: [1.5, 2], label: "PM", labelAt: "nw", tone: "muted", step: 3 },
+            { kind: "label", at: [2.5, 4.3], label: "SP² = e² · PM²", labelAt: "e", step: 4 },
+            { kind: "curve", points: focalEllipse([3, 2], 45, 3 / Math.SQRT2, 0.5), tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Finding the eccentricity from a point",
+        points: [
+          t`To find $e$, take a known point $P$ of the conic: here $P(1, 4)$, with focus $S(1, 0)$ and directrix $x = -1$.`,
+          t`$SP = 4$, straight up from $S$.`,
+          t`The foot of the perpendicular is $M(-1, 4)$, so $PM = 2$.`,
+          t`So $e = \frac{SP}{PM} = \frac{4}{2} = 2$, and the conic is a hyperbola.`,
+        ],
+        figure: {
+          alt: "The focus S(1, 0), the directrix x = −1 and the point P(1, 4). SP = 4, straight up from S. M(−1, 4) is the foot of the perpendicular from P, and PM = 2. So e = 2, and the hyperbola with that focus, directrix and eccentricity is drawn through P at the end.",
+          axes: "xy",
+          view: { x: [-5.5, 4.5], y: [-4.5, 5.6] },
+          elements: [
+            { ...directrix, step: 1 },
+            { ...directrixLabel([-1, -3.6]), step: 1 },
+            { ...focus, step: 1 },
+            { kind: "point", at: [1, 4], label: "P(1, 4)", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [1, 0], to: [1, 4], step: 2 },
+            { kind: "label", at: [1, 2], label: "SP = 4", labelAt: "e", step: 2 },
+            { kind: "point", at: [-1, 4], label: "M(−1, 4)", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "segment", from: [1, 4], to: [-1, 4], tone: "muted", step: 3 },
+            { kind: "label", at: [-0.5, 4], label: "PM = 2", labelAt: "n", tone: "muted", step: 3 },
+            hyperbolaTwo(1, 4),
+            hyperbolaTwo(-1, 4),
+            { kind: "label", at: [-4.3, 0.8], label: "e = 2", labelAt: "w", tone: "bad", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the conic with focus $(1, 0)$, directrix $x = 4$ and eccentricity $\frac{1}{2}$, and name it.`,
       steps: [
         t`Take $P(x, y)$. $SP^2 = (x - 1)^2 + y^2$. The directrix is $x - 4 = 0$, and $\sqrt{1^2 + 0^2} = 1$, so $PM = |x - 4|$.`,
         t`$SP = \frac{1}{2}PM$. Square both sides, $e$ included: $(x - 1)^2 + y^2 = \frac{1}{4}(x - 4)^2$.`,
-        t`Multiply by $4$ and expand: $4x^2 - 8x + 4 + 4y^2 = x^2 - 8x + 16$, so $3x^2 + 4y^2 = 12$.`,
+        t`Multiply by $4$ and expand: $4x^2 - 8x + 4 + 4y^2$ $= x^2 - 8x + 16$, so $3x^2 + 4y^2 = 12$.`,
         t`Divide by $12$: $\frac{x^2}{4} + \frac{y^2}{3} = 1$. Since $e = \frac{1}{2} < 1$, it is an ellipse.`,
       ],
       answer: t`$3x^2 + 4y^2 = 12$, that is $\frac{x^2}{4} + \frac{y^2}{3} = 1$: an ellipse.`,
@@ -51,21 +197,27 @@ Square $SP = e \cdot PM$: $(x - x_1)^2 + (y - y_1)^2 = e^2 \cdot \dfrac{(lx + my
       },
     },
     figure: {
-      alt: "One focus S(1, 0) and one directrix x = −1 give three curves. With e = 1/2 the curve is an ellipse around S, between the directrix and x = 3. With e = 1 it is the parabola y² = 4x, with its vertex at the origin, opening to the right. With e = 2 it is a hyperbola: one branch curls round S, the other lies left of the directrix.",
+      alt: "One focus S(1, 0) and one directrix x = −1. A point P(1, 2) is joined to S, and straight across to M(−1, 2) on the directrix: SP and PM are both 2. Then three curves: with e = 1 the parabola y² = 4x through P, with its vertex at the origin, opening to the right. With e = 1/2 an ellipse around S, between the directrix and x = 3. With e = 2 a hyperbola: one branch curls round S, the other lies left of the directrix.",
       axes: "xy",
       view: { x: [-5.5, 4.5], y: [-4.5, 4.5] },
       elements: [
-        { kind: "line", through: [[-1, -1], [-1, 1]], tone: "muted", step: 1 },
-        { kind: "label", at: [-1, 3.6], label: "x = −1", labelAt: "w", tone: "muted", step: 1 },
-        { kind: "point", at: [1, 0], label: "S(1, 0)", labelAt: "ne", step: 1 },
-        { kind: "ellipse", centre: [1.667, 0], rx: 1.333, ry: 1.155, step: 2 },
-        { kind: "label", at: [3, 0], label: "e = ½", labelAt: "ne", step: 2 },
-        { kind: "curve", points: [[0, 0], [0.092, 0.606], [0.183, 0.856], [0.275, 1.049], [0.367, 1.211], [0.458, 1.354], [0.55, 1.483], [0.642, 1.602], [0.733, 1.713], [0.825, 1.817], [0.917, 1.915], [1.008, 2.008], [1.1, 2.098], [1.192, 2.183], [1.283, 2.266], [1.375, 2.345], [1.467, 2.422], [1.558, 2.497], [1.65, 2.569], [1.742, 2.639], [1.833, 2.708], [1.925, 2.775], [2.017, 2.84], [2.108, 2.904], [2.2, 2.966], [2.292, 3.028], [2.383, 3.088], [2.475, 3.146], [2.567, 3.204], [2.658, 3.261], [2.75, 3.317], [2.842, 3.371], [2.933, 3.425], [3.025, 3.479], [3.117, 3.531], [3.208, 3.582], [3.3, 3.633], [3.392, 3.683], [3.483, 3.733], [3.575, 3.782], [3.667, 3.83], [3.758, 3.877], [3.85, 3.924], [3.942, 3.971], [4.033, 4.017], [4.125, 4.062], [4.217, 4.107], [4.308, 4.151], [4.4, 4.195], [4.492, 4.239], [4.583, 4.282], [4.675, 4.324], [4.767, 4.367], [4.858, 4.408], [4.95, 4.45], [5.042, 4.491], [5.133, 4.531], [5.225, 4.572], [5.317, 4.612], [5.408, 4.651], [5.5, 4.69]], tone: "good", step: 3 },
-        { kind: "curve", points: [[0, 0], [0.092, -0.606], [0.183, -0.856], [0.275, -1.049], [0.367, -1.211], [0.458, -1.354], [0.55, -1.483], [0.642, -1.602], [0.733, -1.713], [0.825, -1.817], [0.917, -1.915], [1.008, -2.008], [1.1, -2.098], [1.192, -2.183], [1.283, -2.266], [1.375, -2.345], [1.467, -2.422], [1.558, -2.497], [1.65, -2.569], [1.742, -2.639], [1.833, -2.708], [1.925, -2.775], [2.017, -2.84], [2.108, -2.904], [2.2, -2.966], [2.292, -3.028], [2.383, -3.088], [2.475, -3.146], [2.567, -3.204], [2.658, -3.261], [2.75, -3.317], [2.842, -3.371], [2.933, -3.425], [3.025, -3.479], [3.117, -3.531], [3.208, -3.582], [3.3, -3.633], [3.392, -3.683], [3.483, -3.733], [3.575, -3.782], [3.667, -3.83], [3.758, -3.877], [3.85, -3.924], [3.942, -3.971], [4.033, -4.017], [4.125, -4.062], [4.217, -4.107], [4.308, -4.151], [4.4, -4.195], [4.492, -4.239], [4.583, -4.282], [4.675, -4.324], [4.767, -4.367], [4.858, -4.408], [4.95, -4.45], [5.042, -4.491], [5.133, -4.531], [5.225, -4.572], [5.317, -4.612], [5.408, -4.651], [5.5, -4.69]], tone: "good", step: 3 },
-        { kind: "label", at: [3.4, 2.6], label: "e = 1", labelAt: "e", tone: "good", step: 3 },
-        { kind: "hyperbola", centre: [-1.667, 0], a: 1.333, b: 2.309, axis: "x", branch: 1, tone: "bad", step: 4 },
-        { kind: "hyperbola", centre: [-1.667, 0], a: 1.333, b: 2.309, axis: "x", branch: -1, tone: "bad", step: 4 },
-        { kind: "label", at: [-4.3, 0.8], label: "e = 2", labelAt: "w", tone: "bad", step: 4 },
+        { ...directrix, step: 1 },
+        { ...directrixLabel(), step: 1 },
+        { ...focus, step: 1 },
+        { kind: "point", at: [1, 2], label: "P", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [1, 0], to: [1, 2], step: 2 },
+        { kind: "label", at: [1, 1.5], label: "SP", labelAt: "e", step: 2 },
+        { kind: "point", at: [-1, 2], label: "M", labelAt: "w", tone: "muted", step: 2 },
+        { kind: "segment", from: [1, 2], to: [-1, 2], tone: "muted", step: 2 },
+        { kind: "label", at: [-0.5, 2], label: "PM", labelAt: "n", tone: "muted", step: 2 },
+        { kind: "curve", points: parabola(1), tone: "good", step: 4 },
+        { kind: "curve", points: parabola(-1), tone: "good", step: 4 },
+        { kind: "label", at: [3.4, 2.6], label: "e = 1", labelAt: "e", tone: "good", step: 4 },
+        { ...ellipseHalf, step: 5 },
+        { kind: "label", at: [3, 0], label: "e = ½", labelAt: "ne", step: 5 },
+        hyperbolaTwo(1, 6),
+        hyperbolaTwo(-1, 6),
+        { kind: "label", at: [-4.3, 0.8], label: "e = 2", labelAt: "w", tone: "bad", step: 6 },
       ],
     },
     visualSpec: t`Drag $P$ along the curve and watch $SP$ and $PM$ change while their ratio stays $e$; a slider for $e$ morphs the curve from an ellipse ($e < 1$) through a parabola ($e = 1$) to a hyperbola ($e > 1$), with the focus and directrix fixed.`,

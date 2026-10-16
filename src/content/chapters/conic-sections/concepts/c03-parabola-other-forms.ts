@@ -1,6 +1,20 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The parabola (x − h)² = 4a(y − k), opening up (a > 0) or down (a < 0): 81 points for x from x0 to x1. */
+const upDown = (h: number, k: number, a: number, x0: number, x1: number): Pt[] =>
+  Array.from({ length: 81 }, (_, i) => {
+    const x = x0 + ((x1 - x0) * i) / 80;
+    return [+x.toFixed(3), +(k + (x - h) ** 2 / (4 * a)).toFixed(3)];
+  });
+
+/** The parabola y² = 4ax, opening right (a > 0) or left (a < 0): 81 points for y from −y1 to y1. */
+const leftRight = (a: number, y1: number): Pt[] =>
+  Array.from({ length: 81 }, (_, i) => {
+    const y = -y1 + (2 * y1 * i) / 80;
+    return [+((y * y) / (4 * a)).toFixed(3), +y.toFixed(3)];
+  });
 
 export const c03: Concept = {
   id: "C03",
@@ -10,18 +24,182 @@ export const c03: Concept = {
     reveal: t`The focus is $(0, 1)$ and the parabola opens upward. Swapping $x$ and $y$ reflects the whole picture in the line $y = x$, so the $x$-axis turns into the $y$-axis. Now $x$ is the squared letter, and the axis of the parabola is the other one: the $y$-axis.`,
   },
   explanation: {
-    intuition: t`So far every parabola opened to the right: $y^2 = 4ax$. Turn that picture and you get three more. Two questions decide which one you have. Which letter is squared? The axis runs along the **other** letter, so $x^2 = 4ay$ has the $y$-axis as its axis. Which sign does the other side have? A minus turns it round: $y^2 = -4ax$ opens left, $x^2 = -4ay$ opens down. The focus is always inside the curve and the directrix outside, each $a$ from the vertex.`,
-    formal: t`**The four parabolas with vertex at the origin** ($a > 0$):
-
-$$\begin{array}{c|c|c|c} \text{Equation} & \text{Opens} & \text{Focus} & \text{Directrix} \\ \hline y^2 = 4ax & \text{right} & (a, 0) & x = -a \\ y^2 = -4ax & \text{left} & (-a, 0) & x = a \\ x^2 = 4ay & \text{up} & (0, a) & y = -a \\ x^2 = -4ay & \text{down} & (0, -a) & y = a \end{array}$$
-
-**Reading one.** The squared letter runs across the axis; the other letter is the axis. The latus rectum is $4a$ in every case: for $x^2 = 4ay$ its ends are $(\pm 2a, a)$.
-
-**Finding $a$.** Make the square's coefficient $1$ first, then compare with $4a$. For example $5x^2 = -12y$ is $x^2 = -\frac{12}{5}y$, so $4a = \frac{12}{5}$ and $a = \frac{3}{5}$.
-
-**Shifted parabolas.** Complete the square in the squared letter to get $(x - h)^2 = 4a(y - k)$, where $a$ may be negative. Put $X = x - h$, $Y = y - k$: this is $X^2 = 4aY$, with vertex $(h, k)$. Find the focus and directrix in $X, Y$, then shift back: focus $(h, k + a)$, directrix $y = k - a$, axis $x = h$.
-
-**An equation from data.** Vertex at the origin and axis along the $y$-axis: write $x^2 = 4ay$ and let the given point fix $a$, sign and all. Given a focus and a directrix, use $SP = PM$ directly.`,
+    intuition: [
+      t`Recall: $y^2 = 4ax$, with $a > 0$, opens to the right from its vertex, the origin (here $a = 1$).`,
+      t`Give that picture a quarter turn anticlockwise about the origin: it becomes $x^2 = 4ay$, opening upward.`,
+      t`Which letter is squared? The **axis**, the curve's line of symmetry, runs along the other letter: here the $y$-axis.`,
+      t`Which sign does the other side have? A minus turns the curve round: $y^2 = -4ax$ opens left, $x^2 = -4ay$ opens down.`,
+      t`The **focus** is always inside the curve, $a$ from the vertex: here $S(0, 1)$.`,
+      t`The **directrix** is outside, $a$ from the vertex on the other side: here $y = -1$.`,
+    ],
+    formal: [
+      {
+        title: "Four parabolas, vertex at origin",
+        points: [
+          t`Take $a > 0$: each of these four parabolas has its vertex at the origin.`,
+          t`$y^2 = 4ax$ opens right: focus $(a, 0)$, directrix $x = -a$.`,
+          t`$y^2 = -4ax$ opens left: focus $(-a, 0)$, directrix $x = a$.`,
+          t`$x^2 = 4ay$ opens up: focus $(0, a)$, directrix $y = -a$.`,
+          t`$x^2 = -4ay$ opens down: focus $(0, -a)$, directrix $y = a$.`,
+        ],
+        figure: {
+          alt: "The four parabolas with vertex at the origin, drawn with a = 1: y² = 4ax opening right with its focus (a, 0), y² = −4ax opening left with its focus (−a, 0), x² = 4ay opening up with its focus (0, a), and x² = −4ay opening down with its focus (0, −a). Each focus is inside its own curve.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-5, 5] },
+          elements: [
+            { kind: "curve", points: leftRight(1, 4.4), step: 2 },
+            { kind: "label", at: [2.6, -1], label: "y² = 4ax", labelAt: "e", step: 2 },
+            { kind: "point", at: [1, 0], step: 2 },
+            { kind: "curve", points: leftRight(-1, 4.4), step: 3 },
+            { kind: "label", at: [-2.6, -1], label: "y² = −4ax", labelAt: "w", step: 3 },
+            { kind: "point", at: [-1, 0], step: 3 },
+            { kind: "curve", points: upDown(0, 0, 1, -4.4, 4.4), step: 4 },
+            { kind: "label", at: [0.3, 3.3], label: "x² = 4ay", labelAt: "e", step: 4 },
+            { kind: "point", at: [0, 1], step: 4 },
+            { kind: "curve", points: upDown(0, 0, -1, -4.4, 4.4), step: 5 },
+            { kind: "label", at: [0.3, -3.3], label: "x² = −4ay", labelAt: "e", step: 5 },
+            { kind: "point", at: [0, -1], step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Reading the axis and focus",
+        points: [
+          t`In $x^2 = 4ay$, $x$ and $-x$ give the same $y$: the squared letter runs across the axis.`,
+          t`The letter not squared, $y$, gives the axis: here the $y$-axis.`,
+          t`So the focus $(0, a)$ lies on the $y$-axis, $a$ above the vertex.`,
+          t`Recall: the **latus rectum** is the chord through the focus at right angles to the axis.`,
+          t`Its length is $4a$ for all four parabolas.`,
+          t`For $x^2 = 4ay$ its ends are $(\pm 2a, a)$.`,
+        ],
+        figure: {
+          alt: "The parabola x² = 4y, that is a = 1. The points (−3, 9/4) and (3, 9/4) are at the same height, so x runs across the y-axis, which is the axis. The focus S(0, 1) is on the axis, and the latus rectum of length 4 joins (−2, 1) and (2, 1) through it.",
+          axes: "xy",
+          view: { x: [-4, 4], y: [-2, 5] },
+          elements: [
+            { kind: "curve", points: upDown(0, 0, 1, -4, 4) },
+            { kind: "label", at: [0.3, 3.4], label: "x² = 4y", labelAt: "e" },
+            { kind: "segment", from: [-3, 2.25], to: [3, 2.25], dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [-3, 2.25], label: "(−3, 9/4)", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "point", at: [3, 2.25], label: "(3, 9/4)", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 0], [0, 1]], tone: "good", step: 2 },
+            { kind: "label", at: [0, 4.6], label: "axis", labelAt: "w", tone: "good", step: 2 },
+            { kind: "point", at: [0, 1], label: "S(0, 1)", labelAt: "ne", step: 3 },
+            { kind: "segment", from: [-2, 1], to: [2, 1], tone: "good", step: 4 },
+            { kind: "label", at: [-1, 1], label: "4a = 4", labelAt: "s", tone: "good", step: 5 },
+            { kind: "point", at: [-2, 1], label: "(−2, 1)", labelAt: "sw", tone: "good", step: 6 },
+            { kind: "point", at: [2, 1], label: "(2, 1)", labelAt: "se", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Finding a from the equation",
+        points: [
+          t`First make the **coefficient** of the square, the number in front of it, equal to $1$.`,
+          t`Take $5x^2 = -12y$: divide by $5$ to get $x^2 = -\frac{12}{5}y$.`,
+          t`Compare with $x^2 = -4ay$: $4a = \frac{12}{5}$, so $a = \frac{3}{5}$.`,
+          t`The focus is $a$ below the vertex: $\left(0, -\frac{3}{5}\right)$.`,
+          t`The directrix is $a$ above the vertex: $y = \frac{3}{5}$.`,
+        ],
+        figure: {
+          alt: "The parabola 5x² = −12y, that is x² = −(12/5)y, opening downward from the origin. With a = 3/5, the focus S(0, −3/5) is just below the vertex and the directrix y = 3/5 just above it.",
+          axes: "xy",
+          view: { x: [-4, 4], y: [-5.5, 1.8] },
+          elements: [
+            { kind: "curve", points: upDown(0, 0, -0.6, -3.7, 3.7), step: 2 },
+            { kind: "label", at: [0.3, -3.6], label: "5x² = −12y", labelAt: "e", step: 2 },
+            { kind: "label", at: [-0.3, -2.4], label: "a = 3/5", labelAt: "w", tone: "good", step: 3 },
+            { kind: "point", at: [0, -0.6], label: "S", labelAt: "e", step: 4 },
+            { kind: "line", through: [[-1, 0.6], [1, 0.6]], dashed: true, tone: "muted", step: 5 },
+            { kind: "label", at: [2.6, 0.6], label: "y = 3/5", labelAt: "n", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Moving the vertex",
+        points: [
+          t`**Completing the square** rewrites $x^2 + 6x$ as $(x + 3)^2 - 9$.`,
+          t`Do it in the squared letter: $x^2 + 6x - 4y + 17 = 0$ becomes $(x + 3)^2 = 4(y - 2)$.`,
+          t`This is $(x - h)^2 = 4a(y - k)$, with $h = -3$, $k = 2$ and $a = 1$.`,
+          t`In general $a$ may be negative; then the parabola opens downward.`,
+          t`Put $X = x - h$ and $Y = y - k$: the equation becomes $X^2 = 4aY$.`,
+          t`Its vertex, where $X = 0$ and $Y = 0$, is $(h, k)$: here $(-3, 2)$, not $(3, -2)$.`,
+        ],
+        figure: {
+          alt: "The parabola x² + 6x − 4y + 17 = 0, that is (x + 3)² = 4(y − 2), opening upward. The dashed lines X = 0 (that is x = −3) and Y = 0 (that is y = 2) are its new axes, crossing at the vertex V(−3, 2).",
+          axes: "xy",
+          view: { x: [-8, 4], y: [-2.4, 7] },
+          elements: [
+            { kind: "curve", points: upDown(-3, 2, 1, -7.6, 1.6), step: 2 },
+            { kind: "label", at: [-5.2, -1.9], label: "(x + 3)² = 4(y − 2)", labelAt: "n", step: 2 },
+            { kind: "segment", from: [-3, 0], to: [-3, 7], dashed: true, tone: "muted", step: 5 },
+            { kind: "label", at: [-3, 6.6], label: "X = 0", labelAt: "e", tone: "muted", step: 5 },
+            { kind: "line", through: [[0, 2], [1, 2]], dashed: true, tone: "muted", step: 5 },
+            { kind: "label", at: [3.6, 2], label: "Y = 0", labelAt: "n", tone: "muted", step: 5 },
+            { kind: "point", at: [-3, 2], label: "V(−3, 2)", labelAt: "se", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Shifting back to x and y",
+        points: [
+          t`Find the focus and directrix in $X, Y$ first, as for $X^2 = 4aY$.`,
+          t`There the focus is $X = 0$, $Y = a$, and the directrix is $Y = -a$.`,
+          t`Then shift back, using $x = X + h$ and $y = Y + k$.`,
+          t`The focus is $(h, k + a)$: here $(-3, 3)$.`,
+          t`The directrix is $y = k - a$: here $y = 1$.`,
+          t`The axis is $x = h$: here $x = -3$.`,
+        ],
+        figure: {
+          alt: "The parabola (x + 3)² = 4(y − 2) with its new axes X = 0 and Y = 0 crossing at the vertex V(−3, 2). The focus is Y = 1 in the new letters, which is S(−3, 3); the directrix Y = −1 is the line y = 1; the axis is x = −3.",
+          axes: "xy",
+          view: { x: [-8, 4], y: [-2.4, 7] },
+          elements: [
+            { kind: "curve", points: upDown(-3, 2, 1, -7.6, 1.6) },
+            { kind: "label", at: [-5.2, -1.9], label: "(x + 3)² = 4(y − 2)", labelAt: "n" },
+            { kind: "segment", from: [-3, 0], to: [-3, 7], dashed: true, tone: "muted" },
+            { kind: "line", through: [[0, 2], [1, 2]], dashed: true, tone: "muted" },
+            { kind: "label", at: [3.6, 2], label: "Y = 0", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [-3, 2], label: "V(−3, 2)", labelAt: "se" },
+            { kind: "point", at: [-3, 3], label: "Y = 1", labelAt: "e", step: 2 },
+            { kind: "line", through: [[0, 1], [1, 1]], tone: "good", step: 2 },
+            { kind: "label", at: [-7.4, 1], label: "Y = −1", labelAt: "s", tone: "good", step: 2 },
+            { kind: "label", at: [-3, 3], label: "S(−3, 3)", labelAt: "nw", step: 4 },
+            { kind: "label", at: [2, 1], label: "y = 1", labelAt: "n", tone: "good", step: 5 },
+            { kind: "label", at: [-3, 6.6], label: "x = −3", labelAt: "e", tone: "muted", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "An equation from given data",
+        points: [
+          t`Vertex at the origin and axis along the $y$-axis: write $x^2 = 4ay$.`,
+          t`A given point on the curve fixes $a$, including its sign: say $P(4, -4)$.`,
+          t`Then $4^2 = 4a(-4)$, so $a = -1$: the parabola is $x^2 = -4y$.`,
+          t`Recall: each point $P$ is as far from the focus $S$ as from the directrix.`,
+          t`So, given a focus and a directrix instead, write $SP = PM$ directly and simplify.`,
+        ],
+        figure: {
+          alt: "The parabola x² = −4y through P(4, −4), with its axis along the y-axis. Its focus S(0, −1) and the directrix y = 1 are drawn; P is 5 from S and 5 from M(4, 1) on the directrix.",
+          axes: "xy",
+          view: { x: [-5.5, 5.5], y: [-5.5, 2.5] },
+          elements: [
+            { kind: "line", through: [[0, 0], [0, 1]], tone: "good", step: 1 },
+            { kind: "label", at: [0, 1.6], label: "axis", labelAt: "w", tone: "good", step: 1 },
+            { kind: "point", at: [4, -4], label: "P(4, −4)", labelAt: "w", step: 2 },
+            { kind: "curve", points: upDown(0, 0, -1, -4.6, 4.6), step: 3 },
+            { kind: "label", at: [-0.6, -3.2], label: "x² = −4y", labelAt: "w", step: 3 },
+            { kind: "point", at: [0, -1], label: "S", labelAt: "ne", step: 4 },
+            { kind: "line", through: [[0, 1], [1, 1]], dashed: true, tone: "muted", step: 4 },
+            { kind: "label", at: [-4, 1], label: "y = 1", labelAt: "n", tone: "muted", step: 4 },
+            { kind: "point", at: [4, 1], label: "M", labelAt: "ne", tone: "muted", step: 4 },
+            { kind: "segment", from: [0, -1], to: [4, -4], tone: "good", step: 4 },
+            { kind: "segment", from: [4, -4], to: [4, 1], dashed: true, tone: "good", step: 4 },
+            { kind: "label", at: [-0.6, -4.6], label: "SP = PM = 5", labelAt: "w", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the vertex, the focus, the axis and the directrix of the parabola $x^2 + 4x + 4y + 16 = 0$.`,
       steps: [
@@ -47,18 +225,21 @@ $$\begin{array}{c|c|c|c} \text{Equation} & \text{Opens} & \text{Focus} & \text{D
       },
     },
     figure: {
-      alt: "The parabola x² = 4y opening upward from the origin. Its focus S(0, 1) is on the y-axis, the directrix y = −1 is below the vertex, and the latus rectum joins (−2, 1) and (2, 1) through the focus.",
+      alt: "The parabola y² = 4x opening right from the origin, drawn faintly. An arm along its axis, labelled opens right, turns a quarter turn anticlockwise to point up, and the picture becomes x² = 4y, opening upward. Its axis is the y-axis, its focus S(0, 1) is inside the curve, and its directrix y = −1 is outside, below the vertex.",
       axes: "xy",
-      view: { x: [-4, 4], y: [-2, 5] },
+      view: { x: [-4.5, 4.5], y: [-4, 5] },
       elements: [
-        { kind: "curve", points: [[-4, 4], [-3.9, 3.802], [-3.8, 3.61], [-3.7, 3.423], [-3.6, 3.24], [-3.5, 3.062], [-3.4, 2.89], [-3.3, 2.722], [-3.2, 2.56], [-3.1, 2.403], [-3, 2.25], [-2.9, 2.103], [-2.8, 1.96], [-2.7, 1.823], [-2.6, 1.69], [-2.5, 1.562], [-2.4, 1.44], [-2.3, 1.322], [-2.2, 1.21], [-2.1, 1.103], [-2, 1], [-1.9, 0.902], [-1.8, 0.81], [-1.7, 0.723], [-1.6, 0.64], [-1.5, 0.562], [-1.4, 0.49], [-1.3, 0.422], [-1.2, 0.36], [-1.1, 0.303], [-1, 0.25], [-0.9, 0.202], [-0.8, 0.16], [-0.7, 0.123], [-0.6, 0.09], [-0.5, 0.062], [-0.4, 0.04], [-0.3, 0.022], [-0.2, 0.01], [-0.1, 0.003], [0, 0], [0.1, 0.002], [0.2, 0.01], [0.3, 0.022], [0.4, 0.04], [0.5, 0.062], [0.6, 0.09], [0.7, 0.123], [0.8, 0.16], [0.9, 0.203], [1, 0.25], [1.1, 0.302], [1.2, 0.36], [1.3, 0.422], [1.4, 0.49], [1.5, 0.562], [1.6, 0.64], [1.7, 0.723], [1.8, 0.81], [1.9, 0.903], [2, 1], [2.1, 1.102], [2.2, 1.21], [2.3, 1.322], [2.4, 1.44], [2.5, 1.562], [2.6, 1.69], [2.7, 1.823], [2.8, 1.96], [2.9, 2.103], [3, 2.25], [3.1, 2.402], [3.2, 2.56], [3.3, 2.722], [3.4, 2.89], [3.5, 3.062], [3.6, 3.24], [3.7, 3.423], [3.8, 3.61], [3.9, 3.803], [4, 4]], step: 1 },
-        { kind: "label", at: [0.3, 3.4], label: "x² = 4y", labelAt: "e", step: 1 },
-        { kind: "point", at: [0, 1], label: "S(0, 1)", labelAt: "ne", step: 2 },
-        { kind: "line", through: [[-1, -1], [1, -1]], dashed: true, tone: "muted", step: 3 },
-        { kind: "label", at: [2.8, -1], label: "y = −1", labelAt: "s", tone: "muted", step: 3 },
-        { kind: "segment", from: [-2, 1], to: [2, 1], tone: "good", step: 4 },
-        { kind: "point", at: [-2, 1], label: "(−2, 1)", labelAt: "sw", tone: "good", step: 4 },
-        { kind: "point", at: [2, 1], label: "(2, 1)", labelAt: "se", tone: "good", step: 4 },
+        { kind: "curve", points: leftRight(1, 4), tone: "muted", step: 1 },
+        { kind: "label", at: [2.4, -1.6], label: "y² = 4x", labelAt: "e", tone: "muted", step: 1 },
+        { kind: "segment", from: [0, 0], to: [3, 0], tone: "good", step: 1 },
+        { kind: "label", at: [3.2, 0], label: "opens right", labelAt: "n", tone: "good", step: 1 },
+        { kind: "turn", r: 2.5, to: 90, label: "opens up", labelAt: "w", step: 2 },
+        { kind: "curve", points: upDown(0, 0, 1, -4.5, 4.5), step: 2 },
+        { kind: "label", at: [0.4, 3.8], label: "x² = 4y", labelAt: "e", step: 2 },
+        { kind: "label", at: [-0.2, 4.5], label: "axis", labelAt: "w", tone: "good", step: 3 },
+        { kind: "point", at: [0, 1], label: "S(0, 1)", labelAt: "nw", step: 5 },
+        { kind: "line", through: [[-1, -1], [1, -1]], dashed: true, tone: "muted", step: 6 },
+        { kind: "label", at: [-2.8, -1], label: "y = −1", labelAt: "s", tone: "muted", step: 6 },
       ],
     },
     visualSpec: t`Two switches, swap and flip, turn $y^2 = 4ax$ into each of the other three parabolas, with the focus, directrix and latus rectum moving along; then drag the vertex to $(h, k)$ and watch the equation become $(x - h)^2 = 4a(y - k)$.`,

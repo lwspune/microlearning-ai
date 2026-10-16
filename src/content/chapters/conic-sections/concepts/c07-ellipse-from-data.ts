@@ -10,26 +10,167 @@ export const c07: Concept = {
     reveal: t`No. $16$ is $(ae)^2$, the focus's distance from the centre squared, not $b^2$. The ends of the minor axis sit farther out: $b^2 = a^2 - a^2e^2 = 36 - 16 = 20$, so the ellipse is $\frac{x^2}{36} + \frac{y^2}{20} = 1$.`,
   },
   explanation: {
-    intuition: t`The standard ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ has two unknowns, so two facts fix it. Each fact the question gives (vertices, foci, directrices, an axis, the latus rectum, a point on the curve) is one equation in $a$, $b$ and $e$. Translate each one, link them with $b^2 = a^2(1 - e^2)$, and solve. Then put $a^2$, the larger number, under $x^2$.`,
-    formal: t`**Translate each piece of data.**
-- Vertices $(\pm a, 0)$, or major axis $2a$: gives $a$.
-- Foci $(\pm ae, 0)$, or distance between the foci $2ae$: gives $ae$.
-- Directrices $x = \pm\frac{a}{e}$, distance between them $\frac{2a}{e}$: gives $\frac{a}{e}$.
-- Minor axis $2b$; latus rectum $\frac{2b^2}{a}$.
-- A point $(x_1, y_1)$ on it: $\frac{x_1^2}{a^2} + \frac{y_1^2}{b^2} = 1$.
-
-**Link them.** $b^2 = a^2(1 - e^2) = a^2 - (ae)^2$. In an ellipse $a$ is the longest of $a$, $b$ and $ae$, so you subtract.
-
-**Lengths are whole, coordinates are halves.** Foci $8$ apart means $2ae = 8$, so $ae = 4$. Halve every given length before you match it.
-
-**Write it down.** Foci on the X-axis: $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with $a^2 > b^2$. Vertices $(\pm 13, 0)$ and foci $(\pm 5, 0)$ give $b^2 = 169 - 25 = 144$: $\frac{x^2}{169} + \frac{y^2}{144} = 1$.
-
-**Eccentricity from a relation.** Write the relation as an equation and divide out $a$. Directrices three times as far apart as the foci: $\frac{2a}{e} = 3(2ae)$, so $e^2 = \frac{1}{3}$ and $e = \frac{1}{\sqrt{3}}$.`,
+    intuition: [
+      t`The ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ has two unknowns, $a$ and $b$, so two facts about it fix it.`,
+      t`Most facts are lengths, like the major axis $AA'$, which is $2a$ long.`,
+      t`The foci $S$ and $S'$ are $2ae$ apart, and the minor axis $BB'$ is $2b$ long.`,
+      t`The directrices are $\frac{2a}{e}$ apart, and the latus rectum $LL'$ is $\frac{2b^2}{a}$ long.`,
+      t`Each fact is one equation in $a$, $b$ and $e$, and $b^2 = a^2(1 - e^2)$ links them.`,
+      t`Solve them, then put $a^2$, the larger number, under $x^2$.`,
+    ],
+    formal: [
+      {
+        title: "Data along the major axis",
+        points: [
+          t`The **data** are the facts a question gives: translate each one into $a$, $b$ or $e$.`,
+          t`Vertices $(\pm a, 0)$, or a major axis $2a$ long, give $a$.`,
+          t`Foci $(\pm ae, 0)$, or foci $2ae$ apart, give $ae$.`,
+          t`Directrices $x = \pm\frac{a}{e}$, or directrices $\frac{2a}{e}$ apart, give $\frac{a}{e}$.`,
+        ],
+        figure: {
+          alt: "The ellipse x²/36 + y²/20 = 1. The vertex A is a from the centre, the focus S is ae from it, and the dashed directrix x = a/e is a/e from it, each marked from the centre O.",
+          axes: "xy",
+          view: { x: [-11, 11], y: [-7.5, 7.5] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 6, ry: 4.472, tone: "accent" },
+            { kind: "point", at: [6, 0], label: "A", labelAt: "ne", step: 2 },
+            { kind: "point", at: [-6, 0], label: "A′", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [0, -5.8], to: [6, -5.8], tone: "good", label: "a", labelAt: "s", step: 2 },
+            { kind: "point", at: [4, 0], label: "S", labelAt: "nw", step: 3 },
+            { kind: "point", at: [-4, 0], label: "S′", labelAt: "ne", step: 3 },
+            { kind: "segment", from: [0, -1.2], to: [4, -1.2], tone: "good", label: "ae", labelAt: "s", step: 3 },
+            { kind: "line", through: [[9, 0], [9, 1]], dashed: true, tone: "muted", step: 4 },
+            { kind: "line", through: [[-9, 0], [-9, 1]], dashed: true, tone: "muted", step: 4 },
+            { kind: "label", at: [9, -6.6], label: "x = a/e", labelAt: "w", tone: "muted", step: 4 },
+            { kind: "label", at: [-9, -6.6], label: "x = −a/e", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "segment", from: [0, 6], to: [9, 6], tone: "good", label: "a/e", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Minor axis, latus rectum, a point",
+        points: [
+          t`A minor axis $2b$ long, or its ends $(0, \pm b)$, give $b$.`,
+          t`A latus rectum $\frac{2b^2}{a}$ long gives $\frac{b^2}{a}$, half of it.`,
+          t`A point $(x_1, y_1)$ on the ellipse fits its equation.`,
+          t`So $\frac{x_1^2}{a^2} + \frac{y_1^2}{b^2} = 1$: one equation in $a^2$ and $b^2$.`,
+        ],
+        figure: {
+          alt: "The ellipse x²/36 + y²/20 = 1. The end B of the minor axis is b above the centre. The latus rectum through the focus S runs from L down to L′, and its upper half, from S to L, is b²/a. A point P(x₁, y₁) lies on the curve.",
+          axes: "xy",
+          view: { x: [-11, 11], y: [-7.5, 7.5] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 6, ry: 4.472, tone: "accent" },
+            { kind: "point", at: [0, 4.472], label: "B", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, -4.472], label: "B′", labelAt: "se", step: 1 },
+            { kind: "segment", from: [8.5, 0], to: [8.5, 4.472], tone: "good", label: "b", labelAt: "e", step: 1 },
+            { kind: "point", at: [4, 0], label: "S", labelAt: "ne", tone: "muted", step: 2 },
+            { kind: "segment", from: [4, -3.333], to: [4, 3.333], tone: "muted", step: 2 },
+            { kind: "segment", from: [4, 0], to: [4, 3.333], tone: "good", label: "b²/a", labelAt: "w", step: 2 },
+            { kind: "point", at: [4, 3.333], label: "L", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "point", at: [4, -3.333], label: "L′", labelAt: "se", tone: "good", step: 2 },
+            { kind: "point", at: [-4.243, 3.162], label: "P(x₁, y₁)", labelAt: "nw", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Linking a, b and ae",
+        points: [
+          t`Recall: $a$, $b$ and $e$ are linked by $b^2 = a^2(1 - e^2)$.`,
+          t`Multiplied out, $b^2 = a^2 - (ae)^2$, that is, $b^2 + (ae)^2 = a^2$.`,
+          t`It is Pythagoras in the triangle $OSB$: the end $B$ of the minor axis is $a$ from the focus $S$.`,
+          t`So in an ellipse $a$ is the longest of $a$, $b$ and $ae$, and you subtract.`,
+        ],
+        figure: {
+          alt: "The ellipse x²/36 + y²/20 = 1 with the right triangle OSB: OS is ae = 4 along the x-axis, OB is b = √20 up the y-axis, and the long side BS is a = 6, the longest of the three.",
+          axes: "xy",
+          view: { x: [-11, 11], y: [-7.5, 7.5] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 6, ry: 4.472, tone: "accent" },
+            { kind: "point", at: [4, 0], label: "S", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 4.472], label: "B", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [0, 0], to: [4, 0], tone: "good", label: "ae", labelAt: "n", step: 1 },
+            { kind: "segment", from: [0, 0], to: [0, 4.472], tone: "good", label: "b", labelAt: "e", step: 1 },
+            { kind: "segment", from: [0, 4.472], to: [4, 0], tone: "good", label: "a", labelAt: "ne", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Halve every given length",
+        points: [
+          t`Coordinates are measured from the centre $O$, so they give half-lengths like $ae$.`,
+          t`A given length runs right across, so it is double: $2a$, $2b$, $2ae$, $\frac{2a}{e}$ or $\frac{2b^2}{a}$.`,
+          t`So foci $8$ apart means $2ae = 8$, and $ae = 4$.`,
+          t`Halve every given length before you match it.`,
+        ],
+        figure: {
+          alt: "The ellipse x²/25 + y²/9 = 1 with foci S(4, 0) and S′(−4, 0). The focus S is ae from the centre; the foci are 2ae apart. With the foci 8 apart, 2ae = 8 and ae = 4.",
+          axes: "xy",
+          view: { x: [-8.5, 8.5], y: [-5, 5] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 5, ry: 3, tone: "accent" },
+            { kind: "point", at: [4, 0], label: "S", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [0, 1], to: [4, 1], tone: "good", label: "ae", labelAt: "n", step: 1 },
+            { kind: "point", at: [-4, 0], label: "S′", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [-4, -1], to: [4, -1], tone: "muted", label: "2ae", labelAt: "se", step: 2 },
+            { kind: "label", at: [-8.2, -4.3], label: "2ae = 8, so ae = 4", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Writing the equation",
+        points: [
+          t`With the foci on the X-axis, the ellipse is $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with $a^2 > b^2$.`,
+          t`For example, take vertices $(\pm 13, 0)$ and foci $(\pm 5, 0)$.`,
+          t`Then $a = 13$ and $ae = 5$, so $b^2 = 169 - 25 = 144$.`,
+          t`$a^2 = 169$ is the larger, so it goes under $x^2$: $\frac{x^2}{169} + \frac{y^2}{144} = 1$.`,
+        ],
+        figure: {
+          alt: "The vertices A(13, 0) and A′(−13, 0) and the foci S(5, 0) and S′(−5, 0) on the x-axis. The end of the minor axis is B(0, 12). The ellipse x²/169 + y²/144 = 1 passes through A, A′ and B.",
+          axes: "xy",
+          view: { x: [-19, 19], y: [-14.5, 14.5] },
+          elements: [
+            { kind: "point", at: [13, 0], label: "A", labelAt: "ne", step: 2 },
+            { kind: "point", at: [-13, 0], label: "A′", labelAt: "nw", step: 2 },
+            { kind: "point", at: [5, 0], label: "S", labelAt: "ne", step: 2 },
+            { kind: "point", at: [-5, 0], label: "S′", labelAt: "nw", step: 2 },
+            { kind: "point", at: [0, 12], label: "B(0, 12)", labelAt: "ne", step: 3 },
+            { kind: "ellipse", centre: [0, 0], rx: 13, ry: 12, tone: "good", step: 4 },
+            { kind: "label", at: [-18.5, -13.3], label: "x²/169 + y²/144 = 1", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Eccentricity from a relation",
+        points: [
+          t`Some data relate two lengths: write the relation as an equation, then divide out $a$.`,
+          t`Say the directrices are three times as far apart as the foci.`,
+          t`As an equation, $\frac{2a}{e} = 3(2ae)$.`,
+          t`Divide both sides by $2a$: $\frac{1}{e} = 3e$, so $e^2 = \frac{1}{3}$.`,
+          t`$e$ is positive, so $e = \frac{1}{\sqrt{3}}$.`,
+        ],
+        figure: {
+          alt: "An ellipse with e = 1/√3. Its foci S and S′ are 2ae apart, and its dashed directrices, outside the curve, are 2a/e apart: three times as far.",
+          axes: "xy",
+          view: { x: [-7.5, 7.5], y: [-5, 5] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 3, ry: 2.449, tone: "accent" },
+            { kind: "point", at: [1.732, 0], label: "S", labelAt: "ne", step: 2 },
+            { kind: "point", at: [-1.732, 0], label: "S′", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [-1.732, -0.9], to: [1.732, -0.9], tone: "good", label: "2ae", labelAt: "se", step: 2 },
+            { kind: "line", through: [[5.196, 0], [5.196, 1]], dashed: true, tone: "muted", step: 2 },
+            { kind: "line", through: [[-5.196, 0], [-5.196, 1]], dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [-5.196, 3.6], to: [5.196, 3.6], tone: "good", label: "2a/e", labelAt: "n", step: 2 },
+            { kind: "label", at: [-7.2, -4.3], label: "e = 1/√3", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ whose latus rectum has length $6$ and whose foci are $(\pm 2, 0)$.`,
       steps: [
         t`Foci $(\pm 2, 0)$: $ae = 2$, so $b^2 = a^2 - a^2e^2 = a^2 - 4$.`,
-        t`Latus rectum $6$: $\frac{2b^2}{a} = 6$, so $b^2 = 3a$. Its ends are $\left(2, \pm\frac{b^2}{a}\right) = (2, \pm 3)$.`,
+        t`Latus rectum $6$: $\frac{2b^2}{a} = 6$, so $b^2 = 3a$. Its ends are $\left(2, \pm\frac{b^2}{a}\right)$ $= (2, \pm 3)$.`,
         t`So $a^2 - 4 = 3a$, that is $(a - 4)(a + 1) = 0$. As $a > 0$, $a = 4$ and $b^2 = 12$.`,
         t`$a^2 = 16$ goes under $x^2$: the ellipse is $\frac{x^2}{16} + \frac{y^2}{12} = 1$.`,
       ],
@@ -57,12 +198,12 @@ export const c07: Concept = {
       view: { x: [-11, 11], y: [-7.5, 7.5] },
       elements: [
         { kind: "ellipse", centre: [0, 0], rx: 6, ry: 4.472, tone: "accent", step: 1 },
-        { kind: "point", at: [6, 0], label: "A", labelAt: "ne", step: 1 },
-        { kind: "point", at: [-6, 0], label: "A′", labelAt: "nw", step: 1 },
-        { kind: "segment", from: [-6, -6.3], to: [6, -6.3], tone: "muted", label: "2a", labelAt: "se", step: 1 },
-        { kind: "point", at: [4, 0], label: "S", labelAt: "nw", step: 2 },
-        { kind: "point", at: [-4, 0], label: "S′", labelAt: "ne", step: 2 },
-        { kind: "segment", from: [-4, -1.4], to: [4, -1.4], tone: "muted", label: "2ae", labelAt: "se", step: 2 },
+        { kind: "point", at: [6, 0], label: "A", labelAt: "ne", step: 2 },
+        { kind: "point", at: [-6, 0], label: "A′", labelAt: "nw", step: 2 },
+        { kind: "segment", from: [-6, -6.3], to: [6, -6.3], tone: "muted", label: "2a", labelAt: "se", step: 2 },
+        { kind: "point", at: [4, 0], label: "S", labelAt: "nw", step: 3 },
+        { kind: "point", at: [-4, 0], label: "S′", labelAt: "ne", step: 3 },
+        { kind: "segment", from: [-4, -1.4], to: [4, -1.4], tone: "muted", label: "2ae", labelAt: "se", step: 3 },
         { kind: "point", at: [0, 4.472], label: "B", labelAt: "ne", step: 3 },
         { kind: "point", at: [0, -4.472], label: "B′", labelAt: "se", step: 3 },
         { kind: "segment", from: [-7.7, -4.472], to: [-7.7, 4.472], tone: "muted", step: 3 },
@@ -71,10 +212,10 @@ export const c07: Concept = {
         { kind: "line", through: [[-9, 0], [-9, 1]], dashed: true, tone: "muted", step: 4 },
         { kind: "label", at: [9, 6.5], label: "x = a/e", labelAt: "w", tone: "muted", step: 4 },
         { kind: "label", at: [-9, 6.5], label: "x = −a/e", labelAt: "e", tone: "muted", step: 4 },
-        { kind: "segment", from: [4, -3.333], to: [4, 3.333], tone: "good", step: 5 },
-        { kind: "point", at: [4, 3.333], label: "L", labelAt: "ne", step: 5, tone: "good" },
-        { kind: "point", at: [4, -3.333], label: "L′", labelAt: "se", step: 5, tone: "good" },
-        { kind: "label", at: [4, 1.9], label: "2b²/a", labelAt: "w", tone: "good", step: 5 },
+        { kind: "segment", from: [4, -3.333], to: [4, 3.333], tone: "good", step: 4 },
+        { kind: "point", at: [4, 3.333], label: "L", labelAt: "ne", step: 4, tone: "good" },
+        { kind: "point", at: [4, -3.333], label: "L′", labelAt: "se", step: 4, tone: "good" },
+        { kind: "label", at: [4, 1.9], label: "2b²/a", labelAt: "w", tone: "good", step: 4 },
       ],
     },
     visualSpec: t`Drag sliders for $a$ and $e$: the foci, directrices, minor axis and latus rectum move and show their lengths, and the equation $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ updates beside them.`,

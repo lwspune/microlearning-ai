@@ -1,6 +1,9 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The parabola y² = 4x (a = 1), for the idea slide and the formal slides. */
+const y2eq4x: Pt[] = [[6.25, -5], [5.941, -4.875], [5.641, -4.75], [5.348, -4.625], [5.062, -4.5], [4.785, -4.375], [4.516, -4.25], [4.254, -4.125], [4, -4], [3.754, -3.875], [3.516, -3.75], [3.285, -3.625], [3.062, -3.5], [2.848, -3.375], [2.641, -3.25], [2.441, -3.125], [2.25, -3], [2.066, -2.875], [1.891, -2.75], [1.723, -2.625], [1.562, -2.5], [1.41, -2.375], [1.266, -2.25], [1.129, -2.125], [1, -2], [0.879, -1.875], [0.766, -1.75], [0.66, -1.625], [0.562, -1.5], [0.473, -1.375], [0.391, -1.25], [0.316, -1.125], [0.25, -1], [0.191, -0.875], [0.141, -0.75], [0.098, -0.625], [0.062, -0.5], [0.035, -0.375], [0.016, -0.25], [0.004, -0.125], [0, 0], [0.004, 0.125], [0.016, 0.25], [0.035, 0.375], [0.062, 0.5], [0.098, 0.625], [0.141, 0.75], [0.191, 0.875], [0.25, 1], [0.316, 1.125], [0.391, 1.25], [0.473, 1.375], [0.562, 1.5], [0.66, 1.625], [0.766, 1.75], [0.879, 1.875], [1, 2], [1.129, 2.125], [1.266, 2.25], [1.41, 2.375], [1.562, 2.5], [1.723, 2.625], [1.891, 2.75], [2.066, 2.875], [2.25, 3], [2.441, 3.125], [2.641, 3.25], [2.848, 3.375], [3.062, 3.5], [3.285, 3.625], [3.516, 3.75], [3.754, 3.875], [4, 4], [4.254, 4.125], [4.516, 4.25], [4.785, 4.375], [5.062, 4.5], [5.348, 4.625], [5.641, 4.75], [5.941, 4.875], [6.25, 5]];
 
 export const c02: Concept = {
   id: "C02",
@@ -10,17 +13,147 @@ export const c02: Concept = {
     reveal: t`At the focus. Put the vertex at the origin and the axis along the x-axis: the rim point $(5, 10)$ is on $y^2 = 4ax$, so $100 = 20a$ and $a = 5$. The focus $(5, 0)$ is $5$ cm from the vertex, exactly level with the rim. The rim is the latus rectum: $4a = 20$ cm across.`,
   },
   explanation: {
-    intuition: t`Put the focus at $S(a, 0)$ and the directrix at $x = -a$. The vertex is then at the origin, midway between them, and the rule $SP = PM$ simplifies to $y^2 = 4ax$. Everything about the curve sits in the one number $a$: the focus, the directrix, and how wide the curve is at the focus. Only $y$ is squared, so $y$ and $-y$ give the same $x$: the curve is symmetric about the x-axis, which is its axis, and it opens to the right, round the focus.`,
-    formal: t`**The equation.** Focus $S(a, 0)$, directrix $x = -a$, $a > 0$. For $P(x, y)$, $SP^2 = (x - a)^2 + y^2$ and $PM^2 = (x + a)^2$. Setting $SP = PM$ gives
-$$y^2 = 4ax$$
-
-**Read it off.** Vertex $O(0, 0)$; focus $S(a, 0)$; directrix $x + a = 0$; axis $y = 0$ (the x-axis, across the squared $y$); tangent at the vertex $x = 0$.
-
-**Latus rectum.** The chord through $S$ at right angles to the axis. Put $x = a$: $y^2 = 4a^2$, so its ends are $(a, \pm 2a)$ and its length is $4a$.
-
-**From $ky^2 = lx$.** Divide by $k$ first: $y^2 = \frac{l}{k}x$, so $4a = \frac{l}{k}$. Then $a$ is a quarter of that.
-
-**Finding the equation.** Get $a$ from what is given: the focus $(a, 0)$, the directrix $x = -a$, an end $(a, \pm 2a)$ of the latus rectum, or a point on the curve (substitute it). Then write $y^2 = 4ax$.`,
+    intuition: [
+      t`Put the focus at $S(a, 0)$ and the directrix at $x = -a$, where $a > 0$ is a fixed length.`,
+      t`Recall: each point $P$ on the parabola has $SP = PM$, where $M$ is its foot on the directrix.`,
+      t`Written in $x$ and $y$, that rule simplifies to $y^2 = 4ax$: a curve opening to the right, round $S$.`,
+      t`It passes through $O$, midway between $S$ and the directrix: $O$ is its **vertex**, where it turns.`,
+      t`Only $y$ is squared, so $y$ and $-y$ give the same $x$: the x-axis is its mirror line, its **axis**.`,
+      t`The one number $a$ fixes it all: the focus, the directrix, and the width $4a$ across the focus.`,
+    ],
+    formal: [
+      {
+        title: "The standard equation",
+        points: [
+          t`Take the focus $S(a, 0)$ and the directrix $x = -a$, with $a > 0$.`,
+          t`Let $P(x, y)$ be any point, and $M(-a, y)$ its foot on the directrix.`,
+          t`By the distance formula, $SP^2 = (x - a)^2 + y^2$.`,
+          t`$M$ is straight across from $P$, so $PM^2 = (x + a)^2$.`,
+          t`$P$ is on the parabola when $SP = PM$, that is, when $SP^2 = PM^2$.`,
+          t`Expand both sides: $x^2$ and $a^2$ cancel, leaving $y^2 = 4ax$.`,
+        ],
+        figure: {
+          alt: "The focus S(a, 0) and the dashed directrix x = −a. A point P(x, y) is joined to S, and straight across to M(−a, y) on the directrix. The parabola y² = 4ax, the path of the points with SP = PM, is drawn at the end.",
+          axes: "xy",
+          view: { x: [-3, 7], y: [-5, 5] },
+          elements: [
+            { kind: "point", at: [1, 0], label: "S(a, 0)", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [-1, 4.3], label: "x = −a", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "point", at: [4, -4], label: "P(x, y)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [-1, -4], label: "M(−a, y)", labelAt: "sw", step: 2 },
+            { kind: "segment", from: [1, 0], to: [4, -4], step: 3 },
+            { kind: "segment", from: [4, -4], to: [-1, -4], step: 4 },
+            { kind: "curve", points: y2eq4x, step: 6 },
+            { kind: "label", at: [3.2, 1], label: "y² = 4ax", labelAt: "e", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Vertex, focus, directrix, axis",
+        points: [
+          t`The vertex is $O(0, 0)$.`,
+          t`The focus is $S(a, 0)$, on the x-axis, inside the curve.`,
+          t`The directrix is $x = -a$, that is, $x + a = 0$.`,
+          t`The axis is $y = 0$, the x-axis: only $y$ is squared, so the curve is mirrored in it.`,
+          t`A **tangent** is a line that touches a curve at one point without crossing it.`,
+          t`The tangent at the vertex is $x = 0$, the y-axis.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 4ax with its vertex O(0, 0), its focus S(a, 0) and the dashed directrix x + a = 0. The axis y = 0 is the x-axis, and the tangent at the vertex, x = 0, is the y-axis.",
+          axes: "xy",
+          view: { x: [-3, 7], y: [-5, 5] },
+          elements: [
+            { kind: "curve", points: y2eq4x },
+            { kind: "label", at: [3.2, 1], label: "y² = 4ax", labelAt: "e" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "point", at: [1, 0], label: "S(a, 0)", labelAt: "ne", step: 2 },
+            { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [-1, 4.3], label: "x + a = 0", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "segment", from: [-3, 0], to: [7, 0], tone: "good", step: 4 },
+            { kind: "label", at: [5, 0], label: "axis y = 0", labelAt: "n", tone: "good", step: 4 },
+            { kind: "line", through: [[0, 0], [0, 1]], tone: "good", step: 6 },
+            { kind: "label", at: [0, -4.3], label: "tangent x = 0", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The latus rectum",
+        points: [
+          t`A **chord** is a segment joining two points of a curve.`,
+          t`The **latus rectum** is the chord through the focus $S$ at right angles to the axis.`,
+          t`Every point on it has $x = a$.`,
+          t`Put $x = a$ in $y^2 = 4ax$: $y^2 = 4a^2$, so $y = \pm 2a$.`,
+          t`Its ends are $L(a, 2a)$ and $L'(a, -2a)$.`,
+          t`Its length is $2a + 2a = 4a$.`,
+        ],
+        figure: {
+          alt: "The parabola y² = 4ax with its focus S(a, 0). A slanting chord joins two points of the curve. The latus rectum is the vertical chord through S, from L(a, 2a) to L′(a, −2a), of length 4a.",
+          axes: "xy",
+          view: { x: [-3, 7], y: [-5, 5] },
+          elements: [
+            { kind: "curve", points: y2eq4x },
+            { kind: "label", at: [3.2, 1], label: "y² = 4ax", labelAt: "e" },
+            { kind: "point", at: [1, 0], label: "S(a, 0)", labelAt: "ne" },
+            { kind: "segment", from: [4, -4], to: [6.25, 5], tone: "muted", step: 1 },
+            { kind: "segment", from: [1, -2], to: [1, 2], tone: "good", step: 2 },
+            { kind: "point", at: [1, 2], label: "L(a, 2a)", labelAt: "se", tone: "good", step: 5 },
+            { kind: "point", at: [1, -2], label: "L′(a, −2a)", labelAt: "ne", tone: "good", step: 5 },
+            { kind: "label", at: [1, -1], label: "length 4a", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Equations like ky² = lx",
+        points: [
+          t`Some equations have a number in front of $y^2$, like $2y^2 = 8x$.`,
+          t`Divide by it first, so that $y^2$ stands alone: $y^2 = 4x$.`,
+          t`Compare with $y^2 = 4ax$: $4a = 4$, so $a = 1$ and the focus is $S(1, 0)$.`,
+          t`Reading $4a = 8$ before dividing would put the focus wrongly at $(2, 0)$.`,
+          t`In general, divide $ky^2 = lx$ by $k$: $y^2 = \frac{l}{k}x$.`,
+          t`So $4a = \frac{l}{k}$, and $a$ is a quarter of that.`,
+        ],
+        figure: {
+          alt: "The parabola 2y² = 8x, which is y² = 4x, opening to the right. Its focus is S(1, 0). The point (2, 0), the focus read off before dividing, is marked as wrong.",
+          axes: "xy",
+          view: { x: [-3, 7], y: [-5, 5] },
+          elements: [
+            { kind: "curve", points: y2eq4x, step: 1 },
+            { kind: "label", at: [3.2, 2], label: "2y² = 8x", labelAt: "e", step: 1 },
+            { kind: "label", at: [3.2, 1.2], label: "y² = 4x", labelAt: "e", tone: "good", step: 2 },
+            { kind: "point", at: [1, 0], tone: "good", step: 3 },
+            { kind: "label", at: [1, 0.45], label: "S(1, 0)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "point", at: [2, 0], tone: "bad", step: 4 },
+            { kind: "label", at: [2, -0.9], label: "not (2, 0)", labelAt: "e", tone: "bad", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Finding the equation",
+        points: [
+          t`To write the equation, first find $a$ from what is given.`,
+          t`A focus $(a, 0)$ gives it at once: $S(1, 0)$ means $a = 1$.`,
+          t`So does a directrix $x = -a$: $x = -1$ means $a = 1$.`,
+          t`So does an end $(a, \pm 2a)$ of the latus rectum: $L(1, 2)$ means $a = 1$.`,
+          t`For a point on the curve, substitute it: $P(4, 4)$ gives $16 = 16a$, so $a = 1$.`,
+          t`Then write $y^2 = 4ax$: here $y^2 = 4x$.`,
+        ],
+        figure: {
+          alt: "Four ways to find a = 1: the focus S(1, 0), the dashed directrix x = −1, the end L(1, 2) of the latus rectum, and the point P(4, 4) on the curve. The parabola y² = 4x through them is drawn at the end.",
+          axes: "xy",
+          view: { x: [-3, 7], y: [-5, 5] },
+          elements: [
+            { kind: "point", at: [1, 0], label: "S(1, 0)", labelAt: "ne", step: 2 },
+            { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [-1, 4.3], label: "x = −1", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "point", at: [1, 2], label: "L(1, 2)", labelAt: "se", tone: "good", step: 4 },
+            { kind: "point", at: [4, 4], label: "P(4, 4)", labelAt: "se", step: 5 },
+            { kind: "curve", points: y2eq4x, step: 6 },
+            { kind: "label", at: [3.2, 1], label: "y² = 4x", labelAt: "e", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the focus, the directrix, and the length and ends of the latus rectum of the parabola $3y^2 = 36x$.`,
       steps: [
@@ -47,19 +180,25 @@ $$y^2 = 4ax$$
       },
     },
     figure: {
-      alt: "The parabola y² = 4x, with vertex O at the origin, opening to the right about the x-axis. Its focus is S(1, 0) and its directrix is the dashed line x = −1. The latus rectum is the vertical chord through S, from L(1, 2) to L′(1, −2), of length 4.",
+      alt: "The focus S(1, 0) and the dashed directrix x = −1. The point P(4, −4) is 5 from S and 5 from M(−1, −4) on the directrix. The parabola y² = 4x through P opens to the right, round S, with vertex O at the origin and the x-axis as its axis. The latus rectum is the vertical chord through S, from L(1, 2) to L′(1, −2), of length 4.",
       axes: "xy",
       view: { x: [-3, 7], y: [-5, 5] },
       elements: [
-        { kind: "curve", points: [[6.25, -5], [5.941, -4.875], [5.641, -4.75], [5.348, -4.625], [5.062, -4.5], [4.785, -4.375], [4.516, -4.25], [4.254, -4.125], [4, -4], [3.754, -3.875], [3.516, -3.75], [3.285, -3.625], [3.062, -3.5], [2.848, -3.375], [2.641, -3.25], [2.441, -3.125], [2.25, -3], [2.066, -2.875], [1.891, -2.75], [1.723, -2.625], [1.562, -2.5], [1.41, -2.375], [1.266, -2.25], [1.129, -2.125], [1, -2], [0.879, -1.875], [0.766, -1.75], [0.66, -1.625], [0.562, -1.5], [0.473, -1.375], [0.391, -1.25], [0.316, -1.125], [0.25, -1], [0.191, -0.875], [0.141, -0.75], [0.098, -0.625], [0.062, -0.5], [0.035, -0.375], [0.016, -0.25], [0.004, -0.125], [0, 0], [0.004, 0.125], [0.016, 0.25], [0.035, 0.375], [0.062, 0.5], [0.098, 0.625], [0.141, 0.75], [0.191, 0.875], [0.25, 1], [0.316, 1.125], [0.391, 1.25], [0.473, 1.375], [0.562, 1.5], [0.66, 1.625], [0.766, 1.75], [0.879, 1.875], [1, 2], [1.129, 2.125], [1.266, 2.25], [1.41, 2.375], [1.562, 2.5], [1.723, 2.625], [1.891, 2.75], [2.066, 2.875], [2.25, 3], [2.441, 3.125], [2.641, 3.25], [2.848, 3.375], [3.062, 3.5], [3.285, 3.625], [3.516, 3.75], [3.754, 3.875], [4, 4], [4.254, 4.125], [4.516, 4.25], [4.785, 4.375], [5.062, 4.5], [5.348, 4.625], [5.641, 4.75], [5.941, 4.875], [6.25, 5]], step: 1 },
-        { kind: "label", at: [3.2, 1], label: "y² = 4x", labelAt: "e", step: 1 },
-        { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted", step: 2 },
-        { kind: "point", at: [1, 0], label: "S(1, 0)", labelAt: "ne", step: 2 },
-        { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 3 },
-        { kind: "label", at: [-1, 4.3], label: "x = −1", labelAt: "w", tone: "muted", step: 3 },
-        { kind: "segment", from: [1, -2], to: [1, 2], tone: "good", step: 4 },
-        { kind: "point", at: [1, 2], label: "L(1, 2)", labelAt: "se", tone: "good", step: 4 },
-        { kind: "point", at: [1, -2], label: "L′(1, −2)", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "point", at: [1, 0], label: "S(1, 0)", labelAt: "ne", step: 1 },
+        { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 1 },
+        { kind: "label", at: [-1, 4.3], label: "x = −1", labelAt: "w", tone: "muted", step: 1 },
+        { kind: "point", at: [4, -4], label: "P", labelAt: "ne", step: 2 },
+        { kind: "point", at: [-1, -4], label: "M", labelAt: "sw", step: 2 },
+        { kind: "segment", from: [1, 0], to: [4, -4], label: "SP = 5", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [4, -4], to: [-1, -4], label: "PM = 5", labelAt: "s", step: 2 },
+        { kind: "curve", points: y2eq4x, step: 3 },
+        { kind: "label", at: [3.2, 1], label: "y² = 4x", labelAt: "e", step: 3 },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "nw", tone: "muted", step: 4 },
+        { kind: "label", at: [5.5, 0], label: "axis", labelAt: "n", tone: "good", step: 5 },
+        { kind: "segment", from: [1, -2], to: [1, 2], tone: "good", step: 6 },
+        { kind: "point", at: [1, 2], label: "L", labelAt: "se", tone: "good", step: 6 },
+        { kind: "point", at: [1, -2], label: "L′", labelAt: "ne", tone: "good", step: 6 },
+        { kind: "label", at: [1.1, 1], label: "LL′ = 4", labelAt: "e", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag the focus $S(a, 0)$ along the x-axis: the directrix $x = -a$ moves the other way, the parabola $y^2 = 4ax$ widens or narrows, and the latus rectum's ends $(a, \pm 2a)$ and length $4a$ update.`,

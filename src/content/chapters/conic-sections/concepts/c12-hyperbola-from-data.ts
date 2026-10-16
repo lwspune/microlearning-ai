@@ -10,23 +10,122 @@ export const c12: Concept = {
     reveal: t`For a hyperbola the foci lie beyond the vertices, so $ae > a$ and the rule flips: $a^2e^2 = a^2 + b^2$. Then $b^2 = 9 - 1 = 8$, and the hyperbola is $x^2 - \frac{y^2}{8} = 1$.`,
   },
   explanation: {
-    intuition: t`Every fact about a hyperbola is a distance from its centre: a vertex is $a$ away, a focus $ae$, a directrix $\frac{a}{e}$, an end of the conjugate axis $b$. Turn each given fact into one of these. Two facts fix the two unknowns, tied together by one relation, $a^2e^2 = a^2 + b^2$. It is the ellipse's relation with the sign flipped, because a hyperbola's foci lie beyond its vertices.`,
-    formal: t`**Read each fact as a distance from the centre**
-
-- vertices $(\pm a, 0)$; transverse axis $2a$
-- ends of the conjugate axis $(0, \pm b)$; conjugate axis $2b$
-- foci $(\pm ae, 0)$; distance between the foci $2ae$
-- directrices $x = \pm\frac{a}{e}$; distance between the directrices $\frac{2a}{e}$
-
-**Halve the lengths first.** An axis, or the distance between the foci or the directrices, spans both sides of the centre.
-
-**Link them with one relation**
-
-$$a^2e^2 = a^2 + b^2, \quad\text{that is,}\quad b^2 = a^2(e^2 - 1)$$
-
-**A point on the curve** satisfies the equation. Through $(3, 0)$ and $(6, 9)$: $(3, 0)$ is a vertex, so $a^2 = 9$; then $\frac{36}{9} - \frac{81}{b^2} = 1$ gives $b^2 = 27$.
-
-**Then write** $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ with the $a^2$ and $b^2$ you found.`,
+    intuition: [
+      t`The hyperbola $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ has two unknowns, $a$ and $b$, so two facts fix it.`,
+      t`The **data** are the facts a question gives: read each as a distance from the centre $O$.`,
+      t`A vertex is $a$ from the centre, and an end of the **conjugate axis**, the axis across the curve, is $b$.`,
+      t`A focus is $ae$ from the centre, and a directrix is $\frac{a}{e}$ from it.`,
+      t`From a vertex to an end of the conjugate axis is also $ae$, so $a^2e^2 = a^2 + b^2$.`,
+      t`It is the ellipse's relation with the sign flipped, because a hyperbola's foci lie beyond its vertices.`,
+    ],
+    formal: [
+      {
+        title: "Each fact is a distance",
+        points: [
+          t`Every fact a question gives is a distance from the centre $O$, measured along an axis.`,
+          t`Recall: the vertices are $(\pm a, 0)$, and the **transverse axis** joining them is $2a$ long.`,
+          t`The conjugate axis, across the curve, has ends $(0, \pm b)$ and is $2b$ long.`,
+          t`The foci are $(\pm ae, 0)$, so the distance between the foci is $2ae$.`,
+          t`The directrices are $x = \pm\frac{a}{e}$, so the distance between them is $\frac{2a}{e}$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/9 − y²/16 = 1 with its centre O. The vertices (±a, 0) and the transverse axis between them, then the dashed conjugate axis with ends (0, ±b), then the foci (±ae, 0) beyond the vertices, then the dashed directrices x = ±a/e between the centre and the vertices.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: -1 },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw", step: 1 },
+            { kind: "segment", from: [-3, 0], to: [3, 0], tone: "good", step: 2 },
+            { kind: "point", at: [3, 0], step: 2, label: "(a, 0)", labelAt: "nw" },
+            { kind: "point", at: [-3, 0], step: 2, label: "(−a, 0)", labelAt: "ne" },
+            { kind: "segment", from: [0, -4], to: [0, 4], dashed: true, tone: "muted", step: 3 },
+            { kind: "point", at: [0, 4], step: 3, label: "(0, b)", labelAt: "e" },
+            { kind: "point", at: [0, -4], step: 3, label: "(0, −b)", labelAt: "e" },
+            { kind: "point", at: [5, 0], tone: "good", step: 4, label: "(ae, 0)", labelAt: "ne" },
+            { kind: "point", at: [-5, 0], tone: "good", step: 4, label: "(−ae, 0)", labelAt: "nw" },
+            { kind: "line", through: [[1.8, 0], [1.8, 1]], dashed: true, tone: "muted", step: 5 },
+            { kind: "line", through: [[-1.8, 0], [-1.8, 1]], dashed: true, tone: "muted", step: 5 },
+            { kind: "label", at: [1.8, 5], label: "x = a/e", labelAt: "ne", tone: "muted", step: 5 },
+            { kind: "label", at: [-1.8, 5], label: "x = −a/e", labelAt: "nw", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Halve the lengths first",
+        points: [
+          t`A coordinate is measured from the centre, so a focus $(ae, 0)$ gives the half-length $ae$.`,
+          t`A given length spans both sides of the centre, like the distance $2ae$ between the foci.`,
+          t`So an axis, or the distance between the foci or the directrices, is double: $2a$, $2b$, $2ae$ or $\frac{2a}{e}$.`,
+          t`For example, foci $8$ apart means $2ae = 8$, so $ae = 4$.`,
+          t`Halve every given length before you use it.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/4 − y²/12 = 1. The focus (ae, 0) is ae from the centre; the two foci (±ae, 0) are 2ae apart, a length across both sides of the centre. With the foci 8 apart, 2ae = 8 and ae = 4.",
+          axes: "xy",
+          view: { x: [-5.6, 5.6], y: [-4.6, 4.6] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 2, b: 3.464, axis: "x", branch: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 2, b: 3.464, axis: "x", branch: -1 },
+            { kind: "point", at: [4, 0], tone: "good", step: 1, label: "(ae, 0)", labelAt: "ne" },
+            { kind: "segment", from: [0, 1.2], to: [4, 1.2], tone: "good", label: "ae", labelAt: "n", step: 1 },
+            { kind: "point", at: [-4, 0], tone: "good", step: 2, label: "(−ae, 0)", labelAt: "nw" },
+            { kind: "segment", from: [-4, -1.2], to: [4, -1.2], tone: "muted", label: "2ae", labelAt: "s", step: 2 },
+            { kind: "label", at: [-0.3, 3.1], label: "2ae = 8", labelAt: "nw", tone: "good", step: 4 },
+            { kind: "label", at: [0.3, 3.1], label: "ae = 4", labelAt: "ne", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Linking a, b and ae",
+        points: [
+          t`Recall: for a hyperbola, $b^2 = a^2(e^2 - 1)$.`,
+          t`Multiplied out, $b^2 = a^2e^2 - a^2$, that is, $a^2e^2 = a^2 + b^2$.`,
+          t`It is Pythagoras: from a vertex to an end of the conjugate axis is $ae$, the long side.`,
+          t`A focus is the same distance $ae$ from the centre, beyond the vertex, since $ae > a$.`,
+          t`So you add $a^2$ and $b^2$: the ellipse's $a^2e^2 = a^2 - b^2$ does not apply.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/9 − y²/16 = 1 with the right triangle from the centre: a = 3 along the x-axis, b = 4 up the y-axis, and the long side from the vertex (3, 0) to (0, 4) is ae = 5. The focus (ae, 0) is that same 5 from the centre, beyond the vertex.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 4, axis: "x", branch: -1 },
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "good", label: "a", labelAt: "n", step: 3 },
+            { kind: "segment", from: [0, 0], to: [0, 4], tone: "good", label: "b", labelAt: "e", step: 3 },
+            { kind: "segment", from: [3, 0], to: [0, 4], tone: "good", label: "ae", labelAt: "ne", step: 3 },
+            { kind: "point", at: [3, 0], step: 3 },
+            { kind: "point", at: [0, 4], step: 3 },
+            { kind: "point", at: [5, 0], tone: "good", step: 4, label: "(ae, 0)", labelAt: "ne" },
+            { kind: "segment", from: [0, -0.9], to: [5, -0.9], tone: "good", label: "ae", labelAt: "s", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "A point, then the equation",
+        points: [
+          t`A point $(x_1, y_1)$ on the hyperbola satisfies its equation.`,
+          t`So $\frac{x_1^2}{a^2} - \frac{y_1^2}{b^2} = 1$: one equation in $a^2$ and $b^2$.`,
+          t`For example, a hyperbola passes through $(3, 0)$ and $(6, 9)$.`,
+          t`$(3, 0)$ is on the $x$-axis, so it is a vertex, and $a^2 = 9$.`,
+          t`Then $(6, 9)$ gives $\frac{36}{9} - \frac{81}{b^2} = 1$, so $b^2 = 27$.`,
+          t`Put $a^2$ and $b^2$ into $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$: here $\frac{x^2}{9} - \frac{y^2}{27} = 1$.`,
+        ],
+        figure: {
+          alt: "The points (3, 0) and (6, 9). (3, 0) is on the x-axis, so it and its mirror image (−3, 0) are the vertices. b² = 27 gives the hyperbola x²/9 − y²/27 = 1 through all three.",
+          axes: "xy",
+          view: { x: [-13, 13], y: [-11, 11] },
+          elements: [
+            { kind: "point", at: [3, 0], step: 3, label: "(3, 0)", labelAt: "nw" },
+            { kind: "point", at: [6, 9], step: 3, label: "(6, 9)", labelAt: "e" },
+            { kind: "point", at: [-3, 0], step: 4 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 5.196, axis: "x", branch: 1, step: 6, tone: "good" },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 5.196, axis: "x", branch: -1, step: 6, tone: "good" },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the hyperbola with centre at the origin, transverse axis $12$ and one focus at $(3\sqrt{5}, 0)$.`,
       steps: [
@@ -54,21 +153,26 @@ $$a^2e^2 = a^2 + b^2, \quad\text{that is,}\quad b^2 = a^2(e^2 - 1)$$
       },
     },
     figure: {
-      alt: "The hyperbola x²/4 − y²/12 = 1. Its vertices are (±2, 0) and the ends of its conjugate axis are (0, ±2√3). The segment from the vertex (2, 0) to the end (0, −2√3) has length √(4 + 12) = 4, the same as the distance from the centre to the foci (±4, 0): a²e² = a² + b².",
+      alt: "The hyperbola x²/4 − y²/12 = 1 with its centre O. Its vertices (±2, 0) are a = 2 from the centre and the ends of its conjugate axis (0, ±2√3) are b = 2√3 from it. Its foci (±4, 0) are ae = 4 from the centre and its dashed directrices x = ±1 are a/e = 1 from it. The segment from the vertex (2, 0) to the end (0, −2√3) also has length √(4 + 12) = 4: a²e² = a² + b².",
       axes: "xy",
       view: { x: [-5.6, 5.6], y: [-4.6, 4.6] },
       elements: [
         { kind: "hyperbola", centre: [0, 0], a: 2, b: 3.464, axis: "x", branch: 1, step: 1 },
         { kind: "hyperbola", centre: [0, 0], a: 2, b: 3.464, axis: "x", branch: -1, step: 1 },
-        { kind: "point", at: [2, 0], step: 2, label: "(2, 0)", labelAt: "nw" },
-        { kind: "point", at: [-2, 0], step: 2, label: "(−2, 0)", labelAt: "ne" },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "sw", step: 2 },
+        { kind: "point", at: [2, 0], step: 3, label: "(2, 0)", labelAt: "nw" },
+        { kind: "point", at: [-2, 0], step: 3, label: "(−2, 0)", labelAt: "ne" },
         { kind: "segment", from: [0, -3.464], to: [0, 3.464], dashed: true, tone: "muted", step: 3 },
         { kind: "point", at: [0, 3.464], step: 3, label: "(0, 2√3)", labelAt: "e" },
         { kind: "point", at: [0, -3.464], step: 3 },
-        { kind: "segment", from: [2, 0], to: [0, -3.464], tone: "good", step: 4 },
         { kind: "point", at: [4, 0], tone: "good", step: 4, label: "(4, 0)", labelAt: "ne" },
         { kind: "point", at: [-4, 0], tone: "good", step: 4, label: "(−4, 0)", labelAt: "nw" },
-        { kind: "label", at: [1.15, -1.75], label: "4", labelAt: "se", tone: "good", step: 4 },
+        { kind: "line", through: [[1, 0], [1, 1]], dashed: true, tone: "muted", step: 4 },
+        { kind: "line", through: [[-1, 0], [-1, 1]], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [1, 4.2], label: "x = 1", labelAt: "e", tone: "muted", step: 4 },
+        { kind: "label", at: [-1, 4.2], label: "x = −1", labelAt: "w", tone: "muted", step: 4 },
+        { kind: "segment", from: [2, 0], to: [0, -3.464], tone: "good", step: 5 },
+        { kind: "label", at: [1.15, -1.75], label: "ae = 4", labelAt: "se", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag a focus along the $x$-axis with the vertices fixed: the ends of the conjugate axis slide so that $a^2e^2 = a^2 + b^2$ stays true, and the branches open or close.`,

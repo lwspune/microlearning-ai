@@ -1,6 +1,19 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The idea and formal slides' ellipse x²/100 + y²/64 = 1: a = 10, b = 8, e = 0.6, ae = 6, a/e = 50/3. */
+const ellipse: FigureElement = { kind: "ellipse", centre: [0, 0], rx: 10, ry: 8, tone: "muted" };
+/** Its directrix x = a/e, and a point P on it with x₁ = 8. */
+const D = 16.667;
+const P: [number, number] = [8, -4.8];
+/** Both directrices, dashed, labelled at the foot of the frame. */
+const directrices = (step?: number, tone: FigureElement["tone"] = "muted"): FigureElement[] => [
+  { kind: "line", through: [[D, 0], [D, 1]], dashed: true, tone, step },
+  { kind: "label", at: [D, -9], label: "x = a/e", labelAt: "w", tone, step },
+  { kind: "line", through: [[-D, 0], [-D, 1]], dashed: true, tone, step },
+  { kind: "label", at: [-D, -9], label: "x = −a/e", labelAt: "e", tone, step },
+];
 
 export const c08: Concept = {
   id: "C08",
@@ -10,16 +23,165 @@ export const c08: Concept = {
     reveal: t`An ellipse, with the pins as its foci $S$ and $S'$. At every point $P$ the two pieces of string add up to the whole string: $SP + S'P = 20$. At either end of the curve both pieces lie along the line of the pins, so the curve measures $20$ cm from end to end: $2a = 20$, $a = 10$, and $ae = 6$.`,
   },
   explanation: {
-    intuition: t`Pin the two ends of a string and pull it tight with a pencil: as the pencil goes round, the two straight pieces always add up to the string's length. The curve it draws is an ellipse with the pins at its foci. The focus-directrix definition gives each piece on its own: $SP$ is $e$ times the distance from $P$ to the nearer directrix, which works out to $a - ex_1$, and $S'P = a + ex_1$. As $P$ moves, one piece shrinks by exactly what the other gains, so the total stays $2a$.`,
-    formal: t`**The setting.** On $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with $a > b$, the foci are $S(ae, 0)$ and $S'(-ae, 0)$ and the directrices are $x = \pm\frac{a}{e}$. For a point $P(x_1, y_1)$ on it, $SP$ and $S'P$ are its **focal distances**.
-
-**Each distance.** $SP = e \cdot PM = e\left(\frac{a}{e} - x_1\right) = a - ex_1$, and $S'P = e\left(x_1 + \frac{a}{e}\right) = a + ex_1$. A point on the right ($x_1 > 0$) is nearer to $S$, so $SP$ is the smaller one there.
-
-**The sum.** $SP + S'P = 2a$, the length of the major axis, for every point of the ellipse. It is not $2ae$ (the distance between the foci) or $\frac{2a}{e}$ (between the directrices).
-
-**The product.** $SP \cdot S'P = (a - ex_1)(a + ex_1) = a^2 - e^2x_1^2$. At $P(a\cos\theta, b\sin\theta)$ this is $a^2 - a^2e^2\cos^2\theta$.
-
-**Major axis along $y$.** If $b > a$, the foci are $(0, \pm be)$, the focal distances are $b - ey_1$ and $b + ey_1$, and their sum is $2b$. The sum is always the major axis: twice the square root of the **bigger** denominator.`,
+    intuition: [
+      t`Pin the two ends of a string at points $S$ and $S'$, and pull it tight with a pencil at $P$.`,
+      t`As the pencil goes round, it draws an ellipse, with the two pins at its foci.`,
+      t`The two straight pieces, $SP$ and $S'P$, are $P$'s **focal distances**: its distances from the foci.`,
+      t`Recall: $SP$ is $e$ times $PM$, the distance from $P$ to the nearer directrix.`,
+      t`That works out to $SP = a - ex_1$, and likewise $S'P = a + ex_1$, where $x_1$ is $P$'s x-coordinate.`,
+      t`As $P$ moves, one piece shrinks by what the other gains: the total stays the string's length, $2a$.`,
+    ],
+    formal: [
+      {
+        title: "The ellipse and its foci",
+        points: [
+          t`Take the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ with $a > b$: its major axis is the x-axis.`,
+          t`Its foci are $S(ae, 0)$ and $S'(-ae, 0)$.`,
+          t`Its directrices are the lines $x = \frac{a}{e}$ and $x = -\frac{a}{e}$.`,
+          t`Let $P(x_1, y_1)$ be any point on the ellipse.`,
+          t`$SP$ and $S'P$ are its **focal distances**: its distances from the two foci.`,
+        ],
+        figure: {
+          alt: "The ellipse x²/a² + y²/b² = 1, wider than it is tall. Its foci S(ae, 0) and S′(−ae, 0) are inside it on the x-axis, and its dashed directrices x = a/e and x = −a/e are outside it. A point P(x₁, y₁) on the ellipse is joined to both foci: SP and S′P are its focal distances.",
+          axes: "xy",
+          view: { x: [-19, 19], y: [-10, 11] },
+          elements: [
+            { ...ellipse, label: "x²/a² + y²/b² = 1", labelAt: "ne", step: 1 },
+            { kind: "point", at: [6, 0], label: "S(ae, 0)", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "point", at: [-6, 0], label: "S′(−ae, 0)", labelAt: "n", tone: "muted", step: 2 },
+            ...directrices(3),
+            { kind: "point", at: P, label: "P(x₁, y₁)", labelAt: "se", step: 4 },
+            { kind: "segment", from: [6, 0], to: P, label: "SP", labelAt: "e", step: 5 },
+            { kind: "segment", from: [-6, 0], to: P, label: "S′P", labelAt: "ne", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The distance to each focus",
+        points: [
+          t`Recall: $SP = e \cdot PM$, where $M$ is the point straight across from $P$ on the nearer directrix.`,
+          t`The nearer directrix is $x = \frac{a}{e}$, so $PM = \frac{a}{e} - x_1$.`,
+          t`So $SP = e\left(\frac{a}{e} - x_1\right)$, which is $a - ex_1$.`,
+          t`Likewise, with $M'$ on the directrix $x = -\frac{a}{e}$: $S'P = e\left(x_1 + \frac{a}{e}\right)$.`,
+          t`That is $S'P = a + ex_1$.`,
+          t`A point on the right ($x_1 > 0$) is nearer to $S$, so $SP$ is the smaller distance there.`,
+        ],
+        figure: {
+          alt: "The ellipse with foci S and S′, its dashed directrices x = a/e and x = −a/e, and a point P(x₁, y₁) on its right side. P is joined to S and straight across to M on x = a/e, with PM = a/e − x₁, so SP = a − ex₁. P is joined to S′ and straight across to M′ on x = −a/e, so S′P = a + ex₁, the longer distance.",
+          axes: "xy",
+          view: { x: [-19, 19], y: [-10, 14] },
+          elements: [
+            ellipse,
+            { kind: "point", at: [6, 0], label: "S", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [-6, 0], label: "S′", labelAt: "n", tone: "muted" },
+            ...directrices(),
+            { kind: "point", at: P, label: "P(x₁, y₁)", labelAt: "se" },
+            { kind: "segment", from: [6, 0], to: P, step: 1 },
+            { kind: "segment", from: P, to: [D, -4.8], dashed: true, step: 1 },
+            { kind: "point", at: [D, -4.8], label: "M", labelAt: "ne", step: 1 },
+            { kind: "label", at: [-15, 13], label: "PM = a/e − x₁", labelAt: "e", step: 2 },
+            { kind: "label", at: [-15, 11.6], label: "SP = a − ex₁", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [-6, 0], to: P, step: 4 },
+            { kind: "segment", from: P, to: [-D, -4.8], dashed: true, step: 4 },
+            { kind: "point", at: [-D, -4.8], label: "M′", labelAt: "ne", step: 4 },
+            { kind: "label", at: [-15, 10.2], label: "S′P = a + ex₁", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The sum is the major axis",
+        points: [
+          t`Add the two distances: $SP + S'P$ equals $(a - ex_1) + (a + ex_1)$.`,
+          t`The $ex_1$ terms cancel, so $SP + S'P = 2a$.`,
+          t`$2a$ is the length of the major axis, from the vertex $(-a, 0)$ to the vertex $(a, 0)$.`,
+          t`This holds for every point of the ellipse, such as the top point $Q$ too.`,
+          t`The sum is not $2ae$, the distance $SS'$ between the foci.`,
+          t`Nor is it $\frac{2a}{e}$, the distance between the directrices.`,
+        ],
+        figure: {
+          alt: "The ellipse with foci S and S′ and a point P(x₁, y₁) joined to both: SP + S′P = 2a, the major axis from (−a, 0) to (a, 0). The top point Q is joined to both foci too, with the same total. The distance SS′ = 2ae between the foci and the distance 2a/e between the dashed directrices are marked as wrong.",
+          axes: "xy",
+          view: { x: [-19, 19], y: [-12, 14] },
+          elements: [
+            ellipse,
+            { kind: "point", at: [6, 0], label: "S", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [-6, 0], label: "S′", labelAt: "n", tone: "muted" },
+            { kind: "point", at: P, label: "P(x₁, y₁)", labelAt: "se" },
+            { kind: "segment", from: [6, 0], to: P, step: 1 },
+            { kind: "segment", from: [-6, 0], to: P, step: 1 },
+            { kind: "label", at: [-15, 13], label: "SP + S′P = 2a", labelAt: "e", tone: "good", step: 2 },
+            { kind: "segment", from: [-10, 0], to: [10, 0], tone: "good", step: 3 },
+            { kind: "point", at: [-10, 0], label: "(−a, 0)", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "point", at: [10, 0], label: "(a, 0)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [-15, 11.6], label: "major axis = 2a", labelAt: "e", tone: "good", step: 3 },
+            { kind: "point", at: [0, 8], label: "Q", labelAt: "ne", step: 4 },
+            { kind: "segment", from: [6, 0], to: [0, 8], dashed: true, step: 4 },
+            { kind: "segment", from: [-6, 0], to: [0, 8], dashed: true, step: 4 },
+            { kind: "label", at: [-15, 10.2], label: "SQ + S′Q = 2a too", labelAt: "e", tone: "good", step: 4 },
+            { kind: "segment", from: [-6, 0], to: [6, 0], tone: "bad", step: 5 },
+            { kind: "label", at: [-15, -9.8], label: "not SS′ = 2ae", labelAt: "e", tone: "bad", step: 5 },
+            ...directrices(6, "bad").filter((el) => el.kind === "line"),
+            { kind: "label", at: [-15, -11.2], label: "not 2a/e, between the directrices", labelAt: "e", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The product of the distances",
+        points: [
+          t`Multiply the two distances: $SP \cdot S'P$ equals $(a - ex_1)(a + ex_1)$.`,
+          t`That is a difference of two squares: $a^2 - (ex_1)^2$.`,
+          t`Square the whole of $ex_1$, both $e$ and $x_1$: the product is $a^2 - e^2x_1^2$.`,
+          t`Since $\cos^2\theta + \sin^2\theta = 1$, the point $(a\cos\theta, b\sin\theta)$ is on the ellipse for every angle $\theta$.`,
+          t`So at $P(a\cos\theta, b\sin\theta)$, $x_1 = a\cos\theta$ and the product is $a^2 - a^2e^2\cos^2\theta$.`,
+        ],
+        figure: {
+          alt: "The ellipse with foci S and S′ and a point P(x₁, y₁) joined to both, the pieces marked a − ex₁ and a + ex₁. Their product is a² − (ex₁)² = a² − e²x₁². P is also written (a cos θ, b sin θ), and the product is then a² − a²e² cos² θ.",
+          axes: "xy",
+          view: { x: [-15, 19], y: [-9.5, 14] },
+          elements: [
+            ellipse,
+            { kind: "point", at: [6, 0], label: "S", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [-6, 0], label: "S′", labelAt: "n", tone: "muted" },
+            { kind: "point", at: P, label: "P(x₁, y₁)", labelAt: "se" },
+            { kind: "segment", from: [6, 0], to: P, label: "a − ex₁", labelAt: "e", step: 1 },
+            { kind: "segment", from: [-6, 0], to: P, label: "a + ex₁", labelAt: "ne", step: 1 },
+            { kind: "label", at: [-14.5, 13], label: "SP · S′P = a² − (ex₁)²", labelAt: "e", step: 2 },
+            { kind: "label", at: [-14.5, 11.6], label: "= a² − e²x₁²", labelAt: "e", tone: "good", step: 3 },
+            { kind: "label", at: [8.6, -6.4], label: "= (a cos θ, b sin θ)", labelAt: "se", step: 4 },
+            { kind: "label", at: [-14.5, 10.2], label: "= a² − a²e² cos² θ", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Major axis along the y-axis",
+        points: [
+          t`If $b > a$, the ellipse is taller than it is wide: its major axis is the y-axis.`,
+          t`Its foci are $S(0, be)$ and $S'(0, -be)$, on the y-axis.`,
+          t`For a point $P(x_1, y_1)$ on it, $SP = b - ey_1$ and $S'P = b + ey_1$, using $y_1$, not $x_1$.`,
+          t`Their sum is $2b$, again the length of the major axis.`,
+          t`So the sum is always twice the square root of the **bigger** denominator.`,
+        ],
+        figure: {
+          alt: "The ellipse x²/a² + y²/b² = 1 with b > a, taller than it is wide. Its foci S(0, be) and S′(0, −be) are on the y-axis. A point P(x₁, y₁) is joined to both: SP = b − ey₁ and S′P = b + ey₁. The major axis, along the y-axis from (0, −b) to (0, b), has length 2b, their sum.",
+          axes: "xy",
+          view: { x: [-13, 19], y: [-11.5, 11.5] },
+          elements: [
+            { kind: "ellipse", centre: [0, 0], rx: 8, ry: 10, tone: "muted", step: 1 },
+            { kind: "point", at: [0, 6], label: "S(0, be)", labelAt: "se", tone: "muted", step: 2 },
+            { kind: "point", at: [0, -6], label: "S′(0, −be)", labelAt: "se", tone: "muted", step: 2 },
+            { kind: "point", at: [-4.8, 8], label: "P(x₁, y₁)", labelAt: "nw", step: 3 },
+            { kind: "segment", from: [0, 6], to: [-4.8, 8], step: 3 },
+            { kind: "segment", from: [0, -6], to: [-4.8, 8], step: 3 },
+            { kind: "label", at: [9, 5.6], label: "SP = b − ey₁", labelAt: "e", step: 3 },
+            { kind: "label", at: [9, 4.2], label: "S′P = b + ey₁", labelAt: "e", step: 3 },
+            { kind: "segment", from: [0, -10], to: [0, 10], tone: "good", step: 4 },
+            { kind: "point", at: [0, 10], label: "(0, b)", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "point", at: [0, -10], label: "(0, −b)", labelAt: "se", tone: "good", step: 4 },
+            { kind: "label", at: [9, 2.8], label: "SP + S′P = 2b", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`The point $P(3, -\sqrt{15})$ lies on the ellipse $\frac{x^2}{36} + \frac{y^2}{20} = 1$. Find its focal distances $SP$ and $S'P$, and check that they add up to the major axis.`,
       steps: [
@@ -47,19 +209,23 @@ export const c08: Concept = {
       },
     },
     figure: {
-      alt: "The ellipse x²/100 + y²/64 = 1 with foci S(6, 0) and S′(−6, 0). The point P(8, −4.8) is on it, joined to both foci: SP = 5.2 and S′P = 14.8, and SP + S′P = 20 = 2a.",
+      alt: "Two pins S(6, 0) and S′(−6, 0) and a pencil at P(8, −4.8), with the string pulled tight from S to P to S′. The pencil draws the ellipse x²/100 + y²/64 = 1, with the pins at its foci. P is joined straight across to M on the dashed directrix x = a/e. SP = 10 − 0.6 × 8 = 5.2 and S′P = 10 + 0.6 × 8 = 14.8, and SP + S′P = 20 = 2a.",
       axes: "xy",
       view: { x: [-13, 19], y: [-9.5, 13.5] },
       elements: [
-        { kind: "ellipse", centre: [0, 0], rx: 10, ry: 8, tone: "muted", step: 1 },
         { kind: "point", at: [6, 0], label: "S(6, 0)", labelAt: "n", tone: "muted", step: 1 },
         { kind: "point", at: [-6, 0], label: "S′(−6, 0)", labelAt: "n", tone: "muted", step: 1 },
-        { kind: "point", at: [8, -4.8], label: "P(8, −4.8)", labelAt: "se", step: 2 },
-        { kind: "segment", from: [6, 0], to: [8, -4.8], step: 2 },
-        { kind: "label", at: [1.5, 12.6], label: "SP = 10 − 0.6 × 8 = 5.2", labelAt: "e", step: 2 },
-        { kind: "segment", from: [-6, 0], to: [8, -4.8], step: 3 },
-        { kind: "label", at: [1.5, 11.1], label: "S′P = 10 + 0.6 × 8 = 14.8", labelAt: "e", step: 3 },
-        { kind: "label", at: [1.5, 9.6], label: "SP + S′P = 20 = 2a", labelAt: "e", tone: "good", step: 4 },
+        { kind: "point", at: P, label: "P(8, −4.8)", labelAt: "se", step: 1 },
+        { kind: "segment", from: [6, 0], to: P, step: 1 },
+        { kind: "segment", from: [-6, 0], to: P, step: 1 },
+        { ...ellipse, step: 2 },
+        { kind: "line", through: [[D, 0], [D, 1]], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [D, -8.6], label: "x = a/e", labelAt: "w", tone: "muted", step: 4 },
+        { kind: "segment", from: P, to: [D, -4.8], dashed: true, step: 4 },
+        { kind: "point", at: [D, -4.8], label: "M", labelAt: "ne", step: 4 },
+        { kind: "label", at: [0.6, 12.4], label: "SP = 10 − 0.6 × 8 = 5.2", labelAt: "e", step: 5 },
+        { kind: "label", at: [0.6, 11], label: "S′P = 10 + 0.6 × 8 = 14.8", labelAt: "e", step: 5 },
+        { kind: "label", at: [0.6, 9.6], label: "SP + S′P = 20 = 2a", labelAt: "e", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag $P$ round the ellipse: the pieces $SP$ and $S'P$ are drawn as a taut string, one growing as the other shrinks, while a counter shows $a - ex_1$, $a + ex_1$ and their total, fixed at $2a$.`,

@@ -1,6 +1,44 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** `{ step }`, or nothing for an element shown from the start. */
+const stepOf = (step?: number) => (step === undefined ? {} : { step });
+
+/** Both branches of x²/a² − y²/b² = 1, opening left and right. */
+const hyperbolaX = (a: number, b: number, step?: number): FigureElement[] => [
+  { kind: "hyperbola", centre: [0, 0], a, b, axis: "x", branch: 1, ...stepOf(step) },
+  { kind: "hyperbola", centre: [0, 0], a, b, axis: "x", branch: -1, ...stepOf(step) },
+];
+
+/** The dashed rectangle −a ≤ x ≤ a, −b ≤ y ≤ b, whose diagonals are the asymptotes. */
+const rectangle = (a: number, b: number, step?: number): FigureElement[] => [
+  { kind: "segment", from: [a, b], to: [-a, b], dashed: true, tone: "muted", ...stepOf(step) },
+  { kind: "segment", from: [-a, b], to: [-a, -b], dashed: true, tone: "muted", ...stepOf(step) },
+  { kind: "segment", from: [-a, -b], to: [a, -b], dashed: true, tone: "muted", ...stepOf(step) },
+  { kind: "segment", from: [a, -b], to: [a, b], dashed: true, tone: "muted", ...stepOf(step) },
+];
+
+/** The asymptotes y = ±(b/a)x, dashed. */
+const asymptotes = (a: number, b: number, step?: number): FigureElement[] => [
+  { kind: "line", through: [[0, 0], [1, +(b / a).toFixed(3)]], dashed: true, tone: "good", ...stepOf(step) },
+  { kind: "line", through: [[0, 0], [1, -+(b / a).toFixed(3)]], dashed: true, tone: "good", ...stepOf(step) },
+];
+
+/**
+ * The idea and formal slides draw x²/a² − y²/b² = 1 as x²/9 − y²/4 = 1 (a = 3, b = 2). From P(0, √5), on its
+ * director circle x² + y² = 5, the tangents y = ∓x + √5 touch at (±4.025, −1.789) and meet at a right angle.
+ */
+const P: [number, number] = [0, 2.236];
+const tangentRight: FigureElement[] = [
+  { kind: "segment", from: P, to: [5.232, -2.996] },
+  { kind: "point", at: [4.025, -1.789] },
+];
+const tangentLeft: FigureElement[] = [
+  { kind: "segment", from: P, to: [-5.232, -2.996] },
+  { kind: "point", at: [-4.025, -1.789] },
+];
+const withStep = (els: FigureElement[], step: number): FigureElement[] => els.map((e) => ({ ...e, step }));
 
 export const c14: Concept = {
   id: "C14",
@@ -10,18 +48,181 @@ export const c14: Concept = {
     reveal: t`$y = \sqrt{\frac{200^2}{4} - 1} = \sqrt{9999} \approx 99.995$, only about $0.005$ below $100 = \frac{200}{2}$. Farther out the gap shrinks towards $0$ but never closes: the branch hugs the line $y = \frac{x}{2}$, an **asymptote** of the hyperbola.`,
   },
   explanation: {
-    intuition: t`Far from the centre, $x^2$ and $y^2$ are huge and the $1$ in $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ hardly matters. So the curve almost satisfies $\frac{x^2}{a^2} = \frac{y^2}{b^2}$, the pair of lines $y = \pm\frac{b}{a}x$. These are the **asymptotes**: the branches come closer and closer to them but never touch. They are the diagonals of the rectangle with sides $2a$ and $2b$. Every tangent is steeper than them, so two tangents can be perpendicular only when $\frac{b}{a} < 1$; then they meet on the **director circle** $x^2 + y^2 = a^2 - b^2$.`,
-    formal: t`**Asymptotes.** For $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, replace the $1$ by $0$ and factorise:
-$$\frac{x^2}{a^2} - \frac{y^2}{b^2} = 0 \quad\Rightarrow\quad y = \pm\frac{b}{a}x$$
-Both lines pass through the centre; they are the diagonals of the rectangle $-a \le x \le a$, $-b \le y \le b$.
-
-**Either way round.** The conjugate hyperbola $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1$ has the same asymptotes $y = \pm\frac{b}{a}x$. The root of the $y^2$ denominator always goes on top.
-
-**Director circle.** $y = mx + c$ touches $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ when $c^2 = a^2m^2 - b^2$. Through $P(h, k)$, $c = k - mh$:
-$$(h^2 - a^2)m^2 - 2hkm + k^2 + b^2 = 0$$
-Perpendicular tangents: $m_1m_2 = \frac{k^2 + b^2}{h^2 - a^2} = -1$, so $P$ lies on $x^2 + y^2 = a^2 - b^2$.
-
-**When it exists.** It is a real circle only when $a > b$. If $b \ge a$, every tangent has $|m| > \frac{b}{a} \ge 1$, and no two slopes multiply to $-1$. For $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1$ the transverse axis is the $y$-axis and the circle is $x^2 + y^2 = b^2 - a^2$.`,
+    intuition: [
+      t`Take the hyperbola $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$, drawn here with $a = 3$ and $b = 2$.`,
+      t`Far from the centre, $x^2$ and $y^2$ are huge and the $1$ hardly matters: the curve almost satisfies $\frac{x^2}{a^2} = \frac{y^2}{b^2}$.`,
+      t`That is the pair of lines $y = \pm\frac{b}{a}x$, the **asymptotes**: the branches come ever closer to them, never touching.`,
+      t`The asymptotes are the diagonals of the rectangle with sides $2a$ and $2b$ around the centre.`,
+      t`Every tangent is steeper than the asymptotes, so two tangents can meet at right angles only when $\frac{b}{a} < 1$.`,
+      t`They then meet on the **director circle** $x^2 + y^2 = a^2 - b^2$, the path of all such meeting points.`,
+    ],
+    formal: [
+      {
+        title: "Finding the asymptotes",
+        points: [
+          t`Replace the $1$ by $0$: $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 0$.`,
+          t`The left side factorises, so $\frac{x}{a} - \frac{y}{b} = 0$ or $\frac{x}{a} + \frac{y}{b} = 0$: two straight lines.`,
+          t`So the asymptotes are $y = \pm\frac{b}{a}x$.`,
+          t`Both lines pass through the centre $O$.`,
+          t`They are the diagonals of the rectangle $-a \le x \le a$, $-b \le y \le b$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 3 and b = 2. Its asymptotes y = ±bx/a are two dashed lines crossing at the centre O; they are the diagonals of the dashed rectangle with corner (a, b).",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            ...hyperbolaX(3, 2),
+            { kind: "label", at: [-7.7, -5.5], label: "x²/a² − y²/b² = 1", labelAt: "e" },
+            ...asymptotes(3, 2, 2),
+            { kind: "label", at: [7.7, 5.5], label: "y = ±bx/a", labelAt: "w", tone: "good", step: 3 },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "se", tone: "good", step: 4 },
+            ...rectangle(3, 2, 5),
+            { kind: "point", at: [3, 2], label: "(a, b)", labelAt: "nw", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Asymptotes of the conjugate hyperbola",
+        points: [
+          t`Recall: the **conjugate hyperbola** of $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$ is $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1$, opening up and down.`,
+          t`Replace its $1$ by $0$: $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 0$, the same two lines as before.`,
+          t`So it has the same asymptotes, $y = \pm\frac{b}{a}x$, the diagonals of the same rectangle.`,
+          t`The root of the $y^2$ denominator always goes on top, whichever term is positive.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 3 and b = 2, opening left and right, and the dashed rectangle with corners (±a, ±b). Its conjugate y²/b² − x²/a² = 1 opens up and down. Both hug the same dashed asymptotes y = ±bx/a, the rectangle's diagonals. The slope is b, up the y-axis, over a, along the x-axis.",
+          axes: "xy",
+          view: { x: [-9, 9], y: [-6.5, 6.5] },
+          elements: [
+            ...hyperbolaX(3, 2),
+            { kind: "label", at: [-0.3, -5.6], label: "x²/a² − y²/b² = 1", labelAt: "w" },
+            ...rectangle(3, 2),
+            { kind: "hyperbola", centre: [0, 0], a: 2, b: 3, axis: "y", branch: 1, tone: "accent", step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 2, b: 3, axis: "y", branch: -1, tone: "accent", step: 1 },
+            { kind: "label", at: [0.3, 5.8], label: "y²/b² − x²/a² = 1", labelAt: "e", step: 1 },
+            ...asymptotes(3, 2, 2),
+            { kind: "label", at: [0.3, -5.6], label: "y = ±bx/a", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [0, 0], to: [0, 2], tone: "good", step: 4 },
+            { kind: "label", at: [0, 1], label: "b", labelAt: "w", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "good", step: 4 },
+            { kind: "label", at: [1.5, 0], label: "a", labelAt: "n", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Tangents from a point P",
+        points: [
+          t`Recall: $y = mx + c$ touches the hyperbola exactly when $c^2 = a^2m^2 - b^2$.`,
+          t`Let the tangent pass through a point $P(h, k)$: then $k = mh + c$, so $c = k - mh$.`,
+          t`Put this $c$ into the condition: $(k - mh)^2 = a^2m^2 - b^2$.`,
+          t`Expand and collect the powers of $m$: $(h^2 - a^2)m^2 - 2hkm$ $+\, k^2 + b^2 = 0$.`,
+          t`This quadratic in $m$ has two roots, $m_1$ and $m_2$: the slopes of the two tangents from $P$.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 3 and b = 2. A tangent, c² = a²m² − b², touches the right branch and passes through the point P(h, k) above the centre. A second tangent from P touches the left branch: their slopes are m₁ and m₂.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            ...hyperbolaX(3, 2),
+            { kind: "label", at: [-7.7, -5.5], label: "x²/a² − y²/b² = 1", labelAt: "e" },
+            ...withStep(tangentRight, 1),
+            { kind: "label", at: [7.7, -5.5], label: "c² = a²m² − b²", labelAt: "w", tone: "good", step: 1 },
+            { kind: "point", at: P, label: "P(h, k)", labelAt: "ne", step: 2 },
+            ...withStep(tangentLeft, 5),
+            { kind: "label", at: [1.6, 0.9], label: "m₁", labelAt: "ne", tone: "good", step: 5 },
+            { kind: "label", at: [-1.6, 0.9], label: "m₂", labelAt: "nw", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Perpendicular tangents meet on a circle",
+        points: [
+          t`Two lines are at right angles when their slopes multiply to $-1$: $m_1m_2 = -1$.`,
+          t`The product of the roots of the quadratic is $m_1m_2 = \frac{k^2 + b^2}{h^2 - a^2}$.`,
+          t`Set it equal to $-1$: $k^2 + b^2 = a^2 - h^2$.`,
+          t`So $h^2 + k^2 = a^2 - b^2$: $P$ lies on the circle $x^2 + y^2 = a^2 - b^2$.`,
+          t`This is the **director circle**: from each of its points, the two tangents meet at right angles.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 3 and b = 2. The two tangents from P(h, k) meet at a right angle. P lies on the dashed circle x² + y² = a² − b² about the centre: the director circle.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            ...hyperbolaX(3, 2),
+            { kind: "label", at: [-7.7, -5.5], label: "x²/a² − y²/b² = 1", labelAt: "e" },
+            ...tangentRight,
+            ...tangentLeft,
+            { kind: "point", at: P, label: "P(h, k)", labelAt: "ne" },
+            { kind: "angle", at: P, from: 225, to: 315, tone: "good", step: 1 },
+            { kind: "circle", centre: [0, 0], r: 2.236, dashed: true, tone: "good", step: 4 },
+            { kind: "label", at: [-0.5, 4.6], label: "x² + y² = a² − b²", labelAt: "w", tone: "good", step: 4 },
+            { kind: "label", at: [0, -2.236], label: "director circle", labelAt: "s", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "When the director circle exists",
+        points: [
+          t`The circle $x^2 + y^2 = a^2 - b^2$ is real only when $a^2 - b^2 > 0$, that is, when $a > b$.`,
+          t`If $b \ge a$, the asymptotes have slopes $\pm\frac{b}{a}$, at least as steep as slope $1$.`,
+          t`Every tangent is steeper still: $|m| > \frac{b}{a} \ge 1$.`,
+          t`Two such slopes multiply to more than $1$ in size, never to $-1$: no two tangents are perpendicular.`,
+        ],
+        figure: {
+          alt: "The hyperbola x²/a² − y²/b² = 1, drawn with a = 2 and b = 3, so b > a and there is no director circle. Its dashed asymptotes y = ±bx/a are steeper than the muted lines of slope ±1. Two tangents, steeper still, touch the two branches and meet below the centre at an angle well short of 90°.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            ...hyperbolaX(2, 3),
+            { kind: "label", at: [-7.8, 0.8], label: "x²/a² − y²/b² = 1", labelAt: "e" },
+            { kind: "label", at: [-7.8, -0.8], label: "b > a: no circle", labelAt: "e", tone: "bad", step: 1 },
+            ...asymptotes(2, 3, 2),
+            { kind: "label", at: [7.8, 0.8], label: "y = ±bx/a", labelAt: "w", tone: "good", step: 2 },
+            { kind: "line", through: [[0, 0], [1, 1]], dashed: true, tone: "muted", step: 2 },
+            { kind: "line", through: [[0, 0], [1, -1]], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [7.8, -0.8], label: "slope ±1", labelAt: "w", tone: "muted", step: 2 },
+            { kind: "segment", from: [0, -4], to: [3.6, 5], step: 3 },
+            { kind: "point", at: [2.5, 2.25], step: 3 },
+            { kind: "segment", from: [0, -4], to: [-3.6, 5], step: 3 },
+            { kind: "point", at: [-2.5, 2.25], step: 3 },
+            { kind: "angle", at: [0, -4], from: 68.2, to: 111.8, tone: "bad", step: 4 },
+            { kind: "label", at: [0, -4], label: "not 90°", labelAt: "se", tone: "bad", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Transverse axis on the y-axis",
+        points: [
+          t`In $\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1$ the positive term is in $y$, so the branches open up and down.`,
+          t`Recall: its **transverse axis**, of length $2b$, joins the vertices $(0, \pm b)$ on the $y$-axis.`,
+          t`Here, from a point $P$ on the $x$-axis, two tangents meet at a right angle.`,
+          t`Such points now lie on $x^2 + y^2 = b^2 - a^2$: the positive term's denominator comes first.`,
+          t`So this hyperbola has a director circle only when $b > a$.`,
+        ],
+        figure: {
+          alt: "The hyperbola y²/b² − x²/a² = 1, drawn with b = 3 and a = 2, opening up and down. Its transverse axis, of length 2b, runs up the y-axis between the vertices (0, ±3). From P(√5, 0) two tangents touch the upper and lower branches and meet at a right angle; P lies on the dashed circle x² + y² = b² − a² = 9 − 4.",
+          axes: "xy",
+          view: { x: [-8, 8], y: [-6, 6] },
+          elements: [
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 2, axis: "y", branch: 1, step: 1 },
+            { kind: "hyperbola", centre: [0, 0], a: 3, b: 2, axis: "y", branch: -1, step: 1 },
+            { kind: "label", at: [7.8, 2.4], label: "y²/b² − x²/a² = 1", labelAt: "w", step: 1 },
+            { kind: "segment", from: [0, -3], to: [0, 3], tone: "good", step: 2 },
+            { kind: "point", at: [0, 3], step: 2 },
+            { kind: "point", at: [0, -3], step: 2 },
+            { kind: "label", at: [0, 1.5], label: "2b", labelAt: "w", tone: "good", step: 2 },
+            { kind: "segment", from: [2.236, 0], to: [-2.996, 5.232], step: 3 },
+            { kind: "point", at: [-1.789, 4.025], step: 3 },
+            { kind: "segment", from: [2.236, 0], to: [-2.996, -5.232], step: 3 },
+            { kind: "point", at: [-1.789, -4.025], step: 3 },
+            { kind: "angle", at: [2.236, 0], from: 135, to: 225, tone: "good", step: 3 },
+            { kind: "point", at: [2.236, 0], label: "P", labelAt: "ne", step: 3 },
+            { kind: "circle", centre: [0, 0], r: 2.236, dashed: true, tone: "good", step: 4 },
+            { kind: "label", at: [7.8, -2.4], label: "x² + y² = b² − a²", labelAt: "w", tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the asymptotes and the director circle of the hyperbola $\frac{x^2}{36} - \frac{y^2}{9} = 1$.`,
       steps: [
@@ -60,28 +261,21 @@ Perpendicular tangents: $m_1m_2 = \frac{k^2 + b^2}{h^2 - a^2} = -1$, so $P$ lies
       },
     },
     figure: {
-      alt: "The hyperbola x²/9 − y²/4 = 1. The dashed rectangle with corners (±3, ±2) has diagonals y = ±2x/3, the asymptotes: the branches run closer and closer to them. From P(0, √5) two tangents meet at a right angle; P lies on the dashed circle x² + y² = 9 − 4 = 5, the director circle.",
+      alt: "The hyperbola x²/9 − y²/4 = 1, which is x²/a² − y²/b² = 1 with a = 3 and b = 2. Its asymptotes y = ±2x/3 are dashed lines through the centre: the branches run closer and closer to them. They are the diagonals of the dashed rectangle with corners (±3, ±2). From P(0, √5) two tangents meet at a right angle; P lies on the dashed circle x² + y² = 9 − 4 = 5, the director circle.",
       axes: "xy",
       view: { x: [-8, 8], y: [-6, 6] },
       elements: [
-        { kind: "hyperbola", centre: [0, 0], a: 3, b: 2, axis: "x", branch: 1, step: 1 },
-        { kind: "hyperbola", centre: [0, 0], a: 3, b: 2, axis: "x", branch: -1, step: 1 },
+        ...hyperbolaX(3, 2, 1),
         { kind: "label", at: [-7.7, -5.5], label: "x²/9 − y²/4 = 1", labelAt: "e", step: 1 },
-        { kind: "segment", from: [3, 2], to: [-3, 2], dashed: true, tone: "muted", step: 2 },
-        { kind: "segment", from: [-3, 2], to: [-3, -2], dashed: true, tone: "muted", step: 2 },
-        { kind: "segment", from: [-3, -2], to: [3, -2], dashed: true, tone: "muted", step: 2 },
-        { kind: "segment", from: [3, -2], to: [3, 2], dashed: true, tone: "muted", step: 2 },
-        { kind: "line", through: [[0, 0], [1, 0.667]], dashed: true, tone: "good", step: 3 },
-        { kind: "line", through: [[0, 0], [1, -0.667]], dashed: true, tone: "good", step: 3 },
+        ...asymptotes(3, 2, 3),
         { kind: "label", at: [7.7, 5.5], label: "y = ±2x/3", labelAt: "w", tone: "good", step: 3 },
-        { kind: "segment", from: [0, 2.236], to: [5.232, -2.996], step: 4 },
-        { kind: "point", at: [4.025, -1.789], step: 4 },
-        { kind: "segment", from: [0, 2.236], to: [-5.232, -2.996], step: 4 },
-        { kind: "point", at: [-4.025, -1.789], step: 4 },
-        { kind: "angle", at: [0, 2.236], from: 225, to: 315, tone: "good", step: 4 },
-        { kind: "point", at: [0, 2.236], label: "P", labelAt: "ne", step: 4 },
-        { kind: "circle", centre: [0, 0], r: 2.236, dashed: true, tone: "good", step: 5 },
-        { kind: "label", at: [-0.5, 4.6], label: "x² + y² = 5", labelAt: "w", tone: "good", step: 5 },
+        ...rectangle(3, 2, 4),
+        ...withStep(tangentRight, 5),
+        ...withStep(tangentLeft, 5),
+        { kind: "angle", at: P, from: 225, to: 315, tone: "good", step: 5 },
+        { kind: "point", at: P, label: "P", labelAt: "ne", step: 5 },
+        { kind: "circle", centre: [0, 0], r: 2.236, dashed: true, tone: "good", step: 6 },
+        { kind: "label", at: [-0.5, 4.6], label: "x² + y² = 9 − 4", labelAt: "w", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag a point $P$ around the hyperbola's plane: its tangents to the curve update, the angle between them is shown, and it turns green when $P$ is on the director circle; a slider for $b$ shows the circle shrinking to nothing as $b$ reaches $a$, while the asymptotes, the diagonals of the $2a \times 2b$ rectangle, swing with it.`,
