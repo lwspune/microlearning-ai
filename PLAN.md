@@ -492,6 +492,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   are visual, so figures on every formal slide, and C07 has them where they
   teach; no split (C06-M2 is one rule,
   "match the form before reading it", with feedback for both forms).
+  Circle (C01–C08) done 2026-10-16: all visual, figures on every formal
+  slide; no split; its C05 formula that ran off a phone led to
+  `scripts/overflow-probe.mjs` (backfill 8).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
