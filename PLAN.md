@@ -539,6 +539,29 @@ and Series (now C15–C18). New chapters audit `ext` first (RUNBOOK 2.1).
 - **Recommendation:** partial. Do (a) now. For (b), the owner picks which
   basics to teach, starting with the ones above; the rest stay `ext`.
 
+### 8. Long maths runs off a phone screen (logged 2026-10-16, open)
+Learning: reading the slide text can't show which formula is too wide, only
+the screen can. Found on Circle C05 (now split). `scripts/overflow-probe.mjs`
+lists every formula wider than a 390 px slide; RUNBOOK 3 step 7 runs it on
+every chapter from Circle on.
+- **Scope:** 19 formulas in 7 live chapters (probe, 2026-10-16). 14 are hook
+  reveals, which the slide rework leaves alone: Trigonometry – II 4 (sum-to-
+  product +338 px, product-to-sum +86 px), Binomial 4 (`(101)^4` +673 px,
+  approximation +52 px), Determinants 2 (+240 px, +37 px), Sequences 2
+  (+128 px, +41 px), Straight Line 1 (+31 px), Circle 1 (+5 px). 5 are in
+  Sequences slides: worked examples of C16 (+33 px), C17 (+120 px),
+  recurring decimals (+18 px), sigma formulas (+137 px), and C17 formal 5
+  (+17 px).
+- **Blast radius:** text only. Splitting `$a = b = c$` into `$a = b$ $= c$`
+  changes no maths, no item and no verifier model; a reseed publishes it.
+- **Does it really apply:** yes for all 19. Each is cut off or scrolls
+  sideways on a 390 px phone, and narrower phones are worse. The worst
+  (Binomial, Trigonometry – II, Determinants) hide most of the answer.
+- **Risk and cost:** low and reversible; about half an hour plus one
+  build/e2e/seed cycle.
+- **Recommendation:** do, as one `fix:` commit on the next chapter's branch,
+  once the owner agrees.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
