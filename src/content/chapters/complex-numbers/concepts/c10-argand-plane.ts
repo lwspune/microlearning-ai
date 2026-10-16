@@ -65,6 +65,12 @@ export const c10: Concept = {
       remediation: t`A negative real part means the point is **left** of the imaginary axis.`,
       fallback: { kind: "ext", topic: "signs of coordinates" },
     },
+    {
+      id: "C10-M4",
+      mistake: "Giving both parts the minus sign that belongs to one",
+      remediation: t`Each part keeps its own sign: in $3 - 2i$ the minus belongs to the $2$ alone, so the real part is still $+3$.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
   ],
   items: [
     {
@@ -76,7 +82,7 @@ export const c10: Concept = {
         { key: "A", text: t`$(3, -2)$`, correct: true, value: "3-2*I" },
         { key: "B", text: t`$(-2, 3)$`, correct: false, misconceptionId: "C10-M1", value: "-2+3*I" },
         { key: "C", text: t`$(3, 2)$`, correct: false, misconceptionId: "C10-M2", value: "3+2*I" },
-        { key: "D", text: t`$(-3, -2)$`, correct: false, misconceptionId: "C10-M3", value: "-3-2*I" },
+        { key: "D", text: t`$(-3, -2)$`, correct: false, misconceptionId: "C10-M4", value: "-3-2*I" },
       ],
       solution: {
         steps: [
@@ -103,7 +109,7 @@ export const c10: Concept = {
       options: [
         { key: "A", text: t`$-4 + i$`, correct: true, value: "-4+I" },
         { key: "B", text: t`$1 - 4i$`, correct: false, misconceptionId: "C10-M1", value: "1-4*I" },
-        { key: "C", text: t`$-4 - i$`, correct: false, misconceptionId: "C10-M2", value: "-4-I" },
+        { key: "C", text: t`$-4 - i$`, correct: false, misconceptionId: "C10-M4", value: "-4-I" },
         { key: "D", text: t`$4 + i$`, correct: false, misconceptionId: "C10-M3", value: "4+I" },
       ],
       solution: {
@@ -131,7 +137,7 @@ export const c10: Concept = {
       options: [
         { key: "A", text: "Quadrant II", correct: true, value: "2" },
         { key: "B", text: "Quadrant IV", correct: false, misconceptionId: "C10-M1", value: "4" },
-        { key: "C", text: "Quadrant III", correct: false, misconceptionId: "C10-M2", value: "3" },
+        { key: "C", text: "Quadrant III", correct: false, misconceptionId: "C10-M4", value: "3" },
         { key: "D", text: "Quadrant I", correct: false, misconceptionId: "C10-M3", value: "1" },
       ],
       solution: {
@@ -162,7 +168,7 @@ export const c10: Concept = {
         { key: "A", text: "Quadrant IV", correct: true, value: "4" },
         { key: "B", text: "Quadrant II", correct: false, misconceptionId: "C10-M1", value: "2" },
         { key: "C", text: "Quadrant I", correct: false, misconceptionId: "C10-M2", value: "1" },
-        { key: "D", text: "Quadrant III", correct: false, misconceptionId: "C10-M3", value: "3" },
+        { key: "D", text: "Quadrant III", correct: false, misconceptionId: "C10-M4", value: "3" },
       ],
       solution: {
         steps: [
@@ -214,5 +220,7 @@ export const c10: Concept = {
   ],
   engineNotes: [
     "Quadrant questions can only tell C10-M1 (swapped axes) apart from the key for points in quadrants II and IV; swapping keeps points in I and III in the same quadrant.",
+    "C10-M2 and C10-M3 drop a minus sign, so they only show on a number whose imaginary (C10-M2) or real (C10-M3) part is negative.",
+    "C10-M4 (one part's minus sign spread to the other) was split from C10-M2 and C10-M3, which had covered it on Q1-Q4: it only shows when exactly one part is negative.",
   ],
 };

@@ -215,8 +215,10 @@ def _c10(transform):
 C10 = {
     "key": _c10(lambda x, y: (x, y)),
     "C10-M1": _c10(lambda x, y: (y, x)),  # swaps the axes
-    "C10-M2": _c10(lambda x, y: (x, -y)),  # flips the sign of the imaginary part
-    "C10-M3": _c10(lambda x, y: (-x, y)),  # flips the sign of the real part
+    "C10-M2": _c10(lambda x, y: (x, Abs(y))),  # drops the minus sign of the imaginary part
+    "C10-M3": _c10(lambda x, y: (Abs(x), y)),  # drops the minus sign of the real part
+    # spreads one part's minus sign to the other part too; with no minus sign there is nothing to spread
+    "C10-M4": _c10(lambda x, y: (-Abs(x), -Abs(y)) if x < 0 or y < 0 else (x, y)),
 }
 
 
