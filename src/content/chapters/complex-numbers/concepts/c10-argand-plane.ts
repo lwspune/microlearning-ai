@@ -10,11 +10,101 @@ export const c10: Concept = {
     reveal: t`Off the line. Add a second, vertical axis for the imaginary part: $3 + 2i$ is the point $(3, 2)$, three right and two up.`,
   },
   explanation: {
-    intuition: t`Give the number line a partner: a vertical axis for imaginary parts. Every complex number $x + iy$ becomes the point $(x, y)$: real part across, imaginary part up. You can also picture it as an arrow from the origin to that point.`,
-    formal: t`The **Argand plane** has a horizontal real axis and a vertical imaginary axis, and $z = x + iy$ is the point $(x, y)$.
-- Real numbers lie on the real axis ($y = 0$); purely imaginary numbers lie on the imaginary axis ($x = 0$).
-- Quadrants go anticlockwise from the top right: I ($x > 0, y > 0$), II ($x < 0, y > 0$), III ($x < 0, y < 0$), IV ($x > 0, y < 0$).
-- The $y$-coordinate is the **coefficient** of $i$, sign included: $5 - 7i$ is the point $(5, -7)$.`,
+    intuition: [
+      t`Recall: a complex number $x + iy$ has a real part $x$ and an imaginary part $y$.`,
+      t`Real numbers live on a line; give that line a partner, a vertical axis for imaginary parts.`,
+      t`Take $3 + 2i$: its real part $3$ says go three units right.`,
+      t`Its imaginary part $2$ says go two units up.`,
+      t`So $3 + 2i$ is the point $(3, 2)$, and every $x + iy$ is the point $(x, y)$.`,
+      t`You can also picture it as an arrow from the **origin**, where the axes cross, to that point.`,
+    ],
+    formal: [
+      {
+        title: "The Argand plane",
+        points: [
+          t`The **Argand plane** has a horizontal **real axis** and a vertical **imaginary axis**.`,
+          t`The complex number $z = x + iy$ is the point $(x, y)$.`,
+          t`Its real part $x$ says how far across: right if positive, left if negative.`,
+          t`Its imaginary part $y$ says how far up: up if positive, down if negative.`,
+        ],
+        figure: {
+          alt: "The Argand plane: the horizontal real axis and the vertical imaginary axis. The point z = x + iy sits x across along the real axis and y up from it.",
+          view: { x: [-2.5, 5], y: [-1.5, 3.5] },
+          elements: [
+            { kind: "label", at: [-1.3, 0], label: "real axis", labelAt: "n", tone: "good", step: 1 },
+            { kind: "label", at: [0, -1], label: "imaginary axis", labelAt: "e", tone: "good", step: 1 },
+            { kind: "point", at: [3, 2], label: "z = x + iy", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "x", labelAt: "n", step: 3 },
+            { kind: "segment", from: [3, 0], to: [3, 2], label: "y", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Numbers on the axes",
+        points: [
+          t`A real number, such as $4$, has imaginary part $0$, so $y = 0$.`,
+          t`So every real number lies on the real axis: $4$ is the point $(4, 0)$.`,
+          t`A **purely imaginary** number, such as $3i$, has real part $0$, so $x = 0$.`,
+          t`So every purely imaginary number lies on the imaginary axis: $3i$ is the point $(0, 3)$.`,
+        ],
+        figure: {
+          alt: "The real axis is highlighted as the line y = 0, with the real number 4 on it at (4, 0). The imaginary axis is highlighted as the line x = 0, with 3i on it at (0, 3).",
+          view: { x: [-2, 5.5], y: [-1.5, 4] },
+          elements: [
+            { kind: "segment", from: [-2, 0], to: [5.5, 0], label: "y = 0", labelAt: "n", tone: "good", step: 1 },
+            { kind: "point", at: [4, 0], label: "4 + 0i", labelAt: "n", step: 2 },
+            { kind: "segment", from: [0, -1.5], to: [0, 4], label: "x = 0", labelAt: "e", tone: "good", step: 3 },
+            { kind: "point", at: [0, 3], label: "0 + 3i", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Four quadrants",
+        points: [
+          t`The axes cut the plane into four **quadrants**, numbered **anticlockwise**, against a clock's hands, from the top right.`,
+          t`Quadrant I, top right: $x > 0$ and $y > 0$, as for $2 + i$.`,
+          t`Quadrant II, top left: $x < 0$ and $y > 0$, as for $-2 + i$.`,
+          t`Quadrant III, bottom left: $x < 0$ and $y < 0$, as for $-2 - i$.`,
+          t`Quadrant IV, bottom right: $x > 0$ and $y < 0$, as for $2 - i$.`,
+          t`A point on an axis, such as $4$ or $3i$, lies in no quadrant.`,
+        ],
+        figure: {
+          alt: "The axes cut the Argand plane into four quadrants: I top right with 2 + i, II top left with −2 + i, III bottom left with −2 − i, and IV bottom right with 2 − i.",
+          view: { x: [-3.5, 3.5], y: [-2.5, 2.5] },
+          elements: [
+            { kind: "label", at: [1.2, 1.9], label: "I", tone: "muted", step: 2 },
+            { kind: "point", at: [2, 1], label: "2 + i", labelAt: "s", step: 2 },
+            { kind: "label", at: [-1.2, 1.9], label: "II", tone: "muted", step: 3 },
+            { kind: "point", at: [-2, 1], label: "−2 + i", labelAt: "s", step: 3 },
+            { kind: "label", at: [-1.2, -1.9], label: "III", tone: "muted", step: 4 },
+            { kind: "point", at: [-2, -1], label: "−2 − i", labelAt: "n", step: 4 },
+            { kind: "label", at: [1.2, -1.9], label: "IV", tone: "muted", step: 5 },
+            { kind: "point", at: [2, -1], label: "2 − i", labelAt: "n", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Each part keeps its sign",
+        points: [
+          t`Recall: the **coefficient** of $i$ is the number multiplying it; in $5 - 7i$ it is $-7$.`,
+          t`The real part of $5 - 7i$ is $5$, so go five units right.`,
+          t`The $y$-coordinate is the coefficient of $i$, sign included, so go seven units **down**.`,
+          t`So $5 - 7i$ is the point $(5, -7)$, in quadrant IV.`,
+          t`The minus sign belongs to the $7$ alone.`,
+          t`So the real part stays $+5$, and the point is right of the imaginary axis.`,
+        ],
+        figure: {
+          alt: "5 − 7i: five units right along the real axis, then seven units down, at the point (5, −7) in quadrant IV, right of the imaginary axis.",
+          view: { x: [-1.5, 7], y: [-8, 1.5] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [5, 0], label: "5 right", labelAt: "n", step: 2 },
+            { kind: "segment", from: [5, 0], to: [5, -7], label: "7 down", labelAt: "e", step: 3 },
+            { kind: "point", at: [5, -7], label: "5 − 7i", labelAt: "w", step: 4 },
+            { kind: "label", at: [2.5, -3.5], label: "IV", tone: "muted", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Plot $-1 + 4i$ and name its quadrant.`,
       steps: [
@@ -38,10 +128,10 @@ export const c10: Concept = {
       alt: "The Argand plane with the point 3 + 2i: three units right along the real axis, then two units up, with an arrow from the origin to the point.",
       view: { x: [-2, 5], y: [-1.5, 3.5] },
       elements: [
-        { kind: "segment", from: [0, 0], to: [3, 0], label: "3 right", labelAt: "n", step: 1 },
-        { kind: "segment", from: [3, 0], to: [3, 2], label: "2 up", labelAt: "e", step: 2 },
-        { kind: "point", at: [3, 2], label: "3 + 2i", step: 3 },
-        { kind: "vector", to: [3, 2], tone: "muted", step: 4 },
+        { kind: "segment", from: [0, 0], to: [3, 0], label: "3 right", labelAt: "n", step: 3 },
+        { kind: "segment", from: [3, 0], to: [3, 2], label: "2 up", labelAt: "e", step: 4 },
+        { kind: "point", at: [3, 2], label: "3 + 2i", step: 5 },
+        { kind: "vector", to: [3, 2], tone: "muted", step: 6 },
       ],
     },
     visualSpec: t`Tap anywhere on the plane and that point's complex number appears as $x + iy$. Type a number and its point and arrow from the origin appear, with dashed lines to each axis.`,

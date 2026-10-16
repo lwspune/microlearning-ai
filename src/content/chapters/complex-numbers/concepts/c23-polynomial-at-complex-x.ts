@@ -10,17 +10,54 @@ export const c23: Concept = {
     reveal: t`It's $0$: $(1 + i)^2 - 2(1 + i) + 2 = 2i - 2 - 2i + 2 = 0$. So any polynomial in $x$ can be cut down using $x^2 = 2x - 2$, instead of computing big powers.`,
   },
   explanation: {
-    intuition: t`Substituting a complex number into a long polynomial is slow. Instead, find the quadratic the number satisfies (its minimal quadratic). That quadratic is 0, so divide the polynomial by it: only the remainder survives.`,
-    formal: t`If $x = p + qi$, then $x$ is a root of $t^2 - 2pt + (p^2 + q^2) = 0$ (sum of the roots $2p$, product $p^2 + q^2$).
-
-Write the polynomial as (quadratic) × (something) + remainder. The quadratic is 0 at $x$, so the value is just the remainder.
-
-**Powers of roots:** for roots $\alpha$ and $\beta$, work from $\alpha + \beta$ and $\alpha\beta$, e.g. $\alpha^2 + \beta^2 = (\alpha + \beta)^2 - 2\alpha\beta$. Note that $\alpha^n + \beta^n \ne (\alpha + \beta)^n$.`,
+    intuition: [
+      t`To **evaluate** a polynomial at $x = 1 + i$ is to put $1 + i$ in place of $x$ and work it out.`,
+      t`Done directly, that is slow: every power, such as $(1 + i)^4$, must be multiplied out.`,
+      t`But $1 + i$ is a root of a short quadratic: $x^2 - 2x + 2 = 0$.`,
+      t`This is its **minimal quadratic**: the quadratic $x^2 + bx + c$, with real $b$ and $c$, that it satisfies.`,
+      t`Divide the polynomial by this quadratic: at $x = 1 + i$, the quadratic part is $0$.`,
+      t`Only the **remainder**, the part left over after dividing, survives: it is the value.`,
+    ],
+    formal: [
+      {
+        title: "The minimal quadratic",
+        points: [
+          t`Take $x = p + qi$, with $p$ and $q$ real, and pair it with its conjugate $p - qi$.`,
+          t`Their sum is $2p$, because the $qi$ parts cancel.`,
+          t`Their product is $(p + qi)(p - qi)$, which is $p^2 + q^2$.`,
+          t`So both are roots of $t^2 - 2pt + (p^2 + q^2) = 0$, written in $t$ since $x$ names the number.`,
+          t`The middle term is $-2pt$, with a minus: recall that the roots add to $-\dfrac ba$.`,
+          t`For example, $3 + 2i$ has sum $6$ and product $13$, so its quadratic is $t^2 - 6t + 13$.`,
+        ],
+      },
+      {
+        title: "The value is the remainder",
+        points: [
+          t`Divide the polynomial by the minimal quadratic, as in long division of numbers.`,
+          t`The **quotient** is what the quadratic gets multiplied by; the remainder is what is left over.`,
+          t`So the polynomial equals (quadratic) × (quotient) + (remainder).`,
+          t`At $x = p + qi$ the quadratic is $0$, so only the remainder survives: it is the value, not $0$.`,
+          t`For $x = 3 + 2i$, $x^3 - 6x^2 + 13x + 4$ equals $x(x^2 - 6x + 13) + 4$.`,
+          t`The bracket is $0$ there, so the value is $4$.`,
+        ],
+      },
+      {
+        title: "Powers of the roots",
+        points: [
+          t`Let $\alpha$ and $\beta$ be the roots of a quadratic: recall that its coefficients give $\alpha + \beta$ and $\alpha\beta$.`,
+          t`Sums of powers, such as $\alpha^2 + \beta^2$, can be built from those two alone.`,
+          t`Squaring the sum, $(\alpha + \beta)^2$ is $\alpha^2 + 2\alpha\beta + \beta^2$.`,
+          t`So $\alpha^2 + \beta^2$ equals $(\alpha + \beta)^2 - 2\alpha\beta$: subtract the $2\alpha\beta$, don't add it.`,
+          t`For cubes, $\alpha^3 + \beta^3$ equals $(\alpha + \beta)^3$ minus $3\alpha\beta(\alpha + \beta)$.`,
+          t`Powers don't split over sums: $\alpha^n + \beta^n$ is not $(\alpha + \beta)^n$, nor $n(\alpha + \beta)$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $x = 2 + i$, find $x^2 - 4x + 9$.`,
       steps: [
         t`$x = 2 + i$ satisfies $t^2 - 4t + 5 = 0$.`,
-        t`So $x^2 - 4x + 9 = (x^2 - 4x + 5) + 4 = 0 + 4$.`,
+        t`So $x^2 - 4x + 9$ equals $(x^2 - 4x + 5) + 4$, which is $0 + 4$.`,
       ],
       answer: t`$4$`,
     },

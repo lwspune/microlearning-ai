@@ -10,12 +10,119 @@ export const c04: Concept = {
     reveal: t`Only one thing: $i \cdot i = i^2 = -1$. So $(2 + i)(3 + i) = 6 + 5i + i^2 = 5 + 5i$.`,
   },
   explanation: {
-    intuition: t`Treat $i$ like a letter: collect like terms and multiply out brackets as usual. The one new rule is $i^2 = -1$. It turns an $i^2$ term into an ordinary number, which then joins the real part.`,
-    formal: t`For $z_1 = a + ib$ and $z_2 = c + id$:
-- Add: $z_1 + z_2 = (a + c) + i(b + d)$
-- Subtract: $z_1 - z_2 = (a - c) + i(b - d)$. The minus applies to **both** parts of $z_2$.
-- Multiply: $(a + ib)(c + id) = ac + iad + ibc + i^2bd = (ac - bd) + i(ad + bc)$
-- Square: $(a + ib)^2 = a^2 + 2abi + i^2b^2 = (a^2 - b^2) + 2abi$`,
+    intuition: [
+      t`Treat $i$ like a letter, such as $x$, and use the algebra you already know.`,
+      t`Collect **like terms**, terms of the same kind: numbers with numbers, $i$ terms with $i$ terms.`,
+      t`So $(3 + i)(1 + i)$ multiplies out to $3 + 3i + i + i^2$, which is $3 + 4i + i^2$.`,
+      t`Picture $3 + 4i$ as an arrow from where the axes cross: real part $3$ across, imaginary part $4$ up.`,
+      t`The one new rule is $i^2 = -1$: the $i^2$ term is just the number $-1$.`,
+      t`That number joins the real part: $3 - 1 = 2$, so the product is $2 + 4i$.`,
+    ],
+    figure: {
+      alt: "Multiplying out (3 + i)(1 + i) gives 3 + 4i + i². The arrow to 3 + 4i goes 3 across and 4 up. The i² term is −1, so it moves the point one unit left, to the product 2 + 4i.",
+      view: { x: [-1, 5], y: [-1, 5] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [3, 0], dashed: true, label: "3 across", labelAt: "n", tone: "muted", step: 4 },
+        { kind: "segment", from: [3, 0], to: [3, 4], dashed: true, label: "4 up", labelAt: "e", tone: "muted", step: 4 },
+        { kind: "vector", to: [3, 4], label: "3 + 4i", labelAt: "e", tone: "muted", step: 4 },
+        { kind: "vector", from: [3, 4], to: [2, 4], step: 5 },
+        { kind: "label", at: [2.5, 4.1], label: "i² = −1", labelAt: "n", step: 5 },
+        { kind: "vector", to: [2, 4], label: "2 + 4i", labelAt: "w", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "Adding complex numbers",
+        points: [
+          t`Take $z_1 = a + ib$ and $z_2 = c + id$, with $a, b, c, d$ real.`,
+          t`To add them, add the real parts, then add the imaginary parts.`,
+          t`So $z_1 + z_2 = (a + c) + i(b + d)$.`,
+          t`For example, take $2 + i$ and $1 + 3i$.`,
+          t`Their sum is $(2 + 1) + i(1 + 3)$, which is $3 + 4i$.`,
+          t`Placing the arrow of $1 + 3i$ at the tip of $2 + i$ also ends at the sum.`,
+        ],
+        figure: {
+          alt: "The arrows to 2 + i and 1 + 3i, and their sum 3 + 4i: real parts add to 3 and imaginary parts to 4. The arrow of 1 + 3i, moved to start at the tip of 2 + i, ends at 3 + 4i.",
+          view: { x: [-1, 4.5], y: [-1, 5] },
+          elements: [
+            { kind: "vector", to: [2, 1], label: "2 + i", labelAt: "se", tone: "muted", step: 4 },
+            { kind: "vector", to: [1, 3], label: "1 + 3i", labelAt: "nw", tone: "muted", step: 4 },
+            { kind: "vector", to: [3, 4], label: "3 + 4i", labelAt: "ne", step: 5 },
+            { kind: "vector", from: [2, 1], to: [3, 4], tone: "muted", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Subtracting complex numbers",
+        points: [
+          t`To subtract, subtract the real parts, then subtract the imaginary parts.`,
+          t`So $z_1 - z_2 = (a - c) + i(b - d)$.`,
+          t`The minus applies to **both** parts of $z_2$: $-(c + id) = -c - id$.`,
+          t`For example, start from $4 + 3i$ and take away $1 + 2i$.`,
+          t`Taking away $1 + 2i$ moves the point $1$ left and $2$ down.`,
+          t`It lands on $(4 - 1) + i(3 - 2)$, which is $3 + i$.`,
+        ],
+        figure: {
+          alt: "The arrow to 4 + 3i. Taking away 1 + 2i moves its tip one unit left and two units down, to 3 + i.",
+          view: { x: [-1, 5.5], y: [-1, 4] },
+          elements: [
+            { kind: "vector", to: [4, 3], label: "4 + 3i", labelAt: "ne", tone: "muted", step: 4 },
+            { kind: "vector", from: [4, 3], to: [3, 1], step: 5 },
+            { kind: "label", at: [3.6, 2], label: "− (1 + 2i)", labelAt: "e", step: 5 },
+            { kind: "vector", to: [3, 1], label: "3 + i", labelAt: "se", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Multiplying complex numbers",
+        points: [
+          t`Multiply every term by every term, as with $(x + 2)(x + 3)$: four products.`,
+          t`For $(a + ib)(c + id)$, they are $ac + iad + ibc + i^2bd$.`,
+          t`For $(1 + i)(4 + 2i)$, they are $4 + 2i + 4i + 2i^2$.`,
+          t`Laid tip to tail, the first three reach $4 + 6i$.`,
+          t`Use $i^2 = -1$: $i^2bd$ is the real number $-bd$, so $2i^2 = -2$.`,
+          t`So the product is $(ac - bd) + i(ad + bc)$, here $2 + 6i$.`,
+        ],
+        figure: {
+          alt: "The products 4, 2i and 4i of (1 + i)(4 + 2i), laid tip to tail: 4 across, then 2 up, then 4 up, reaching 4 + 6i. The last product, 2i², is −2, so it moves the point two units left, to the product 2 + 6i.",
+          view: { x: [-1, 6], y: [-1, 7] },
+          elements: [
+            { kind: "vector", to: [4, 0], tone: "muted", step: 3 },
+            { kind: "label", at: [2, 0.1], label: "4", labelAt: "n", tone: "muted", step: 3 },
+            { kind: "vector", from: [4, 0], to: [4, 2], tone: "muted", step: 3 },
+            { kind: "label", at: [4.1, 1], label: "2i", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "vector", from: [4, 2], to: [4, 6], tone: "muted", step: 3 },
+            { kind: "label", at: [4.1, 4], label: "4i", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "point", at: [4, 6], label: "4 + 6i", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "vector", from: [4, 6], to: [2, 6], step: 5 },
+            { kind: "label", at: [3, 6.1], label: "2i² = −2", labelAt: "n", step: 5 },
+            { kind: "vector", to: [2, 6], label: "2 + 6i", labelAt: "w", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Squaring a complex number",
+        points: [
+          t`To square $a + ib$, expand it like $(x + y)^2 = x^2 + 2xy + y^2$.`,
+          t`So $(a + ib)^2$ equals $a^2 + 2abi + i^2b^2$: keep the middle term.`,
+          t`For example, $(2 + i)^2$ is $4 + 4i + i^2$.`,
+          t`Use $i^2 = -1$: the last term is the real number $-b^2$, here $-1$.`,
+          t`So $(a + ib)^2 = (a^2 - b^2) + 2abi$.`,
+          t`Here $(2 + i)^2 = 3 + 4i$.`,
+        ],
+        figure: {
+          alt: "The arrow to 2 + i. Its square multiplies out to 4 + 4i + i²; the i² term is −1, so it moves the point 4 + 4i one unit left, to the square 3 + 4i.",
+          view: { x: [-1, 5.5], y: [-1, 5] },
+          elements: [
+            { kind: "vector", to: [2, 1], label: "2 + i", labelAt: "se", tone: "muted", step: 3 },
+            { kind: "point", at: [4, 4], label: "4 + 4i", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "vector", from: [4, 4], to: [3, 4], step: 4 },
+            { kind: "label", at: [3.5, 4.1], label: "i² = −1", labelAt: "n", step: 4 },
+            { kind: "vector", to: [3, 4], label: "3 + 4i", labelAt: "w", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Simplify $(4 - i)(2 + 3i) - (1 + 2i)$.`,
       steps: [
@@ -35,17 +142,6 @@ export const c04: Concept = {
           { kind: "point", at: [10, 8], label: "10 + 8i", labelAt: "se", step: 3 },
         ],
       },
-    },
-    figure: {
-      alt: "Adding 2 + i and 1 + 3i: the real parts add to 3 and the imaginary parts to 4, so the sum 3 + 4i is the far corner of the parallelogram the two arrows make.",
-      view: { x: [-1, 5], y: [-1, 5] },
-      elements: [
-        { kind: "vector", to: [2, 1], label: "2 + i", labelAt: "se", tone: "muted", step: 1 },
-        { kind: "vector", to: [1, 3], label: "1 + 3i", labelAt: "nw", tone: "muted", step: 2 },
-        { kind: "segment", from: [2, 1], to: [3, 4], dashed: true, tone: "muted", step: 3 },
-        { kind: "segment", from: [1, 3], to: [3, 4], dashed: true, tone: "muted", step: 3 },
-        { kind: "vector", to: [3, 4], label: "3 + 4i", labelAt: "ne", step: 4 },
-      ],
     },
     visualSpec: t`Two sliders set $z_1$ and $z_2$. The product's four partial terms ($ac$, $iad$, $ibc$, $i^2bd$) appear as tiles; the $i^2bd$ tile visibly flips its sign and slides across into the real part.`,
   },

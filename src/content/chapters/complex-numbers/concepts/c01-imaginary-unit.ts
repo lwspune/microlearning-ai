@@ -1,6 +1,18 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** A tick on the number line at `x`, its number below. */
+const tick = (x: number): FigureElement[] => [
+  { kind: "segment", from: [x, -0.1], to: [x, 0.1], tone: "muted" },
+  { kind: "label", at: [x, -0.05], label: x < 0 ? `−${-x}` : `${x}`, labelAt: "s", tone: "muted" },
+];
+
+/** The real number line from −5 to 5, ticked at the whole numbers from −4 to 4. */
+const numberLine: FigureElement[] = [
+  { kind: "segment", from: [-5.2, 0], to: [5.2, 0], tone: "muted" },
+  ...[-4, -3, -2, -1, 0, 1, 2, 3, 4].flatMap(tick),
+];
 
 export const c01: Concept = {
   id: "C01",
@@ -10,12 +22,64 @@ export const c01: Concept = {
     reveal: t`A new number, called $i$, defined by $i^2 = -1$. Then every negative number has a square root: $\sqrt{-49} = 7i$, because $(7i)^2 = 49i^2 = -49$.`,
   },
   explanation: {
-    intuition: t`Real numbers can't produce a negative square, so we add one new number that does: $i$, with $i^2 = -1$. The square root of any negative number is then a real square root times $i$. Treat $i$ like a letter, and replace $i^2$ by $-1$ whenever it appears.`,
-    formal: t`$i$ is defined by $i^2 = -1$. For $a > 0$: $\sqrt{-a} = i\sqrt a$, the principal root (with a plus sign).
-
-**The product rule needs care.** $\sqrt a\,\sqrt b = \sqrt{ab}$ holds when at least one of $a$, $b$ is non-negative, but it **fails when both are negative**:
-$$\sqrt{-5}\cdot\sqrt{-20} = (i\sqrt5)(i\sqrt{20}) = i^2\sqrt{100} = -10, \text{ not } +10.$$
-Convert each root to the form $i\sqrt{\ }$ first, then multiply.`,
+    intuition: [
+      t`The **square** of a number is that number times itself: $2^2 = 4$ and $(-2)^2 = 4$.`,
+      t`The **real numbers** are the numbers on the number line, and their squares are never negative.`,
+      t`So no real number squares to $-1$: the negative side of the line is a gap.`,
+      t`We add one new number, $i$, the **imaginary unit**, defined by $i^2 = -1$.`,
+      t`Then every negative number has a square root: a real square root times $i$.`,
+      t`Treat $i$ like a letter, and replace $i^2$ by $-1$ whenever it appears.`,
+    ],
+    figure: {
+      alt: "A number line from −4 to 4. Arcs carry 2 and −2 to the same square, 4. The squares of real numbers fill the side from 0 rightwards; the negative side is a gap that no real square reaches. The new number i is defined so that its square, i² = −1, lands in that gap.",
+      axes: "none",
+      view: { x: [-5.6, 5.6], y: [-1.6, 3.7] },
+      elements: [
+        ...numberLine,
+        { kind: "point", at: [-2, 0], step: 1 },
+        { kind: "point", at: [2, 0], step: 1 },
+        { kind: "arc", centre: [1, 0], r: 3, from: 0, to: 180, label: "(−2)² = 4", labelAt: "n", step: 1 },
+        { kind: "arc", centre: [3, 0], r: 1, from: 0, to: 180, label: "2² = 4", labelAt: "nw", step: 1 },
+        { kind: "point", at: [4, 0], step: 1 },
+        { kind: "segment", from: [0, 0], to: [5, 0], tone: "good", step: 2 },
+        { kind: "label", at: [2.5, -0.55], label: "real squares", labelAt: "s", tone: "good", step: 2 },
+        { kind: "segment", from: [-5, 0], to: [0, 0], tone: "bad", step: 3 },
+        { kind: "label", at: [-2.5, -0.55], label: "no real squares", labelAt: "s", tone: "bad", step: 3 },
+        { kind: "point", at: [-1, 0], label: "i² = −1", labelAt: "n", step: 4 },
+      ],
+    },
+    formal: [
+      {
+        title: "Square roots of negative numbers",
+        points: [
+          t`A **square root** of a number is a number whose square is that number.`,
+          t`For $a > 0$, $(i\sqrt a)^2 = i^2 \cdot a = -a$.`,
+          t`So $i\sqrt a$ is a square root of $-a$, and so is $-i\sqrt a$.`,
+          t`The **principal root** $\sqrt{-a}$ is the one with the plus sign: $\sqrt{-a} = i\sqrt a$.`,
+          t`For example, $\sqrt{-49} = i\sqrt{49} = 7i$.`,
+        ],
+      },
+      {
+        title: "When the product rule fails",
+        points: [
+          t`The **product rule** for roots says $\sqrt a\,\sqrt b = \sqrt{ab}$.`,
+          t`It holds when at least one of $a$ and $b$ is non-negative, that is, zero or more.`,
+          t`It **fails when both are negative**.`,
+          t`For $\sqrt{-5}\cdot\sqrt{-20}$, the rule would give $\sqrt{(-5)(-20)} = \sqrt{100}$.`,
+          t`That is $+10$, and it is wrong: the next slide finds $-10$.`,
+        ],
+      },
+      {
+        title: "Convert each root first",
+        points: [
+          t`Write each root in the form $i\sqrt{\ }$ first, then multiply.`,
+          t`$\sqrt{-5} = i\sqrt5$ and $\sqrt{-20} = i\sqrt{20}$.`,
+          t`Multiply: $(i\sqrt5)(i\sqrt{20})$ $= i^2\sqrt{100}$.`,
+          t`Use $i^2 = -1$: the product is $-10$, not $+10$.`,
+          t`The two $i$'s give $i^2 = -1$: that minus sign is what the product rule loses.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Simplify $\sqrt{-18}\cdot\sqrt{-2}$.`,
       steps: [

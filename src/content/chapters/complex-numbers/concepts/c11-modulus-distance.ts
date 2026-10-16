@@ -10,11 +10,122 @@ export const c11: Concept = {
     reveal: t`It's the point $(3, 4)$: a right triangle with legs $3$ and $4$, so the distance is $\sqrt{9 + 16} = 5$.`,
   },
   explanation: {
-    intuition: t`The modulus $|z|$ is a distance: how far the point $z$ is from the origin, found with Pythagoras. The same idea measures the gap between two points: $|z_1 - z_2|$ is the distance between $z_1$ and $z_2$.`,
-    formal: t`For $z = a + ib$: $|z| = \sqrt{a^2 + b^2}$, which is never negative.
-- Square both parts and add. There's no $i^2$ here, because $b$ is just the coefficient of $i$.
-- The distance between $z_1$ and $z_2$ is $|z_1 - z_2|$, and the order doesn't matter: $|z_1 - z_2| = |z_2 - z_1|$.
-- $|z_1 - z_2|$ is **not** $|z_1| - |z_2|$. Subtract the numbers first, then take the modulus.`,
+    intuition: [
+      t`The **origin** is the point $0$, where the real and imaginary axes cross.`,
+      t`Recall: $3 + 4i$ is the point $3$ across and $4$ up.`,
+      t`The **modulus** of $z$, written $|z|$, is the distance from the origin to the point $z$.`,
+      t`The sides $3$ and $4$ meet at a right angle, so by Pythagoras $|z| = \sqrt{3^2 + 4^2} = 5$.`,
+      t`The same idea measures the gap between two points $z_1$ and $z_2$: it is $|z_1 - z_2|$.`,
+    ],
+    formal: [
+      {
+        title: "The modulus of a + ib",
+        points: [
+          t`Take any $z = a + ib$, with $a$ and $b$ real.`,
+          t`Its point is $a$ across and $b$ up, at a right angle.`,
+          t`By Pythagoras, its distance from the origin is $|z| = \sqrt{a^2 + b^2}$.`,
+          t`A distance is never negative, so $|z|$ is never negative.`,
+        ],
+        figure: {
+          alt: "The point a + ib, a across and b up from the origin. The arrow from the origin to it is the long side of a right triangle with sides a and b, and its length is |z|.",
+          view: { x: [-1, 5], y: [-1, 3.5] },
+          elements: [
+            { kind: "point", at: [3, 2], label: "a + ib", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [0, 0], to: [3, 0], label: "a", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "segment", from: [3, 0], to: [3, 2], label: "b", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "vector", to: [3, 2], step: 3 },
+            { kind: "label", at: [1.5, 1], label: "|z|", labelAt: "nw", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Square both parts and add",
+        points: [
+          t`To find $|a + ib|$, square $a$ and $b$, add, then take the square root.`,
+          t`Recall: the imaginary part $b$ is the real number beside $i$, so no $i^2$ appears.`,
+          t`For $-4 + 3i$, the parts are $-4$ and $3$.`,
+          t`A square is never negative: $(-4)^2 + 3^2 = 16 + 9 = 25$.`,
+          t`Take the square root: $|-4 + 3i| = \sqrt{25} = 5$.`,
+        ],
+        figure: {
+          alt: "The point −4 + 3i, 4 left and 3 up from the origin. The arrow from the origin to it is the long side of a right triangle with sides 4 and 3, so it is 5 long.",
+          view: { x: [-5.5, 1.5], y: [-1, 4] },
+          elements: [
+            { kind: "point", at: [-4, 3], label: "−4 + 3i", labelAt: "n", step: 3 },
+            { kind: "segment", from: [0, 0], to: [-4, 0], label: "4", labelAt: "n", tone: "muted", step: 3 },
+            { kind: "segment", from: [-4, 0], to: [-4, 3], label: "3", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "vector", to: [-4, 3], step: 5 },
+            { kind: "label", at: [-2, 1.5], label: "5", labelAt: "ne", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Distance between two points",
+        points: [
+          t`The distance between the points $z_1$ and $z_2$ is $|z_1 - z_2|$.`,
+          t`Take $z_1 = 6 + 5i$ and $z_2 = 2 + 2i$.`,
+          t`Subtract: $(6 + 5i) - (2 + 2i) = 4 + 3i$.`,
+          t`So the points are $4$ apart across and $3$ apart up.`,
+          t`Take the modulus: $|4 + 3i| = \sqrt{16 + 9} = 5$.`,
+        ],
+        figure: {
+          alt: "The points 6 + 5i and 2 + 2i. They are 4 apart across and 3 apart up, so the straight line between them is 5 long.",
+          view: { x: [-0.8, 7.8], y: [-0.8, 6] },
+          elements: [
+            { kind: "point", at: [6, 5], label: "6 + 5i", labelAt: "ne", step: 2 },
+            { kind: "point", at: [2, 2], label: "2 + 2i", labelAt: "w", step: 2 },
+            { kind: "segment", from: [2, 2], to: [6, 2], label: "4", labelAt: "s", tone: "muted", step: 4 },
+            { kind: "segment", from: [6, 2], to: [6, 5], label: "3", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "segment", from: [2, 2], to: [6, 5], label: "5", labelAt: "nw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Either order, same distance",
+        points: [
+          t`Swapping the order gives the negative: $z_2 - z_1 = -(z_1 - z_2)$.`,
+          t`For those points, $z_1 - z_2 = 4 + 3i$, so $z_2 - z_1 = -4 - 3i$.`,
+          t`Both are $\sqrt{16 + 9} = 5$ from the origin, on opposite sides of it.`,
+          t`So the order doesn't matter: $|z_1 - z_2| = |z_2 - z_1|$.`,
+        ],
+        figure: {
+          alt: "Arrows from the origin to 4 + 3i and to −4 − 3i point opposite ways. Both are 5 long, so the two differences have the same modulus.",
+          view: { x: [-5.5, 5.5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [4, 3], label: "4 + 3i", labelAt: "ne", step: 2 },
+            { kind: "vector", to: [4, 3], step: 2 },
+            { kind: "point", at: [-4, -3], label: "−4 − 3i", labelAt: "sw", step: 2 },
+            { kind: "vector", to: [-4, -3], step: 2 },
+            { kind: "label", at: [2, 1.5], label: "5", labelAt: "nw", step: 3 },
+            { kind: "label", at: [-2, -1.5], label: "5", labelAt: "se", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Subtract first, then take modulus",
+        points: [
+          t`$|z_1 - z_2|$ is **not** $|z_1| - |z_2|$.`,
+          t`Subtract the numbers first, then take the modulus.`,
+          t`For example, $4 + 3i$ and $-4 + 3i$ are each $5$ from the origin.`,
+          t`So $|z_1| - |z_2| = 5 - 5 = 0$, yet they are different points.`,
+          t`Subtract first: $(4 + 3i) - (-4 + 3i) = 8$, so they are $8$ apart.`,
+        ],
+        figure: {
+          alt: "The points 4 + 3i and −4 + 3i are each 5 from the origin, yet the line between them is 8 long: the same distance from the origin, far apart.",
+          view: { x: [-5.5, 5.5], y: [-1, 4.5] },
+          elements: [
+            { kind: "point", at: [4, 3], label: "4 + 3i", labelAt: "ne", step: 3 },
+            { kind: "vector", to: [4, 3], tone: "muted", step: 3 },
+            { kind: "label", at: [2, 1.5], label: "5", labelAt: "se", step: 3 },
+            { kind: "point", at: [-4, 3], label: "−4 + 3i", labelAt: "nw", step: 3 },
+            { kind: "vector", to: [-4, 3], tone: "muted", step: 3 },
+            { kind: "label", at: [-2, 1.5], label: "5", labelAt: "sw", step: 3 },
+            { kind: "segment", from: [-4, 3], to: [4, 3], step: 5 },
+            { kind: "label", at: [1.5, 3], label: "8 apart", labelAt: "n", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the distance between $6 + 2i$ and $1 - 10i$.`,
       steps: [
@@ -35,13 +146,16 @@ export const c11: Concept = {
       },
     },
     figure: {
-      alt: "The point 3 + 4i makes a right triangle with legs 3 and 4. Its distance from the origin, the hypotenuse, is |z| = 5.",
+      alt: "The origin 0, and the point 3 + 4i, 3 across and 4 up from it. The arrow from the origin to 3 + 4i is the long side of a right triangle with sides 3 and 4: its length |z| is √(3² + 4²) = 5.",
       view: { x: [-1, 5], y: [-1, 5] },
       elements: [
-        { kind: "point", at: [3, 4], label: "3 + 4i", labelAt: "ne" },
-        { kind: "segment", from: [0, 0], to: [3, 0], label: "3", labelAt: "n", tone: "muted", step: 1 },
+        { kind: "point", at: [0, 0], label: "0", labelAt: "nw", tone: "muted", step: 1 },
+        { kind: "point", at: [3, 4], label: "3 + 4i", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [0, 0], to: [3, 0], label: "3", labelAt: "n", tone: "muted", step: 2 },
         { kind: "segment", from: [3, 0], to: [3, 4], label: "4", labelAt: "e", tone: "muted", step: 2 },
-        { kind: "segment", from: [0, 0], to: [3, 4], label: "|z| = 5", labelAt: "nw", step: 3 },
+        { kind: "vector", to: [3, 4], step: 3 },
+        { kind: "label", at: [1.5, 2], label: "|z|", labelAt: "nw", step: 3 },
+        { kind: "label", at: [-0.8, 4.6], label: "|z| = √(3² + 4²) = 5", labelAt: "e", step: 4 },
       ],
     },
     visualSpec: t`Two draggable points with the segment between them and a right triangle beneath it. The legs show the real and imaginary differences, and the hypotenuse is labelled $|z_1 - z_2|$, updating live.`,

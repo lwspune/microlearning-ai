@@ -10,12 +10,124 @@ export const c24: Concept = {
     reveal: t`A circle with centre $1 + 2i$ and radius 3: $|z - (1 + 2i)| = 3$.`,
   },
   explanation: {
-    intuition: t`$|z - a|$ is the distance from $z$ to $a$, so $|z - a| = r$ is every point at distance $r$ from $a$: a circle. Read the centre carefully from the sign inside: $|z + 1 - 2i| = |z - (-1 + 2i)|$ has centre $-1 + 2i$.`,
-    formal: t`$|z - a| = r$ is the circle with centre $a$ and radius $r$. In Cartesian form, with $a = p + qi$: $(x - p)^2 + (y - q)^2 = r^2$, the radius **squared** on the right.
-
-If $z$ has a coefficient, divide it out first: $|kz - w| = R \iff \left|z - \dfrac wk\right| = \dfrac{R}{|k|}$. Both the centre and the radius change.
-
-In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z\bar z + q(z + \bar z) + s = 0$ is $x^2 + y^2 + 2qx + s = 0$.`,
+    intuition: [
+      t`Take a fixed point, $a = 1 + 2i$.`,
+      t`Recall: $|z - a|$ is the distance between the points $z$ and $a$.`,
+      t`Mark more points $z$ with $|z - a| = 3$: each is $3$ from $a$.`,
+      t`Together they make a **circle**: all points at one distance, the **radius**, from one point, the **centre**.`,
+      t`So $|z - a| = r$ is the circle with centre $a$ and radius $r$.`,
+    ],
+    formal: [
+      {
+        title: "The Cartesian equation",
+        points: [
+          t`Write $z = x + iy$ and the centre $a = p + qi$.`,
+          t`Then $z - a = (x - p) + i(y - q)$: $x - p$ across and $y - q$ up.`,
+          t`By Pythagoras, $|z - a|$ is $\sqrt{(x - p)^2 + (y - q)^2}$.`,
+          t`Set it equal to $r$ and square: $(x - p)^2 + (y - q)^2 = r^2$.`,
+          t`The right side is the radius **squared**: radius $2$ gives $= 4$, not $= 2$.`,
+        ],
+        figure: {
+          alt: "A circle with centre p + qi and a point x + iy on it. From the centre, x − p across and y − q up make a right triangle whose long side, |z − a|, is the radius r. The circle is (x − p)² + (y − q)² = r².",
+          view: { x: [-1.6, 4.6], y: [-1.5, 3.9] },
+          elements: [
+            { kind: "point", at: [1, 1], label: "p + qi", labelAt: "sw", step: 1 },
+            { kind: "point", at: [2.532, 2.286], label: "x + iy", labelAt: "ne", step: 1 },
+            { kind: "segment", from: [1, 1], to: [2.532, 1], label: "x − p", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "segment", from: [2.532, 1], to: [2.532, 2.286], label: "y − q", labelAt: "w", tone: "muted", step: 2 },
+            { kind: "segment", from: [1, 1], to: [2.532, 2.286], label: "|z − a|", labelAt: "nw", step: 3 },
+            { kind: "circle", centre: [1, 1], r: 2, step: 4 },
+            { kind: "label", at: [-1.5, 3.5], label: "(x − p)² + (y − q)² = r²", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Reading the centre's sign",
+        points: [
+          t`In $|z - a|$, the centre $a$ is the number taken away from $z$.`,
+          t`So write a plus as minus a negative: $|z + 1 - 2i| = |z - (-1 + 2i)|$.`,
+          t`So $|z + 1 - 2i| = 2$ is the circle with centre $-1 + 2i$, radius $2$.`,
+          t`The centre is not $1 - 2i$, the signs as written.`,
+          t`Flipping only one sign, to $-1 - 2i$, is wrong too: both signs flip.`,
+        ],
+        figure: {
+          alt: "The circle |z + 1 − 2i| = 2, with centre −1 + 2i and radius 2. Below it, crossed out as wrong centres, are 1 − 2i (the signs as written) and −1 − 2i (only one sign flipped).",
+          view: { x: [-4.6, 3.8], y: [-3, 4.6] },
+          elements: [
+            { kind: "point", at: [-1, 2], label: "−1 + 2i", labelAt: "sw", step: 3 },
+            { kind: "segment", from: [-1, 2], to: [-3, 2], label: "2", labelAt: "n", tone: "muted", step: 3 },
+            { kind: "circle", centre: [-1, 2], r: 2, step: 3 },
+            { kind: "point", at: [1, -2], hollow: true, label: "not 1 − 2i", labelAt: "e", tone: "bad", step: 4 },
+            { kind: "point", at: [-1, -2], hollow: true, label: "not −1 − 2i", labelAt: "w", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "When z has a coefficient",
+        points: [
+          t`Here $z$ has a **coefficient**, a number multiplying it: the $2$ in $|2z - 2 - 4i| = 6$.`,
+          t`Take out the $2$: $2z - 2 - 4i = 2(z - (1 + 2i))$.`,
+          t`Recall: $|kw| = |k|\,|w|$, so this is $2\,|z - (1 + 2i)| = 6$.`,
+          t`Divide by $2$: $|z - (1 + 2i)| = 3$, centre $1 + 2i$, radius $3$.`,
+          t`Both changed: the centre is not $2 + 4i$, and the radius is not $6$.`,
+          t`In general, $|kz - w| = R$ means $\left|z - \frac{w}{k}\right| = \frac{R}{|k|}$.`,
+        ],
+        figure: {
+          alt: "The circle |2z − 2 − 4i| = 6, which is |z − (1 + 2i)| = 3: centre 1 + 2i and radius 3. The point 2 + 4i is crossed out as a wrong centre.",
+          view: { x: [-2.6, 5], y: [-1.6, 5.6] },
+          elements: [
+            { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "sw", step: 4 },
+            { kind: "segment", from: [1, 2], to: [4, 2], label: "3", labelAt: "n", tone: "muted", step: 4 },
+            { kind: "circle", centre: [1, 2], r: 3, step: 4 },
+            { kind: "point", at: [2, 4], hollow: true, label: "not 2 + 4i", labelAt: "w", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Using z and its conjugate",
+        points: [
+          t`Recall: the **conjugate** of $z = x + iy$ is $\bar z = x - iy$, its mirror image in the real axis.`,
+          t`Multiply: $z\bar z = x^2 + y^2$, which is $|z|^2$.`,
+          t`Add: $z + \bar z = 2x$, twice the real part, not $x$.`,
+          t`So $z\bar z + q(z + \bar z) + s = 0$ becomes $x^2 + y^2 + 2qx + s = 0$.`,
+        ],
+        figure: {
+          alt: "The point z = x + iy and its mirror image z̄ = x − iy in the real axis, with arrows from the origin. The arrow to z has length |z|. Adding the two arrows lands on the real axis at 2x, twice the real part.",
+          view: { x: [-1, 6.6], y: [-2.4, 2.6] },
+          elements: [
+            { kind: "vector", to: [2, 1.5], tone: "muted", step: 1 },
+            { kind: "point", at: [2, 1.5], label: "x + iy", labelAt: "ne", step: 1 },
+            { kind: "vector", to: [2, -1.5], tone: "muted", step: 1 },
+            { kind: "point", at: [2, -1.5], label: "x − iy", labelAt: "se", step: 1 },
+            { kind: "label", at: [1, 0.75], label: "|z|", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [2, 1.5], to: [4, 0], dashed: true, tone: "muted", step: 3 },
+            { kind: "segment", from: [2, -1.5], to: [4, 0], dashed: true, tone: "muted", step: 3 },
+            { kind: "point", at: [4, 0], label: "2x", labelAt: "e", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Completing the square",
+        points: [
+          t`For example, take $z\bar z - 3(z + \bar z) + 5 = 0$.`,
+          t`It becomes $x^2 + y^2 - 6x + 5 = 0$.`,
+          t`**Completing the square** writes $x^2 - 6x$ as a square plus a number: $(x - 3)^2 - 9$.`,
+          t`The bracket keeps the sign of $-6x$: it is $x - 3$, not $x + 3$.`,
+          t`So $(x - 3)^2 + y^2 = 4$: the circle with centre $3$.`,
+          t`The right side is already $r^2$, so the radius is $\sqrt4 = 2$, not $4$.`,
+        ],
+        figure: {
+          alt: "The circle (x − 3)² + y² = 4, with centre 3 on the real axis and radius 2. The point −3 is crossed out as a wrong centre.",
+          view: { x: [-4.6, 5.8], y: [-2.8, 2.8] },
+          elements: [
+            { kind: "point", at: [-3, 0], hollow: true, label: "not −3", labelAt: "n", tone: "bad", step: 4 },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "nw", step: 5 },
+            { kind: "circle", centre: [3, 0], r: 2, step: 5 },
+            { kind: "segment", from: [3, 0], to: [3, 2], label: "2", labelAt: "e", tone: "muted", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Describe $|2z + 4i| = 8$.`,
       steps: [
@@ -36,18 +148,18 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
       },
     },
     figure: {
-      alt: "The point 1 + 2i, three points each at distance 3 from it, and the circle made of all such points: |z − (1 + 2i)| = 3.",
+      alt: "The point a = 1 + 2i and a point z at distance |z − a| from it. Two more points, each at distance 3 from 1 + 2i, then the circle made of all such points: |z − (1 + 2i)| = 3.",
       view: { x: [-3, 5], y: [-1.5, 6.8] },
       elements: [
         { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "sw", step: 1 },
-        { kind: "segment", from: [1, 2], to: [3.819, 3.026], tone: "muted", step: 2, label: "3", labelAt: "se" },
-        { kind: "point", at: [3.819, 3.026], step: 2 },
-        { kind: "segment", from: [1, 2], to: [-1.298, 3.928], tone: "muted", step: 2 },
-        { kind: "point", at: [-1.298, 3.928], step: 2 },
-        { kind: "segment", from: [1, 2], to: [0.479, -0.954], tone: "muted", step: 2 },
-        { kind: "point", at: [0.479, -0.954], step: 2 },
-        { kind: "circle", centre: [1, 2], r: 3, step: 3 },
-        { kind: "label", at: [-2.8, 6.3], label: "|z − (1 + 2i)| = 3", labelAt: "e", step: 3 },
+        { kind: "segment", from: [1, 2], to: [3.819, 3.026], tone: "muted", step: 2, label: "|z − a|", labelAt: "se" },
+        { kind: "point", at: [3.819, 3.026], label: "z", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [1, 2], to: [-1.298, 3.928], tone: "muted", step: 3 },
+        { kind: "point", at: [-1.298, 3.928], step: 3 },
+        { kind: "segment", from: [1, 2], to: [0.479, -0.954], tone: "muted", step: 3, label: "3", labelAt: "e" },
+        { kind: "point", at: [0.479, -0.954], step: 3 },
+        { kind: "circle", centre: [1, 2], r: 3, step: 4 },
+        { kind: "label", at: [-2.8, 6.3], label: "|z − (1 + 2i)| = 3", labelAt: "e", step: 5 },
       ],
     },
     visualSpec: t`Drag a point $a$ and move a radius slider; the circle $|z - a| = r$ redraws, with its equation in both forms updating as you go.`,

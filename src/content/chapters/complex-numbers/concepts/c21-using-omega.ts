@@ -10,18 +10,96 @@ export const c21: Concept = {
     reveal: t`$1 + \omega = -\omega^2$. Any two of $1, \omega, \omega^2$ add to minus the third.`,
   },
   explanation: {
-    intuition: t`Most $\omega$ problems collapse with one move: group terms so that $1 + \omega + \omega^2 = 0$ can replace a pair by minus the third. A messy bracket then becomes a single power of $\omega$, and $\omega^3 = 1$ finishes the job.`,
-    formal: t`From $1 + \omega + \omega^2 = 0$:
-- $1 + \omega = -\omega^2$, $\;1 + \omega^2 = -\omega$, $\;\omega + \omega^2 = -1$
-- so $p + q\omega + p\omega^2 = p(1 + \omega^2) + q\omega = (q - p)\omega$
-
-**Roots of $z^3 = k$:** if $c$ is the real cube root of $k$, the roots are $c$, $c\omega$ and $c\omega^2$. Scale **all three**.
-
-A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
+    intuition: [
+      t`Recall: $\omega$ is a cube root of $1$ other than $1$ itself, so $\omega^3 = 1$.`,
+      t`Recall too: the three cube roots of $1$ add to zero, $1 + \omega + \omega^2 = 0$.`,
+      t`So any two of $1$, $\omega$, $\omega^2$, a **pair**, add to minus the one left over, the **third**.`,
+      t`To **group** terms is to bracket them so that such a pair appears.`,
+      t`Swapping the pair for minus the third turns a messy bracket into a number times one power of $\omega$.`,
+      t`Then $\omega^3 = 1$ finishes the job.`,
+    ],
+    formal: [
+      {
+        title: "A pair is minus the third",
+        points: [
+          t`Start from $1 + \omega + \omega^2 = 0$.`,
+          t`Take $\omega^2$ from both sides: $1 + \omega = -\omega^2$.`,
+          t`Take $\omega$ from both sides: $1 + \omega^2 = -\omega$.`,
+          t`Take $1$ from both sides: $\omega + \omega^2 = -1$.`,
+          t`Keep the minus: $1 + \omega^2$ is $-\omega$, not $\omega$.`,
+        ],
+        figure: {
+          alt: "The cube roots of unity 1, ω and ω² as arrows from the origin to the unit circle. Adding two of the arrows, by completing a parallelogram, lands opposite the third: 1 + ω is −ω², 1 + ω² is −ω and ω + ω² is −1.",
+          view: { x: [-2.6, 2.6], y: [-1.6, 1.6] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+            { kind: "vector", to: [1, 0], label: "1", labelAt: "n", step: 1 },
+            { kind: "vector", to: [-0.5, 0.866], label: "ω", labelAt: "nw", step: 1 },
+            { kind: "vector", to: [-0.5, -0.866], label: "ω²", labelAt: "sw", step: 1 },
+            { kind: "segment", from: [1, 0], to: [0.5, 0.866], dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [-0.5, 0.866], to: [0.5, 0.866], dashed: true, tone: "muted", step: 2 },
+            { kind: "point", at: [0.5, 0.866], label: "1 + ω = −ω²", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "segment", from: [1, 0], to: [0.5, -0.866], dashed: true, tone: "muted", step: 3 },
+            { kind: "segment", from: [-0.5, -0.866], to: [0.5, -0.866], dashed: true, tone: "muted", step: 3 },
+            { kind: "point", at: [0.5, -0.866], label: "1 + ω² = −ω", labelAt: "se", tone: "good", step: 3 },
+            { kind: "segment", from: [-0.5, 0.866], to: [-1, 0], dashed: true, tone: "muted", step: 4 },
+            { kind: "segment", from: [-0.5, -0.866], to: [-1, 0], dashed: true, tone: "muted", step: 4 },
+            { kind: "point", at: [-1, 0], label: "ω + ω² = −1", labelAt: "nw", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Grouping a bracket",
+        points: [
+          t`A **coefficient** is the number in front of a term: in $q\omega$ it is $q$.`,
+          t`In $p + q\omega + p\omega^2$, the first and last terms share the coefficient $p$.`,
+          t`Take out the common $p$: $p(1 + \omega^2) + q\omega$.`,
+          t`Swap the pair for minus the third: $p(-\omega) + q\omega$.`,
+          t`So $p + q\omega + p\omega^2$ equals $(q - p)\omega$, a single term.`,
+        ],
+      },
+      {
+        title: "Simplify first, then raise",
+        points: [
+          t`A **power** of a bracket multiplies the whole bracket by itself.`,
+          t`A power doesn't split over a sum: $(a + b)^n \ne a^n + b^n$.`,
+          t`So first simplify the bracket to a single term, such as $c\omega$.`,
+          t`Then raise that term to the power: $(c\omega)^n = c^n\omega^n$.`,
+          t`Recall: $\omega^3 = 1$, so only the remainder of $n$ on division by $3$ matters.`,
+        ],
+      },
+      {
+        title: "Roots of z³ = k",
+        points: [
+          t`Recall: the three cube roots of $1$ are $1$, $\omega$ and $\omega^2$.`,
+          t`Let $c$ be the **real cube root** of $k$: the real number with $c^3 = k$.`,
+          t`Then the roots of $z^3 = k$ are $c$, $c\omega$ and $c\omega^2$.`,
+          t`Each one cubes to $k$: $(c\omega)^3 = c^3\omega^3 = k$.`,
+          t`So scale **all three** cube roots of $1$, not just the real one.`,
+          t`For example, the real cube root of $64$ is $4$, so $z^3 = 64$ has roots $4$, $4\omega$, $4\omega^2$.`,
+        ],
+        figure: {
+          alt: "The cube roots of unity 1, ω and ω² as arrows from the origin to the unit circle. Each is scaled by the real cube root c, drawn here as 2: the roots of z³ = k are the arrows c, cω and cω², on a circle of radius c, in the same three directions.",
+          view: { x: [-2.8, 2.8], y: [-2.3, 2.3] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted", step: 1 },
+            { kind: "vector", to: [1, 0], label: "1", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "vector", to: [-0.5, 0.866], tone: "muted", step: 1 },
+            { kind: "label", at: [-0.8, 0.66], label: "ω", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "vector", to: [-0.5, -0.866], tone: "muted", step: 1 },
+            { kind: "label", at: [-0.8, -0.66], label: "ω²", labelAt: "w", tone: "muted", step: 1 },
+            { kind: "vector", to: [2, 0], label: "c", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "circle", centre: [0, 0], r: 2, dashed: true, tone: "good", step: 3 },
+            { kind: "vector", to: [-1, 1.732], label: "cω", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "vector", to: [-1, -1.732], label: "cω²", labelAt: "sw", tone: "good", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Simplify $(3 + 3\omega + 7\omega^2)^3$.`,
       steps: [
-        t`Group: $3(1 + \omega) + 7\omega^2 = -3\omega^2 + 7\omega^2 = 4\omega^2$.`,
+        t`Group: $3(1 + \omega) + 7\omega^2$ $= -3\omega^2 + 7\omega^2$ $= 4\omega^2$.`,
         t`Cube: $(4\omega^2)^3 = 64\omega^6 = 64$.`,
       ],
       answer: t`$64$`,

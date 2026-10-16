@@ -10,12 +10,46 @@ export const c03: Concept = {
     reveal: t`$a = 3$ and $b = -5$. Real parts match and imaginary parts match: one equation between complex numbers is really two equations.`,
   },
   explanation: {
-    intuition: t`Every complex number has two separate parts, a real part and an imaginary part, like the two coordinates of a point. Two complex numbers are equal only when both parts match, so one complex equation gives two real equations.`,
-    formal: t`Standard form: $z = x + iy$ with $x, y$ real. $\operatorname{Re} z = x$ and $\operatorname{Im} z = y$. The imaginary part is the real number $y$, **without** the $i$.
-
-**Equality:** $a + ib = c + id \iff a = c$ and $b = d$ (for real $a, b, c, d$).
-
-Before comparing, bring each side to the form $x + iy$. For example, $i(2 + 5i) = 2i + 5i^2 = -5 + 2i$.`,
+    intuition: [
+      t`Recall: $i$ is the new number with $i^2 = -1$.`,
+      t`A **complex number** is a real number plus a real number times $i$, such as $3 - 5i$.`,
+      t`So every complex number has two separate parts, like the two coordinates of a point.`,
+      t`The **real part** is the number on its own, and the **imaginary part** is the number multiplying $i$.`,
+      t`Two complex numbers are equal only when both parts match.`,
+      t`So one equation between complex numbers gives two equations between real numbers.`,
+    ],
+    formal: [
+      {
+        title: "Standard form",
+        points: [
+          t`A complex number written as $z = x + iy$, with $x$ and $y$ real, is in **standard form**.`,
+          t`Its real part is $x$, the term without $i$: we write $\operatorname{Re} z = x$.`,
+          t`Its imaginary part is $y$, the **coefficient** of $i$, the number multiplying it: $\operatorname{Im} z = y$.`,
+          t`The imaginary part is the real number $y$, **without** the $i$.`,
+          t`It keeps its sign: $\operatorname{Im}(3 - 4i) = -4$.`,
+        ],
+      },
+      {
+        title: "Equality of complex numbers",
+        points: [
+          t`Let $a$, $b$, $c$ and $d$ be real numbers.`,
+          t`Then $a + ib = c + id$ exactly when $a = c$ and $b = d$.`,
+          t`That is, the real parts are equal and the imaginary parts are equal.`,
+          t`It works both ways: matching parts give equal numbers, and equal numbers have matching parts.`,
+          t`Match like with like: never a real part with an imaginary part.`,
+        ],
+      },
+      {
+        title: "Standard form before comparing",
+        points: [
+          t`Compare the parts only once each side is in the form $x + iy$.`,
+          t`For example, take $i(2 + 5i)$.`,
+          t`Multiply out: $i(2 + 5i) = 2i + 5i^2$.`,
+          t`Replace $i^2$ by $-1$: this is $2i - 5$.`,
+          t`In standard form it is $-5 + 2i$, with real part $-5$ and imaginary part $2$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`If $(x - 1) + i(2y + 3) = 4 - i$ with $x, y$ real, find $x$ and $y$.`,
       steps: [

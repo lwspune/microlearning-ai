@@ -10,14 +10,105 @@ export const c18: Concept = {
     reveal: t`It turned the point a quarter-turn anticlockwise about the origin. Multiplying by $\cos\alpha + i\sin\alpha$ rotates by $\alpha$.`,
   },
   explanation: {
-    intuition: t`Multiplying by $e^{i\alpha}$ keeps the length and adds $\alpha$ to the angle: a rotation about the origin. To rotate about another point $c$, shift so that $c$ becomes the origin, rotate, then shift back.`,
-    formal: t`Rotating $z$ anticlockwise by $\alpha$:
-- about the origin: $z' = z\,e^{i\alpha}$
-- about the point $c$: $z' - c = (z - c)\,e^{i\alpha}$, so $z' = c + (z - c)\,e^{i\alpha}$
-
-A positive $\alpha$ turns anticlockwise. $e^{i\pi/2} = i$ is a quarter-turn and $e^{i\pi} = -1$ a half-turn.
-
-**Triangles:** if $A$, $B$, $C$ go anticlockwise round an equilateral triangle, then $C - A = (B - A)\,e^{i\pi/3}$.`,
+    intuition: [
+      t`Recall: multiplying complex numbers multiplies their lengths and adds their angles.`,
+      t`Take $z = 3 + i$, drawn as an arrow from the origin.`,
+      t`The number $i$ has length $1$ and angle $\dfrac\pi2$.`,
+      t`So $iz = -1 + 3i$ has the same length as $z$, and an angle $\dfrac\pi2$ more.`,
+      t`The arrow turned a quarter-turn **anticlockwise**, against a clock's hands: a **rotation** about the origin.`,
+      t`To rotate about another fixed point $c$, the **centre**, shift $c$ to the origin, rotate, then shift back.`,
+    ],
+    formal: [
+      {
+        title: "Rotating about the origin",
+        points: [
+          t`Recall: $e^{i\alpha}$ means $\cos\alpha + i\sin\alpha$, with length $1$ and argument $\alpha$.`,
+          t`Take a point $z$, drawn as an arrow from the origin.`,
+          t`Multiplying $z$ by $e^{i\alpha}$ multiplies its length by $1$, so the length stays the same.`,
+          t`It adds $\alpha$ to the argument, so the arrow turns through $\alpha$ about the origin.`,
+          t`So the **image** $z'$, where $z$ lands, is $z' = z\,e^{i\alpha}$.`,
+          t`A positive $\alpha$ turns anticlockwise.`,
+        ],
+        figure: {
+          alt: "An arrow z from the origin. Multiplying by e^(iα) keeps its length, so its tip stays on the same circle about the origin; the arrow turns anticlockwise through α to the image z′ = z e^(iα).",
+          view: { x: [-1.2, 3.4], y: [-0.8, 3.2] },
+          elements: [
+            { kind: "vector", to: [2.443, 0.889], label: "z", labelAt: "e", tone: "good", step: 2 },
+            { kind: "arc", centre: [0, 0], r: 2.6, from: 20, to: 80, tone: "muted", step: 3 },
+            { kind: "turn", r: 2.6, from: 20, to: 80, label: "z′ = z e^(iα)", labelAt: "ne", step: 4 },
+            { kind: "label", at: [0.696, 0.696], label: "α", labelAt: "ne", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Quarter-turns and half-turns",
+        points: [
+          t`Take $z = 2 + i$.`,
+          t`$e^{i\pi/2} = i$, so multiplying by $i$ is a **quarter-turn**, through $\dfrac\pi2$.`,
+          t`$e^{i\pi} = -1$, so multiplying by $-1$ is a **half-turn**, through $\pi$.`,
+        ],
+        figure: {
+          alt: "The arrow z = 2 + i. A quarter-turn anticlockwise, through π/2, takes it to iz = −1 + 2i; a half-turn, through π, takes it to −z = −2 − i, straight through the origin.",
+          view: { x: [-3.6, 3.2], y: [-1.8, 2.8] },
+          elements: [
+            { kind: "vector", to: [2, 1], label: "z = 2 + i", labelAt: "e", tone: "good", step: 1 },
+            { kind: "turn", r: 2.236, from: 26.565, to: 116.565, label: "iz = −1 + 2i", labelAt: "w", step: 2 },
+            { kind: "label", at: [0.3, 0.9], label: "π/2", labelAt: "ne", step: 2 },
+            { kind: "turn", r: 2.236, from: 26.565, to: 206.565, label: "−z = −2 − i", labelAt: "s", step: 3 },
+            { kind: "label", at: [-0.9, 0.3], label: "π", labelAt: "nw", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Rotating about another centre",
+        points: [
+          t`To rotate $z$ about a centre $c$, first shift by $-c$, which moves $c$ to the origin.`,
+          t`That shift sends $z$ to $z - c$, the arrow from $c$ to $z$.`,
+          t`Rotate that arrow by multiplying: $(z - c)\,e^{i\alpha}$.`,
+          t`This is the arrow from $c$ to the image, so $z' - c = (z - c)\,e^{i\alpha}$.`,
+          t`Shift back by adding $c$: $z' = c + (z - c)\,e^{i\alpha}$.`,
+        ],
+        figure: {
+          alt: "A centre c and a point z. The arrow from c to z is z − c. It turns anticlockwise through α about c, keeping its length, to the arrow (z − c) e^(iα), which ends at the image z′.",
+          view: { x: [-0.8, 4.4], y: [-0.8, 3.8] },
+          elements: [
+            { kind: "point", at: [1, 0.8], label: "c", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "point", at: [3.318, 1.421], label: "z", labelAt: "e", step: 1 },
+            { kind: "vector", from: [1, 0.8], to: [3.318, 1.421], tone: "good", step: 2 },
+            { kind: "label", at: [2.159, 1.11], label: "z − c", labelAt: "se", tone: "good", step: 2 },
+            { kind: "turn", centre: [1, 0.8], r: 2.4, from: 15, to: 85, label: "(z − c) e^(iα)", labelAt: "e", step: 3 },
+            { kind: "label", at: [1.6, 1.6], label: "α", labelAt: "ne", step: 3 },
+            { kind: "point", at: [1.209, 3.191], label: "z′", labelAt: "w", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Equilateral triangles",
+        points: [
+          t`An **equilateral** triangle has three equal sides, and each of its angles is $\dfrac\pi3$.`,
+          t`Name its corners $A$, $B$, $C$, going anticlockwise round it.`,
+          t`The side from $A$ to $B$ is the arrow $B - A$.`,
+          t`Turning it through $\dfrac\pi3$ about $A$ lays it along the side from $A$ to $C$.`,
+          t`So $C - A = (B - A)\,e^{i\pi/3}$.`,
+        ],
+        figure: {
+          alt: "An equilateral triangle with corners A, B, C going anticlockwise. The side from A to B, the arrow B − A, turns anticlockwise through π/3 about A and lies along the side from A to C: C − A = (B − A) e^(iπ/3).",
+          view: { x: [-0.6, 4.4], y: [-0.6, 3.6] },
+          elements: [
+            { kind: "segment", from: [1, 0.5], to: [3.462, 0.934], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [3.462, 0.934], to: [1.855, 2.849], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [1.855, 2.849], to: [1, 0.5], dashed: true, tone: "muted", step: 1 },
+            { kind: "point", at: [1, 0.5], label: "A", labelAt: "sw", step: 2 },
+            { kind: "point", at: [3.462, 0.934], label: "B", labelAt: "e", step: 2 },
+            { kind: "point", at: [1.855, 2.849], label: "C", labelAt: "n", step: 2 },
+            { kind: "vector", from: [1, 0.5], to: [3.462, 0.934], tone: "good", step: 3 },
+            { kind: "label", at: [2.231, 0.717], label: "B − A", labelAt: "s", tone: "good", step: 3 },
+            { kind: "turn", centre: [1, 0.5], r: 2.5, from: 10, to: 70, label: "C − A", labelAt: "w", step: 4 },
+            { kind: "label", at: [1.75, 1.2], label: "π/3", labelAt: "ne", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Rotate $5 + i$ anticlockwise by $\dfrac\pi2$ about $2 + i$.`,
       steps: [
@@ -32,21 +123,21 @@ A positive $\alpha$ turns anticlockwise. $e^{i\pi/2} = i$ is a quarter-turn and 
         elements: [
           { kind: "point", at: [2, 1], label: "c = 2 + i", labelAt: "sw", tone: "muted" },
           { kind: "point", at: [5, 1], label: "z = 5 + i", labelAt: "se" },
-          { kind: "vector", from: [2, 1], to: [5, 1], tone: "muted", step: 1 },
-          { kind: "arc", centre: [2, 1], r: 3, from: 0, to: 90, tone: "muted", step: 2 },
-          { kind: "vector", from: [2, 1], to: [2, 4], tone: "muted", step: 2 },
+          { kind: "vector", from: [2, 1], to: [5, 1], tone: "good", step: 1 },
+          { kind: "label", at: [3.5, 1], label: "z − c = 3", labelAt: "n", tone: "good", step: 1 },
+          { kind: "turn", centre: [2, 1], r: 3, from: 0, to: 90, label: "3i", labelAt: "w", step: 2 },
           { kind: "point", at: [2, 4], label: "2 + 4i", labelAt: "ne", step: 3 },
         ],
       },
     },
     figure: {
-      alt: "Multiplying 3 + i by i keeps its length and turns it a quarter-turn anticlockwise about the origin, to −1 + 3i.",
+      alt: "The arrow z = 3 + i from the origin, and the arrow i of length 1 at angle π/2. Multiplying z by i keeps its length and turns it a quarter-turn anticlockwise about the origin, to iz = −1 + 3i.",
       view: { x: [-2.5, 4.2], y: [-0.8, 3.8] },
       elements: [
-        { kind: "vector", to: [3, 1], label: "z = 3 + i", labelAt: "e", step: 1 },
-        { kind: "arc", centre: [0, 0], r: 3.162, from: 18.435, to: 108.435, tone: "muted", step: 2 },
-        { kind: "angle", at: [0, 0], from: 18.435, to: 108.435, label: "π/2", step: 2 },
-        { kind: "vector", to: [-1, 3], label: "iz = −1 + 3i", labelAt: "nw", step: 3 },
+        { kind: "vector", to: [3, 1], label: "z = 3 + i", labelAt: "e", tone: "good", step: 2 },
+        { kind: "vector", to: [0, 1], label: "i", labelAt: "e", tone: "muted", step: 3 },
+        { kind: "turn", r: 3.162, from: 18.435, to: 108.435, label: "iz = −1 + 3i", labelAt: "nw", step: 4 },
+        { kind: "label", at: [0.58, 1.16], label: "π/2", labelAt: "ne", step: 4 },
       ],
     },
     visualSpec: t`A point $z$ and a centre $c$ you can drag, with an angle slider. The image $z'$ sweeps along the circle about $c$ through $z$, and a faint ghost shows where rotating about the origin would put it instead.`,

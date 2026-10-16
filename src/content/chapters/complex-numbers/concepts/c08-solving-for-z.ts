@@ -10,13 +10,37 @@ export const c08: Concept = {
     reveal: t`Only its real part. $z + \bar z = 2x = 6$ gives $x = 3$, but $y$ could be anything. You need both parts to pin $z$ down.`,
   },
   explanation: {
-    intuition: t`When $z$ and $\bar z$ appear together, you can't just divide through. Put $z = x + iy$ and $\bar z = x - iy$, simplify each side into real and imaginary parts, then equate parts. One complex equation gives two real equations for $x$ and $y$.`,
-    formal: t`To solve $az + b\bar z = c$:
-- Substitute $z = x + iy$ and $\bar z = x - iy$.
-- Collect into the form $(\ldots) + i(\ldots)$.
-- Equate real parts and imaginary parts, then solve the two real equations.
-
-Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
+    intuition: [
+      t`An equation with only $z$ in it, like $2z = 6 + 4i$, is solved by dividing through: $z = 3 + 2i$.`,
+      t`Recall: the **conjugate** of $z = x + iy$ is $\bar z = x - iy$, with the sign of $i$ flipped.`,
+      t`With $z$ and $\bar z$ together, you can't just divide through: $4z - \bar z$ is not $3z$.`,
+      t`Instead put $z = x + iy$ and $\bar z = x - iy$, where the unknowns $x$ and $y$ are real.`,
+      t`Simplify each side into a **real part**, with no $i$, plus $i$ times an **imaginary part**.`,
+      t`**Equate parts**, real with real and imaginary with imaginary: one complex equation becomes two equations in $x$ and $y$.`,
+    ],
+    formal: [
+      {
+        title: "Substitute and collect",
+        points: [
+          t`The equation has the form $az + b\bar z = c$, where $a$, $b$ and $c$ are given complex numbers.`,
+          t`Substitute $z = x + iy$ and $\bar z = x - iy$, where $x$ and $y$ are real.`,
+          t`Don't treat $\bar z$ as if it were $z$: they differ unless $z$ is real.`,
+          t`Expand both sides, and replace any $i^2$ with $-1$.`,
+          t`Collect into the form $(\ldots) + i(\ldots)$: the real part, plus $i$ times the imaginary part.`,
+        ],
+      },
+      {
+        title: "Equate parts and solve",
+        points: [
+          t`Recall: two complex numbers are equal only when their real parts and their imaginary parts are both equal.`,
+          t`So equate the real parts of the two sides: that is one equation in $x$ and $y$.`,
+          t`Then equate the imaginary parts: that is a second equation.`,
+          t`Each is a **real equation**: no $i$ is left in it.`,
+          t`Match real with real and imaginary with imaginary, never a real part with an imaginary part.`,
+          t`Solve the two real equations together for $x$ and $y$, then write $z = x + iy$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Solve $4z - \bar z = 6 + 10i$.`,
       steps: [

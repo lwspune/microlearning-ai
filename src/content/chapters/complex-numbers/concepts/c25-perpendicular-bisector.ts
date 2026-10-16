@@ -10,14 +10,112 @@ export const c25: Concept = {
     reveal: "A whole line. Every point on the perpendicular bisector of the segment from home to school works.",
   },
   explanation: {
-    intuition: t`$|z - a|$ is the distance from $z$ to the point $a$. So $|z - a| = |z - b|$ asks for every point equally far from $a$ and $b$. That set is the **perpendicular bisector** of $ab$: it passes through the midpoint and is perpendicular to $ab$. It's a line, even though the equation has two moduli.`,
-    formal: t`$|z - a| = |z - b|$ with $a \ne b$ is the perpendicular bisector of segment $ab$.
-
-To get its Cartesian equation, put $z = x + iy$ and square both sides. The $x^2$ and $y^2$ terms **always cancel**, which is why the result is a line.
-
-Watch the signs: $|z + 2| = |z - (-2)|$ is the distance from $-2$, **not** from $+2$.
-
-Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a ratio $k \ne 1$ it becomes a circle; that's C26.)`,
+    intuition: [
+      t`Take two fixed points on the Argand plane, $a = -2 + i$ and $b = 2 - i$.`,
+      t`Recall: $|z - a|$ is the distance from $z$ to $a$; here $z = 1 + 2i$ is $\sqrt{10}$ from $a$.`,
+      t`It is also $\sqrt{10}$ from $b$: **equidistant**, equally far, from both, so $|z - a| = |z - b|$.`,
+      t`The **segment** $ab$ is the straight piece from $a$ to $b$; its **midpoint**, halfway along, is $0$.`,
+      t`Every $z$ with $|z - a| = |z - b|$ lies on one straight line, through $0$ and $1 + 2i$.`,
+      t`It is the **perpendicular bisector** of $ab$: it cuts $ab$ in half, at a right angle.`,
+    ],
+    formal: [
+      {
+        title: "Equal distances from two points",
+        points: [
+          t`A **locus** is the set of all points $z$ that satisfy a condition.`,
+          t`Take two different points, $a = 1$ and $b = 3 + 2i$.`,
+          t`The point $3$ is $2$ from each, so it lies on the locus $|z - a| = |z - b|$.`,
+          t`All such points make the perpendicular bisector of $ab$, here the line $x + y = 3$.`,
+          t`It crosses $ab$ at its midpoint $2 + i$, at a right angle; it does not run along $ab$.`,
+          t`If $a = b$, every $z$ is equally far from both, so the locus is the whole plane.`,
+        ],
+        figure: {
+          alt: "The points a = 1 and b = 3 + 2i. The point 3 is 2 from each, so it lies on their perpendicular bisector, the line x + y = 3, which crosses the segment ab at its midpoint 2 + i at a right angle.",
+          view: { x: [-1, 5], y: [-1.2, 3.8] },
+          elements: [
+            { kind: "point", at: [1, 0], label: "a = 1", labelAt: "nw", step: 2 },
+            { kind: "point", at: [3, 2], label: "b = 3 + 2i", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [3, 0], to: [1, 0], label: "2", labelAt: "n", tone: "good", step: 3 },
+            { kind: "segment", from: [3, 0], to: [3, 2], label: "2", labelAt: "e", tone: "good", step: 3 },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "line", through: [[0, 3], [3, 0]], step: 4 },
+            { kind: "label", at: [0.6, 2.4], label: "x + y = 3", labelAt: "ne", step: 4 },
+            { kind: "segment", from: [1, 0], to: [3, 2], dashed: true, tone: "muted", step: 5 },
+            { kind: "point", at: [2, 1], label: "2 + i", labelAt: "w", tone: "muted", step: 5 },
+            { kind: "angle", at: [2, 1], from: -45, to: 45, step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Squaring gives a line",
+        points: [
+          t`Put $z = x + iy$ to get the **Cartesian equation**, an equation in $x$ and $y$.`,
+          t`For $|z - 1| = |z - (3 + 2i)|$, square both sides to clear the square roots.`,
+          t`The left side becomes $(x - 1)^2 + y^2$; the right, $(x - 3)^2 + (y - 2)^2$.`,
+          t`Expanded, both sides hold $x^2 + y^2$, so those squares **always cancel**.`,
+          t`What is left is $-2x + 1 = -6x - 4y + 13$, that is, $x + y = 3$.`,
+          t`No squares are left, so the locus is a line, not a circle, despite the two moduli.`,
+        ],
+        figure: {
+          alt: "A point z = x + iy on the line x + y = 3, joined to the points 1 and 3 + 2i. Squaring its two distances and cancelling x² and y² leaves the straight line x + y = 3.",
+          view: { x: [-1.5, 4.5], y: [-1.2, 4.5] },
+          elements: [
+            { kind: "point", at: [1, 0], label: "1", labelAt: "nw", step: 2 },
+            { kind: "point", at: [3, 2], label: "3 + 2i", labelAt: "e", step: 2 },
+            { kind: "segment", from: [-0.5, 3.5], to: [1, 0], label: "|z − 1|", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "segment", from: [-0.5, 3.5], to: [3, 2], label: "|z − 3 − 2i|", labelAt: "ne", tone: "muted", step: 3 },
+            { kind: "point", at: [-0.5, 3.5], label: "z = x + iy", labelAt: "ne", step: 3 },
+            { kind: "line", through: [[0, 3], [3, 0]], tone: "good", step: 5 },
+            { kind: "label", at: [2.2, 0.8], label: "x + y = 3", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Read each point's sign",
+        points: [
+          t`Recall: $|z - p|$ is the distance from $z$ to the point $p$.`,
+          t`So first write each modulus in the form $|z - \text{point}|$.`,
+          t`$|z + 2| = |z - (-2)|$, so it is the distance from $-2$, **not** from $2$.`,
+          t`$|z - 3i|$ is already in that form: the distance from $3i$, **not** from $-3i$.`,
+          t`So $|z + 2| = |z - 3i|$ is the perpendicular bisector of $-2$ and $3i$.`,
+        ],
+        figure: {
+          alt: "|z + 2| is the distance from −2, not from 2, and |z − 3i| is the distance from 3i, not from −3i. The locus |z + 2| = |z − 3i| is the perpendicular bisector of the segment from −2 to 3i.",
+          view: { x: [-3.5, 3.5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [-2, 0], label: "−2", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "point", at: [2, 0], label: "not 2", labelAt: "n", tone: "bad", step: 3 },
+            { kind: "point", at: [0, 3], label: "3i", labelAt: "e", tone: "good", step: 4 },
+            { kind: "point", at: [0, -3], label: "not −3i", labelAt: "e", tone: "bad", step: 4 },
+            { kind: "segment", from: [-2, 0], to: [0, 3], dashed: true, tone: "muted", step: 5 },
+            { kind: "line", through: [[-1, 1.5], [2, -0.5]], step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The ratio form",
+        points: [
+          t`Recall: the modulus of a quotient is the quotient of the moduli, $\left|\dfrac{p}{q}\right| = \dfrac{|p|}{|q|}$.`,
+          t`So $\left|\dfrac{z - 2}{z + 2}\right| = 1$ means $|z - 2| = |z + 2|$.`,
+          t`That is the bisector of $2$ and $-2$: the imaginary axis, $x = 0$.`,
+          t`In general, $\left|\dfrac{z - a}{z - b}\right| = 1$ is the same locus as $|z - a| = |z - b|$.`,
+          t`This is the **ratio form**: one distance divided by the other equals $1$.`,
+          t`With a ratio other than $1$, such as $\dfrac13$, the locus is a circle instead; that comes later.`,
+        ],
+        figure: {
+          alt: "The points 2 and −2. The locus |(z − 2)/(z + 2)| = 1 is their perpendicular bisector, the imaginary axis x = 0. With the ratio 1/3 instead, the locus is a circle around 2.5 of radius 1.5.",
+          view: { x: [-3, 4.5], y: [-2.5, 2.5] },
+          elements: [
+            { kind: "point", at: [2, 0], label: "2", labelAt: "nw", step: 2 },
+            { kind: "point", at: [-2, 0], label: "−2", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [0, -2.5], to: [0, 2.5], tone: "good", step: 3 },
+            { kind: "label", at: [0, 1.8], label: "x = 0", labelAt: "e", tone: "good", step: 3 },
+            { kind: "circle", centre: [2.5, 0], r: 1.5, dashed: true, tone: "muted", step: 6 },
+            { kind: "label", at: [2.5, 1.5], label: "ratio ⅓", labelAt: "n", tone: "muted", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the locus of $|z - 2| = |z + 2i|$.`,
       steps: [
@@ -40,17 +138,19 @@ Same locus, different form: $\left|\dfrac{z - a}{z - b}\right| = 1$. (With a rat
       },
     },
     figure: {
-      alt: "Points a = −2 + i and b = 2 − i. Every point equally far from both lies on the perpendicular bisector of ab, the line y = 2x through the midpoint 0. For example z = 1 + 2i is √10 from each.",
-      view: { x: [-3.5, 3.5], y: [-3, 3.2] },
+      alt: "Points a = −2 + i and b = 2 − i. The point z = 1 + 2i is √10 from each. Every point equally far from both lies on the perpendicular bisector of ab, the line y = 2x, which cuts ab in half at its midpoint 0, at a right angle.",
+      view: { x: [-4, 4], y: [-3, 3.2] },
       elements: [
-        { kind: "point", at: [-2, 1], label: "a", labelAt: "w", step: 1 },
-        { kind: "point", at: [2, -1], label: "b", labelAt: "e", step: 1 },
-        { kind: "segment", from: [-2, 1], to: [2, -1], dashed: true, tone: "muted", step: 2 },
-        { kind: "line", through: [[0, 0], [1, 2]], step: 3 },
-        { kind: "label", at: [-1.2, -2.4], label: "|z − a| = |z − b|", labelAt: "w", step: 3 },
-        { kind: "segment", from: [1, 2], to: [-2, 1], label: "√10", labelAt: "n", tone: "good", step: 4 },
-        { kind: "segment", from: [1, 2], to: [2, -1], label: "√10", labelAt: "e", tone: "good", step: 4 },
-        { kind: "point", at: [1, 2], label: "z", labelAt: "e", tone: "good", step: 4 },
+        { kind: "point", at: [-2, 1], label: "a = −2 + i", labelAt: "w", step: 1 },
+        { kind: "point", at: [2, -1], label: "b = 2 − i", labelAt: "e", step: 1 },
+        { kind: "segment", from: [1, 2], to: [-2, 1], label: "√10", labelAt: "nw", tone: "good", step: 2 },
+        { kind: "point", at: [1, 2], label: "z = 1 + 2i", labelAt: "e", tone: "good", step: 2 },
+        { kind: "segment", from: [1, 2], to: [2, -1], label: "√10", labelAt: "e", tone: "good", step: 3 },
+        { kind: "segment", from: [-2, 1], to: [2, -1], dashed: true, tone: "muted", step: 4 },
+        { kind: "point", at: [0, 0], tone: "muted", step: 4 },
+        { kind: "line", through: [[0, 0], [1, 2]], step: 5 },
+        { kind: "label", at: [-1.2, -2.4], label: "|z − a| = |z − b|", labelAt: "w", step: 5 },
+        { kind: "angle", at: [0, 0], from: -26.57, to: 63.43, step: 6 },
       ],
     },
     visualSpec: t`Two fixed points $a$ and $b$ on the Argand plane, and a draggable point $z$ with segments drawn to each. The two lengths are shown live. When they're equal, $z$ leaves a trace. After a few drags the trace shows itself as a straight line through the midpoint, at right angles to $ab$.`,

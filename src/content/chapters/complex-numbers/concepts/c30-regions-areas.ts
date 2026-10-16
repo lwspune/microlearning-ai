@@ -1,6 +1,18 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The initial arm along the positive real axis, `len` long, labelled above the axis at `labelX`. */
+const initialArm = (len: number, labelX: number): FigureElement[] => [
+  { kind: "segment", from: [0, 0], to: [len, 0], tone: "good" },
+  { kind: "label", at: [labelX, 0], label: "initial arm", labelAt: "n", tone: "good" },
+];
+
+/** The point r from 0 at `deg` degrees. */
+const tip = (r: number, deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(r * Math.cos(a)).toFixed(3), +(r * Math.sin(a)).toFixed(3)];
+};
 
 export const c30: Concept = {
   id: "C30",
@@ -10,19 +22,137 @@ export const c30: Concept = {
     reveal: t`Everything to the right of the imaginary axis: the bisector of $1$ and $-1$ splits the plane in two, and you keep $1$'s side.`,
   },
   explanation: {
-    intuition: t`An inequality describes a region, not a curve. Draw the boundary first (a circle, line or ray), then decide which side belongs by testing one point. With several conditions, keep only the overlap.`,
-    formal: t`- $|z - a| < r$: inside the circle; $|z - a| > r$: outside it
-- $|z - a| < |z - b|$: the half-plane on $a$'s side of the perpendicular bisector
-- $\operatorname{Re} z > c$ or $\operatorname{Im} z < c$: half-planes
-- $\alpha < \arg z < \beta$: a sector
-
-**Areas:** a disc of radius $r$ has area $\pi r^2$; a sector of angle $\phi$ has area $\dfrac{\phi}{2\pi}\cdot\pi r^2$. With several conditions, find the area of the overlap only.`,
+    intuition: [
+      t`An equation such as $|z - 1 - i| = 2$ gives a curve: the circle with centre $1 + i$, radius $2$.`,
+      t`An inequality such as $|z - 1 - i| \le 2$ gives a **region**, a whole patch of the plane.`,
+      t`The curve is the region's **boundary**, its edge; a boundary can be a circle, a line or a ray.`,
+      t`To find which side belongs, test one point: the centre $1 + i$ is $0 \le 2$ away, so the inside belongs.`,
+      t`A second condition, $\operatorname{Re} z \ge 1$, keeps the points on or right of the line $\operatorname{Re} z = 1$.`,
+      t`With several conditions, keep only their **overlap**, where all of them hold: here the right half of the inside.`,
+    ],
+    formal: [
+      {
+        title: "Inside or outside a circle",
+        points: [
+          t`Recall: $|z - a| = r$ is the circle with centre $a$ and radius $r$.`,
+          t`$|z - a| < r$ keeps the points less than $r$ from $a$: the inside of the circle.`,
+          t`This inside is a **disc**; $|z - a| \le r$ is the disc with its circle included.`,
+          t`$|z - a| > r$ keeps the points more than $r$ from $a$: the outside of the circle.`,
+        ],
+        figure: {
+          alt: "The circle with centre a and radius r. The inside, |z − a| < r, is shaded: the disc. Then the outside, |z − a| > r, is shaded in a fainter colour.",
+          view: { x: [-1.5, 5.5], y: [-1.6, 4] },
+          elements: [
+            { kind: "circle", centre: [2, 1], r: 2, step: 1 },
+            { kind: "point", at: [2, 1], label: "a", labelAt: "sw", step: 1 },
+            { kind: "segment", from: [2, 1], to: [4, 1], label: "r", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "region", within: [{ kind: "disc", centre: [2, 1], r: 2 }], step: 2 },
+            { kind: "label", at: [2, 2.1], label: "|z − a| < r", labelAt: "n", step: 2 },
+            { kind: "label", at: [2, -0.3], label: "disc", labelAt: "s", step: 3 },
+            { kind: "region", within: [{ kind: "outsideDisc", centre: [2, 1], r: 2 }], tone: "muted", step: 4 },
+            { kind: "label", at: [-1.3, 3.6], label: "|z − a| > r", labelAt: "e", tone: "muted", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Nearer one point than another",
+        points: [
+          t`Recall: $|z - a| = |z - b|$ is the perpendicular bisector: the points equally far from $a$ and $b$.`,
+          t`$|z - a| < |z - b|$ keeps the points $z$ closer to $a$ than to $b$.`,
+          t`They fill a **half-plane**, all of the plane on one side of a line: here $a$'s side.`,
+          t`To check the side, test $a$ itself: it is $0$ from $a$, so it is always in.`,
+        ],
+        figure: {
+          alt: "The points a and b and the dashed perpendicular bisector between them. A point z is joined to both: it is nearer a. The half-plane on a's side of the bisector is shaded.",
+          view: { x: [-3, 3.5], y: [-2.5, 3] },
+          elements: [
+            { kind: "point", at: [-1, -1], label: "a", labelAt: "sw", step: 1 },
+            { kind: "point", at: [2, 1], label: "b", labelAt: "se", step: 1 },
+            { kind: "line", through: [[0.5, 0], [-1.5, 3]], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [-1.5, 1.5], to: [-1, -1], tone: "good", step: 2 },
+            { kind: "segment", from: [-1.5, 1.5], to: [2, 1], tone: "muted", step: 2 },
+            { kind: "point", at: [-1.5, 1.5], label: "z", labelAt: "nw", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0.5, 0], [-1.5, 3]] }], step: 3 },
+            { kind: "label", at: [-2.9, -2.2], label: "nearer a", labelAt: "e", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Half-planes from Re and Im",
+        points: [
+          t`Recall: $\operatorname{Re} z$ is the real part of $z$, and $\operatorname{Im} z$ its imaginary part.`,
+          t`$\operatorname{Re} z > c$ is the half-plane right of the vertical line $\operatorname{Re} z = c$; here $c = 1$.`,
+          t`$\operatorname{Im} z < c$ is the half-plane below the horizontal line $\operatorname{Im} z = c$; here $c = 2$.`,
+          t`In the same way, $\operatorname{Re} z < c$ is left of its line, and $\operatorname{Im} z > c$ above it.`,
+          t`With $\ge$ or $\le$, the line belongs too: $\operatorname{Im} z \ge 0$ is on or above the real axis.`,
+        ],
+        figure: {
+          alt: "The dashed vertical line Re z = 1 with the half-plane to its right shaded, then the dashed horizontal line Im z = 2 with the half-plane below it shaded in a fainter colour.",
+          view: { x: [-2, 4], y: [-1.5, 3.5] },
+          elements: [
+            { kind: "line", through: [[1, 3], [1, -1]], dashed: true, tone: "muted", label: "Re z = 1", labelAt: "e", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[1, 0], [1, -1]] }], step: 2 },
+            { kind: "line", through: [[-1, 2], [3, 2]], dashed: true, tone: "muted", label: "Im z = 2", labelAt: "n", step: 3 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[1, 2], [0, 2]] }], tone: "muted", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Between two arguments: a sector",
+        points: [
+          t`Recall: $\arg z$ is the angle an arm turns, from the positive real axis to the arrow to $z$.`,
+          t`$\arg z = \alpha$ is a **ray**: a half-line starting at $0$, at angle $\alpha$.`,
+          t`$\alpha < \arg z < \beta$ keeps the points whose arrows lie between the rays at $\alpha$ and $\beta$.`,
+          t`This wedge is a **sector**: the slice of the plane between two rays from one point.`,
+        ],
+        figure: {
+          alt: "An arm turns from the initial arm on the positive real axis to the arrow to z, tracing arg z. Then the ray arg z = α, and an arm turns on from it to the ray arg z = β. The wedge between the two rays, a sector, is shaded; z lies inside it.",
+          view: { x: [-1.5, 3.5], y: [-1, 3.4] },
+          elements: [
+            ...initialArm(2.8, 2.45),
+            { kind: "vector", to: tip(1.8, 50), tone: "muted", step: 1 },
+            { kind: "turn", r: 1.8, to: 50, step: 1 },
+            { kind: "point", at: tip(1.8, 50), label: "z", labelAt: "e", step: 1 },
+            { kind: "label", at: tip(0.8, 22), label: "arg z", labelAt: "e", step: 1 },
+            { kind: "ray", from: [0, 0], angle: 30, label: "arg z = α", labelAt: "se", step: 2 },
+            { kind: "turn", r: 2.6, from: 30, to: 75, tone: "muted", step: 3 },
+            { kind: "ray", from: [0, 0], angle: 75, label: "arg z = β", labelAt: "w", step: 3 },
+            { kind: "region", within: [{ kind: "sector", centre: [0, 0], from: 30, to: 75 }], step: 4 },
+            { kind: "label", at: tip(2.6, 56), label: "sector", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Areas of discs and sectors",
+        points: [
+          t`A disc of radius $r$ has area $\pi r^2$.`,
+          t`That is not $2\pi r$: $2\pi r$ is the **circumference**, the length round the edge.`,
+          t`A sector of the disc, between two radii $\phi$ radians apart, is $\dfrac{\phi}{2\pi}$ of a whole turn.`,
+          t`So its area is $\dfrac{\phi}{2\pi}\cdot\pi r^2$.`,
+          t`With several conditions, such as $|z| \le r$ and $0 \le \arg z \le \phi$, find the area of the overlap only.`,
+        ],
+        figure: {
+          alt: "A disc of radius r centred at 0, area πr², with its edge, the circumference 2πr. An arm turns from the radius on the positive real axis through the angle φ, and the sector between the two radii is shaded: its area is φ/2π of πr².",
+          view: { x: [-2.8, 2.8], y: [-3.2, 2.8] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }], tone: "muted", step: 1 },
+            { kind: "circle", centre: [0, 0], r: 2, tone: "muted", step: 1 },
+            { kind: "segment", from: [0, 0], to: [2, 0], label: "r", labelAt: "n", tone: "good", step: 1 },
+            { kind: "label", at: [-0.9, -1], label: "πr²", step: 1 },
+            { kind: "label", at: [0, -2.15], label: "2πr round the edge", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "turn", r: 2, to: 120, label: "φ", labelAt: "nw", step: 3 },
+            { kind: "region", within: [{ kind: "disc", centre: [0, 0], r: 2 }, { kind: "sector", centre: [0, 0], from: 0, to: 120 }], step: 4 },
+            { kind: "label", at: [0.1, 0.9], label: "φ/2π · πr²", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
-      prompt: t`Find the area of the region $|z| \le 3,\ \operatorname{Im} z \ge 0,\ \operatorname{Re} z \ge 0$.`,
+      prompt: t`Find the area of the region $|z| \le 3$, $\operatorname{Im} z \ge 0$, $\operatorname{Re} z \ge 0$.`,
       steps: [
         t`The disc has radius 3.`,
         t`The two half-planes keep a quarter of it.`,
-        t`Area $= \dfrac14\cdot\pi\cdot 3^2 = \dfrac{9\pi}4$.`,
+        t`Area $= \dfrac14\cdot\pi\cdot 3^2$, which is $\dfrac{9\pi}4$.`,
       ],
       answer: t`$\dfrac{9\pi}4$`,
       figure: {
@@ -36,14 +166,18 @@ export const c30: Concept = {
       },
     },
     figure: {
-      alt: "The disc |z − 1 − i| ≤ 2 and the half-plane Re z ≥ 1 overlap in the right half of the disc, shaded.",
+      alt: "The circle |z − 1 − i| = 2, centre 1 + i, is the boundary. Testing the centre shows the inside belongs, so the inside is shaded. The dashed line Re z = 1 is added, and the overlap of the inside with the half-plane Re z ≥ 1, the right half, is shaded more strongly.",
       view: { x: [-1.6, 3.8], y: [-1.6, 3.6] },
       elements: [
-        { kind: "circle", centre: [1, 1], r: 2, tone: "muted", step: 1 },
-        { kind: "line", through: [[1, 0], [1, 1]], dashed: true, tone: "muted", step: 2 },
-        { kind: "label", at: [1, -1.3], label: "Re z = 1", labelAt: "e", tone: "muted", step: 2 },
-        { kind: "region", within: [{ kind: "disc", centre: [1, 1], r: 2 }, { kind: "halfPlane", through: [[1, 1], [1, 0]] }], step: 3 },
-        { kind: "label", at: [2, 1], label: "overlap", step: 3 },
+        { kind: "circle", centre: [1, 1], r: 2, step: 1 },
+        { kind: "point", at: [1, 1], label: "1 + i", labelAt: "w", step: 1 },
+        { kind: "label", at: [-1.5, 3.35], label: "|z − 1 − i| = 2", labelAt: "e", step: 1 },
+        { kind: "label", at: [-0.414, -0.414], label: "boundary", labelAt: "sw", step: 3 },
+        { kind: "region", within: [{ kind: "disc", centre: [1, 1], r: 2 }], tone: "muted", step: 4 },
+        { kind: "line", through: [[1, 0], [1, 1]], dashed: true, tone: "muted", step: 5 },
+        { kind: "label", at: [1, -1.3], label: "Re z = 1", labelAt: "e", tone: "muted", step: 5 },
+        { kind: "region", within: [{ kind: "disc", centre: [1, 1], r: 2 }, { kind: "halfPlane", through: [[1, 1], [1, 0]] }], step: 6 },
+        { kind: "label", at: [2, 0.6], label: "overlap", step: 6 },
       ],
     },
     visualSpec: t`Toggle conditions on and off; each shades its region in its own colour, and the overlap that satisfies all of them is highlighted with its area shown.`,

@@ -10,14 +10,115 @@ export const c29: Concept = {
     reveal: t`$10 - 3 = 7$. The centre is $10$ from the origin, and the nearest point of the circle is $3$ closer, on the line through the origin and the centre.`,
   },
   explanation: {
-    intuition: t`The nearest and farthest points of a circle from a point $c$ lie on the line through $c$ and the centre. So add or subtract the radius from the distance to the centre. If $c$ is inside a disc, the least distance is $0$.`,
-    formal: t`For $z$ on the circle $|z - a| = r$, with $d = |a - c|$:
-- greatest $|z - c| = d + r$
-- least $|z - c| = |d - r|$
-
-For the disc $|z - a| \le r$ the greatest value is the same, $d + r$. The least is $0$ if $c$ is inside ($d < r$), and $d - r$ otherwise.
-
-Always check that the extreme point is allowed by the region.`,
+    intuition: [
+      t`Recall: $|z - c|$ is the distance from $z$ to a fixed point $c$; here $c = 0$, so it is $|z|$.`,
+      t`Let $z$ move on a circle of radius $1.5$ whose centre, $4 + 3i$, is $5$ from $c$.`,
+      t`The nearest and farthest points of the circle lie on the line through $c$ and the centre.`,
+      t`The **nearest** point is $1.5$ closer than the centre, so the **least value** of $|z|$, the smallest it gets, is $5 - 1.5 = 3.5$.`,
+      t`The **farthest** point is $1.5$ beyond the centre, so the **greatest value**, the largest it gets, is $5 + 1.5 = 6.5$.`,
+      t`So the greatest and least values are the distance to the centre plus or minus the radius.`,
+    ],
+    formal: [
+      {
+        title: "Greatest and least on a circle",
+        points: [
+          t`Recall: $|z - a| = r$ is the circle with centre $a$ and radius $r$; here $|z - 2 - i| = 3$.`,
+          t`Take a fixed point $c$ outside it; here $c = -1 - 3i$.`,
+          t`Let $d = |a - c|$, the distance from $c$ to the centre; here $d = |3 + 4i| = 5$.`,
+          t`The greatest value of $|z - c|$ is $d + r$, on the far side: here $5 + 3 = 8$.`,
+          t`When $c$ is outside ($d > r$), the least value is $d - r$, on the near side: here $5 - 3 = 2$.`,
+          t`Both of these points lie on the line through $c$ and the centre.`,
+        ],
+        figure: {
+          alt: "The circle |z − 2 − i| = 3 and the point c = −1 − 3i outside it, 5 from the centre 2 + i. Beyond the centre, the farthest point of the circle is 5 + 3 = 8 from c; short of it, the nearest point is 5 − 3 = 2 from c. Both lie on the line through c and the centre.",
+          view: { x: [-2.5, 6.5], y: [-4, 4.8] },
+          elements: [
+            { kind: "line", through: [[-1, -3], [2, 1]], dashed: true, tone: "muted", step: 6 },
+            { kind: "circle", centre: [2, 1], r: 3, tone: "muted", step: 1 },
+            { kind: "point", at: [2, 1], label: "2 + i", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "point", at: [-1, -3], label: "−1 − 3i", labelAt: "e", step: 2 },
+            { kind: "segment", from: [-1, -3], to: [2, 1], tone: "muted", step: 3 },
+            { kind: "label", at: [-0.4, -2.2], label: "d = 5", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "segment", from: [2, 1], to: [3.8, 3.4], step: 4 },
+            { kind: "point", at: [3.8, 3.4], label: "farthest: 8", labelAt: "e", step: 4 },
+            { kind: "segment", from: [-1, -3], to: [0.2, -1.4], tone: "good", step: 5 },
+            { kind: "point", at: [0.2, -1.4], label: "nearest: 2", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "A point inside the circle",
+        points: [
+          t`Now take $c$ inside the circle, so $d < r$: here $c = 1 + i$ inside $|z - 1 - 2i| = 3$.`,
+          t`The nearest point is straight out past $c$, away from the centre: here $1 - i$.`,
+          t`So the least value is $r - d$: here $3 - 1 = 2$.`,
+          t`The other order, $d - r = -2$, is negative, and a distance never is.`,
+          t`So on a circle the least value is $|d - r|$, whichever of $d$ and $r$ is larger.`,
+          t`The greatest value is still $d + r$: here $1 + 3 = 4$, at $1 + 5i$.`,
+        ],
+        figure: {
+          alt: "The circle |z − 1 − 2i| = 3 and the point c = 1 + i inside it, 1 below the centre. The nearest point of the circle is 1 − i, straight out past c, 3 − 1 = 2 away. The farthest is 1 + 5i, on the other side, 1 + 3 = 4 away.",
+          view: { x: [-3, 5.5], y: [-1.8, 5.8] },
+          elements: [
+            { kind: "circle", centre: [1, 2], r: 3, tone: "muted" },
+            { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [1, 1], label: "1 + i", labelAt: "e", step: 1 },
+            { kind: "segment", from: [1, 1], to: [1, -1], tone: "good", step: 2 },
+            { kind: "point", at: [1, -1], label: "nearest: 1 − i", labelAt: "e", tone: "good", step: 2 },
+            { kind: "segment", from: [1, 1], to: [1, 5], step: 6 },
+            { kind: "point", at: [1, 5], label: "farthest: 1 + 5i", labelAt: "e", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Greatest and least on a disc",
+        points: [
+          t`A **disc**, $|z - a| \le r$, is the circle together with every point inside it.`,
+          t`Here the disc is $|z - 1 - 2i| \le 3$, and $c = 1 + i$ lies inside it.`,
+          t`Now $z$ can sit right on $c$, so the least value of $|z - c|$ is $0$.`,
+          t`The farthest point is still on the edge, so the greatest value is still $d + r = 1 + 3 = 4$.`,
+        ],
+        figure: {
+          alt: "The disc |z − 1 − 2i| ≤ 3, shaded, and the point c = 1 + i inside it. z can be c itself, so the least value of |z − c| is 0. The farthest point of the disc is 1 + 5i on its edge, 4 away.",
+          view: { x: [-3, 5.5], y: [-1.8, 5.8] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [1, 2], r: 3 }], tone: "muted", step: 1 },
+            { kind: "circle", centre: [1, 2], r: 3, tone: "muted" },
+            { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [1, 1], label: "1 + i", labelAt: "w", step: 2 },
+            { kind: "label", at: [1, 1], label: "z = c: least 0", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [1, 1], to: [1, 5], step: 4 },
+            { kind: "point", at: [1, 5], label: "farthest: 1 + 5i", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "A point outside the disc",
+        points: [
+          t`Here the disc is $|z + 3 - 4i| \le 1$, with centre $-3 + 4i$ and radius $1$.`,
+          t`Take $c = 0$, so $|z - c| = |z|$; the centre is $d = |-3 + 4i| = 5$ from it.`,
+          t`As $d > r$, $c$ is outside, and the nearest point is on the near edge: the least $|z|$ is $5 - 1 = 4$.`,
+          t`The greatest value is $5 + 1 = 6$, on the far edge.`,
+          t`So, for $d \ge r$, the least value is $d - r$; it is $0$ only when $c$ is inside the disc.`,
+          t`Always check that the nearest or farthest point belongs to the circle or disc you were given.`,
+        ],
+        figure: {
+          alt: "The disc |z + 3 − 4i| ≤ 1, centre −3 + 4i, radius 1, and the origin outside it, 5 from the centre. The nearest point of the disc is on its near edge, 5 − 1 = 4 from 0; the farthest is on its far edge, 5 + 1 = 6 from 0.",
+          view: { x: [-6.5, 2.5], y: [-1, 6] },
+          elements: [
+            { kind: "region", within: [{ kind: "disc", centre: [-3, 4], r: 1 }], tone: "muted", step: 1 },
+            { kind: "circle", centre: [-3, 4], r: 1, tone: "muted", step: 1 },
+            { kind: "point", at: [-3, 4], label: "−3 + 4i", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 0], label: "c = 0", labelAt: "ne", step: 2 },
+            { kind: "vector", to: [-3, 4], tone: "muted", step: 2 },
+            { kind: "segment", from: [0, 0], to: [-2.4, 3.2], tone: "good", step: 3 },
+            { kind: "point", at: [-2.4, 3.2], label: "nearest: 4", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [-3, 4], to: [-3.6, 4.8], step: 4 },
+            { kind: "point", at: [-3.6, 4.8], label: "farthest: 6", labelAt: "w", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`For $|z - 2i| \le 1$, find the greatest and least values of $|z|$.`,
       steps: [
@@ -39,17 +140,18 @@ Always check that the extreme point is allowed by the region.`,
       },
     },
     figure: {
-      alt: "A circle with centre a and radius 1.5, and a point c at distance 5 from the centre. Along the line through c and a, the nearest point of the circle is 5 − 1.5 = 3.5 from c and the farthest is 5 + 1.5 = 6.5.",
-      view: { x: [-1, 7.5], y: [-1, 5.5] },
+      alt: "The point c = 0 and a circle with centre 4 + 3i and radius 1.5, whose centre is 5 from c. Along the line through c and the centre, the nearest point of the circle is 5 − 1.5 = 3.5 from c and the farthest is 5 + 1.5 = 6.5.",
+      view: { x: [-1, 8.5], y: [-1, 5.5] },
       elements: [
-        { kind: "point", at: [0, 0], label: "c", labelAt: "sw" },
-        { kind: "circle", centre: [4, 3], r: 1.5, tone: "muted", step: 1 },
-        { kind: "point", at: [4, 3], label: "a", labelAt: "se", tone: "muted", step: 1 },
-        { kind: "line", through: [[0, 0], [4, 3]], dashed: true, tone: "muted", step: 2 },
-        { kind: "segment", from: [0, 0], to: [2.8, 2.1], tone: "good", step: 3 },
-        { kind: "point", at: [2.8, 2.1], label: "nearest", labelAt: "nw", tone: "good", step: 3 },
-        { kind: "segment", from: [2.8, 2.1], to: [5.2, 3.9], step: 4 },
-        { kind: "point", at: [5.2, 3.9], label: "farthest", labelAt: "e", step: 4 },
+        { kind: "line", through: [[0, 0], [4, 3]], dashed: true, tone: "muted", step: 3 },
+        { kind: "point", at: [0, 0], label: "c = 0", labelAt: "sw", step: 1 },
+        { kind: "circle", centre: [4, 3], r: 1.5, tone: "muted", step: 2 },
+        { kind: "point", at: [4, 3], label: "4 + 3i", labelAt: "se", tone: "muted", step: 2 },
+        { kind: "vector", to: [4, 3], tone: "muted", step: 2 },
+        { kind: "segment", from: [0, 0], to: [2.8, 2.1], tone: "good", step: 4 },
+        { kind: "point", at: [2.8, 2.1], label: "nearest: 3.5", labelAt: "nw", tone: "good", step: 4 },
+        { kind: "segment", from: [4, 3], to: [5.2, 3.9], step: 5 },
+        { kind: "point", at: [5.2, 3.9], label: "farthest: 6.5", labelAt: "e", step: 5 },
       ],
     },
     visualSpec: t`A circle or disc and a point $c$. The line through $c$ and the centre marks the nearest and farthest points; dragging $c$ inside the disc snaps the least distance to 0.`,

@@ -10,16 +10,86 @@ export const c07: Concept = {
     reveal: t`The real part: $k - 2 = 0$, so $k = 2$. Every point on the imaginary axis has real part zero.`,
   },
   explanation: {
-    intuition: t`Purely real means no imaginary part; purely imaginary means no real part. So set the **other** part to zero. If the number is a fraction, rationalise it first: the condition applies to the simplified number, not to its numerator.`,
-    formal: t`$z$ is **purely real** $\iff \operatorname{Im} z = 0 \iff z = \bar z$.
-
-$z$ is **purely imaginary** $\iff \operatorname{Re} z = 0 \iff z = -\bar z$ (usually with $z \ne 0$ as well).
-
-For a quotient $\dfrac pq$, rationalise to the form $x + iy$ first, then apply the condition. Whether the numerator alone is real or imaginary is **not** the test.`,
+    intuition: [
+      t`Recall: $x + iy$ has real part $x$ and imaginary part $y$, and is drawn as the point $(x, y)$.`,
+      t`A number is **purely real**, only real, when its imaginary part is $0$, like $2$: it lies on the real axis.`,
+      t`It is **purely imaginary** when its real part is $0$, like $3i$: it lies on the **imaginary axis**, the vertical one.`,
+      t`So to make a number purely real or purely imaginary, set the **other** part to zero.`,
+      t`If the number is a fraction, first **rationalise** it: make its bottom real, giving the form $x + iy$.`,
+      t`The test applies to that simplified number, not to its top, the **numerator**, alone.`,
+    ],
+    figure: {
+      alt: "The Argand plane with the point 3 + 2i off both axes. The real axis is highlighted, where Im z = 0, with the purely real number 2 on it. The imaginary axis is highlighted, where Re z = 0, with the purely imaginary number 3i on it.",
+      view: { x: [-2.5, 5.5], y: [-1.5, 4.5] },
+      elements: [
+        { kind: "point", at: [3, 2], label: "3 + 2i", labelAt: "ne", step: 1 },
+        { kind: "line", through: [[0, 0], [1, 0]], tone: "good", step: 2 },
+        { kind: "point", at: [2, 0], label: "2", labelAt: "n", tone: "good", step: 2 },
+        { kind: "label", at: [4.4, 0], label: "Im z = 0", labelAt: "n", tone: "good", step: 2 },
+        { kind: "line", through: [[0, 0], [0, 1]], tone: "good", step: 3 },
+        { kind: "point", at: [0, 3], label: "3i", labelAt: "e", tone: "good", step: 3 },
+        { kind: "label", at: [0, 4], label: "Re z = 0", labelAt: "e", tone: "good", step: 3 },
+      ],
+    },
+    formal: [
+      {
+        title: "Purely real numbers",
+        points: [
+          t`Take $z = x + iy$, with $x$ and $y$ real: it is purely real when $\operatorname{Im} z = 0$, that is, $y = 0$.`,
+          t`Recall: the conjugate $\bar z = x - iy$ is the mirror image of $z$ in the real axis.`,
+          t`A number on the real axis is its own mirror image: for $z = 4$, $\bar z = 4$ too.`,
+          t`In symbols, $z = \bar z$ means $x + iy = x - iy$, so $y = -y$, so $y = 0$.`,
+          t`We write $\iff$, read "if and only if", when each statement implies the other.`,
+          t`So $z$ is purely real $\iff \operatorname{Im} z = 0$ $\iff z = \bar z$.`,
+        ],
+        figure: {
+          alt: "2 + 3i and its conjugate 2 − 3i are mirror images in the real axis, joined by a dashed line, so they differ. The purely real number 4 lies on the real axis and is its own mirror image: z = z̄ = 4.",
+          view: { x: [-1.5, 6], y: [-4, 4] },
+          elements: [
+            { kind: "segment", from: [2, 3], to: [2, -3], dashed: true, tone: "muted", step: 2 },
+            { kind: "point", at: [2, 3], label: "z = 2 + 3i", labelAt: "e", step: 2 },
+            { kind: "point", at: [2, -3], label: "z̄ = 2 − 3i", labelAt: "e", step: 2 },
+            { kind: "point", at: [4, 0], label: "z = z̄ = 4", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Purely imaginary numbers",
+        points: [
+          t`$z = x + iy$ is purely imaginary when $\operatorname{Re} z = 0$, that is, $x = 0$, so $z = iy$.`,
+          t`For $z = 3i$, the mirror image in the real axis is $\bar z = -3i$, which is $-z$.`,
+          t`In general, the conjugate of $iy$ is $-iy$: so $\bar z = -z$.`,
+          t`In symbols, $z = -\bar z$ means $x + iy = -x + iy$, so $x = 0$.`,
+          t`So $z$ is purely imaginary $\iff \operatorname{Re} z = 0$ $\iff z = -\bar z$.`,
+          t`Usually $z \ne 0$ is asked as well, since $0$ lies on both axes.`,
+        ],
+        figure: {
+          alt: "The purely imaginary number z = 3i as an arrow up the imaginary axis, and its conjugate, the mirror image −3i, as an arrow down it: z̄ = −3i = −z.",
+          view: { x: [-3, 4], y: [-4, 4] },
+          elements: [
+            { kind: "vector", to: [0, 3], step: 2 },
+            { kind: "point", at: [0, 3], label: "z = 3i", labelAt: "e", step: 2 },
+            { kind: "vector", to: [0, -3], tone: "good", step: 2 },
+            { kind: "point", at: [0, -3], label: "z̄ = −3i = −z", labelAt: "e", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Fractions: rationalise first",
+        points: [
+          t`For a quotient $\dfrac pq$, first write it in the form $x + iy$.`,
+          t`Recall: multiply top and bottom by the conjugate of the bottom, which makes the bottom real.`,
+          t`Then set its real part or its imaginary part to zero.`,
+          t`Whether the top alone is real or imaginary is **not** the test.`,
+          t`For example, the top of $\dfrac{3i}{2 + i}$ is purely imaginary.`,
+          t`But $\dfrac{3i(2 - i)}{5} = \dfrac{3 + 6i}{5}$, which is neither.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`For which real $x$ is $\dfrac{x + 2i}{1 - i}$ purely real?`,
       steps: [
-        t`Rationalise: $\dfrac{(x + 2i)(1 + i)}{2} = \dfrac{(x - 2) + (x + 2)i}{2}$.`,
+        t`Rationalise: $\dfrac{(x + 2i)(1 + i)}{2}$ $= \dfrac{(x - 2) + (x + 2)i}{2}$.`,
         t`Purely real means the imaginary part is zero: $x + 2 = 0$.`,
       ],
       answer: t`$x = -2$`,

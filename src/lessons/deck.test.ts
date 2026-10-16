@@ -80,8 +80,10 @@ describe("buildDeck", () => {
     }
   });
 
-  it("splits C14's formal explanation into its three authored sections", () => {
-    expect(buildDeck(concept("C14")).filter((s) => s.id.startsWith("formal-"))).toHaveLength(3);
+  it("gives each of C14's authored formal sections its own slide", () => {
+    const formal = concept("C14").explanation.formal;
+    expect(Array.isArray(formal)).toBe(true);
+    expect(buildDeck(concept("C14")).filter((s) => s.id.startsWith("formal-"))).toHaveLength(formal.length);
   });
 });
 
