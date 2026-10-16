@@ -1,6 +1,14 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The fixed points A(3, 3) and B(7, 3) of the line and circle slides, joined by a faint segment. */
+const AB: FigureElement[] = [
+  { kind: "segment", from: [3, 3], to: [7, 3], tone: "muted" },
+  { kind: "point", at: [3, 3], label: "A(3, 3)", labelAt: "sw" },
+  { kind: "point", at: [7, 3], label: "B(7, 3)", labelAt: "se" },
+];
+const abView = { x: [-1, 12.5] as [number, number], y: [-1, 7.4] as [number, number] };
 
 export const c01: Concept = {
   id: "C01",
@@ -10,27 +18,148 @@ export const c01: Concept = {
     reveal: t`Yes. For $P(x, y)$, $PA^2 = PB^2$ gives $(x - 3)^2 + (y - 2)^2 = (x - 7)^2 + (y - 4)^2$. The $x^2$ and $y^2$ cancel, leaving $2x + y = 13$. Both points fit: $6 + 7 = 13$ and $12 + 1 = 13$. That equation is the **locus**: here, the perpendicular bisector of $AB$.`,
   },
   explanation: {
-    intuition: t`A locus is the path of a point that moves by a rule, such as "always 4 units from $O$" or "always as far from $A$ as from $B$". To get its equation, call the moving point $P(x, y)$ and write the rule in $x$ and $y$, usually with the distance formula. Every point on the path satisfies that equation, and no other point does. So the equation **is** the locus.`,
-    formal: t`**Locus.** The set of all points that satisfy a condition, and no others. Its **equation** is satisfied by the coordinates of every point on the locus and by no other point. The $X$-axis is $y = 0$; $\{P \mid OP = 4\}$ is $x^2 + y^2 = 16$, a circle.
-
-**Finding the equation**
-
-- **1.** Take any point $P(x, y)$ on the locus.
-- **2.** Write the condition with the distance formula, $PA^2 = (x - x_1)^2 + (y - y_1)^2$ for $A(x_1, y_1)$. Square to clear the roots, numbers included: $AP = 3BP$ gives $AP^2 = 9BP^2$.
-- **3.** Expand, and collect everything on one side.
-
-**What shape you get**
-
-- $PA = PB$: $x^2$ and $y^2$ cancel. A line, the perpendicular bisector of $AB$.
-- $PA^2 - PB^2 = c$: they cancel again. A line at right angles to $AB$.
-- $PA = k\,PB$ with $k \ne 1$, $PA = r$, or $\angle APB = 90^\circ$ (use $PA^2 + PB^2 = AB^2$): $x^2$ and $y^2$ stay, with equal coefficients. A circle.`,
+    intuition: [
+      t`A **locus** is the path a point traces as it moves by a rule.`,
+      t`Take the rule: stay as far from $A(3, 2)$ as from $B(7, 4)$.`,
+      t`$P(3, 7)$ follows the rule: it is $5$ units from each.`,
+      t`So does $Q(6, 1)$: it is $\sqrt{10}$ units from each.`,
+      t`Every point that follows the rule lies on one line, $2x + y = 13$.`,
+      t`The equation fits the points on the path and no others, so the equation **is** the locus.`,
+    ],
+    formal: [
+      {
+        title: "Locus and its equation",
+        points: [
+          t`A **locus** is the set of all points that satisfy a condition, and no others.`,
+          t`The points $P$ with $OP = 4$, written $\{P \mid OP = 4\}$, form a circle about $O$.`,
+          t`Its **equation**, $x^2 + y^2 = 16$, is true for the coordinates of every point on it.`,
+          t`It is true for no other point: $(1, 1)$ gives $1 + 1 = 2$, not $16$.`,
+          t`The $x$-axis is a locus too: its equation is $y = 0$.`,
+        ],
+        figure: {
+          alt: "The circle of points 4 units from the origin O, with a dashed radius marked 4. Its equation x² + y² = 16 holds at the point (2.4, 3.2) on it, but not at the point (1, 1) inside it. The x-axis is drawn as the locus y = 0.",
+          axes: "xy",
+          view: { x: [-5.5, 5.5], y: [-5.5, 5.5] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 4, tone: "good", step: 2 },
+            { kind: "segment", from: [0, 0], to: [-3.2, -2.4], dashed: true, label: "4", labelAt: "nw", step: 2 },
+            { kind: "label", at: [1.2, 4.9], label: "x² + y² = 16", labelAt: "e", tone: "good", step: 3 },
+            { kind: "point", at: [2.4, 3.2], label: "(2.4, 3.2)", labelAt: "e", tone: "good", step: 3 },
+            { kind: "point", at: [1, 1], label: "(1, 1)", labelAt: "e", tone: "bad", step: 4 },
+            { kind: "segment", from: [-5.5, 0], to: [5.5, 0], step: 5 },
+            { kind: "label", at: [-3.7, 0.1], label: "y = 0", labelAt: "ne", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Finding the equation",
+        points: [
+          t`Step 1: take any point $P(x, y)$ on the locus.`,
+          t`Step 2: write the condition using distances from fixed points such as $A(x_1, y_1)$.`,
+          t`By Pythagoras, $PA^2$ equals $(x - x_1)^2 + (y - y_1)^2$.`,
+          t`Work with $PA^2$, not $PA$: squaring clears the square root.`,
+          t`Square the numbers too: $AP = 3BP$ gives $AP^2 = 9BP^2$.`,
+          t`Step 3: expand, and collect everything on one side.`,
+        ],
+        figure: {
+          alt: "A point P(x, y) and a fixed point A(x₁, y₁), joined by a dashed segment PA. A right triangle under it has a horizontal side x − x₁ and an upright side y − y₁, so PA² = (x − x₁)² + (y − y₁)².",
+          axes: "xy",
+          view: { x: [-1, 8.5], y: [-0.8, 5.6] },
+          elements: [
+            { kind: "point", at: [6, 4.5], label: "P(x, y)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [2, 1.5], label: "A(x₁, y₁)", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [2, 1.5], to: [6, 4.5], dashed: true, label: "PA", labelAt: "nw", step: 3 },
+            { kind: "segment", from: [2, 1.5], to: [6, 1.5], tone: "good", label: "x − x₁", labelAt: "s", step: 3 },
+            { kind: "segment", from: [6, 1.5], to: [6, 4.5], tone: "good", label: "y − y₁", labelAt: "e", step: 3 },
+            { kind: "angle", at: [6, 1.5], from: 90, to: 180, step: 3 },
+          ],
+        },
+      },
+      {
+        title: "When the locus is a line",
+        points: [
+          t`Points **equidistant** from $A$ and $B$, at equal distances from both, obey $PA = PB$.`,
+          t`Squared out, the $x^2$ and $y^2$ cancel, leaving the equation of a line.`,
+          t`It is the **perpendicular bisector** of $AB$: through its midpoint, at right angles to $AB$.`,
+          t`For $PA^2 - PB^2 = c$, with $c$ a fixed number, they cancel again.`,
+          t`So that locus is also a line at right angles to $AB$.`,
+        ],
+        figure: {
+          alt: "Points A(3, 3) and B(7, 3). A point P is as far from A as from B; every such point lies on the vertical line x = 5, the perpendicular bisector of AB, which crosses AB at its midpoint at right angles. The locus PA² − PB² = 8 is the vertical line x = 6, also at right angles to AB.",
+          axes: "xy",
+          view: abView,
+          elements: [
+            ...AB,
+            { kind: "segment", from: [5, 5.5], to: [3, 3], dashed: true, step: 1 },
+            { kind: "segment", from: [5, 5.5], to: [7, 3], dashed: true, step: 1 },
+            { kind: "point", at: [5, 5.5], label: "P", labelAt: "w", step: 1 },
+            { kind: "line", through: [[5, 0], [5, 6]], tone: "good", step: 2 },
+            { kind: "label", at: [5, 6.9], label: "PA = PB", labelAt: "w", tone: "good", step: 2 },
+            { kind: "point", at: [5, 3], label: "midpoint", labelAt: "s", tone: "good", step: 3 },
+            { kind: "angle", at: [5, 3], from: 0, to: 90, step: 3 },
+            { kind: "line", through: [[6, 0], [6, 6]], step: 5 },
+            { kind: "angle", at: [6, 3], from: 0, to: 90, step: 5 },
+            { kind: "label", at: [6, 6.9], label: "PA² − PB² = 8", labelAt: "e", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "When the locus is a circle",
+        points: [
+          t`Take $PA = k\,PB$, with $k$ a fixed number other than $1$, such as $PA = 2PB$.`,
+          t`Squared out, $x^2$ and $y^2$ stay, with equal **coefficients**: the numbers multiplying them.`,
+          t`An equation like that is a circle.`,
+          t`$PA = r$, a fixed distance $r$ from $A$, gives a circle too.`,
+        ],
+        figure: {
+          alt: "Points A(3, 3) and B(7, 3). A point P is twice as far from A as from B; every such point lies on a circle around B, the locus PA = 2PB. The points a fixed distance r from A form a smaller circle centred at A, the locus PA = r.",
+          axes: "xy",
+          view: abView,
+          elements: [
+            ...AB,
+            { kind: "segment", from: [8.333, 5.667], to: [3, 3], dashed: true, step: 1 },
+            { kind: "segment", from: [8.333, 5.667], to: [7, 3], dashed: true, step: 1 },
+            { kind: "point", at: [8.333, 5.667], label: "P", labelAt: "n", step: 1 },
+            { kind: "circle", centre: [8.333, 3], r: 2.667, tone: "good", step: 3 },
+            { kind: "label", at: [10.3, 5.3], label: "PA = 2PB", labelAt: "e", tone: "good", step: 3 },
+            { kind: "circle", centre: [3, 3], r: 2.2, step: 4 },
+            { kind: "segment", from: [3, 3], to: [3, 0.8], dashed: true, label: "r", labelAt: "e", step: 4 },
+            { kind: "label", at: [3, 5.2], label: "PA = r", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "A right angle at P",
+        points: [
+          t`$\angle APB = 90^\circ$ means $PA$ and $PB$ meet at a right angle at $P$.`,
+          t`Then Pythagoras gives $PA^2 + PB^2 = AB^2$: write that in $x$ and $y$.`,
+          t`Again $x^2$ and $y^2$ stay with equal coefficients, so the locus is a circle.`,
+          t`It is the circle with $AB$ as a diameter.`,
+        ],
+        figure: {
+          alt: "Points A(3, 3) and B(7, 3). A point P sees AB at a right angle: PA and PB meet at 90° at P. By Pythagoras PA² + PB² = AB². Every such point lies on the circle with AB as a diameter, centred at the midpoint of AB.",
+          axes: "xy",
+          view: abView,
+          elements: [
+            ...AB,
+            { kind: "segment", from: [5, 5], to: [3, 3], dashed: true, label: "PA", labelAt: "se", step: 1 },
+            { kind: "segment", from: [5, 5], to: [7, 3], dashed: true, label: "PB", labelAt: "sw", step: 1 },
+            { kind: "angle", at: [5, 5], from: 225, to: 315, step: 1 },
+            { kind: "point", at: [5, 5], label: "P", labelAt: "n", step: 1 },
+            { kind: "segment", from: [3, 3], to: [7, 3], tone: "good", label: "AB", labelAt: "s", step: 2 },
+            { kind: "circle", centre: [5, 3], r: 2, tone: "good", step: 3 },
+            { kind: "point", at: [5, 3], tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`$A(-5, 2)$ and $B(4, 1)$ are two points. Find the equation of the locus of a point $P$ that is equidistant from $A$ and $B$, and identify the locus.`,
       steps: [
         t`Let $P(x, y)$ be any point on the locus. $PA = PB$, so $PA^2 = PB^2$.`,
-        t`By the distance formula: $(x + 5)^2 + (y - 2)^2 = (x - 4)^2 + (y - 1)^2$.`,
-        t`Expand: $x^2 + 10x + 25 + y^2 - 4y + 4 = x^2 - 8x + 16 + y^2 - 2y + 1$. The $x^2$ and $y^2$ cancel: $18x - 2y + 12 = 0$, so $9x - y + 6 = 0$.`,
-        t`Check: the midpoint of $AB$ is $\left(-\frac{1}{2}, \frac{3}{2}\right)$, and $9\left(-\frac{1}{2}\right) - \frac{3}{2} + 6 = 0$. The locus is the perpendicular bisector of $AB$.`,
+        t`By the distance formula, $(x + 5)^2 + (y - 2)^2$ equals $(x - 4)^2 + (y - 1)^2$.`,
+        t`Expand: $x^2 + 10x + 25 + y^2 - 4y + 4$ equals $x^2 - 8x + 16 + y^2 - 2y + 1$. The $x^2$ and $y^2$ cancel: $18x - 2y + 12 = 0$, so $9x - y + 6 = 0$.`,
+        t`Check: the midpoint of $AB$ is $\left(-\frac{1}{2}, \frac{3}{2}\right)$, and $9\left(-\frac{1}{2}\right) - \frac{3}{2} + 6$ is $0$. The locus is the perpendicular bisector of $AB$.`,
       ],
       answer: t`$9x - y + 6 = 0$, the perpendicular bisector of $AB$.`,
       figure: {
@@ -56,17 +185,17 @@ export const c01: Concept = {
       axes: "xy",
       view: { x: [-1, 10], y: [-1, 10] },
       elements: [
-        { kind: "segment", from: [3, 2], to: [7, 4], tone: "muted", step: 1 },
-        { kind: "point", at: [3, 2], label: "A(3, 2)", labelAt: "w", step: 1 },
-        { kind: "point", at: [7, 4], label: "B(7, 4)", labelAt: "e", step: 1 },
-        { kind: "segment", from: [3, 7], to: [3, 2], dashed: true, label: "5", labelAt: "w", step: 2 },
-        { kind: "segment", from: [3, 7], to: [7, 4], dashed: true, label: "5", labelAt: "ne", step: 2 },
-        { kind: "point", at: [3, 7], label: "P(3, 7)", labelAt: "ne", step: 2 },
-        { kind: "segment", from: [6, 1], to: [3, 2], dashed: true, label: "√10", labelAt: "s", step: 3 },
-        { kind: "segment", from: [6, 1], to: [7, 4], dashed: true, label: "√10", labelAt: "e", step: 3 },
-        { kind: "point", at: [6, 1], label: "Q(6, 1)", labelAt: "e", step: 3 },
-        { kind: "line", through: [[5, 3], [3, 7]], tone: "good", step: 4 },
-        { kind: "label", at: [2.25, 8.5], label: "2x + y = 13", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "segment", from: [3, 2], to: [7, 4], tone: "muted", step: 2 },
+        { kind: "point", at: [3, 2], label: "A(3, 2)", labelAt: "w", step: 2 },
+        { kind: "point", at: [7, 4], label: "B(7, 4)", labelAt: "e", step: 2 },
+        { kind: "segment", from: [3, 7], to: [3, 2], dashed: true, label: "5", labelAt: "w", step: 3 },
+        { kind: "segment", from: [3, 7], to: [7, 4], dashed: true, label: "5", labelAt: "ne", step: 3 },
+        { kind: "point", at: [3, 7], label: "P(3, 7)", labelAt: "ne", step: 3 },
+        { kind: "segment", from: [6, 1], to: [3, 2], dashed: true, label: "√10", labelAt: "s", step: 4 },
+        { kind: "segment", from: [6, 1], to: [7, 4], dashed: true, label: "√10", labelAt: "e", step: 4 },
+        { kind: "point", at: [6, 1], label: "Q(6, 1)", labelAt: "e", step: 4 },
+        { kind: "line", through: [[5, 3], [3, 7]], tone: "good", step: 5 },
+        { kind: "label", at: [2.25, 8.5], label: "2x + y = 13", labelAt: "ne", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag $P$ around the plane: $PA$ and $PB$ update live, and $P$ leaves a trail only where it meets the chosen rule ($PA = PB$, $PA = 2PB$, $\angle APB = 90^\circ$), tracing the line or circle whose equation is shown.`,

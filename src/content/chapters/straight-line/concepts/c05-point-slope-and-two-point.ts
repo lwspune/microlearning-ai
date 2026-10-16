@@ -10,21 +10,168 @@ export const c05: Concept = {
     reveal: t`Yes. From $(1, 2)$ to $(3, 8)$ the slope is $\frac{8 - 2}{3 - 1} = 3$. Any point $(x, y)$ on the line gives the same slope: $\frac{y - 2}{x - 1} = 3$, that is $y - 2 = 3(x - 1)$. That is the line's equation.`,
   },
   explanation: {
-    intuition: t`A line is fixed once you know one point on it and how steep it is. Take any other point $(x, y)$ on the line: the slope from $(x_1, y_1)$ to it must be $m$. That one condition, with the fraction cleared, is the equation. Given two points instead, find $m$ from them first, then use either point. A line parallel to an axis keeps one coordinate fixed, so its equation names just that coordinate.`,
-    formal: t`**Point–slope form:** the line through $(x_1, y_1)$ with slope $m$ is $$y - y_1 = m(x - x_1)$$ If the inclination $\theta$ is given, first find $m = \tan\theta$.
-
-**Two-point form:** the line through $(x_1, y_1)$ and $(x_2, y_2)$ is $$\frac{x - x_1}{x_2 - x_1} = \frac{y - y_1}{y_2 - y_1}$$ It is the same as finding $m = \frac{y_2 - y_1}{x_2 - x_1}$ first, then using point–slope.
-
-**Watch the signs:** subtract the point's coordinates. Through $(-1, 4)$: $y - 4 = m(x + 1)$. Then check that every given point satisfies your answer.
-
-**Lines parallel to the axes:**
-- Parallel to the $X$-axis (horizontal, slope $0$): $y = k$. The $X$-axis itself is $y = 0$.
-- Parallel to the $Y$-axis (vertical, inclination $90^\circ$, slope not defined): $x = h$. The $Y$-axis itself is $x = 0$.
-- Two points with the same $x$-coordinate $h$ lie on $x = h$.`,
+    intuition: [
+      t`A point and a slope fix a line: here $P(2, 1)$ and slope $2$, a rise of $2$ for each $1$ across.`,
+      t`Take any other point $(x, y)$ on the line.`,
+      t`From $P$ to it, the run across is $x - 2$ and the rise up is $y - 1$.`,
+      t`That slope must be $2$: $\frac{y - 1}{x - 2} = 2$, so $y - 1 = 2(x - 2)$.`,
+      t`Recall: a rule obeyed by every point of the line, and by no other point, is its **equation**.`,
+      t`Given two points instead, first find the slope from them, then use either point.`,
+    ],
+    formal: [
+      {
+        title: "Point–slope form",
+        points: [
+          t`Take the line through a given point $(x_1, y_1)$ with slope $m$.`,
+          t`Any other point $(x, y)$ on it is a run of $x - x_1$ and a rise of $y - y_1$ away.`,
+          t`The slope between them must be $m$: $\frac{y - y_1}{x - x_1} = m$.`,
+          t`Clear the fraction: $y - y_1 = m(x - x_1)$, the **point–slope form**.`,
+        ],
+        figure: {
+          alt: "A line of slope m through the given point (x₁, y₁). Another point (x, y) on it is reached by a dashed run of x − x₁ and a dashed rise of y − y₁, so y − y₁ = m(x − x₁).",
+          axes: "xy",
+          view: { x: [-1, 5.5], y: [-1.5, 5.5] },
+          elements: [
+            { kind: "point", at: [1, 1], label: "(x₁, y₁)", labelAt: "nw", step: 1 },
+            { kind: "line", through: [[1, 1], [3, 4]], step: 1 },
+            { kind: "point", at: [3, 4], label: "(x, y)", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [1, 1], to: [3, 1], dashed: true, label: "x − x₁", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "segment", from: [3, 1], to: [3, 4], dashed: true, label: "y − y₁", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "label", at: [2.5, -1.1], label: "y − y₁ = m(x − x₁)", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "When the inclination is given",
+        points: [
+          t`Recall: the **inclination** $\theta$ is the angle from the positive $X$-axis to the line, measured anticlockwise.`,
+          t`Its slope is $m = \tan\theta$, for any $\theta$ except $90^\circ$.`,
+          t`So when $\theta$ is given, first find $m = \tan\theta$, then use point–slope form.`,
+          t`For example, $\theta = 60^\circ$ gives $m = \tan 60^\circ = \sqrt{3}$.`,
+          t`Through $(3, 2)$, the line is then $y - 2 = \sqrt{3}(x - 3)$.`,
+        ],
+        figure: {
+          alt: "A line crossing the x-axis at about 1.85. From the initial arm along the positive x-axis, an arm turns 60° anticlockwise onto the line: its inclination θ. Its slope is tan 60° = √3, and through the point (3, 2) the line is y − 2 = √3(x − 3).",
+          axes: "xy",
+          view: { x: [-1, 6], y: [-1.5, 4.5] },
+          elements: [
+            { kind: "line", through: [[1.845, 0], [3, 2]], step: 1 },
+            { kind: "segment", from: [1.845, 0], to: [5.6, 0], tone: "good", step: 1 },
+            { kind: "label", at: [4.5, 0], label: "initial arm", labelAt: "n", tone: "good", step: 1 },
+            { kind: "turn", centre: [1.845, 0], r: 1, to: 60, label: "θ = 60°", labelAt: "e", step: 1 },
+            { kind: "label", at: [3.6, 1.2], label: "m = tan 60° = √3", labelAt: "e", step: 4 },
+            { kind: "point", at: [3, 2], label: "(3, 2)", labelAt: "nw", step: 5 },
+            { kind: "label", at: [4, -1.1], label: "y − 2 = √3(x − 3)", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Two-point form",
+        points: [
+          t`Take the line through two given points $(x_1, y_1)$ and $(x_2, y_2)$.`,
+          t`Its slope is the rise over the run between them: $m = \frac{y_2 - y_1}{x_2 - x_1}$.`,
+          t`Any point $(x, y)$ on the line gives the same slope, measured from $(x_1, y_1)$.`,
+          t`Rearranged, that is the **two-point form**: $\frac{x - x_1}{x_2 - x_1}$ equals $\frac{y - y_1}{y_2 - y_1}$.`,
+          t`It is the same as finding $m$ first, then using point–slope form.`,
+          t`Neither bottom may be $0$: the form needs $x_1 \ne x_2$ and $y_1 \ne y_2$.`,
+        ],
+        figure: {
+          alt: "A line through (x₁, y₁) and (x₂, y₂). Below it, a dashed run of x₂ − x₁ and rise of y₂ − y₁ join the two points. Above it, a dashed rise of y − y₁ and run of x − x₁ join (x₁, y₁) to a third point (x, y) on the line: both give the same slope.",
+          axes: "xy",
+          view: { x: [-0.5, 8], y: [-0.8, 5.5] },
+          elements: [
+            { kind: "point", at: [2, 1], label: "(x₁, y₁)", labelAt: "se", step: 1 },
+            { kind: "point", at: [6, 4], label: "(x₂, y₂)", labelAt: "nw", step: 1 },
+            { kind: "line", through: [[2, 1], [6, 4]], step: 1 },
+            { kind: "segment", from: [2, 1], to: [6, 1], dashed: true, label: "x₂ − x₁", labelAt: "s", tone: "muted", step: 2 },
+            { kind: "segment", from: [6, 1], to: [6, 4], dashed: true, label: "y₂ − y₁", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "point", at: [4, 2.5], label: "(x, y)", labelAt: "se", step: 3 },
+            { kind: "segment", from: [2, 1], to: [2, 2.5], dashed: true, label: "y − y₁", labelAt: "w", tone: "muted", step: 3 },
+            { kind: "segment", from: [2, 2.5], to: [4, 2.5], dashed: true, label: "x − x₁", labelAt: "n", tone: "muted", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Watch the signs",
+        points: [
+          t`In point–slope form, the point's coordinates are subtracted from $x$ and $y$.`,
+          t`Through $(-1, 4)$: $y - 4 = m(x - (-1))$, that is $y - 4 = m(x + 1)$.`,
+          t`Keeping the point's signs, $y + 4 = m(x - 1)$, gives the line through $(1, -4)$ instead.`,
+          t`So check your answer: every given point must satisfy it.`,
+          t`$(-1, 4)$ does: both sides of $y - 4 = m(x + 1)$ are $0$ there.`,
+        ],
+        figure: {
+          alt: "The line y − 4 = m(x + 1) through (−1, 4). A dashed parallel line through (1, −4), marked wrong, is y + 4 = m(x − 1), what keeping the point's signs gives. The point (−1, 4) is ticked: it satisfies the right equation.",
+          axes: "xy",
+          view: { x: [-4, 4], y: [-5.5, 6] },
+          elements: [
+            { kind: "point", at: [-1, 4], label: "(−1, 4)", labelAt: "nw", step: 2 },
+            { kind: "line", through: [[-1, 4], [0, 5]], step: 2 },
+            { kind: "label", at: [0.2, 3.4], label: "y − 4 = m(x + 1)", labelAt: "e", step: 2 },
+            { kind: "point", at: [1, -4], label: "(1, −4)", labelAt: "nw", tone: "bad", step: 3 },
+            { kind: "line", through: [[1, -4], [2, -3]], dashed: true, tone: "bad", step: 3 },
+            { kind: "label", at: [-3.8, -4.6], label: "y + 4 = m(x − 1)", labelAt: "e", tone: "bad", step: 3 },
+            { kind: "point", at: [-1, 4], tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Lines parallel to the X-axis",
+        points: [
+          t`A **horizontal** line runs parallel to the $X$-axis; its slope is $0$.`,
+          t`Every point on it has the same $y$-coordinate: here $2$, in general $k$.`,
+          t`So its equation is $y = k$, here $y = 2$: it names only that coordinate.`,
+          t`Point–slope form agrees: through $(h, k)$ with $m = 0$, it gives $y - k = 0$.`,
+          t`The $X$-axis itself is the horizontal line $y = 0$.`,
+        ],
+        figure: {
+          alt: "A horizontal line through (−2, 2), (1, 2) and (4, 2): every point on it has y = 2, so it is the line y = 2. The x-axis itself is marked y = 0.",
+          axes: "xy",
+          view: { x: [-3.5, 5.5], y: [-1.2, 3.5] },
+          elements: [
+            { kind: "line", through: [[-2, 2], [4, 2]], step: 1 },
+            { kind: "point", at: [-2, 2], label: "(−2, 2)", labelAt: "n", step: 2 },
+            { kind: "point", at: [1, 2], label: "(1, 2)", labelAt: "n", step: 2 },
+            { kind: "point", at: [4, 2], label: "(4, 2)", labelAt: "n", step: 2 },
+            { kind: "label", at: [2.5, 2], label: "y = 2", labelAt: "s", step: 3 },
+            { kind: "segment", from: [-3.5, 0], to: [5.5, 0], tone: "good", step: 5 },
+            { kind: "label", at: [-2.5, 0], label: "y = 0", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Lines parallel to the Y-axis",
+        points: [
+          t`A **vertical** line runs parallel to the $Y$-axis; its inclination is $90^\circ$.`,
+          t`Its slope is not defined, since $\tan 90^\circ$ is not defined.`,
+          t`Every point on it has the same $x$-coordinate: here $3$, in general $h$.`,
+          t`So its equation is $x = h$, here $x = 3$.`,
+          t`Two points with the same $x$-coordinate $h$ therefore lie on $x = h$.`,
+          t`The $Y$-axis itself is the vertical line $x = 0$.`,
+        ],
+        figure: {
+          alt: "A vertical line through the x-axis at 3. From the initial arm along the positive x-axis, an arm turns 90° anticlockwise onto it. The points (3, −1), (3, 2) and (3, 3.5) on it all have x = 3, so it is the line x = 3. The y-axis itself is marked x = 0.",
+          axes: "xy",
+          view: { x: [-1.5, 6], y: [-1.8, 4.5] },
+          elements: [
+            { kind: "line", through: [[3, 0], [3, 2]], step: 1 },
+            { kind: "segment", from: [3, 0], to: [5.6, 0], tone: "good", step: 1 },
+            { kind: "label", at: [4.7, 0], label: "initial arm", labelAt: "n", tone: "good", step: 1 },
+            { kind: "turn", centre: [3, 0], r: 0.9, to: 90, label: "90°", labelAt: "e", step: 1 },
+            { kind: "point", at: [3, -1], label: "(3, −1)", labelAt: "e", step: 3 },
+            { kind: "point", at: [3, 2], label: "(3, 2)", labelAt: "e", step: 3 },
+            { kind: "point", at: [3, 3.5], label: "(3, 3.5)", labelAt: "e", step: 3 },
+            { kind: "label", at: [3, 2.75], label: "x = 3", labelAt: "w", step: 4 },
+            { kind: "segment", from: [0, -1.8], to: [0, 4.5], tone: "good", step: 6 },
+            { kind: "label", at: [0, 3.8], label: "x = 0", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the line passing through $A(-1, 4)$ and $B(3, -2)$.`,
       steps: [
-        t`Slope from the two points: $m = \frac{-2 - 4}{3 - (-1)} = \frac{-6}{4} = -\frac{3}{2}$.`,
+        t`Slope from the two points: $m = \frac{-2 - 4}{3 - (-1)}$, which is $\frac{-6}{4} = -\frac{3}{2}$.`,
         t`Point–slope form with $A(-1, 4)$: $y - 4 = -\frac{3}{2}(x + 1)$.`,
         t`Multiply by $2$: $2y - 8 = -3x - 3$, so $3x + 2y - 5 = 0$.`,
         t`Check with $B(3, -2)$: $9 - 4 - 5 = 0$. It works.`,
@@ -51,8 +198,8 @@ export const c05: Concept = {
       view: { x: [-1, 6], y: [-1.5, 6.5] },
       elements: [
         { kind: "point", at: [2, 1], label: "P(2, 1)", labelAt: "nw", step: 1 },
-        { kind: "line", through: [[2, 1], [4, 5]], step: 2 },
-        { kind: "point", at: [4, 5], label: "(x, y)", labelAt: "nw", step: 3 },
+        { kind: "line", through: [[2, 1], [4, 5]], step: 1 },
+        { kind: "point", at: [4, 5], label: "(x, y)", labelAt: "nw", step: 2 },
         { kind: "segment", from: [2, 1], to: [4, 1], dashed: true, label: "x − 2", labelAt: "s", tone: "muted", step: 3 },
         { kind: "segment", from: [4, 1], to: [4, 5], dashed: true, label: "y − 1", labelAt: "e", tone: "muted", step: 3 },
         { kind: "label", at: [3, -1.2], label: "y − 1 = 2(x − 2)", step: 4 },

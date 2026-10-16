@@ -1,6 +1,15 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The initial arm along the positive x-axis (tone good), its label `labelX` along it, above the axis. */
+function initialArm(len: number, labelX: number, step?: number): FigureElement[] {
+  const s = step === undefined ? {} : { step };
+  return [
+    { kind: "segment", from: [0, 0], to: [len, 0], tone: "good", ...s },
+    { kind: "label", at: [labelX, 0], label: "initial arm", labelAt: "n", tone: "good", ...s },
+  ];
+}
 
 export const c06: Concept = {
   id: "C06",
@@ -10,26 +19,197 @@ export const c06: Concept = {
     reveal: t`No. Divide each equation by $\sqrt{a^2 + b^2}$ to get the normal form, whose right side is the distance $p$. $\frac{x}{\sqrt{2}} + \frac{y}{\sqrt{2}} = 2\sqrt{2}$ gives $p = 2\sqrt{2} \approx 2.83$, while $\frac{3}{5}x + \frac{4}{5}y = \frac{12}{5}$ gives $p = 2.4$. So $3x + 4y = 12$ is closer, though its constant is bigger.`,
   },
   explanation: {
-    intuition: t`Two facts fix a line, and each form stores two of them. $y = mx + c$ stores the slope and where the line crosses the $Y$-axis. $\frac{x}{a} + \frac{y}{b} = 1$ stores where it crosses both axes. $x\cos\alpha + y\sin\alpha = p$ stores the perpendicular from the origin: its length $p$ and its direction $\alpha$. Pick the form whose two facts the question gives, and read them off only once the equation matches that form exactly.`,
-    formal: t`**Slope–intercept form** $y = mx + c$. $m$ is the slope and $c$ is the $Y$-intercept (put $x = 0$). The $X$-intercept comes from $y = 0$: $x = -\frac{c}{m}$.
-
-**Intercept form** $\frac{x}{a} + \frac{y}{b} = 1$ ($a, b \ne 0$). The line passes through $(a, 0)$ and $(0, b)$, and its slope is $\frac{b - 0}{0 - a} = -\frac{b}{a}$. To read the intercepts of $px + qy = r$, divide until it is exactly in this form: the intercepts are the **denominators**.
-
-**Normal form** $x\cos\alpha + y\sin\alpha = p$. $p \ge 0$ is the length of the perpendicular $ON$ from the origin, and $\alpha$ ($0^\circ \le \alpha < 360^\circ$) is the angle $ON$ makes with the positive $X$-axis, not the line's own inclination.
-
-**Reducing** $ax + by + c = 0$ **to normal form.** Write $ax + by = -c$; if the right side is negative, multiply by $-1$. Divide by $\sqrt{a^2 + b^2}$. The coefficients are now $\cos\alpha$ and $\sin\alpha$: find $\alpha$ from the signs of both, and the right side is $p$.
-
-**Special lines.** Equal intercepts: $x + y = a$. Intercepts adding to zero: $x - y = a$. (A line through the origin has both intercepts $0$.) If $(h, k)$ bisects the segment between the axes, the intercepts are $2h$ and $2k$: $\frac{x}{h} + \frac{y}{k} = 2$.`,
+    intuition: [
+      t`Two facts fix a line, and each form of its equation stores two of them.`,
+      t`$y = mx + c$ stores the slope $m$ and the **$Y$-intercept** $c$: the line crosses the $Y$-axis at $(0, c)$.`,
+      t`$\frac{x}{a} + \frac{y}{b} = 1$ stores both **intercepts**: the line crosses the $X$-axis at $(a, 0)$ and the $Y$-axis at $(0, b)$.`,
+      t`The **perpendicular** from the origin $O$ is the segment $ON$ that meets the line at right angles.`,
+      t`$x\cos\alpha + y\sin\alpha = p$ stores its length $p$ and its direction $\alpha$, turned from the positive $X$-axis.`,
+      t`Pick the form whose two facts you are given, and read them off only once the equation matches it exactly.`,
+    ],
+    formal: [
+      {
+        title: "Slope–intercept form",
+        points: [
+          t`The **slope–intercept form** of a line is $y = mx + c$, like $y = 2x + 2$.`,
+          t`$m$ is the slope, the rise for each step of $1$ to the right: here $2$.`,
+          t`$c$ is the $Y$-intercept: put $x = 0$ to get $y = c$, here $2$.`,
+          t`The $X$-intercept comes from putting $y = 0$: solve $mx + c = 0$.`,
+          t`So for $m \ne 0$ it is $x = -\frac{c}{m}$, here $-\frac{2}{2} = -1$.`,
+        ],
+        figure: {
+          alt: "The line y = 2x + 2. A step of 1 to the right from (0, 2) rises 2, so the slope m is 2. The line crosses the Y-axis at (0, 2), so c = 2, and the X-axis at (−1, 0), which is −c/m.",
+          axes: "xy",
+          view: { x: [-2.5, 2.5], y: [-1.5, 5] },
+          elements: [
+            { kind: "line", through: [[-1, 0], [1, 4]], step: 1 },
+            { kind: "label", at: [-0.9, 1.4], label: "y = 2x + 2", labelAt: "w", step: 1 },
+            { kind: "segment", from: [0, 2], to: [1, 2], label: "1", labelAt: "s", dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [1, 2], to: [1, 4], label: "rise 2", labelAt: "e", dashed: true, tone: "muted", step: 2 },
+            { kind: "point", at: [0, 2], label: "(0, 2)", labelAt: "nw", tone: "good", step: 3 },
+            { kind: "point", at: [-1, 0], label: "(−1, 0)", labelAt: "nw", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Intercept form",
+        points: [
+          t`The **intercept form** of a line is $\frac{x}{a} + \frac{y}{b} = 1$, where $a \ne 0$ and $b \ne 0$.`,
+          t`Put $y = 0$: then $x = a$, so the line passes through $(a, 0)$.`,
+          t`Put $x = 0$: then $y = b$, so it passes through $(0, b)$.`,
+          t`Its slope, from $(a, 0)$ to $(0, b)$, is $\frac{b - 0}{0 - a} = -\frac{b}{a}$.`,
+          t`So a line that cuts both positive axes slopes downwards.`,
+        ],
+        figure: {
+          alt: "The line x/4 + y/2 = 1. Putting y = 0 gives the point (a, 0) = (4, 0) on the X-axis; putting x = 0 gives (0, b) = (0, 2) on the Y-axis. Its slope is −b/a: it cuts both positive axes and slopes downwards.",
+          axes: "xy",
+          view: { x: [-1, 5.5], y: [-1, 3.5] },
+          elements: [
+            { kind: "line", through: [[4, 0], [0, 2]], step: 1 },
+            { kind: "label", at: [2.2, 1.4], label: "x/4 + y/2 = 1", labelAt: "ne", step: 1 },
+            { kind: "point", at: [4, 0], label: "(a, 0)", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "point", at: [0, 2], label: "(0, b)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [0.6, 0.6], label: "slope −b/a", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Reading off the intercepts",
+        points: [
+          t`To read the intercepts of $px + qy = r$, first make it match the intercept form exactly.`,
+          t`For $2x + 3y = 6$, divide by $6$ so the right side is $1$: $\frac{2x}{6} + \frac{3y}{6} = 1$.`,
+          t`Simplify: $\frac{x}{3} + \frac{y}{2} = 1$.`,
+          t`The intercepts are the **denominators**: $3$ on the $X$-axis and $2$ on the $Y$-axis.`,
+          t`They are not the coefficients: the line misses $(2, 0)$ and $(0, 3)$.`,
+        ],
+        figure: {
+          alt: "The line 2x + 3y = 6, which is x/3 + y/2 = 1. It crosses the X-axis at (3, 0) and the Y-axis at (0, 2), the denominators. The points (2, 0) and (0, 3), from the coefficients, are not on it.",
+          axes: "xy",
+          view: { x: [-1, 4.5], y: [-1, 3.5] },
+          elements: [
+            { kind: "line", through: [[3, 0], [0, 2]], step: 2 },
+            { kind: "label", at: [1.7, 1.8], label: "2x + 3y = 6", labelAt: "ne", step: 2 },
+            { kind: "label", at: [1.7, 1.3], label: "x/3 + y/2 = 1", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "point", at: [3, 0], label: "3", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "point", at: [0, 2], label: "2", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "point", at: [2, 0], tone: "bad", step: 5 },
+            { kind: "point", at: [0, 3], tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Normal form",
+        points: [
+          t`**Normal** means perpendicular: the **normal form** describes a line by its perpendicular $ON$ from the origin.`,
+          t`$p$ is the length of $ON$, so $p \ge 0$.`,
+          t`$\alpha$ is the angle $ON$ is turned through from the positive $X$-axis, anticlockwise.`,
+          t`$\alpha$ can be any angle from $0^\circ$ up to, but not including, $360^\circ$.`,
+          t`Then the line is $x\cos\alpha + y\sin\alpha = p$.`,
+          t`Recall: a line's **inclination** is its own angle with the $X$-axis; $\alpha$ is not that, as $ON$ is at right angles to the line.`,
+        ],
+        figure: {
+          alt: "A line crossing the axes at (−4, 0) and about (0, 2.31). The perpendicular from the origin O meets it at N, up and to the left of O, with ON = p = 2. ON is turned 120° anticlockwise from the initial arm, the positive X-axis, so α = 120°, and the line is x cos 120° + y sin 120° = 2. The line's own inclination is 30°, not α.",
+          axes: "xy",
+          view: { x: [-5, 2], y: [-1, 3.5] },
+          elements: [
+            { kind: "line", through: [[-4, 0], [0, 2.3094011]], step: 1 },
+            { kind: "segment", from: [0, 0], to: [-1, 1.7320508], tone: "good", step: 1 },
+            { kind: "point", at: [-1, 1.7320508], label: "N", labelAt: "nw", tone: "good", step: 1 },
+            { kind: "label", at: [-0.7, 1.25], label: "p = 2", labelAt: "w", tone: "good", step: 2 },
+            ...initialArm(1.6, 0.9, 3),
+            { kind: "turn", r: 1, to: 120, label: "α = 120°", labelAt: "w", tone: "good", step: 3 },
+            { kind: "label", at: [-4.9, 3.1], label: "x cos 120° + y sin 120° = 2", labelAt: "e", step: 5 },
+            { kind: "angle", at: [-4, 0], from: 0, to: 30, label: "30°", labelAt: "e", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Reducing to normal form",
+        points: [
+          t`To reduce $ax + by + c = 0$, like $3x + 4y + 10 = 0$, move the constant: $ax + by = -c$.`,
+          t`The right side must be $p \ge 0$: if it is negative, multiply both sides by $-1$.`,
+          t`Divide by $\sqrt{a^2 + b^2}$, so the squares of the coefficients add up to $1$.`,
+          t`The coefficients of $x$ and $y$ are now $\cos\alpha$ and $\sin\alpha$.`,
+          t`The right side is now $p$, the length of $ON$.`,
+          t`Place $\alpha$ by the signs of both: here both are negative, so $\alpha$ is in Quadrant III.`,
+        ],
+        figure: {
+          alt: "The line 3x + 4y + 10 = 0, crossing the axes at about (−3.33, 0) and (0, −2.5). It is reduced in steps: 3x + 4y = −10, then −3x − 4y = 10, then dividing by √(3² + 4²) = 5 gives −0.6x − 0.8y = 2. The perpendicular from the origin meets the line at N, down and to the left of O, with ON = p = 2. ON is turned about 233° anticlockwise from the initial arm, into Quadrant III, because cos α = −0.6 and sin α = −0.8 are both negative.",
+          axes: "xy",
+          view: { x: [-4.5, 1.8], y: [-3, 2] },
+          elements: [
+            { kind: "line", through: [[-3.3333333, 0], [0, -2.5]], step: 1 },
+            { kind: "label", at: [-4.4, -1.3], label: "3x + 4y + 10 = 0", labelAt: "e", step: 1 },
+            { kind: "label", at: [-2.9, 1.75], label: "3x + 4y = −10", labelAt: "e", step: 1 },
+            { kind: "label", at: [-2.9, 1.35], label: "−3x − 4y = 10", labelAt: "e", step: 2 },
+            { kind: "label", at: [-2.9, 0.95], label: "÷ √(3² + 4²) = 5", labelAt: "e", step: 3 },
+            { kind: "label", at: [-2.9, 0.55], label: "−0.6x − 0.8y = 2", labelAt: "e", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 0], to: [-1.2, -1.6], tone: "good", step: 5 },
+            { kind: "point", at: [-1.2, -1.6], label: "N", labelAt: "sw", tone: "good", step: 5 },
+            { kind: "label", at: [-0.95, -1.27], label: "p = 2", labelAt: "se", tone: "good", step: 5 },
+            ...initialArm(1.4, 0.85, 6),
+            { kind: "turn", r: 0.8, to: 233.13, label: "α ≈ 233°", labelAt: "w", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Equal or opposite intercepts",
+        points: [
+          t`Equal intercepts, $a$ on each axis, give $\frac{x}{a} + \frac{y}{a} = 1$: that is, $x + y = a$.`,
+          t`Intercepts adding to zero, $a$ and $-a$, give $\frac{x}{a} + \frac{y}{-a} = 1$: that is, $x - y = a$.`,
+          t`A line through the origin has both intercepts $0$: equal, and adding to zero too.`,
+        ],
+        figure: {
+          alt: "The line x + y = 3 cuts both axes at 3: equal intercepts. The line x − y = 3 cuts the X-axis at 3 and the Y-axis at −3: intercepts adding to zero. A dashed line through the origin has both intercepts 0.",
+          axes: "xy",
+          view: { x: [-3.5, 5], y: [-4, 4.5] },
+          elements: [
+            { kind: "line", through: [[3, 0], [0, 3]], step: 1 },
+            { kind: "point", at: [3, 0], step: 1 },
+            { kind: "point", at: [0, 3], step: 1 },
+            { kind: "label", at: [1.6, 2.2], label: "x + y = 3", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[3, 0], [0, -3]], tone: "good", step: 2 },
+            { kind: "point", at: [0, -3], tone: "good", step: 2 },
+            { kind: "label", at: [1.2, -2.4], label: "x − y = 3", labelAt: "se", tone: "good", step: 2 },
+            { kind: "line", through: [[0, 0], [1, 2]], dashed: true, tone: "muted", step: 3 },
+            { kind: "label", at: [-1.4, -2.8], label: "both 0", labelAt: "w", tone: "muted", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Midpoint between the axes",
+        points: [
+          t`Let the line cut the axes at $A(a, 0)$ and $B(0, b)$.`,
+          t`Let $M(h, k)$ be the **midpoint** of $AB$, the point halfway between them.`,
+          t`The midpoint of $AB$ is $\left(\frac{a}{2}, \frac{b}{2}\right)$, so $h = \frac{a}{2}$ and $k = \frac{b}{2}$.`,
+          t`So the intercepts are $a = 2h$ and $b = 2k$, not $h$ and $k$.`,
+          t`The line is $\frac{x}{2h} + \frac{y}{2k} = 1$, that is $\frac{x}{h} + \frac{y}{k} = 2$.`,
+        ],
+        figure: {
+          alt: "A line cutting the axes at A(6, 0) and B(0, 4). The midpoint of AB is M(3, 2), so h = 3 and k = 2, and the intercepts are a = 2h = 6 and b = 2k = 4. The line is x/6 + y/4 = 1, that is x/3 + y/2 = 2.",
+          axes: "xy",
+          view: { x: [-1, 7.5], y: [-1, 5] },
+          elements: [
+            { kind: "line", through: [[6, 0], [0, 4]], step: 1 },
+            { kind: "point", at: [6, 0], label: "A(6, 0)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [0, 4], label: "B(0, 4)", labelAt: "ne", step: 1 },
+            { kind: "point", at: [3, 2], label: "M(3, 2)", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "label", at: [4, 4.4], label: "a = 2h, b = 2k", labelAt: "e", tone: "good", step: 4 },
+            { kind: "label", at: [4, 3.8], label: "x/3 + y/2 = 2", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Reduce $\sqrt{3}x - y - 2 = 0$ to normal form, and find $p$ and $\alpha$.`,
       steps: [
         t`Move the constant: $\sqrt{3}x - y = 2$. The right side is already positive.`,
-        t`$\sqrt{a^2 + b^2} = \sqrt{3 + 1} = 2$. Divide by $2$: $\frac{\sqrt{3}}{2}x - \frac{1}{2}y = 1$, so $p = 1$.`,
-        t`$\cos\alpha = \frac{\sqrt{3}}{2}$ is positive and $\sin\alpha = -\frac{1}{2}$ is negative, so $\alpha$ is in the fourth quadrant: $\alpha = 360^\circ - 30^\circ = 330^\circ$.`,
+        t`$\sqrt{a^2 + b^2} = \sqrt{3 + 1} = 2$. Divide by $2$: $\frac{\sqrt{3}}{2}x - \frac{1}{2}y$ $= 1$, so $p = 1$.`,
+        t`$\cos\alpha = \frac{\sqrt{3}}{2}$ is positive and $\sin\alpha = -\frac{1}{2}$ is negative, so $\alpha$ is in the fourth quadrant: $\alpha = 360^\circ - 30^\circ$ $= 330^\circ$.`,
       ],
-      answer: t`$x\cos 330^\circ + y\sin 330^\circ = 1$, with $p = 1$ and $\alpha = 330^\circ$.`,
+      answer: t`$x\cos 330^\circ + y\sin 330^\circ$ $= 1$, with $p = 1$ and $\alpha = 330^\circ$.`,
       figure: {
-        alt: "The line √3x − y = 2, crossing the axes at about (1.15, 0) and (0, −2). The perpendicular from the origin O meets it at N, below and to the right of O, with ON = p = 1. The angle from the positive X-axis round to ON, measured anticlockwise, is α = 330°.",
+        alt: "The line √3x − y = 2, crossing the axes at about (1.15, 0) and (0, −2). The perpendicular from the origin O meets it at N, below and to the right of O, with ON = p = 1. ON is turned 330° anticlockwise from the initial arm, the positive X-axis, so α = 330°.",
         axes: "xy",
         view: { x: [-1.2, 2.4], y: [-2.4, 1.2] },
         elements: [
@@ -38,23 +218,25 @@ export const c06: Concept = {
           { kind: "segment", from: [0, 0], to: [0.866, -0.5], tone: "good", step: 2 },
           { kind: "point", at: [0.866, -0.5], label: "N", labelAt: "se", tone: "good", step: 2 },
           { kind: "label", at: [0.3, -0.95], label: "p = 1", tone: "good", step: 2 },
-          { kind: "angle", at: [0, 0], from: 0, to: 330, label: "α = 330°", labelAt: "nw", tone: "good", step: 3 },
+          ...initialArm(1.1, 0.7, 3),
+          { kind: "turn", r: 0.8, to: 330, label: "α = 330°", labelAt: "sw", tone: "good", step: 3 },
         ],
       },
     },
     figure: {
-      alt: "The line 3x + 4y = 12. It cuts the X-axis at (4, 0), so a = 4, and the Y-axis at (0, 3), so b = 3: x/4 + y/3 = 1. The perpendicular from the origin O meets the line at N; its length is p = 2.4 and it makes an angle α of about 53° with the positive X-axis: 0.6x + 0.8y = 2.4.",
+      alt: "The line 3x + 4y = 12. It crosses the Y-axis at (0, 3), so c = 3 and b = 3, and the X-axis at (4, 0), so a = 4: x/4 + y/3 = 1. The perpendicular from the origin O meets the line at right angles at N; its length is p = 2.4. ON is turned about 53° anticlockwise from the initial arm, the positive X-axis, so α ≈ 53°: 0.6x + 0.8y = 2.4.",
       axes: "xy",
       view: { x: [-1, 5.5], y: [-1, 4] },
       elements: [
         { kind: "line", through: [[4, 0], [0, 3]], step: 1 },
         { kind: "label", at: [2.8, 1.25], label: "3x + 4y = 12", labelAt: "ne", step: 1 },
-        { kind: "point", at: [4, 0], label: "a = 4", labelAt: "ne", step: 2 },
-        { kind: "point", at: [0, 3], label: "b = 3", labelAt: "ne", step: 2 },
-        { kind: "segment", from: [0, 0], to: [1.44, 1.92], tone: "good", step: 3 },
-        { kind: "point", at: [1.44, 1.92], label: "N", labelAt: "ne", tone: "good", step: 3 },
-        { kind: "label", at: [0.72, 0.96], label: "p = 2.4", labelAt: "se", tone: "good", step: 3 },
-        { kind: "angle", at: [0, 0], from: 0, to: 53.13, label: "α ≈ 53°", labelAt: "e", tone: "good", step: 4 },
+        { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "ne", step: 2 },
+        { kind: "point", at: [4, 0], label: "(4, 0)", labelAt: "ne", step: 3 },
+        { kind: "segment", from: [0, 0], to: [1.44, 1.92], tone: "good", step: 4 },
+        { kind: "point", at: [1.44, 1.92], label: "N", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "label", at: [1.08, 1.44], label: "p = 2.4", labelAt: "nw", tone: "good", step: 4 },
+        ...initialArm(1.8, 1.3, 5),
+        { kind: "turn", r: 1.2, to: 53.13, label: "α ≈ 53°", labelAt: "se", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag a line around the plane; its slope and $Y$-intercept, its two intercepts, and its perpendicular from the origin (length $p$, angle $\alpha$) update together, with the three equations shown beside it.`,

@@ -10,28 +10,164 @@ export const c04: Concept = {
     reveal: t`No. Turn the line of slope $3$ through a right angle and its step turns too: right $1$, up $3$ becomes up $1$, left $3$. That is a slope of $-\frac{1}{3}$, not $-3$. The perpendicular slope flips the fraction **and** changes the sign, so the two slopes multiply to $-1$: $3 \times \left(-\frac{1}{3}\right) = -1$.`,
   },
   explanation: {
-    intuition: t`Slope is the rise for each step to the right. Parallel lines climb at the same rate, so they have the same slope. Turn a line through a right angle and its step turns with it: right $1$, up $m$ becomes up $1$, left $m$. The new slope is $\frac{1}{-m} = -\frac{1}{m}$, which is why perpendicular slopes multiply to $-1$. A horizontal line and a vertical line are perpendicular too, but the vertical one has no slope, so the product rule can't be used there.`,
-    formal: t`**Parallel lines**
-
-Two non-vertical lines are parallel if and only if $m_1 = m_2$. Any two vertical lines are parallel.
-
-**Perpendicular lines**
-
-Two non-vertical lines are perpendicular if and only if $m_1 m_2 = -1$, that is, $m_2 = -\frac{1}{m_1}$: flip the fraction **and** change its sign. A horizontal line is perpendicular to a vertical one.
-
-**A right angle without Pythagoras**
-
-Find the slopes of all three sides. If two of them multiply to $-1$, those sides are perpendicular, and the right angle is at the vertex they share.
-
-**Altitudes and unknowns**
-
-The altitude from $A$ is perpendicular to the **opposite** side $BC$, so its slope is $-\frac{1}{m_{BC}}$. For an unknown coordinate, write the slope with the unknown in it, set $m_1 = m_2$ or $m_1 m_2 = -1$, and solve.`,
+    intuition: [
+      t`Recall: a line's **slope** $m$ is how far it rises for each step of $1$ to the right.`,
+      t`**Parallel** lines run side by side in the same direction and never meet.`,
+      t`They climb at the same rate, so parallel lines have the same slope.`,
+      t`**Perpendicular** lines meet at a **right angle**: a quarter turn, $90^\circ$.`,
+      t`Turn a line a quarter turn and its step turns too: right $1$, up $m$ becomes up $1$, left $m$.`,
+      t`So the new slope is $\frac{1}{-m} = -\frac{1}{m}$, and the two slopes multiply to $-1$.`,
+    ],
+    formal: [
+      {
+        title: "Parallel lines",
+        points: [
+          t`Take two lines that are not vertical, with slopes $m_1$ and $m_2$.`,
+          t`If $m_1 = m_2$, they climb at the same rate, so they are parallel.`,
+          t`If they are parallel, then $m_1 = m_2$: the rule works both ways.`,
+          t`Recall: a **vertical** line has no slope, so this rule can't test it.`,
+          t`Still, any two vertical lines are parallel.`,
+        ],
+        figure: {
+          alt: "Two lines of slope 2, m₁ = 2 and m₂ = 2, side by side. Each has the same step drawn on it: 1 to the right, 2 up, so they climb at the same rate and are parallel. To the right, two vertical lines, which have no slope, are parallel too.",
+          axes: "xy",
+          view: { x: [-0.6, 8.6], y: [-0.6, 5.6] },
+          elements: [
+            { kind: "line", through: [[1, 1], [2, 3]], step: 1 },
+            { kind: "label", at: [2.4, 4.6], label: "m₁ = 2", labelAt: "w", step: 1 },
+            { kind: "line", through: [[3, 1], [4, 3]], step: 1 },
+            { kind: "label", at: [4.4, 4.6], label: "m₂ = 2", labelAt: "w", step: 1 },
+            { kind: "segment", from: [1, 1], to: [2, 1], dashed: true, tone: "muted", label: "1", labelAt: "s", step: 2 },
+            { kind: "segment", from: [2, 1], to: [2, 3], dashed: true, tone: "muted", label: "2", labelAt: "e", step: 2 },
+            { kind: "segment", from: [3, 1], to: [4, 1], dashed: true, tone: "muted", label: "1", labelAt: "s", step: 2 },
+            { kind: "segment", from: [4, 1], to: [4, 3], dashed: true, tone: "muted", label: "2", labelAt: "e", step: 2 },
+            { kind: "line", through: [[6.3, 0], [6.3, 1]], step: 4 },
+            { kind: "label", at: [6.3, 5], label: "no slope", labelAt: "e", step: 4 },
+            { kind: "line", through: [[7.9, 0], [7.9, 1]], step: 5 },
+            { kind: "label", at: [7.1, 2.4], label: "parallel", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Perpendicular lines",
+        points: [
+          t`Two non-vertical lines are perpendicular if $m_1 m_2 = -1$.`,
+          t`If they are perpendicular, then $m_1 m_2 = -1$: this rule works both ways too.`,
+          t`So $m_2 = -\frac{1}{m_1}$: flip the fraction **and** change its sign.`,
+          t`A **horizontal** line, of slope $0$, is perpendicular to a vertical line.`,
+          t`The vertical line has no slope, so the product rule can't be used there.`,
+        ],
+        figure: {
+          alt: "A line of slope 2 and a line of slope −1/2 cross at right angles: 2 × (−1/2) = −1, and m₂ = −1/m₁. To the right, a horizontal line of slope 0 meets a vertical line, which has no slope, at right angles.",
+          axes: "xy",
+          view: { x: [-0.6, 8.6], y: [-0.6, 5.6] },
+          elements: [
+            { kind: "line", through: [[2.5, 2.5], [3.5, 4.5]], step: 1 },
+            { kind: "label", at: [4.1, 5], label: "m₁ = 2", labelAt: "e", step: 1 },
+            { kind: "line", through: [[2.5, 2.5], [0.5, 3.5]], tone: "good", step: 1 },
+            { kind: "angle", at: [2.5, 2.5], from: 63.43, to: 153.43, tone: "good", step: 1 },
+            { kind: "label", at: [0.1, 2.4], label: "m₂ = −1/2", labelAt: "e", tone: "good", step: 1 },
+            { kind: "label", at: [0.1, 4.8], label: "m₂ = −1/m₁", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [5.2, 4], to: [8.2, 4], step: 4 },
+            { kind: "label", at: [7.9, 4], label: "m = 0", labelAt: "n", step: 4 },
+            { kind: "segment", from: [6.5, 1.2], to: [6.5, 5.4], step: 4 },
+            { kind: "angle", at: [6.5, 4], from: 0, to: 90, tone: "good", step: 4 },
+            { kind: "label", at: [6.5, 1.8], label: "no slope", labelAt: "e", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "A right angle without Pythagoras",
+        points: [
+          t`To find a triangle's right angle, first find the slopes of all three sides.`,
+          t`If two of the slopes multiply to $-1$, those two sides are perpendicular.`,
+          t`Here $2 \times \left(-\frac{1}{2}\right) = -1$, so $PQ \perp QR$: the sign $\perp$ means "is perpendicular to".`,
+          t`The right angle is at $Q$, the **vertex** (corner) that $PQ$ and $QR$ share.`,
+        ],
+        figure: {
+          alt: "Triangle P(1, 1), Q(3, 5), R(7, 3). Side PQ has slope 2, QR has slope −1/2 and RP has slope 1/3. PQ and QR multiply to −1, so they are perpendicular, and the right angle is marked at Q, the vertex they share.",
+          axes: "xy",
+          view: { x: [-0.6, 8.4], y: [-0.6, 6.4] },
+          elements: [
+            { kind: "segment", from: [1, 1], to: [3, 5] },
+            { kind: "segment", from: [3, 5], to: [7, 3] },
+            { kind: "segment", from: [7, 3], to: [1, 1] },
+            { kind: "point", at: [1, 1], label: "P(1, 1)", labelAt: "sw" },
+            { kind: "point", at: [3, 5], label: "Q(3, 5)", labelAt: "n" },
+            { kind: "point", at: [7, 3], label: "R(7, 3)", labelAt: "e" },
+            { kind: "label", at: [2, 3], label: "m = 2", labelAt: "w", step: 1 },
+            { kind: "label", at: [5, 4], label: "m = −1/2", labelAt: "ne", step: 1 },
+            { kind: "label", at: [4, 2], label: "m = 1/3", labelAt: "se", step: 1 },
+            { kind: "segment", from: [1, 1], to: [3, 5], tone: "good", step: 3 },
+            { kind: "segment", from: [3, 5], to: [7, 3], tone: "good", step: 3 },
+            { kind: "angle", at: [3, 5], from: 243.43, to: 333.43, tone: "good", step: 4 },
+            { kind: "point", at: [3, 5], tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Slope of an altitude",
+        points: [
+          t`An **altitude** of a triangle is the line from a vertex that meets the opposite side at right angles.`,
+          t`The **opposite** side is the one not through that vertex: for $A$, it is $BC$.`,
+          t`The altitude from $A$ is perpendicular to $BC$, so its slope is $-\frac{1}{m_{BC}}$.`,
+          t`Here $m_{BC} = \frac{1}{3}$, so the altitude from $A$ has slope $-3$.`,
+        ],
+        figure: {
+          alt: "Triangle A(2, 5), B(1, 1), C(7, 3). The altitude from A, dashed, meets the opposite side BC at right angles. BC has slope 1/3, so the altitude has slope −3.",
+          axes: "xy",
+          view: { x: [-0.6, 8.4], y: [-0.6, 6.2] },
+          elements: [
+            { kind: "segment", from: [2, 5], to: [1, 1], tone: "muted" },
+            { kind: "segment", from: [2, 5], to: [7, 3], tone: "muted" },
+            { kind: "segment", from: [1, 1], to: [7, 3], tone: "muted" },
+            { kind: "point", at: [2, 5], label: "A(2, 5)", labelAt: "n" },
+            { kind: "point", at: [1, 1], label: "B(1, 1)", labelAt: "s" },
+            { kind: "point", at: [7, 3], label: "C(7, 3)", labelAt: "e" },
+            { kind: "segment", from: [2, 5], to: [3.1, 1.7], dashed: true, tone: "good", step: 1 },
+            { kind: "angle", at: [3.1, 1.7], from: 18.43, to: 108.43, tone: "good", step: 1 },
+            { kind: "segment", from: [1, 1], to: [7, 3], step: 2 },
+            { kind: "label", at: [5, 2.33], label: "m = 1/3", labelAt: "se", step: 2 },
+            { kind: "label", at: [2.7, 3.4], label: "slope −3", labelAt: "e", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Finding an unknown coordinate",
+        points: [
+          t`A point may have an unknown coordinate, like $C(4, k)$: it lies somewhere on the line $x = 4$.`,
+          t`Write the slope through it with the unknown in it: $m_{BC} = \frac{k - 3}{4 - 3}$ $= k - 3$.`,
+          t`If the lines must be parallel, set $m_1 = m_2$ and solve.`,
+          t`If they must be perpendicular, set $m_1 m_2 = -1$ and solve.`,
+          t`Here $AB \perp BC$ and $m_{AB} = -\frac{1}{2}$, so $m_{BC} = 2$.`,
+          t`So $k - 3 = 2$, giving $k = 5$: the point is $C(4, 5)$.`,
+        ],
+        figure: {
+          alt: "A(1, 4) and B(3, 3), with AB of slope −1/2. C(4, k) lies somewhere on the dashed line x = 4, and the slope of BC is k − 3. BC must be perpendicular to AB, so it has slope 2, and it reaches x = 4 at C(4, 5).",
+          axes: "xy",
+          view: { x: [-0.6, 7.4], y: [-0.6, 6.2] },
+          elements: [
+            { kind: "segment", from: [1, 4], to: [3, 3] },
+            { kind: "point", at: [1, 4], label: "A(1, 4)", labelAt: "n" },
+            { kind: "point", at: [3, 3], label: "B(3, 3)", labelAt: "s" },
+            { kind: "label", at: [2, 3.5], label: "m = −1/2", labelAt: "sw" },
+            { kind: "line", through: [[4, 0], [4, 1]], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [4, 0.4], label: "x = 4", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "label", at: [4, 1.6], label: "slope BC = k − 3", labelAt: "e", step: 2 },
+            { kind: "segment", from: [3, 3], to: [4, 5], dashed: true, tone: "good", step: 5 },
+            { kind: "angle", at: [3, 3], from: 63.43, to: 153.43, tone: "good", step: 5 },
+            { kind: "label", at: [3.4, 4.3], label: "m = 2", labelAt: "w", tone: "good", step: 5 },
+            { kind: "point", at: [4, 5], label: "C(4, 5)", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Show that line $AB$ is perpendicular to line $BC$, where $A(1, 2)$, $B(2, 4)$ and $C(0, 5)$. Then find the slope of the line through $C$ parallel to $AB$.`,
       steps: [
         t`$m_{AB} = \frac{4 - 2}{2 - 1} = 2$.`,
-        t`$m_{BC} = \frac{5 - 4}{0 - 2} = -\frac{1}{2}$.`,
-        t`$m_{AB} \times m_{BC} = 2 \times \left(-\frac{1}{2}\right) = -1$, so $AB \perp BC$: the angle at $B$ is a right angle.`,
+        t`$m_{BC} = \frac{5 - 4}{0 - 2}$ $= -\frac{1}{2}$.`,
+        t`$m_{AB} \times m_{BC}$ $= 2 \times \left(-\frac{1}{2}\right)$ $= -1$, so $AB \perp BC$: the angle at $B$ is a right angle.`,
         t`A line parallel to $AB$ has the same slope as $AB$: $2$.`,
       ],
       answer: t`$AB \perp BC$, with the right angle at $B$; the line through $C$ parallel to $AB$ has slope $2$.`,
@@ -54,23 +190,24 @@ The altitude from $A$ is perpendicular to the **opposite** side $BC$, so its slo
       },
     },
     figure: {
-      alt: "A line of slope 2 through the point (3, 2), with a step drawn on it: 1 to the right, 2 up. A second line of slope 2 runs beside it, parallel. Then the step is turned through a right angle, to 1 up and 2 to the left, and drawn on a third line through (3, 2) of slope −1/2, marked at right angles to the first. The two slopes multiply to −1.",
+      alt: "A line of slope 2 through the point (3, 2), with a step drawn on it: 1 to the right, 2 up. A second line of slope 2 runs beside it, parallel. Then an arm along the first line turns a quarter turn about (3, 2), and the step turns with it, to 1 up and 2 to the left, on a third line through (3, 2) of slope −1/2, marked at right angles to the first. The two slopes multiply to −1.",
       axes: "xy",
       view: { x: [0, 9], y: [-0.6, 5.6] },
       elements: [
         { kind: "line", through: [[3, 2], [4, 4]], step: 1 },
         { kind: "label", at: [3.9, 4.6], label: "m₁ = 2", labelAt: "w", step: 1 },
-        { kind: "segment", from: [3.5, 3], to: [4.5, 3], dashed: true, tone: "muted", label: "1", labelAt: "s", step: 2 },
-        { kind: "segment", from: [4.5, 3], to: [4.5, 5], dashed: true, tone: "muted", label: "2", labelAt: "e", step: 2 },
-        { kind: "line", through: [[6, 2], [7, 4]], dashed: true, step: 3 },
+        { kind: "segment", from: [3.5, 3], to: [4.5, 3], dashed: true, tone: "muted", label: "1", labelAt: "s", step: 1 },
+        { kind: "segment", from: [4.5, 3], to: [4.5, 5], dashed: true, tone: "muted", label: "2", labelAt: "e", step: 1 },
+        { kind: "line", through: [[6, 2], [7, 4]], dashed: true, step: 2 },
         { kind: "label", at: [6.3, 1.4], label: "parallel: m = 2", labelAt: "e", step: 3 },
-        { kind: "line", through: [[3, 2], [1, 3]], tone: "good", step: 4 },
-        { kind: "segment", from: [2.5, 2.25], to: [2.5, 3.25], dashed: true, tone: "muted", step: 4 },
-        { kind: "label", at: [2.5, 2.8], label: "1", labelAt: "w", tone: "muted", step: 4 },
-        { kind: "segment", from: [2.5, 3.25], to: [0.5, 3.25], dashed: true, tone: "muted", label: "2", labelAt: "n", step: 4 },
+        { kind: "turn", centre: [3, 2], r: 1.5, from: 63.43, to: 153.43, step: 4 },
         { kind: "angle", at: [3, 2], from: 63.43, to: 153.43, tone: "good", step: 4 },
-        { kind: "label", at: [0.15, 2.2], label: "m₂ = −1/2", labelAt: "e", tone: "good", step: 4 },
-        { kind: "label", at: [0.15, 1], label: "m₁ × m₂ = −1", labelAt: "e", tone: "good", step: 5 },
+        { kind: "line", through: [[3, 2], [1, 3]], tone: "good", step: 5 },
+        { kind: "segment", from: [2.5, 2.25], to: [2.5, 3.25], dashed: true, tone: "muted", step: 5 },
+        { kind: "label", at: [2.5, 2.8], label: "1", labelAt: "w", tone: "muted", step: 5 },
+        { kind: "segment", from: [2.5, 3.25], to: [0.5, 3.25], dashed: true, tone: "muted", label: "2", labelAt: "n", step: 5 },
+        { kind: "label", at: [0.15, 2.2], label: "m₂ = −1/2", labelAt: "e", tone: "good", step: 6 },
+        { kind: "label", at: [0.15, 1], label: "m₁ × m₂ = −1", labelAt: "e", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag a handle to turn a line about a fixed point: its slope triangle turns with it, a second line stays at right angles to it, and the two slopes and their product, always $-1$, update as you drag.`,

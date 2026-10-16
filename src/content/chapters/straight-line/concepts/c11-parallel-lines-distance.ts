@@ -10,25 +10,125 @@ export const c11: Concept = {
     reveal: t`No. Halve the second equation: it is the same line, $3x + 4y + \frac{9}{2} = 0$, but now its constant is $\frac{9}{2}$, not $9$. With matching coefficients, $d = \frac{|2 - \frac{9}{2}|}{5} = \frac{1}{2}$.`,
   },
   explanation: {
-    intuition: t`Two parallel lines never get closer or further apart. Stand anywhere on one line and drop a perpendicular to the other: it always has the same length, and that length is the distance between the lines. So the distance is the distance of one point from a line, and working that out once for $ax + by + c_1 = 0$ and $ax + by + c_2 = 0$ gives a short formula. It needs both equations written with the **same** $a$ and $b$.`,
-    formal: t`**Distance between parallel lines**
-
-For $ax + by + c_1 = 0$ and $ax + by + c_2 = 0$:
-
-$$d = \frac{|c_1 - c_2|}{\sqrt{a^2 + b^2}}$$
-
-**Why it works.** The point $\left(0, -\frac{c_1}{b}\right)$ lies on the first line. Its distance from the second is $\frac{|-c_1 + c_2|}{\sqrt{a^2 + b^2}}$. (If $b = 0$, use $\left(-\frac{c_1}{a}, 0\right)$.)
-
-**Match the coefficients first.** For $x + 2y - 3 = 0$ and $2x + 4y + 1 = 0$, double the first: $2x + 4y - 6 = 0$. Then $d = \frac{|-6 - 1|}{\sqrt{20}} = \frac{7}{2\sqrt{5}}$.
-
-**Lines as $y = mx + c$.** Write $y = mx + c_1$ as $mx - y + c_1 = 0$, so $d = \frac{|c_1 - c_2|}{\sqrt{m^2 + 1}}$. The plain gap $|c_1 - c_2|$ is the vertical gap, which is longer.`,
+    intuition: [
+      t`Here is the line $3x + 4y - 12 = 0$.`,
+      t`The line $3x + 4y + 3 = 0$ is **parallel** to it: they never meet, and never get closer or further apart.`,
+      t`From $(4, 0)$ on the first line, drop a **perpendicular**, meeting the second line at a right angle: its length is $3$.`,
+      t`From $(0, 3)$, another point on the first line, the perpendicular has the same length, $3$.`,
+      t`This fixed gap is the **distance between the parallel lines**.`,
+      t`It is just one point's distance from the other line, and that gives a short formula.`,
+    ],
+    formal: [
+      {
+        title: "Distance between parallel lines",
+        points: [
+          t`Two parallel lines can be written with the same $a$ and $b$: $ax + by + c_1 = 0$ and $ax + by + c_2 = 0$.`,
+          t`Only their constants, $c_1$ and $c_2$, differ.`,
+          t`The distance $d$ between them equals $\frac{|c_1 - c_2|}{\sqrt{a^2 + b^2}}$.`,
+          t`For $3x + 4y - 12 = 0$ and $3x + 4y + 3 = 0$: $d = \frac{|-12 - 3|}{5} = 3$.`,
+        ],
+        figure: {
+          alt: "Two parallel lines, ax + by + c₁ = 0 and ax + by + c₂ = 0, here 3x + 4y − 12 = 0 and 3x + 4y + 3 = 0. A perpendicular from the first line to the second, at right angles to it, is the distance d.",
+          axes: "xy",
+          view: { x: [-3.5, 5.5], y: [-3.5, 4.5] },
+          elements: [
+            { kind: "line", through: [[0, 3], [1, 2.25]], step: 1 },
+            { kind: "label", at: [3.6, 1.6], label: "ax + by + c₁ = 0", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[0, -0.75], [1, -1.5]], tone: "muted", step: 1 },
+            { kind: "label", at: [-2.9, -1], label: "ax + by + c₂ = 0", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "segment", from: [3, 0.75], to: [1.2, -1.65], tone: "good", step: 3 },
+            { kind: "angle", at: [1.2, -1.65], from: 323.13, to: 413.13, tone: "good", step: 3 },
+            { kind: "label", at: [2.1, -0.45], label: "d", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Why the formula works",
+        points: [
+          t`Recall: the distance of $(x_1, y_1)$ from $ax + by + c = 0$ is $|ax_1 + by_1 + c|$ divided by $\sqrt{a^2 + b^2}$.`,
+          t`Put $x = 0$ in the first line and solve: the point $\left(0, -\frac{c_1}{b}\right)$ lies on it.`,
+          t`Put that point into $ax + by + c_2$: the value is $-c_1 + c_2$.`,
+          t`So its distance from the second line is $\frac{|-c_1 + c_2|}{\sqrt{a^2 + b^2}}$.`,
+          t`$|-c_1 + c_2|$ is the same as $|c_1 - c_2|$, so this is the formula.`,
+          t`If $b = 0$, the lines are vertical: use the point $\left(-\frac{c_1}{a}, 0\right)$ instead.`,
+        ],
+        figure: {
+          alt: "The parallel lines 3x + 4y − 12 = 0 and 3x + 4y + 3 = 0. The point (0, 3), where x = 0 on the first line, gives the value 3(0) + 4(3) + 3 = 15 in the second line's equation. Its perpendicular to the second line has length 15/5 = 3.",
+          axes: "xy",
+          view: { x: [-3.5, 5.5], y: [-3.5, 4.5] },
+          elements: [
+            { kind: "line", through: [[0, 3], [1, 2.25]] },
+            { kind: "label", at: [3.6, 1.6], label: "3x + 4y − 12 = 0", labelAt: "ne" },
+            { kind: "line", through: [[0, -0.75], [1, -1.5]], tone: "muted" },
+            { kind: "label", at: [-2.9, -1], label: "3x + 4y + 3 = 0", labelAt: "sw", tone: "muted" },
+            { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [0.3, 4.1], label: "3(0) + 4(3) + 3 = 15", labelAt: "e", step: 3 },
+            { kind: "segment", from: [0, 3], to: [-1.8, 0.6], tone: "good", step: 4 },
+            { kind: "angle", at: [-1.8, 0.6], from: 323.13, to: 413.13, tone: "good", step: 4 },
+            { kind: "label", at: [-0.9, 1.8], label: "15/5 = 3", labelAt: "nw", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Match the coefficients first",
+        points: [
+          t`Multiplying an equation by a number gives the same line, but changes $a$, $b$ and $c$.`,
+          t`So first make the $x$ and $y$ coefficients of the two lines equal.`,
+          t`For $x + 2y - 3 = 0$ and $2x + 4y + 1 = 0$, double the first: $2x + 4y - 6 = 0$.`,
+          t`Now $a = 2$, $b = 4$, $c_1 = -6$ and $c_2 = 1$.`,
+          t`So $d = \frac{|-6 - 1|}{\sqrt{4 + 16}}$, which is $\frac{7}{2\sqrt{5}}$.`,
+        ],
+        figure: {
+          alt: "The parallel lines x + 2y − 3 = 0, which is also 2x + 4y − 6 = 0, and 2x + 4y + 1 = 0. The perpendicular from (3, 0) on the first line to the second has length 7/(2√5).",
+          axes: "xy",
+          view: { x: [-3.5, 5.5], y: [-2.5, 3] },
+          elements: [
+            { kind: "line", through: [[0, 1.5], [3, 0]] },
+            { kind: "label", at: [2.2, 1.6], label: "x + 2y − 3 = 0", labelAt: "e" },
+            { kind: "line", through: [[0, -0.25], [1, -0.75]], tone: "muted" },
+            { kind: "label", at: [-1.5, -0.9], label: "2x + 4y + 1 = 0", labelAt: "sw", tone: "muted" },
+            { kind: "label", at: [2.2, 1.05], label: "= 2x + 4y − 6 = 0", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [3, 0], to: [2.3, -1.4], tone: "good", step: 5 },
+            { kind: "angle", at: [2.3, -1.4], from: 333.43, to: 423.43, tone: "good", step: 5 },
+            { kind: "label", at: [2.3, -1.4], label: "d = 7/(2√5)", labelAt: "sw", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Lines in slope–intercept form",
+        points: [
+          t`Recall: a line in **slope–intercept form** is written $y = mx + c$.`,
+          t`Write $y = mx + c_1$ as $mx - y + c_1 = 0$: here $a = m$ and $b = -1$.`,
+          t`Write $y = mx + c_2$ the same way: the two lines have the same $a$ and $b$.`,
+          t`So $d = \frac{|c_1 - c_2|}{\sqrt{m^2 + 1}}$.`,
+          t`The plain gap $|c_1 - c_2|$ is the **vertical gap**, straight up from one line to the other.`,
+          t`It crosses at a slant, so it is longer than $d$: here $3$ against $2.4$.`,
+        ],
+        figure: {
+          alt: "The parallel lines y = ¾x + 2 and y = ¾x − 1. From (2, 3.5) on the first line, the perpendicular to the second has length d = 3/√(9/16 + 1) = 2.4. The dashed vertical gap from the same point down to the second line is longer, 3.",
+          axes: "xy",
+          view: { x: [-4, 5], y: [-3, 5] },
+          elements: [
+            { kind: "line", through: [[0, 2], [4, 5]] },
+            { kind: "label", at: [-2, 0.5], label: "y = mx + c₁", labelAt: "nw" },
+            { kind: "line", through: [[0, -1], [4, 2]], tone: "muted" },
+            { kind: "label", at: [-1, -1.75], label: "y = mx + c₂", labelAt: "se", tone: "muted" },
+            { kind: "segment", from: [2, 3.5], to: [3.44, 1.58], tone: "good", step: 4 },
+            { kind: "angle", at: [3.44, 1.58], from: 36.87, to: 126.87, tone: "good", step: 4 },
+            { kind: "label", at: [2.72, 2.54], label: "d = 2.4", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "segment", from: [2, 3.5], to: [2, 0.5], tone: "bad", dashed: true, step: 5 },
+            { kind: "label", at: [2, 2], label: "3", labelAt: "w", tone: "bad", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the distance between the parallel lines $2x + 3y - 4 = 0$ and $4x + 6y + 5 = 0$.`,
       steps: [
         t`Make the $x$ and $y$ coefficients equal: double the first line to get $4x + 6y - 8 = 0$. Now $a = 4$, $b = 6$, $c_1 = -8$, $c_2 = 5$.`,
-        t`$\sqrt{a^2 + b^2} = \sqrt{16 + 36} = \sqrt{52} = 2\sqrt{13}$.`,
-        t`$d = \frac{|-8 - 5|}{2\sqrt{13}} = \frac{13}{2\sqrt{13}} = \frac{\sqrt{13}}{2}$.`,
-        t`Check: the perpendicular from $(5, -2)$ on the first line meets the second at $\left(4, -\frac{7}{2}\right)$, and $\sqrt{1^2 + \left(\frac{3}{2}\right)^2} = \frac{\sqrt{13}}{2}$.`,
+        t`$\sqrt{a^2 + b^2} = \sqrt{16 + 36}$ $= \sqrt{52} = 2\sqrt{13}$.`,
+        t`$d = \frac{|-8 - 5|}{2\sqrt{13}}$ $= \frac{13}{2\sqrt{13}}$ $= \frac{\sqrt{13}}{2}$.`,
+        t`Check: the perpendicular from $(5, -2)$ on the first line meets the second at $\left(4, -\frac{7}{2}\right)$, and $\sqrt{1^2 + \left(\frac{3}{2}\right)^2}$ $= \frac{\sqrt{13}}{2}$.`,
       ],
       answer: t`$d = \frac{\sqrt{13}}{2}$.`,
       figure: {
@@ -48,7 +148,7 @@ $$d = \frac{|c_1 - c_2|}{\sqrt{a^2 + b^2}}$$
       },
     },
     figure: {
-      alt: "Two parallel lines, 3x + 4y − 12 = 0 and 3x + 4y + 3 = 0. Perpendiculars dropped from (4, 0) and from (0, 3) on the first line to the second line both have length 3: the gap is the same wherever you start.",
+      alt: "Two parallel lines, 3x + 4y − 12 = 0 and 3x + 4y + 3 = 0. Perpendiculars dropped from (4, 0) and from (0, 3) on the first line, meeting the second line at right angles, both have length 3: the gap is the same wherever you start.",
       axes: "xy",
       view: { x: [-3.5, 5.5], y: [-3.5, 4.5] },
       elements: [
@@ -58,9 +158,11 @@ $$d = \frac{|c_1 - c_2|}{\sqrt{a^2 + b^2}}$$
         { kind: "label", at: [-2.9, -1], label: "3x + 4y + 3 = 0", labelAt: "sw", tone: "muted", step: 2 },
         { kind: "point", at: [4, 0], step: 3, label: "(4, 0)", labelAt: "ne" },
         { kind: "segment", from: [4, 0], to: [2.2, -2.4], tone: "good", step: 3 },
+        { kind: "angle", at: [2.2, -2.4], from: 323.13, to: 413.13, tone: "good", step: 3 },
         { kind: "label", at: [3, -1.2], label: "3", labelAt: "nw", tone: "good", step: 3 },
         { kind: "point", at: [0, 3], step: 4, label: "(0, 3)", labelAt: "ne" },
         { kind: "segment", from: [0, 3], to: [-1.8, 0.6], tone: "good", step: 4 },
+        { kind: "angle", at: [-1.8, 0.6], from: 323.13, to: 413.13, tone: "good", step: 4 },
         { kind: "label", at: [-1, 1.8], label: "3", labelAt: "nw", tone: "good", step: 4 },
       ],
     },

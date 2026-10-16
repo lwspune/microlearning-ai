@@ -1,6 +1,12 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The parabola y = x² for −2.55 ≤ x ≤ 2.55, as points to join. */
+const parabola: Pt[] = Array.from({ length: 52 }, (_, i) => {
+  const x = Math.round((-2.55 + i * 0.1) * 1000) / 1000;
+  return [x, Math.round(x * x * 1000) / 1000];
+});
 
 export const c02: Concept = {
   id: "C02",
@@ -10,23 +16,156 @@ export const c02: Concept = {
     reveal: t`$P$ stays exactly where it is; only the place you measure from moves. From the new origin, $P$ is $6 - 2 = 4$ across and $5 - 1 = 4$ up, so its new co-ordinates are $(4, 4)$.`,
   },
   explanation: {
-    intuition: t`Shifting the origin moves the place you measure from, not the points. Every point stays put; only its co-ordinates change. If the new origin $O'$ is at $(h, k)$, the old distance across, $x$, is the trip to $O'$, which is $h$, plus the trip from $O'$ to the point, which is $X$. So $x = X + h$, and in the same way $y = Y + k$. A curve is the same set of points, so its new equation comes from putting $x = X + h$, $y = Y + k$ into the old one.`,
-    formal: t`**Shift of origin.** Move the origin to $O'(h, k)$, keeping the axes parallel to the old ones. A point with old co-ordinates $(x, y)$ and new co-ordinates $(X, Y)$ has
-$$x = X + h, \qquad y = Y + k.$$
-
-**New from old:** $X = x - h$, $Y = y - k$: the point minus the new origin.
-
-**Old from new:** $x = X + h$, $y = Y + k$.
-
-**Where the origin went:** from one point whose old and new co-ordinates you know, $h = x - X$ and $k = y - Y$.
-
-**New equation of a locus:** put $x = X + h$, $y = Y + k$ into the old equation and simplify. Expand every square in full: $(X + h)^2 = X^2 + 2hX + h^2$.`,
+    intuition: [
+      t`A point's **co-ordinates** say how far across and how far up it is from the **origin** $O$.`,
+      t`To **shift the origin**, we measure from a new point $O'$ instead, with new axes parallel to the old.`,
+      t`The point $P$ itself does not move; only the place we measure from moves.`,
+      t`From $O'(2, 1)$, the point $P(6, 5)$ is $6 - 2 = 4$ across and $5 - 1 = 4$ up.`,
+      t`So its new co-ordinates are $(4, 4)$, though its old ones are still $(6, 5)$.`,
+      t`A curve is a set of points, so it stays put too; only its equation changes.`,
+    ],
+    formal: [
+      {
+        title: "Old and new co-ordinates",
+        points: [
+          t`Shift the origin to $O'(h, k)$, keeping the new axes parallel to the old ones.`,
+          t`A point $P$ has **old co-ordinates** $(x, y)$, measured from $O$ along the old axes.`,
+          t`Its **new co-ordinates** $(X, Y)$ are measured from $O'$ along the new axes.`,
+          t`Going across from the $y$-axis to $P$, you first travel $h$ to reach $O'$, then $X$ more.`,
+          t`So $x = X + h$.`,
+          t`In the same way, going up, $y = Y + k$.`,
+        ],
+        figure: {
+          alt: "Old axes, and dashed new axes through O′(h, k) parallel to them. A point P(x, y) is x across from the y-axis. Measured from O′ it is X across and Y up. Going across, the trip h to O′ plus the trip X from O′ make x, so x = X + h; going up, the trip k plus Y make y, so y = Y + k.",
+          axes: "xy",
+          view: { x: [-1, 8], y: [-1, 6.5] },
+          elements: [
+            { kind: "point", at: [2, 1.5], label: "O′(h, k)", labelAt: "nw", step: 1 },
+            { kind: "line", through: [[2, 1.5], [3, 1.5]], dashed: true, tone: "muted", step: 1 },
+            { kind: "line", through: [[2, 1.5], [2, 2.5]], dashed: true, tone: "muted", step: 1 },
+            { kind: "label", at: [7.6, 1.5], label: "X", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "label", at: [2, 6.1], label: "Y", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "point", at: [6, 5], label: "P(x, y)", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [0, 5], to: [6, 5], label: "x", labelAt: "n", dashed: true, tone: "muted", step: 2 },
+            { kind: "segment", from: [2, 1.5], to: [6, 1.5], label: "X", labelAt: "s", tone: "good", step: 3 },
+            { kind: "segment", from: [6, 1.5], to: [6, 5], label: "Y", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [0, 1.5], to: [2, 1.5], label: "h", labelAt: "s", step: 4 },
+            { kind: "label", at: [2.4, 3.8], label: "x = X + h", labelAt: "e", tone: "good", step: 5 },
+            { kind: "segment", from: [0, 0], to: [0, 1.5], label: "k", labelAt: "e", step: 6 },
+            { kind: "label", at: [2.4, 2.9], label: "y = Y + k", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "New co-ordinates from old",
+        points: [
+          t`Old from new: add $h$ and $k$, so $x = X + h$ and $y = Y + k$.`,
+          t`New from old: subtract them, so $X = x - h$ and $Y = y - k$.`,
+          t`So the new co-ordinates are the point minus the new origin.`,
+          t`For example, take the new origin $O'(4, 2)$ and the point $Q(2, 5)$.`,
+          t`Then $X = 2 - 4 = -2$ and $Y = 5 - 2 = 3$: $Q$ is now $(-2, 3)$.`,
+        ],
+        figure: {
+          alt: "Dashed new axes through O′(4, 2). The point Q(2, 5) is 2 to the left of O′ and 3 above it, so its new co-ordinates are X = 2 − 4 = −2 and Y = 5 − 2 = 3, that is (−2, 3).",
+          axes: "xy",
+          view: { x: [-1, 6], y: [-1, 6.2] },
+          elements: [
+            { kind: "point", at: [4, 2], label: "O′(4, 2)", labelAt: "se" },
+            { kind: "line", through: [[4, 2], [5, 2]], dashed: true, tone: "muted" },
+            { kind: "line", through: [[4, 2], [4, 3]], dashed: true, tone: "muted" },
+            { kind: "label", at: [5.7, 2], label: "X", labelAt: "n", tone: "muted" },
+            { kind: "label", at: [4, 5.8], label: "Y", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [2, 5], label: "Q(2, 5)", labelAt: "ne", step: 4 },
+            { kind: "segment", from: [4, 2], to: [2, 2], label: "X = −2", labelAt: "s", tone: "good", step: 5 },
+            { kind: "segment", from: [2, 2], to: [2, 5], label: "Y = 3", labelAt: "w", tone: "good", step: 5 },
+            { kind: "label", at: [2, 5], label: "new (−2, 3)", labelAt: "nw", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Where the origin went",
+        points: [
+          t`Suppose you know one point's old and new co-ordinates, but not where $O'$ is.`,
+          t`From $x = X + h$: $h = x - X$, the old co-ordinate minus the new.`,
+          t`From $y = Y + k$, in the same way: $k = y - Y$.`,
+          t`For example, $R$ is $(4, 3)$ in the old co-ordinates and $(5, 1)$ in the new.`,
+          t`So $h = 4 - 5 = -1$ and $k = 3 - 1 = 2$: the origin moved to $(-1, 2)$.`,
+        ],
+        figure: {
+          alt: "The point R(4, 3) on the old axes, with new co-ordinates (5, 1). Going 5 back across from R and 1 down reaches O′(−1, 2), the new origin, with dashed new axes through it.",
+          axes: "xy",
+          view: { x: [-3, 6], y: [-1, 5] },
+          elements: [
+            { kind: "point", at: [4, 3], label: "R(4, 3)", labelAt: "nw" },
+            { kind: "label", at: [4, 3], label: "new (5, 1)", labelAt: "se", tone: "good", step: 4 },
+            { kind: "segment", from: [4, 3], to: [-1, 3], label: "X = 5", labelAt: "n", tone: "good", step: 5 },
+            { kind: "segment", from: [-1, 3], to: [-1, 2], label: "Y = 1", labelAt: "w", tone: "good", step: 5 },
+            { kind: "point", at: [-1, 2], label: "O′(−1, 2)", labelAt: "sw", tone: "good", step: 5 },
+            { kind: "line", through: [[-1, 2], [0, 2]], dashed: true, tone: "muted", step: 5 },
+            { kind: "line", through: [[-1, 2], [-1, 3]], dashed: true, tone: "muted", step: 5 },
+            { kind: "label", at: [5.7, 2], label: "X", labelAt: "s", tone: "muted", step: 5 },
+            { kind: "label", at: [-1, 4.7], label: "Y", labelAt: "e", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "New equation of a locus",
+        points: [
+          t`Recall: a **locus** is the set of all points that satisfy a condition.`,
+          t`Shifting the origin moves none of these points, so the locus stays put.`,
+          t`To find its new equation, put $x = X + h$ and $y = Y + k$ into the old one.`,
+          t`For $x + y = 6$ with $O'(2, 1)$: $(X + 2) + (Y + 1) = 6$.`,
+          t`Simplify: $X + Y = 3$, the same line measured from $O'$.`,
+        ],
+        figure: {
+          alt: "The line x + y = 6. Dashed new axes run through O′(2, 1). The line has not moved, but measured from O′ its equation is X + Y = 3.",
+          axes: "xy",
+          view: { x: [-1, 7], y: [-1, 7] },
+          elements: [
+            { kind: "line", through: [[0, 6], [6, 0]] },
+            { kind: "label", at: [3.8, 2.2], label: "x + y = 6", labelAt: "ne", tone: "muted" },
+            { kind: "point", at: [2, 1], label: "O′(2, 1)", labelAt: "sw", step: 2 },
+            { kind: "line", through: [[2, 1], [3, 1]], dashed: true, tone: "muted", step: 2 },
+            { kind: "line", through: [[2, 1], [2, 2]], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [6.7, 1], label: "X", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "label", at: [2, 6.7], label: "Y", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "label", at: [3.8, 2.2], label: "X + Y = 3", labelAt: "sw", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Expanding a square",
+        points: [
+          t`If the old equation has a square, substituting gives a square such as $(X + h)^2$.`,
+          t`Expand it in full: $(X + h)^2 = X^2 + 2hX + h^2$.`,
+          t`Keep the middle term $2hX$: $(X + h)^2$ is not $X^2 + h^2$.`,
+          t`For example, take the curve $y = x^2$ and move the origin to $O'(1, 1)$.`,
+          t`Then $Y + 1 = (X + 1)^2$ $= X^2 + 2X + 1$.`,
+          t`So the new equation is $Y = X^2 + 2X$.`,
+        ],
+        figure: {
+          alt: "The parabola y = x². Dashed new axes run through O′(1, 1), a point on the curve. Measured from O′, the same curve is Y = X² + 2X.",
+          axes: "xy",
+          view: { x: [-2.6, 4.5], y: [-1, 6.6] },
+          elements: [
+            { kind: "curve", points: parabola },
+            { kind: "label", at: [-2.2, 4.84], label: "y = x²", labelAt: "e", tone: "muted" },
+            { kind: "point", at: [1, 1], label: "O′(1, 1)", labelAt: "se", step: 4 },
+            { kind: "line", through: [[1, 1], [2, 1]], dashed: true, tone: "muted", step: 4 },
+            { kind: "line", through: [[1, 1], [1, 2]], dashed: true, tone: "muted", step: 4 },
+            { kind: "label", at: [4.2, 1], label: "X", labelAt: "n", tone: "muted", step: 4 },
+            { kind: "label", at: [1, 6.2], label: "Y", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "label", at: [1.9, 3.61], label: "Y = X² + 2X", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Obtain the new equation of the locus $x^2 + y^2 - 6x + 2y + 6 = 0$ when the origin is shifted to $(3, -1)$, the axes remaining parallel to the original axes.`,
       steps: [
         t`$(h, k) = (3, -1)$, so put $x = X + 3$ and $y = Y - 1$.`,
-        t`Substitute: $(X + 3)^2 + (Y - 1)^2 - 6(X + 3) + 2(Y - 1) + 6 = 0$.`,
-        t`Expand: $X^2 + 6X + 9 + Y^2 - 2Y + 1 - 6X - 18 + 2Y - 2 + 6 = 0$. The $X$ and $Y$ terms cancel, and $9 + 1 - 18 - 2 + 6 = -4$.`,
+        t`Substitute: $(X + 3)^2 + (Y - 1)^2$ $- 6(X + 3) + 2(Y - 1) + 6 = 0$.`,
+        t`Expand: $X^2 + 6X + 9 + Y^2 - 2Y + 1$ $- 6X - 18 + 2Y - 2 + 6 = 0$. The $X$ and $Y$ terms cancel, and $9 + 1 - 18 - 2 + 6 = -4$.`,
         t`So $X^2 + Y^2 - 4 = 0$: the same circle, radius $2$, now centred at the new origin.`,
       ],
       answer: t`$X^2 + Y^2 = 4$.`,
@@ -51,15 +190,15 @@ $$x = X + h, \qquad y = Y + k.$$
       axes: "xy",
       view: { x: [-1, 8], y: [-1, 6.5] },
       elements: [
-        { kind: "point", at: [2, 1], label: "O′(2, 1)", labelAt: "nw", step: 1 },
-        { kind: "line", through: [[2, 1], [3, 1]], dashed: true, tone: "muted", step: 1 },
-        { kind: "line", through: [[2, 1], [2, 2]], dashed: true, tone: "muted", step: 1 },
-        { kind: "label", at: [7.6, 1], label: "X", labelAt: "n", tone: "muted", step: 1 },
-        { kind: "label", at: [2, 6.1], label: "Y", labelAt: "e", tone: "muted", step: 1 },
-        { kind: "point", at: [6, 5], label: "P(6, 5)", labelAt: "ne", step: 2 },
-        { kind: "segment", from: [2, 1], to: [6, 1], label: "X = 4", labelAt: "s", tone: "good", step: 3 },
-        { kind: "segment", from: [6, 1], to: [6, 5], label: "Y = 4", labelAt: "e", tone: "good", step: 3 },
-        { kind: "label", at: [6, 5], label: "new (4, 4)", labelAt: "nw", tone: "good", step: 4 },
+        { kind: "point", at: [6, 5], label: "P(6, 5)", labelAt: "ne", step: 1 },
+        { kind: "point", at: [2, 1], label: "O′(2, 1)", labelAt: "nw", step: 2 },
+        { kind: "line", through: [[2, 1], [3, 1]], dashed: true, tone: "muted", step: 2 },
+        { kind: "line", through: [[2, 1], [2, 2]], dashed: true, tone: "muted", step: 2 },
+        { kind: "label", at: [7.6, 1], label: "X", labelAt: "n", tone: "muted", step: 2 },
+        { kind: "label", at: [2, 6.1], label: "Y", labelAt: "e", tone: "muted", step: 2 },
+        { kind: "segment", from: [2, 1], to: [6, 1], label: "X = 4", labelAt: "s", tone: "good", step: 4 },
+        { kind: "segment", from: [6, 1], to: [6, 5], label: "Y = 4", labelAt: "e", tone: "good", step: 4 },
+        { kind: "label", at: [6, 5], label: "new (4, 4)", labelAt: "nw", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag the new origin $O'$ around the plane: a fixed point $P$ shows its old co-ordinates and its new ones, $(x - h, y - k)$, and a fixed curve's new equation updates as $O'$ moves.`,

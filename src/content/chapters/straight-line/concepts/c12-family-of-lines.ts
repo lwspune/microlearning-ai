@@ -1,6 +1,19 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The view of the idea slide, kept for every slide built on its two lines. */
+const view = { x: [-1.5, 8] as [number, number], y: [-2, 5] as [number, number] };
+
+/** The lines x + y − 4 = 0 and x − y − 2 = 0, labelled, and their meeting point (3, 1): always present. */
+const pair: FigureElement[] = [
+  { kind: "line", through: [[-1, 5], [6, -2]], tone: "muted" },
+  { kind: "line", through: [[0, -2], [7, 5]], tone: "muted" },
+  { kind: "label", at: [5.37, -1.37], label: "x + y − 4 = 0", labelAt: "sw", tone: "muted" },
+  { kind: "label", at: [6.37, 4.37], label: "x − y − 2 = 0", labelAt: "nw", tone: "muted" },
+  { kind: "point", at: [3, 1] },
+  { kind: "label", at: [3, 1.76], label: "(3, 1)", labelAt: "n" },
+];
 
 export const c12: Concept = {
   id: "C12",
@@ -10,17 +23,184 @@ export const c12: Concept = {
     reveal: t`Yes. At the meeting point both $x + y - 4$ and $x - y - 2$ are $0$, so $(x + y - 4) + k(x - y - 2) = 0$ holds there for every $k$. For the origin to be on it too: $-4 - 2k = 0$, so $k = -2$, and the line is $-x + 3y = 0$, that is $x = 3y$. (The lines meet at $(3, 1)$, and $3 = 3 \times 1$.)`,
   },
   explanation: {
-    intuition: t`Where $L_1 = 0$ and $L_2 = 0$ meet, both expressions are $0$, so $L_1 + kL_2$ is $0$ there too, whatever $k$ is. Each value of $k$ gives one line through that point: change $k$ and the line swings about the point. The question always gives one more fact (an intercept, a direction, a second point), and that fact fixes $k$. You never need the meeting point itself.`,
-    formal: t`**The family.** If $L_1 \equiv a_1x + b_1y + c_1 = 0$ and $L_2 \equiv a_2x + b_2y + c_2 = 0$ meet at a point, then $L_1 + kL_2 = 0$ is a line through that point for every $k$. First bring each line to the form $\ldots = 0$: $2x - y = 2$ becomes $2x - y - 2 = 0$.
-
-**One condition fixes $k$.** Collect terms into $Ax + By + C = 0$, where $A = a_1 + ka_2$, $B = b_1 + kb_2$, $C = c_1 + kc_2$. Then:
-- through $(x_1, y_1)$: substitute the point;
-- $X$-intercept: $-\frac{C}{A}$; $Y$-intercept: $-\frac{C}{B}$;
-- parallel to the $X$-axis: $A = 0$; parallel to the $Y$-axis: $B = 0$.
-
-**Put $k$ back** into $L_1 + kL_2 = 0$, in the same place, and clear the fractions.
-
-**Concurrent lines.** Three lines are concurrent when the third passes through the meeting point of the other two. $3x - 4y + 5 = 0$ and $7x - 8y + 5 = 0$ meet at $(5, 5)$, and $4(5) + 5(5) - 45 = 0$, so $4x + 5y - 45 = 0$ passes through it too.`,
+    intuition: [
+      t`Write the two lines with $0$ on the right: $x + y - 4 = 0$ and $x - y - 2 = 0$.`,
+      t`Call their left sides $L_1$ and $L_2$: where the lines meet, both are $0$.`,
+      t`So $L_1 + kL_2 = 0$ there too, for any number $k$, without finding the point.`,
+      t`Each value of $k$ gives a line through the meeting point, such as $k = -\frac{1}{2}$ or $k = -1$.`,
+      t`Change $k$ and the line swings about the point: these lines are a **family of lines**.`,
+      t`One more fact, such as a point, an intercept or a direction, fixes $k$: through the origin, $k = -2$.`,
+    ],
+    formal: [
+      {
+        title: "The family through a point",
+        points: [
+          t`Write each line in general form, with $0$ on the right: $L_1 = 0$ and $L_2 = 0$.`,
+          t`Here $L_1$ stands for $a_1x + b_1y + c_1$, and $L_2$ for $a_2x + b_2y + c_2$.`,
+          t`A term moved across the $=$ sign changes its sign: $2x - y = 2$ becomes $2x - y - 2 = 0$.`,
+          t`In the same way, $x + y = 4$ gives $L_1 = x + y - 4$, and $x - y = 2$ gives $L_2 = x - y - 2$.`,
+          t`If $L_1 = 0$ and $L_2 = 0$ meet at a point, $L_1 + kL_2 = 0$ passes through it for every $k$.`,
+        ],
+        figure: {
+          alt: "Two lines, L₁ = 0 and L₂ = 0, here x + y − 4 = 0 and x − y − 2 = 0, meet at (3, 1). Dashed lines through (3, 1) are members of L₁ + kL₂ = 0 for different values of k.",
+          axes: "xy",
+          view,
+          elements: [
+            { kind: "line", through: [[-1, 5], [6, -2]], tone: "muted", step: 1 },
+            { kind: "line", through: [[0, -2], [7, 5]], tone: "muted", step: 1 },
+            { kind: "label", at: [5.37, -1.37], label: "L₁ = 0", labelAt: "sw", tone: "muted", step: 1 },
+            { kind: "label", at: [6.37, 4.37], label: "L₂ = 0", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "label", at: [5.37, -1.37], label: "x + y − 4 = 0", labelAt: "ne", tone: "muted", step: 4 },
+            { kind: "label", at: [6.0, 3.5], label: "x − y − 2 = 0", labelAt: "se", tone: "muted", step: 4 },
+            { kind: "point", at: [3, 1], step: 5 },
+            { kind: "label", at: [3, 1.76], label: "(3, 1)", labelAt: "n", step: 5 },
+            { kind: "line", through: [[-1.5, 2.5], [8, -0.667]], tone: "good", dashed: true, step: 5 },
+            { kind: "line", through: [[-1.5, 1], [8, 1]], tone: "good", dashed: true, step: 5 },
+            { kind: "line", through: [[2, -2], [3, 1]], tone: "good", dashed: true, step: 5 },
+            { kind: "label", at: [0.2, 4.4], label: "L₁ + kL₂ = 0", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Collect the terms",
+        points: [
+          t`To use one more fact, first write $L_1 + kL_2 = 0$ in general form.`,
+          t`Gather the $x$ terms, the $y$ terms and the constants: $Ax + By + C = 0$.`,
+          t`Here $A = a_1 + ka_2$, $B = b_1 + kb_2$ and $C = c_1 + kc_2$.`,
+          t`Our two lines give $(x + y - 4) + k(x - y - 2) = 0$.`,
+          t`Collected, that is $(1 + k)x + (1 - k)y$ $- (4 + 2k) = 0$.`,
+          t`Each $k$ gives its own line: $k = 2$ gives $3x - y - 8 = 0$.`,
+        ],
+        figure: {
+          alt: "The lines x + y − 4 = 0 and x − y − 2 = 0 meet at (3, 1). The member of the family with k = 2, the line 3x − y − 8 = 0, also passes through (3, 1).",
+          axes: "xy",
+          view,
+          elements: [
+            ...pair,
+            { kind: "line", through: [[2, -2], [3, 1]], tone: "good", step: 6 },
+            { kind: "label", at: [3.75, 3.3], label: "3x − y − 8 = 0", labelAt: "w", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Through a given point",
+        points: [
+          t`One more fact about the line becomes an equation in $k$: solve it to fix $k$.`,
+          t`Say the line must also pass through $P(-1, -1)$.`,
+          t`Then substitute the point for $x$ and $y$ in $L_1 + kL_2 = 0$.`,
+          t`At $P$, $L_1 = -1 - 1 - 4 = -6$ and $L_2 = -1 + 1 - 2 = -2$.`,
+          t`So $-6 - 2k = 0$, and $k = -3$.`,
+          t`The line is $(x + y - 4) - 3(x - y - 2) = 0$, that is $x - 2y - 1 = 0$.`,
+        ],
+        figure: {
+          alt: "The lines x + y − 4 = 0 and x − y − 2 = 0 meet at (3, 1). The point P(−1, −1) is marked, and the member with k = −3, the line x − 2y − 1 = 0, passes through both (3, 1) and P.",
+          axes: "xy",
+          view,
+          elements: [
+            ...pair,
+            { kind: "point", at: [-1, -1], label: "P(−1, −1)", labelAt: "s", step: 2 },
+            { kind: "line", through: [[-1, -1], [3, 1]], tone: "good", step: 6 },
+            { kind: "label", at: [5.0, 1.75], label: "x − 2y − 1 = 0", labelAt: "se", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Lines with a given intercept",
+        points: [
+          t`Recall: the $X$-intercept is where a line crosses the $X$-axis, so put $y = 0$.`,
+          t`For $Ax + By + C = 0$ that gives $-\frac{C}{A}$: keep the minus sign.`,
+          t`The $Y$-intercept comes from $x = 0$: it is $-\frac{C}{B}$, not $-\frac{C}{A}$.`,
+          t`Say the line must make $X$-intercept $5$, so it passes through $(5, 0)$.`,
+          t`Here $-\frac{C}{A} = \frac{4 + 2k}{1 + k} = 5$, so $4 + 2k = 5 + 5k$.`,
+          t`So $k = -\frac{1}{3}$: one line, through $(3, 1)$ and $(5, 0)$.`,
+        ],
+        figure: {
+          alt: "The lines x + y − 4 = 0 and x − y − 2 = 0 meet at (3, 1). The point (5, 0) on the x-axis is marked, and the member with k = −1/3 passes through (3, 1) and (5, 0).",
+          axes: "xy",
+          view,
+          elements: [
+            ...pair,
+            { kind: "point", at: [5, 0], label: "(5, 0)", labelAt: "ne", step: 4 },
+            { kind: "line", through: [[5, 0], [3, 1]], tone: "good", step: 6 },
+            { kind: "label", at: [5.6, 1.0], label: "k = −1/3", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Parallel to an axis",
+        points: [
+          t`A line parallel to the $X$-axis is flat, $y = d$ for a number $d$: it has no $x$ term.`,
+          t`So set the coefficient of $x$ to zero: $A = 0$.`,
+          t`A line parallel to the $Y$-axis is upright, $x = d$: no $y$ term, so $B = 0$.`,
+          t`Here $A = 1 + k = 0$ gives $k = -1$: the line $2y - 2 = 0$, or $y = 1$.`,
+          t`And $B = 1 - k = 0$ gives $k = 1$: the line $2x - 6 = 0$, or $x = 3$.`,
+        ],
+        figure: {
+          alt: "The lines x + y − 4 = 0 and x − y − 2 = 0 meet at (3, 1). The member with k = −1 is the flat line y = 1, parallel to the x-axis; the member with k = 1 is the upright line x = 3, parallel to the y-axis. Both pass through (3, 1).",
+          axes: "xy",
+          view,
+          elements: [
+            ...pair.filter((e) => e.label !== "(3, 1)"),
+            { kind: "label", at: [2.88, 2.3], label: "(3, 1)", labelAt: "w" },
+            { kind: "line", through: [[-1.5, 1], [8, 1]], tone: "good", step: 4 },
+            { kind: "label", at: [7.9, 1.1], label: "k = −1: y = 1", labelAt: "nw", tone: "good", step: 4 },
+            { kind: "line", through: [[3, -2], [3, 5]], tone: "good", step: 5 },
+            { kind: "label", at: [2.95, 3.85], label: "k = 1: x = 3", labelAt: "w", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Put k back",
+        points: [
+          t`Put the $k$ you found back into $L_1 + kL_2 = 0$, where it multiplies $L_2$.`,
+          t`$kL_1 + L_2 = 0$ is a different line through the same point, so don't swap them.`,
+          t`Clear a fraction by multiplying through: $k = -\frac{1}{3}$, times $3$, gives $3L_1 - L_2 = 0$.`,
+          t`Expand and collect: $3(x + y - 4) - (x - y - 2) = 0$ is $2x + 4y - 10 = 0$.`,
+          t`Divide by the common factor $2$: $x + 2y - 5 = 0$.`,
+          t`Check it with the fact you used: at $(5, 0)$, $5 + 0 - 5 = 0$.`,
+        ],
+        figure: {
+          alt: "The lines x + y − 4 = 0 and x − y − 2 = 0 meet at (3, 1). With k = −1/3, L₁ + kL₂ = 0 is the line x + 2y − 5 = 0 through (5, 0). The swapped kL₁ + L₂ = 0, dashed, is a different line through (3, 1) that misses (5, 0).",
+          axes: "xy",
+          view,
+          elements: [
+            ...pair,
+            { kind: "line", through: [[5, 0], [3, 1]], tone: "good", step: 1 },
+            { kind: "label", at: [5.4, 1.5], label: "L₁ + kL₂ = 0", labelAt: "e", tone: "good", step: 1 },
+            { kind: "line", through: [[-1, -1], [3, 1]], tone: "bad", dashed: true, step: 2 },
+            { kind: "label", at: [6.0, 2.05], label: "kL₁ + L₂ = 0", labelAt: "e", tone: "bad", step: 2 },
+            { kind: "label", at: [5.4, 0.95], label: "x + 2y − 5 = 0", labelAt: "e", tone: "good", step: 5 },
+            { kind: "point", at: [5, 0], label: "(5, 0)", labelAt: "ne", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Concurrent lines",
+        points: [
+          t`The lines $3x - 4y + 5 = 0$ and $7x - 8y + 5 = 0$ meet at $(5, 5)$.`,
+          t`Three lines are **concurrent** when all three pass through one point.`,
+          t`So a third line is concurrent with these two when it passes through $(5, 5)$.`,
+          t`Substitute it into $4x + 5y - 45 = 0$: $4(5) + 5(5) - 45 = 0$.`,
+          t`So $4x + 5y - 45 = 0$ passes through $(5, 5)$ too: the three lines are concurrent.`,
+        ],
+        figure: {
+          alt: "The lines 3x − 4y + 5 = 0 and 7x − 8y + 5 = 0 meet at (5, 5). The line 4x + 5y − 45 = 0 passes through (5, 5) too, so all three lines meet there.",
+          axes: "xy",
+          view: { x: [-1, 9.5], y: [-1, 9.5] },
+          elements: [
+            { kind: "line", through: [[-1, 0.5], [5, 5]], tone: "muted", step: 1 },
+            { kind: "label", at: [0.2, 4.0], label: "3x − 4y + 5 = 0", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "line", through: [[-1, -0.25], [5, 5]], tone: "muted", step: 1 },
+            { kind: "label", at: [8, 7.63], label: "7x − 8y + 5 = 0", labelAt: "nw", tone: "muted", step: 1 },
+            { kind: "point", at: [5, 5], step: 1 },
+            { kind: "label", at: [4.4, 5], label: "(5, 5)", labelAt: "w", step: 1 },
+            { kind: "line", through: [[0, 9], [5, 5]], tone: "good", step: 4 },
+            { kind: "label", at: [5.8, 5.0], label: "4x + 5y − 45 = 0", labelAt: "e", tone: "good", step: 4 },
+            { kind: "point", at: [5, 5], tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the equation of the line through the point of intersection of $2x + y - 5 = 0$ and $x - y - 1 = 0$ that makes intercept $4$ on the $Y$-axis.`,
       steps: [
@@ -49,23 +229,24 @@ export const c12: Concept = {
       },
     },
     figure: {
-      alt: "The lines x + y = 4 and x − y = 2 cross at (3, 1). Dashed lines through (3, 1) show members of the family (x + y − 4) + k(x − y − 2) = 0: k = −1/2 gives x + 3y = 6 and k = −1 gives y = 1. The member with k = −2, the line x = 3y, also passes through the origin.",
+      alt: "The lines x + y = 4 and x − y = 2 cross at (3, 1). Dashed lines through (3, 1) show members of the family (x + y − 4) + k(x − y − 2) = 0: k = −1/2 gives x + 3y = 6 and k = −1 gives y = 1. An arm about (3, 1) swings from the first to the second and on, as k changes. The member with k = −2, the line x = 3y, also passes through the origin.",
       axes: "xy",
-      view: { x: [-1.5, 8], y: [-2, 5] },
+      view,
       elements: [
         { kind: "line", through: [[-1, 5], [6, -2]], tone: "muted", step: 1 },
         { kind: "line", through: [[0, -2], [7, 5]], tone: "muted", step: 1 },
-        { kind: "line", through: [[-1.5, 2.5], [8, -0.667]], tone: "muted", step: 3, dashed: true },
-        { kind: "line", through: [[-1.5, 1], [8, 1]], tone: "muted", step: 3, dashed: true },
-        { kind: "line", through: [[-1.5, -0.5], [8, 2.667]], tone: "good", step: 4 },
+        { kind: "line", through: [[-1.5, 2.5], [8, -0.667]], tone: "muted", step: 4, dashed: true },
+        { kind: "line", through: [[-1.5, 1], [8, 1]], tone: "muted", step: 4, dashed: true },
+        { kind: "turn", centre: [3, 1], r: 2, from: -18.43, to: 18.43, step: 5 },
+        { kind: "line", through: [[-1.5, -0.5], [8, 2.667]], tone: "good", step: 6 },
         { kind: "point", at: [3, 1], step: 2 },
         { kind: "label", at: [3, 1.76], label: "(3, 1)", labelAt: "n", step: 2 },
-        { kind: "point", at: [0, 0], tone: "good", step: 4 },
+        { kind: "point", at: [0, 0], tone: "good", step: 6 },
         { kind: "label", at: [5.37, -1.37], label: "x + y = 4", labelAt: "sw", tone: "muted", step: 1 },
         { kind: "label", at: [6.37, 4.37], label: "x − y = 2", labelAt: "nw", tone: "muted", step: 1 },
-        { kind: "label", at: [5.435, 0.188], label: "k = −1/2", labelAt: "ne", tone: "muted", step: 3 },
-        { kind: "label", at: [6.86, 1], label: "k = −1", labelAt: "n", tone: "muted", step: 3 },
-        { kind: "label", at: [7.43, 2.477], label: "k = −2", labelAt: "nw", tone: "good", step: 4 },
+        { kind: "label", at: [5.435, 0.188], label: "k = −1/2", labelAt: "ne", tone: "muted", step: 4 },
+        { kind: "label", at: [6.86, 1], label: "k = −1", labelAt: "n", tone: "muted", step: 4 },
+        { kind: "label", at: [7.43, 2.477], label: "k = −2", labelAt: "nw", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag a slider for $k$: the line $L_1 + kL_2 = 0$ swings about the meeting point of two fixed lines, and a target (a point or an intercept) lights up when the line reaches it, showing that value of $k$.`,

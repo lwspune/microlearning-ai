@@ -1,6 +1,14 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The line 3x + 2y − 6 = 0, through (2, 0) and (0, 3), with its equation, appearing at `step`. */
+const line326 = (step: number): FigureElement[] => [
+  { kind: "line", through: [[2, 0], [0, 3]], step },
+  { kind: "label", at: [2.6, -0.9], label: "3x + 2y − 6 = 0", labelAt: "e", step },
+];
+
+const view326 = { x: [-1, 4.5] as [number, number], y: [-1.5, 4] as [number, number] };
 
 export const c07: Concept = {
   id: "C07",
@@ -10,27 +18,144 @@ export const c07: Concept = {
     reveal: t`No, they are the same line. The second is the first multiplied by $2$, so every point that fits one fits the other. Both have slope $\frac{2}{3}$ and cross the axes at $(-3, 0)$ and $(0, 2)$. In general, $a_1x + b_1y + c_1 = 0$ and $a_2x + b_2y + c_2 = 0$ are the same line when $\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$.`,
   },
   explanation: {
-    intuition: t`$y = mx + c$ can't write a vertical line, and the intercept form can't write a line through the origin. $ax + by + c = 0$ writes every line, so it is the form the rest of the chapter uses. The price: the slope and intercepts aren't on show. Each comes from one move: put $y = 0$, put $x = 0$, or solve for $y$. Multiplying the whole equation by a nonzero number doesn't change the line.`,
-    formal: t`**Every line is $ax + by + c = 0$** ($a$, $b$ not both zero). If $b \ne 0$, solve for $y$: $y = -\frac{a}{b}x - \frac{c}{b}$. If $b = 0$, the line is vertical: $x = -\frac{c}{a}$. Any other form becomes general form by moving every term to one side: $y = 2x - 4$ becomes $2x - y - 4 = 0$.
-
-**Read-offs**
-
-- Slope $= -\frac{a}{b}$
-- $x$-intercept $= -\frac{c}{a}$ (put $y = 0$)
-- $y$-intercept $= -\frac{c}{b}$ (put $x = 0$)
-
-**Area with the axes.** The line and the two axes make a triangle with its right angle at the origin: area $= \frac{1}{2}\,|x\text{-intercept}|\,|y\text{-intercept}|$. Intercepts can be negative; lengths can't.
-
-**Two lines.** They meet where both equations hold, so solve them together: $x + 2y = 3$ and $2x - y = 1$ meet at $(1, 1)$. They are the same line when $\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$.
-
-**A point on a line.** Substitute it: the point lies on the line only if the left side becomes $0$. For $A(2, 3)$ and $3x + 2y - 6 = 0$: $6 + 6 - 6 = 6 \ne 0$, so $A$ is not on the line.`,
+    intuition: [
+      t`$y = mx + c$ needs a slope $m$, so it can't write a **vertical** (upright) line such as $x = 3$.`,
+      t`The intercept form, built on the **intercepts** (where a line crosses the axes), can't write a line through the origin like $y = 2x$.`,
+      t`The **general form** $ax + by + c = 0$ writes every line: these two are $x - 3 = 0$ and $2x - y = 0$.`,
+      t`So the rest of the chapter uses it, though its slope and intercepts aren't on show.`,
+      t`Each comes from one move: put $y = 0$, put $x = 0$, or solve for $y$.`,
+      t`Multiplying the whole equation by a nonzero number doesn't change the line.`,
+    ],
+    figure: {
+      alt: "The vertical line x = 3, which y = mx + c can't write, and the line y = 2x through the origin, which the intercept form can't write. Both have a general form: x − 3 = 0 and 2x − y = 0.",
+      axes: "xy",
+      view: { x: [-1.5, 5], y: [-1.5, 4.5] },
+      elements: [
+        { kind: "line", through: [[3, 0], [3, 1]], step: 1 },
+        { kind: "label", at: [3, 3.8], label: "x = 3", labelAt: "e", step: 1 },
+        { kind: "line", through: [[0, 0], [1, 2]], step: 2 },
+        { kind: "label", at: [1.9, 3.8], label: "y = 2x", labelAt: "w", step: 2 },
+        { kind: "label", at: [3, 3.1], label: "x − 3 = 0", labelAt: "e", tone: "good", step: 3 },
+        { kind: "label", at: [1.55, 3.1], label: "2x − y = 0", labelAt: "w", tone: "good", step: 3 },
+      ],
+    },
+    formal: [
+      {
+        title: "Every line in general form",
+        points: [
+          t`Every line can be written $ax + by + c = 0$, where the **coefficients** $a$, $b$ and the constant $c$ are fixed numbers.`,
+          t`$a$ and $b$ are not both zero, or no $x$ or $y$ would be left.`,
+          t`Any other form becomes general form by moving every term to one side.`,
+          t`For example, $y = 2x - 4$ becomes $2x - y - 4 = 0$.`,
+          t`If $b \ne 0$, solve for $y$: $by = -ax - c$, so $y = -\frac{a}{b}x - \frac{c}{b}$.`,
+          t`If $b = 0$, the line is vertical: $x = -\frac{c}{a}$.`,
+        ],
+      },
+      {
+        title: "Slope and intercepts",
+        points: [
+          t`Read $a$, $b$, $c$ with their signs: $3x + 2y - 6 = 0$ has $a = 3$, $b = 2$, $c = -6$.`,
+          t`The slope is the coefficient of $x$ once $y$ stands alone: $-\frac{a}{b}$, here $-\frac{3}{2}$.`,
+          t`Every point on the $x$-axis has $y = 0$, so put $y = 0$ to find the $x$-intercept.`,
+          t`That gives $ax + c = 0$, so the $x$-intercept is $-\frac{c}{a}$, here $2$.`,
+          t`Put $x = 0$ instead: the $y$-intercept is $-\frac{c}{b}$, here $3$.`,
+        ],
+        figure: {
+          alt: "The line 3x + 2y − 6 = 0. From (0, 3), going 2 to the right and 3 down reaches the line again, so its slope is −3/2. It meets the x-axis at (2, 0), the x-intercept 2, and the y-axis at (0, 3), the y-intercept 3.",
+          axes: "xy",
+          view: view326,
+          elements: [
+            ...line326(1),
+            { kind: "segment", from: [0, 3], to: [2, 3], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [1.2, 3], label: "right 2", labelAt: "s", step: 2 },
+            { kind: "segment", from: [2, 3], to: [2, 0], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [2, 1.8], label: "down 3", labelAt: "e", step: 2 },
+            { kind: "point", at: [2, 0], label: "(2, 0)", labelAt: "ne", tone: "good", step: 4 },
+            { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Area with the axes",
+        points: [
+          t`Take $x - 2y + 4 = 0$: its intercepts are $-\frac{c}{a} = -4$ and $-\frac{c}{b} = 2$.`,
+          t`A line that cuts both axes away from the origin makes a triangle with them.`,
+          t`Its right angle is at the origin, and its **legs**, the two sides that meet there, lie along the axes.`,
+          t`Intercepts can be negative, but lengths can't: the legs are $|-4| = 4$ and $|2| = 2$.`,
+          t`So the area is $\frac{1}{2} \times |x\text{-intercept}|$ $\times\, |y\text{-intercept}|$.`,
+          t`Here the area is $\frac{1}{2} \times 4 \times 2 = 4$ square units.`,
+        ],
+        figure: {
+          alt: "The line x − 2y + 4 = 0 meets the x-axis at (−4, 0) and the y-axis at (0, 2). With the axes it makes a shaded right triangle, its right angle at the origin, with legs of length 4 and 2 along the axes. Its area is ½ × 4 × 2 = 4.",
+          axes: "xy",
+          view: { x: [-5.5, 4], y: [-1, 3.5] },
+          elements: [
+            { kind: "line", through: [[-4, 0], [0, 2]], step: 1 },
+            { kind: "label", at: [1.4, 2.7], label: "x − 2y + 4 = 0", labelAt: "se", step: 1 },
+            { kind: "point", at: [-4, 0], label: "(−4, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, 2], label: "(0, 2)", labelAt: "nw", step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [0, 2]] }, { kind: "halfPlane", through: [[0, 2], [-4, 0]] }, { kind: "halfPlane", through: [[-4, 0], [0, 0]] }], tone: "good", step: 2 },
+            { kind: "segment", from: [-0.25, 0], to: [-0.25, 0.25], tone: "muted", step: 3 },
+            { kind: "segment", from: [-0.25, 0.25], to: [0, 0.25], tone: "muted", step: 3 },
+            { kind: "segment", from: [-4, 0], to: [0, 0], tone: "good", step: 3 },
+            { kind: "segment", from: [0, 0], to: [0, 2], tone: "good", step: 3 },
+            { kind: "label", at: [-2.4, 0], label: "4", labelAt: "n", tone: "good", step: 4 },
+            { kind: "label", at: [0, 1.5], label: "2", labelAt: "w", tone: "good", step: 4 },
+            { kind: "label", at: [-5.3, 3], label: "area = ½ × 4 × 2 = 4", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Two lines: crossing or the same",
+        points: [
+          t`Two lines, such as $x + 2y = 3$ and $2x - y = 1$, cross at a point that fits both equations.`,
+          t`So solve the two equations together to find it.`,
+          t`These two meet at $(1, 1)$: $1 + 2 = 3$ and $2 - 1 = 1$.`,
+          t`Write two lines as $a_1x + b_1y + c_1 = 0$ and $a_2x + b_2y + c_2 = 0$.`,
+          t`They are the same line when $\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$: one equation is a multiple of the other.`,
+        ],
+        figure: {
+          alt: "The lines x + 2y = 3 and 2x − y = 1 crossing at the point (1, 1), which fits both equations.",
+          axes: "xy",
+          view: { x: [-1.5, 3.5], y: [-1.5, 3] },
+          elements: [
+            { kind: "line", through: [[3, 0], [1, 1]], step: 1 },
+            { kind: "label", at: [-1, 2], label: "x + 2y = 3", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[0, -1], [1, 1]], step: 1 },
+            { kind: "label", at: [1.9, 2.8], label: "2x − y = 1", labelAt: "e", step: 1 },
+            { kind: "point", at: [1, 1], tone: "good", step: 3 },
+            { kind: "label", at: [1.4, 0.4], label: "(1, 1)", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Is a point on the line?",
+        points: [
+          t`A point lies on a line only if its coordinates fit the line's equation.`,
+          t`So substitute the point: in general form, the left side must become $0$.`,
+          t`Take $A(2, 3)$ and the line $3x + 2y - 6 = 0$.`,
+          t`$3(2) + 2(3) - 6 = 6 \ne 0$, so $A$ is not on the line.`,
+          t`But $(2, 0)$ gives $3(2) + 0 - 6 = 0$, so it is on the line.`,
+        ],
+        figure: {
+          alt: "The line 3x + 2y − 6 = 0. The point A(2, 3) lies off it, above and to the right; the point (2, 0), where the line meets the x-axis, lies on it.",
+          axes: "xy",
+          view: view326,
+          elements: [
+            ...line326(3),
+            { kind: "point", at: [2, 3], label: "A(2, 3)", labelAt: "ne", tone: "bad", step: 3 },
+            { kind: "point", at: [2, 0], label: "(2, 0)", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`For the line $4x - 5y + 20 = 0$, find the slope, the two intercepts, and the area of the triangle it cuts off with the axes.`,
       steps: [
         t`Compare with $ax + by + c = 0$: $a = 4$, $b = -5$, $c = 20$. Keep the signs.`,
-        t`Slope $= -\frac{a}{b} = -\frac{4}{-5} = \frac{4}{5}$.`,
-        t`$x$-intercept $= -\frac{c}{a} = -\frac{20}{4} = -5$; $y$-intercept $= -\frac{c}{b} = -\frac{20}{-5} = 4$. Check $(-5, 0)$: $-20 - 0 + 20 = 0$.`,
-        t`Area $= \frac{1}{2}\,|-5|\,|4| = \frac{1}{2} \times 5 \times 4 = 10$ square units.`,
+        t`Slope $= -\frac{a}{b}$ $= -\frac{4}{-5} = \frac{4}{5}$.`,
+        t`$x$-intercept $= -\frac{c}{a}$ $= -\frac{20}{4} = -5$; $y$-intercept $= -\frac{c}{b}$ $= -\frac{20}{-5} = 4$. Check $(-5, 0)$: $-20 - 0 + 20 = 0$.`,
+        t`Area $= \frac{1}{2}\,|-5|\,|4|$ $= \frac{1}{2} \times 5 \times 4 = 10$ square units.`,
       ],
       answer: t`Slope $\frac{4}{5}$, $x$-intercept $-5$, $y$-intercept $4$, area $10$ square units.`,
     },
