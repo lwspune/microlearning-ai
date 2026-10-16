@@ -897,9 +897,11 @@ def _c24(kind):
             q, s_ = v["q"], v["s"]
             if kind == "key":
                 return expand(x**2 + y**2 + 2 * q * x + s_)
-            if kind == "C24-M1":
+            if kind in ("C24-M1", "C24-M2"):
+                raise ValueError(f"{kind} is about |kz - w| = R; from z conj(z) see C24-M8 and C24-M9")
+            if kind == "C24-M8":  # completes the square with the wrong sign: centre q, not -q
                 return expand(x**2 + y**2 - 2 * q * x + s_)
-            if kind == "C24-M2":  # treats r^2 as r
+            if kind == "C24-M9":  # squares the right side again: takes r^2 = q^2 - s as the radius
                 return _circle(-q, (q**2 - s_) ** 2)
             if kind == "C24-M6":  # z + conj(z) = x (forgets the 2)
                 return expand(x**2 + y**2 + q * x + s_)
@@ -908,7 +910,7 @@ def _c24(kind):
     return model
 
 
-C24 = {k: _c24(k) for k in ["key", "C24-M1", "C24-M2", "C24-M3", "C24-M4", "C24-M5", "C24-M6"]}
+C24 = {k: _c24(k) for k in ["key", "C24-M1", "C24-M2", "C24-M3", "C24-M4", "C24-M5", "C24-M6", "C24-M8", "C24-M9"]}
 
 
 # ---------- C26 Loci from algebraic conditions ----------

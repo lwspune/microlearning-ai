@@ -95,6 +95,18 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
       remediation: t`$|z - a| = R$ is every point at distance $R$ from $a$: $R$ is the radius, and $R^2$ goes on the right.`,
       fallback: { kind: "ext", topic: "circle equation" },
     },
+    {
+      id: "C24-M8",
+      mistake: t`Completing the square with the wrong sign: $x^2 - 4x$ as $(x + 2)^2 - 4$`,
+      remediation: t`$x^2 - 4x = (x - 2)^2 - 4$: the bracket keeps the sign of the $x$ term, so the centre is $+2$.`,
+      fallback: { kind: "ext", topic: "completing the square" },
+    },
+    {
+      id: "C24-M9",
+      mistake: "Squaring the right side again after completing the square",
+      remediation: t`In $(x - 2)^2 + y^2 = 5$ the right side is already $r^2$: the radius is $\sqrt5$, and the $5$ stays.`,
+      fallback: { kind: "ext", topic: "circle equation" },
+    },
   ],
   items: [
     {
@@ -159,10 +171,10 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
       stem: t`$z\bar z - 2(z + \bar z) - 1 = 0$ is the circle:`,
       verify: { kind: "locus", inputs: { q: "-2", s: "-1" }, params: { op: "zzbar" } },
       options: [
-        { key: "A", text: t`$\left(x - 2\right)^2 + y^2 = 25$`, correct: false, misconceptionId: "C24-M2", value: "x**2 - 4*x + y**2 - 21" },
+        { key: "A", text: t`$\left(x - 2\right)^2 + y^2 = 25$`, correct: false, misconceptionId: "C24-M9", value: "x**2 - 4*x + y**2 - 21" },
         { key: "B", text: t`$\left(x - 1\right)^2 + y^2 = 2$`, correct: false, misconceptionId: "C24-M6", value: "x**2 - 2*x + y**2 - 1" },
         { key: "C", text: t`$\left(x - 2\right)^2 + y^2 = 5$`, correct: true, value: "x**2 - 4*x + y**2 - 1" },
-        { key: "D", text: t`$\left(x + 2\right)^2 + y^2 = 5$`, correct: false, misconceptionId: "C24-M1", value: "x**2 + 4*x + y**2 - 1" },
+        { key: "D", text: t`$\left(x + 2\right)^2 + y^2 = 5$`, correct: false, misconceptionId: "C24-M8", value: "x**2 + 4*x + y**2 - 1" },
       ],
       solution: {
         steps: [
@@ -237,5 +249,8 @@ In terms of $z$ and $\bar z$: $z\bar z = x^2 + y^2$ and $z + \bar z = 2x$, so $z
         },
       },
     },
+  ],
+  engineNotes: [
+    "C24-M8 (completing the square with the wrong sign) and C24-M9 (squaring the right side again) were split from C24-M1 and C24-M2, which had covered them on Q3: a student starting from z z̄ never reads a centre from |z + a| or writes a radius on the right, so those remediations did not fit.",
   ],
 };
