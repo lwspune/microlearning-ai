@@ -144,7 +144,7 @@ class ExactAngles(unittest.TestCase):
                 opt("A", "-pi", correct=True),
                 opt("B", "0", mid="C14-M1"),
                 opt("C", "pi", mid="C14-M2"),
-                opt("D", "-pi/2", mid="C14-M3"),
+                opt("D", "-pi/2", mid="C14-M5"),
             ],
         }
         errors = run(("C14", [item]))
