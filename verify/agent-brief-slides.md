@@ -61,6 +61,9 @@ no `turn`), the hook, `visualSpec`, `status`.
 - If you added a figure and a dev server answers on http://localhost:3000, look at `/review/<chapter>/<slug>`
   (its "After point n" frames, light and dark, e.g. with `scripts/figure-sheet.mjs`) for label collisions; say
   if you couldn't.
+- With the dev server up, `node scripts/overflow-probe.mjs <chapter> <slug>` lists maths too wide for a
+  phone. Split every hit on a slide you changed (idea, formal, worked); report hits in the hook or reveal,
+  which you leave alone.
 - Read the points aloud as a student new to the topic: one simple sentence each; nothing used before it is
   defined; each figure step matches its point.
 

@@ -196,7 +196,11 @@ Guests are anonymous logins with no profile.
    concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
-   Look for KaTeX errors and sideways scrolling. (Punctuation touching
+   Look for KaTeX errors and sideways scrolling: `node scripts/overflow-probe.mjs <chapter> <slug>...`
+   lists every formula wider than a phone slide, with its TeX. Anything on
+   a slide you wrote or changed must be split into `$…$ $…$` pieces before
+   merging; a hit in shipped text you did not touch goes to the PLAN.md
+   backfill ledger. (Punctuation touching
    inline math is kept on its line by the renderer, `renderInline`.) Check every figure in light and dark mode:
    each "After step n" frame, labels clear of axis numbers and of each other.
    A per-figure contact sheet beats a full-page screenshot (figures are too
@@ -336,6 +340,7 @@ Guests are anonymous logins with no profile.
 | After a production build the old `next dev` (still alive: stopping `npm run dev` doesn't kill its `next` child) answered every review page with 500 | after a build, kill the process on :3000 (`netstat -ano`), `rm -rf .next/dev`, then start `npm run dev` |
 | New concepts C15–C18 were placed first in Sequences and Series' graph, and a chapter test pinned that order, but the live map listed them last and "Up next" was C13: the page ordered concepts by code | a test of the data is not a test of the screen: check what the learner sees (the golden path now checks the Sequences map); the map orders by `concepts.position`, which `seed_chapter` writes in graph order |
 | Agents' Python edit scripts turned the `\\` row breaks of LaTeX matrices into `\ `, which KaTeX draws as a space: 2×2s showed as one row, with no error | the validator now rejects a single-backslash row break inside any matrix; write such edits with a script file, never a shell heredoc |
+| Slide reworks asked agents to split equations over ~35 characters, and the read-through looked fine, yet a Circle formula ran 19 px off a phone slide; a probe then found 19 more in 7 live chapters (one +673 px) | the same lesson again: only the screen shows width. `scripts/overflow-probe.mjs` measures every formula on a phone slide; agents and step 7 run it (PLAN.md backfill 8 holds the shipped ones) |
 | 16 content agents each opening a browser grew the page file to 25 GB; drive C fell to 0.2 GB and `next dev` crashed | at most ~10 agents at once on this machine; agents check figures with `scripts/figure-sheet.mjs` (waits for "load": "networkidle" never comes while other edits hot-reload) |
 
 ## 7. Fine-tuning knobs
