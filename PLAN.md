@@ -508,6 +508,34 @@ lesson slides (C03, C04: label at `y` 7.05, view to 7.9).
   (C05's three are inside its taller 10 × 8 box, C08's is the U corner
   label, straight-line C01 has no rectangle); moved above it, view to 7.9.
 
+### 7. What the books assume, chapter by chapter (logged 2026-10-16, open)
+Learning: the textbook's starting point is not the student's. Each chapter
+marks the Std X (or other-chapter) knowledge its book assumes as `ext`, and
+nothing teaches or checks it; the owner found A.P. missing from Sequences
+and Series (now C15–C18). New chapters audit `ext` first (RUNBOOK 2.1).
+- **Scope:** 13 chapters, about 45 `ext` items, of two kinds.
+  (a) Taught in another chapter but not linked: ⁿCᵣ (Binomial ← Permutations
+  and Combinations), standard-angle values, quadrant signs and trig functions
+  (Trig II, Circle, Straight Line, Complex ← Trigonometry – I), directed
+  angles (Trig I ← Angle), lines, circles, conics (Complex, LPP ← coordinate
+  chapters). (b) Std X basics taught nowhere: distance, midpoint and section
+  formulas, completing the square, laws of indices, surds, quadratic
+  formula, simultaneous equations, linear inequalities, Pythagoras,
+  algebraic identities, number systems, ratio, area of a triangle.
+- **Blast radius:** (a) wording of `ext` items and fallback topics only (no
+  gating: prerequisites don't cross chapters); (b) new opening concepts per
+  chapter, a new gate on its first concepts (started ones stay open), new
+  verifier models; e2e expectations if a chapter's starting concepts change.
+- **Does it really apply:** not every item. Some are taught in Std XI itself
+  (trig in this course) or are one-line recalls; the risky ones are those
+  whole topics build on (A.P. was one; completing the square under Circle
+  and Conics, the distance formula under the coordinate chapters, laws of
+  indices under G.P. and Binomial are the likely next).
+- **Risk and cost:** (a) small, reversible, an hour; (b) a chapter-sized job
+  each, like the A.P. work, and it gates students.
+- **Recommendation:** partial. Do (a) now. For (b), the owner picks which
+  basics to teach, starting with the ones above; the rest stay `ext`.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The

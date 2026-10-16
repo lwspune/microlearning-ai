@@ -27,6 +27,14 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    atomic concepts, *hard* prerequisites only, transitively reduced, each
    node mapped to its PYQ Vault source slugs. Get the graph approved
    **before** writing any concept: it's the riskiest decision.
+   - **Audit what the book assumes** (`ext`). The book's starting point is
+     not the student's: Sequences and Series began at G.P. because the book
+     assumes Std X A.P., and the owner caught it (2026-10-16). For each
+     `ext` item, mark it (a) taught in another chapter of the app — name
+     that chapter in the item and in fallbacks, or (b) a Std X basic taught
+     nowhere — ask the owner whether to teach it first as opening concepts
+     (as C15–C18 of Sequences and Series), or (c) truly safe to assume.
+     Never leave a Std X basic as `ext` without that question.
 2. Pin it with a chapter test (node and edge counts, transitive reduction);
    copy `chapters/complex-numbers/complex-numbers.test.ts`.
 3. Register the chapter in `src/content/chapters/index.ts`, with its `group`
