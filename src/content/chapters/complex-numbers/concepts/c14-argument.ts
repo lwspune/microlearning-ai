@@ -67,7 +67,7 @@ With the reference angle $\alpha = \tan^{-1}\left|\dfrac yx\right|$:
     },
     {
       id: "C14-M3",
-      mistake: t`Reference angle from $\tan^{-1}\left|\dfrac xy\right|$, measured from the imaginary axis (for a point on an axis: swapping the real and imaginary axes)`,
+      mistake: t`Reference angle from $\tan^{-1}\left|\dfrac xy\right|$, measured from the imaginary axis`,
       remediation: t`The angle is measured from the **real** axis, so it's $\tan^{-1}\left|\frac{y}{x}\right|$: imaginary part over real part.`,
       fallback: { kind: "ext", topic: "trig values" },
     },
@@ -77,9 +77,16 @@ With the reference angle $\alpha = \tan^{-1}\left|\dfrac yx\right|$:
       remediation: "That's the reference angle. Now place it: which quadrant is the point in?",
       fallback: { kind: "concept", id: "C10" },
     },
+    {
+      id: "C14-M5",
+      mistake: "For a point on an axis, putting it on the other axis: a real number read as imaginary, or the reverse",
+      remediation: t`A real number like $-5$ lies on the **real** axis; a number like $-2i$ lies on the **imaginary** axis. Plot it first, then read off how far the arm turns.`,
+      fallback: { kind: "concept", id: "C10" },
+    },
   ],
   engineNotes: [
     "For a point in quadrant I or IV, C14-M1 gives the correct answer, so those items cannot detect M1. To diagnose M1, use a point with x < 0.",
+    "C14-M3 applies only to points off the axes and C14-M5 only to points on an axis: diagnose each with its own kind of point.",
   ],
   items: [
     {
@@ -174,7 +181,7 @@ With the reference angle $\alpha = \tan^{-1}\left|\dfrac yx\right|$:
         { key: "A", text: t`$\pi$`, correct: true, value: "pi" },
         { key: "B", text: t`$0$`, correct: false, misconceptionId: "C14-M1", value: "0" },
         { key: "C", text: t`$-\pi$`, correct: false, misconceptionId: "C14-M2", value: "-pi" },
-        { key: "D", text: t`$-\dfrac{\pi}{2}$`, correct: false, misconceptionId: "C14-M3", value: "-pi/2" },
+        { key: "D", text: t`$-\dfrac{\pi}{2}$`, correct: false, misconceptionId: "C14-M5", value: "-pi/2" },
       ],
       solution: {
         steps: [
@@ -200,7 +207,7 @@ With the reference angle $\alpha = \tan^{-1}\left|\dfrac yx\right|$:
         { key: "A", text: t`$-\dfrac{\pi}{2}$`, correct: true, value: "-pi/2" },
         { key: "B", text: t`$\dfrac{3\pi}{2}$`, correct: false, misconceptionId: "C14-M2", value: "3*pi/2" },
         { key: "C", text: t`$\dfrac{\pi}{2}$`, correct: false, misconceptionId: "C14-M4", value: "pi/2" },
-        { key: "D", text: t`$\pi$`, correct: false, misconceptionId: "C14-M3", value: "pi" },
+        { key: "D", text: t`$\pi$`, correct: false, misconceptionId: "C14-M5", value: "pi" },
       ],
       solution: {
         steps: [

@@ -67,20 +67,32 @@ def _c14_m2(v, p):  # range convention mixed up
     return principal + 2 * pi if principal < 0 else principal
 
 
-def _c14_m3(v, p):  # reference angle measured from the imaginary axis
+def _c14_m3(v, p):  # reference angle tan^-1|x/y|, measured from the imaginary axis
     px, py = v["x"], v["y"]
     if px == 0 or py == 0:
-        theta = atan2(px, py)  # axis point: real and imaginary roles swapped
-    else:
-        theta = _place(atan(Abs(px / py)), px, py)
-    return _in_range(theta, p)
+        raise ValueError("a point on an axis has no reference angle (its axis swap is C14-M5)")
+    return _in_range(_place(atan(Abs(px / py)), px, py), p)
 
 
 def _c14_m4(v, p):  # reference angle, not placed by quadrant
     return pi / 2 if v["x"] == 0 else atan(Abs(v["y"] / v["x"]))
 
 
-C14 = {"key": _c14_key, "C14-M1": _c14_m1, "C14-M2": _c14_m2, "C14-M3": _c14_m3, "C14-M4": _c14_m4}
+def _c14_m5(v, p):  # a point on an axis put on the other axis: real and imaginary roles swapped
+    px, py = v["x"], v["y"]
+    if px != 0 and py != 0:
+        raise ValueError("only a point on an axis can be put on the other axis")
+    return _in_range(atan2(px, py), p)
+
+
+C14 = {
+    "key": _c14_key,
+    "C14-M1": _c14_m1,
+    "C14-M2": _c14_m2,
+    "C14-M3": _c14_m3,
+    "C14-M4": _c14_m4,
+    "C14-M5": _c14_m5,
+}
 
 
 # ---------- C25 |z - a| = |z - b| ----------
