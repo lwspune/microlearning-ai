@@ -87,6 +87,15 @@ await (async () => {
   let userId: string | null = null;
 
   try {
+    // A chapter shows its concepts in graph order, not by code: Sequences and Series opens with
+    // C15–C18 (sequences and A.P.), added after C01–C14 had their codes.
+    await page.goto(BASE + "/learn/sequences-and-series");
+    const seqReady = page.locator("section[aria-labelledby=ready] li").filter({ visible: true });
+    await seqReady.first().waitFor();
+    check((await seqReady.first().innerText()).includes("Sequences and series"), `Sequences map: "Up next" is Sequences and series (got ${(await seqReady.first().innerText()).split("\n").slice(0, 3).join(" ")})`);
+    const seqGroups = await page.locator("section[aria-labelledby=outline] h3").filter({ visible: true }).allInnerTexts();
+    check(seqGroups[0]?.startsWith("Sequences and A.P."), `Sequences map: the outline opens with Sequences and A.P. (got ${seqGroups[0]})`);
+
     await page.goto(BASE + "/");
     // Courses: the 11th + 12th group is open by default; Graduates courses are coming soon.
     check((await page.getByRole("tab", { name: "11th + 12th", selected: true }).count()) === 1, "home: 11th + 12th courses shown first");

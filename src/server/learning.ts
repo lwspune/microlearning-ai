@@ -75,6 +75,8 @@ async function loadGraph(chapterSlug: string) {
     .from("concepts")
     .select("id, code, slug, title, one_liner, grp, tier, status")
     .eq("chapter_id", chapter.id)
+    // The graph's order, not the code's: Sequences and Series opens with C15–C18.
+    .order("position")
     .order("code");
   if (ce) throw ce;
   const { data: edges, error: ee } = await db
