@@ -175,6 +175,7 @@ export type Database = {
           grp: string
           id: string
           one_liner: string
+          position: number
           slug: string
           sources: string[]
           status: string
@@ -189,6 +190,7 @@ export type Database = {
           grp: string
           id?: string
           one_liner: string
+          position?: number
           slug: string
           sources?: string[]
           status?: string
@@ -203,6 +205,7 @@ export type Database = {
           grp?: string
           id?: string
           one_liner?: string
+          position?: number
           slug?: string
           sources?: string[]
           status?: string
@@ -527,6 +530,7 @@ export type Database = {
           grp: string | null
           id: string | null
           one_liner: string | null
+          position: number | null
           slug: string | null
           sources: string[] | null
           status: string | null
@@ -541,6 +545,7 @@ export type Database = {
           grp?: string | null
           id?: string | null
           one_liner?: string | null
+          position?: number | null
           slug?: string | null
           sources?: string[] | null
           status?: string | null
@@ -555,6 +560,7 @@ export type Database = {
           grp?: string | null
           id?: string | null
           one_liner?: string | null
+          position?: number | null
           slug?: string | null
           sources?: string[] | null
           status?: string | null

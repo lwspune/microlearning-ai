@@ -90,6 +90,16 @@ describe("seed_chapter", () => {
     await expect(rolledBack(seed(payload({ c01Prereqs: ["C02"] })))).rejects.toThrow(/prerequisite cycle:/);
   });
 
+  it("stores each concept's position in the order the content lists it, not by code", async () => {
+    const p = payload();
+    p.concepts = [p.concepts[1], p.concepts[0]]; // C02 first, as a new opening concept would be
+    const rows = await rolledBackSelect(seed(p), `select code, position from concepts where chapter_id = ${T} order by position;`);
+    expect(rows).toEqual([
+      { code: "C02", position: 1 },
+      { code: "C01", position: 2 },
+    ]);
+  });
+
   it("stores each item's step-by-step solution, readable through the published view", async () => {
     const rows = await rolledBackSelect(
       seed(payload()),
