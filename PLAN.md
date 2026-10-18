@@ -935,3 +935,5 @@ read from those rows or page images, never from a PDF's text layer.
   its clipped segment, "n"/"s" labels centre on their anchor, and a key must
   not be readable off the stem (backfill 10). Agents check labels with a
   shared rough renderer before handing back.
+- Wave 3 started 2026-10-18 (branch `std12-calculus-1`): graphs locked and
+  committed (Differentiation 12 · Application of Derivatives 10).
