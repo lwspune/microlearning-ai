@@ -45,10 +45,12 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 2. Pin it with a chapter test (node and edge counts, transitive reduction);
    copy `chapters/complex-numbers/complex-numbers.test.ts`.
 3. Register the chapter in `src/content/chapters/index.ts`, with its `group`
-   (`school` = 11th + 12th, `graduate` = Graduates) and `subject`. The group
+   (`school` = K-12, `graduate` = Graduates) and `subject`. The group
    is the concept pool: only that group's courses can use the chapter. A
-   `school` chapter also names its `standard` (11 or 12): course pages list
-   chapters under 11th and 12th, and the catalog check refuses a missing one.
+   `school` chapter also names its `standard` (11 or 12): a board's page
+   (`board: true`) shows one standard at a time behind a Std XI / Std XII
+   switch, remembered per browser; an exam's page lists both under headings.
+   The catalog check refuses a missing standard.
 4. Create `verify/models/<chapter_with_underscores>.py` with a `MODELS` dict.
 5. **Add it to its courses** (section 2a). Its course card says "Coming
    soon" until a concept is published, and its routes 404 until it is

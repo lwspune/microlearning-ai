@@ -134,7 +134,7 @@ export function AddPeopleForm({
             <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
               <label className="inline-flex items-center gap-2">
                 <input type="radio" name="stage" value="school" defaultChecked className={radio} />
-                11th + 12th
+                K-12
               </label>
               <label className="inline-flex items-center gap-2">
                 <input type="radio" name="stage" value="graduate" className={radio} />

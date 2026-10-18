@@ -281,10 +281,15 @@ everyone so teachers could use the chapter as guests.
 ## Courses and the animated homepage (approved 2026-10-14, branch `courses-home`)
 
 **Structure:** group → course → subject → chapter → concept.
-- **Two groups, mutually exclusive:** *11th + 12th* (Maharashtra Board,
+- **Two groups, mutually exclusive:** *K-12* (Maharashtra Board,
   CBSE, MHT-CET, JEE Main, NDA) and *Graduates* (CDS, AFCAT, CAPF). Every
   course belongs to exactly one group; a student picks their group once and
   only sees its courses (a cookie now, the profile once roles exist).
+  Renamed from *11th + 12th* on 2026-10-18 (owner).
+- **Boards split by standard** (owner, 2026-10-18): a board's page shows one
+  standard at a time (Std XI / Std XII switch, remembered per browser, shared
+  across boards). Entrance exams span both years, so their pages list both
+  under headings.
 - **One concept pool per group.** A chapter belongs to one group and one
   subject (everything so far is Maths). Each course covers a subset of its
   group's concepts. Mastery is per concept, so a concept mastered once counts
@@ -309,7 +314,7 @@ everyone so teachers could use the chapter as guests.
 **Homepage:** the hero draws the real Complex Numbers concept graph behind
 the Argand card (prerequisite edges draw in, a light travels from C01 to the
 deepest concept), the headline rises word by word, a group switch
-(11th + 12th / Graduates) with a sliding indicator, course cards that rise in
+(K-12 / Graduates) with a sliding indicator, course cards that rise in
 on scroll with a cursor spotlight, and a "How it works" line that draws as
 you scroll. CSS + SVG only, no new package; reduced motion shows the finished,
 still page.

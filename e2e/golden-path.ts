@@ -97,8 +97,8 @@ await (async () => {
     check(seqGroups[0]?.startsWith("Sequences and A.P."), `Sequences map: the outline opens with Sequences and A.P. (got ${seqGroups[0]})`);
 
     await page.goto(BASE + "/");
-    // Courses: the 11th + 12th group is open by default; Graduates courses are coming soon.
-    check((await page.getByRole("tab", { name: "11th + 12th", selected: true }).count()) === 1, "home: 11th + 12th courses shown first");
+    // Courses: the K-12 group is open by default; Graduates courses are coming soon.
+    check((await page.getByRole("tab", { name: "K-12", selected: true }).count()) === 1, "home: K-12 courses shown first");
     await shot("00-home");
     await noSideScroll("home");
     // A click before hydration does nothing (the tabs are a client component), so retry until selected.
@@ -110,7 +110,38 @@ await (async () => {
     const cds = page.getByRole("link", { name: /^CDS/ });
     await cds.waitFor();
     check(await cds.getByText("Coming soon", { exact: true }).isVisible(), "home: CDS (Graduates) is coming soon");
-    await page.getByRole("tab", { name: "11th + 12th" }).click();
+    await page.getByRole("tab", { name: "K-12" }).click();
+
+    // A board's page shows one standard at a time: Std XI first, and the choice is remembered.
+    await page.getByRole("link", { name: /^MH Board/ }).click();
+    await page.waitForURL("**/courses/mh-board");
+    const complex = page.getByRole("link", { name: /Complex Numbers/ });
+    const lpp = page.getByRole("link", { name: /Linear Programming/ });
+    await complex.waitFor();
+    check((await page.getByRole("tab", { name: "Std XI", selected: true }).count()) === 1, "board: Std XI is open by default");
+    check(!(await lpp.isVisible()), "board: Std XII chapters are hidden under Std XI");
+    await shot("00-board");
+    await noSideScroll("board");
+    // Retry until hydrated, as with the group tabs; then the arrow key moves back.
+    const std12 = page.getByRole("tab", { name: "Std XII" });
+    for (let i = 0; i < 20 && (await std12.getAttribute("aria-selected")) !== "true"; i++) {
+      await std12.click();
+      await page.waitForTimeout(250);
+    }
+    check(await lpp.isVisible(), "board: Std XII shows Linear Programming");
+    check(!(await complex.isVisible()), "board: Std XII hides the Std XI chapters");
+    await page.keyboard.press("ArrowLeft");
+    check((await page.getByRole("tab", { name: "Std XI", selected: true }).count()) === 1, "board: the left arrow moves to Std XI");
+    await page.keyboard.press("ArrowRight");
+    await page.waitForTimeout(500); // the choice is saved by a server action
+    await page.reload();
+    await lpp.waitFor();
+    check((await page.getByRole("tab", { name: "Std XII", selected: true }).count()) === 1, "board: Std XII is remembered after a reload");
+    await page.goto(BASE + "/courses/cbse");
+    await page.getByRole("link", { name: /Linear Programming/ }).waitFor();
+    check((await page.getByRole("tab", { name: "Std XII", selected: true }).count()) === 1, "board: the standard carries over to CBSE");
+    await page.goto(BASE + "/");
+
     await page.getByRole("link", { name: /^JEE Main/ }).click();
     await page.waitForURL("**/courses/jee-main");
     await page.getByRole("link", { name: /Complex Numbers/ }).waitFor();

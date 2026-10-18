@@ -3,14 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
+import { rememberStandard } from "@/app/courses/actions";
 import { ProgressRing } from "@/components/ProgressRing";
+import { Tabs } from "@/components/Tabs";
 import { card, eyebrow, linkCard } from "@/components/ui";
-import { byStandard, courses, findCourse, GROUPS, SUBJECTS } from "@/content/courses";
-import type { Standard, SubjectId } from "@/content/types";
+import { byStandard, courses, findCourse, GROUPS, parseStandard, STANDARD_TITLE, SUBJECTS } from "@/content/courses";
+import type { SubjectId } from "@/content/types";
 import { currentUserId } from "@/lib/supabase/server";
-import { type CourseChapterProgress, courseProgress } from "@/server/courses";
-
-const STANDARD_TITLE: Record<Standard, string> = { 11: "11th", 12: "12th" };
+import { type CourseChapterProgress, courseProgress, rememberedStandardValue } from "@/server/courses";
 
 export function generateStaticParams() {
   return courses.map((c) => ({ course: c.slug }));
@@ -48,22 +48,21 @@ function ChapterCard({ course, ch }: { course: string; ch: CourseChapterProgress
   );
 }
 
-async function Chapters({ slug }: { slug: string }) {
-  const course = findCourse(slug)!;
-  const progress = await courseProgress(course, await currentUserId());
+/** Chapters by subject, then by standard under headings (`headings` off: one standard's list). */
+function Subjects({ course, progress, id, headings }: { course: string; progress: CourseChapterProgress[]; id: string; headings: boolean }) {
   const subjects = [...new Set(progress.map((p) => p.subject))] as SubjectId[];
   return subjects.map((s) => (
-    <section key={s} aria-labelledby={`subject-${s}`} className="mt-10">
-      <h2 id={`subject-${s}`} className="font-display text-2xl font-semibold">
+    <section key={s} aria-labelledby={`${id}-${s}`} className="mt-10 first:mt-8">
+      <h2 id={`${id}-${s}`} className="font-display text-2xl font-semibold">
         {SUBJECTS[s]}
       </h2>
       {byStandard(progress.filter((p) => p.subject === s)).map(({ standard, chapters }) => (
         <div key={standard ?? "none"} className="mt-4">
-          {standard && <h3 className={`${eyebrow} mt-6`}>{STANDARD_TITLE[standard]}</h3>}
+          {headings && standard && <h3 className={`${eyebrow} mt-6`}>{STANDARD_TITLE[standard]}</h3>}
           <ul className="mt-3 grid gap-3">
             {chapters.map((ch) => (
               <li key={ch.slug}>
-                <ChapterCard course={slug} ch={ch} />
+                <ChapterCard course={course} ch={ch} />
               </li>
             ))}
           </ul>
@@ -71,6 +70,31 @@ async function Chapters({ slug }: { slug: string }) {
       ))}
     </section>
   ));
+}
+
+async function Chapters({ slug }: { slug: string }) {
+  const course = findCourse(slug)!;
+  const progress = await courseProgress(course, await currentUserId());
+  const standards = byStandard(progress).flatMap((g) => (g.standard ? [g.standard] : []));
+  // A board shows one standard at a time; an entrance exam spans both years in one list.
+  if (!course.board || standards.length < 2) return <Subjects course={slug} progress={progress} id="subject" headings />;
+
+  const remembered = parseStandard(await rememberedStandardValue());
+  const initial = remembered && standards.includes(remembered) ? remembered : standards[0];
+  const panels = Object.fromEntries(
+    standards.map((std) => [std, <Subjects key={std} course={slug} progress={progress.filter((p) => p.standard === std)} id={`std${std}`} headings={false} />]),
+  );
+  return (
+    <div className="mt-8">
+      <Tabs
+        label="Your standard"
+        tabs={standards.map((std) => ({ id: String(std), title: STANDARD_TITLE[std] }))}
+        initial={String(initial)}
+        panels={panels}
+        remember={rememberStandard}
+      />
+    </div>
+  );
 }
 
 async function CourseContent({ params }: { params: PageProps<"/courses/[course]">["params"] }) {

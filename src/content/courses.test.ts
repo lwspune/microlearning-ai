@@ -10,6 +10,8 @@ import {
   findCourse,
   GROUPS,
   parseGroup,
+  parseStandard,
+  STANDARD_TITLE,
   uniqueConcepts,
   validateCatalog,
   withCourse,
@@ -37,7 +39,7 @@ describe("validateCatalog", () => {
     expect(validateCatalog([course("a"), course("b")], [ch])).toEqual([]);
   });
 
-  it("needs an 11th + 12th chapter to name its standard; a Graduates chapter has none", () => {
+  it("needs a K-12 chapter to name its standard; a Graduates chapter has none", () => {
     expect(validateCatalog([course("a")], [{ ...ch, standard: undefined }])).toContain("a: chapter ch needs a standard (11 or 12)");
     const grad = chapter("g", "graduate");
     expect(validateCatalog([course("b", { group: "graduate", chapters: [{ chapter: "g" }] })], [grad])).toEqual([]);
@@ -138,6 +140,18 @@ describe("lookups", () => {
     expect(parseGroup(undefined)).toBeNull();
   });
 
+  it("parses only known standards", () => {
+    expect(parseStandard("11")).toBe(11);
+    expect(parseStandard("12")).toBe(12);
+    expect(parseStandard("10")).toBeNull();
+    expect(parseStandard("11 ")).toBeNull();
+    expect(parseStandard(undefined)).toBeNull();
+  });
+
+  it("titles the standards as Std XI and Std XII", () => {
+    expect(STANDARD_TITLE).toEqual({ 11: "Std XI", 12: "Std XII" });
+  });
+
   it("finds a course by slug, or null", () => {
     expect(findCourse("jee-main")?.title).toBe("JEE Main");
     expect(findCourse("nope")).toBeNull();
@@ -178,7 +192,15 @@ describe("the catalog", () => {
   });
 
   it("has the two groups, in order", () => {
-    expect(GROUPS.map((g) => g.title)).toEqual(["11th + 12th", "Graduates"]);
+    expect(GROUPS.map((g) => g.title)).toEqual(["K-12", "Graduates"]);
+  });
+
+  it("splits only the boards by standard; entrance exams span both years in one list", () => {
+    expect(courses.filter((c) => c.board).map((c) => c.slug)).toEqual(["mh-board", "cbse"]);
+  });
+
+  it("names a board without its years: the standard is picked on its page", () => {
+    expect(courses.filter((c) => c.board).map((c) => c.title)).toEqual(["Maharashtra Board", "CBSE"]);
   });
 
   it("puts every course in exactly one group", () => {
@@ -186,12 +208,12 @@ describe("the catalog", () => {
     expect(grouped.sort()).toEqual(courses.map((c) => c.slug).sort());
   });
 
-  it("lists the 11th + 12th and Graduate courses", () => {
+  it("lists the K-12 and Graduate courses", () => {
     expect(coursesIn("school").map((c) => c.short)).toEqual(["MH Board", "CBSE", "MHT-CET", "JEE Main", "NDA"]);
     expect(coursesIn("graduate").map((c) => c.short)).toEqual(["CDS", "AFCAT", "CAPF"]);
   });
 
-  it("has Complex Numbers in every 11th + 12th course (confirmed by the owner, 2026-10-14)", () => {
+  it("has Complex Numbers in every K-12 course (confirmed by the owner, 2026-10-14)", () => {
     for (const c of coursesIn("school")) expect(c.chapters.map((x) => x.chapter)).toContain("complex-numbers");
   });
 

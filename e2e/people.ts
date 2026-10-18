@@ -176,7 +176,7 @@ await (async () => {
     await page.goto(BASE + "/teach/people");
     await page.getByRole("button", { name: "Add people" }).waitFor();
     check((await page.getByRole("radio", { name: "Teachers" }).count()) === 0, "a teacher isn't offered to add teachers");
-    check(await page.getByRole("radio", { name: "11th + 12th" }).isChecked(), "a teacher adds students, 11th + 12th by default");
+    check(await page.getByRole("radio", { name: "K-12" }).isChecked(), "a teacher adds students, K-12 by default");
     await signOut();
 
     // 4. A student signs in and lands on Learn, with no staff switcher.
