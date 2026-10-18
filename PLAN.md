@@ -965,3 +965,7 @@ read from those rows or page images, never from a PDF's text layer.
 - **Std XII done 2026-10-18:** all 15 chapters live (14 new: 134 concepts,
   784 items, plus Linear Programming). With Std XI's 18, all 33 MH Board
   chapters are live.
+- **Other courses (owner, 2026-10-18, later):** CBSE, MHT-CET, JEE Main and
+  NDA get their own chapters, built later, taking the relevant concepts from
+  this pool rather than listing the MH Board chapters with coverage. Check
+  each course's chapter names against PYQ Vault first. Not started.
