@@ -20,6 +20,13 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    `SUPABASE_DB_PASSWORD` from the environment; don't pass it as an argument).
 4. `npm run dev` → http://localhost:3000. `/review` (content review) works in
    dev; in production it needs `REVIEW_ENABLED=true` **at build time**.
+5. Hosting: Vercel team `fable-island`, project `microlearning-ai` (Hobby),
+   deploys every push to `main`. Live at https://www.conceptladder.in
+   (`conceptladder.in` redirects to it; DNS at GoDaddy: `@` A record and `www`
+   CNAME, values from Vercel → Settings → Domains). Supabase Auth's Site URL
+   is `https://www.conceptladder.in`. The old address
+   https://microlearning-ai-ten.vercel.app still works;
+   `microlearning-ai.vercel.app` is someone else's site.
 
 ## 2. Adding a chapter
 
@@ -346,6 +353,7 @@ Guests are anonymous logins with no profile.
 | 16 content agents each opening a browser grew the page file to 25 GB; drive C fell to 0.2 GB and `next dev` crashed | at most 10 agents at once (owner, 2026-10-18, after a restart; it was 5 while the page file was large); check free disk before each launch, stop below 2 GB, and restart Windows to shrink the page file; agents check figures with `scripts/figure-sheet.mjs` (waits for "load": "networkidle" never comes while other edits hot-reload) |
 | Functions ran in Vercel's default region (Washington) while Supabase is in Mumbai: each query cost ~250 ms and a chapter map took ~2 s | `vercel.json` pins `regions` to `bom1`; `src/lib/supabase/region.test.ts` |
 | Only 6 agents at a time, but 30 in a row (Complex Numbers), grew the page file to 23 GB again: free disk fell from 6.4 GB to 0.1 GB, and Node crashed in the probe, the shots and even vitest | a cap on agents at once is not enough; the page file grows over a long run and shrinks only on restart. Check free disk before each new agent and stop starting agents below 2 GB; restart the machine between big chapters |
+| Vercel's Hobby plan blocked every deploy from the private repo ("Deployment was blocked"): Std XII waves 2–5 were merged and seeded but not on the live site for hours, and nothing flagged it | the repo is public (2026-10-18); after each push to `main`, check the production deployment's status (`gh api repos/lwspune/microlearning-ai/deployments`) is `success`, not just that it exists, and smoke the live site |
 
 ## 7. Fine-tuning knobs
 
