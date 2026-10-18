@@ -864,3 +864,48 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
   students of those two courses see the 22. LPP C10 no longer doubtful for
   them (3 of 11 HSC 12 papers' LPP questions minimise over an unbounded
   region). CBSE, JEE Main and NDA coverage unchanged and still draft.
+
+## Std XII Maths, Maharashtra State Board (approved 2026-10-18)
+
+Goal: the Balbharati Std XII Maths book (Part 1 and Part 2, 15 chapters) in
+the MH Board course's Std XII section, built the Std XI way. Linear
+Programming is already live; the other 14 chapters are new (estimate ~140
+concepts, ~850 items).
+
+**Sources.** Textbooks: `C:\Vilas\LWS_Pune\NDA_Subjects_Content\Subjects\Maths\State_Board\12th`
+(`Part 01`, `Part 02` chapter PDFs). The whole book is transcribed in PYQ
+Vault's State Board pipeline (2,536 questions, a book-section `subtopic` on
+each): `Question_Bank/scripts/stateboard/data/<chapter>-12.questions.json`,
+exercise solutions in the sibling `*.solutions.json` files. HSC past papers
+(`Question_Bank/scripts/mh-hsc-12-pyq/data`) are a small extra pool. Maths is
+read from those rows or page images, never from a PDF's text layer.
+
+**Owner's decisions (2026-10-18):**
+1. Same autonomy as Std XI: I approve concept graphs myself, and publish
+   and merge each wave once every gate passes; the owner reviews live.
+2. MH Board course only; other courses' coverage is a later pass.
+3. Slugs that clash with a live Std XI chapter take `-12`:
+   `differentiation-12`, `trigonometric-functions-12`. Titles stay the book's.
+4. Waves in book order (below). Items from the book's exercises, keys
+   re-derived by the verifier, refs `mh-sb-12/<chapter>/<book ref>`.
+   Agents: one per concept, at most 5 at once.
+
+| Wave | Chapters |
+|---|---|
+| 1. Logic and algebra | Mathematical Logic · Matrices · Trigonometric Functions |
+| 2. Geometry | Pair of Straight Lines · Vectors · Line and Plane |
+| 3. Calculus I | Differentiation · Application of Derivatives |
+| 4. Calculus II | Indefinite Integration · Definite Integration · Application of Definite Integration · Differential Equations |
+| 5. Probability | Probability Distributions · Binomial Distribution |
+
+**Status:**
+- Wave 1 done 2026-10-18 (branch `std12-logic-algebra`, paused once at a
+  clean point and resumed): 37 concepts, 214 items (Mathematical Logic 11 ·
+  Matrices 11 · Trigonometric Functions 15), every key and distractor
+  verified, every figure sheet checked, 0 phone overflows; same gates;
+  published and merged. Book misprints caught and turned into distractors
+  or notes: Logic duality key, Matrices Ex 2.2 Q.6(iii), Trig
+  SolvedEx.Cosine.5 (−1/8 for −1/4) and Applications.1(i) (cos B for cos A).
+  Lesson: an agent that opens /review for its concept before the lead
+  registers it leaves the dev server serving a stale not-found; rewriting
+  the chapter index clears it.
