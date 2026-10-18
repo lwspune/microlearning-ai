@@ -1,6 +1,21 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The lesson's region: 3x + y ≤ 12, x + 3y ≤ 12, x, y ≥ 0, with corners (0, 0), (4, 0), (3, 3), (0, 4). */
+const lessonRegion: Shape[] = [
+  { kind: "halfPlane", through: [[0, 12], [-1, 15]] },
+  { kind: "halfPlane", through: [[0, 4], [-3, 5]] },
+  { kind: "halfPlane", through: [[0, 0], [0, -1]] },
+  { kind: "halfPlane", through: [[0, 0], [1, 0]] },
+];
+const lessonView = { x: [-0.8, 8] as [number, number], y: [-0.8, 6] as [number, number] };
+/** The corners on the axes, unlabelled. */
+const axisCorners: FigureElement[] = [
+  { kind: "point", at: [0, 0] },
+  { kind: "point", at: [4, 0] },
+  { kind: "point", at: [0, 4] },
+];
 
 export const c08: Concept = {
   id: "C08",
@@ -10,19 +25,93 @@ export const c08: Concept = {
     reveal: t`No. From any inside point, step right: $Z$ goes up. So an inside point is never the best, and you keep improving until you hit the boundary. Along an edge $Z$ changes steadily, so the best point is at an end of the edge: a corner. Here the corners give $0$, $8$, $15$ and $12$, so the maximum is $15$, at $(3, 3)$.`,
   },
   explanation: {
-    intuition: t`All points with the same $Z$ lie on one line, $2x + 3y = k$. Change $k$ and the line slides, staying parallel. Slide it the way $Z$ grows: the last point of the region it touches is a corner. So you never search inside the region; you only test the corners.`,
-    formal: t`**The corner-point method** (bounded region)
-
-- **1.** Draw the feasible region.
-- **2.** List **all** its corners, including the one where two sloping lines meet: solve that pair.
-- **3.** Work out $Z$ at every corner.
-- **4.** The largest value is the maximum of $Z$; the smallest is the minimum.
-
-**Lay it out as a table.** For $Z = 2x + 3y$ on $3x + y \le 12$, $x + 3y \le 12$, $x, y \ge 0$:
-
-$$\begin{array}{c|c} \text{Corner} & Z = 2x + 3y \\ \hline (0, 0) & 0 \\ (4, 0) & 8 \\ (3, 3) & 15 \\ (0, 4) & 12 \end{array}$$
-
-Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: the corner off the axes, often with fractions, can beat it.`,
+    intuition: [
+      t`Recall: the **feasible region** holds the points that meet every constraint; here $3x + y \le 12$, $x + 3y \le 12$, $x, y \ge 0$.`,
+      t`We want $Z = 2x + 3y$ as large as possible; $Z$ is called the **objective function**.`,
+      t`All points with the same $Z$ lie on one line: $Z = 6$ all along $2x + 3y = 6$.`,
+      t`Raise $Z$ to $12$ and the line slides outwards, staying parallel.`,
+      t`Slide it the way $Z$ grows: the last point it touches is a **corner**, where two edges meet.`,
+      t`So you never search inside the region: you only test the corners.`,
+    ],
+    formal: [
+      {
+        title: "The corner-point method",
+        points: [
+          t`**Step 1.** Draw the feasible region; the method needs it **bounded**, closed in on every side.`,
+          t`**Step 2.** List **all** its corners, the points where its edges meet.`,
+          t`Include the corner where two sloping lines meet: solve that pair, here giving $(3, 3)$.`,
+          t`**Step 3.** Work out $Z$ at every corner.`,
+          t`**Step 4.** The largest value is the maximum of $Z$; the smallest is the minimum.`,
+        ],
+        figure: {
+          alt: "The region 3x + y ≤ 12, x + 3y ≤ 12 in the first quadrant, shaded, with its two sloping boundary lines labelled. Its corners on the axes, (0, 0), (4, 0) and (0, 4), appear, then the corner (3, 3) where the two sloping lines meet.",
+          axes: "xy",
+          view: lessonView,
+          elements: [
+            { kind: "region", within: lessonRegion, step: 1 },
+            { kind: "line", through: [[4, 0], [3, 3]], tone: "muted", step: 1 },
+            { kind: "label", at: [2.2, 5.4], label: "3x + y = 12", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "line", through: [[0, 4], [3, 3]], tone: "muted", step: 1 },
+            { kind: "label", at: [6, 2], label: "x + 3y = 12", labelAt: "ne", tone: "muted", step: 1 },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [4, 0], label: "(4, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [3, 3], label: "(3, 3)", labelAt: "ne", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Lay it out as a table",
+        points: [
+          t`For $Z = 2x + 3y$, write each corner beside its value of $Z$.`,
+          t`At $(0, 0)$: $Z = 0$.`,
+          t`At $(4, 0)$: $Z = 8$.`,
+          t`At $(3, 3)$: $Z = 6 + 9 = 15$.`,
+          t`At $(0, 4)$: $Z = 12$.`,
+          t`The largest, $15$ at $(3, 3)$, is the maximum; the smallest, $0$ at $(0, 0)$, is the minimum.`,
+        ],
+        figure: {
+          alt: "The region 3x + y ≤ 12, x + 3y ≤ 12 in the first quadrant, shaded, with its four corners. One by one they show Z = 0 at (0, 0), Z = 8 at (4, 0), Z = 15 at (3, 3) and Z = 12 at (0, 4). Then (3, 3) is marked the maximum and (0, 0) the minimum.",
+          axes: "xy",
+          view: lessonView,
+          elements: [
+            { kind: "region", within: lessonRegion },
+            ...axisCorners,
+            { kind: "point", at: [3, 3] },
+            { kind: "label", at: [0, 0], label: "(0, 0), Z = 0", labelAt: "ne", step: 2 },
+            { kind: "label", at: [4, 0], label: "(4, 0), Z = 8", labelAt: "ne", step: 3 },
+            { kind: "label", at: [3, 3], label: "(3, 3), Z = 15", labelAt: "ne", step: 4 },
+            { kind: "label", at: [0, 4], label: "(0, 4), Z = 12", labelAt: "ne", step: 5 },
+            { kind: "point", at: [3, 3], tone: "good", step: 6 },
+            { kind: "label", at: [3, 3], label: "max", labelAt: "sw", tone: "good", step: 6 },
+            { kind: "label", at: [0, 0.6], label: "min", labelAt: "ne", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Never stop at a good value",
+        points: [
+          t`On the axes, the best corner is $(0, 4)$, with $Z = 12$.`,
+          t`But its line, $2x + 3y = 12$, still cuts through the region: higher $Z$ lies beyond it.`,
+          t`The corner off the axes, $(3, 3)$, beats it with $Z = 15$.`,
+          t`In other problems that corner often has fractions, so it is easy to skip.`,
+          t`So never stop at the first good value: test every corner.`,
+        ],
+        figure: {
+          alt: "The region 3x + y ≤ 12, x + 3y ≤ 12 in the first quadrant, shaded. The corner (0, 4) shows Z = 12, the best on the axes. The dashed line Z = 12 through it still cuts across the region. Beyond it, the corner (3, 3) shows Z = 15.",
+          axes: "xy",
+          view: lessonView,
+          elements: [
+            { kind: "region", within: lessonRegion },
+            ...axisCorners,
+            { kind: "label", at: [0, 4], label: "(0, 4), Z = 12", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[0, 4], [-3, 6]], tone: "muted", dashed: true, step: 2 },
+            { kind: "label", at: [5.4, 0.4], label: "Z = 12", labelAt: "ne", tone: "muted", step: 2 },
+            { kind: "point", at: [3, 3], label: "(3, 3), Z = 15", labelAt: "ne", tone: "good", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Maximise $Z = 4x + 5y$ subject to $x + y \le 7$, $x + 2y \le 10$, $x, y \ge 0$.`,
       steps: [
@@ -56,21 +145,21 @@ Max $15$ at $(3, 3)$; min $0$ at $(0, 0)$. Never stop at the first good value: t
       },
     },
     figure: {
-      alt: "The region 3x + y ≤ 12, x + 3y ≤ 12 in the first quadrant, shaded, with corners (0, 0), (4, 0) and (0, 4). Dashed lines of equal Z = 2x + 3y slide outwards: Z = 6 crosses the region, Z = 12 still crosses it, and Z = 15 only touches it, at the corner (3, 3), which is the maximum.",
+      alt: "The region 3x + y ≤ 12, x + 3y ≤ 12 in the first quadrant, shaded. Dashed lines of equal Z = 2x + 3y slide outwards: Z = 6 crosses the region, Z = 12 still crosses it, and Z = 15 only touches it, at the corner (3, 3), which is the maximum. Then the other corners, (0, 0), (4, 0) and (0, 4), are marked: only the corners need testing.",
       axes: "xy",
-      view: { x: [-0.8, 8], y: [-0.8, 6] },
+      view: lessonView,
       elements: [
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 12], [-1, 15]] }, { kind: "halfPlane", through: [[0, 4], [-3, 5]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
-        { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 1 },
-        { kind: "point", at: [4, 0], label: "(4, 0)", labelAt: "ne", step: 1 },
-        { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "e", step: 1 },
-        { kind: "line", through: [[0, 2], [-3, 4]], tone: "muted", dashed: true, step: 2 },
-        { kind: "label", at: [0.75, 1.5], label: "Z = 6", labelAt: "ne", tone: "muted", step: 2 },
-        { kind: "line", through: [[0, 4], [-3, 6]], tone: "muted", dashed: true, step: 3 },
-        { kind: "label", at: [1.5, 3], label: "Z = 12", labelAt: "sw", tone: "muted", step: 3 },
-        { kind: "line", through: [[0, 5], [-3, 7]], tone: "good", dashed: true, step: 4 },
-        { kind: "label", at: [6, 1], label: "Z = 15", labelAt: "ne", tone: "good", step: 4 },
-        { kind: "point", at: [3, 3], label: "(3, 3), Z = 15", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "region", within: lessonRegion, step: 1 },
+        { kind: "line", through: [[0, 2], [-3, 4]], tone: "muted", dashed: true, step: 3 },
+        { kind: "label", at: [0.75, 1.5], label: "Z = 6", labelAt: "ne", tone: "muted", step: 3 },
+        { kind: "line", through: [[0, 4], [-3, 6]], tone: "muted", dashed: true, step: 4 },
+        { kind: "label", at: [1.5, 3], label: "Z = 12", labelAt: "sw", tone: "muted", step: 4 },
+        { kind: "line", through: [[0, 5], [-3, 7]], tone: "good", dashed: true, step: 5 },
+        { kind: "label", at: [6, 1], label: "Z = 15", labelAt: "ne", tone: "good", step: 5 },
+        { kind: "point", at: [3, 3], label: "(3, 3), Z = 15", labelAt: "ne", tone: "good", step: 5 },
+        { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 6 },
+        { kind: "point", at: [4, 0], label: "(4, 0)", labelAt: "ne", step: 6 },
+        { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "ne", step: 6 },
       ],
     },
     visualSpec: t`Drag the value of $k$ to slide the dashed line $Z = k$ across the region; the region's corners show their $Z$ values, and the last corner the line touches lights up as the maximum.`,

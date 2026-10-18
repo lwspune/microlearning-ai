@@ -10,16 +10,131 @@ export const c04: Concept = {
     reveal: t`No. $(100, 0)$, $(1000, 0)$, … are all in it. The region runs off to infinity: it is **unbounded**.`,
   },
   explanation: {
-    intuition: t`Look at the shape before you optimise. **Bounded:** a closed polygon you could draw a circle around. **Unbounded:** it runs off to infinity in some direction. **Empty:** no point at all, because the constraints contradict each other.`,
-    formal: t`**Bounded:** some constraint caps $x$ and some caps $y$. For example $x + y \le 6$ caps both, since $x, y \ge 0$.
-
-**Unbounded:** you can walk off to infinity and stay inside. Test a far point such as $(100, 0)$ or $(0, 100)$ against every constraint.
-
-**Empty:** prove it by combining the inequalities. $x + y \ge 8$ and $x + 2y \le 6$: since $y \ge 0$, $x + 2y \ge x + y \ge 8 > 6$. No point fits both.
-
-**The signs alone don't decide it:**
-- $x - 2y \le 2$ uses only $\le$, yet $(0, 100)$ satisfies it: unbounded.
-- $x + y \ge 1$, $x \le 3$, $y \le 2$ has a $\ge$, yet it is bounded.`,
+    intuition: [
+      t`Recall: the **feasible region** is the set of points that satisfy every constraint, like $x + y \ge 5$ and $x, y \ge 0$ here.`,
+      t`Look at its shape before you hunt for the largest or smallest value.`,
+      t`**Bounded:** a closed **polygon**, a shape with straight sides, that you could draw a circle around.`,
+      t`**Unbounded:** it runs off to infinity in some direction, like the region here.`,
+      t`**Empty:** it has no point at all, because the constraints **contradict** each other: they can't all hold at once.`,
+    ],
+    formal: [
+      {
+        title: "Bounded regions",
+        points: [
+          t`A constraint **caps** $x$ when it gives $x$ a largest possible value.`,
+          t`A region is bounded when some constraint caps $x$ and some caps $y$.`,
+          t`For example, take $x + y \le 6$ with $x, y \ge 0$.`,
+          t`Since $y \ge 0$, $x$ is at most $x + y$, so $x \le 6$.`,
+          t`In the same way $y \le 6$: the region is closed in, a triangle.`,
+        ],
+        figure: {
+          alt: "The line x + y = 6 and the triangle under it in the first quadrant, shaded, with corners (0, 0), (6, 0) and (0, 6). A dashed line x = 6 shows x is at most 6, and a dashed line y = 6 shows y is at most 6, so the triangle is closed in.",
+          axes: "xy",
+          view: { x: [-0.9, 8.5], y: [-0.9, 8.5] },
+          elements: [
+            { kind: "line", through: [[0, 6], [-1, 7]], step: 3 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 6], [-1, 7]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 3 },
+            { kind: "label", at: [2.6, 2.2], label: "x + y ≤ 6", labelAt: "sw", step: 3 },
+            { kind: "segment", from: [6, 0], to: [6, 7.2], dashed: true, tone: "good", step: 4 },
+            { kind: "label", at: [6, 7.2], label: "x ≤ 6", labelAt: "n", tone: "good", step: 4 },
+            { kind: "segment", from: [0, 6], to: [7.2, 6], dashed: true, tone: "good", step: 5 },
+            { kind: "label", at: [7.2, 6], label: "y ≤ 6", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Unbounded regions",
+        points: [
+          t`A region is **unbounded** when you can walk off to infinity and stay inside it.`,
+          t`To show it, pick a **far point**, a point a long way out, such as $(100, 0)$ or $(0, 100)$.`,
+          t`Test the far point against every constraint, $x, y \ge 0$ included.`,
+          t`Here $x + y \ge 5$ holds at $(0, 100)$, since $0 + 100 = 100$.`,
+          t`So the region runs off upward: it is unbounded.`,
+        ],
+        figure: {
+          alt: "The line x + y = 5 and the shaded region above it in the first quadrant. An arrow points straight up through the region towards the far point (0, 100), which passes the test, so the region is unbounded.",
+          axes: "xy",
+          view: { x: [-0.9, 9], y: [-0.9, 9] },
+          elements: [
+            { kind: "line", through: [[0, 5], [-1, 6]], step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "label", at: [2.6, 1.4], label: "x + y ≥ 5", labelAt: "sw", step: 1 },
+            { kind: "vector", from: [1.5, 4.5], to: [1.5, 8.6], label: "towards (0, 100)", labelAt: "e", step: 2 },
+            { kind: "label", at: [5.5, 5.5], label: "unbounded", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Empty regions",
+        points: [
+          t`A region is **empty** when no point satisfies every constraint.`,
+          t`Take $x + 2y \le 6$: the triangle under the line through $(6, 0)$ and $(0, 3)$.`,
+          t`Add $x + y \ge 8$: the side of its line away from the origin.`,
+          t`To prove the two never meet, combine the inequalities.`,
+          t`Since $y \ge 0$, $x + 2y \ge x + y$, which is at least $8$.`,
+          t`But $8 > 6$, so no point fits both: the region is empty.`,
+        ],
+        figure: {
+          alt: "Two separate shadings that do not overlap: the triangle under x + 2y = 6, and the side of x + y = 8 away from the origin. No point lies in both, so the region is empty.",
+          axes: "xy",
+          view: { x: [-0.9, 9.5], y: [-0.9, 9] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [-2, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "muted", step: 2 },
+            { kind: "line", through: [[0, 3], [-2, 4]], step: 2 },
+            { kind: "label", at: [0.3, 3.45], label: "x + 2y ≤ 6", labelAt: "e", step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [1, 7]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "muted", step: 3 },
+            { kind: "line", through: [[0, 8], [-1, 9]], step: 3 },
+            { kind: "label", at: [6.3, 3.2], label: "x + y ≥ 8", labelAt: "e", step: 3 },
+            { kind: "label", at: [6, 7.5], label: "no point in both", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Only ≤ signs, yet unbounded",
+        points: [
+          t`The signs $\le$ and $\ge$ alone don't decide the shape of a region.`,
+          t`Take $x - 2y \le 2$ with $x, y \ge 0$: it uses only $\le$.`,
+          t`Yet the far point $(0, 100)$ passes, since $0 - 200 \le 2$.`,
+          t`So its region runs off upward: it is unbounded.`,
+        ],
+        figure: {
+          alt: "The line x − 2y = 2 and the shaded region above it in the first quadrant. An arrow points straight up through the region towards (0, 100), so the region is unbounded although its constraint uses only ≤.",
+          axes: "xy",
+          view: { x: [-0.9, 9], y: [-1.4, 9] },
+          elements: [
+            { kind: "line", through: [[0, -1], [2, 0]], step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, -1], [2, 0]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 2 },
+            { kind: "label", at: [6, 2], label: "x − 2y ≤ 2", labelAt: "se", step: 2 },
+            { kind: "vector", from: [1.5, 2], to: [1.5, 8.6], label: "towards (0, 100)", labelAt: "e", step: 3 },
+            { kind: "label", at: [5, 6], label: "unbounded", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "A ≥ sign, yet bounded",
+        points: [
+          t`Now take $x + y \ge 1$, $x \le 3$ and $y \le 2$, with $x, y \ge 0$.`,
+          t`It has a $\ge$, yet $x \le 3$ caps $x$ and $y \le 2$ caps $y$.`,
+          t`So its region is a closed pentagon, a shape with five straight sides: it is bounded.`,
+          t`Look at the region, not the signs.`,
+        ],
+        figure: {
+          alt: "The pentagon with corners (1, 0), (3, 0), (3, 2), (0, 2) and (0, 1), shaded, cut off by x + y ≥ 1 at the origin's corner and closed in by x ≤ 3 and y ≤ 2, so it is bounded although it has a ≥ constraint.",
+          axes: "xy",
+          view: { x: [-0.6, 5], y: [-0.6, 3.6] },
+          elements: [
+            { kind: "line", through: [[0, 1], [1, 0]], step: 1 },
+            { kind: "label", at: [0.55, 0.45], label: "x + y ≥ 1", labelAt: "ne", step: 1 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 1], [1, 0]] }, { kind: "halfPlane", through: [[3, 0], [3, 1]] }, { kind: "halfPlane", through: [[0, 2], [-1, 2]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+            { kind: "line", through: [[3, 0], [3, 1]], tone: "good", step: 2 },
+            { kind: "label", at: [3, 2.8], label: "x ≤ 3", labelAt: "e", tone: "good", step: 2 },
+            { kind: "line", through: [[0, 2], [-1, 2]], tone: "good", step: 2 },
+            { kind: "label", at: [3.9, 2], label: "y ≤ 2", labelAt: "n", tone: "good", step: 2 },
+            { kind: "label", at: [1.6, 1.2], label: "bounded", step: 3 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Is the region $x - y \le 2$, $x + 2y \ge 4$, $x, y \ge 0$ bounded?`,
       steps: [
@@ -50,9 +165,9 @@ export const c04: Concept = {
       elements: [
         { kind: "line", through: [[0, 5], [-1, 6]], step: 1 },
         { kind: "label", at: [2.6, 1.4], label: "x + y = 5", labelAt: "sw", step: 1 },
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 2 },
-        { kind: "label", at: [5, 5], label: "x + y ≥ 5", step: 2 },
-        { kind: "vector", from: [5.5, 1], to: [8.7, 1], label: "on to (100, 0)", labelAt: "n", step: 3 },
+        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
+        { kind: "label", at: [5, 5], label: "x + y ≥ 5", step: 1 },
+        { kind: "vector", from: [5.5, 1], to: [8.7, 1], label: "on to (100, 0)", labelAt: "n", step: 4 },
       ],
     },
     visualSpec: t`Drag the constraint lines; the shaded region is tagged bounded, unbounded or empty as it changes, with an arrow showing the open direction when it is unbounded.`,

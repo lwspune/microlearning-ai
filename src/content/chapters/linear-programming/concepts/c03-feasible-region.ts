@@ -1,6 +1,15 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The idea slide's constraints, 2x + y ≤ 8 and x + 2y ≤ 8, reused on the formal slides. */
+const line1: FigureElement = { kind: "line", through: [[0, 8], [-1, 10]], tone: "muted" };
+const label1: FigureElement = { kind: "label", at: [1, 6], label: "2x + y = 8", labelAt: "e", tone: "muted" };
+const line2: FigureElement = { kind: "line", through: [[0, 4], [-2, 5]], tone: "muted" };
+const label2: FigureElement = { kind: "label", at: [6, 1.8], label: "x + 2y = 8", labelAt: "e", tone: "muted" };
+const h1: Shape = { kind: "halfPlane", through: [[0, 8], [-1, 10]] };
+const h2: Shape = { kind: "halfPlane", through: [[0, 4], [-2, 5]] };
+const firstQuadrant: Shape[] = [{ kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }];
 
 export const c03: Concept = {
   id: "C03",
@@ -10,17 +19,94 @@ export const c03: Concept = {
     reveal: t`No: you can't make $-2$ chairs. That's why every LPP includes $x \ge 0$ and $y \ge 0$, which keep you in the first quadrant.`,
   },
   explanation: {
-    intuition: t`Each constraint keeps one half-plane: one side of its line. The feasible region is the part that every constraint keeps at once. Shade the half-planes one by one and keep only the overlap. $x \ge 0$ and $y \ge 0$ are always there, so the region sits in the first quadrant.`,
-    formal: t`**Feasible region:** the set of points that satisfy every constraint, including $x \ge 0$ and $y \ge 0$.
-
-**To draw it:**
-- draw each boundary line
-- pick its side (test the origin)
-- keep the overlap, in the first quadrant
-
-With $\le$ and $\ge$, the boundary lines belong to the region.
-
-**Is a point in it?** Substitute it into every inequality, including $x \ge 0$ and $y \ge 0$. One failure puts it outside. A point on a boundary line satisfies that constraint with equality, so it is inside.`,
+    intuition: [
+      t`A **constraint** is a rule that $x$ and $y$ must obey, written as an inequality.`,
+      t`$x$ and $y$ count things, so $x \ge 0$ and $y \ge 0$ are always constraints: we stay in the first quadrant.`,
+      t`Recall: a **half-plane** is one side of a line. $2x + y \le 8$ keeps one half-plane.`,
+      t`A second constraint, $x + 2y \le 8$, keeps a half-plane of its own.`,
+      t`Keep only the **overlap**, the part every constraint keeps at once: this is the **feasible region**.`,
+    ],
+    formal: [
+      {
+        title: "The feasible region",
+        points: [
+          t`The **feasible region** is the set of points that satisfy every constraint at once.`,
+          t`The constraints always include $x \ge 0$ and $y \ge 0$, so it lies in the first quadrant.`,
+        ],
+        figure: {
+          alt: "The lines 2x + y = 8 and x + 2y = 8 in the first quadrant. The feasible region, the points satisfying 2x + y ≤ 8, x + 2y ≤ 8, x ≥ 0 and y ≥ 0, is shaded; the y-axis is marked x ≥ 0 and the x-axis y ≥ 0.",
+          axes: "xy",
+          view: { x: [-0.9, 9], y: [-0.9, 9] },
+          elements: [
+            line1,
+            label1,
+            line2,
+            label2,
+            { kind: "region", within: [h1, h2, ...firstQuadrant], step: 1 },
+            { kind: "label", at: [1.3, 1.3], label: "feasible region", step: 1 },
+            { kind: "label", at: [0, 2.6], label: "x ≥ 0", labelAt: "e", tone: "good", step: 2 },
+            { kind: "label", at: [5.8, 0], label: "y ≥ 0", labelAt: "n", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Drawing the feasible region",
+        points: [
+          t`First draw each constraint's boundary line.`,
+          t`Pick each line's side by testing the origin: $0 \le 8$ is true for both, so keep the origin's side.`,
+          t`Then keep the overlap of those sides, inside the first quadrant.`,
+          t`With $\le$ and $\ge$, the boundary lines belong to the region.`,
+        ],
+        figure: {
+          alt: "Step by step: the lines 2x + y = 8 and x + 2y = 8 are drawn; testing the origin shades the origin's side of each; their overlap in the first quadrant is the feasible region, with corners (0, 0), (4, 0), (8/3, 8/3) and (0, 4); its edges, parts of the boundary lines, are highlighted as belonging to it.",
+          axes: "xy",
+          view: { x: [-0.9, 9], y: [-0.9, 9] },
+          elements: [
+            { ...line1, step: 1 },
+            { ...label1, step: 1 },
+            { ...line2, step: 1 },
+            { ...label2, step: 1 },
+            { kind: "region", within: [h1], tone: "muted", step: 2 },
+            { kind: "region", within: [h2], tone: "muted", step: 2 },
+            { kind: "point", at: [0, 0], label: "test (0, 0)", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "region", within: [h1, h2, ...firstQuadrant], step: 3 },
+            { kind: "label", at: [1.3, 1.3], label: "feasible region", step: 3 },
+            { kind: "segment", from: [0, 0], to: [4, 0], tone: "good", step: 4 },
+            { kind: "segment", from: [4, 0], to: [8 / 3, 8 / 3], tone: "good", step: 4 },
+            { kind: "segment", from: [8 / 3, 8 / 3], to: [0, 4], tone: "good", step: 4 },
+            { kind: "segment", from: [0, 4], to: [0, 0], tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Is a point in it?",
+        points: [
+          t`To test a point, substitute it into every inequality, including $x \ge 0$ and $y \ge 0$.`,
+          t`$(1, 1)$ gives $3 \le 8$ and $3 \le 8$, and its coordinates are positive: it is inside.`,
+          t`One failure puts a point outside: $(5, 1)$ gives $2x + y = 11$, more than $8$.`,
+          t`$(-1, 2)$ passes both, but $x = -1 < 0$, so it is outside too.`,
+          t`A point on a boundary line satisfies that constraint with equality, so it is inside.`,
+          t`For example, $(3, 2)$ gives $2x + y = 8$ and $x + 2y = 7 \le 8$: inside.`,
+        ],
+        figure: {
+          alt: "The feasible region of 2x + y ≤ 8, x + 2y ≤ 8, x, y ≥ 0, shaded. The point (1, 1) is inside; (5, 1) is outside, beyond 2x + y = 8; (−1, 2) is outside, left of the y-axis; (3, 2) lies on the line 2x + y = 8, on the region's edge, and is inside.",
+          axes: "xy",
+          view: { x: [-1.6, 9], y: [-0.9, 9] },
+          elements: [
+            line1,
+            label1,
+            line2,
+            label2,
+            { kind: "region", within: [h1, h2, ...firstQuadrant] },
+            { kind: "point", at: [1, 1], label: "(1, 1)", labelAt: "e", tone: "good", step: 2 },
+            { kind: "point", at: [5, 1], label: "(5, 1)", labelAt: "s", tone: "bad", hollow: true, step: 3 },
+            { kind: "point", at: [-1, 2], label: "(−1, 2)", labelAt: "n", tone: "bad", hollow: true, step: 4 },
+            { kind: "segment", from: [4, 0], to: [8 / 3, 8 / 3], tone: "good", step: 5 },
+            { kind: "point", at: [3, 2], label: "(3, 2)", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Shade the feasible region of $x + y \le 5$, $2x + y \ge 4$, $x, y \ge 0$, and check whether $(2, 1)$ is in it.`,
       steps: [
@@ -50,14 +136,14 @@ With $\le$ and $\ge$, the boundary lines belong to the region.
       axes: "xy",
       view: { x: [-0.9, 9], y: [-0.9, 9] },
       elements: [
-        { kind: "line", through: [[0, 8], [-1, 10]], tone: "muted", step: 1 },
-        { kind: "label", at: [1, 6], label: "2x + y = 8", labelAt: "e", tone: "muted", step: 1 },
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "muted", step: 1 },
-        { kind: "line", through: [[0, 4], [-2, 5]], tone: "muted", step: 2 },
-        { kind: "label", at: [6, 1], label: "x + 2y = 8", labelAt: "n", tone: "muted", step: 2 },
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 4], [-2, 5]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "muted", step: 2 },
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[0, 4], [-2, 5]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 3 },
-        { kind: "label", at: [1.3, 1.3], label: "feasible region", step: 3 },
+        { ...line1, step: 3 },
+        { ...label1, step: 3 },
+        { kind: "region", within: [h1, ...firstQuadrant], tone: "muted", step: 3 },
+        { ...line2, step: 4 },
+        { ...label2, step: 4 },
+        { kind: "region", within: [h2, ...firstQuadrant], tone: "muted", step: 4 },
+        { kind: "region", within: [h1, h2, ...firstQuadrant], step: 5 },
+        { kind: "label", at: [1.3, 1.3], label: "feasible region", step: 5 },
       ],
     },
     visualSpec: t`Toggle constraints on and off and drag a test point: each constraint shades its side, the overlap is highlighted, and the point turns green inside or red outside, showing the inequality it fails.`,

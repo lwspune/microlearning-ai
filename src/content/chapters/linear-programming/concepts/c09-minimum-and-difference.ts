@@ -10,22 +10,131 @@ export const c09: Concept = {
     reveal: t`No: $(0, 0)$ breaks $x + y \ge 3$, so it is not in the region and $Z = 0$ is never reached. Evaluate $Z$ at the corners instead: $(3, 0)$ gives $6$, $(0, 3)$ gives $9$, $(6, 0)$ and $(0, 4)$ give $12$, $(6, 4)$ gives $24$. The minimum is $6$, at $(3, 0)$.`,
   },
   explanation: {
-    intuition: t`One corner table answers both questions: its largest value is the maximum, its smallest the minimum. Read the values, not the picture. The origin counts only if it is in the region, and a negative coefficient makes $Z$ fall as that variable grows, so the corner farthest out need not win.`,
-    formal: t`**Minimum on a bounded region**
-
-Find the corners, evaluate $Z$ at each, and take the **smallest** value. The maximum is the largest value in the same table.
-
-**The origin**
-
-$(0, 0)$ is a candidate only if it is a corner, i.e. it satisfies every constraint. A $\ge$ constraint such as $x + y \ge 3$ cuts it off.
-
-**Negative coefficients**
-
-In $Z = ax - by$ with $a, b > 0$, each unit of $y$ **lowers** $Z$ by $b$. So the corner with the biggest coordinates is not always the maximum. Keep every sign when you substitute.
-
-**Max minus min**
-
-Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative, subtracting it adds: $12 - (-3) = 15$.`,
+    intuition: [
+      t`Recall: the shaded **feasible region** is every point that meets all the constraints.`,
+      t`Here they are $x + y \ge 3$, $x \le 6$, $y \le 4$ and $x, y \ge 0$.`,
+      t`To **minimise** $Z = 2x + 3y$ is to find its smallest value in the region.`,
+      t`The origin would give $Z = 0$, but $0 + 0 \ge 3$ is false: it is not in the region.`,
+      t`So work out $Z$ at every corner, the **corner table**, and read the values, not the picture.`,
+      t`Its smallest value, $6$ at $(3, 0)$, is the minimum; its largest, $24$ at $(6, 4)$, is the maximum.`,
+    ],
+    formal: [
+      {
+        title: "Minimum on a bounded region",
+        points: [
+          t`Recall: a **bounded** region is one you could draw a circle around.`,
+          t`Find every corner: here $(0, 0)$, $(4, 0)$, $(3, 3)$ and $(0, 4)$.`,
+          t`Work out $Z = 2x + 3y$ at each: $0$, $8$, $15$ and $12$.`,
+          t`The **smallest** value in this corner table is the minimum: $0$, at $(0, 0)$.`,
+          t`The **largest** value in the same table is the maximum: $15$, at $(3, 3)$.`,
+          t`Here the origin is in the region, so it can be the minimum.`,
+        ],
+        figure: {
+          alt: "The region 3x + y ≤ 12, x + 3y ≤ 12 in the first quadrant, shaded, with corners (0, 0), (4, 0), (3, 3) and (0, 4). Z = 2x + 3y is 0, 8, 15 and 12 there; the minimum 0 at (0, 0) and the maximum 15 at (3, 3) are highlighted.",
+          axes: "xy",
+          view: { x: [-0.8, 7.2], y: [-0.8, 5.6] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 12], [-1, 15]] }, { kind: "halfPlane", through: [[0, 4], [-3, 5]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[4, 0], [0, 12]], tone: "muted" },
+            { kind: "label", at: [2.4, 4.8], label: "3x + y = 12", labelAt: "e", tone: "muted" },
+            { kind: "line", through: [[0, 4], [12, 0]], tone: "muted" },
+            { kind: "label", at: [5.4, 2.4], label: "x + 3y = 12", labelAt: "ne", tone: "muted" },
+            { kind: "point", at: [0, 0], tone: "muted", step: 2 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 2 },
+            { kind: "point", at: [3, 3], tone: "muted", step: 2 },
+            { kind: "point", at: [0, 4], tone: "muted", step: 2 },
+            { kind: "label", at: [0, 0], label: "(0, 0): Z = 0", labelAt: "ne", step: 3 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = 8", labelAt: "ne", step: 3 },
+            { kind: "label", at: [3, 3], label: "(3, 3): Z = 15", labelAt: "ne", step: 3 },
+            { kind: "label", at: [0, 4], label: "(0, 4): Z = 12", labelAt: "ne", step: 3 },
+            { kind: "point", at: [0, 0], step: 4 },
+            { kind: "point", at: [3, 3], step: 5 },
+          ],
+        },
+      },
+      {
+        title: "When the origin counts",
+        points: [
+          t`A **candidate** is a point whose $Z$ goes into the corner table.`,
+          t`The origin $(0, 0)$ is a candidate only if it is a corner: it meets every constraint.`,
+          t`Test it in each one: $0 \le 6$ and $0 \le 4$ hold.`,
+          t`But $x + y \ge 3$ fails: $0 + 0 = 0$, which is less than $3$.`,
+          t`So a $\ge$ constraint such as $x + y \ge 3$ can cut the origin off.`,
+          t`Its place goes to the corners on $x + y = 3$: $(3, 0)$ and $(0, 3)$.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 3, x ≤ 6, y ≤ 4 in the first quadrant, shaded. The lines x = 6 and y = 4 are labelled; the origin passes both. The line x + y = 3 cuts the origin off: it is hollow and red, not feasible, and the corners (3, 0) and (0, 3) on that line take its place.",
+          axes: "xy",
+          view: { x: [-0.86, 8.6], y: [-0.86, 5.4] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [1, 2]] }, { kind: "halfPlane", through: [[6, 0], [6, 1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "line", through: [[6, 0], [6, 1]], tone: "muted", step: 3 },
+            { kind: "line", through: [[0, 4], [1, 4]], tone: "muted", step: 3 },
+            { kind: "label", at: [6, 2], label: "x = 6", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "label", at: [3, 4], label: "y = 4", labelAt: "n", tone: "muted", step: 3 },
+            { kind: "line", through: [[0, 3], [-1, 4]], step: 4 },
+            { kind: "label", at: [1, 2], label: "x + y = 3", labelAt: "ne", step: 4 },
+            { kind: "point", at: [0, 0], label: "not feasible", labelAt: "n", tone: "bad", hollow: true, step: 5 },
+            { kind: "point", at: [3, 0], tone: "good", step: 6 },
+            { kind: "point", at: [0, 3], tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Negative coefficients",
+        points: [
+          t`A **coefficient** is the number multiplying a variable: in $Z = 3x - y$, $y$ has $-1$.`,
+          t`So each unit up in $y$ **lowers** $Z$ by $1$.`,
+          t`In general, in $Z = ax - by$ with $a, b > 0$, each unit of $y$ lowers $Z$ by $b$.`,
+          t`On $x \le 4$, $y \le 3$: $(4, 0)$ gives $12$, but the far corner $(4, 3)$ gives $12 - 3 = 9$.`,
+          t`So the corner with the biggest coordinates is not always the maximum.`,
+          t`Keep every sign when you substitute: $Z(4, 3) = 12 - 3$, not $12 + 3$.`,
+        ],
+        figure: {
+          alt: "The box x ≤ 4, y ≤ 3 in the first quadrant, shaded. An arrow up the box shows Z = 3x − y falling as y grows. Z is 12 at (4, 0) but only 9 at the far corner (4, 3); (4, 0) is highlighted.",
+          axes: "xy",
+          view: { x: [-0.8, 7.2], y: [-0.8, 4.4] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[4, 0], [4, 1]] }, { kind: "halfPlane", through: [[0, 3], [-1, 3]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "vector", from: [2, 0.4], to: [2, 2.6], label: "Z falls", labelAt: "e", step: 2 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 4 },
+            { kind: "point", at: [4, 3], tone: "muted", step: 4 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = 12", labelAt: "ne", step: 4 },
+            { kind: "label", at: [4, 3], label: "(4, 3): Z = 9", labelAt: "ne", step: 4 },
+            { kind: "point", at: [4, 0], step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Max minus min",
+        points: [
+          t`Write $Z_{\max}$ for the maximum of $Z$ and $Z_{\min}$ for the minimum.`,
+          t`"Max minus min" asks for $Z_{\max} - Z_{\min}$.`,
+          t`Both come from the same corner table: for $Z = 3x - y$, $0$, $12$, $9$ and $-3$.`,
+          t`So $Z_{\max} = 12$ at $(4, 0)$ and $Z_{\min} = -3$ at $(0, 3)$.`,
+          t`A negative minimum, subtracted, adds: $12 - (-3) = 15$.`,
+        ],
+        figure: {
+          alt: "The box x ≤ 4, y ≤ 3 in the first quadrant, shaded. Z = 3x − y is 0 at (0, 0), 12 at (4, 0), 9 at (4, 3) and −3 at (0, 3); the maximum 12 and the minimum −3 are highlighted, and 12 − (−3) = 15 is written inside.",
+          axes: "xy",
+          view: { x: [-0.8, 7.2], y: [-0.8, 4.4] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[4, 0], [4, 1]] }, { kind: "halfPlane", through: [[0, 3], [-1, 3]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+            { kind: "point", at: [0, 0], tone: "muted", step: 3 },
+            { kind: "point", at: [4, 0], tone: "muted", step: 3 },
+            { kind: "point", at: [4, 3], tone: "muted", step: 3 },
+            { kind: "point", at: [0, 3], tone: "muted", step: 3 },
+            { kind: "label", at: [0, 0], label: "(0, 0): Z = 0", labelAt: "ne", step: 3 },
+            { kind: "label", at: [4, 0], label: "(4, 0): Z = 12", labelAt: "ne", step: 3 },
+            { kind: "label", at: [4, 3], label: "(4, 3): Z = 9", labelAt: "ne", step: 3 },
+            { kind: "label", at: [0, 3], label: "(0, 3): Z = −3", labelAt: "ne", step: 3 },
+            { kind: "point", at: [4, 0], step: 4 },
+            { kind: "point", at: [0, 3], step: 4 },
+            { kind: "label", at: [0.6, 1.5], label: "12 − (−3) = 15", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the maximum and the minimum of $Z = 3x - 2y$ subject to $x + y \le 6$, $y \le 4$, $x \ge 1$, $x, y \ge 0$, and the maximum minus the minimum.`,
       steps: [
@@ -59,24 +168,25 @@ Both come from the same table: $Z_{\max} - Z_{\min}$. If the minimum is negative
       },
     },
     figure: {
-      alt: "The region x + y ≥ 3, x ≤ 6, y ≤ 4 in the first quadrant, shaded. The origin is hollow and red: it breaks x + y ≥ 3. Z = 2x + 3y is 6 at (3, 0), 12 at (6, 0), 24 at (6, 4), 12 at (0, 4) and 9 at (0, 3); the minimum, 6 at (3, 0), is highlighted.",
+      alt: "The region x + y ≥ 3, x ≤ 6, y ≤ 4 in the first quadrant, shaded. The origin is hollow and red: it breaks x + y ≥ 3. Z = 2x + 3y is 6 at (3, 0), 12 at (6, 0), 24 at (6, 4), 12 at (0, 4) and 9 at (0, 3); the minimum, 6 at (3, 0), and the maximum, 24 at (6, 4), are highlighted.",
       axes: "xy",
       view: { x: [-0.86, 8.6], y: [-0.86, 5.4] },
       elements: [
         { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [1, 2]] }, { kind: "halfPlane", through: [[6, 0], [6, 1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
         { kind: "line", through: [[0, 3], [-1, 4]], tone: "muted", step: 1 },
-        { kind: "point", at: [0, 0], label: "(0, 0) not feasible", labelAt: "ne", tone: "bad", hollow: true, step: 2 },
-        { kind: "point", at: [3, 0], tone: "muted", step: 3 },
-        { kind: "point", at: [6, 0], tone: "muted", step: 3 },
-        { kind: "point", at: [6, 4], tone: "muted", step: 3 },
-        { kind: "point", at: [0, 4], tone: "muted", step: 3 },
-        { kind: "point", at: [0, 3], tone: "muted", step: 3 },
-        { kind: "label", at: [3, 0], label: "(3, 0): Z = 6", labelAt: "ne", step: 3 },
-        { kind: "label", at: [6, 0], label: "(6, 0): Z = 12", labelAt: "ne", step: 3 },
-        { kind: "label", at: [6, 4], label: "(6, 4): Z = 24", labelAt: "ne", step: 3 },
-        { kind: "label", at: [0, 4], label: "(0, 4): Z = 12", labelAt: "ne", step: 3 },
-        { kind: "label", at: [0, 3], label: "(0, 3): Z = 9", labelAt: "e", step: 3 },
-        { kind: "point", at: [3, 0], step: 4 },
+        { kind: "point", at: [0, 0], label: "not feasible", labelAt: "n", tone: "bad", hollow: true, step: 4 },
+        { kind: "point", at: [3, 0], tone: "muted", step: 5 },
+        { kind: "point", at: [6, 0], tone: "muted", step: 5 },
+        { kind: "point", at: [6, 4], tone: "muted", step: 5 },
+        { kind: "point", at: [0, 4], tone: "muted", step: 5 },
+        { kind: "point", at: [0, 3], tone: "muted", step: 5 },
+        { kind: "label", at: [3, 0], label: "(3, 0): Z = 6", labelAt: "ne", step: 5 },
+        { kind: "label", at: [6, 0], label: "(6, 0): Z = 12", labelAt: "ne", step: 5 },
+        { kind: "label", at: [6, 4], label: "(6, 4): Z = 24", labelAt: "ne", step: 5 },
+        { kind: "label", at: [0, 4], label: "(0, 4): Z = 12", labelAt: "ne", step: 5 },
+        { kind: "label", at: [0, 3], label: "(0, 3): Z = 9", labelAt: "e", step: 5 },
+        { kind: "point", at: [3, 0], step: 6 },
+        { kind: "point", at: [6, 4], step: 6 },
       ],
     },
     visualSpec: t`Drag the coefficients of $Z$ through positive and negative values; each corner shows its $Z$ value, the largest glows as the maximum and the smallest as the minimum, and the origin is crossed out when it is not in the region.`,

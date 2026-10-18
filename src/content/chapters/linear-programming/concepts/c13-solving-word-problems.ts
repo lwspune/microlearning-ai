@@ -1,6 +1,22 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Shape } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The bakery of the lesson slides: oven 3x + 2y ≤ 36, flour x + 4y ≤ 32, x, y ≥ 0. */
+const bakeryView = { x: [-1.45, 14.5] as [number, number], y: [-1.45, 11] as [number, number] };
+const firstQuadrant: Shape[] = [{ kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }];
+const bakeryRegion: Shape[] = [{ kind: "halfPlane", through: [[0, 18], [-2, 21]] }, { kind: "halfPlane", through: [[0, 8], [-4, 9]] }, ...firstQuadrant];
+
+/** The two boundary lines, labelled by the limit each one is; `step` when they appear with a point. */
+function limitLines(step?: number): FigureElement[] {
+  const s = step === undefined ? {} : { step };
+  return [
+    { kind: "line", through: [[0, 18], [-2, 21]], tone: "muted", ...s },
+    { kind: "label", at: [5.4, 10], label: "oven", labelAt: "e", tone: "muted", ...s },
+    { kind: "line", through: [[0, 8], [-4, 9]], tone: "muted", ...s },
+    { kind: "label", at: [14.4, 3.9], label: "flour", labelAt: "s", tone: "muted", ...s },
+  ];
+}
 
 export const c13: Concept = {
   id: "C13",
@@ -10,17 +26,93 @@ export const c13: Concept = {
     reveal: t`At a corner of the feasible region, and often at the one where **both limits are used up exactly**. A plan that leaves spare time or material can usually be pushed further.`,
   },
   explanation: {
-    intuition: t`A word problem is the whole chapter in one pass. Turn the words into an LPP, draw the region, find its corners, work out $Z$ at each, and give the answer in the problem's own words: how many of each, and the profit or cost in ₹.`,
-    formal: t`**The five steps**
-
-1. **Variables.** Let $x$ and $y$ be the amounts of the two products, and say what each one counts.
-2. **Objective.** Write $Z$ from the profit or cost per unit, and say whether to maximise or minimise it.
-3. **Constraints.** One for every limit or requirement in the problem, plus $x, y \ge 0$.
-
-4. **Region and corners.** Draw each boundary line, shade the feasible region and find its corners.
-5. **Evaluate and answer.** Work out $Z$ at every corner and pick the best. Answer with units: ₹… by making … of one product and … of the other.
-
-**Check.** Every limit in the words must be a constraint. The best plan is often the mixed one where two lines cross, so never skip that corner.`,
+    intuition: [
+      t`A word problem is the whole chapter in one pass.`,
+      t`First turn the words into an **LPP**: a quantity $Z$ to make as good as possible, and the limits on the plan.`,
+      t`Here a bakery's two limits are oven time and flour; the shaded **feasible region** holds the plans that meet both.`,
+      t`Find the region's **corners**, the points where two of its edges meet.`,
+      t`Work out $Z$, the profit, at each corner: the best is $(8, 6)$, where both limits are used up.`,
+      t`Give the answer in the problem's own words: how many of each, and the profit or cost in ₹.`,
+    ],
+    formal: [
+      {
+        title: "Write the LPP",
+        points: [
+          t`**Step 1.** Let $x$ and $y$ be the amounts of the two products, and say what each one counts.`,
+          t`**Step 2.** Write the **objective** $Z$ from the profit or cost per unit.`,
+          t`Say whether to maximise it, for a profit, or minimise it, for a cost.`,
+          t`**Step 3.** Write one **constraint** for every limit or requirement in the problem.`,
+          t`Add $x, y \ge 0$: no amount can be negative.`,
+        ],
+        figure: {
+          alt: "The bakery's plane: x counts batches of cakes and y batches of pastries. The objective Z = 500x + 400y appears, marked maximise since it is a profit. Then the oven and flour boundary lines, and the first quadrant, where x and y are not negative, is shaded.",
+          axes: "xy",
+          view: bakeryView,
+          elements: [
+            { kind: "label", at: [0.3, 0.2], label: "x: cake batches", labelAt: "ne", step: 1 },
+            { kind: "label", at: [0.4, 5], label: "y: pastry batches", labelAt: "e", step: 1 },
+            { kind: "label", at: [14.4, 8.8], label: "Z = 500x + 400y", labelAt: "w", tone: "good", step: 2 },
+            { kind: "label", at: [14.4, 7.8], label: "maximise: a profit", labelAt: "w", tone: "good", step: 3 },
+            ...limitLines(4),
+            { kind: "region", within: firstQuadrant, step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Solve it and answer",
+        points: [
+          t`**Step 4.** Draw each boundary line and shade the **feasible region**, the plans that meet every constraint.`,
+          t`Find its **corners**, including the one where two sloping lines cross.`,
+          t`**Step 5.** Work out $Z$ at every corner.`,
+          t`Pick the best: the largest $Z$ for a profit, the smallest for a cost.`,
+          t`Answer with units: ₹… by making … of one product and … of the other.`,
+        ],
+        figure: {
+          alt: "The bakery's region 3x + 2y ≤ 36 (oven), x + 4y ≤ 32 (flour) in the first quadrant, shaded. Its corners (0, 0), (12, 0), (8, 6) and (0, 8) appear, then Z = 6000, 6400 and 3200 at the last three. The largest, at (8, 6), is highlighted, and the answer reads ₹6400 from 8 batches of cakes and 6 of pastries.",
+          axes: "xy",
+          view: bakeryView,
+          elements: [
+            { kind: "region", within: bakeryRegion, step: 1 },
+            ...limitLines(1),
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [12, 0], label: "(12, 0)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "ne", step: 2 },
+            { kind: "point", at: [8, 6], label: "(8, 6)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [10.4, 1.2], label: "Z = 6000", labelAt: "w", step: 3 },
+            { kind: "label", at: [0.4, 7], label: "Z = 3200", labelAt: "e", step: 3 },
+            { kind: "label", at: [7.6, 5.2], label: "Z = 6400", labelAt: "w", step: 3 },
+            { kind: "point", at: [8, 6], tone: "good", step: 4 },
+            { kind: "label", at: [14.4, 9.4], label: "₹6400 profit", labelAt: "w", tone: "good", step: 5 },
+            { kind: "label", at: [14.4, 8.4], label: "8 cake, 6 pastry batches", labelAt: "w", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Check before you answer",
+        points: [
+          t`Every limit in the words must be a constraint: here, oven time and flour.`,
+          t`A corner on an axis is a plan that makes only one product.`,
+          t`The **mixed plan**, making some of both, is the corner where two lines cross.`,
+          t`It is often the best, so never skip that corner.`,
+        ],
+        figure: {
+          alt: "The bakery's region, shaded, with its oven and flour lines. The corners on the axes, (12, 0) and (0, 8), each make one product. The mixed corner (8, 6), where the lines cross, appears next; the dashed line Z = 6400 touches the region only there: the best plan.",
+          axes: "xy",
+          view: bakeryView,
+          elements: [
+            { kind: "region", within: bakeryRegion },
+            ...limitLines(1),
+            { kind: "point", at: [12, 0], label: "(12, 0)", labelAt: "ne", step: 2 },
+            { kind: "label", at: [10.6, 1.3], label: "cakes only", labelAt: "w", step: 2 },
+            { kind: "point", at: [0, 8], label: "(0, 8) pastries only", labelAt: "ne", step: 2 },
+            { kind: "point", at: [8, 6], label: "(8, 6) mixed", labelAt: "ne", step: 3 },
+            { kind: "line", through: [[0, 16], [-400, 516]], tone: "good", dashed: true, step: 4 },
+            { kind: "label", at: [4, 10.4], label: "Z = 6400", labelAt: "w", tone: "good", step: 4 },
+            { kind: "point", at: [8, 6], tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`A bakery makes $x$ batches of cakes and $y$ batches of pastries a week. A batch of cakes needs $3$ hours of oven time and $1$ kg of flour; a batch of pastries needs $2$ hours and $4$ kg. There are $36$ oven hours and $32$ kg of flour. The profit is ₹$500$ per batch of cakes and ₹$400$ per batch of pastries. How many of each give the most profit?`,
       steps: [
@@ -52,21 +144,22 @@ export const c13: Concept = {
       },
     },
     figure: {
-      alt: "The bakery's region 3x + 2y ≤ 36, x + 4y ≤ 32 in the first quadrant, shaded, with corners (0, 0), (12, 0), (8, 6) and (0, 8). The dashed line 500x + 400y = 6400 touches the region only at (8, 6), where both limits are used up: the best plan.",
+      alt: "The bakery's region 3x + 2y ≤ 36, x + 4y ≤ 32 in the first quadrant, shaded, with corners (0, 0), (12, 0), (8, 6) and (0, 8). The dashed line 500x + 400y = 6400 touches the region only at (8, 6), where both limits are used up: the best plan, ₹6400 from 8 batches of cakes and 6 of pastries.",
       axes: "xy",
-      view: { x: [-1.45, 14.5], y: [-1.45, 11] },
+      view: bakeryView,
       elements: [
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 18], [-2, 21]] }, { kind: "halfPlane", through: [[0, 8], [-4, 9]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
-        { kind: "line", through: [[0, 18], [-2, 21]], tone: "muted", step: 1 },
-        { kind: "label", at: [5.4, 10], label: "oven", labelAt: "e", tone: "muted", step: 1 },
-        { kind: "line", through: [[0, 8], [-4, 9]], tone: "muted", step: 1 },
-        { kind: "label", at: [14.4, 3.9], label: "flour", labelAt: "s", tone: "muted", step: 1 },
-        { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 2 },
-        { kind: "point", at: [12, 0], label: "(12, 0)", labelAt: "ne", step: 2 },
-        { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "ne", step: 2 },
-        { kind: "line", through: [[0, 16], [-400, 516]], tone: "good", dashed: true, step: 3 },
-        { kind: "label", at: [4, 10.4], label: "Z = 6400", labelAt: "w", tone: "good", step: 3 },
-        { kind: "point", at: [8, 6], label: "(8, 6) best", labelAt: "ne", tone: "good", step: 3 },
+        { kind: "region", within: bakeryRegion, step: 3 },
+        ...limitLines(2),
+        { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", step: 4 },
+        { kind: "point", at: [12, 0], label: "(12, 0)", labelAt: "ne", step: 4 },
+        { kind: "point", at: [0, 8], label: "(0, 8)", labelAt: "ne", step: 4 },
+        { kind: "point", at: [8, 6], label: "(8, 6)", labelAt: "ne", step: 4 },
+        { kind: "line", through: [[0, 16], [-400, 516]], tone: "good", dashed: true, step: 5 },
+        { kind: "label", at: [4, 10.4], label: "Z = 6400", labelAt: "w", tone: "good", step: 5 },
+        { kind: "point", at: [8, 6], tone: "good", step: 5 },
+        { kind: "label", at: [8, 6], label: "best", labelAt: "sw", tone: "good", step: 5 },
+        { kind: "label", at: [14.4, 9.4], label: "₹6400 profit", labelAt: "w", tone: "good", step: 6 },
+        { kind: "label", at: [14.4, 8.4], label: "8 cake, 6 pastry batches", labelAt: "w", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Drag the profit per unit of each product; the Z line slides out across a fixed two-limit region, and the best corner lights up with its plan and its profit in ₹.`,

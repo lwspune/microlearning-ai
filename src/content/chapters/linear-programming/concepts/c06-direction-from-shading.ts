@@ -10,14 +10,85 @@ export const c06: Concept = {
     reveal: t`No. The origin is shaded, and there $0 - 0 = 0 < 1$. So the shading is $x - y \le 1$. Because of the $-y$, moving up makes $x - y$ smaller, so above is the $\le$ side here.`,
   },
   explanation: {
-    intuition: t`The picture tells you which side is shaded. The sign comes from a test point, not from above or below. Above means $\ge$ only when the coefficient of $y$ is positive.`,
-    formal: t`**Reading the sign from the shading**
-
-1. Write the line. Through $(p, 0)$ and $(0, q)$ it is $\frac{x}{p} + \frac{y}{q} = 1$; clear the fractions to get $ax + by = c$.
-2. Pick a point clearly inside the shading: the origin, if it is shaded and not on the line.
-3. Substitute it into $ax + by$. If you get less than $c$, the shading is $ax + by \le c$; otherwise it is $ax + by \ge c$.
-
-**Above is not always $\ge$.** Moving up raises $ax + by$ only when $b > 0$. When $b < 0$, the side above the line is the $\le$ side.`,
+    intuition: [
+      t`Here the line $x - y = 1$ has the side above it shaded.`,
+      t`Pick a **test point**: a point clearly inside the shading, here the origin.`,
+      t`At the origin $x - y$ is $0$, which is less than $1$: so the shading is $x - y \le 1$.`,
+      t`The shading lies above the line, yet the sign is $\le$.`,
+      t`The sign comes from the test point, not from above or below.`,
+      t`Above means $\ge$ only when the **coefficient** of $y$, the number multiplying it, is positive.`,
+    ],
+    formal: [
+      {
+        title: "Write the boundary line",
+        points: [
+          t`Recall: the line through $(p, 0)$ and $(0, q)$ is $\frac{x}{p} + \frac{y}{q} = 1$.`,
+          t`Read the two axis crossings off the figure: here $(1, 0)$ and $(0, -1)$.`,
+          t`So the line is $\frac{x}{1} + \frac{y}{-1} = 1$, keeping the minus sign.`,
+          t`Clear the fractions to get the form $ax + by = c$: here $x - y = 1$.`,
+        ],
+        figure: {
+          alt: "The half-plane above a line is shaded. The line crosses the axes at (1, 0) and (0, −1), so it is x/1 + y/(−1) = 1, which is x − y = 1.",
+          axes: "xy",
+          view: { x: [-3, 3], y: [-3, 3] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, -1], [1, 0]] }] },
+            { kind: "point", at: [1, 0], label: "(1, 0)", labelAt: "nw", tone: "muted", step: 2 },
+            { kind: "point", at: [0, -1], label: "(0, −1)", labelAt: "se", tone: "muted", step: 2 },
+            { kind: "line", through: [[0, -1], [1, 0]], step: 3 },
+            { kind: "label", at: [2.4, 1.4], label: "x − y = 1", labelAt: "se", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Test a point in the shading",
+        points: [
+          t`Pick a point clearly inside the shading, not on the line.`,
+          t`The origin is easiest, when it is shaded and not on the line.`,
+          t`Substitute it into $ax + by$: here $0 - 0 = 0$.`,
+          t`If you get less than $c$, the shading is $ax + by \le c$.`,
+          t`Otherwise, the shading is $ax + by \ge c$.`,
+          t`Here $0 < 1$, so the shading is $x - y \le 1$.`,
+        ],
+        figure: {
+          alt: "The line x − y = 1 with the side above it shaded. The origin, inside the shading, is the test point: 0 − 0 = 0, which is less than 1, so the shading is x − y ≤ 1.",
+          axes: "xy",
+          view: { x: [-3, 3], y: [-3, 3] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, -1], [1, 0]] }] },
+            { kind: "line", through: [[0, -1], [1, 0]] },
+            { kind: "label", at: [2.4, 1.4], label: "x − y = 1", labelAt: "se" },
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "nw", tone: "good", step: 2 },
+            { kind: "label", at: [-2.6, 1.6], label: "0 − 0 = 0", labelAt: "e", step: 3 },
+            { kind: "label", at: [-2.6, 2.4], label: "x − y ≤ 1", labelAt: "e", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Above is not always ≥",
+        points: [
+          t`Moving straight up raises $y$ and leaves $x$ the same.`,
+          t`So moving up raises $ax + by$ only when $b$, the coefficient of $y$, is positive.`,
+          t`When $b < 0$, moving up lowers $ax + by$ instead.`,
+          t`In $x - y = 1$, $b = -1$: from $(-1, -2)$ up to $(-1, -1)$, $x - y$ drops from $1$ to $0$.`,
+          t`So when $b < 0$, the side above the line is the $\le$ side: here $x - y \le 1$.`,
+        ],
+        figure: {
+          alt: "The line x − y = 1 with the side above it shaded. An arrow goes straight up from (−1, −2) on the line to (−1, −1), where x − y is 0, less than 1: moving up lowers x − y, so the side above is x − y ≤ 1.",
+          axes: "xy",
+          view: { x: [-3, 3], y: [-3, 3] },
+          elements: [
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, -1], [1, 0]] }] },
+            { kind: "line", through: [[0, -1], [1, 0]] },
+            { kind: "label", at: [2.4, 1.4], label: "x − y = 1", labelAt: "se" },
+            { kind: "vector", from: [-1, -2], to: [-1, -1], step: 1 },
+            { kind: "point", at: [-1, -2], label: "(−1, −2)", labelAt: "se", tone: "muted", step: 4 },
+            { kind: "point", at: [-1, -1], label: "(−1, −1)", labelAt: "w", tone: "good", step: 4 },
+            { kind: "label", at: [-2.6, 2.4], label: "x − y ≤ 1", labelAt: "e", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`A line passes through $(5, 0)$ and $(0, -2)$, and the side containing the origin is shaded. Which inequality describes the shading?`,
       steps: [

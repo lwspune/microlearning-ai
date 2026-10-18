@@ -1,6 +1,25 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The hook's region x + y ≥ 3, x, y ≥ 0 (open up and to the right); it appears at `step` when given. */
+function hookRegion(step?: number): FigureElement {
+  return {
+    kind: "region",
+    within: [{ kind: "halfPlane", through: [[0, 3], [1, 2]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }],
+    ...(step === undefined ? {} : { step }),
+  };
+}
+
+/** The hook region's corners (3, 0) and (0, 3), labelled with `suffix` (e.g. ": Z = 3"), at `step`. */
+function hookCorners(step: number, suffix = ""): FigureElement[] {
+  return [
+    { kind: "point", at: [3, 0], label: `(3, 0)${suffix}`, labelAt: "ne", step },
+    { kind: "point", at: [0, 3], label: `(0, 3)${suffix}`, labelAt: "e", step },
+  ];
+}
+
+const hookView: Figure["view"] = { x: [-0.8, 8], y: [-0.8, 8] };
 
 export const c10: Concept = {
   id: "C10",
@@ -10,28 +29,115 @@ export const c10: Concept = {
     reveal: t`No. $(100, 0)$ is in the region and gives $Z = 100$. The region runs off and $Z$ grows without limit: there is **no maximum**. But $3$ **is** the minimum, since every point has $x + y \ge 3$.`,
   },
   explanation: {
-    intuition: t`On an unbounded region the corners still give the candidate, but you must check it. Draw the line $Z = M$ through the best corner. If part of the region lies on the better side of that line, $Z$ keeps improving forever and there is no optimum. If none does, $M$ is the answer.`,
-    formal: t`**The rule (NCERT)**
-
-If the region is unbounded, find $Z$ at every corner. Let $M$ be the largest value and $m$ the smallest.
-- $M$ is the maximum only if the open half-plane $Z > M$ has no point in common with the region. Otherwise $Z$ has **no maximum**.
-- $m$ is the minimum only if the open half-plane $Z < m$ has no point in common with the region. Otherwise $Z$ has **no minimum**.
-
-**Quick check**
-
-Which way does the region run off? If walking that way improves $Z$, there is no optimum. Test a far point such as $(100, 0)$ or $(0, 100)$.
-- Positive coefficients, region running off right or up: $Z$ grows, so **no maximum**. A minimum still exists.
-- $Z = x - 3y$ with the region running off upward: $Z$ falls, so **no minimum**.
-
-**Unbounded is not empty**
-
-An unbounded region has more points, not none. It can still have a minimum (or a maximum).`,
+    intuition: [
+      t`The region $x + y \ge 3$, $x, y \ge 0$ is **unbounded**: it runs off without end.`,
+      t`Its corners both give $Z = x + y = 3$, so the best corner value is $M = 3$.`,
+      t`On an unbounded region, $M$ is only a **candidate**: a possible answer you must check.`,
+      t`To check it, draw the line $Z = M$ through the best corner: here $x + y = 3$.`,
+      t`The line's **better side** is where $Z$ beats $M$: here, where $Z > 3$.`,
+      t`Part of the region lies there: $(100, 0)$ gives $Z = 100$, so there is no maximum.`,
+    ],
+    formal: [
+      {
+        title: "The rule for a maximum",
+        points: [
+          t`On an unbounded region, find $Z$ at every corner and call the largest value $M$.`,
+          t`For $Z = x + y$, both corners give $Z = 3$, so here $M = 3$.`,
+          t`The **open half-plane** $Z > M$ is the side of the line $Z = M$ where $Z > M$, without the line.`,
+          t`If that half-plane has no point in common with the region, $M$ is the maximum.`,
+          t`Otherwise $Z$ has **no maximum**.`,
+          t`Here $(100, 0)$ lies in both and gives $Z = 100$, so there is no maximum.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 3 in the first quadrant, shaded and open up and to the right, with corners (3, 0) and (0, 3), both giving Z = x + y = 3. The dashed line Z = 3 runs along its edge; the open half-plane Z > 3 beyond it, shaded grey, overlaps the region, and an arrow runs on towards (100, 0), where Z = 100: no maximum.",
+          axes: "xy",
+          view: hookView,
+          elements: [
+            hookRegion(),
+            ...hookCorners(1, ": Z = 3"),
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [1, 2]] }], tone: "muted", step: 3 },
+            { kind: "line", through: [[0, 3], [-1, 4]], dashed: true, tone: "accent", step: 3 },
+            { kind: "label", at: [5, 6.5], label: "Z > 3", tone: "muted", step: 3 },
+            { kind: "vector", from: [4.5, 0.8], to: [7.7, 0.8], label: "(100, 0): Z = 100", labelAt: "n", tone: "bad", step: 6 },
+            { kind: "label", at: [5.5, 3.5], label: "no maximum", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "The rule for a minimum",
+        points: [
+          t`For a minimum, call the smallest corner value $m$: here $m = 3$ too.`,
+          t`The open half-plane $Z < m$ is the side of the line $Z = m$ where $Z < m$.`,
+          t`If that half-plane has no point in common with the region, $m$ is the minimum.`,
+          t`Otherwise $Z$ has **no minimum**.`,
+          t`Here $Z < 3$ misses the region, since every point of it has $x + y \ge 3$.`,
+          t`So the minimum is $3$, even though there is no maximum.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 3 in the first quadrant, shaded and open up and to the right, with corners (3, 0) and (0, 3), both giving Z = x + y = 3. The dashed line Z = 3 runs along its edge; the side Z < 3, the triangle towards the origin, is shaded grey and holds no point of the region, so the minimum is 3.",
+          axes: "xy",
+          view: hookView,
+          elements: [
+            hookRegion(),
+            ...hookCorners(1, ": Z = 3"),
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "muted", step: 2 },
+            { kind: "line", through: [[0, 3], [-1, 4]], dashed: true, tone: "accent", step: 2 },
+            { kind: "label", at: [0.9, 0.9], label: "Z < 3", tone: "muted", step: 2 },
+            { kind: "label", at: [4.5, 4.5], label: "minimum 3", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "A quick check: walk away",
+        points: [
+          t`Ask which way the region runs off without end: this one runs right and up.`,
+          t`If walking that way keeps improving $Z$, the optimum you want does not exist.`,
+          t`To test a direction, put in a far point such as $(100, 0)$ or $(0, 100)$.`,
+          t`With positive coefficients, $Z$ grows as you walk right or up: **no maximum**.`,
+          t`A minimum still exists then: here $Z = x + y$ has minimum $3$.`,
+          t`For $Z = x - 3y$, walking up makes $Z$ fall: **no minimum**.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 3 in the first quadrant, shaded and open up and to the right. One arrow runs right towards (100, 0), where x + y grows; another runs up towards (0, 100), where x − 3y falls.",
+          axes: "xy",
+          view: hookView,
+          elements: [
+            hookRegion(),
+            { kind: "vector", from: [3.8, 1.5], to: [7.7, 1.5], step: 1 },
+            { kind: "vector", from: [1.5, 3.8], to: [1.5, 7.7], step: 1 },
+            { kind: "label", at: [5.8, 1.5], label: "towards (100, 0)", labelAt: "n", step: 3 },
+            { kind: "label", at: [1.5, 6.8], label: "towards (0, 100)", labelAt: "e", step: 3 },
+            { kind: "label", at: [5.8, 1.5], label: "x + y grows", labelAt: "s", tone: "bad", step: 4 },
+            { kind: "label", at: [1.5, 5], label: "x − 3y falls", labelAt: "e", tone: "bad", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Unbounded is not empty",
+        points: [
+          t`Recall: an **empty** region has no point at all, so the LPP has no feasible solution.`,
+          t`An unbounded region is not empty: it has more points, not none.`,
+          t`Its corners, such as $(3, 0)$ and $(0, 3)$, are points of the region.`,
+          t`It can still have a minimum, or a maximum.`,
+        ],
+        figure: {
+          alt: "The region x + y ≥ 3 in the first quadrant, shaded and open up and to the right: unbounded but full of points, with its corners (3, 0) and (0, 3) marked and the minimum 3 of Z = x + y labelled.",
+          axes: "xy",
+          view: hookView,
+          elements: [
+            hookRegion(2),
+            ...hookCorners(3),
+            { kind: "label", at: [4.5, 4.5], label: "minimum 3", tone: "good", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Minimise $Z = 2x + 5y$ subject to $x + y \ge 4$, $x + 3y \ge 6$, $x, y \ge 0$.`,
       steps: [
         t`Shade the region: it is unbounded. Corners: $(0, 4)$ on $x + y = 4$, $(6, 0)$ on $x + 3y = 6$, and where the lines cross: subtracting gives $2y = 2$, so $(3, 1)$.`,
         t`$Z$ at the corners: $2(0) + 5(4) = 20$, $2(3) + 5(1) = 11$, $2(6) + 5(0) = 12$. The smallest is $m = 11$.`,
-        t`Check $2x + 5y < 11$: draw $2x + 5y = 11$. It touches the region only at $(3, 1)$, and the side towards the origin holds no point of the region. Indeed $2x + 5y = \tfrac12(x + y) + \tfrac32(x + 3y)$ $\ge 2 + 9$ $= 11$.`,
+        t`Check $2x + 5y < 11$: draw $2x + 5y = 11$. It touches the region only at $(3, 1)$, and the side towards the origin holds no point of the region. Indeed $2x + 5y$ $= \tfrac12(x + y) + \tfrac32(x + 3y)$ $\ge 2 + 9$ $= 11$.`,
       ],
       answer: t`Minimum $Z = 11$, at $(3, 1)$.`,
       figure: {
@@ -54,17 +160,16 @@ An unbounded region has more points, not none. It can still have a minimum (or a
     figure: {
       alt: "The region x + y ≥ 3 in the first quadrant, shaded, with corners (3, 0) and (0, 3). The dashed line Z = 3 runs along its edge, a second dashed line Z = 6 lies further out inside the region, and arrows show Z growing as the region runs off towards (100, 0).",
       axes: "xy",
-      view: { x: [-0.8, 8], y: [-0.8, 8] },
+      view: hookView,
       elements: [
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 3], [1, 2]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
-        { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "n", step: 1 },
-        { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "e", step: 1 },
-        { kind: "line", through: [[0, 3], [-1, 4]], dashed: true, tone: "accent", step: 2 },
-        { kind: "label", at: [1, 2], label: "Z = 3", labelAt: "ne", step: 2 },
-        { kind: "line", through: [[0, 6], [-1, 7]], dashed: true, tone: "muted", step: 3 },
-        { kind: "label", at: [1.5, 4.5], label: "Z = 6", labelAt: "ne", tone: "muted", step: 3 },
-        { kind: "vector", from: [2.5, 2.5], to: [5.5, 5.5], label: "Z grows", labelAt: "se", step: 3 },
-        { kind: "vector", from: [4.5, 0.8], to: [7.7, 0.8], label: "(100, 0): Z = 100", labelAt: "n", tone: "bad", step: 4 },
+        hookRegion(1),
+        ...hookCorners(2),
+        { kind: "line", through: [[0, 3], [-1, 4]], dashed: true, tone: "accent", step: 4 },
+        { kind: "label", at: [1, 2], label: "Z = 3", labelAt: "ne", step: 4 },
+        { kind: "line", through: [[0, 6], [-1, 7]], dashed: true, tone: "muted", step: 5 },
+        { kind: "label", at: [1.5, 4.5], label: "Z = 6", labelAt: "ne", tone: "muted", step: 5 },
+        { kind: "vector", from: [2.5, 2.5], to: [5.5, 5.5], label: "Z grows", labelAt: "se", step: 5 },
+        { kind: "vector", from: [4.5, 0.8], to: [7.7, 0.8], label: "(100, 0): Z = 100", labelAt: "n", tone: "bad", step: 6 },
       ],
     },
     visualSpec: t`Slide the dashed line Z = k across an unbounded region; the part of the region on the better side of the best corner's line lights up, and when it never runs out Z is tagged as having no optimum.`,
