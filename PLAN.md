@@ -855,3 +855,12 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
   slug `differentiation` is Std XI's; the Std XII chapter of the same name
   will need its own slug. This completes the book (17 new chapters plus
   Complex Numbers) apart from the Extra row.
+- Extra row done 2026-10-18 (branch `coverage-mh-complex`): MH Board and
+  MHT-CET Complex Numbers coverage settled against the book's text and all
+  254 exercise and solved-example questions, cross-checked with MHT-CET's
+  2026 papers. Kept 22 (C24 circle and C25 perpendicular-bisector loci
+  confirmed by section 1.8 and Ex 1.4 Q6); left out C13, C18, C22, C26 and C27
+  (not in the book), with C28–C30 already out. Approved by the owner, so
+  students of those two courses see the 22. LPP C10 no longer doubtful for
+  them (3 of 11 HSC 12 papers' LPP questions minimise over an unbounded
+  region). CBSE, JEE Main and NDA coverage unchanged and still draft.
