@@ -3,6 +3,7 @@ import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import "katex/dist/katex.min.css";
 import { SiteHeader, SiteHeaderFallback } from "@/components/SiteHeader";
+import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,8 +24,8 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: { default: "MicroLearning AI", template: "%s · MicroLearning AI" },
-  description: "Learn complex chapters one connected concept at a time.",
+  title: { default: BRAND.name, template: `%s · ${BRAND.name}` },
+  description: BRAND.tagline,
 };
 
 export const viewport: Viewport = {

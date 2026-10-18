@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { LADDER_PATH } from "@/components/icons";
 
 /** Home-screen icons for the PWA manifest: /icon/192 and /icon/512. */
 export function generateImageMetadata() {
@@ -17,13 +18,19 @@ export default async function Icon({ id }: { id: Promise<string | number> }) {
           alignItems: "center",
           justifyContent: "center",
           background: "#3b33a8",
-          color: "#ffffff",
-          fontSize: px * 0.5,
-          fontWeight: 700,
-          fontStyle: "italic",
         }}
       >
-        i
+        <svg
+          width={px * 0.62}
+          height={px * 0.62}
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth={2}
+          strokeLinecap="round"
+        >
+          <path d={LADDER_PATH} />
+        </svg>
       </div>
     ),
     { width: px, height: px },
