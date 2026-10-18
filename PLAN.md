@@ -909,3 +909,5 @@ read from those rows or page images, never from a PDF's text layer.
   Lesson: an agent that opens /review for its concept before the lead
   registers it leaves the dev server serving a stale not-found; rewriting
   the chapter index clears it.
+- Wave 2 started 2026-10-18 (branch `std12-geometry`): graphs locked and
+  committed (Pair of Straight Lines 9 · Vectors 13 · Line and Plane 11).
