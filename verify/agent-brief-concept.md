@@ -115,6 +115,9 @@ CONCEPTS = [dict(
   - `intuition` and each formal section's `points`: one simple sentence per point (aim under 20 words, never
     over 25 outside `$…$`), at most 6 per slide; inline maths only (no `$$`, no line breaks). A display formula
     becomes its own point; a table becomes one point per row. Split a section that needs more than 6 points.
+  - **Formulae on phones** (everywhere: hook, slides, worked steps): keep each `$…$` under about 35 characters of
+    source, or it runs off a 390 px screen. Split a chain into pieces that wrap, `$f(x + 1) = (x + 1)^2 + 1$
+    $= x^2 + 2x + 2$`, and a long sum before its `=`: `$2x^2 + 8x + 8 + x + 2 - 1$ $= 2x^2 + 9x + 9$`.
   - Each formal section has a `title` of up to 6 words (its topic: "Standard position", "Arc length").
   - **Define every term before using it**, in plain words, in the point that first uses it ("a **ray** is a
     half-line …"). The idea slide defines the everyday words; don't repeat it on the formal slides.
