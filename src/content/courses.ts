@@ -102,6 +102,8 @@ export const courses: Course[] = [
       { chapter: "definite-integration" },
       { chapter: "application-of-definite-integration" },
       { chapter: "differential-equations" },
+      { chapter: "probability-distributions" },
+      { chapter: "binomial-distribution" },
       lpp([]),
     ],
   },

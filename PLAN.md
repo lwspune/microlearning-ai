@@ -954,3 +954,14 @@ read from those rows or page images, never from a PDF's text layer.
   (4) key 0 for 8/21; Indef Int Ex 3.2(A) II (14); DE Ex 6.6 Q2 (log 2 =
   0.6912), 6.4 Ex.2 sign, Misc II Q.2 iv). Lesson: a stale not-found review
   page sometimes needs a dev-server restart (RUNBOOK).
+- Wave 5 done 2026-10-18 (branch `std12-probability`): Probability
+  Distributions 7 concepts / 41 items, Binomial Distribution 4 / 24; every
+  key re-derived by hand and by summing the table or integrating the p.d.f.,
+  every figure sheet checked (about 10 labels moved), 0 phone overflows; same
+  gates; seeded, DoD passed, merged. Book faults worked around: Binomial
+  Ex 8.1 Q.4 (ii) (45/1024 for 45/512), ProbDist Ex 7.1 Q.10 and Q.15 keys,
+  7.3.2 SolvedEx.1 (minus signs dropped), and two densities that don't
+  integrate to 1 (7.4 SolvedEx.4, the 3(1 − 2x²) rows), left out.
+- **Std XII done 2026-10-18:** all 15 chapters live (14 new: 134 concepts,
+  784 items, plus Linear Programming). With Std XI's 18, all 33 MH Board
+  chapters are live.
