@@ -29,7 +29,7 @@ export const c04: Concept = {
   status: "approved",
   hook: {
     prompt: t`$2\sin 30^\circ = 2 \times \frac{1}{2} = 1$. **So is $\sin 60^\circ = 1$?**`,
-    reveal: t`No: $\sin 60^\circ = \frac{\sqrt{3}}{2}$. Doubling the angle does not double the sine. Write $60^\circ = 30^\circ + 30^\circ$ and use the sum formula: $\sin 60^\circ = 2\sin 30^\circ\cos 30^\circ = 2 \cdot \frac{1}{2} \cdot \frac{\sqrt{3}}{2} = \frac{\sqrt{3}}{2}$. The extra factor $\cos 30^\circ$ is what pulls it below $1$.`,
+    reveal: t`No: $\sin 60^\circ = \frac{\sqrt{3}}{2}$. Doubling the angle does not double the sine. Write $60^\circ = 30^\circ + 30^\circ$ and use the sum formula: $\sin 60^\circ = 2\sin 30^\circ\cos 30^\circ$ $= 2 \cdot \frac{1}{2} \cdot \frac{\sqrt{3}}{2}$ $= \frac{\sqrt{3}}{2}$. The extra factor $\cos 30^\circ$ is what pulls it below $1$.`,
   },
   explanation: {
     intuition: [

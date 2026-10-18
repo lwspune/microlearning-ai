@@ -7,7 +7,7 @@ export const c02: Concept = {
   status: "approved",
   hook: {
     prompt: t`Work out $\tan 20^\circ + \tan 25^\circ + \tan 20^\circ \tan 25^\circ$. Neither tan is a nice number. **Can the answer be?**`,
-    reveal: t`Yes: it is exactly $1$. Since $20^\circ + 25^\circ = 45^\circ$, $\tan 45^\circ = \frac{\tan 20^\circ + \tan 25^\circ}{1 - \tan 20^\circ \tan 25^\circ} = 1$. Clear the fraction: $\tan 20^\circ + \tan 25^\circ = 1 - \tan 20^\circ \tan 25^\circ$, so the sum is $1$.`,
+    reveal: t`Yes: it is exactly $1$. Since $20^\circ + 25^\circ = 45^\circ$, $\tan 45^\circ = \frac{\tan 20^\circ + \tan 25^\circ}{1 - \tan 20^\circ \tan 25^\circ} = 1$. Clear the fraction: $\tan 20^\circ + \tan 25^\circ$ $= 1 - \tan 20^\circ \tan 25^\circ$, so the sum is $1$.`,
   },
   explanation: {
     intuition: [

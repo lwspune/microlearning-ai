@@ -137,7 +137,7 @@ export const c16: Concept = {
       prompt: t`Take the list $5, 11, 17, 23, \ldots$. Show that it is an A.P., find its $20$th term, and decide whether $301$ is a term.`,
       steps: [
         t`The differences are $11 - 5 = 6$, $17 - 11 = 6$ and $23 - 17 = 6$. All are equal, so it is an A.P. with $a = 5$ and $d = 6$.`,
-        t`$t_{20} = a + (20 - 1)d = 5 + 19 \times 6 = 119$.`,
+        t`$t_{20} = a + (20 - 1)d$ $= 5 + 19 \times 6$ $= 119$.`,
         t`For $301$: $5 + (n - 1)6 = 301$, so $(n - 1)6 = 296$ and $n - 1 = \frac{296}{6} = \frac{148}{3}$.`,
         t`Then $n = \frac{151}{3} = 50\frac{1}{3}$. That is not a natural number, so $301$ is not a term.`,
       ],

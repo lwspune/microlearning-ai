@@ -7,7 +7,7 @@ export const c06: Concept = {
   status: "approved",
   hook: {
     prompt: t`What is the area of the triangle with vertices $A(2, 5)$, $B(5, 7)$ and $C(8, 9)$? **What does the answer tell you about the three points?**`,
-    reveal: t`$\begin{vmatrix} 2 & 5 & 1 \\ 5 & 7 & 1 \\ 8 & 9 & 1 \end{vmatrix} = 2(7 - 9) - 5(5 - 8) + 1(45 - 56) = -4 + 15 - 11 = 0$. The area is $0$: there is no triangle at all. From $A$ to $B$ and from $B$ to $C$ you go $3$ right and $2$ up, so the three points lie on one line. They are collinear.`,
+    reveal: t`$\begin{vmatrix} 2 & 5 & 1 \\ 5 & 7 & 1 \\ 8 & 9 & 1 \end{vmatrix} = 2(7 - 9) - 5(5 - 8) + 1(45 - 56)$ $= -4 + 15 - 11$ $= 0$. The area is $0$: there is no triangle at all. From $A$ to $B$ and from $B$ to $C$ you go $3$ right and $2$ up, so the three points lie on one line. They are collinear.`,
   },
   explanation: {
     intuition: [

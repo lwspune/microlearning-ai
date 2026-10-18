@@ -31,7 +31,7 @@ An unbounded region has more points, not none. It can still have a minimum (or a
       steps: [
         t`Shade the region: it is unbounded. Corners: $(0, 4)$ on $x + y = 4$, $(6, 0)$ on $x + 3y = 6$, and where the lines cross: subtracting gives $2y = 2$, so $(3, 1)$.`,
         t`$Z$ at the corners: $2(0) + 5(4) = 20$, $2(3) + 5(1) = 11$, $2(6) + 5(0) = 12$. The smallest is $m = 11$.`,
-        t`Check $2x + 5y < 11$: draw $2x + 5y = 11$. It touches the region only at $(3, 1)$, and the side towards the origin holds no point of the region. Indeed $2x + 5y = \tfrac12(x + y) + \tfrac32(x + 3y) \ge 2 + 9 = 11$.`,
+        t`Check $2x + 5y < 11$: draw $2x + 5y = 11$. It touches the region only at $(3, 1)$, and the side towards the origin holds no point of the region. Indeed $2x + 5y = \tfrac12(x + y) + \tfrac32(x + 3y)$ $\ge 2 + 9$ $= 11$.`,
       ],
       answer: t`Minimum $Z = 11$, at $(3, 1)$.`,
       figure: {

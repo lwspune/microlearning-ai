@@ -41,7 +41,7 @@ export const c14: Concept = {
   status: "approved",
   hook: {
     prompt: t`$1 \times 4 + 2 \times 5 + 3 \times 6 = 32$. A friend says it equals $(1 + 2 + 3)(4 + 5 + 6)$. **Is that right?**`,
-    reveal: t`No: $(1 + 2 + 3)(4 + 5 + 6) = 6 \times 15 = 90$. Multiplying two sums also makes cross products like $1 \times 5$ and $2 \times 6$ that are not in the series. Instead, write the $r$th term, $r(r + 3) = r^2 + 3r$, and add each part: $(1 + 4 + 9) + 3(1 + 2 + 3) = 14 + 18 = 32$.`,
+    reveal: t`No: $(1 + 2 + 3)(4 + 5 + 6) = 6 \times 15 = 90$. Multiplying two sums also makes cross products like $1 \times 5$ and $2 \times 6$ that are not in the series. Instead, write the $r$th term, $r(r + 3) = r^2 + 3r$, and add each part: $(1 + 4 + 9) + 3(1 + 2 + 3) = 14 + 18$ $= 32$.`,
   },
   explanation: {
     intuition: [
