@@ -1,4 +1,10 @@
 import type { Chapter } from "../../types.ts";
+import { c01 } from "./concepts/c01-first-principle.ts";
+import { c02 } from "./concepts/c02-differentiability.ts";
+import { c03 } from "./concepts/c03-standard-derivatives.ts";
+import { c04 } from "./concepts/c04-sum-rule.ts";
+import { c05 } from "./concepts/c05-product-rule.ts";
+import { c06 } from "./concepts/c06-quotient-rule.ts";
 import { graph } from "./graph.ts";
 
 export const differentiation: Chapter = {
@@ -8,5 +14,5 @@ export const differentiation: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [],
+  concepts: [c01, c02, c03, c04, c05, c06],
 };
