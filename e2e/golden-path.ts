@@ -182,8 +182,8 @@ await (async () => {
     };
     const toQuestions = async () => {
       await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
-      while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
-        await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+      while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {
+        await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).click();
       }
       await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     };
@@ -215,6 +215,15 @@ await (async () => {
     const total = Number((await counter()).split("/")[1]);
     check((await counter()) === `1 / ${total}`, `lesson opens on slide 1 of ${total}`);
     await shot("03-hook");
+
+    // Where full screen works, the first slide's button is Start: it opens full screen and stays put.
+    await stage.getByRole("button", { name: "Start →" }).click();
+    await page.waitForFunction(() => document.fullscreenElement !== null);
+    check((await counter()) === `1 / ${total}`, "Start opens full screen and stays on slide 1");
+    await shot("03-hook-fullscreen");
+    await page.evaluate(() => document.exitFullscreen());
+    await page.waitForFunction(() => document.fullscreenElement === null);
+    check(await stage.getByRole("button", { name: "Next →" }).isVisible(), "after leaving full screen the button is Next: Start doesn't come back");
 
     // Keyboard: the right arrow advances.
     await page.keyboard.press("ArrowRight");
@@ -304,8 +313,15 @@ await (async () => {
     check(/\/learn\/complex-numbers\/[a-z-]+/.test((await nextConcept.getAttribute("href")) ?? ""), "next concept links into the chapter");
     await shot("10-mastered");
 
+    // Leaving from full screen: the lesson stays mounted but hidden, so it must let go of full screen.
+    await stage.getByRole("button", { name: "Full screen" }).click();
+    await page.waitForFunction(() => document.fullscreenElement !== null);
     await page.getByRole("link", { name: "Back to the chapter" }).click();
     await page.waitForURL("**/learn/complex-numbers");
+    await page.waitForFunction(() => document.fullscreenElement === null, null, { timeout: 5000 }).then(
+      () => ok("leaving a full-screen lesson leaves full screen"),
+      () => fail("leaving a full-screen lesson leaves full screen"),
+    );
     // Next keeps the previous page mounted but hidden (React Activity), so scope to the map row.
     // Mastered concepts show on the chapter path; "Ready for you" holds what's left to do.
     const ready2 = page.locator("section[aria-labelledby=ready]");
@@ -350,8 +366,8 @@ await (async () => {
     check(await page.getByRole("link", { name: "Back to Conjugate →" }).first().isVisible(), "refresher shows a way back to Conjugate");
     check((await counter()).startsWith("1 /"), "refresher starts at the first slide");
     await shot("14-refresher");
-    while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
-      await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+    while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).click();
     }
     for (let i = 0; i < 2; i++) {
       if (i > 0) await nextQ();
@@ -418,7 +434,7 @@ await (async () => {
     await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Argand plane/ }).click();
     await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
     while (!(await page.getByRole("heading", { name: "The idea" }).isVisible())) {
-      await page.getByRole("button", { name: "Next →" }).click();
+      await page.getByRole("button", { name: /Start →|Next →/ }).click();
     }
     const figure = stage.locator("svg[role=img]");
     check(await figure.isVisible(), "idea slide shows a figure");
@@ -429,8 +445,8 @@ await (async () => {
       await page.getByRole("button", { name: "Next →" }).click();
     }
     check(await figure.isVisible(), "worked example shows a figure");
-    while (await page.getByRole("button", { name: /Next →|Try a question →/ }).count()) {
-      await page.getByRole("button", { name: /Next →|Try a question →/ }).click();
+    while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).click();
     }
     await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     check((await page.getByRole("button", { name: "See the solution" }).count()) === 0, "no solution before answering");

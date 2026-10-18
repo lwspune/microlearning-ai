@@ -3,7 +3,7 @@
 import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RenderedInlineNodes } from "@/components/RenderedRichText";
 import { card, primaryButton, secondaryButton } from "@/components/ui";
-import { type Position, backward, forward, startAt } from "./navigation";
+import { type Position, backward, forward, offersStart, startAt } from "./navigation";
 import type { RenderedSlide } from "./renderDeck";
 import { SlideBody } from "./SlideBody";
 
@@ -16,8 +16,9 @@ const subscribeFullscreen = (cb: () => void) => {
 
 /**
  * Slides on a stage: swipe, arrow keys or Back/Next. A points slide reveals one point per step
- * before moving on (navigation.ts). Shared by the lesson (with its questions) and the review
- * preview (without), so the preview behaves exactly as learners see it.
+ * before moving on (navigation.ts). Where full screen works, the first slide's button reads Start
+ * and opens it. Shared by the lesson (with its questions) and the review preview (without), so the
+ * preview behaves exactly as learners see it.
  *
  * - `banner`: above the header (the refresher bar).
  * - `questions`: rendered under the slide and kept mounted; given whether the questions slide is
@@ -37,6 +38,8 @@ export function LessonStage({
   questions?: (api: { active: boolean; reread: () => void }) => ReactNode;
 }) {
   const [pos, setPos] = useState<Position>(() => startAt(slides, startIndex));
+  // Set on the first move or full screen, so Start never comes back (even after leaving full screen).
+  const [begun, setBegun] = useState(false);
   const slide = slides[pos.index];
 
   const stageRef = useRef<HTMLElement>(null);
@@ -60,6 +63,12 @@ export function LessonStage({
   const prev = backward(slides, pos);
   const canGoOn = next.index !== pos.index || next.shown !== pos.shown;
   const canGoBack = prev.index !== pos.index || prev.shown !== pos.shown;
+  const showStart = offersStart(pos, { canFullscreen, isFullscreen, begun });
+
+  function go(to: (p: Position) => Position) {
+    setBegun(true);
+    setPos(to);
+  }
 
   // Move focus to a new slide's heading so screen readers announce it (a new point announces itself).
   useEffect(() => {
@@ -94,9 +103,11 @@ export function LessonStage({
       if ((e.target as HTMLElement).closest("input, textarea, select")) return;
       if (e.key === "ArrowRight" || e.key === "PageDown") {
         e.preventDefault();
+        setBegun(true);
         setPos((p) => forward(slides, p));
       } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
         e.preventDefault();
+        setBegun(true);
         setPos((p) => backward(slides, p));
       }
     }
@@ -105,8 +116,10 @@ export function LessonStage({
   }, [slides]);
 
   function toggleFullscreen() {
+    setBegun(true);
     if (document.fullscreenElement) void document.exitFullscreen();
-    else void stageRef.current?.requestFullscreen();
+    // A refusal (the browser or the learner) just leaves the slides where they are.
+    else stageRef.current?.requestFullscreen().catch(() => {});
   }
 
   return (
@@ -124,7 +137,7 @@ export function LessonStage({
         if (!start) return;
         const dx = e.clientX - start.x;
         const dy = e.clientY - start.y;
-        if (Math.abs(dx) > SWIPE_MIN_PX && Math.abs(dx) > 1.5 * Math.abs(dy)) setPos((p) => (dx < 0 ? forward(slides, p) : backward(slides, p)));
+        if (Math.abs(dx) > SWIPE_MIN_PX && Math.abs(dx) > 1.5 * Math.abs(dy)) go((p) => (dx < 0 ? forward(slides, p) : backward(slides, p)));
       }}
     >
       {banner}
@@ -167,16 +180,16 @@ export function LessonStage({
             <SlideBody slide={slide} shown={pos.shown} />
           </div>
         </div>
-        {questions?.({ active: slide.kind === "questions", reread: () => setPos(startAt(slides, 0)) })}
+        {questions?.({ active: slide.kind === "questions", reread: () => go(() => startAt(slides, 0)) })}
       </div>
 
       <footer className="flex items-center justify-between gap-3 border-t border-border bg-surface/60 px-5 py-3">
-        <button type="button" className={secondaryButton} onClick={() => setPos(prev)} disabled={!canGoBack}>
+        <button type="button" className={secondaryButton} onClick={() => go(() => prev)} disabled={!canGoBack}>
           ← Back
         </button>
         {canGoOn && (
-          <button type="button" className={primaryButton} onClick={() => setPos(next)}>
-            {next.index !== pos.index && slides[next.index].kind === "questions" ? "Try a question →" : "Next →"}
+          <button type="button" className={primaryButton} onClick={showStart ? toggleFullscreen : () => go(() => next)}>
+            {showStart ? "Start →" : next.index !== pos.index && slides[next.index].kind === "questions" ? "Try a question →" : "Next →"}
           </button>
         )}
       </footer>

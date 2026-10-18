@@ -21,3 +21,12 @@ export function backward(slides: readonly Navigable[], { index, shown }: Positio
   if (shown > 1) return { index, shown: shown - 1 };
   return index > 0 ? { index: index - 1, shown: pointsOf(slides[index - 1]) } : { index, shown };
 }
+
+/**
+ * The first slide's main button reads Start until the learner begins: it opens full screen and
+ * stays on the slide. Only where full screen works (not on iPhone); elsewhere it stays Next.
+ */
+export const offersStart = (
+  { index }: Position,
+  { canFullscreen, isFullscreen, begun }: { canFullscreen: boolean; isFullscreen: boolean; begun: boolean },
+): boolean => index === 0 && canFullscreen && !isFullscreen && !begun;
