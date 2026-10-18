@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A player scores each free throw with probability $0.7$ and takes $3$. **Which is more likely: exactly $2$ baskets, or all $3$?**`,
     reveal: t`Exactly $2$. All $3$ is one order: $(0.7)^3 = 0.343$. Exactly $2$ can happen in $3$ orders (SSF, SFS, FSS), each $(0.7)^2(0.3) = 0.147$, so $3 \times 0.147 = 0.441$.`,

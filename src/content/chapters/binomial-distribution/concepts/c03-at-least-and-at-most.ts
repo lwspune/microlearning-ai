@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Each seed sprouts with probability $\frac{1}{4}$. You plant $4$ seeds. Since $4 \times \frac{1}{4} = 1$, **is at least one seed sure to sprout?**`,
     reveal: t`No. All four can fail, with probability $\left(\frac{3}{4}\right)^4$ $= \frac{81}{256}$. So $P(\text{at least one})$ $= 1 - \frac{81}{256} = \frac{175}{256}$, about $0.68$. Adding the four chances counts the overlaps more than once.`,

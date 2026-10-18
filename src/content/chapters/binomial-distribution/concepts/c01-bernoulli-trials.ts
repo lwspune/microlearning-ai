@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Toss a coin $4$ times and count heads. Or pick $4$ students one by one from a class of $10$ boys and $10$ girls and count girls. Both are $4$ yes-or-no tries. **Why do mathematicians treat the coin and the class differently?**`,
     reveal: t`The coin never changes: every toss has $P(\text{head}) = \frac{1}{2}$. The class does: the first pick gives a girl with chance $\frac{10}{20}$, but after a girl is picked the next chance is $\frac{9}{19}$. Repeated tries with a fixed number of goes, two outcomes, no influence on each other and the same chance every time are called **Bernoulli trials**; the coin tosses are, the picks are not.`,

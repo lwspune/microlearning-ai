@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Toss a coin $4$ times; $X$ = (number of heads) $-$ (number of tails). A friend says $X$ can be any whole number from $-4$ to $4$. **Can $X$ be $1$?**`,
     reveal: t`No. Turn one head into a tail: heads drop by $1$ and tails rise by $1$, so $X$ drops by $2$. $X$ takes only $-4, -2, 0, 2, 4$. Find $X$ for the outcomes before you write its values.`,

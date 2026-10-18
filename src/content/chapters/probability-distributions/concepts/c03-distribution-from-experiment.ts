@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Toss two fair coins and let $X$ be the number of heads. $X$ can be $0$, $1$ or $2$. **Is each value equally likely, with probability $\frac13$?**`,
     reveal: t`No. The four outcomes $HH$, $HT$, $TH$, $TT$ are equally likely, and two of them give $X = 1$. So $P(X = 0) = \frac14$, $P(X = 1) = \frac12$ and $P(X = 2) = \frac14$, which add to $1$.`,

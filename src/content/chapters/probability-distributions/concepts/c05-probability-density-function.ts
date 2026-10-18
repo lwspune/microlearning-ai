@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$X$ has p.d.f. $f(x) = 3x^2$ for $0 < x < 1$. Then $f(0.9) = 2.43$. **How can that be, when no probability is more than $1$?**`,
     reveal: t`$f(x)$ is a height, not a probability. Probabilities are areas under the curve: $P(0.9 < X < 1) = 1 - 0.729 = 0.271$, and the total area is $1$.`,

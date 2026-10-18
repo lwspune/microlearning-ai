@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A table claims $P(X = 0) = 0.5$, $P(X = 1) = 0.4$ and $P(X = 2) = 0.3$. Each number is a fine probability. **What is wrong?**`,
     reveal: t`They add to $1.2$. Each time, $X$ takes exactly one of the values $0, 1, 2$, so their probabilities must add to exactly $1$. This table is not a probability distribution.`,

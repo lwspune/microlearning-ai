@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$X$ has p.d.f. $f(x) = 2x$ for $0 < x < 1$, so values near $1$ are likelier than values near $0$. **Is the mean of $X$ the midpoint, $\frac12$?**`,
     reveal: t`No. Weight each value by its density: $E(X) = \int_0^1 x \cdot 2x\,dx$ $= \frac23$. The mean leans towards where $f$ is bigger, like the balance point of a see-saw.`,

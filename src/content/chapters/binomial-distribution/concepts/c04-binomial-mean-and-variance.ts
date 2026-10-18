@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Someone says the number of sixes in their dice throws has mean $5$ and variance $8$. **Can that be true?**`,
     reveal: t`No. The variance is $npq$, which is the mean $np$ times $q$. Since $q < 1$, a binomial variance is always less than its mean, and $8 > 5$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Toss 2 coins; $X$ is the number of heads, with $P(X = 0) = \frac{1}{4}$, $P(X = 1) = \frac{1}{2}$, $P(X = 2) = \frac{1}{4}$. Is $P(X \le 1.5)$ bigger than $P(X \le 1)$?`,
     reveal: t`No: both are $\frac{3}{4}$. $X$ takes no value between $1$ and $1.5$, so nothing is added. The running total $P(X \le x)$ only climbs at $0$, $1$ and $2$.`,

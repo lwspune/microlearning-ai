@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A raffle ticket wins ₹100 with probability $\frac{1}{50}$ and nothing otherwise. **On average, what is one ticket worth?**`,
     reveal: t`₹2. Out of $50$ tickets about one wins, so the $50$ tickets share ₹100: ₹2 each. That is $E(X) = 100 \times \frac{1}{50}$ $+ 0 \times \frac{49}{50} = 2$, an amount no single ticket ever pays.`,
