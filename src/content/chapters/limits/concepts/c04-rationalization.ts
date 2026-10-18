@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Put $x = 0$ into $\frac{\sqrt{x + 9} - 3}{x}$: you get $\frac{0}{0}$. Yet at $x = 0.0001$ it is about $0.16666$. **Where does $\frac{1}{6}$ come from?**`,
     reveal: t`Multiply top and bottom by $\sqrt{x + 9} + 3$. The top becomes $(x + 9) - 9 = x$, which cancels the $x$ below. What is left is $\frac{1}{\sqrt{x + 9} + 3}$, and at $x = 0$ that is $\frac{1}{3 + 3} = \frac{1}{6}$.`,

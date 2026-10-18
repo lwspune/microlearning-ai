@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$(x)' = 1$ and $(\sin x)' = \cos x$. **So is the derivative of $x\sin x$ just $1 \cdot \cos x = \cos x$?**`,
     reveal: t`No. Both factors change, and each change counts: $(x\sin x)' = x\cos x + \sin x$. At $x = \pi$ that is $-\pi$, not $\cos\pi = -1$.`,

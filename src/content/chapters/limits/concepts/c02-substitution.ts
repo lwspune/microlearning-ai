@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`As $x$ gets close to $2$, what does $\frac{x^2 + 1}{x + 3}$ get close to? You could make a table for $x = 1.9, 1.99, 2.01, \ldots$ **Is there a shortcut?**`,
     reveal: t`Yes: substitute $x = 2$. The top tends to $5$ and the bottom to $5$, so the fraction tends to $\frac{5}{5} = 1$. The table agrees: $x = 1.99$ gives about $0.994$, and $x = 2.01$ about $1.006$.`,

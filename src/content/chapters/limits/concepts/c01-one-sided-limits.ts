@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$f(x) = x + 1$ for every $x \ne 2$, but $f(2) = 5$. Is $\lim_{x \to 2} f(x)$ equal to $3$ or to $5$?`,
     reveal: t`It is $3$. On both sides of $2$, $f(x)$ is close to $3$. The limit never looks at $x = 2$ itself, so $f(2) = 5$ plays no part.`,

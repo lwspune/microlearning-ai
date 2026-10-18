@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In **radian** mode a calculator gives $\frac{\sin 0.001}{0.001} \approx 0.99999$. In **degree** mode the same keys give $0.01745$. **Which one shows the limit of $\frac{\sin x}{x}$ as $x \to 0$?**`,
     reveal: t`Both, for different angles. In radians the ratio heads for $1$. In degrees, $x^\circ$ is $\frac{\pi x}{180}$ radians, so it heads for $\frac{\pi}{180} \approx 0.01745$. The famous $1$ needs radians.`,

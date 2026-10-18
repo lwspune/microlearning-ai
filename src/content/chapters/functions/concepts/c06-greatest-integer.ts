@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A calculator's integer part just drops the digits after the point: $7.9 \to 7$ and $-4.6 \to -4$. **Is the greatest integer $[-4.6]$ equal to $-4$?**`,
     reveal: t`No. $[x]$ is the greatest integer **at or below** $x$. On the number line $-4$ lies to the right of $-4.6$, so it is above it. The greatest integer at or below $-4.6$ is $-5$.`,

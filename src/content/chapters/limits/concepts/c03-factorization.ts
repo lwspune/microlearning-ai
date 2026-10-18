@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Put $x = 3$ in $\dfrac{x^2 - 9}{x - 3}$ and you get $\frac{0}{0}$. Yet at $x = 2.9$ it is $5.9$, and at $x = 3.01$ it is $6.01$. **What is it heading for, and why?**`,
     reveal: t`It heads for $6$. Since $x^2 - 9 = (x - 3)(x + 3)$, the fraction is just $x + 3$ whenever $x \ne 3$. The $\frac{0}{0}$ came from the factor $(x - 3)$ hiding in both the top and the bottom.`,

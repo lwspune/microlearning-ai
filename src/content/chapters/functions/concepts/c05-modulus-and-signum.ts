@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Can $|x| = -x$ ever be true? Isn't $-x$ always negative?`,
     reveal: t`Yes, it is true whenever $x < 0$. For $x = -6$: $|x| = 6$ and $-x = -(-6) = 6$. A minus sign in front of a letter doesn't make it negative: when $x$ is negative, $-x$ is positive.`,

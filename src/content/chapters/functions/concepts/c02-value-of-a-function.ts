@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A taxi charges $f(d) = 20d + 50$ rupees for a ride of $d$ km, so a $10$ km ride costs $f(10) = 250$. **Does an $11$ km ride cost $f(10) + 1 = 251$?**`,
     reveal: t`No. The extra $1$ goes into the input, the distance: $f(11) = 20(11) + 50 = 270$. The rule then multiplies it by $20$. So $f(10 + 1)$ is a new value, not $f(10) + 1$.`,

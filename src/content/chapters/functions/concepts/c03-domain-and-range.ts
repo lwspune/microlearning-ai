@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A calculator shows **Error** for $\frac{1}{0}$, $\sqrt{-1}$ and $\log 0$. For $f(x) = \dfrac{\sqrt{x}}{x - 10}$, which inputs $x$ give Error?`,
     reveal: t`Every negative $x$, since it puts a negative number under the root, and $x = 10$, since it makes the denominator $0$. Every other real $x$ works, so the domain is $[0, 10) \cup (10, \infty)$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\frac{x^3}{x}$ is just $x^2$, whose derivative is $2x$. **But the top's derivative over the bottom's is $\frac{3x^2}{1} = 3x^2$. Which is right?**`,
     reveal: t`$2x$ is right: a quotient does not split into $\frac{u'}{v'}$. The quotient rule, $\frac{vu' - uv'}{v^2}$, gives $\frac{x \cdot 3x^2 - x^3 \cdot 1}{x^2}$ $= \frac{2x^3}{x^2} = 2x$.`,

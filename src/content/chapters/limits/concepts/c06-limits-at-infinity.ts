@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At $x = 1000$, $\frac{2x + 1}{x + 3}$ is about $1.995$. At $x = 10^6$ it is about $1.999995$. **What number is it heading for?**`,
     reveal: t`Divide top and bottom by $x$: $\frac{2 + \frac{1}{x}}{1 + \frac{3}{x}}$. As $x$ grows, $\frac{1}{x}$ and $\frac{3}{x}$ shrink to $0$, so the fraction heads for $\frac{2}{1} = 2$.`,

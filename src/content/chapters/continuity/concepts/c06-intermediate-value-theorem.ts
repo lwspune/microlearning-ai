@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At 6 a.m. the temperature was $-3^\circ$C. By noon it was $5^\circ$C. Was it ever exactly $0^\circ$C in between?`,
     reveal: t`Yes. Temperature changes without jumps, so on its way from below $0$ to above $0$ it must pass $0$. That is the intermediate value theorem.`,

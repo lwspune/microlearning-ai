@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$(x^2)' = 2x$ and $(x^3)' = 3x^2$. **So is the derivative of $x^2 \cdot x^3$ equal to $2x \cdot 3x^2 = 6x^3$?**`,
     reveal: t`No. $x^2 \cdot x^3 = x^5$, whose derivative is $5x^4$. Derivatives split over a **sum**, term by term, but not over a product. So multiply out first, then differentiate.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$f(x) = x^2 + 1$ for $x < 2$, and $f(x) = kx - 1$ for $x \ge 2$. For one value of $k$ the two pieces join with no break. **Which value?**`,
     reveal: t`The left piece arrives at height $2^2 + 1 = 5$. The right piece starts at $f(2) = 2k - 1$. No break means $2k - 1 = 5$, so $k = 3$.`,

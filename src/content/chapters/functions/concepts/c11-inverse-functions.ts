@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$f$ doubles a number, then adds $3$, so $f(4) = 11$. **Is $f^{-1}(11)$ equal to $\frac{1}{11}$?**`,
     reveal: t`No. $f^{-1}$ runs $f$ backwards: it takes $11$ back to the input that gave it. Undo the last step first: $11 - 3 = 8$, then halve: $4$. So $f^{-1}(11) = 4$. The number $\frac{1}{11}$ is $\frac{1}{f(4)}$, a reciprocal, which is something else.`,

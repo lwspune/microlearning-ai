@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At $x = 2$, $\frac{x^{10} - 2^{10}}{x - 2}$ is $\frac{0}{0}$. Near $x = 2$ it gets close to $5120$. Factorising $x^{10} - 2^{10}$ by hand is long. **Is there a shortcut?**`,
     reveal: t`$x^{10} - 2^{10}$ $= (x - 2)(x^9 + 2x^8 + \dots + 2^9)$. Cancel $x - 2$: the second bracket has $10$ terms, and each becomes $2^9$ at $x = 2$. So the limit is $10 \times 2^9 = 5120$, with no factorising at all.`,

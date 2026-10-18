@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`As $x \to 0$, the base of $(1 + x)^{\frac{1}{x}}$ tends to $1$, and $1$ to any power is $1$. Yet $1.01^{100} \approx 2.705$ and $1.001^{1000} \approx 2.717$. **What is it heading for?**`,
     reveal: t`Not $1$. The base creeps towards $1$ while the power $\frac{1}{x}$ shoots up, and the two balance at the number $e \approx 2.718$. A base near $1$ raised to a huge power need not be near $1$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$f(x) = \frac{x^2 - 4}{x - 2}$ and $g(x) = \frac{1}{x - 2}$ are both undefined at $x = 2$. **Can one new value at $x = 2$ make each of them continuous?**`,
     reveal: t`Only $f$. For $x \ne 2$, $f(x) = x + 2$, which tends to $4$: set $f(2) = 4$ and the gap closes. Near $2$, $g(x)$ shoots off to $\pm\infty$, so no single value can join it up. The first break is **removable**; the second is **infinite**.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x^2$ and $2^x$ are equal at $x = 2$: both are $4$. **Do their graphs have the same slope there?**`,
     reveal: t`No. $x^2$ follows the power rule: its slope is $2x$, which is $4$ at $x = 2$. $2^x$ follows its own rule: its slope is $2^x\log 2$, which is $4\log 2 \approx 2.77$. Same value, different rules: you must know which rule each function follows.`,

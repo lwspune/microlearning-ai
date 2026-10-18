@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Given $\log_{10} 2 \approx 0.3010$, **how many digits does $2^{20}$ have**, without multiplying it out?`,
     reveal: t`The power rule brings the $20$ down: $\log_{10} 2^{20} = 20 \times 0.3010$ $= 6.02$. So $10^6 < 2^{20} < 10^7$, and $2^{20}$ has $7$ digits. Indeed $2^{20} = 1048576$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$g(x) = \frac{x^2 - 4}{x - 2}$ equals $x + 2$ for every $x \ne 2$. Can you draw its graph without lifting your pen? Which value of $g(2)$ would let you?`,
     reveal: t`No: $g(2)$ is not defined, so the line has a hole at $(2, 4)$. Setting $g(2) = 4$, the value the graph heads for, fills the hole. Then $g$ is continuous at $2$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$[x]$ is the greatest integer $\le x$. Its graph jumps at $x = 3$, but $[3] = 3$ sits on the step to the right. Is $[x]$ continuous at $3$ from that side?`,
     reveal: t`Yes. Just right of $3$, $[x] = 3 = [3]$: continuous from the right. Just left, $[x] = 2 \ne 3$: not from the left. So $[x]$ is not continuous at $3$.`,

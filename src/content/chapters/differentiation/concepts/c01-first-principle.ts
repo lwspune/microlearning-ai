@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A stone falls $s = 5t^2$ metres in $t$ seconds. Average speed is distance over time, so it needs two instants. **What is its speed at the single instant** $t = 1$?`,
     reveal: t`From $t = 1$ to $t = 1 + h$ it falls $5(1 + h)^2 - 5$ $= 10h + 5h^2$ metres, an average speed of $10 + 5h$. Let $h \to 0$: the speed at $t = 1$ is $10$ m/s. That limit is a **derivative**.`,

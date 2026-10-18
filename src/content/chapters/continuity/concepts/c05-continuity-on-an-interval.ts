@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$f(x) = \frac{1}{x - 3}$ breaks at $x = 3$. Is $f$ continuous on the interval $[4, 6]$?`,
     reveal: t`Yes. Its only break, $x = 3$, is not in $[4, 6]$. At every point of $[4, 6]$ the denominator is not $0$, so $f$ is continuous there.`,

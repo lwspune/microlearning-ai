@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Pair each student in your class with their birth month. Two students share March. Is that still a function? And what about pairing each month with the students born in it?`,
     reveal: t`The first is a function: each student has exactly one birth month, and sharing a month is fine. The second is not: a month can have two students, or none at all. A function gives each input exactly one output.`,

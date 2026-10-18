@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The graph of $y = |x|$ has no gap at $x = 0$: you can draw it without lifting the pen. **Does it have a tangent at $x = 0$?**`,
     reveal: t`No. Left of $0$ the graph is $y = -x$, slope $-1$; right of $0$ it is $y = x$, slope $1$. No single line fits both, so $|x|$ is continuous at $0$ but not differentiable there.`,

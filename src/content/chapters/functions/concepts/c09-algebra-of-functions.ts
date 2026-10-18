@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $f(x) = \sqrt{x}$ and $g(x) = \sqrt{x}$. The rule for $fg$ simplifies to $\sqrt{x} \cdot \sqrt{x} = x$. **So is $(fg)(-4) = -4$?**`,
     reveal: t`No. $f(-4) = \sqrt{-4}$ is not a real number, so $(fg)(-4) = f(-4)\,g(-4)$ has no value. $fg$ exists only where both $f$ and $g$ do: on $[0, \infty)$, not on all of $\mathbb{R}$.`,

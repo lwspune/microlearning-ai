@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shirt costs ₹$1000$. A coupon takes ₹$100$ off, and a sale takes $10\%$ off. **Does it matter which is applied first?**`,
     reveal: t`Yes. Coupon first: $1000 - 100 = 900$, then $10\%$ off gives ₹$810$. Sale first: $1000 \times 0.9 = 900$, then the coupon gives ₹$800$. The same two steps in a different order give a different price.`,

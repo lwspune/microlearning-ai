@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A courier charges ₹40 for a parcel **up to** 1 kg and ₹70 for a parcel **over** 1 kg. What does a parcel of exactly 1 kg cost?`,
     reveal: t`₹40. Up to 1 kg includes 1 kg itself; over 1 kg does not. A rule in pieces must say which piece owns each boundary, and exactly one piece does.`,

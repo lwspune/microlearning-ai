@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Each of $3$ friends picks one of $2$ ice-cream flavours. **How many ways can the choices go: $2^3$ or $3^2$?**`,
     reveal: t`Each friend has $2$ choices, made independently: $2 \times 2 \times 2 = 2^3 = 8$ ways. Each way is a function from the $3$ friends to the $2$ flavours. With only $2$ flavours, two friends always share one, so none of these functions is one-one.`,

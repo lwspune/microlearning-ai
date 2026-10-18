@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At $x = 0$, $\dfrac{3^x - 1}{x}$ is $\frac{0}{0}$. Yet at $x = 0.01$ it is $1.1047$, at $x = 0.001$ it is $1.0992$, and at $x = 0.0001$ it is $1.0987$. **What number is it heading for?**`,
     reveal: t`It heads for $\log 3 = 1.0986\ldots$, the natural log of $3$. For every base $a > 0$, $\frac{a^x - 1}{x}$ heads for $\log a$; for the base $e$ that is $\log e = 1$.`,
