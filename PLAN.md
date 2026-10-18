@@ -614,9 +614,15 @@ where two lines meet, and they met at the first line's printed point, so the
 key could be copied from the stem. The agent brief now forbids it for new work.
 - **Scope:** unknown; shipped items have not been scanned. A first pass:
   flag items whose key text appears verbatim in the stem, then read each.
-- **Recommendation:** run that scan after Std XII wave 2 and bring the
-  360 analysis (count, which chapters, fix cost) to the owner before
-  changing any shipped item.
+- **Scan, 2026-10-18 (after wave 2):** 9 of 1695 approved items have the
+  key text in the stem; none is a copy-the-answer case. Logic C05-Q3/Q5 and
+  Complex C20-Q1 (the answer is a sub-expression by nature), Dispersion
+  C06-Q5/Q6 (every option is a name in the table), Sets C08-Q5 (both given
+  percentages are options); Probability C09-Q6 (1/4), Limits C04-Q5 (√2) and
+  Conics C10-Q2 (x² + y² = 4) are the book's true answers that happen to echo
+  a given number, with equally plausible distractors.
+- **Recommendation:** decline; change nothing. Close unless the owner wants
+  the three coincidences reworded.
 
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
@@ -929,3 +935,11 @@ read from those rows or page images, never from a PDF's text layer.
   its clipped segment, "n"/"s" labels centre on their anchor, and a key must
   not be readable off the stem (backfill 10). Agents check labels with a
   shared rough renderer before handing back.
+- Wave 3 done 2026-10-18 (branch `std12-calculus-1`): Differentiation 12
+  concepts / 72 items, Application of Derivatives 10 / 57; every key
+  re-derived (hand and sympy), every figure sheet checked (about 30 labels
+  moved), 0 phone overflows; same gates; seeded, DoD passed, merged. Paused
+  mid-wave for a Windows restart (page file 23 GB, free disk 4.7 GB); resumed
+  at 10 agents (owner) with 17 GB free. Book faults worked around: Misc I Q.6
+  (log x at x = −1), Ex 2.3 Q.2 at θ = π/2 (dx/dθ = 0), Ex 1.3 Q.3 (iv) (81
+  has no usable point).

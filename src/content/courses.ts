@@ -96,6 +96,8 @@ export const courses: Course[] = [
       { chapter: "pair-of-straight-lines" },
       { chapter: "vectors" },
       { chapter: "line-and-plane" },
+      { chapter: "differentiation-12" },
+      { chapter: "application-of-derivatives" },
       lpp([]),
     ],
   },
