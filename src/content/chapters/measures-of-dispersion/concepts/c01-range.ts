@@ -4,22 +4,116 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two students' marks in three tests: Asha $48, 50, 52$ and Ravi $10, 50, 90$. Both have mean $50$. **Does the mean tell you they are alike?**`,
     reveal: t`No. Asha's marks stay close to $50$; Ravi's are far apart. The mean says where the data sits, not how spread it is. The simplest measure of spread is the **range**, largest minus smallest: Asha $52 - 48 = 4$, Ravi $90 - 10 = 80$.`,
   },
   explanation: {
-    intuition: t`Two data sets can share a mean and still look very different: one bunched together, one scattered. A measure of dispersion puts a number on that spread. The quickest one is the range: the gap between the largest observation $L$ and the smallest $S$. Its coefficient, $\frac{L - S}{L + S}$, has no units, so it can compare the spread of data in different units, like heights in cm and weights in kg.`,
-    formal: t`**Range.** For raw data, $L$ is the largest observation and $S$ the smallest: $$\text{Range} = L - S$$ Find them by scanning the whole list, not by reading its first and last entries.
-
-**Coefficient of range.** $$\frac{L - S}{L + S}$$ The range carries the data's units; the coefficient is a pure number, a relative measure of spread.
-
-**Negative values.** The larger number is the one further right on the number line: $-3 > -10$. For $-3, -10, -6$: $L = -3$, $S = -10$, range $= -3 - (-10) = 7$. A range is never negative.
-
-**Frequency tables.** The range is about the values of the variable, not how often they occur: ignore the frequency column when you pick $L$ and $S$.
-
-**Class intervals.** $L$ is the upper limit of the highest class and $S$ the lower limit of the lowest class. For classes $0\text{–}10, \ldots, 40\text{–}50$: range $= 50 - 0 = 50$.`,
+    intuition: [
+      t`Asha's marks in three tests, her **observations**, are $48, 50, 52$; Ravi's are $10, 50, 90$.`,
+      t`Both sets have mean $50$, yet Asha's are bunched together and Ravi's are scattered.`,
+      t`How far apart the observations lie is the data's **dispersion**, or **spread**.`,
+      t`A **measure of dispersion** puts a number on that spread.`,
+      t`The quickest one is the **range**: the gap between the largest observation $L$ and the smallest $S$.`,
+      t`Its **coefficient**, $\frac{L - S}{L + S}$, has no units, so it can compare heights in cm with weights in kg.`,
+    ],
+    figure: {
+      alt: "Two number lines from 0 to 100. On the top one, Asha's marks 48, 50 and 52 sit close together; on the bottom one, Ravi's marks 10, 50 and 90 are far apart. A dashed line at 50 marks the mean of both. A bar over each set spans its smallest to its largest mark: range 4 for Asha, range 80 for Ravi.",
+      axes: "none",
+      view: { x: [-22, 116], y: [-29, 19] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [100, 0], tone: "muted" },
+        { kind: "segment", from: [0, -20], to: [100, -20], tone: "muted" },
+        { kind: "label", at: [0, 0], label: "Asha", labelAt: "w", step: 1 },
+        { kind: "point", at: [48, 0], step: 1 },
+        { kind: "point", at: [50, 0], step: 1 },
+        { kind: "point", at: [52, 0], step: 1 },
+        { kind: "label", at: [48, 0], label: "48", labelAt: "sw", step: 1 },
+        { kind: "label", at: [52, 0], label: "52", labelAt: "se", step: 1 },
+        { kind: "label", at: [0, -20], label: "Ravi", labelAt: "w", step: 1 },
+        { kind: "point", at: [10, -20], step: 1 },
+        { kind: "point", at: [50, -20], step: 1 },
+        { kind: "point", at: [90, -20], step: 1 },
+        { kind: "label", at: [10, -20], label: "10", labelAt: "s", step: 1 },
+        { kind: "label", at: [50, -20], label: "50", labelAt: "s", step: 1 },
+        { kind: "label", at: [90, -20], label: "90", labelAt: "s", step: 1 },
+        { kind: "segment", from: [50, 13], to: [50, -20], dashed: true, tone: "muted", step: 2 },
+        { kind: "label", at: [50, 13], label: "mean 50", labelAt: "n", step: 2 },
+        { kind: "segment", from: [48, 4], to: [52, 4], tone: "accent", step: 5 },
+        { kind: "label", at: [52, 4], label: "range 4", labelAt: "e", tone: "accent", step: 5 },
+        { kind: "segment", from: [10, -15], to: [90, -15], tone: "accent", step: 5 },
+        { kind: "label", at: [90, -15], label: "range 80", labelAt: "ne", tone: "accent", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Range of raw data",
+        points: [
+          t`**Raw data** is a plain list of observations, not grouped into a table.`,
+          t`$L$ is the largest observation and $S$ the smallest.`,
+          t`$\text{Range} = L - S$.`,
+          t`Find $L$ and $S$ by scanning the whole list.`,
+          t`Don't just read the first and last entries: they need not be the largest and smallest.`,
+        ],
+      },
+      {
+        title: "Coefficient of range",
+        points: [
+          t`The **coefficient of range** is $\frac{L - S}{L + S}$.`,
+          t`The range carries the data's units, such as marks or cm.`,
+          t`The coefficient is a pure number, with no units: a **relative measure** of spread.`,
+        ],
+      },
+      {
+        title: "Range with negative values",
+        points: [
+          t`Of two numbers, the larger is the one further right on the number line.`,
+          t`So $-3 > -10$.`,
+          t`For $-3, -10, -6$: $L = -3$ and $S = -10$.`,
+          t`Range $= -3 - (-10) = 7$.`,
+          t`A range is never negative.`,
+        ],
+        figure: {
+          alt: "A number line from −11 to 0. An arrow pointing right is marked larger. The points −10, −6 and −3 are on it; −3, the furthest right, is L and −10, the furthest left, is S. A bar from −10 to −3 is marked range 7.",
+          axes: "none",
+          view: { x: [-12, 1], y: [-2.6, 2.4] },
+          elements: [
+            { kind: "segment", from: [-11.5, 0], to: [0.5, 0], tone: "muted" },
+            { kind: "vector", from: [-10, -1.7], to: [-3, -1.7], step: 1 },
+            { kind: "label", at: [-3, -1.7], label: "larger", labelAt: "e", step: 1 },
+            { kind: "point", at: [-10, 0], step: 2 },
+            { kind: "point", at: [-3, 0], step: 2 },
+            { kind: "label", at: [-10, 0], label: "−10", labelAt: "s", step: 2 },
+            { kind: "label", at: [-3, 0], label: "−3", labelAt: "s", step: 2 },
+            { kind: "point", at: [-6, 0], step: 3 },
+            { kind: "label", at: [-6, 0], label: "−6", labelAt: "s", step: 3 },
+            { kind: "label", at: [-3, 0], label: "L", labelAt: "n", tone: "good", step: 3 },
+            { kind: "label", at: [-10, 0], label: "S", labelAt: "n", tone: "good", step: 3 },
+            { kind: "segment", from: [-10, 1.3], to: [-3, 1.3], tone: "accent", step: 4 },
+            { kind: "label", at: [-6.5, 1.3], label: "range 7", labelAt: "n", tone: "accent", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Range of a frequency table",
+        points: [
+          t`A **frequency table** lists each value of the variable with its **frequency**, how often it occurs.`,
+          t`The range is about the values themselves, not how often they occur.`,
+          t`So ignore the frequency column when you pick $L$ and $S$.`,
+        ],
+      },
+      {
+        title: "Range of class intervals",
+        points: [
+          t`Grouped data comes in **classes**, intervals such as $0\text{–}10$.`,
+          t`The class $0\text{–}10$ runs from its **lower limit** $0$ to its **upper limit** $10$.`,
+          t`$L$ is the upper limit of the highest class.`,
+          t`$S$ is the lower limit of the lowest class.`,
+          t`For classes $0\text{–}10, \ldots, 40\text{–}50$: range $= 50 - 0 = 50$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the range and the coefficient of range of $19, 27, 15, 21, 33, 45, 7, 12, 20, 26$.`,
       steps: [

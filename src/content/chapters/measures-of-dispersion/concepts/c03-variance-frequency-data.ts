@@ -4,32 +4,93 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The value $1$ occurs $3$ times and the value $5$ occurs once. **Is the variance the same as for the two numbers $1$ and $5$?**`,
     reveal: t`No. The two numbers $1, 5$ have mean $3$ and variance $\frac{4 + 4}{2} = 4$. But the data is really $1, 1, 1, 5$: mean $\frac{8}{4} = 2$, variance $\frac{1 + 1 + 1 + 9}{4} = 3$. Each value counts as many times as it occurs, so the frequencies change the answer.`,
   },
   explanation: {
-    intuition: t`A frequency table is a short way of writing a long list: $x_i$ with frequency $f_i$ means $x_i$ written down $f_i$ times. So the variance is still the mean of the squared deviations, but each value's squared deviation counts $f_i$ times, and you divide by the total number of observations $N = \sum f_i$, not by the number of rows. For class intervals you don't know the exact values, so each class is represented by its middle value, the class mark.`,
-    formal: t`**Mean of a frequency distribution**
-
-$N = \sum f_i$ and $\bar{x} = \frac{\sum f_i x_i}{N}$.
-
-**Variance**
-
-$$\sigma^2 = \frac{\sum f_i (x_i - \bar{x})^2}{N} = \frac{\sum f_i x_i^2}{N} - \bar{x}^2$$
-
-**The table.** Make columns $x_i$, $f_i$, $f_i x_i$ and $f_i x_i^2$, and total the last three. The entry $f_i x_i^2$ is $f_i \times x_i^2$: square the value, not the product $f_i x_i$. When $\bar{x}$ is a whole number, the column $f_i (x_i - \bar{x})^2$ is often quicker.
-
-**Class intervals.** Take $x_i$ as the class mark, $\frac{\text{lower limit} + \text{upper limit}}{2}$. The class $10\text{–}20$ has mark $15$; an inclusive class like $5\text{–}9$ has mark $7$.`,
+    intuition: [
+      t`A **frequency table** lists each value $x_i$ with its **frequency** $f_i$, the number of times it occurs.`,
+      t`So it is a short way of writing a long list: $x_i$ written down $f_i$ times.`,
+      t`Here $1$ with frequency $3$ and $5$ with frequency $1$ stand for the list $1, 1, 1, 5$.`,
+      t`Recall: the **variance** is the mean of the squared deviations $(x_i - \bar{x})^2$; here $\bar{x} = 2$.`,
+      t`Each value's squared deviation counts $f_i$ times: here $(-1)^2$ three times and $3^2$ once.`,
+      t`Divide the total, $12$, by $N = \sum f_i = 4$ observations, not by the $2$ rows: the variance is $3$.`,
+    ],
+    figure: {
+      alt: "A dot plot on a number line from 0 to 6. Three dots are stacked above 1, marked f = 3, and one dot sits above 5, marked f = 1. A dashed line at 2 marks the mean. Arrows run from the mean to each dot: three arrows of −1 to the dots at 1 and one arrow of +3 to the dot at 5. A label reads N = 4.",
+      axes: "none",
+      view: { x: [-0.6, 6.6], y: [-0.8, 2.4] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [6, 0], tone: "muted" },
+        { kind: "label", at: [1, 0], label: "1", labelAt: "s", tone: "muted" },
+        { kind: "label", at: [5, 0], label: "5", labelAt: "s", tone: "muted" },
+        { kind: "point", at: [1, 0.45], step: 3 },
+        { kind: "point", at: [1, 1], step: 3 },
+        { kind: "point", at: [1, 1.55], step: 3 },
+        { kind: "label", at: [1, 1.55], label: "f = 3", labelAt: "n", step: 3 },
+        { kind: "point", at: [5, 0.45], step: 3 },
+        { kind: "label", at: [5, 0.45], label: "f = 1", labelAt: "n", step: 3 },
+        { kind: "segment", from: [2, 0], to: [2, 1.9], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [2, 0], label: "mean 2", labelAt: "s", step: 4 },
+        { kind: "vector", from: [2, 0.45], to: [1.12, 0.45], tone: "bad", step: 5 },
+        { kind: "vector", from: [2, 1], to: [1.12, 1], tone: "bad", step: 5 },
+        { kind: "vector", from: [2, 1.55], to: [1.12, 1.55], tone: "bad", step: 5 },
+        { kind: "label", at: [1, 1], label: "−1", labelAt: "w", tone: "bad", step: 5 },
+        { kind: "vector", from: [2, 0.45], to: [4.88, 0.45], tone: "bad", step: 5 },
+        { kind: "label", at: [3.5, 0.45], label: "+3", labelAt: "n", tone: "bad", step: 5 },
+        { kind: "label", at: [3.5, 1.55], label: "N = 4", labelAt: "n", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "Mean of a frequency distribution",
+        points: [
+          t`$N$ is the number of observations: $N = \sum f_i$, the total of the frequencies.`,
+          t`Each value $x_i$ adds $f_i$ copies of itself to the sum, so the sum is $\sum f_i x_i$.`,
+          t`So the mean is $\bar{x} = \frac{\sum f_i x_i}{N}$.`,
+        ],
+      },
+      {
+        title: "Variance with frequencies",
+        points: [
+          t`Weight each squared deviation by its frequency, add them, and divide by $N$.`,
+          t`So $\sigma^2$ equals $\frac{\sum f_i (x_i - \bar{x})^2}{N}$.`,
+          t`The shortcut, the mean of the squares minus the square of the mean, takes the same weights.`,
+          t`So $\sigma^2$ also equals $\frac{\sum f_i x_i^2}{N} - \bar{x}^2$.`,
+        ],
+      },
+      {
+        title: "Lay it out as a table",
+        points: [
+          t`Make columns $x_i$, $f_i$, $f_i x_i$ and $f_i x_i^2$.`,
+          t`Total the last three columns: they give $N$, $\sum f_i x_i$ and $\sum f_i x_i^2$.`,
+          t`The entry $f_i x_i^2$ is $f_i \times x_i^2$: square the value, then multiply.`,
+          t`It is not the product $f_i x_i$ squared, which squares the frequency too.`,
+          t`When $\bar{x}$ is a whole number, a column of $f_i (x_i - \bar{x})^2$ is often quicker.`,
+        ],
+      },
+      {
+        title: "Class intervals",
+        points: [
+          t`Grouped data comes in **classes**, intervals such as $10\text{–}20$.`,
+          t`A class runs from its **lower limit**, here $10$, to its **upper limit**, here $20$.`,
+          t`The exact values inside a class are unknown, so its middle value stands for them all.`,
+          t`That middle value is the **class mark**: $x_i = \frac{\text{lower limit} + \text{upper limit}}{2}$.`,
+          t`So the class $10\text{–}20$ has mark $15$.`,
+          t`An inclusive class like $5\text{–}9$, which contains both $5$ and $9$, has mark $7$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A die is rolled $30$ times with the results below. Find the variance of the score.
 
-$$\begin{array}{c|c} x & f \\ \hline 1 & 1 \\ 2 & 5 \\ 3 & 5 \\ 4 & 5 \\ 5 & 10 \\ 6 & 4 \end{array}$$`,
+$$\begin{array}{c|c} x & f \ \hline 1 & 1 \ 2 & 5 \ 3 & 5 \ 4 & 5 \ 5 & 10 \ 6 & 4 \end{array}$$`,
       steps: [
         t`$N = \sum f_i = 30$. The $f_i x_i$ column is $1, 10, 15, 20, 50, 24$, so $\sum f_i x_i = 120$ and $\bar{x} = \frac{120}{30} = 4$.`,
-        t`The $f_i x_i^2$ column is $1 \times 1, 5 \times 4, 5 \times 9, 5 \times 16, 10 \times 25, 4 \times 36$, that is $1, 20, 45, 80, 250, 144$. So $\sum f_i x_i^2 = 540$.`,
-        t`$\sigma^2 = \frac{\sum f_i x_i^2}{N} - \bar{x}^2 = \frac{540}{30} - 4^2 = 18 - 16 = 2$.`,
+        t`The $f_i x_i^2$ column is $1 \times 1$, $5 \times 4$, $5 \times 9$, $5 \times 16$, $10 \times 25$, $4 \times 36$, that is $1, 20, 45, 80, 250, 144$. So $\sum f_i x_i^2 = 540$.`,
+        t`$\sigma^2 = \frac{\sum f_i x_i^2}{N} - \bar{x}^2$ $= \frac{540}{30} - 4^2$ $= 18 - 16 = 2$.`,
       ],
       answer: t`The variance is $\sigma^2 = 2$.`,
     },

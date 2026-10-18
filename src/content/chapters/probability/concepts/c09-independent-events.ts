@@ -1,29 +1,173 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
+// The area square: all outcomes as a square of area 1 (drawn 4 by 4), A in the left strip of
+// width p = 0.4, B in the bottom strip of height q = 0.3. Each piece's area is its probability.
+const S = 4;
+const X = 1.6;
+const Y = 1.2;
+
+function rect(x0: number, x1: number, y0: number, y1: number, tone: FigureElement["tone"], step?: number): FigureElement {
+  return {
+    kind: "region",
+    within: [
+      { kind: "halfPlane", through: [[x0, y1], [x0, y0]] },
+      { kind: "halfPlane", through: [[x1, y0], [x1, y1]] },
+      { kind: "halfPlane", through: [[x0, y0], [x1, y0]] },
+      { kind: "halfPlane", through: [[x1, y1], [x0, y1]] },
+    ],
+    tone,
+    ...(step === undefined ? {} : { step }),
+  };
+}
+
+function square(step?: number): FigureElement[] {
+  const at = step === undefined ? {} : { step };
+  return [
+    { kind: "segment", from: [0, 0], to: [S, 0], tone: "muted", ...at },
+    { kind: "segment", from: [S, 0], to: [S, S], tone: "muted", ...at },
+    { kind: "segment", from: [S, S], to: [0, S], tone: "muted", ...at },
+    { kind: "segment", from: [0, S], to: [0, 0], tone: "muted", ...at },
+  ];
+}
+
+function strips(step?: number): FigureElement[] {
+  const at = step === undefined ? {} : { step };
+  return [
+    { kind: "segment", from: [X, 0], to: [X, S], ...at },
+    { kind: "segment", from: [0, Y], to: [S, Y], ...at },
+    { kind: "label", at: [X / 2, 0], label: "p", labelAt: "s", ...at },
+    { kind: "label", at: [(X + S) / 2, 0], label: "1 − p", labelAt: "s", ...at },
+    { kind: "label", at: [0, Y / 2], label: "q", labelAt: "w", ...at },
+    { kind: "label", at: [0, (Y + S) / 2], label: "1 − q", labelAt: "w", ...at },
+    { kind: "label", at: [X / 2, S], label: "A", labelAt: "n", ...at },
+    { kind: "label", at: [(X + S) / 2, S], label: "A′", labelAt: "n", ...at },
+    { kind: "label", at: [S, Y / 2], label: "B", labelAt: "e", ...at },
+    { kind: "label", at: [S, (Y + S) / 2], label: "B′", labelAt: "e", ...at },
+  ];
+}
+
+function area(x0: number, x1: number, y0: number, y1: number, label: string, step?: number): FigureElement {
+  return { kind: "label", at: [(x0 + x1) / 2, (y0 + y1) / 2 - 0.25], label, labelAt: "n", ...(step === undefined ? {} : { step }) };
+}
+
+const view: Figure["view"] = { x: [-1.4, 5.2], y: [-0.9, 4.9] };
+
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Three friends each try a puzzle on their own, and each solves it with probability $\frac{1}{2}$. **Is the chance that someone solves it $\frac{1}{2} + \frac{1}{2} + \frac{1}{2}$?**`,
     reveal: t`No: that is $\frac{3}{2}$, more than $1$. Adding counts the cases where two or three of them solve it more than once. Go the other way: all three fail with probability $\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$, so at least one solves it with probability $1 - \frac{1}{8} = \frac{7}{8}$.`,
   },
   explanation: {
-    intuition: t`Two events are independent when one happening does not change the chance of the other: a coin and a die, draws with replacement, two people working on their own. Then $P(B \mid A) = P(B)$, and the multiplication theorem becomes $P(A \cap B) = P(A)\,P(B)$. The failures are independent too, so they multiply as well. To find a compound event, split it into happen-or-fail patterns, multiply along each pattern and add the patterns. 'At least one' is quickest as $1 - P(\text{none})$.`,
-    formal: t`**Independent events.** $A$ and $B$ are independent if
-$$P(A \cap B) = P(A)\,P(B), \quad \text{that is,} \quad P(B \mid A) = P(B).$$
-Two cards drawn one after the other, given the first is a non-face red card: with replacement, $P(\text{second is a face card}) = \frac{12}{52} = P(\text{face card})$, so the draws are independent; without replacement it is $\frac{12}{51}$, so they are not.
-
-**Complements too.** If $A$ and $B$ are independent, so are $A$ and $B'$, $A'$ and $B$, and $A'$ and $B'$. For example $P(A \cap B') = P(A)\,[1 - P(B)]$. This holds for any number of events.
-
-**Independent is not mutually exclusive.** Mutually exclusive events cannot happen together: $P(A \cap B) = 0$. Independent events can: $P(A \cap B) = P(A)\,P(B)$. So never just add the chances of independent events.
-
-**Two independent events**, with $p = P(A)$ and $q = P(B)$:
-$$\begin{array}{l|l} \text{Event} & \text{Probability} \\ \hline \text{both} & pq \\ \text{none} & (1 - p)(1 - q) \\ \text{at least one} & 1 - (1 - p)(1 - q) \\ \text{exactly one} & p(1 - q) + (1 - p)q \end{array}$$
-'Exactly one' needs the other to fail. $1 - pq$ is 'not both', which also includes 'none'.
-
-**Odds first.** Odds in favour $a : b$ give $P = \frac{a}{a + b}$; odds against $a : b$ give $P = \frac{b}{a + b}$. Convert each, then multiply.`,
+    intuition: [
+      t`Two events are **independent** when one happening does not change the chance of the other.`,
+      t`A coin and a die, draws with replacement, and two people working on their own are all independent.`,
+      t`Then the chance that both happen is the product of their two chances.`,
+      t`Their failures are independent too, so the chances of failing multiply as well.`,
+      t`For a compound event, list its **patterns** (which events happen, which fail), multiply along each, then add them.`,
+      t`'At least one' is quickest as $1 - P(\text{none})$, where 'none' means every event fails.`,
+    ],
+    formal: [
+      {
+        title: "Independent events",
+        points: [
+          t`Recall: $P(B \mid A)$ is the chance of $B$ once we know $A$ has happened.`,
+          t`Recall the multiplication theorem: $P(A \cap B) = P(A)\,P(B \mid A)$.`,
+          t`$A$ and $B$ are **independent** if $P(B \mid A) = P(B)$.`,
+          t`Then the theorem becomes $P(A \cap B) = P(A)\,P(B)$.`,
+          t`This product rule is the usual test: $A$ and $B$ are independent exactly when it holds.`,
+        ],
+      },
+      {
+        title: "Cards with and without replacement",
+        points: [
+          t`Draw two cards one after the other; the first is a red card that is not a face card.`,
+          t`A **face card** is a jack, queen or king: $12$ of the $52$ cards.`,
+          t`With replacement, the chance that the second card is a face card is $\frac{12}{52}$.`,
+          t`That equals $P(\text{face card})$, so the two draws are independent.`,
+          t`Without replacement it is $\frac{12}{51}$, so the two draws are not independent.`,
+        ],
+      },
+      {
+        title: "Complements are independent too",
+        points: [
+          t`Recall: $A'$, the complement of $A$, is the event that $A$ does not happen.`,
+          t`If $A$ and $B$ are independent, so are $A$ and $B'$.`,
+          t`So are $A'$ and $B$, and $A'$ and $B'$.`,
+          t`For example, $P(A \cap B') = P(A)\,[1 - P(B)]$.`,
+          t`This holds for any number of independent events.`,
+        ],
+      },
+      {
+        title: "Independent is not mutually exclusive",
+        points: [
+          t`Recall: **mutually exclusive** events cannot happen together, so $P(A \cap B) = 0$.`,
+          t`Independent events can happen together: $P(A \cap B) = P(A)\,P(B)$.`,
+          t`So never just add the chances of independent events.`,
+        ],
+      },
+      {
+        title: "Both, or none",
+        points: [
+          t`Let $p = P(A)$ and $q = P(B)$, for independent events $A$ and $B$.`,
+          t`Draw all the outcomes as a square of area $1$: each part's area is its probability.`,
+          t`$A$ happens in a strip of width $p$, and $B$ in a strip of height $q$.`,
+          t`Both happen where the strips cross: $P(A \cap B) = pq$.`,
+          t`None happens in the far corner: $P(A' \cap B') = (1 - p)(1 - q)$.`,
+          t`The failures multiply too, because $A'$ and $B'$ are independent.`,
+        ],
+        figure: {
+          alt: "A square of area 1. A vertical line splits it into a left strip of width p, where A happens, and a right strip of width 1 − p, where A fails. A horizontal line splits it into a bottom strip of height q, where B happens, and a top strip of height 1 − q, where B fails. The bottom-left corner, area pq, is shaded for both; the top-right corner, area (1 − p)(1 − q), is shaded for none.",
+          axes: "none",
+          view,
+          elements: [
+            ...square(2),
+            ...strips(3),
+            rect(0, X, 0, Y, "good", 4),
+            area(0, X, 0, Y, "pq", 4),
+            rect(X, S, Y, S, "muted", 5),
+            area(X, S, Y, S, "(1 − p)(1 − q)", 5),
+          ],
+        },
+      },
+      {
+        title: "Exactly one, or at least one",
+        points: [
+          t`Exactly one happens in the two side pieces: $p(1 - q) + (1 - p)q$.`,
+          t`'Exactly one' needs the other to fail: $p(1 - q)$, not just $p$.`,
+          t`At least one adds 'both': it is everything outside the 'none' corner.`,
+          t`So $P(\text{at least one}) = 1 - (1 - p)(1 - q)$.`,
+          t`$1 - pq$ is 'not both', which also includes 'none'.`,
+        ],
+        figure: {
+          alt: "The same square of area 1, split at p across and q up. The two side pieces, A without B with area p(1 − q) and B without A with area (1 − p)q, are shaded for exactly one. Then the corner pq is shaded too: everything except the top-right corner (1 − p)(1 − q) is at least one.",
+          axes: "none",
+          view,
+          elements: [
+            ...square(),
+            ...strips(),
+            rect(0, X, Y, S, "good", 1),
+            area(0, X, Y, S, "p(1 − q)", 1),
+            rect(X, S, 0, Y, "good", 1),
+            area(X, S, 0, Y, "(1 − p)q", 1),
+            rect(0, X, 0, Y, "good", 3),
+            area(0, X, 0, Y, "pq", 3),
+            area(X, S, Y, S, "(1 − p)(1 − q)"),
+          ],
+        },
+      },
+      {
+        title: "Start from the odds",
+        points: [
+          t`Recall: odds in favour $a : b$ give $P = \frac{a}{a + b}$.`,
+          t`Odds against $a : b$ give $P = \frac{b}{a + b}$.`,
+          t`Convert each odds to a probability first, then multiply.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`$A$, $B$ and $C$ try to hit a target independently, with probabilities $\frac{3}{4}$, $\frac{1}{2}$ and $\frac{5}{8}$. Find the probability that the target is not hit, that it is hit, and that it is hit by exactly one of them.`,
       steps: [

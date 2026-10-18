@@ -1,32 +1,107 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
+/** A shaded block of the outcome bar, from x0 to x1: four half-planes, walked anticlockwise. */
+const block = (x0: number, x1: number, tone: FigureElement["tone"], step: number): FigureElement => ({
+  kind: "region",
+  within: [
+    { kind: "halfPlane", through: [[x0, 0], [x1, 0]] },
+    { kind: "halfPlane", through: [[x1, 0], [x1, 1]] },
+    { kind: "halfPlane", through: [[x1, 1], [x0, 1]] },
+    { kind: "halfPlane", through: [[x0, 1], [x0, 0]] },
+  ],
+  tone,
+  step,
+});
+
+/** The bar of 8 equally likely outcomes: its top, its bottom and the 9 upright block edges. */
+const bar: FigureElement[] = [
+  { kind: "segment", from: [0, 0], to: [8, 0], tone: "muted" },
+  { kind: "segment", from: [0, 1], to: [8, 1], tone: "muted" },
+  ...Array.from({ length: 9 }, (_, i): FigureElement => ({ kind: "segment", from: [i, 0], to: [i, 1], tone: "muted" })),
+];
+
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The forecast gives a $1$ in $5$ chance of rain tomorrow. Your friend says: so the odds against rain are $5$ to $1$. **Is that right?**`,
     reveal: t`No. Out of $5$ equally likely days, $1$ is rainy and $4$ are dry. Odds compare the two parts with each other, not a part with the whole: the odds against rain are $4 : 1$, and the odds in favour are $1 : 4$. Probability is the one that uses the whole: $P(\text{rain}) = \frac{1}{5}$.`,
   },
   explanation: {
-    intuition: t`Every outcome either is in $A$ or is not, so the outcomes split into two parts: $A$ and its complement $A'$. The two probabilities fill the whole, so $P(A) + P(A') = 1$. When $A$ is hard to count, such as 'at least one', count $A'$ instead and subtract from $1$. Odds use the same two parts, but compare them with each other instead of with the total.`,
-    formal: t`**Complement.** $A'$ happens exactly when $A$ does not. Since $P(A) + P(A') = P(S) = 1$,
-$$P(A') = 1 - P(A).$$
-
-**'At least one'.** Its complement is **none**, not 'all'. So $P(\text{at least one}) = 1 - P(\text{none})$.
-
-**Odds.** If $n(A) = m$ out of $n(S) = n$, then $n - m$ outcomes are unfavourable.
-- Odds in favour of $A$: $m : (n - m) = P(A) : P(A')$.
-- Odds against $A$: $(n - m) : m = P(A') : P(A)$.
-
-**Odds to probability.** Odds in favour $a : b$ give $P(A) = \frac{a}{a + b}$. Odds against $a : b$ give $P(A) = \frac{b}{a + b}$. Odds are part to part; probability is part to whole.`,
+    intuition: [
+      t`Recall: an event $A$ is a set of outcomes, and its **complement** $A'$ is every outcome not in $A$.`,
+      t`Here $3$ of $8$ equally likely outcomes are in $A$, and the other $5$ are in $A'$.`,
+      t`Each outcome is in exactly one part, so $P(A) + P(A') = 1$: here $\frac{3}{8} + \frac{5}{8} = 1$.`,
+      t`When $A$ is hard to count, such as 'at least one', count $A'$ instead and subtract from $1$.`,
+      t`**Odds** compare the two parts with each other, not with the whole: here $3 : 5$.`,
+      t`Probability compares a part with the whole: $P(A) = \frac{3}{8}$.`,
+    ],
+    figure: {
+      alt: "A bar of 8 equal blocks, the equally likely outcomes. The first 3 blocks are shaded and labelled A; the other 5 are shaded in another colour and labelled A′. Below, the counts 3 and 5, and P(A) + P(A′) = 3/8 + 5/8 = 1. Above, the odds 3 : 5 compare the two parts; below, P(A) = 3/8 compares a part with the whole.",
+      axes: "none",
+      view: { x: [-0.5, 8.5], y: [-2.6, 2.6] },
+      elements: [
+        ...bar,
+        block(0, 3, "good", 1),
+        { kind: "label", at: [1.5, 1], label: "A", labelAt: "n", tone: "good", step: 1 },
+        block(3, 8, "accent", 1),
+        { kind: "label", at: [5.5, 1], label: "A′", labelAt: "n", step: 1 },
+        { kind: "label", at: [1.5, 0], label: "3", labelAt: "s", tone: "good", step: 2 },
+        { kind: "label", at: [5.5, 0], label: "5", labelAt: "s", step: 2 },
+        { kind: "label", at: [4, -0.9], label: "P(A) + P(A′) = 3/8 + 5/8 = 1", labelAt: "s", step: 3 },
+        { kind: "label", at: [4, 1.6], label: "odds in favour of A = 3 : 5", labelAt: "n", tone: "good", step: 5 },
+        { kind: "label", at: [4, -1.8], label: "P(A) = 3/8", labelAt: "s", tone: "good", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "The complement rule",
+        points: [
+          t`$A'$ happens exactly when $A$ does not.`,
+          t`So $A$ and $A'$ never happen together, and one of them always happens.`,
+          t`Together they make up $S$, so $P(A) + P(A') = P(S) = 1$.`,
+          t`So $P(A') = 1 - P(A)$.`,
+        ],
+      },
+      {
+        title: "At least one: count none",
+        points: [
+          t`'At least one' means one or more: it also counts two, three or more.`,
+          t`If it is not true that at least one happens, then none does.`,
+          t`So the complement of 'at least one' is **none**, not 'all'.`,
+          t`So $P(\text{at least one})$ equals $1 - P(\text{none})$.`,
+        ],
+      },
+      {
+        title: "Odds in favour and against",
+        points: [
+          t`Let $n(A) = m$ of the $n(S) = n$ outcomes be **favourable**: they make $A$ happen.`,
+          t`The other $n - m$ outcomes are **unfavourable**: they make up $A'$.`,
+          t`**Odds in favour** of $A$ put the favourable first: $m : (n - m)$.`,
+          t`Dividing both by $n$, that is $P(A) : P(A')$.`,
+          t`**Odds against** $A$ put the unfavourable first: $(n - m) : m$.`,
+          t`That is $P(A') : P(A)$.`,
+        ],
+      },
+      {
+        title: "From odds to probability",
+        points: [
+          t`Odds in favour $a : b$ mean $a$ parts for $A$ and $b$ parts against.`,
+          t`That is $a + b$ parts in all, so $P(A) = \frac{a}{a + b}$.`,
+          t`Odds against $a : b$ put the unfavourable first: $a$ parts against, $b$ for.`,
+          t`So $P(A) = \frac{b}{a + b}$.`,
+          t`Odds are part to part; probability is part to whole.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`The odds in favour of X solving a problem are $4 : 3$, and the odds against Y solving the same problem are $2 : 3$. Find the probability that X solves it, that Y solves it, and that Y fails.`,
       steps: [
-        t`In favour $4 : 3$ means $4$ parts for X and $3$ against, $7$ parts in all: $P(X) = \frac{4}{4 + 3} = \frac{4}{7}$.`,
-        t`Against $2 : 3$ puts the unfavourable part first: $2$ parts against Y, $3$ for Y. So $P(Y) = \frac{3}{2 + 3} = \frac{3}{5}$.`,
-        t`Y fails is the complement: $P(Y') = 1 - \frac{3}{5} = \frac{2}{5}$, the $2$ parts against out of $5$.`,
+        t`In favour $4 : 3$ means $4$ parts for X and $3$ against, $7$ parts in all: $P(X) = \frac{4}{4 + 3}$ $= \frac{4}{7}$.`,
+        t`Against $2 : 3$ puts the unfavourable part first: $2$ parts against Y, $3$ for Y. So $P(Y) = \frac{3}{2 + 3}$ $= \frac{3}{5}$.`,
+        t`Y fails is the complement: $P(Y') = 1 - \frac{3}{5}$ $= \frac{2}{5}$, the $2$ parts against out of $5$.`,
       ],
       answer: t`$P(X) = \frac{4}{7}$, $P(Y) = \frac{3}{5}$ and $P(Y') = \frac{2}{5}$.`,
     },

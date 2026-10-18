@@ -4,26 +4,62 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Elephants in a herd: mean weight $4000$ kg, S.D. $200$ kg. Mice in a cage: mean weight $20$ g, S.D. $4$ g. **Whose weights vary more?**`,
     reveal: t`Judged by $\sigma$ alone, the elephants: $200$ kg against $4$ g. But $200$ kg is only $5\%$ of an elephant's mean weight, while $4$ g is $20\%$ of a mouse's. Relative to their size, the mice vary four times as much. That ratio, $\frac{\sigma}{\bar{x}} \times 100$, is the coefficient of variation.`,
   },
   explanation: {
-    intuition: t`The standard deviation is in the data's own units, and it tends to grow with the size of the values. A spread of $5$ kg is tiny for elephants and huge for kittens. Dividing $\sigma$ by the mean gives the spread per unit of mean, a pure number that we write as a percentage. Now groups with different means, or even different units, can be compared fairly: the smaller the C.V., the more consistent the group.`,
-    formal: t`**Definition.** The coefficient of variation is $$\text{C.V.} = \frac{\sigma}{\bar{x}} \times 100$$ The S.D. goes on top, the mean below, and the result is a percentage with no units.
-
-**From the variance.** C.V. uses $\sigma$, not $\sigma^2$. If the variance is given, take its square root first.
-
-**Working backwards.** Rearrange the same formula: $\sigma = \frac{\text{C.V.} \times \bar{x}}{100}$ and $\bar{x} = \frac{100\,\sigma}{\text{C.V.}}$.
-
-**Comparing groups.** The smaller C.V. is the more consistent (stable, uniform) group; the larger C.V. is the more variable one. Compare C.V.s, not S.D.s, because the means differ. And consistency is not a high mean: the best average need not be the steadiest.`,
+    intuition: [
+      t`Recall: the **standard deviation** (S.D.) $\sigma$ is a typical distance of the observations from their mean $\bar{x}$.`,
+      t`$\sigma$ is in the data's own units, such as kg, and it tends to grow with the size of the values.`,
+      t`A spread of $5$ kg is tiny for elephants but huge for kittens.`,
+      t`Dividing $\sigma$ by the mean gives the spread per unit of mean: a pure number, with no units.`,
+      t`Written as a percentage, it compares groups fairly, even groups with different means or different units.`,
+      t`The smaller this number, the more **consistent** (stable, uniform) the group.`,
+    ],
+    formal: [
+      {
+        title: "Coefficient of variation",
+        points: [
+          t`The **coefficient of variation** (C.V.) is the S.D. written as a percentage of the mean.`,
+          t`C.V. $= \frac{\sigma}{\bar{x}} \times 100$.`,
+          t`The S.D. $\sigma$ goes on top, and the mean $\bar{x}$ below.`,
+          t`The result is a percentage, with no units.`,
+        ],
+      },
+      {
+        title: "Starting from the variance",
+        points: [
+          t`Recall: the **variance** is $\sigma^2$, the square of the S.D.`,
+          t`C.V. uses $\sigma$, not $\sigma^2$.`,
+          t`If the variance is given, take its square root first.`,
+        ],
+      },
+      {
+        title: "Working backwards",
+        points: [
+          t`Rearrange the same formula to find $\sigma$ or $\bar{x}$.`,
+          t`Given the C.V. and the mean, $\sigma = \frac{\text{C.V.} \times \bar{x}}{100}$.`,
+          t`Given the C.V. and the S.D., $\bar{x} = \frac{100\,\sigma}{\text{C.V.}}$.`,
+        ],
+      },
+      {
+        title: "Comparing groups",
+        points: [
+          t`The group with the smaller C.V. is the more consistent one.`,
+          t`The group with the larger C.V. is the more variable one.`,
+          t`When the means differ, compare the C.V.s, not the S.D.s.`,
+          t`Consistency is not a high mean: the best average need not be the steadiest.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A shop's daily sales over five days are $49, 53, 50, 47, 51$ units. Find the coefficient of variation. Another shop's sales have C.V. $6\%$: which shop's sales are more consistent?`,
       steps: [
-        t`Mean: $\bar{x} = \frac{49 + 53 + 50 + 47 + 51}{5} = \frac{250}{5} = 50$.`,
+        t`Mean: the sales add to $49 + 53 + 50 + 47 + 51 = 250$, so $\bar{x} = \frac{250}{5} = 50$.`,
         t`Deviations from $50$: $-1, 3, 0, -3, 1$. Their squares add to $1 + 9 + 0 + 9 + 1 = 20$, so $\sigma^2 = \frac{20}{5} = 4$ and $\sigma = 2$.`,
-        t`C.V. $= \frac{\sigma}{\bar{x}} \times 100 = \frac{2}{50} \times 100 = 4\%$.`,
+        t`C.V. $= \frac{\sigma}{\bar{x}} \times 100$ $= \frac{2}{50} \times 100 = 4\%$.`,
         t`$4\% < 6\%$: the smaller C.V. is the more consistent, so the first shop's sales are more consistent.`,
       ],
       answer: t`C.V. $= 4\%$; the first shop is more consistent.`,

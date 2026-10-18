@@ -1,33 +1,179 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
 
+/** The two-set Venn diagram of verify/figures.py `venn()`: S is the rectangle [0, 10] × [0, 7]. */
+const view: Figure["view"] = { x: [-0.3, 10.3], y: [-0.3, 7.3] };
+const cA: Pt = [3.9, 3.5];
+const cB: Pt = [6.1, 3.5];
+const r = 2.4;
+const frame: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+
+/** Where each cell's label sits, and the caption above the circles. */
+const at = { onlyA: [2.6, 3.5] as Pt, both: [5, 3.5] as Pt, onlyB: [7.4, 3.5] as Pt, neither: [0.9, 0.8] as Pt, note: [5, 6.05] as Pt };
+
+type Cell = "onlyA" | "both" | "onlyB" | "neither";
+
+/** One of the four cells, shaded. */
+function cell(c: Cell, more: { step?: number; tone?: FigureElement["tone"] } = {}): FigureElement {
+  const inA = c === "onlyA" || c === "both";
+  const inB = c === "onlyB" || c === "both";
+  return {
+    kind: "region",
+    within: [
+      { kind: inA ? "disc" : "outsideDisc", centre: cA, r },
+      { kind: inB ? "disc" : "outsideDisc", centre: cB, r },
+      ...frame,
+    ],
+    ...more,
+  };
+}
+
+/** The rectangle S, the two circles and their names; always shown. */
+const venn: FigureElement[] = [
+  { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+  { kind: "circle", centre: cA, r, tone: "muted" },
+  { kind: "label", at: [2.2, 5.2], label: "A", labelAt: "nw" },
+  { kind: "circle", centre: cB, r, tone: "muted" },
+  { kind: "label", at: [7.8, 5.2], label: "B", labelAt: "ne" },
+  { kind: "label", at: [9.5, 6.4], label: "S", labelAt: "n" },
+];
+
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The chance of rain tomorrow is $0.7$ and the chance of a strong wind is $0.5$. **So is the chance of rain or wind $0.7 + 0.5 = 1.2$?**`,
-    reveal: t`No: a probability can never be more than $1$. The days with rain **and** wind were counted twice, once in each number. If the chance of both is $0.4$, take it away once: $P(\text{rain or wind}) = 0.7 + 0.5 - 0.4 = 0.8$.`,
+    reveal: t`No: a probability can never be more than $1$. The days with rain **and** wind were counted twice, once in each number. If the chance of both is $0.4$, take it away once: $P(\text{rain or wind})$ $= 0.7 + 0.5 - 0.4 = 0.8$.`,
   },
   explanation: {
-    intuition: t`Picture $A$ and $B$ as two overlapping circles in a Venn diagram. $P(A)$ covers the overlap, and so does $P(B)$, so $P(A) + P(B)$ counts the overlap $A \cap B$ twice. Subtract it once and you have $P(A \cup B)$. Only when the circles don't overlap (mutually exclusive events) is there nothing to subtract, and then you just add.`,
-    formal: t`**The addition theorem.** For any two events $A$ and $B$ of a sample space $S$:
-$$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
-
-**Mutually exclusive events.** If $A \cap B = \phi$, then $P(A \cap B) = 0$ and $P(A \cup B) = P(A) + P(B)$. This is the only case where you just add.
-
-**Words into events.** "$A$ or $B$" and "at least one" mean $A \cup B$; "both" means $A \cap B$. "Exactly one" leaves out the overlap: $P(A) + P(B) - 2P(A \cap B)$.
-
-**Neither, and not both (De Morgan).** $P(A' \cap B') = 1 - P(A \cup B)$ and $P(A' \cup B') = 1 - P(A \cap B)$.
-
-**Use it backwards.** The theorem links four numbers: $P(A)$, $P(B)$, $P(A \cap B)$, $P(A \cup B)$. Any three give the fourth.`,
+    intuition: [
+      t`Recall: events are sets of outcomes, so draw $A$ and $B$ as two circles inside the sample space $S$.`,
+      t`$P(A)$ covers all of circle $A$, including the **overlap**, the part inside both circles.`,
+      t`$P(B)$ covers all of circle $B$, so it covers the overlap too.`,
+      t`So $P(A) + P(B)$ counts the overlap, $A \cap B$, twice.`,
+      t`Subtract $P(A \cap B)$ once, and you have $P(A \cup B)$, the chance of $A$ or $B$.`,
+      t`When the circles don't overlap, the events are mutually exclusive: there is nothing to subtract, so just add.`,
+    ],
+    figure: {
+      alt: "A Venn diagram of events A and B inside the sample space S. Circle A is shaded, then circle B, so the overlap is shaded twice and is marked 'twice'. Last, the caption P(A ∪ B) = P(A) + P(B) − P(A ∩ B) appears above the circles.",
+      axes: "none",
+      view,
+      elements: [
+        cell("onlyA", { step: 2 }),
+        cell("both", { step: 2 }),
+        cell("onlyB", { step: 3 }),
+        cell("both", { step: 3 }),
+        ...venn,
+        { kind: "label", at: at.both, label: "twice", labelAt: "n", tone: "bad", step: 4 },
+        { kind: "label", at: at.note, label: "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)", labelAt: "n", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "The addition theorem",
+        points: [
+          t`The **addition theorem** gives $P(A \cup B)$ for any two events $A$ and $B$ of a sample space $S$.`,
+          t`$P(A \cup B)$ equals $P(A) + P(B) - P(A \cap B)$.`,
+        ],
+      },
+      {
+        title: "Mutually exclusive events",
+        points: [
+          t`Recall: $A$ and $B$ are **mutually exclusive** when they have no common outcome, $A \cap B = \phi$.`,
+          t`Then $P(A \cap B) = 0$.`,
+          t`So $P(A \cup B) = P(A) + P(B)$.`,
+          t`This is the only case where you just add.`,
+        ],
+      },
+      {
+        title: "Words into events",
+        points: [
+          t`"$A$ or $B$" and "at least one" both mean $A \cup B$.`,
+          t`"Both" means $A \cap B$, the overlap.`,
+          t`"Exactly one" means one happens but not the other: $A \cup B$ with the overlap left out.`,
+          t`So $P(\text{exactly one})$ equals $P(A) + P(B) - 2P(A \cap B)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside S. Both circles are shaded, captioned 'A ∪ B: at least one'. The overlap is marked 'both'. Then the two parts outside the overlap are shaded again and marked 'only A' and 'only B': exactly one.",
+          axes: "none",
+          view,
+          elements: [
+            cell("onlyA", { step: 1 }),
+            cell("both", { step: 1 }),
+            cell("onlyB", { step: 1 }),
+            cell("onlyA", { step: 3, tone: "good" }),
+            cell("onlyB", { step: 3, tone: "good" }),
+            ...venn,
+            { kind: "label", at: at.note, label: "A ∪ B: at least one", labelAt: "n", step: 1 },
+            { kind: "label", at: at.both, label: "both", labelAt: "n", step: 2 },
+            { kind: "label", at: at.onlyA, label: "only A", labelAt: "n", step: 3 },
+            { kind: "label", at: at.onlyB, label: "only B", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Neither: outside both circles",
+        points: [
+          t`Recall: $A'$, the **complement** of $A$, is the event that $A$ does not happen.`,
+          t`**Neither** means $A$ does not happen and $B$ does not happen: $A' \cap B'$.`,
+          t`By De Morgan's law, $A' \cap B' = (A \cup B)'$, the part outside both circles.`,
+          t`So $P(A' \cap B') = 1 - P(A \cup B)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside S. The region outside both circles is shaded and marked 'neither', captioned A′ ∩ B′ = (A ∪ B)′.",
+          axes: "none",
+          view,
+          elements: [
+            cell("neither", { step: 3, tone: "good" }),
+            ...venn,
+            { kind: "label", at: at.neither, label: "neither", labelAt: "n", step: 3 },
+            { kind: "label", at: at.note, label: "A′ ∩ B′ = (A ∪ B)′", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Not both: all but the overlap",
+        points: [
+          t`**Not both** means $A$ and $B$ do not both happen: $A' \cup B'$.`,
+          t`By De Morgan's law, $A' \cup B' = (A \cap B)'$, everything outside the overlap.`,
+          t`So $P(A' \cup B') = 1 - P(A \cap B)$.`,
+          t`Don't swap them: neither uses $P(A \cup B)$, and not both uses $P(A \cap B)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of A and B inside S. Everything except the overlap is shaded, captioned A′ ∪ B′ = (A ∩ B)′: not both.",
+          axes: "none",
+          view,
+          elements: [
+            cell("onlyA", { step: 2, tone: "good" }),
+            cell("onlyB", { step: 2, tone: "good" }),
+            cell("neither", { step: 2, tone: "good" }),
+            ...venn,
+            { kind: "label", at: at.note, label: "A′ ∪ B′ = (A ∩ B)′", labelAt: "n", tone: "good", step: 2 },
+          ],
+        },
+      },
+      {
+        title: "Use it backwards",
+        points: [
+          t`The theorem links four numbers: $P(A)$, $P(B)$, $P(A \cap B)$ and $P(A \cup B)$.`,
+          t`Any three of them give the fourth.`,
+          t`For example, $P(A \cap B)$ equals $P(A) + P(B) - P(A \cup B)$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`The probability that a student passes in French is $0.64$, in Sociology is $0.45$, and in both is $0.40$. Find the probability that the student passes in at least one, in exactly one, and in neither of the two subjects.`,
       steps: [
         t`Let $F$: passes in French, $S$: passes in Sociology. Then $P(F) = 0.64$, $P(S) = 0.45$, $P(F \cap S) = 0.40$.`,
-        t`At least one: $P(F \cup S) = P(F) + P(S) - P(F \cap S) = 0.64 + 0.45 - 0.40 = 0.69$.`,
-        t`Exactly one: take the overlap out of the union too. $P(F \cup S) - P(F \cap S) = 0.69 - 0.40 = 0.29$.`,
-        t`Neither: $P(F' \cap S') = 1 - P(F \cup S) = 1 - 0.69 = 0.31$.`,
+        t`At least one: $P(F \cup S)$ $= P(F) + P(S) - P(F \cap S)$ $= 0.64 + 0.45 - 0.40 = 0.69$.`,
+        t`Exactly one: take the overlap out of the union too. $P(F \cup S) - P(F \cap S)$ $= 0.69 - 0.40 = 0.29$.`,
+        t`Neither: $P(F' \cap S') = 1 - P(F \cup S)$ $= 1 - 0.69 = 0.31$.`,
       ],
       answer: t`At least one: $0.69$; exactly one: $0.29$; neither: $0.31$.`,
     },

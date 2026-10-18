@@ -1,32 +1,116 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
+const faces = [1, 2, 3, 4, 5, 6];
+
+/** The two-dice sample space: the face numbers along each side, always shown. */
+const diceAxes: FigureElement[] = [
+  ...faces.map((j): FigureElement => ({ kind: "label", at: [j, 0.4], label: `${j}`, labelAt: "s", tone: "muted" })),
+  ...faces.map((j): FigureElement => ({ kind: "label", at: [0.4, j], label: `${j}`, labelAt: "w", tone: "muted" })),
+  { kind: "label", at: [3.5, -0.35], label: "first die", labelAt: "s", tone: "muted" },
+  { kind: "label", at: [0, 6.75], label: "second die", labelAt: "e", tone: "muted" },
+];
+
+/** A dashed bow from (1, 4) to (4, 1), bowing towards (2, 2) so it passes between the dots. */
+const lump = Array.from({ length: 25 }, (_, i): [number, number] => {
+  const u = i / 24;
+  const v = (1 - u) ** 2 * 4 + 2 * u * (1 - u) * 2 + u ** 2 * 1;
+  const w = (1 - u) ** 2 * 1 + 2 * u * (1 - u) * 2 + u ** 2 * 4;
+  return [+w.toFixed(3), +v.toFixed(3)];
+});
+
+/** The 36 ordered pairs (first die, second die), one dot each. */
+const dicePairs = (step: number): FigureElement[] =>
+  faces.flatMap((a) => faces.map((b): FigureElement => ({ kind: "point", at: [a, b], tone: "muted", step })));
+
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two dice are thrown. A sum of $11$ needs a $5$ and a $6$; a sum of $12$ needs a $6$ and a $6$. **One way each, so are they equally likely?**`,
     reveal: t`No. Paint one die red. Then $11$ comes two ways, red $5$ with blue $6$ or red $6$ with blue $5$, but $12$ comes only one way. Of the $36$ equally likely pairs, $2$ give $11$ and $1$ gives $12$: $P(11) = \frac{2}{36} = \frac{1}{18}$, twice $P(12) = \frac{1}{36}$.`,
   },
   explanation: {
-    intuition: t`When every outcome has the same chance, probability is a share: the outcomes you want out of all the outcomes. So list the sample space, count the outcomes in the event, and divide. The share can't be less than none or more than all, so a probability always lies between $0$ and $1$. The one thing to check first is that your listed outcomes really are equally likely: two dice give $36$ ordered pairs, not $21$ unordered ones.`,
-    formal: t`**Classical definition.** If $S$ has $n(S)$ equally likely outcomes and the event $A$ contains $n(A)$ of them, then $$P(A) = \frac{n(A)}{n(S)}.$$
-
-**Properties.** $0 \le P(A) \le 1$, $P(\phi) = 0$ and $P(S) = 1$. The probabilities of all the outcomes total $1$. So $P(A) = 0.4$, $P(B) = 0.6$, $P(C) = 0.2$ for mutually exclusive events covering $S$ is impossible: the total is $1.2$.
-
-**Equally likely outcomes.** Two dice: $6 \times 6 = 36$ ordered pairs, and $(1, 4)$ is a different outcome from $(4, 1)$. A bag of balls: count every ball, not every colour.
-
-**Example.** One card from a pack of $52$: $P(\text{king or queen}) = \frac{4 + 4}{52} = \frac{2}{13}$.
-
-**Outcomes not equally likely.** Give each a weight and scale so they total $1$. A coin with heads twice as likely as tails: $P(H) = 2k$, $P(T) = k$, $3k = 1$, so $P(H) = \frac{2}{3}$.`,
+    intuition: [
+      t`The **probability** of an event is a number saying how likely it is to happen.`,
+      t`Recall: an **event** is a set of outcomes, and the **sample space** lists every outcome once.`,
+      t`Outcomes are **equally likely** when each has the same chance, like the six faces of a fair die.`,
+      t`Then probability is a share: the outcomes you want out of all the outcomes.`,
+      t`So list the sample space, count the outcomes in the event, and divide.`,
+      t`A share can't be less than none or more than all, so a probability lies between $0$ and $1$.`,
+    ],
+    formal: [
+      {
+        title: "The classical definition",
+        points: [
+          t`Let the sample space $S$ have $n(S)$ outcomes, all equally likely.`,
+          t`Let the event $A$ contain $n(A)$ of them, its **favourable** outcomes.`,
+          t`Then the probability of $A$ is $P(A) = \frac{n(A)}{n(S)}$.`,
+          t`Check first that the outcomes really are equally likely: otherwise this share is wrong.`,
+        ],
+      },
+      {
+        title: "Example: a king or queen",
+        points: [
+          t`One card is drawn from a pack of $52$, so $n(S) = 52$.`,
+          t`The pack has $4$ kings and $4$ queens, so $n(A) = 4 + 4$.`,
+          t`So $P(\text{king or queen}) = \frac{4 + 4}{52}$, which is $\frac{2}{13}$.`,
+        ],
+      },
+      {
+        title: "Properties of probability",
+        points: [
+          t`A probability is never below $0$ or above $1$: $0 \le P(A) \le 1$.`,
+          t`The **impossible event** $\phi$ has no outcomes, so $P(\phi) = 0$.`,
+          t`The **sure event** $S$ has every outcome, so $P(S) = 1$.`,
+          t`The probabilities of all the outcomes add up to $1$.`,
+          t`Take three **mutually exclusive** events $A$, $B$, $C$ (no two can happen together) that cover $S$.`,
+          t`Then $P(A) = 0.4$, $P(B) = 0.6$, $P(C) = 0.2$ is impossible: the total is $1.2$.`,
+        ],
+      },
+      {
+        title: "Two dice: 36 ordered pairs",
+        points: [
+          t`Two dice give $6 \times 6 = 36$ **ordered pairs**: (first die, second die).`,
+          t`So $(1, 4)$, a $1$ then a $4$, is a different outcome from $(4, 1)$.`,
+          t`Lumping those two together as one **unordered** pair, "a $1$ and a $4$", leaves $21$ outcomes.`,
+          t`Those $21$ are not equally likely: "a $1$ and a $4$" comes two ways, "two $6$s" only one.`,
+          t`A bag of balls works the same way: count every ball, not every colour.`,
+        ],
+        figure: {
+          alt: "A 6 by 6 grid of dots: the first die's number runs along the bottom and the second die's up the side, one dot for each of the 36 ordered pairs. The dots (1, 4) and (4, 1) light up as two different outcomes, then a dashed curve joins them to show the unordered list lumping them into one. The dot (6, 6) lights up alone: two 6s happen only one way.",
+          axes: "none",
+          view: { x: [-0.6, 7.2], y: [-1.1, 7.3] },
+          elements: [
+            ...diceAxes,
+            ...dicePairs(1),
+            { kind: "point", at: [1, 4], label: "(1, 4)", labelAt: "n", step: 2 },
+            { kind: "point", at: [4, 1], label: "(4, 1)", labelAt: "n", step: 2 },
+            { kind: "curve", points: lump, dashed: true, tone: "bad", step: 3 },
+            { kind: "point", at: [6, 6], label: "(6, 6)", labelAt: "n", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Outcomes not equally likely",
+        points: [
+          t`When the outcomes are not equally likely, give each one a weight for its chance.`,
+          t`Then scale the weights so that they total $1$.`,
+          t`Example: a coin lands heads twice as often as tails.`,
+          t`So $P(H) = 2k$ and $P(T) = k$, for some number $k$.`,
+          t`They total $1$: $3k = 1$, so $k = \frac{1}{3}$.`,
+          t`So $P(H) = \frac{2}{3}$ and $P(T) = \frac{1}{3}$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A box contains $75$ tickets numbered $1$ to $75$. A ticket is drawn at random. Find the probability that the number on it is divisible by $3$ and $5$.`,
       steps: [
         t`Every ticket is equally likely, so $n(S) = 75$.`,
         t`Divisible by both $3$ and $5$ means divisible by $15$.`,
         t`The multiples of $15$ up to $75$: $15, 30, 45, 60, 75$. So $n(A) = 5$, counting $75$ itself.`,
-        t`$P(A) = \frac{n(A)}{n(S)} = \frac{5}{75} = \frac{1}{15}$.`,
+        t`$P(A) = \frac{n(A)}{n(S)}$ $= \frac{5}{75} = \frac{1}{15}$.`,
       ],
       answer: t`$\frac{1}{15}$`,
     },

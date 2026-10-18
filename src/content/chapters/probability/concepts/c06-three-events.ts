@@ -1,27 +1,146 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement, Pt, Shape } from "../../../types.ts";
 
 const t = String.raw;
 
+/** The house three-set Venn diagram (verify/figures.py `venn()`): circles of radius 2.2 inside a 10 by 7 frame, the sample space. */
+const R = 2.2;
+const CENTRES: [Pt, Pt, Pt] = [[3.9, 4.3], [6.1, 4.3], [5, 2.5]];
+const FRAME: Shape[] = [
+  { kind: "halfPlane", through: [[0, 0], [10, 0]] },
+  { kind: "halfPlane", through: [[10, 0], [10, 7]] },
+  { kind: "halfPlane", through: [[10, 7], [0, 7]] },
+  { kind: "halfPlane", through: [[0, 7], [0, 0]] },
+];
+
+/** A shaded region: inside (true) or outside (false) each of the three circles, or either (null). */
+const cell = (ins: [boolean | null, boolean | null, boolean | null], step?: number, tone?: FigureElement["tone"]): FigureElement => ({
+  kind: "region",
+  within: [
+    ...ins.flatMap((v, i): Shape[] =>
+      v === null ? [] : [v ? { kind: "disc", centre: CENTRES[i], r: R } : { kind: "outsideDisc", centre: CENTRES[i], r: R }],
+    ),
+    ...FRAME,
+  ],
+  step,
+  tone,
+});
+
+/** The seven regions inside at least one circle, each shaded once: A ∪ B ∪ C. */
+const union = (step?: number, tone?: FigureElement["tone"]): FigureElement[] =>
+  ([[true, false, false], [false, true, false], [false, false, true], [true, true, false], [false, true, true], [true, false, true], [true, true, true]] as [boolean, boolean, boolean][])
+    .map((ins) => cell(ins, step, tone));
+
+/** The frame, the three circles and their names; always shown. */
+const venn: FigureElement[] = [
+  { kind: "curve", points: [[0, 0], [10, 0], [10, 7], [0, 7], [0, 0]], tone: "muted" },
+  { kind: "circle", centre: CENTRES[0], r: R, tone: "muted" },
+  { kind: "label", at: [2.34, 5.86], label: "A", labelAt: "nw" },
+  { kind: "circle", centre: CENTRES[1], r: R, tone: "muted" },
+  { kind: "label", at: [7.66, 5.86], label: "B", labelAt: "ne" },
+  { kind: "circle", centre: CENTRES[2], r: R, tone: "muted" },
+  { kind: "label", at: [7.2, 1.29], label: "C", labelAt: "e" },
+  { kind: "label", at: [9.5, 6.4], label: "S", labelAt: "n" },
+];
+
+const VIEW: Figure["view"] = { x: [-0.3, 10.3], y: [-0.3, 7.3] };
+
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
-    prompt: t`A number is drawn at random from $1$ to $100$. Adding the three chances, $P(\text{divisible by } 2) + P(\text{by } 3) + P(\text{by } 5) = \frac{50}{100} + \frac{33}{100} + \frac{20}{100} = \frac{103}{100}$. **That is more than $1$. What went wrong, and what is the real probability of 'divisible by $2$, $3$ or $5$'?**`,
+    prompt: t`A number is drawn at random from $1$ to $100$. Adding the three chances, $P(\text{divisible by } 2)$ $+ P(\text{by } 3) + P(\text{by } 5)$ $= \frac{50}{100} + \frac{33}{100} + \frac{20}{100}$ $= \frac{103}{100}$. **That is more than $1$. What went wrong, and what is the real probability of 'divisible by $2$, $3$ or $5$'?**`,
     reveal: t`Numbers such as $6$, $10$ and $15$ were counted twice, and $30$, $60$, $90$ three times. Subtract the pairs: there are $16 + 10 + 6 = 32$ multiples of $6$, $10$ and $15$, leaving $103 - 32 = 71$. But $30$, $60$, $90$ were added three times and subtracted three times, so they are now missing: add them back to get $74$. The probability is $\frac{74}{100} = \frac{37}{50}$.`,
   },
   explanation: {
-    intuition: t`Draw $A$, $B$ and $C$ as three overlapping circles. Adding $P(A) + P(B) + P(C)$ counts each two-circle overlap twice and the centre, $A \cap B \cap C$, three times. Subtracting the three pairs fixes the overlaps, but the centre lies inside every pair, so it is subtracted three times and drops out completely. Adding $P(A \cap B \cap C)$ back once makes every region count exactly once.`,
-    formal: t`**The addition theorem for three events**
-
-$$P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(B \cap C) - P(A \cap C) + P(A \cap B \cap C)$$
-
-Add the three, subtract the pairs, add back the triple. The signs alternate: $+$, $-$, $+$.
-
-**Divisible by $a$ or $b$ or $c$.** From $1$ to $N$ there are as many multiples of $d$ as the whole-number part of $\frac{N}{d}$. Divisible by both $a$ and $b$ means divisible by their LCM: by $2$ and $3$ is by $6$, by $2$ and $10$ is just by $10$.
-
-**None of the three.** $P(\text{none}) = 1 - P(A \cup B \cup C)$.
-
-**Exactly one must happen.** If only one of $A$, $B$, $C$ can happen and one must, every overlap is $0$ and $P(A) + P(B) + P(C) = 1$. With odds against $A$ of $7 : 4$ and against $B$ of $5 : 3$: $P(A) = \frac{4}{11}$, $P(B) = \frac{3}{8}$, so $P(C) = \frac{23}{88}$ and the odds against $C$ are $P(C') : P(C) = 65 : 23$.`,
+    intuition: [
+      t`Draw events $A$, $B$ and $C$ as three overlapping circles inside the sample space $S$.`,
+      t`Adding $P(A) + P(B) + P(C)$ counts each **two-circle overlap**, the part inside two circles, twice.`,
+      t`It counts the **centre**, the part inside all three circles, three times.`,
+      t`Subtracting the three pairs, such as $P(A \cap B)$, fixes the two-circle overlaps.`,
+      t`But the centre lies inside every pair, so it is taken away three times and drops out.`,
+      t`Adding $P(A \cap B \cap C)$ back once makes every part count exactly once.`,
+    ],
+    formal: [
+      {
+        title: "The addition theorem for three events",
+        points: [
+          t`Recall: $A \cup B \cup C$ is the event that at least one of $A$, $B$, $C$ happens.`,
+          t`Add the **singles**, one for each event: $P(A) + P(B) + P(C)$.`,
+          t`Subtract the **pairs**, the three two-event overlaps: $P(A \cap B)$, $P(B \cap C)$ and $P(A \cap C)$.`,
+          t`Add back the **triple**, $P(A \cap B \cap C)$, the chance that all three happen.`,
+          t`So $P(A \cup B \cup C)$ equals $P(A) + P(B) + P(C)$ $- P(A \cap B) - P(B \cap C)$ $- P(A \cap C)$ $+ P(A \cap B \cap C)$.`,
+          t`The signs alternate: $+$ for the singles, $-$ for the pairs, $+$ for the triple.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of events A, B and C inside the sample space S. The three discs are shaded, marked + singles, so the two-circle overlaps are shaded twice and the centre three times. The three pair overlaps are then shaded in a second colour, marked − pairs, which covers the centre three times too. Last, the centre is shaded in a third colour, marked + triple.",
+          axes: "none",
+          view: VIEW,
+          elements: [
+            cell([true, null, null], 2),
+            cell([null, true, null], 2),
+            cell([null, null, true], 2),
+            cell([true, true, null], 3, "bad"),
+            cell([null, true, true], 3, "bad"),
+            cell([true, null, true], 3, "bad"),
+            cell([true, true, true], 4, "good"),
+            ...venn,
+            { kind: "label", at: [1.2, 1.3], label: "+ singles", labelAt: "n", step: 2 },
+            { kind: "label", at: [1.2, 0.8], label: "− pairs", labelAt: "n", step: 3, tone: "bad" },
+            { kind: "label", at: [1.2, 0.3], label: "+ triple", labelAt: "n", step: 4, tone: "good" },
+          ],
+        },
+      },
+      {
+        title: "Counting multiples for divisibility",
+        points: [
+          t`Let $A, B, C$ be 'divisible by $a$', 'by $b$', 'by $c$' for a number drawn from $1$ to $N$.`,
+          t`From $1$ to $N$, the count of multiples of $d$ is the whole-number part of $\frac{N}{d}$.`,
+          t`For example, from $1$ to $100$ there are $33$ multiples of $3$, since $\frac{100}{3}$ is $33.3\ldots$`,
+          t`Divisible by both $a$ and $b$ means divisible by their **LCM**, their least common multiple.`,
+          t`So by $2$ and $3$ means by $6$, and by $2$ and $10$ means just by $10$.`,
+          t`Divisible by all three means divisible by the LCM of all three.`,
+        ],
+      },
+      {
+        title: "None of the three",
+        points: [
+          t`Recall: the **complement** $E'$ of an event $E$ happens exactly when $E$ does not.`,
+          t`'At least one of $A$, $B$, $C$' is $A \cup B \cup C$, every part inside the circles.`,
+          t`'None of the three' is its complement, the part outside all three circles.`,
+          t`So $P(\text{none}) = 1 - P(A \cup B \cup C)$.`,
+        ],
+        figure: {
+          alt: "A Venn diagram of events A, B and C inside the sample space S. First everything inside the three circles is shaded, the event at least one. Then the part of S outside all three circles is shaded in another colour and labelled none.",
+          axes: "none",
+          view: VIEW,
+          elements: [
+            ...union(2),
+            cell([false, false, false], 3, "good"),
+            ...venn,
+            { kind: "label", at: [0.9, 0.8], label: "none", labelAt: "n", step: 3, tone: "good" },
+          ],
+        },
+      },
+      {
+        title: "When exactly one must happen",
+        points: [
+          t`Suppose only one of $A$, $B$, $C$ can happen, and one of them must.`,
+          t`Only one can happen, so every overlap has probability $0$.`,
+          t`One must happen, so $P(A \cup B \cup C) = 1$.`,
+          t`So the theorem leaves just $P(A) + P(B) + P(C) = 1$.`,
+        ],
+      },
+      {
+        title: "Odds when exactly one happens",
+        points: [
+          t`Recall: odds against $a : b$ give $P = \frac{b}{a + b}$.`,
+          t`Odds against $A$ of $7 : 4$ give $P(A) = \frac{4}{11}$.`,
+          t`Odds against $B$ of $5 : 3$ give $P(B) = \frac{3}{8}$.`,
+          t`Exactly one happens, so $P(C) = 1 - \frac{4}{11} - \frac{3}{8}$, which is $\frac{23}{88}$.`,
+          t`Then $P(C') = \frac{65}{88}$, so the odds against $C$ are $P(C') : P(C) = 65 : 23$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A student takes exams in English, Hindi and Marathi. The probabilities that she passes them are $P(E) = 0.5$, $P(H) = 0.4$ and $P(M) = 0.3$; $P(E \cap H) = 0.2$, $P(H \cap M) = 0.1$, $P(E \cap M) = 0.15$ and $P(E \cap H \cap M) = 0.05$. Find the probability that she passes at least one of the three.`,
       steps: [
@@ -30,6 +149,23 @@ Add the three, subtract the pairs, add back the triple. The signs alternate: $+$
         t`Add back the triple, which the pairs removed completely: $0.75 + 0.05 = 0.8$.`,
       ],
       answer: t`$P(E \cup H \cup M) = 0.8$. (So the probability that she passes none is $1 - 0.8 = 0.2$.)`,
+    },
+    figure: {
+      alt: "A Venn diagram of events A, B and C inside the sample space S. The three discs are shaded, so each two-circle overlap is shaded twice and the centre three times. The three pair overlaps are then shaded in a second colour, which covers the centre three times as well. Last, the centre is shaded once in a third colour and a caption says each part is now counted once.",
+      axes: "none",
+      view: VIEW,
+      elements: [
+        cell([true, null, null], 2),
+        cell([null, true, null], 2),
+        cell([null, null, true], 2),
+        cell([true, true, null], 4, "bad"),
+        cell([null, true, true], 4, "bad"),
+        cell([true, null, true], 4, "bad"),
+        cell([true, true, true], 6, "good"),
+        ...venn,
+        { kind: "label", at: [1.5, 0.8], label: "each part", labelAt: "n", step: 6, tone: "good" },
+        { kind: "label", at: [1.5, 0.3], label: "counted once", labelAt: "n", step: 6, tone: "good" },
+      ],
     },
     visualSpec: t`Three overlapping circles $A$, $B$, $C$: step through adding the three, subtracting the pairs and adding back the triple, with each of the seven regions showing how many times it has been counted so far, until every region reads $1$.`,
   },

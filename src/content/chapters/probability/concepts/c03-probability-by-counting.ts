@@ -4,28 +4,79 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bag has $3$ red and $2$ white balls; two are drawn together. Asha counts selections: $P(\text{both red}) = \frac{^3C_2}{^5C_2}$. Ravi counts the draws in order: $\frac{3 \times 2}{5 \times 4}$. **Who is right?**`,
     reveal: t`Both. Asha gets $\frac{3}{10}$ and Ravi gets $\frac{6}{20} = \frac{3}{10}$. Ravi counts every pair of balls twice, once in each order, but he does it on the top **and** the bottom, so the $2$ cancels. What goes wrong is mixing the two: order on one side only.`,
   },
   explanation: {
-    intuition: t`When every outcome is equally likely, $P(A) = \frac{n(A)}{n(S)}$, so a probability question becomes two counting questions. With cards, balls or committees there are far too many outcomes to list, so count them with $^nC_r$ and the multiplication principle. Count $n(S)$ and $n(A)$ the same way: both as selections, or both in order. And $n(A)$ counts whole outcomes: every card, person or letter in the outcome must be chosen or placed.`,
-    formal: t`**Drawn together means a selection.** $r$ things taken at once from $N$: $n(S) = {}^NC_r$. Counting the draws one by one in order, $N(N - 1)\cdots$, gives the same probability only if $n(A)$ is counted in order too.
-
-**Choose from each group and multiply.** From $6$ red and $4$ green balls, draw $3$. Two red and one green: $n(A) = {}^6C_2 \times {}^4C_1 = 60$, out of $^{10}C_3 = 120$, so $P = \frac{1}{2}$.
-
-**Fill the whole outcome.** 'Exactly $2$ red' in a draw of $3$ also fixes the third ball: it is not red, so choose it from the others. If the event can happen in several ways (any one of the $4$ suits), add up all of them.
-
-**Arrangements.** $n$ different letters in a row: $n(S) = n!$. Letters that must be together: tie them into one block, arrange the block with the others, then multiply by the ways the block's letters swap inside it. Fixed places: fill those first, then arrange the rest.
-
-**The pack.** $52$ cards, $4$ suits of $13$; $26$ red and $26$ black; $12$ face cards (J, Q, K) and $4$ aces.`,
+    intuition: [
+      t`Recall: when every outcome is equally likely, $P(A) = \frac{n(A)}{n(S)}$.`,
+      t`Cards, balls or committees have far too many outcomes to list, so count $n(A)$ and $n(S)$ instead.`,
+      t`$^nC_r$ is the number of ways to choose $r$ things from $n$, ignoring their order.`,
+      t`The **multiplication principle**: if one choice can be made in $a$ ways and the next in $b$, both together in $a \times b$.`,
+      t`Count $n(S)$ and $n(A)$ the same way: both as **selections**, with order ignored, or both **in order**.`,
+      t`And $n(A)$ counts whole outcomes: every card, person or letter in an outcome must be chosen or placed.`,
+    ],
+    formal: [
+      {
+        title: "Drawn together means a selection",
+        points: [
+          t`**Drawn together** means $r$ things are taken at once from $N$, so their order does not matter.`,
+          t`So each outcome is a selection, and $n(S) = {}^NC_r$.`,
+          t`You may instead count the draws one by one, in order: $N(N - 1)\cdots$ ways.`,
+          t`That gives the same probability only if $n(A)$ is counted in order too.`,
+        ],
+      },
+      {
+        title: "Choose from each group, multiply",
+        points: [
+          t`Example: from $6$ red and $4$ green balls, draw $3$; the event is two red and one green.`,
+          t`Choose the $2$ red balls from the $6$: $^6C_2 = 15$ ways.`,
+          t`Choose the $1$ green ball from the $4$: $^4C_1 = 4$ ways.`,
+          t`Each red pair goes with each green ball, so multiply: $n(A) = 15 \times 4 = 60$.`,
+          t`All the draws: $n(S) = {}^{10}C_3 = 120$.`,
+          t`So $P = \frac{60}{120} = \frac{1}{2}$.`,
+        ],
+      },
+      {
+        title: "Fill the whole outcome",
+        points: [
+          t`An event often names only part of the outcome; the rest must still be chosen.`,
+          t`'Exactly $2$ red' in a draw of $3$ also fixes the third ball: it is not red.`,
+          t`So choose that third ball from the balls that are not red.`,
+          t`An event may happen in several ways: 'same suit' can be any one of the $4$ suits.`,
+          t`Count every one of those ways and add them all up.`,
+        ],
+      },
+      {
+        title: "Arranging letters in a row",
+        points: [
+          t`Recall: $n$ different letters can be arranged in a row in $n!$ ways, so $n(S) = n!$.`,
+          t`Letters that must be together: tie them into one **block**, a unit that moves as a whole.`,
+          t`Arrange the block and the other letters as units.`,
+          t`Then multiply by the ways the block's letters can swap inside it.`,
+          t`Letters in **fixed places**, such as the first or the last place: fill those places first.`,
+          t`Then arrange the remaining letters in the places left.`,
+        ],
+      },
+      {
+        title: "The pack of cards",
+        points: [
+          t`A pack has $52$ cards in $4$ **suits** of $13$; a suit is a set sharing one symbol.`,
+          t`The suits are hearts, diamonds, clubs and spades.`,
+          t`Hearts and diamonds are red, $26$ cards; clubs and spades are black, $26$ cards.`,
+          t`$12$ are **face cards**: the jack, queen and king (J, Q, K) of each suit.`,
+          t`$4$ are aces, one in each suit.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`There are $6$ positive and $8$ negative numbers. Four of them are chosen at random, without replacement, and multiplied. Find the probability that the product is positive.`,
       steps: [
         t`Choosing $4$ of the $14$ numbers: $n(S) = {}^{14}C_4 = 1001$.`,
         t`The product is positive when it has an even number of negative factors: $0$, $2$ or $4$ negatives.`,
-        t`$0$ negatives: $^6C_4 = 15$. $2$ negatives: $^6C_2 \times {}^8C_2 = 15 \times 28 = 420$. $4$ negatives: $^8C_4 = 70$.`,
+        t`$0$ negatives: $^6C_4 = 15$. $2$ negatives: $^6C_2 \times {}^8C_2$ $= 15 \times 28 = 420$. $4$ negatives: $^8C_4 = 70$.`,
         t`The cases don't overlap, so add: $n(A) = 15 + 420 + 70 = 505$, and $P = \frac{505}{1001}$.`,
       ],
       answer: t`$\frac{505}{1001}$`,

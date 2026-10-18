@@ -4,34 +4,115 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The sets $4, 5, 6$ and $1, 5, 9$ both have mean $5$. In each, add up the deviations from the mean, $x_i - 5$. **Both sums are $0$. So how can we tell which set is more spread out?**`,
     reveal: t`Square the deviations before adding: the signs go and the far values count more. For $4, 5, 6$ the squares add to $1 + 0 + 1 = 2$; for $1, 5, 9$ they add to $16 + 0 + 16 = 32$. Divide by $n = 3$: the variances are $\frac{2}{3}$ and $\frac{32}{3}$, so the second set is far more spread out.`,
   },
   explanation: {
-    intuition: t`Spread means how far the observations sit from their mean. The deviations $x_i - \bar{x}$ always add up to $0$, so their plain average says nothing. Square them first: every square is positive, and a big deviation counts much more than a small one. The mean of these squares is the **variance**, $\sigma^2$. Its square root, the **standard deviation** $\sigma$, brings the answer back to the data's own units.`,
-    formal: t`**Variance** of $n$ observations $x_1, x_2, \ldots, x_n$ with mean $\bar{x}$ (the book divides by $n$):
-
-$$\sigma^2 = \frac{\sum (x_i - \bar{x})^2}{n}$$
-
-**Lay it out as a table.** For $2, 5, 6, 9, 13$: $\bar{x} = \frac{35}{5} = 7$.
-
-$$\begin{array}{c|c|c} x_i & x_i - \bar{x} & (x_i - \bar{x})^2 \\ \hline 2 & -5 & 25 \\ 5 & -2 & 4 \\ 6 & -1 & 1 \\ 9 & 2 & 4 \\ 13 & 6 & 36 \end{array}$$
-
-So $\sigma^2 = \frac{70}{5} = 14$ and $\sigma = \sqrt{14}$.
-
-**Shortcut**, handy when $\bar{x}$ is not a whole number: $\sigma^2 = \frac{\sum x_i^2}{n} - \bar{x}^2$, the mean of the squares minus the square of the mean. Above: $\frac{315}{5} - 7^2 = 63 - 49 = 14$.
-
-**Standard deviation**: $\sigma = \sqrt{\sigma^2}$, never negative.
-
-**Working backwards.** From $n$, $\bar{x}$ and $\sigma^2$ you can rebuild both sums: $\sum x_i = n\bar{x}$ and $\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$. Use them to find missing observations, or to correct a misread one in **both** sums.`,
+    intuition: [
+      t`**Spread** is how far the observations, the data values, sit from their **mean** $\bar{x}$: their sum divided by how many there are.`,
+      t`The **deviation** of an observation $x_i$ is $x_i - \bar{x}$; below the mean it is negative.`,
+      t`Above the mean it is positive, and the deviations always add up to $0$: their plain average says nothing.`,
+      t`So square each deviation first: every square is positive, and a big deviation counts much more than a small one.`,
+      t`The mean of these squares is the **variance**, $\sigma^2$.`,
+      t`Its square root, the **standard deviation** $\sigma$, brings the answer back to the data's own units.`,
+    ],
+    figure: {
+      alt: "The observations 2, 5, 6, 9 and 13 as dots on a number line. A dashed line marks their mean, 7. Below the line, a segment joins each dot to the mean: −5, −2 and −1 on the left, +2 and +6 on the right, and they add up to 0. Above the line, a square stands on each deviation, sharing a corner at the mean: areas 25, 4 and 1 on the left, 4 and 36 on the right. The far values, 2 and 13, have by far the biggest squares.",
+      axes: "none",
+      view: { x: [-0.8, 15], y: [-5.4, 6.8] },
+      elements: [
+        { kind: "segment", from: [-0.5, 0], to: [14.5, 0], tone: "muted" },
+        { kind: "point", at: [2, 0], label: "2", labelAt: "s" },
+        { kind: "point", at: [5, 0], label: "5", labelAt: "s" },
+        { kind: "point", at: [6, 0], label: "6", labelAt: "s" },
+        { kind: "point", at: [9, 0], label: "9", labelAt: "s" },
+        { kind: "point", at: [13, 0], label: "13", labelAt: "s" },
+        { kind: "segment", from: [7, 0], to: [7, -3.1], dashed: true, step: 1 },
+        { kind: "label", at: [7, -3.1], label: "x̄ = 7", labelAt: "s", step: 1 },
+        { kind: "segment", from: [6, -1.3], to: [7, -1.3], tone: "bad", step: 2 },
+        { kind: "label", at: [6, -1.3], label: "−1", labelAt: "w", tone: "bad", step: 2 },
+        { kind: "segment", from: [5, -2], to: [7, -2], tone: "bad", step: 2 },
+        { kind: "label", at: [5, -2], label: "−2", labelAt: "w", tone: "bad", step: 2 },
+        { kind: "segment", from: [2, -2.7], to: [7, -2.7], tone: "bad", step: 2 },
+        { kind: "label", at: [2, -2.7], label: "−5", labelAt: "w", tone: "bad", step: 2 },
+        { kind: "segment", from: [7, -1.3], to: [9, -1.3], tone: "good", step: 3 },
+        { kind: "label", at: [9, -1.3], label: "+2", labelAt: "e", tone: "good", step: 3 },
+        { kind: "segment", from: [7, -2], to: [13, -2], tone: "good", step: 3 },
+        { kind: "label", at: [13, -2], label: "+6", labelAt: "e", tone: "good", step: 3 },
+        { kind: "label", at: [7, -4.1], label: "−5 − 2 − 1 + 2 + 6 = 0", labelAt: "s", step: 3 },
+        { kind: "curve", points: [[2, 0], [2, 5], [7, 5], [7, 0]], step: 4 },
+        { kind: "curve", points: [[5, 0], [5, 2], [7, 2]], step: 4 },
+        { kind: "curve", points: [[6, 0], [6, 1], [7, 1]], step: 4 },
+        { kind: "curve", points: [[9, 0], [9, 2], [7, 2]], step: 4 },
+        { kind: "curve", points: [[13, 0], [13, 6], [7, 6], [7, 5]], step: 4 },
+        { kind: "label", at: [3.5, 3], label: "25", labelAt: "n", step: 4 },
+        { kind: "label", at: [5.5, 0.8], label: "4", labelAt: "n", step: 4 },
+        { kind: "label", at: [6.5, 0.1], label: "1", labelAt: "n", step: 4 },
+        { kind: "label", at: [8, 0.6], label: "4", labelAt: "n", step: 4 },
+        { kind: "label", at: [10.5, 3], label: "36", labelAt: "n", step: 4 },
+      ],
+    },
+    formal: [
+      {
+        title: "Variance of raw data",
+        points: [
+          t`**Raw data** are $n$ observations $x_1, x_2, \ldots, x_n$ listed one by one, with no frequencies.`,
+          t`The sign $\sum$ means "add up over all the observations".`,
+          t`Square each deviation and add the squares: $\sum (x_i - \bar{x})^2$.`,
+          t`Divide by $n$, as this book does, to get the variance:`,
+          t`$\sigma^2 = \frac{\sum (x_i - \bar{x})^2}{n}$.`,
+        ],
+      },
+      {
+        title: "Lay it out as a table",
+        points: [
+          t`Take $2, 5, 6, 9, 13$: $\bar{x} = \frac{35}{5} = 7$, and each row is one observation.`,
+          t`Row $2$: deviation $2 - 7 = -5$, square $25$.`,
+          t`Row $5$: deviation $5 - 7 = -2$, square $4$.`,
+          t`Row $6$: deviation $6 - 7 = -1$, square $1$.`,
+          t`Row $9$: deviation $9 - 7 = 2$, square $4$.`,
+          t`Row $13$: deviation $13 - 7 = 6$, square $36$.`,
+        ],
+      },
+      {
+        title: "Variance and S.D. from it",
+        points: [
+          t`The squares add up to $25 + 4 + 1 + 4 + 36 = 70$.`,
+          t`So $\sigma^2 = \frac{70}{5} = 14$.`,
+          t`The **S.D.**, short for standard deviation, is the positive square root: $\sigma = \sqrt{\sigma^2}$.`,
+          t`It is never negative.`,
+          t`Here $\sigma = \sqrt{14}$.`,
+        ],
+      },
+      {
+        title: "The shortcut formula",
+        points: [
+          t`When $\bar{x}$ is not a whole number, the deviations are messy decimals; this shortcut avoids them.`,
+          t`$\sigma^2 = \frac{\sum x_i^2}{n} - \bar{x}^2$.`,
+          t`In words: the mean of the squares minus the square of the mean.`,
+          t`For $2, 5, 6, 9, 13$: $\sum x_i^2 = 4 + 25 + 36 + 81 + 169$ $= 315$.`,
+          t`So $\sigma^2 = \frac{315}{5} - 7^2$ $= 63 - 49 = 14$, as before.`,
+        ],
+      },
+      {
+        title: "Working backwards",
+        points: [
+          t`Given $n$, $\bar{x}$ and $\sigma^2$, you can rebuild both sums.`,
+          t`From the mean: $\sum x_i = n\bar{x}$.`,
+          t`From the shortcut: $\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$.`,
+          t`Use them to find missing observations.`,
+          t`Or to correct a **misread** observation, one copied wrongly: fix it in **both** sums.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`The mean of $5$ observations is $4.8$ and the variance is $6.56$. Three of them are $1$, $3$ and $8$. Find the other two.`,
       steps: [
-        t`Call them $a$ and $b$. $\sum x_i = n\bar{x} = 5 \times 4.8 = 24$, so $a + b = 24 - (1 + 3 + 8) = 12$.`,
-        t`$\sum x_i^2 = n(\sigma^2 + \bar{x}^2) = 5(6.56 + 23.04) = 5 \times 29.6 = 148$, so $a^2 + b^2 = 148 - (1 + 9 + 64) = 74$.`,
-        t`$2ab = (a + b)^2 - (a^2 + b^2) = 144 - 74 = 70$, so $ab = 35$.`,
+        t`Call them $a$ and $b$. $\sum x_i = n\bar{x}$ $= 5 \times 4.8 = 24$, so $a + b = 24 - (1 + 3 + 8)$ $= 12$.`,
+        t`$\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$ $= 5(6.56 + 23.04)$ $= 5 \times 29.6 = 148$, so $a^2 + b^2 = 148 - (1 + 9 + 64)$ $= 74$.`,
+        t`$2ab = (a + b)^2 - (a^2 + b^2)$ $= 144 - 74 = 70$, so $ab = 35$.`,
         t`$a$ and $b$ are the roots of $t^2 - 12t + 35 = 0$, that is $(t - 5)(t - 7) = 0$.`,
       ],
       answer: t`The other two observations are $5$ and $7$.`,

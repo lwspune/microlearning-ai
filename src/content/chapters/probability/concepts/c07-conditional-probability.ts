@@ -4,33 +4,97 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A family has two children. You are told that **at least one of them is a girl**. What is the probability that both are girls? Most people say $\frac{1}{2}$.`,
     reveal: t`List the children in order of birth: $BB$, $BG$, $GB$, $GG$, all equally likely. The news rules out only $BB$, so three cases are left: $BG$, $GB$, $GG$. Both are girls in just one of them, so the probability is $\frac{1}{3}$, not $\frac{1}{2}$. Knowing something shrinks the sample space.`,
   },
   explanation: {
-    intuition: t`A condition is news. Once you know $B$ has happened, every outcome outside $B$ is impossible, so $B$ becomes the new sample space. Inside it, $A$ can happen only through the outcomes it shares with $B$, that is $A \cap B$. So $P(A \mid B)$ is the share of $B$ that also lies in $A$. The event after the bar is the one you already know.`,
-    formal: t`**Definition.** For events $A$ and $B$ with $P(B) > 0$, the probability of $A$ given $B$ is
-$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}.$$
-The book writes it as $P(A/B)$.
-
-**Two ways to find it.**
-- **Reduce the sample space** (equally likely outcomes): $P(A \mid B) = \dfrac{n(A \cap B)}{n(B)}$. Count inside $B$ only.
-- **Use the formula** when probabilities, not outcomes, are given.
-
-**Example.** A card drawn from a pack of $52$ is a face card. The reduced space is the $12$ face cards, and $4$ are kings: $P(\text{king} \mid \text{face}) = \frac{4}{12} = \frac{1}{3}$, while $P(\text{king}) = \frac{4}{52} = \frac{1}{13}$.
-
-**Watch the order.** $P(A \mid B)$ divides by $P(B)$; $P(B \mid A)$ divides by $P(A)$. Above, $P(\text{face} \mid \text{king}) = 1$, not $\frac{1}{3}$.
-
-**Complements keep the condition.** $P(A' \mid B) = 1 - P(A \mid B)$.`,
+    intuition: [
+      t`Recall: the **sample space** $S$ holds every possible outcome, and events $A$ and $B$ are parts of it.`,
+      t`A **condition** is news: you are told that the event $B$ has happened.`,
+      t`Then every outcome outside $B$ is impossible, so $B$ becomes the new sample space.`,
+      t`Inside $B$, $A$ can happen only through the outcomes it shares with $B$: that is $A \cap B$.`,
+      t`The probability of $A$ **given** $B$, written $P(A \mid B)$, is the share of $B$ that also lies in $A$.`,
+      t`The event after the bar is the one you already know.`,
+    ],
+    figure: {
+      alt: "A Venn diagram: a box for the sample space S holds two overlapping circles, A on the left and B on the right. Once B is known, everything outside B is greyed out as impossible and B is shaded as the new sample space. Then the overlap of A and B, A ∩ B, is shaded inside B.",
+      axes: "none",
+      view: { x: [0, 10], y: [0, 7] },
+      elements: [
+        { kind: "region", within: [{ kind: "outsideDisc", centre: [6.1, 3.9], r: 2.1 }, { kind: "halfPlane", through: [[0.3, 0.3], [9.7, 0.3]] }, { kind: "halfPlane", through: [[9.7, 0.3], [9.7, 6.7]] }, { kind: "halfPlane", through: [[9.7, 6.7], [0.3, 6.7]] }, { kind: "halfPlane", through: [[0.3, 6.7], [0.3, 0.3]] }], tone: "muted", step: 3 },
+        { kind: "region", within: [{ kind: "disc", centre: [6.1, 3.9], r: 2.1 }], tone: "good", step: 3 },
+        { kind: "label", at: [2.1, 0.8], label: "impossible now", tone: "muted", step: 3 },
+        { kind: "region", within: [{ kind: "disc", centre: [3.9, 3.9], r: 2.1 }, { kind: "disc", centre: [6.1, 3.9], r: 2.1 }], tone: "accent", step: 4 },
+        { kind: "label", at: [4.45, 3.7], label: "A ∩ B", step: 4 },
+        { kind: "segment", from: [0.3, 0.3], to: [9.7, 0.3], tone: "muted" },
+        { kind: "segment", from: [9.7, 0.3], to: [9.7, 6.7], tone: "muted" },
+        { kind: "segment", from: [9.7, 6.7], to: [0.3, 6.7], tone: "muted" },
+        { kind: "segment", from: [0.3, 6.7], to: [0.3, 0.3], tone: "muted" },
+        { kind: "label", at: [0.6, 6.0], label: "S", tone: "muted" },
+        { kind: "circle", centre: [3.9, 3.9], r: 2.1 },
+        { kind: "label", at: [1.9, 5.7], label: "A" },
+        { kind: "circle", centre: [6.1, 3.9], r: 2.1, tone: "good" },
+        { kind: "label", at: [7.9, 5.7], label: "B", tone: "good" },
+      ],
+    },
+    formal: [
+      {
+        title: "Probability of A given B",
+        points: [
+          t`Take two events $A$ and $B$ with $P(B) > 0$.`,
+          t`The probability of $A$ given $B$ is written $P(A \mid B)$.`,
+          t`It is defined as $P(A \mid B) = \dfrac{P(A \cap B)}{P(B)}$.`,
+          t`We need $P(B) > 0$ because we divide by it.`,
+          t`The book writes it as $P(A/B)$.`,
+        ],
+      },
+      {
+        title: "Two ways to find it",
+        points: [
+          t`First way, when the outcomes are equally likely: **reduce the sample space** to $B$.`,
+          t`Write $n(E)$ for the number of outcomes in an event $E$.`,
+          t`Count inside $B$ only: $P(A \mid B) = \dfrac{n(A \cap B)}{n(B)}$.`,
+          t`Second way, when probabilities, not outcomes, are given: **use the formula**.`,
+        ],
+      },
+      {
+        title: "A face card example",
+        points: [
+          t`A card is drawn from a pack of $52$, and you are told it is a face card.`,
+          t`A **face card** is a jack, queen or king, so a pack has $12$ of them.`,
+          t`The reduced sample space is the $12$ face cards, and $4$ of them are kings.`,
+          t`So $P(\text{king} \mid \text{face}) = \frac{4}{12} = \frac{1}{3}$.`,
+          t`Without the news, $P(\text{king}) = \frac{4}{52} = \frac{1}{13}$.`,
+        ],
+      },
+      {
+        title: "Watch the order",
+        points: [
+          t`$P(A \mid B)$ divides by $P(B)$, the event after the bar.`,
+          t`$P(B \mid A)$ divides by $P(A)$, so it is usually different.`,
+          t`In the card example, $P(\text{face} \mid \text{king}) = 1$, not $\frac{1}{3}$.`,
+          t`Every king is a face card, so once you know it is a king, it is surely a face card.`,
+        ],
+      },
+      {
+        title: "Complements keep the condition",
+        points: [
+          t`Recall: the **complement** $A'$ is every outcome not in $A$.`,
+          t`Inside $B$, each outcome lies either in $A$ or in $A'$.`,
+          t`So $P(A' \mid B) = 1 - P(A \mid B)$.`,
+          t`The condition $B$ stays the same on both sides.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A die is tossed once and shows an odd number. Find the probability that the number is less than $4$.`,
       steps: [
         t`Let $A$: less than $4$ $= \{1, 2, 3\}$, and $B$: odd $= \{1, 3, 5\}$. $B$ is given.`,
         t`The reduced sample space is $B = \{1, 3, 5\}$, so $n(B) = 3$.`,
         t`Inside $B$, the numbers less than $4$ are $A \cap B = \{1, 3\}$, so $n(A \cap B) = 2$ and $P(A \mid B) = \frac{2}{3}$.`,
-        t`Check with the formula: $P(A \mid B) = \dfrac{P(A \cap B)}{P(B)} = \dfrac{2/6}{3/6} = \dfrac{2}{3}$.`,
+        t`Check with the formula: $P(A \mid B) = \dfrac{P(A \cap B)}{P(B)}$ $= \dfrac{2/6}{3/6} = \dfrac{2}{3}$.`,
       ],
       answer: t`$P(\text{less than } 4 \mid \text{odd}) = \frac{2}{3}$.`,
     },

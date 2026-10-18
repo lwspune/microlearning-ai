@@ -4,28 +4,85 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ten values are all equal to $10$. What is their standard deviation? **And could a standard deviation ever come out negative?**`,
     reveal: t`Every value equals the mean $10$, so every deviation is $0$, the variance is $0$ and $\sigma = 0$. It can never be negative: $\sigma$ is the positive square root of the variance. It is $0$ only when all the values are equal, with no spread at all.`,
   },
   explanation: {
-    intuition: t`Variance measures spread, but in squared units: marks², kg². That is hard to read beside the data. Take its square root and you are back in the data's own units: that is the standard deviation, $\sigma$. Think of it as a typical distance of the values from their mean. Being a square root, it is never negative, and it is $0$ only when there is no spread at all.`,
-    formal: t`**Standard deviation (S.D.)**
-
-$$\sigma = \sqrt{\text{Var}(X)} = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n}} = \sqrt{\frac{\sum x_i^2}{n} - \bar{x}^2}$$
-
-Work out the whole variance first, then take its **positive** square root.
-
-**Units and sign.** If the data are in kg, the variance is in kg² and $\sigma$ is in kg. Always $\sigma \ge 0$, and $\sigma = 0$ only when all the observations are equal.
-
-**Going back.** The variance is $\sigma^2$. From the mean and the S.D. of $n$ observations: $\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$.
-
-**Two results to remember.** For the first $n$ natural numbers, $\sigma = \sqrt{\frac{n^2 - 1}{12}}$: $n = 5$ gives $\sigma = \sqrt{2}$. For two numbers $a$ and $b$, $\sigma = \frac{|a - b|}{2}$, half the range.`,
+    intuition: [
+      t`Recall: the **variance** is the mean of the squared deviations $(x_i - \bar{x})^2$.`,
+      t`So its unit is the data's unit squared, such as marks² or kg², which is hard to read beside the data.`,
+      t`Its square root is back in the data's own unit: this is the **standard deviation**, $\sigma$.`,
+      t`For example, the values $3, 9, 11, 17$ have mean $10$ and variance $25$.`,
+      t`So $\sigma = \sqrt{25} = 5$: think of it as a typical distance of the values from their mean.`,
+    ],
+    figure: {
+      alt: "A number line with the values 3, 9, 11 and 17 marked on it. A dashed line at 10 marks the mean. A bar from 5 to 15 shows one standard deviation, 5, on each side of the mean.",
+      axes: "none",
+      view: { x: [-1.5, 21.5], y: [-3, 7.5] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [20, 0], tone: "muted" },
+        { kind: "point", at: [3, 0], step: 4 },
+        { kind: "point", at: [9, 0], step: 4 },
+        { kind: "point", at: [11, 0], step: 4 },
+        { kind: "point", at: [17, 0], step: 4 },
+        { kind: "label", at: [3, 0], label: "3", labelAt: "s", step: 4 },
+        { kind: "label", at: [9, 0], label: "9", labelAt: "s", step: 4 },
+        { kind: "label", at: [11, 0], label: "11", labelAt: "s", step: 4 },
+        { kind: "label", at: [17, 0], label: "17", labelAt: "s", step: 4 },
+        { kind: "segment", from: [10, 0], to: [10, 5], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [10, 5], label: "mean 10", labelAt: "n", step: 4 },
+        { kind: "segment", from: [5, 2.5], to: [15, 2.5], tone: "accent", step: 5 },
+        { kind: "segment", from: [5, 2], to: [5, 3], tone: "accent", step: 5 },
+        { kind: "segment", from: [15, 2], to: [15, 3], tone: "accent", step: 5 },
+        { kind: "label", at: [7.5, 2.5], label: "σ = 5", labelAt: "n", tone: "accent", step: 5 },
+        { kind: "label", at: [12.5, 2.5], label: "σ = 5", labelAt: "n", tone: "accent", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Two formulas for σ",
+        points: [
+          t`The **standard deviation (S.D.)** of a variable $X$ is the positive square root of its variance.`,
+          t`So $\sigma = \sqrt{\text{Var}(X)}$, where $\text{Var}(X)$ is the variance.`,
+          t`From the deviations: $\sigma = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n}}$.`,
+          t`From the sum of squares: $\sigma = \sqrt{\frac{\sum x_i^2}{n} - \bar{x}^2}$.`,
+          t`Work out the whole variance first, then take its **positive** square root.`,
+        ],
+      },
+      {
+        title: "Units and sign",
+        points: [
+          t`If the data are in kg, the variance is in kg² and $\sigma$ is in kg.`,
+          t`A positive square root is never negative, so always $\sigma \ge 0$.`,
+          t`$\sigma = 0$ only when all the observations are equal: there is no spread at all.`,
+        ],
+      },
+      {
+        title: "Going back from σ",
+        points: [
+          t`The variance is $\sigma^2$, the square of the S.D.`,
+          t`Square the sum-of-squares formula and add $\bar{x}^2$: $\frac{\sum x_i^2}{n} = \sigma^2 + \bar{x}^2$.`,
+          t`So, from the mean and the S.D. of $n$ observations, $\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$.`,
+        ],
+      },
+      {
+        title: "Two results to remember",
+        points: [
+          t`The **natural numbers** are $1, 2, 3, \dots$; take the first $n$ of them.`,
+          t`Their S.D. is $\sigma = \sqrt{\frac{n^2 - 1}{12}}$.`,
+          t`For $n = 5$, the numbers $1, \dots, 5$: $\sigma = \sqrt{\frac{24}{12}} = \sqrt{2}$.`,
+          t`For two numbers $a$ and $b$, $\sigma = \frac{|a - b|}{2}$.`,
+          t`Both sit $\frac{|a - b|}{2}$ from their mean, the midpoint, so that is their S.D.`,
+          t`It is half the **range**, the larger number minus the smaller.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`The daily hours of study of 5 students are $2, 5, 6, 8, 9$. Find the standard deviation.`,
       steps: [
-        t`Mean: $\bar{x} = \frac{2 + 5 + 6 + 8 + 9}{5} = \frac{30}{5} = 6$ hours.`,
+        t`Mean: $\bar{x} = \frac{2 + 5 + 6 + 8 + 9}{5}$ $= \frac{30}{5} = 6$ hours.`,
         t`Deviations from $6$: $-4, -1, 0, 2, 3$. Their squares: $16, 1, 0, 4, 9$, with sum $30$.`,
         t`Variance: $\sigma^2 = \frac{30}{5} = 6$ hours².`,
         t`S.D.: $\sigma = \sqrt{6} \approx 2.45$ hours, the positive root, back in hours.`,

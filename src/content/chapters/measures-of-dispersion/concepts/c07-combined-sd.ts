@@ -4,31 +4,109 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Group A is $10, 10, 10, 10$ and group B is $20, 20, 20, 20$. Each group has S.D. $0$. **Is the S.D. of all eight values also $0$?**`,
     reveal: t`No. The eight values have mean $15$, and every one of them is $5$ away from it, so the combined S.D. is $5$. Neither group spreads at all; the whole spread comes from the **gap between the group means**. Any formula for the combined S.D. has to count that gap.`,
   },
   explanation: {
-    intuition: t`When two groups are put together, the values spread for two reasons. Each group spreads about its own mean: that is $\sigma_1^2$ and $\sigma_2^2$. And each group's mean sits away from the combined mean, by $d_1$ and $d_2$. The combined variance adds both kinds of spread, weighted by the group sizes. So you always find the combined mean first, then the gaps, then the variance.`,
-    formal: t`**Step 1: the combined mean.** A bigger group pulls harder:
-$$\bar{x}_c = \frac{n_1\bar{x}_1 + n_2\bar{x}_2}{n_1 + n_2}$$
-
-**Step 2: the gaps.** Measure each group mean from the combined mean: $d_1 = \bar{x}_1 - \bar{x}_c$, $d_2 = \bar{x}_2 - \bar{x}_c$.
-
-**Step 3: the combined variance and S.D.**
-$$\sigma_c^2 = \frac{n_1(\sigma_1^2 + d_1^2) + n_2(\sigma_2^2 + d_2^2)}{n_1 + n_2}, \qquad \sigma_c = \sqrt{\sigma_c^2}$$
-Combine variances, never S.D.s, and take the square root only at the end.
-
-**Why it works.** For each group $\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$. Add the two sums of squares, divide by $n_1 + n_2$ and subtract $\bar{x}_c^2$: this gives the same $\sigma_c^2$. Use this route when the sums $\sum x_i$ and $\sum x_i^2$ are given.
-
-**Adding observations or working backwards.** A few added values form a second group: find their own mean and variance first. If the combined figures are given, find $n_2$, then $\bar{x}_2$ from the mean equation, then solve the variance equation for $\sigma_2^2$.`,
+    intuition: [
+      t`Group 1 is $3, 5$ and group 2 is $12, 14, 16$: together they make one **combined** group of five values.`,
+      t`Each group spreads about its own mean: $\bar{x}_1 = 4$ and $\bar{x}_2 = 14$.`,
+      t`Recall: a group's **variance** $\sigma^2$ measures that spread, and its S.D. $\sigma$ is the square root.`,
+      t`The **combined mean** $\bar{x}_c$ is the mean of all five values: here $10$.`,
+      t`Each group mean sits a **gap** $d$ from it: $d_1 = 4 - 10 = -6$ and $d_2 = 14 - 10 = 4$.`,
+      t`So the combined variance adds two spreads, weighted by the group sizes: within each group, and the gaps between the means.`,
+    ],
+    figure: {
+      alt: "A number line from 0 to 20. Group 1, the values 3 and 5, sits on the left with its mean 4 marked; group 2, the values 12, 14 and 16, sits on the right with its mean 14 marked. A dashed line at 10 marks the combined mean. Arrows from the combined mean to each group mean show the gaps: d₁ = −6 to the left and d₂ = 4 to the right.",
+      axes: "none",
+      view: { x: [-1, 21], y: [-3.2, 5.6] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [20, 0], tone: "muted" },
+        { kind: "point", at: [3, 0], tone: "good", step: 1 },
+        { kind: "point", at: [5, 0], tone: "good", step: 1 },
+        { kind: "label", at: [3, 0], label: "3", labelAt: "s", step: 1 },
+        { kind: "label", at: [5, 0], label: "5", labelAt: "s", step: 1 },
+        { kind: "label", at: [4, -1.4], label: "group 1", labelAt: "s", tone: "good", step: 1 },
+        { kind: "point", at: [12, 0], step: 1 },
+        { kind: "point", at: [14, 0], step: 1 },
+        { kind: "point", at: [16, 0], step: 1 },
+        { kind: "label", at: [12, 0], label: "12", labelAt: "s", step: 1 },
+        { kind: "label", at: [14, 0], label: "14", labelAt: "s", step: 1 },
+        { kind: "label", at: [16, 0], label: "16", labelAt: "s", step: 1 },
+        { kind: "label", at: [14, -1.4], label: "group 2", labelAt: "s", step: 1 },
+        { kind: "segment", from: [4, 0], to: [4, 1.2], tone: "good", step: 2 },
+        { kind: "label", at: [4, 1.2], label: "mean 4", labelAt: "n", tone: "good", step: 2 },
+        { kind: "segment", from: [14, 0], to: [14, 1.2], step: 2 },
+        { kind: "label", at: [14, 1.2], label: "mean 14", labelAt: "n", step: 2 },
+        { kind: "segment", from: [10, -0.8], to: [10, 4.4], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [10, 4.4], label: "combined mean 10", labelAt: "n", step: 4 },
+        { kind: "vector", from: [10, 3], to: [4, 3], tone: "bad", step: 5 },
+        { kind: "label", at: [7, 3], label: "d₁ = −6", labelAt: "n", tone: "bad", step: 5 },
+        { kind: "vector", from: [10, 3], to: [14, 3], tone: "bad", step: 5 },
+        { kind: "label", at: [12, 3], label: "d₂ = 4", labelAt: "n", tone: "bad", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Step 1: the combined mean",
+        points: [
+          t`$n_1$ and $n_2$ are the two group sizes, and $\bar{x}_1$, $\bar{x}_2$ their means.`,
+          t`The combined mean $\bar{x}_c$ equals $\frac{n_1\bar{x}_1 + n_2\bar{x}_2}{n_1 + n_2}$.`,
+          t`The top is the total of all the values; the bottom counts them.`,
+          t`A bigger group pulls harder: $\bar{x}_c$ lies nearer to its mean.`,
+          t`Always find $\bar{x}_c$ first: the gaps and the variance both use it.`,
+        ],
+      },
+      {
+        title: "Step 2: the gaps",
+        points: [
+          t`Each **gap** $d$ is a group mean measured from the combined mean.`,
+          t`$d_1 = \bar{x}_1 - \bar{x}_c$.`,
+          t`$d_2 = \bar{x}_2 - \bar{x}_c$.`,
+          t`Measure both from $\bar{x}_c$, not from the other group's mean.`,
+        ],
+      },
+      {
+        title: "Step 3: combined variance and S.D.",
+        points: [
+          t`Each group brings its variance plus its squared gap: $\sigma_1^2 + d_1^2$ and $\sigma_2^2 + d_2^2$.`,
+          t`Weight each by its group size: $n_1(\sigma_1^2 + d_1^2)$ and $n_2(\sigma_2^2 + d_2^2)$.`,
+          t`Add them and divide by $n_1 + n_2$: that is the combined variance $\sigma_c^2$.`,
+          t`The combined S.D. is $\sigma_c = \sqrt{\sigma_c^2}$.`,
+          t`Combine variances, never S.D.s.`,
+          t`Take the square root only at the end.`,
+        ],
+      },
+      {
+        title: "Why the formula works",
+        points: [
+          t`Recall the shortcut: $\sigma^2 = \frac{\sum x_i^2}{n} - \bar{x}^2$.`,
+          t`So each group's sum of squares is $\sum x_i^2 = n(\sigma^2 + \bar{x}^2)$.`,
+          t`Add the two groups' sums of squares and divide by $n_1 + n_2$.`,
+          t`Subtract $\bar{x}_c^2$: this gives the same $\sigma_c^2$.`,
+          t`Use this route when the sums $\sum x_i$ and $\sum x_i^2$ are given.`,
+        ],
+      },
+      {
+        title: "Added values and working backwards",
+        points: [
+          t`A few **added observations** form a second group of their own.`,
+          t`Find their own mean and variance first, then combine the two groups as usual.`,
+          t`**Working backwards**, the combined figures are given and one group's are missing.`,
+          t`First, $n_2$ is the combined size minus $n_1$.`,
+          t`Next, find $\bar{x}_2$ from the mean equation.`,
+          t`Then solve the variance equation for $\sigma_2^2$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Two samples of sizes $10$ and $30$ have means $12$ and $20$ and standard deviations $5$ and $3$. Find the standard deviation of the combined sample of $40$.`,
       steps: [
-        t`Combined mean: $\bar{x}_c = \frac{10 \times 12 + 30 \times 20}{10 + 30} = \frac{120 + 600}{40} = 18$.`,
+        t`Combined mean: $\bar{x}_c = \frac{10 \times 12 + 30 \times 20}{10 + 30}$ $= \frac{120 + 600}{40}$ $= 18$.`,
         t`Gaps from the combined mean: $d_1 = 12 - 18 = -6$ and $d_2 = 20 - 18 = 2$.`,
-        t`$\sigma_c^2 = \frac{10(5^2 + 6^2) + 30(3^2 + 2^2)}{40} = \frac{610 + 390}{40} = \frac{1000}{40} = 25$.`,
+        t`$\sigma_c^2 = \frac{10(5^2 + 6^2) + 30(3^2 + 2^2)}{40}$ $= \frac{610 + 390}{40}$ $= \frac{1000}{40}$ $= 25$.`,
         t`$\sigma_c = \sqrt{25} = 5$. Without the $d$-terms you would get $\sqrt{13}$, too small: it misses the gap between the means.`,
       ],
       answer: t`The combined S.D. is $5$.`,

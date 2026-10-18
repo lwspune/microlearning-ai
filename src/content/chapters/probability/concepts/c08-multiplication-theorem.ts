@@ -4,29 +4,93 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bag has $3$ red and $4$ blue marbles. Two are drawn without replacement. **The first one drawn is red. What is the chance the second is blue?** Is it $\frac{3}{7} \times \frac{4}{6} = \frac{2}{7}$?`,
     reveal: t`No. You are told the first is red, so that part is no longer uncertain: the bag now holds $2$ red and $4$ blue, and the chance is $\frac{4}{6} = \frac{2}{3}$. The product $\frac{3}{7} \times \frac{4}{6} = \frac{2}{7}$ answers a different question: the chance that the first is red **and** the second is blue, asked before any draw. That product is the multiplication theorem.`,
   },
   explanation: {
-    intuition: t`For $A$ and $B$ both to happen, $A$ must happen first, and then $B$ must happen in the world where $A$ already has. The chance of the first is $P(A)$. The chance of the second, once $A$ has happened, is $P(B \mid A)$. Multiply them. When a ball or card is not put back, the box has changed by the second draw: one fewer thing in all, and one fewer of the kind just drawn.`,
-    formal: t`**The multiplication theorem.** For events $A$ and $B$ with $P(A) \ne 0$:
-$$P(A \cap B) = P(A)\,P(B \mid A)$$
-It is the conditional probability formula $P(B \mid A) = \frac{P(A \cap B)}{P(A)}$ rearranged. The book writes $P(B/A)$.
-
-**Without replacement.** Two aces from a pack of $52$, the first kept aside: $P(A) = \frac{4}{52}$; then $51$ cards are left with $3$ aces, so $P(B \mid A) = \frac{3}{51}$.
-$$P(\text{both aces}) = \frac{4}{52} \times \frac{3}{51} = \frac{1}{221}$$
-
-**With replacement.** If the first card goes back, the second draw sees the full pack again: $P(B \mid A) = \frac{4}{52}$, and $P(\text{both aces}) = \frac{1}{13} \times \frac{1}{13} = \frac{1}{169}$.
-
-**Order matters.** "First red, then green" is one order: $P(R_1)\,P(G_2 \mid R_1)$. "One red and one green" allows both orders, so add the two products.`,
+    intuition: [
+      t`For $A$ and $B$ both to happen, $A$ must happen, and then $B$ in the world where $A$ already has.`,
+      t`The chance of the first is $P(A)$.`,
+      t`Recall: the chance of the second, once $A$ has happened, is $P(B \mid A)$.`,
+      t`Multiply the two chances to get the chance that both happen.`,
+      t`A draw **without replacement** keeps the thing drawn aside: it is not put back.`,
+      t`So by the second draw the box has changed: one fewer thing in all, and one fewer of the kind just drawn.`,
+    ],
+    formal: [
+      {
+        title: "The multiplication theorem",
+        points: [
+          t`Recall: $A \cap B$ is the event that both $A$ and $B$ happen.`,
+          t`For events $A$ and $B$ with $P(A) \ne 0$, the **multiplication theorem** says`,
+          t`$P(A \cap B) = P(A)\,P(B \mid A)$.`,
+          t`It is the conditional probability formula: $P(B \mid A)$ equals $\frac{P(A \cap B)}{P(A)}$.`,
+          t`Multiply both sides by $P(A)$ to get the theorem.`,
+          t`The book writes $P(B \mid A)$ as $P(B/A)$.`,
+        ],
+      },
+      {
+        title: "Without replacement",
+        points: [
+          t`Two cards are drawn from a pack of $52$, and the first is kept aside.`,
+          t`Let $A$: the first card is an ace, and $B$: the second is an ace.`,
+          t`The pack has $4$ aces in $52$ cards, so $P(A) = \frac{4}{52}$.`,
+          t`Then $51$ cards are left with $3$ aces, so $P(B \mid A) = \frac{3}{51}$.`,
+          t`Multiply along the branch: $P(\text{both aces})$ is $\frac{4}{52} \times \frac{3}{51}$.`,
+          t`So $P(\text{both aces}) = \frac{1}{221}$.`,
+        ],
+        figure: {
+          alt: "A two-stage tree growing left to right. From the start, the first card branches to ace, with chance 4/52, and to not ace, with chance 48/52. From the ace, the second card branches to ace, with chance 3/51, and to not ace, with chance 48/51. The path ace then ace is highlighted: 4/52 × 3/51 = 1/221.",
+          axes: "none",
+          view: { x: [-0.6, 7.4], y: [-3.6, 3.4] },
+          elements: [
+            { kind: "point", at: [0, 0], tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [2.6, 1.6], step: 2 },
+            { kind: "point", at: [2.6, 1.6], label: "ace", labelAt: "nw", step: 2 },
+            { kind: "segment", from: [0, 0], to: [2.6, -1.6], tone: "muted", step: 2 },
+            { kind: "point", at: [2.6, -1.6], label: "not ace", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "label", at: [1.3, 0.8], label: "4/52", labelAt: "nw", step: 3 },
+            { kind: "label", at: [1.3, -0.8], label: "48/52", labelAt: "sw", tone: "muted", step: 3 },
+            { kind: "segment", from: [2.6, 1.6], to: [5.4, 2.6], step: 4 },
+            { kind: "point", at: [5.4, 2.6], label: "ace", labelAt: "e", step: 4 },
+            { kind: "segment", from: [2.6, 1.6], to: [5.4, 0.6], tone: "muted", step: 4 },
+            { kind: "point", at: [5.4, 0.6], label: "not ace", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "label", at: [4, 2.1], label: "3/51", labelAt: "n", step: 4 },
+            { kind: "label", at: [3.8, 1.0], label: "48/51", labelAt: "sw", tone: "muted", step: 4 },
+            { kind: "segment", from: [0, 0], to: [2.6, 1.6], tone: "good", step: 5 },
+            { kind: "segment", from: [2.6, 1.6], to: [5.4, 2.6], tone: "good", step: 5 },
+            { kind: "label", at: [3.4, -2.5], label: "4/52 × 3/51", labelAt: "s", tone: "good", step: 5 },
+            { kind: "label", at: [3.4, -3.1], label: "= 1/221", labelAt: "s", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "With replacement",
+        points: [
+          t`A draw **with replacement** puts the first card back before the second draw.`,
+          t`The second draw sees the full pack again, so $P(B \mid A) = \frac{4}{52}$.`,
+          t`Each of the two fractions is $\frac{4}{52} = \frac{1}{13}$.`,
+          t`So $P(\text{both aces})$ is $\frac{1}{13} \times \frac{1}{13}$.`,
+          t`That is $\frac{1}{169}$.`,
+        ],
+      },
+      {
+        title: "Order matters",
+        points: [
+          t`Write $R_1$ for "the first is red" and $G_2$ for "the second is green".`,
+          t`"First red, then green" is one order, so it is one product: $P(R_1)\,P(G_2 \mid R_1)$.`,
+          t`"One red and one green" allows both orders: red then green, or green then red.`,
+          t`So find the product for each order, and add the two.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`An urn contains $4$ black and $6$ white balls. Two balls are drawn one after the other without replacement. Find the probability that both balls are black.`,
       steps: [
         t`Let $A$: the first ball is black, and $B$: the second ball is black. Then $P(A) = \frac{4}{10}$.`,
         t`The first black ball is not put back, so $9$ balls are left, $3$ of them black: $P(B \mid A) = \frac{3}{9}$.`,
-        t`By the multiplication theorem, $P(A \cap B) = P(A)\,P(B \mid A) = \frac{4}{10} \times \frac{3}{9} = \frac{12}{90} = \frac{2}{15}$.`,
+        t`By the multiplication theorem, $P(A \cap B) = P(A)\,P(B \mid A)$ $= \frac{4}{10} \times \frac{3}{9}$ $= \frac{12}{90} = \frac{2}{15}$.`,
       ],
       answer: t`$P(\text{both black}) = \frac{2}{15}$.`,
     },

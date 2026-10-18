@@ -1,32 +1,89 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
 
+const faces = [1, 2, 3, 4, 5, 6];
+
+/** The 36 outcomes of two dice as a grid of dots: first die across, second die up. */
+const diceGrid = (tone: FigureElement["tone"], step: number, keep: (a: number, b: number) => boolean): FigureElement[] =>
+  faces.flatMap((a) => faces.filter((b) => keep(a, b)).map((b): FigureElement => ({ kind: "point", at: [a, b], tone, step })));
+
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Toss two coins. A friend says there are $3$ outcomes: two heads, two tails, or one of each. **Is she right?**`,
     reveal: t`No, there are $4$. Make the coins different, a 1-rupee and a 2-rupee coin: one of each happens in two ways, $HT$ (head on the 1-rupee coin) and $TH$. So $S = \{HH, HT, TH, TT\}$ and $n(S) = 2 \times 2 = 4$. Her list of $3$ hides that one of each is twice as likely as two heads.`,
   },
   explanation: {
-    intuition: t`A random experiment can end in several ways; the sample space $S$ lists each of them exactly once. Write outcomes you can tell apart: when things happen one after another, $HT$ and $TH$ are different outcomes. When an experiment runs in stages, every choice at one stage pairs with every choice at the next, so the counts multiply. An event is just a set of outcomes, a subset of $S$, so you compare two events with $\cap$ and $\cup$.`,
-    formal: t`**Sample space.** The set $S$ of all possible outcomes of a random experiment, each listed once; $n(S)$ is how many there are. A coin and a die: $S = \{H1, \dots, H6, T1, \dots, T6\}$, so $n(S) = 2 \times 6 = 12$.
-
-**Counting $n(S)$** for $r$ draws from $n$ different items:
-- one after another, **with** replacement: $n^r$ (every draw has all $n$ choices);
-- one after another, **without** replacement: $n(n - 1)(n - 2)\cdots$, $r$ factors; arranging all $n$ gives $n!$;
-- all together, where order doesn't count: $^nC_r$.
-
-**Events.** An event is a subset of $S$. $A \cap B$: both happen. $A \cup B$: at least one happens. $A' = S - A$: $A$ does not happen.
-
-**Types of events.**
-- **Mutually exclusive:** $A \cap B = \emptyset$ (they can't happen together).
-- **Exhaustive:** $A \cup B = S$ (one of them must happen).
-- **Complementary:** both at once; then $B = A'$.
-- **Equally likely:** no outcome is more likely than another (a fair coin, a fair die).
-
-The first two are separate tests, an overlap test and a covering test: a pair can pass one, both or neither.`,
+    intuition: [
+      t`A **random experiment** is one whose result you can't tell in advance, like throwing two dice.`,
+      t`Each possible result is an **outcome**; the **sample space** $S$ lists every outcome exactly once.`,
+      t`Write outcomes you can tell apart: one die after the other, $(1, 6)$ and $(6, 1)$ are different outcomes.`,
+      t`The experiment runs in two **stages**, one die then the other: a $3$ first pairs with all $6$ second results.`,
+      t`Every choice at one stage pairs with every choice at the next, so the counts multiply: $6 \times 6 = 36$ outcomes.`,
+      t`An **event** is a set of outcomes, a subset of $S$: "the sum is $7$" is these $6$ outcomes.`,
+    ],
+    figure: {
+      alt: "A 6 by 6 grid of dots, the first die's result across and the second die's up: the 36 outcomes of throwing two dice. The dots (1, 6) and (6, 1) are marked as two different outcomes. The column for a 3 on the first die is picked out: it pairs with all 6 results of the second die. Then the 6 dots whose numbers add up to 7, on the diagonal from (1, 6) to (6, 1), are picked out as the event the sum is 7.",
+      axes: "none",
+      view: { x: [-2.4, 7.6], y: [-1.1, 7.1] },
+      elements: [
+        ...faces.map((a): FigureElement => ({ kind: "label", at: [a, 0.45], label: `${a}`, labelAt: "s", tone: "muted" })),
+        ...faces.map((b): FigureElement => ({ kind: "label", at: [0.55, b], label: `${b}`, labelAt: "w", tone: "muted" })),
+        { kind: "label", at: [3.5, -0.35], label: "first die", labelAt: "s", tone: "muted" },
+        { kind: "label", at: [-0.15, 3.5], label: "second die", labelAt: "w", tone: "muted" },
+        ...diceGrid("muted", 2, () => true),
+        { kind: "point", at: [1, 6], label: "(1, 6)", labelAt: "n", step: 3 },
+        { kind: "point", at: [6, 1], label: "(6, 1)", labelAt: "e", step: 3 },
+        ...diceGrid("accent", 4, (a) => a === 3),
+        { kind: "label", at: [3.5, 6.55], label: "6 × 6 = 36", labelAt: "n", step: 5 },
+        ...diceGrid("good", 6, (a, b) => a + b === 7),
+        { kind: "label", at: [6.15, 1.75], label: "sum 7", labelAt: "e", tone: "good", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "Sample space",
+        points: [
+          t`The **sample space** $S$ is the set of all possible outcomes of a random experiment, each listed once.`,
+          t`$n(S)$ is the number of outcomes in $S$.`,
+          t`Toss a coin and throw a die: $S$ = {$H1, \dots, H6$, $T1, \dots, T6$}.`,
+          t`So $n(S) = 2 \times 6 = 12$.`,
+        ],
+      },
+      {
+        title: "Counting the outcomes",
+        points: [
+          t`Draw $r$ items from $n$ different ones: how you draw them sets $n(S)$.`,
+          t`One after another, **with replacement**, each item put back: every draw has all $n$ choices, so $n^r$.`,
+          t`One after another, **without replacement**, each item kept out: each draw has one fewer choice.`,
+          t`That gives $n(n - 1)(n - 2)\cdots$, with $r$ factors.`,
+          t`Arranging all $n$ items gives $n!$, the product $n(n - 1)\cdots 2 \cdot 1$.`,
+          t`All together, where order doesn't count: $^nC_r$, the number of ways to choose $r$ of $n$.`,
+        ],
+      },
+      {
+        title: "Events as sets",
+        points: [
+          t`An event is a subset of $S$, so two events combine like sets.`,
+          t`$A \cap B$, the **intersection**: both $A$ and $B$ happen.`,
+          t`$A \cup B$, the **union**: at least one of them happens.`,
+          t`$A' = S - A$, the **complement** of $A$: $A$ does not happen.`,
+        ],
+      },
+      {
+        title: "Types of events",
+        points: [
+          t`**Mutually exclusive** events can't happen together: $A \cap B = \emptyset$, the empty set.`,
+          t`**Exhaustive** events cover $S$, so one of them must happen: $A \cup B = S$.`,
+          t`These are separate tests, an overlap test and a covering test.`,
+          t`A pair can pass one test, both or neither.`,
+          t`**Complementary** events pass both tests at once; then $B = A'$.`,
+          t`Outcomes are **equally likely** when none is more likely than another: a fair coin, a fair die.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Two friends go from Mumbai to Delhi by car, train or plane, then tour the city by bus or taxi. List $S$ and find $n(S)$. $A$: they travel by train. $B$: they tour by taxi. Are $A$ and $B$ mutually exclusive? Exhaustive?`,
       steps: [

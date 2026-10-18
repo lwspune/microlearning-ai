@@ -4,29 +4,116 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a class test, every student is given $4$ bonus marks. **Does the standard deviation of the marks go up?**`,
     reveal: t`No. Every mark moves up by $4$, and so does the mean, so each deviation $x - \bar{x}$ stays the same, and so does $\sigma$. Halving every mark is different: each deviation halves, so $\sigma$ halves and the variance becomes a quarter of what it was.`,
   },
   explanation: {
-    intuition: t`The S.D. measures how far the values sit from their mean. Add the same number to every value and the mean moves with them: the gaps don't change, so neither does $\sigma$. Multiply every value by $h$ and every gap is multiplied by $h$: $\sigma$ is multiplied by $|h|$ and the variance, built from squared gaps, by $h^2$. That is why you may swap big, awkward values $x$ for small ones $u = \frac{x - a}{h}$, find $\sigma_u$ easily, and then convert back.`,
-    formal: t`**Change of origin.** For $y = x + c$ (or $x - c$): $\sigma_y = \sigma_x$ and $\sigma_y^2 = \sigma_x^2$. The mean moves by $c$; the spread does not.
-
-**Change of scale.** For $y = hx$: every deviation is multiplied by $h$, so $\sigma_y^2 = h^2\sigma_x^2$ and $\sigma_y = |h|\,\sigma_x$.
-
-**Both together.** With $u = \frac{x - a}{h}$, that is $x = a + hu$:
-$$\sigma_x^2 = h^2\sigma_u^2, \qquad \sigma_x = |h|\,\sigma_u$$
-The origin $a$ comes back only in the mean, $\bar{x} = a + h\bar{u}$, never in $\sigma$.
-
-**The method.** Take $a$ near the middle value and $h$ the common gap (the class width). Find $\sum f u$ and $\sum f u^2$, then $\sigma_u^2 = \frac{\sum f u^2}{N} - \bar{u}^2$. Finally multiply: $\sigma_x^2 = h^2\sigma_u^2$.`,
+    intuition: [
+      t`Recall: the S.D. $\sigma$ measures how far the values sit from their mean.`,
+      t`Adding the same number to every value is a **change of origin**: the whole data slides along.`,
+      t`The mean slides with the data, so every gap from the mean stays the same, and so does $\sigma$.`,
+      t`Multiplying every value by the same number $h$ is a **change of scale**: every gap is multiplied by $h$.`,
+      t`So $\sigma$ is multiplied by $|h|$, and the variance, built from squared gaps, by $h^2$.`,
+      t`That is why you may swap big, awkward values $x$ for small ones $u = \frac{x - a}{h}$, find $\sigma_u$ easily, then convert back.`,
+    ],
+    figure: {
+      alt: "Three number lines. On the top one the values 2, 4 and 6 have mean 4, and the largest is a gap of 2 from the mean. On the middle one, 5 is added to each value: 7, 9 and 11 have mean 9, and the gap is still 2, so σ is the same. On the bottom one, each value is doubled: 4, 8 and 12 have mean 8, and the gap is 4, so σ is doubled and the variance is multiplied by 4.",
+      axes: "none",
+      view: { x: [-6, 20], y: [-23.5, 6] },
+      elements: [
+        { kind: "segment", from: [0, 0], to: [14, 0], tone: "muted" },
+        { kind: "segment", from: [0, -10], to: [14, -10], tone: "muted" },
+        { kind: "segment", from: [0, -20], to: [14, -20], tone: "muted" },
+        { kind: "label", at: [0, 0], label: "x", labelAt: "w", step: 1 },
+        { kind: "point", at: [2, 0], step: 1 },
+        { kind: "point", at: [4, 0], step: 1 },
+        { kind: "point", at: [6, 0], step: 1 },
+        { kind: "label", at: [2, 0], label: "2", labelAt: "s", step: 1 },
+        { kind: "label", at: [4, 0], label: "4", labelAt: "s", step: 1 },
+        { kind: "label", at: [6, 0], label: "6", labelAt: "s", step: 1 },
+        { kind: "segment", from: [4, 0], to: [4, 4], dashed: true, tone: "muted", step: 1 },
+        { kind: "label", at: [4, 4], label: "mean", labelAt: "nw", step: 1 },
+        { kind: "segment", from: [4, 2.5], to: [6, 2.5], tone: "accent", step: 1 },
+        { kind: "label", at: [6, 2.5], label: "gap 2", labelAt: "e", tone: "accent", step: 1 },
+        { kind: "label", at: [0, -10], label: "x + 5", labelAt: "w", step: 2 },
+        { kind: "point", at: [7, -10], step: 2 },
+        { kind: "point", at: [9, -10], step: 2 },
+        { kind: "point", at: [11, -10], step: 2 },
+        { kind: "label", at: [7, -10], label: "7", labelAt: "s", step: 2 },
+        { kind: "label", at: [9, -10], label: "9", labelAt: "s", step: 2 },
+        { kind: "label", at: [11, -10], label: "11", labelAt: "s", step: 2 },
+        { kind: "segment", from: [9, -10], to: [9, -6], dashed: true, tone: "muted", step: 3 },
+        { kind: "label", at: [9, -6], label: "mean", labelAt: "nw", step: 3 },
+        { kind: "segment", from: [9, -7.5], to: [11, -7.5], tone: "accent", step: 3 },
+        { kind: "label", at: [11, -7.5], label: "gap 2", labelAt: "e", tone: "accent", step: 3 },
+        { kind: "label", at: [0, -20], label: "2x", labelAt: "w", step: 4 },
+        { kind: "point", at: [4, -20], step: 4 },
+        { kind: "point", at: [8, -20], step: 4 },
+        { kind: "point", at: [12, -20], step: 4 },
+        { kind: "label", at: [4, -20], label: "4", labelAt: "s", step: 4 },
+        { kind: "label", at: [8, -20], label: "8", labelAt: "s", step: 4 },
+        { kind: "label", at: [12, -20], label: "12", labelAt: "s", step: 4 },
+        { kind: "segment", from: [8, -20], to: [8, -16], dashed: true, tone: "muted", step: 4 },
+        { kind: "label", at: [8, -16], label: "mean", labelAt: "nw", step: 4 },
+        { kind: "segment", from: [8, -17.5], to: [12, -17.5], tone: "accent", step: 4 },
+        { kind: "label", at: [12, -17.5], label: "gap 4", labelAt: "e", tone: "accent", step: 4 },
+        { kind: "label", at: [14, -10], label: "σ same", labelAt: "e", tone: "good", step: 3 },
+        { kind: "label", at: [14, -20], label: "σ × 2", labelAt: "e", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Change of origin",
+        points: [
+          t`A **change of origin** replaces each value $x$ by $y = x + c$, or $x - c$, for a fixed number $c$.`,
+          t`The mean moves by $c$ too.`,
+          t`Recall: a **deviation** $x - \bar{x}$ is a value's gap from the mean.`,
+          t`Every deviation stays the same, so the spread does not move.`,
+          t`So $\sigma_y = \sigma_x$ and $\sigma_y^2 = \sigma_x^2$.`,
+        ],
+      },
+      {
+        title: "Change of scale",
+        points: [
+          t`A **change of scale** replaces each value $x$ by $y = hx$, for a fixed number $h$.`,
+          t`Every deviation is multiplied by $h$.`,
+          t`So every squared deviation, and the variance, is multiplied by $h^2$: $\sigma_y^2 = h^2\sigma_x^2$.`,
+          t`The S.D. is the variance's positive square root, so $\sigma_y = |h|\,\sigma_x$.`,
+          t`Here $|h|$ is $h$ without its sign: a negative $h$ flips the data, but $\sigma$ stays positive.`,
+        ],
+      },
+      {
+        title: "Both changes together",
+        points: [
+          t`Take $u = \frac{x - a}{h}$: move the origin to $a$, then divide by $h$.`,
+          t`Turned round, this says $x = a + hu$.`,
+          t`So $\sigma_x^2 = h^2\sigma_u^2$.`,
+          t`And $\sigma_x = |h|\,\sigma_u$.`,
+          t`The origin $a$ comes back only in the mean: $\bar{x} = a + h\bar{u}$.`,
+          t`It never comes back in $\sigma$.`,
+        ],
+      },
+      {
+        title: "The method, step by step",
+        points: [
+          t`Take $a$ near the middle value, and $h$ the common gap between the values.`,
+          t`For classes, $h$ is the **class width**, the length of each class.`,
+          t`Find $u$ for each value, then $\sum f u$ and $\sum f u^2$.`,
+          t`Then $\bar{u} = \frac{\sum f u}{N}$, where $N = \sum f$ is the total frequency.`,
+          t`And $\sigma_u^2$ equals $\frac{\sum f u^2}{N} - \bar{u}^2$.`,
+          t`Finally multiply: $\sigma_x^2 = h^2\sigma_u^2$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the standard deviation of $x$: $$\begin{array}{c|c} x & f \\ \hline 12 & 1 \\ 16 & 2 \\ 20 & 8 \\ 24 & 8 \\ 28 & 1 \end{array}$$`,
       steps: [
         t`The values are $4$ apart, so take $u = \frac{x - 20}{4}$: $u = -2, -1, 0, 1, 2$.`,
         t`$N = 20$, $\sum fu = -2 - 2 + 0 + 8 + 2 = 6$ and $\sum fu^2 = 4 + 2 + 0 + 8 + 4 = 18$.`,
-        t`$\bar{u} = \frac{6}{20} = 0.3$, so $\sigma_u^2 = \frac{18}{20} - 0.3^2 = 0.9 - 0.09 = 0.81$ and $\sigma_u = 0.9$.`,
-        t`Convert back: $\sigma_x = |h|\,\sigma_u = 4 \times 0.9 = 3.6$. The origin $20$ is not added.`,
+        t`$\bar{u} = \frac{6}{20} = 0.3$, so $\sigma_u^2 = \frac{18}{20} - 0.3^2$, which is $0.9 - 0.09 = 0.81$, and $\sigma_u = 0.9$.`,
+        t`Convert back: $\sigma_x = |h|\,\sigma_u$, which is $4 \times 0.9 = 3.6$. The origin $20$ is not added.`,
       ],
       answer: t`$\sigma_x = 3.6$`,
     },
