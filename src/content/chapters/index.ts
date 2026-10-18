@@ -22,9 +22,13 @@ import { vectors } from "./vectors/index.ts";
 import { lineAndPlane } from "./line-and-plane/index.ts";
 import { differentiation12 } from "./differentiation-12/index.ts";
 import { applicationOfDerivatives } from "./application-of-derivatives/index.ts";
+import { indefiniteIntegration } from "./indefinite-integration/index.ts";
+import { definiteIntegration } from "./definite-integration/index.ts";
+import { applicationOfDefiniteIntegration } from "./application-of-definite-integration/index.ts";
+import { differentialEquations } from "./differential-equations/index.ts";
 import { sequencesAndSeries } from "./sequences-and-series/index.ts";
 import { setsAndRelations } from "./sets-and-relations/index.ts";
 import { straightLine } from "./straight-line/index.ts";
 import { trigonometricFunctions } from "./trigonometric-functions/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations];
