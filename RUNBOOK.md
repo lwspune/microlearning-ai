@@ -342,6 +342,7 @@ Guests are anonymous logins with no profile.
 | Agents' Python edit scripts turned the `\\` row breaks of LaTeX matrices into `\ `, which KaTeX draws as a space: 2×2s showed as one row, with no error | the validator now rejects a single-backslash row break inside any matrix; write such edits with a script file, never a shell heredoc |
 | Slide reworks asked agents to split equations over ~35 characters, and the read-through looked fine, yet a Circle formula ran 19 px off a phone slide; a probe then found 19 more in 7 live chapters (one +673 px) | the same lesson again: only the screen shows width. `scripts/overflow-probe.mjs` measures every formula on a phone slide; agents and step 7 run it (PLAN.md backfill 8 holds the shipped ones) |
 | 16 content agents each opening a browser grew the page file to 25 GB; drive C fell to 0.2 GB and `next dev` crashed | at most ~10 agents at once on this machine; agents check figures with `scripts/figure-sheet.mjs` (waits for "load": "networkidle" never comes while other edits hot-reload) |
+| Functions ran in Vercel's default region (Washington) while Supabase is in Mumbai: each query cost ~250 ms and a chapter map took ~2 s | `vercel.json` pins `regions` to `bom1`; `src/lib/supabase/region.test.ts` |
 
 ## 7. Fine-tuning knobs
 
