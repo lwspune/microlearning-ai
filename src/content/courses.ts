@@ -46,14 +46,18 @@ const range = (from: number, to: number) =>
 const CN_ALL = [...range(1, 8), "C10", "C11", "C12", "C14", "C15", "C16", "C19"];
 const CN_LOCI = range(24, 27);
 
+// MH Board and MHT-CET: what the Std XI book teaches, settled against its text and every exercise
+// (and MHT-CET's 2026 papers); approved by the owner 2026-10-18. The book has circle and
+// perpendicular-bisector loci but no rotation, nth roots beyond cube roots, modulus bounds, or
+// argument and algebraic loci (C13, C18, C22, C26, C27).
 const cnMaharashtra: Coverage = {
-  ids: [...CN_ALL, "C09", "C13", "C17", "C18", "C20", "C21", "C22", "C23", ...CN_LOCI],
-  unsure: ["C13", "C18", "C22", ...CN_LOCI],
-  status: "draft",
+  ids: [...CN_ALL, "C09", "C17", "C20", "C21", "C23", "C24", "C25"],
+  status: "approved",
 };
 
 // Linear Programming coverage, approved by the owner 2026-10-15. Class 12 in both boards and
-// MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it.
+// MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it. C10 (unbounded
+// regions) is no longer doubtful for MH Board and MHT-CET: the HSC papers ask it (2026-10-18).
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
   coverage: { ids: range(1, 13), unsure, status: "approved" },
@@ -86,7 +90,7 @@ export const courses: Course[] = [
       { chapter: "permutations-and-combinations" },
       { chapter: "binomial-theorem" },
       { chapter: "sets-and-relations" },
-      lpp(["C10"]),
+      lpp([]),
     ],
   },
   {
@@ -103,7 +107,7 @@ export const courses: Course[] = [
     short: "MHT-CET",
     group: "school",
     tagline: "Maharashtra engineering entrance",
-    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }, lpp(["C10"])],
+    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }, lpp([])],
   },
   {
     slug: "jee-main",

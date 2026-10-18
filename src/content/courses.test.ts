@@ -194,6 +194,24 @@ describe("the catalog", () => {
   it("has Complex Numbers in every 11th + 12th course (confirmed by the owner, 2026-10-14)", () => {
     for (const c of coursesIn("school")) expect(c.chapters.map((x) => x.chapter)).toContain("complex-numbers");
   });
+
+  // Settled against the Std XI book and MHT-CET 2026 papers; approved by the owner 2026-10-18.
+  it("covers exactly the book's 22 Complex Numbers concepts for MH Board and MHT-CET, approved", () => {
+    const book = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C14", "C15", "C16", "C17", "C19", "C20", "C21", "C23", "C24", "C25"];
+    for (const slug of ["mh-board", "mht-cet"]) {
+      const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "complex-numbers")!.coverage!;
+      expect([...coverage.ids].sort()).toEqual(book);
+      expect(coverage.unsure ?? []).toEqual([]);
+      expect(coverage.status).toBe("approved");
+    }
+  });
+
+  it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {
+    for (const slug of ["mh-board", "mht-cet"]) {
+      const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;
+      expect(coverage.unsure ?? []).toEqual([]);
+    }
+  });
 });
 
 describe("byStandard", () => {
