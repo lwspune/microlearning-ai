@@ -919,5 +919,13 @@ read from those rows or page images, never from a PDF's text layer.
   Lesson: an agent that opens /review for its concept before the lead
   registers it leaves the dev server serving a stale not-found; rewriting
   the chapter index clears it.
-- Wave 2 started 2026-10-18 (branch `std12-geometry`): graphs locked and
-  committed (Pair of Straight Lines 9 · Vectors 13 · Line and Plane 11).
+- Wave 2 done 2026-10-18 (branch `std12-geometry`): Pair of Straight Lines
+  9 concepts / 53 items, Vectors 13 / 77, Line and Plane 11 / 65; every key
+  re-derived, every figure sheet checked (about 50 label clashes moved),
+  0 phone overflows; same gates; seeded, DoD passed, merged. Book faults
+  caught: Line and Plane Misc I Q.5 (no printed option correct) and Q.18
+  (skew lines, wrong key), SolvedEx.6 of Vectors 5.5 (34 for −34).
+  Lessons, now in the agent brief and prompts: a line's label sits 85% along
+  its clipped segment, "n"/"s" labels centre on their anchor, and a key must
+  not be readable off the stem (backfill 10). Agents check labels with a
+  shared rough renderer before handing back.
