@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You can integrate $x$ and $\cos x$ on their own. **Is $\int x\cos x\,dx$ simply $\frac{x^2}{2}\sin x + c$?**`,
     reveal: t`No. Differentiate it: $\frac{d}{dx}\left(\frac{x^2}{2}\sin x\right)$ $= x\sin x + \frac{x^2}{2}\cos x$, not $x\cos x$. Running the product rule backwards gives the right method, integration by parts, and the answer $x\sin x + \cos x + c$.`,

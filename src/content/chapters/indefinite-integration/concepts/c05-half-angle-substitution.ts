@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`No standard formula fits $\int \dfrac{dx}{2 + \cos x}$, and $u = \cos x$ fails: there is no $\sin x$ to make $du$. **Is there a substitution that turns it into a plain fraction in one letter?**`,
     reveal: t`Yes. With $t = \tan\frac{x}{2}$, $\cos x = \frac{1 - t^2}{1 + t^2}$ and $dx = \frac{2\,dt}{1 + t^2}$, so the integral becomes $\int \frac{2\,dt}{t^2 + 3}$.`,

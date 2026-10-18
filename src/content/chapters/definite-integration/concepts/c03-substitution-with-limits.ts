@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Asha puts $u = x^2$ in $\int_1^2 2x\,e^{x^2}\,dx$, gets $\int e^u\,du$, and writes $\left[e^u\right]_1^2 = e^2 - e$. **Is she right?**`,
     reveal: t`No. The limits $1$ and $2$ are values of $x$. When $x = 2$, $u = 4$, so the answer is $\left[e^u\right]_1^4 = e^4 - e$.`,

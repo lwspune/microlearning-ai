@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Above $[0, 4]$, the line $y = 4x$ covers an area of $32$ and the parabola $y = x^2$ covers $\frac{64}{3}$. They meet at $x = 0$ and $x = 4$. **What is the area of the region between them?**`,
     reveal: t`$\frac{32}{3}$. The region between is the line's area with the parabola's area cut away: $32 - \frac{64}{3} = \frac{32}{3}$. In one integral that is $\int_0^4 (4x - x^2)\,dx$: upper curve minus lower curve.`,

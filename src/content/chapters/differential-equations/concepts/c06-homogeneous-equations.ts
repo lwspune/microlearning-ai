@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\dfrac{dy}{dx} = \dfrac{x + y}{x}$ won't separate: $x$ and $y$ are tangled together. But the right side is $1 + \dfrac{y}{x}$. **What one substitution untangles it?**`,
     reveal: t`Call the ratio $v = \dfrac{y}{x}$, so $y = vx$ and $\dfrac{dy}{dx} = v + x\dfrac{dv}{dx}$. The equation becomes $v + x\dfrac{dv}{dx} = 1 + v$, so $x\dfrac{dv}{dx} = 1$, which separates. Then $v = \log|x| + c$, and $y = x\log|x| + cx$.`,

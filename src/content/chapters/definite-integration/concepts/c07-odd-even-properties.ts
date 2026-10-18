@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\int_{-\pi/4}^{\pi/4} x^3\sin^4 x\,dx$ needs integration by parts again and again. **Can you find it in one line?**`,
     reveal: t`Yes: it is $0$. Replace $x$ by $-x$: $(-x)^3\sin^4(-x) = -x^3\sin^4 x$. The area on the left is the area on the right turned upside down, so the two cancel.`,

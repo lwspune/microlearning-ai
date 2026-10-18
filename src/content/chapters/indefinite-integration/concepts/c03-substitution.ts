@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\dfrac{d}{dx}\sin(x^2) = 2x\cos(x^2)$. **So what is $\int x\cos(x^2)\,dx$?**`,
     reveal: t`Half of $\sin(x^2)$: $\dfrac{1}{2}\sin(x^2) + c$. The integrand has $x$, not $2x$, so the $2$ that differentiation produces must be divided out.`,

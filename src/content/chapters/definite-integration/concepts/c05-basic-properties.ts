@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\int_0^2 (x - 1)\,dx = 0$. **So is $\int_0^2 |x - 1|\,dx$ also $0$?**`,
     reveal: t`No. $x - 1$ is below the x-axis on $[0, 1]$ and above it on $[1, 2]$, so in $\int_0^2 (x - 1)\,dx$ the two triangles cancel. $|x - 1|$ flips the lower one up. Split at $x = 1$: $\frac{1}{2} + \frac{1}{2} = 1$.`,

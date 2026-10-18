@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\int \cos 6x\,dx$ is a standard form. **But no formula covers a product: so what is $\int 2\cos 5x\cos x\,dx$?**`,
     reveal: t`Rewrite the product as a sum: $2\cos 5x\cos x = \cos 6x + \cos 4x$. Each term is a standard form, so the integral is $\frac{\sin 6x}{6} + \frac{\sin 4x}{4} + c$.`,

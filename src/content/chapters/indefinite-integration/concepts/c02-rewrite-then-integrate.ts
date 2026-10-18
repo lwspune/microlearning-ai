@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`No standard formula has $\sin^2 x$ in it, and $\int \sin^2 x\,dx$ is not $\frac{\sin^3 x}{3}$. **So how do you integrate $\sin^2 x$?**`,
     reveal: t`Rewrite it first: $\sin^2 x = \frac{1 - \cos 2x}{2}$ $= \frac{1}{2} - \frac{\cos 2x}{2}$, a sum of standard forms. Integrate term by term: $\frac{x}{2} - \frac{\sin 2x}{4} + c$.`,

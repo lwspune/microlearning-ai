@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take the region in the first quadrant between the parabola $y = x^2$, the Y-axis and the line $y = 4$. Its vertical strips run from the curve **up** to $y = 4$, not down to the X-axis. **Can one integral, with nothing subtracted, give its area?**`,
     reveal: t`Yes: cut it into **horizontal** strips. A strip at height $y$ runs from the Y-axis to the curve, so it is $x = \sqrt{y}$ long. Adding them from $y = 0$ to $y = 4$: $\int_0^4 \sqrt{y}\,dy$ $= \frac{2}{3}\left[y^{3/2}\right]_0^4 = \frac{16}{3}$. Check: the $2 \times 4$ rectangle, $8$, minus the area under the curve, $\frac{8}{3}$, is also $\frac{16}{3}$.`,

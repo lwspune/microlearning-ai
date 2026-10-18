@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Let $s = \sqrt{\sin x}$ and $c = \sqrt{\cos x}$. The integrand of $\int_0^{\pi/2} \dfrac{s}{s + c}\,dx$ has no easy antiderivative. **Can you still find its value?**`,
     reveal: t`Yes: $\dfrac{\pi}{4}$. Replace $x$ by $\dfrac{\pi}{2} - x$: $\sin$ and $\cos$ swap, so the same integral is $\int_0^{\pi/2} \dfrac{c}{s + c}\,dx$. Add the two forms: the integrand becomes $\dfrac{s + c}{s + c} = 1$. So $2I = \dfrac{\pi}{2}$ and $I = \dfrac{\pi}{4}$.`,

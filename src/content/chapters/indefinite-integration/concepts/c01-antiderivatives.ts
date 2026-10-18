@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For $x > 0$, find $\int x^x(1 + \log x)\,dx$. There is no formula for it in any table. **Can you still do it?**`,
     reveal: t`Yes. You know $\frac{d}{dx}(x^x) = x^x(1 + \log x)$, which is exactly the integrand. So the answer is $x^x + c$: integrating runs a derivative you already know backwards.`,

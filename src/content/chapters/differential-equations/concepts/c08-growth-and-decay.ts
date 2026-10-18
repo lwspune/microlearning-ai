@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Lily pads on a pond double their area every day. The pond is fully covered on day $30$. **On which day was it half covered?**`,
     reveal: t`Day $29$, not day $15$. Each day multiplies the area by $2$, so one day before full it was half full. Growth at a rate proportional to the amount multiplies in equal times; it does not add equal amounts.`,

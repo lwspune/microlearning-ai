@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Four rectangles stand on $[0, 1]$, each $\tfrac14$ wide and as tall as the line $y = x$ at its right end. Their total area is $\tfrac{1 + 2 + 3 + 4}{16} = \tfrac58$, but the triangle under the line has area $\tfrac12$. **Can rectangles ever give exactly $\tfrac12$?**`,
     reveal: t`Yes, in the limit. With $n$ strips the total is $\tfrac{1 + 2 + \dots + n}{n^2}$ $= \tfrac{n + 1}{2n} = \tfrac12 + \tfrac{1}{2n}$. The extra $\tfrac{1}{2n}$ shrinks as $n$ grows, so the limit is exactly $\tfrac12$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Integrate $\int e^x \sin x\,dx$ by parts twice and you are back at $\int e^x \sin x\,dx$. **Dead end, or answer?**`,
     reveal: t`Answer. Call it $I$: parts twice gives $I = e^x(\sin x - \cos x) - I$. So $2I = e^x(\sin x - \cos x)$, and $I = \frac{e^x}{2}(\sin x - \cos x) + c$.`,

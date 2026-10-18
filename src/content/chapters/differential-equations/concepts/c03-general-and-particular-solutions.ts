@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Both $y = x^2 + 1$ and $y = x^2 - 7$ satisfy $\dfrac{dy}{dx} = 2x$. **How many solutions does this equation have, and which one passes through $(1, 5)$?**`,
     reveal: t`Infinitely many: $y = x^2 + c$ works for every constant $c$, since the $c$ disappears when you differentiate. Through $(1, 5)$: $5 = 1 + c$, so $c = 4$ and the solution is $y = x^2 + 4$.`,

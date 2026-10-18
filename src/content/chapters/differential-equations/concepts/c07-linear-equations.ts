@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x\dfrac{dy}{dx} + y = 3x^2$. **Is the left side the derivative of one simple product?**`,
     reveal: t`Yes: $\frac{d}{dx}(xy) = x\frac{dy}{dx} + y$. So $(xy)' = 3x^2$, and $xy = x^3 + c$. An integrating factor turns every linear equation into this shape.`,

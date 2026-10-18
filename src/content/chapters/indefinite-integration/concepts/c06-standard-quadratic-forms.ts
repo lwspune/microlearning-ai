@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\frac{d}{dx}\tan^{-1}\frac{x}{4} = \frac{4}{x^2 + 16}$. **So what is $\int \frac{dx}{x^2 + 16}$?**`,
     reveal: t`Divide by $4$: $\frac{d}{dx}\left(\frac{1}{4}\tan^{-1}\frac{x}{4}\right)$ $= \frac{1}{x^2 + 16}$. So $\int \frac{dx}{x^2 + 16}$ $= \frac{1}{4}\tan^{-1}\frac{x}{4} + c$: the $\frac{1}{4}$ in front is easy to lose.`,

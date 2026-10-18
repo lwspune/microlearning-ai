@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Look at $\sqrt{1 + \left(\frac{dy}{dx}\right)^2}$ $= \left(\frac{d^2y}{dx^2}\right)^{3/2}$. **Is its degree $\frac{3}{2}$?**`,
     reveal: t`No. A degree is read only once the equation is free of roots and fractional powers. Square both sides: $1 + \left(\frac{dy}{dx}\right)^2$ $= \left(\frac{d^2y}{dx^2}\right)^3$. The highest derivative, $\frac{d^2y}{dx^2}$, now has power $3$: order $2$, degree $3$.`,

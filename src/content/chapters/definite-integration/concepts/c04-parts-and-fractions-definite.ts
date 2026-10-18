@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For $\int_1^e \log x\,dx$, take $u = \log x$, $v = 1$. The first term of parts is $\left[x\log x\right]_1^e = e$. **Is the answer $e$?**`,
     reveal: t`No. The second integral is still to be subtracted, over the same limits: $\int_1^e 1\,dx = e - 1$. So $\int_1^e \log x\,dx = e - (e - 1) = 1$.`,

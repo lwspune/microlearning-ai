@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\int_0^2 \sqrt{4 - x^2}\,dx$ looks like hard work. **Can you find it without integrating?**`,
     reveal: t`$y = \sqrt{4 - x^2}$ is the upper half of the circle $x^2 + y^2 = 4$. From $0$ to $2$ it bounds one quarter of that circle: $\frac{\pi \cdot 2^2}{4} = \pi$.`,

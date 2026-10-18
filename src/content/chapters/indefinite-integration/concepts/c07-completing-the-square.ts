@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You know $\int \frac{dx}{x^2 + 1} = \tan^{-1}x + c$. **What is $\int \frac{dx}{x^2 + 2x + 2}$?**`,
     reveal: t`Write $x^2 + 2x + 2$ $= (x + 1)^2 + 1$. It is the same shape with $x + 1$ in place of $x$, so the answer is $\tan^{-1}(x + 1) + c$. Check: its derivative is $\frac{1}{(x + 1)^2 + 1}$, the integrand.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Every line through the origin is $y = mx$, each with its own slope $m$. Can one equation, with no $m$ in it, describe all of them at once?`,
     reveal: t`Yes. Differentiate: $\frac{dy}{dx} = m$. Put that back for $m$: $y = x\frac{dy}{dx}$. Every line $y = mx$ satisfies it, whatever $m$ is.`,

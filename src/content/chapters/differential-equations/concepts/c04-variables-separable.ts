@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\dfrac{dy}{dx} = xy$. You can't just integrate the right side with respect to $x$: it contains $y$, which you don't know yet. **So how do you start?**`,
     reveal: t`Divide by $y$ and multiply by $dx$: $\dfrac{dy}{y} = x\,dx$. Now each side holds only one variable, so integrate each side: $\log|y| = \dfrac{x^2}{2} + c$. That gives $y = Ae^{\frac{x^2}{2}}$, with $A$ an arbitrary constant.`,

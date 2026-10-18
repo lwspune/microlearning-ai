@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Tea at $90^\circ$C is left in a room at $30^\circ$C. In $10$ minutes it cools to $60^\circ$C. **Will it be at room temperature after another $10$ minutes?**`,
     reveal: t`No. Tea cools at a rate proportional to how much hotter it is than the room. That gap was $60^\circ$ and halved to $30^\circ$ in $10$ minutes, so in the next $10$ minutes it halves again, to $15^\circ$. The tea is at $45^\circ$C, and it never quite reaches $30^\circ$C.`,

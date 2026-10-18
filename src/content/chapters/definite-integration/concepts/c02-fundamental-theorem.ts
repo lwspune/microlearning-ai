@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$F(x) = \sin x$ and $G(x) = \sin x + 100$ both have derivative $\cos x$. **Do $F\left(\frac{\pi}{2}\right) - F(0)$ and $G\left(\frac{\pi}{2}\right) - G(0)$ agree?**`,
     reveal: t`Yes: $1 - 0 = 1$ and $101 - 100 = 1$. The constant cancels, so every antiderivative gives the same $\int_0^{\pi/2}\cos x\,dx = 1$.`,

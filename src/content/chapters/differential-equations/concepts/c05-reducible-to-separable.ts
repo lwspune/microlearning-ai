@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Try to separate the variables in $\dfrac{dy}{dx} = \dfrac{1}{x + y}$. **Can you get every $y$ on one side and every $x$ on the other?**`,
     reveal: t`Not as it stands: $x$ and $y$ are locked together in $x + y$. So call the bracket $v = x + y$. Then $\dfrac{dv}{dx} = 1 + \dfrac{dy}{dx}$ $= 1 + \dfrac{1}{v}$, which has only $v$ and $x$. It separates: $\dfrac{v}{v + 1}\,dv = dx$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You can integrate $\frac{1}{x - 1}$ and $\frac{1}{x + 2}$. **Can you find $\int \frac{3}{(x - 1)(x + 2)}\,dx$?**`,
     reveal: t`Split it: $\frac{3}{(x - 1)(x + 2)} = \frac{1}{x - 1} - \frac{1}{x + 2}$. Check by adding: the top is $(x + 2) - (x - 1) = 3$. So the integral is $\log|x - 1| - \log|x + 2| + c$.`,

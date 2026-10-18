@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The line $y = x$ and the X-axis, between $x = -3$ and $x = 3$, enclose two triangles. Yet $\int_{-3}^{3} x\,dx = 0$. **Is the area $0$?**`,
     reveal: t`No. The triangle below the axis gives $\int_{-3}^{0} x\,dx = -\dfrac{9}{2}$, which cancels the $+\dfrac{9}{2}$ above it. Each triangle covers $\dfrac{9}{2}$ square units, so the area is $9$ sq. units.`,

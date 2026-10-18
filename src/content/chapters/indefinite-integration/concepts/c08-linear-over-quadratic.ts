@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\int \frac{2x + 2}{x^2 + 2x + 3}\,dx$ $= \log|x^2 + 2x + 3| + c$, because the top is the derivative of the bottom. **What if the top is $2x + 7$ instead?**`,
     reveal: t`Split the top: $2x + 7 = (2x + 2) + 5$. The $2x + 2$ part still gives $\log|x^2 + 2x + 3|$. The $5$ is left over the quadratic, and $x^2 + 2x + 3 = (x + 1)^2 + 2$ is a standard form. So the answer is $\log|x^2 + 2x + 3|$ $+ \frac{5}{\sqrt{2}}\tan^{-1}\frac{x + 1}{\sqrt{2}} + c$.`,
