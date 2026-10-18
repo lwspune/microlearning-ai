@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c13: Concept = {
   id: "C13",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A calculator gives $\sin^{-1}(\sin\frac{4\pi}{5})$ $= \frac{\pi}{5}$, not $\frac{4\pi}{5}$. **Is the calculator wrong?**`,
     reveal: t`No. $\sin^{-1}$ returns only angles in $[-\frac{\pi}{2}, \frac{\pi}{2}]$, and $\frac{4\pi}{5}$ is outside. $\frac{\pi}{5}$ is the angle in that range with the same sine: $\sin\frac{4\pi}{5} = \sin(\pi - \frac{4\pi}{5})$ $= \sin\frac{\pi}{5}$.`,

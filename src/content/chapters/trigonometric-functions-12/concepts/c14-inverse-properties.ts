@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c14: Concept = {
   id: "C14",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Without a calculator, find $\sin^{-1}(0.3) + \cos^{-1}(0.3)$.`,
     reveal: t`It is $\frac{\pi}{2}$. Draw a right triangle with hypotenuse $10$ and one side $3$. The angle facing $3$ has sine $0.3$; the other acute angle has cosine $0.3$. The two acute angles of a right triangle add up to $\frac{\pi}{2}$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$2x + y = 5$ and $x + 3y = 10$ have the solution $x = 1$, $y = 3$. **Which of these keep that solution: swapping the two equations, doubling one, or adding one to the other?**`,
     reveal: t`All three. Swapped, they are the same pair. Doubled, $4x + 2y = 10$ still holds at $(1, 3)$. Added, $3x + 4y = 15$ holds too: $3 + 12 = 15$. Each move acts on a row of numbers, like $2, 1, 5$. These three moves on rows are the **elementary row transformations**.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A radar shows a boat **2 km** from the ship, in a direction turned $\frac{\pi}{4}$ anticlockwise from due east. **How far east and how far north of the ship is the boat?**`,
     reveal: t`$2\cos\frac{\pi}{4} = \sqrt{2}$ km east and $2\sin\frac{\pi}{4} = \sqrt{2}$ km north. A distance and a direction fix a point as surely as $x$ and $y$ do: they are its **polar co-ordinates**.`,

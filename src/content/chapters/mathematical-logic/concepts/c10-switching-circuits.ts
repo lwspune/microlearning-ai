@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two switches $S_1$ and $S_2$ control a lamp. In circuit X they sit one after the other on one wire. In circuit Y they sit on two side-by-side wires. With $S_1$ closed and $S_2$ open, which lamp glows?`,
     reveal: t`Only the lamp in Y. In X the current must pass **both** switches, like 'and'. In Y one closed switch is enough, like 'or'. So a circuit is a statement: series is $\wedge$, parallel is $\vee$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c15: Concept = {
   id: "C15",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $\sin^{-1}x = \frac{2\pi}{3}$. Taking the sine of both sides gives $x = \sin\frac{2\pi}{3} = \frac{\sqrt{3}}{2}$. **But $\sin^{-1}\frac{\sqrt{3}}{2} = \frac{\pi}{3}$, not $\frac{2\pi}{3}$. What went wrong?**`,
     reveal: t`$\sin^{-1}x$ always lies in $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$, so it is never $\frac{2\pi}{3}$: the equation has no solution. Taking the sine hid this, because $\frac{\pi}{3}$ and $\frac{2\pi}{3}$ have the same sine. So every root must be checked.`,

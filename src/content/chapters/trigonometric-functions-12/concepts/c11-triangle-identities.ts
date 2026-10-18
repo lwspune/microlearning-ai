@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle has sides $4$ cm, $5$ cm and $6$ cm. **Without finding any angle**, what is $\frac{\sin A + \sin B}{\sin C}$?`,
     reveal: t`$\frac{3}{2}$. By the sine rule each sine is its side over $2R$. The $2R$ cancels, leaving $\frac{4 + 5}{6} = \frac{3}{2}$.`,

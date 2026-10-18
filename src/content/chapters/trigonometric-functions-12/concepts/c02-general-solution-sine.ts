@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\sin\theta = \frac{1}{\sqrt{2}}$ at $\frac{\pi}{4}$ and at $\frac{3\pi}{4}$, and again after every full turn. **Can one formula list every solution?**`,
     reveal: t`Yes: $\theta = n\pi + (-1)^n\frac{\pi}{4}$, for every integer $n$. Even $n$ gives $\frac{\pi}{4}$, $\frac{9\pi}{4}$, and so on; odd $n$ gives $\pi - \frac{\pi}{4} = \frac{3\pi}{4}$, $\frac{11\pi}{4}$, and so on.`,

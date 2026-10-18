@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Let $p$ be 'It is raining.' Can $p \vee \sim p$ (it is raining or it is not) ever be false? Can $p \wedge \sim p$ ever be true?`,
     reveal: t`Neither. $p \vee \sim p$ is T in both rows of its truth table, so it is a **tautology**. $p \wedge \sim p$ is F in both rows: a **contradiction**. Most patterns, like $p \to q$, are T in some rows and F in others: a **contingency**.`,

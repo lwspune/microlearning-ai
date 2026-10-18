@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`'If a number is divisible by $4$ then it is even' is true. Is 'If a number is even then it is divisible by $4$' true too?`,
     reveal: t`No: $6$ is even but not divisible by $4$. Swapping the parts gave the **converse**, which can fail. But 'If a number is not even then it is not divisible by $4$', the **contrapositive**, is always true.`,

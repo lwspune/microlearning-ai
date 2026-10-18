@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two sides of a triangle, 8 cm and 15 cm, meet at $90^\circ$: Pythagoras makes the third side 17 cm. **How long is it if they meet at $60^\circ$?**`,
     reveal: t`13 cm. The cosine rule corrects Pythagoras for the angle: $8^2 + 15^2 - 2(8)(15)\cos 60^\circ$ $= 289 - 120 = 169$, and $\sqrt{169} = 13$.`,

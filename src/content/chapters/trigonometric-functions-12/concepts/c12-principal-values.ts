@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\sin\frac{\pi}{6}$, $\sin\frac{5\pi}{6}$ and $\sin\frac{13\pi}{6}$ all equal $\frac{1}{2}$. **A calculator's $\sin^{-1}$ key gives just one angle for $\frac{1}{2}$. Which one, and why that one?**`,
     reveal: t`$\frac{\pi}{6}$, that is $30^\circ$. $\sin^{-1}$ answers only with angles from $-\frac{\pi}{2}$ to $\frac{\pi}{2}$, and $\frac{\pi}{6}$ is the only one there with sine $\frac{1}{2}$. That one angle is the **principal value**.`,

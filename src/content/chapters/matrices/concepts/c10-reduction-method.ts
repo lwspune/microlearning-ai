@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $z = 4$, $y + z = 7$ and $x + y + z = 9$. **Why is this system so much quicker than one where every equation has $x$, $y$ and $z$?**`,
     reveal: t`Start at the bottom: $z = 4$, then $y = 7 - 4 = 3$, then $x = 9 - 3 - 4 = 2$. Each equation has only one new unknown, so the system solves itself from the last line upwards. The reduction method uses row operations to bring any system to this shape.`,

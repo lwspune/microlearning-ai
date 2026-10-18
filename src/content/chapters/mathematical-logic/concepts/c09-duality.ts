@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$p \vee (p \wedge q) \equiv p$ is a law. Swap every $\wedge$ with $\vee$ to get $p \wedge (p \vee q) \equiv p$. **Is that still a law?**`,
     reveal: t`Yes. If $p$ is T, then $p \vee q$ is T, so both sides are T. If $p$ is F, the $\wedge$ makes the left side F too. Swapping $\wedge$ and $\vee$ always turns a law into another law: this is the **principle of duality**.`,

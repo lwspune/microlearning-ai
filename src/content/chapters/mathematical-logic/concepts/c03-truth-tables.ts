@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Can you choose truth values for $p$ and $q$ that make $p \to (q \to p)$ false?`,
     reveal: t`No. To be false it needs $p$ true and $q \to p$ false; but $q \to p$ is false only when $p$ is false. A truth table settles it without any cleverness: try all $2^2 = 4$ cases, and every row comes out T.`,

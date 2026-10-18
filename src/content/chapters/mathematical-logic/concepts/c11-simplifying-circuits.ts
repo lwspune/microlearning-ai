@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A circuit uses six switches: $S_1$ in series with a block of $S_2$, $S_3$ in parallel, and in parallel with all that, $S_3'$, $S_2'$, $S_1$ in series. Can fewer switches light the lamp in exactly the same cases?`,
     reveal: t`Yes, one switch does it: $S_1$ alone. The statement $[p \wedge (q \vee r)]$ $\vee (\sim r \wedge \sim q \wedge p)$ becomes $p \wedge [(q \vee r) \vee \sim(q \vee r)]$ by taking out $p$, and that is $p \wedge t \equiv p$.`,

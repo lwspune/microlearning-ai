@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ravi solves $\tan^2\theta = \frac{1}{3}$ as $\tan\theta = \frac{1}{\sqrt{3}}$, so $\theta = n\pi + \frac{\pi}{6}$. **Is $\theta = \frac{5\pi}{6}$ a solution he missed?**`,
     reveal: t`Yes. $\tan\frac{5\pi}{6} = -\frac{1}{\sqrt{3}}$, and its square is $\frac{1}{3}$ too. Ravi dropped the negative root. The two signs together give $\theta = n\pi \pm \frac{\pi}{6}$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $3x + 2y = 7$ and $x + y = 3$. **Is there one matrix that turns the column of right-hand sides $\begin{bmatrix} 7 \\ 3 \end{bmatrix}$ straight into $\begin{bmatrix} x \\ y \end{bmatrix}$?**`,
     reveal: t`Yes. The coefficients form $A = \begin{bmatrix} 3 & 2 \\ 1 & 1 \end{bmatrix}$, and its inverse is $A^{-1} = \begin{bmatrix} 1 & -2 \\ -1 & 3 \end{bmatrix}$. Then $A^{-1}\begin{bmatrix} 7 \\ 3 \end{bmatrix} = \begin{bmatrix} 7 - 6 \\ -7 + 9 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}$, so $x = 1$ and $y = 2$ in one step. Check: $3 + 4 = 7$ and $1 + 2 = 3$.`,

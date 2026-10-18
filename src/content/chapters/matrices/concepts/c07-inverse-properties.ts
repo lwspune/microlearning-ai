@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Every morning you put on your socks, then your shoes. At night you undo it. **Which comes off first, and what does that say about undoing a product $AB$?**`,
     reveal: t`The shoes come off first: the last step is undone first. Matrices work the same way: $(AB)^{-1} = B^{-1}A^{-1}$, with the order reversed.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Every number except $0$ has an inverse. $B = \begin{bmatrix} 2 & 1 \\ 6 & 3 \end{bmatrix}$ has no zero entry at all. **Does $B$ have an inverse?**`,
     reveal: t`No. $|B| = 6 - 6 = 0$. If $BX = I$ for some $X$, then $|B| \cdot |X| = |I| = 1$, but the left side is $0$. So no $X$ works. The test is $|B|$, not the entries: a matrix with $|B| = 0$ is **singular** and has no inverse.`,

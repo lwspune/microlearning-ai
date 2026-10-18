@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $A = \begin{bmatrix} 3 & 1 \\ 4 & 3 \end{bmatrix}$ and its adjoint $\begin{bmatrix} 3 & -1 \\ -4 & 3 \end{bmatrix}$. Their product is not $I$. **What single number must you divide the adjoint by to get $A^{-1}$?**`,
     reveal: t`The product is $\begin{bmatrix} 5 & 0 \\ 0 & 5 \end{bmatrix} = 5I$, and $5 = 9 - 4 = |A|$. Divide the adjoint by $5$: $A^{-1} = \frac{1}{5}\begin{bmatrix} 3 & -1 \\ -4 & 3 \end{bmatrix}$. Dividing by $|A|$ always works, as long as $|A| \neq 0$.`,

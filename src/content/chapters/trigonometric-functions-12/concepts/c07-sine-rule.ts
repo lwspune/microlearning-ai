@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle has angles $30^\circ$, $30^\circ$ and $120^\circ$, so the big angle is 4 times each small one. **Is the longest side 4 times each short side?**`,
     reveal: t`No, only about $1.73$ times. The sides follow the sines: $\sin 30^\circ : \sin 30^\circ : \sin 120^\circ$ $= \frac{1}{2} : \frac{1}{2} : \frac{\sqrt{3}}{2}$ $= 1 : 1 : \sqrt{3}$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In $\triangle ABC$, $AB = 5$ with $\cos B = \frac{3}{5}$, and $AC = 4\sqrt{2}$ with $C = 45^\circ$. **Can you find $BC$ without the cosine rule?**`,
     reveal: t`Yes. Drop the perpendicular $AD$ to $BC$. Then $BD = 5 \times \frac{3}{5} = 3$ and $DC = 4\sqrt{2}\cos 45^\circ = 4$, so $BC = 3 + 4 = 7$. That is the **projection rule**.`,

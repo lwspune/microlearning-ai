@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\cos\theta = \frac{1}{2}$ when $\theta = \frac{\pi}{3}$. Name a negative angle, and two angles beyond $2\pi$, where it also holds.`,
     reveal: t`$-\frac{\pi}{3}$ works, since $\cos(-\theta) = \cos\theta$. Adding $2\pi$ to each gives $\frac{5\pi}{3}$ and $\frac{7\pi}{3}$; adding $4\pi$ to $-\frac{\pi}{3}$ gives $\frac{11\pi}{3}$. Every answer is $2n\pi \pm \frac{\pi}{3}$ for some integer $n$.`,

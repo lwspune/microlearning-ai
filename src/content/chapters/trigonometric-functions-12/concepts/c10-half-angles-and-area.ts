@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangular plot has sides $4$ m, $13$ m and $15$ m. Neither an angle nor a height is given. **Can you find its area?**`,
     reveal: t`Yes. Half the perimeter is $s = 16$, and the area is $\sqrt{16 \times 12 \times 3 \times 1}$ $= \sqrt{576} = 24$ sq. m. Three sides are enough.`,

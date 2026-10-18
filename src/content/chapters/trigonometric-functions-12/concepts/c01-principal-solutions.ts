@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\sin\frac{\pi}{3} = \frac{\sqrt{3}}{2}$. **Is $\frac{\pi}{3}$ the only angle in one turn, $0 \le \theta < 2\pi$, with $\sin\theta = \frac{\sqrt{3}}{2}$?**`,
     reveal: t`No. $\sin\frac{2\pi}{3}$ $= \sin\left(\pi - \frac{\pi}{3}\right)$ $= \frac{\sqrt{3}}{2}$ too. One turn holds exactly two such angles, $\frac{\pi}{3}$ and $\frac{2\pi}{3}$: the **principal solutions** of $\sin\theta = \frac{\sqrt{3}}{2}$.`,

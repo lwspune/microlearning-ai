@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Asha says: **Every student in our class passed the test.** Ravi wants to prove her wrong. Must he show that every student failed, or is less enough?`,
     reveal: t`Less is enough: one student who failed. The opposite of **all passed** is **at least one did not pass**, not **all failed**. To negate a for all statement, switch to there exists and negate the condition.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You know $\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc$. Cover the row and column of $a$: only $d$ is left. Cover the row and column of $b$: only $c$ is left. **So why does $b$ get a minus sign and $a$ a plus?**`,
     reveal: t`Read it as $a(d) - b(c)$: each element of row 1 times what is left when its row and column are covered. That leftover is the element's **minor**. The sign comes from the element's place: $b$ is in row 1, column 2, and $(-1)^{1+2} = -1$. A minor with its sign is a **cofactor**, and the same rule expands any square matrix.`,

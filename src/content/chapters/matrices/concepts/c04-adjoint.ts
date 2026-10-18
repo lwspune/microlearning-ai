@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $A = \begin{bmatrix} 3 & 1 \\ 5 & 2 \end{bmatrix}$. Swap its diagonal entries $3$ and $2$, and change the signs of the other two. **What do you get when you multiply $A$ by this new matrix?**`,
     reveal: t`The new matrix is $\begin{bmatrix} 2 & -1 \\ -5 & 3 \end{bmatrix}$. Row 1 times column 1: $6 - 5 = 1$; row 1 times column 2: $-3 + 3 = 0$. The product is $\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$, the identity. The new matrix is the **adjoint** of $A$, and later it will give inverses.`,

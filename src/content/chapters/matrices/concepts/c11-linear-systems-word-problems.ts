@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`2 pens and 3 notebooks cost Rs. 70, and a notebook costs Rs. 10 more than a pen. Let a pen cost $p$ and a notebook $n$. **Is the second condition $n - p = 10$ or $p - n = 10$?**`,
     reveal: t`$n - p = 10$: the notebook is the dearer one, so it comes first. With $2p + 3n = 70$ this gives $p = 8$ and $n = 18$, and indeed $18 - 8 = 10$. The other way round gives $p = 20$ and $n = 10$, which makes the pen dearer.`,

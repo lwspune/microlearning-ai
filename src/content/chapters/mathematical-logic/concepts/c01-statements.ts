@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Three sentences: '$7$ is a prime number.' '$7$ is an even number.' '$x + 2 = 9$.' **Which of them can you mark T or F right now?**`,
     reveal: t`The first two. $7$ is prime, so the first is true (T); $7$ is odd, so the second is false (F). Both are **statements**. The third is true only when $x = 7$, so you can't mark it until you know $x$: it is not a statement.`,

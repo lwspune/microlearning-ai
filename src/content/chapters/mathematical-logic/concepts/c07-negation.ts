@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Riya promises: **I will bring the notes and the pen.** She brings the notes but forgets the pen. Did she break her promise? What does **not (notes and pen)** really say?`,
     reveal: t`Yes, she broke it: one missing thing is enough. **Not (notes and pen)** means **no notes, or no pen**. So $\sim(p \wedge q) \equiv \sim p \vee \sim q$: the $\sim$ goes onto each part and **and** becomes **or**.`,

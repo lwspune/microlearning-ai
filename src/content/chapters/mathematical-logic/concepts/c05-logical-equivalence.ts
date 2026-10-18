@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Statement A: **If it rains, I carry an umbrella.** Statement B: **It does not rain, or I carry an umbrella.** Can one of them be true while the other is false?`,
     reveal: t`No. A is false only when it rains and I have no umbrella. B is false only when both its parts are false: it rains and I have no umbrella. They fail in exactly the same case, so they say the same thing: $p \to q \equiv \sim p \vee q$.`,

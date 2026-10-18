@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`With numbers, $3x = 6$ and $x \cdot 3 = 6$ have the same answer. Take $A = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$ and $B = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$. **Do $AX = B$ and $XA = B$ have the same solution $X$?**`,
     reveal: t`No. Here $A^{-1} = \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}$. For $AX = B$, $X = A^{-1}B = \begin{bmatrix} -2 & -2 \\ 3 & 4 \end{bmatrix}$. For $XA = B$, $X = BA^{-1} = \begin{bmatrix} 1 & 1 \\ 3 & 1 \end{bmatrix}$. Matrix products depend on order, so $A^{-1}$ must go on the side where $A$ was.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The row operation $R_2 \to R_2 - 2R_1$ turns $\begin{bmatrix} 1 & 0 \\ 2 & 1 \end{bmatrix}$ into $I$. **Can you use that to write down its inverse, with no formula?**`,
     reveal: t`Yes. Do the same operation to $I$: it becomes $\begin{bmatrix} 1 & 0 \\ -2 & 1 \end{bmatrix}$. That matrix undoes the original one: their product is $I$. The operations that turn $A$ into $I$, done to $I$, build $A^{-1}$.`,

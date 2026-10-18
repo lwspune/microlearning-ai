@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $\sin\theta = \tan\theta$ by dividing both sides by $\sin\theta$: $1 = \frac{1}{\cos\theta}$, so $\cos\theta = 1$ and $\theta = 2n\pi$. **But $\theta = \pi$ works too: $\sin\pi = 0 = \tan\pi$. Where did it go?**`,
     reveal: t`Dividing by $\sin\theta$ assumed $\sin\theta \ne 0$, and threw away every root where it is $0$. Factorise instead: $\sin\theta(\cos\theta - 1) = 0$ gives $\sin\theta = 0$ or $\cos\theta = 1$, so $\theta = n\pi$.`,

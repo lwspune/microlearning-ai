@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A father says: “If you score 90% in the exam, I will buy you a bicycle.” You score 75%, and he buys you the bicycle anyway. **Did he break his promise?**`,
     reveal: t`No. The promise is $p \to q$, with $p$: you score 90%, and $q$: he buys the bicycle. It is broken only if $p$ is T and $q$ is F. Here $p$ is F, so the promise stands: $F \to T = T$.`,
