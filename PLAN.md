@@ -844,5 +844,14 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
   7 · Probability 10), every key and distractor verified (0 problems); paused
   2026-10-15 as drafts, then its slides rewritten as points with figures
   (lesson-rework section above); same gates; published and merged. No
-  before/after sheet (owner, 2026-10-18: not for chapter content). Wave 5
-  (calculus) not started; its graphs are drafted.
+  before/after sheet (owner, 2026-10-18: not for chapter content).
+- Wave 5 done 2026-10-18 (branch `std11-calculus`): 32 concepts, 187 items
+  (Functions 11 · Limits 9 · Continuity 6 · Differentiation 6); graphs locked
+  against every book subtopic; written to the points rules from the start;
+  every key and distractor verified, every figure sheet checked, 0 phone
+  overflows; same gates; published and merged. Agents found two sympy traps,
+  now in the prompts: one-sided limits of a `Piecewise` (take the piece on
+  that side) and whole-number bases like 24^x (rewrite over primes). The
+  slug `differentiation` is Std XI's; the Std XII chapter of the same name
+  will need its own slug. This completes the book (17 new chapters plus
+  Complex Numbers) apart from the Extra row.
