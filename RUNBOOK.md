@@ -27,6 +27,14 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    is `https://www.conceptladder.in`. The old address
    https://microlearning-ai-ten.vercel.app still works;
    `microlearning-ai.vercel.app` is someone else's site.
+6. Brand: **Concept Ladder** (was MicroLearning AI until 2026-10-19). Name and
+   tagline live in `src/lib/brand.ts`; the ladder mark is `LadderIcon` in
+   `src/components/icons.tsx`, and the app icon draws the same `LADDER_PATH`.
+   `src/app/favicon.ico` is made from `/icon/512` (16, 32 and 48 px). Some
+   internal names keep the old brand on purpose: the npm package, the Vercel
+   and Supabase projects, and the hidden student login domain
+   `students.microlearning.invalid`. Renaming that domain would lock out every
+   existing student, because the database checks it.
 
 ## 2. Adding a chapter
 
@@ -338,6 +346,7 @@ Guests are anonymous logins with no profile.
 | Git Bash rewrote a `/` argument into `C:/Program Files/Git/`; with `MSYS_NO_PATHCONV=1`, a `/c/Users/...` output path then went to a new `C:\c\Users\...` folder | pass Windows paths (`C:\...`) to Node scripts and set `MSYS_NO_PATHCONV=1` for URL-path arguments |
 | Once the homepage read a cookie it rendered partly at request time; `REVIEW_ENABLED`, set only for the build, then differed between the prerendered shell and the request render: a hydration error (#418) in production only | `next.config.ts` inlines `REVIEW_ENABLED` at build time; never read runtime-only env in a component on a partially prerendered page |
 | The e2e screenshot helper waited for every animation to finish, and the hero's loops never do: the run hung silently | `shot()` waits only for finite, time-based animations |
+| Before/after shots taken against `next dev` kept catching pages mid-reload (hero half-animated, "Loading your progress…"): the dev server recompiled between requests and reloaded the open page (rebrand, 2026-10-19) | take the "after" shots from a production build: `npm run build`, then `npx next start -p <free port>`; write raw shots outside the project |
 | A failed sign-in emptied the email box: React resets a form after its action runs | return the typed email in the action state and use it as `defaultValue` (`LoginForm`) |
 | `build_index.py` regenerated the whole `index.ts` from a template written before chapters had `group` and `subject`, so rerunning it would have dropped them | generators replace only the part they own (`register` in `build_index.py`, `test_tooling.py`) |
 | Next's route announcer also has `role="alert"`, so an e2e `getByRole("alert")` read an empty string | scope alerts to the form: `form [role=alert]` |

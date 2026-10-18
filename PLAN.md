@@ -1,4 +1,6 @@
-# MicroLearning AI — Plan
+# Concept Ladder — Plan
+
+(Called MicroLearning AI until 2026-10-19.)
 
 An interactive, mobile-first learning tool. It breaks a complex chapter into
 interlinked **atomic concepts**. Each concept has an explanation and questions,
