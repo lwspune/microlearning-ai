@@ -136,10 +136,10 @@ export const c04: Concept = {
         view: { x: [-1, 14], y: [-1, 12] },
         elements: [
           { kind: "vector", to: [11, 10], tone: "muted", step: 2 },
-          { kind: "point", at: [11, 10], label: "11 + 10i", labelAt: "e", step: 2 },
+          { kind: "point", at: [11, 10], label: "11 + 10i", labelAt: "ne", step: 2 },
           { kind: "vector", from: [11, 10], to: [10, 8], step: 3 },
-          { kind: "label", at: [10.5, 9], label: "− (1 + 2i)", labelAt: "e", tone: "muted", step: 3 },
-          { kind: "point", at: [10, 8], label: "10 + 8i", labelAt: "se", step: 3 },
+          { kind: "label", at: [11.3, 8.6], label: "− (1 + 2i)", labelAt: "e", tone: "muted", step: 3 },
+          { kind: "point", at: [10, 8], label: "10 + 8i", labelAt: "s", step: 3 },
         ],
       },
     },
