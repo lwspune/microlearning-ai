@@ -7,7 +7,7 @@ export const c23: Concept = {
   status: "approved",
   hook: {
     prompt: t`If $x = 1 + i$, what is $x^2 - 2x + 2$? **Work it out, then guess why it's useful.**`,
-    reveal: t`It's $0$: $(1 + i)^2 - 2(1 + i) + 2 = 2i - 2 - 2i + 2 = 0$. So any polynomial in $x$ can be cut down using $x^2 = 2x - 2$, instead of computing big powers.`,
+    reveal: t`It's $0$: $(1 + i)^2 - 2(1 + i) + 2$ $= 2i - 2 - 2i + 2$ $= 0$. So any polynomial in $x$ can be cut down using $x^2 = 2x - 2$, instead of computing big powers.`,
   },
   explanation: {
     intuition: [
