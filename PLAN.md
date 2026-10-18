@@ -497,6 +497,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   `scripts/overflow-probe.mjs` (backfill 8). Conic Sections (C01–C14) done
   2026-10-16: all visual, figures on every formal slide, the eccentric
   angle drawn as a turn (C09, C10, C13); no split; 0 phone overflows.
+  Complex Numbers (C01–C30) done 2026-10-18: points, defined terms and
+  figures; misconceptions split in C03, C10, C14, C24 and C25; backfill
+  9(a) fixed; C23's hook reveal split (the only phone overflow).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
