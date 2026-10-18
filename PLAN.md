@@ -899,11 +899,13 @@ read from those rows or page images, never from a PDF's text layer.
 | 5. Probability | Probability Distributions · Binomial Distribution |
 
 **Status:**
-- Wave 1 paused 2026-10-18 (owner asked to pause at a clean point), branch
-  `std12-logic-algebra`: graphs locked and committed; Mathematical Logic
-  (11) and Matrices (11) written, reviewed and committed as draft;
-  Trigonometric Functions C01–C05 the same; C06–C15 not started. Not yet
-  done: C06–C15, approve, gates, seed (new chapters before the DoD), merge.
-  To resume: the scratchpad's `x12p/queue.paused.txt` lists the 10 queued
-  prompts (regenerate with `w12_prompts.py trigonometric-functions-12` if the
-  scratchpad is gone, then drop C01–C05).
+- Wave 1 done 2026-10-18 (branch `std12-logic-algebra`, paused once at a
+  clean point and resumed): 37 concepts, 214 items (Mathematical Logic 11 ·
+  Matrices 11 · Trigonometric Functions 15), every key and distractor
+  verified, every figure sheet checked, 0 phone overflows; same gates;
+  published and merged. Book misprints caught and turned into distractors
+  or notes: Logic duality key, Matrices Ex 2.2 Q.6(iii), Trig
+  SolvedEx.Cosine.5 (−1/8 for −1/4) and Applications.1(i) (cos B for cos A).
+  Lesson: an agent that opens /review for its concept before the lead
+  registers it leaves the dev server serving a stale not-found; rewriting
+  the chapter index clears it.
