@@ -70,8 +70,9 @@ ITEMS = [dict(id="CNN-Q1", stem=r"...", inputs={"a": "3"}, params={...}, models=
 - Options: let `draft_items.py` write the text from the value. Overrides: `text={...}` for named answers,
   `fmt="deg"` for degrees, `fmt="pct"` for percentages, `fmt="point"` for (x, y) given as x + I*y.
 - Identities ("Prove that L = R") become "L equals" (or "L simplifies to") with R as the key; each model applies
-  its wrong rule to L. Values are sympy expressions in a real symbol, `Symbol("x", real=True)` (the verifier
-  parses option values with real symbols, so a plain `Symbol("x")` never matches), and the verifier accepts a match when
+  its wrong rule to L. Values are sympy expressions; the verifier parses option values with `x` and `y` as real
+  symbols and every other letter as a plain one, so build them the same way: `Symbol("x", real=True)`,
+  `Symbol("y", real=True)`, but `Symbol("t")`, `Symbol("h")`, `Symbol("a")` (a mismatch never matches), and the verifier accepts a match when
   `simplify(a - b) == 0`, so check each model against the key in sympy before relying on it. Give expression
   options `text=` in the book's notation (`$\cot 2x$`, `$\operatorname{cosec}^2\theta$`): sympy's own LaTeX
   writes `\cot{\left(2 x \right)}`. Angles given in degrees go into sympy as radians (`pi/12` for $15^\circ$);
