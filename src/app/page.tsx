@@ -11,6 +11,7 @@ import { complexNumbers } from "@/content/chapters/complex-numbers";
 import type { Figure } from "@/content/types";
 import { FigureFrame } from "@/figures/FigureFrame";
 import { FigureView } from "@/figures/FigureView";
+import { BRAND } from "@/lib/brand";
 import { reviewEnabled } from "@/lib/review";
 
 /** The hero picture: z = 3 + 2i as a point, an arrow, its modulus and argument. */
@@ -42,7 +43,7 @@ export default function Home() {
         <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-4 pt-14 pb-16 sm:px-6 md:grid-cols-[1.1fr_1fr] md:gap-14 md:pt-24 md:pb-28">
           <div>
             <p className={`${eyebrow} hero-in`} style={after(0)}>
-              MicroLearning AI
+              {BRAND.name}
             </p>
             <h1 className="mt-3 font-display text-5xl leading-[1.05] font-semibold tracking-tight text-balance md:text-6xl">
               <RiseWords text="Hard chapters, [one clear idea] at a time." />

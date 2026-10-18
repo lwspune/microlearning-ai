@@ -56,6 +56,17 @@ export function RefreshIcon({ className }: IconProps) {
   );
 }
 
+/** The brand mark: a ladder narrowing as it rises. The app icon draws the same path. */
+export const LADDER_PATH = "M5 17L7.5 3M15 17L12.5 3M5.6 13.5h8.8M6.25 10h7.5M6.9 6.5h6.2";
+
+export function LadderIcon({ className }: IconProps) {
+  return (
+    <svg {...base(className)}>
+      <path d={LADDER_PATH} />
+    </svg>
+  );
+}
+
 export function ArrowDownIcon({ className }: IconProps) {
   return (
     <svg {...base(className)}>

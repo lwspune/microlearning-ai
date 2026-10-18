@@ -3,18 +3,19 @@ import { signOut } from "@/app/login/actions";
 import { areasFor } from "@/lib/auth/routing";
 import { currentViewer } from "@/server/viewer";
 import { AreaSwitcher } from "./AreaSwitcher";
+import { LadderIcon } from "./icons";
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex h-12 w-full max-w-5xl items-center justify-between gap-3 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-          <span aria-hidden="true" className="grid h-7 w-7 place-items-center rounded-lg bg-accent text-base text-background">
-            μ
+          <span aria-hidden="true" className="grid h-7 w-7 place-items-center rounded-lg bg-accent text-background">
+            <LadderIcon className="h-5 w-5" />
           </span>
           {/* The wordmark stays readable to screen readers on phones, where the mark stands alone. */}
           <span className="sr-only sm:not-sr-only">
-            MicroLearning <span className="text-accent">AI</span>
+            Concept <span className="text-accent">Ladder</span>
           </span>
         </Link>
         <nav aria-label="Account" className="flex items-center gap-3">

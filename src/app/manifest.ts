@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { BRAND } from "@/lib/brand";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "MicroLearning AI",
-    short_name: "MicroLearn",
-    description: "Learn complex chapters one connected concept at a time.",
+    name: BRAND.name,
+    short_name: BRAND.shortName,
+    description: BRAND.tagline,
     start_url: "/",
     display: "standalone",
     background_color: "#f7f4ee",
