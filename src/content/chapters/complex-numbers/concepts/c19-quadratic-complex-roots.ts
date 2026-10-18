@@ -10,14 +10,71 @@ export const c19: Concept = {
     reveal: t`$x^2 = -4$, so $x = \pm 2i$. With complex numbers, every quadratic has two roots.`,
   },
   explanation: {
-    intuition: t`The quadratic formula still works when the discriminant is negative: the square root of a negative number is simply imaginary. With real coefficients, the two roots come out as a conjugate pair $p \pm qi$, mirror images across the real axis.`,
-    formal: t`For $ax^2 + bx + c = 0$ with real $a, b, c$ and $D = b^2 - 4ac < 0$:
-$$x = \frac{-b \pm i\sqrt{-D}}{2a}.$$
-Divide **both** parts by $2a$.
-
-**Conjugate pairs:** with real coefficients, if $p + qi$ is a root, so is $p - qi$. This needs the coefficients to be real.
-
-**Sum and product:** $\alpha + \beta = -\dfrac ba$ and $\alpha\beta = \dfrac ca$, just as for real roots.`,
+    intuition: [
+      t`In $ax^2 + bx + c = 0$, the numbers $a$, $b$ and $c$ are the **coefficients**; here they are real.`,
+      t`The **discriminant**, $D = b^2 - 4ac$, is the number under the square root in the quadratic formula.`,
+      t`When $D < 0$, no real number squares to $D$, so there are no real roots.`,
+      t`But $\sqrt D$ is now imaginary, such as $\sqrt{-16} = 4i$, so the formula still gives two roots.`,
+      t`For $x^2 - 2x + 5 = 0$, $D = -16$, and the roots are $1 + 2i$ and $1 - 2i$.`,
+      t`They are a **conjugate pair**, $p \pm qi$: mirror images of each other in the real axis.`,
+    ],
+    figure: {
+      alt: "The roots of x² − 2x + 5 = 0 on the Argand plane: 1 + 2i above the real axis and 1 − 2i the same distance below it, joined by a dashed line that the real axis cuts in half. They are mirror images in the real axis.",
+      view: { x: [-2, 4], y: [-3, 3] },
+      elements: [
+        { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "e", step: 5 },
+        { kind: "point", at: [1, -2], label: "1 − 2i", labelAt: "e", step: 5 },
+        { kind: "segment", from: [1, 2], to: [1, -2], dashed: true, tone: "good", step: 6 },
+      ],
+    },
+    formal: [
+      {
+        title: "Quadratic formula with negative D",
+        points: [
+          t`Take $ax^2 + bx + c = 0$ with real $a$, $b$, $c$ and $D = b^2 - 4ac < 0$.`,
+          t`Then $-D$ is positive, so $\sqrt D = i\sqrt{-D}$, an imaginary number.`,
+          t`So the quadratic formula becomes $x = \dfrac{-b \pm i\sqrt{-D}}{2a}$.`,
+          t`It starts with $-b$, not $b$: for $x^2 - 2x + 5$, that is $+2$.`,
+          t`Divide **both** parts of the top by $2a$: the $-b$ and the $i\sqrt{-D}$.`,
+          t`So the real part is $-\dfrac{b}{2a}$, and the imaginary parts are $\pm\dfrac{\sqrt{-D}}{2a}$.`,
+        ],
+      },
+      {
+        title: "Conjugate pairs",
+        points: [
+          t`Recall: the **conjugate** of $p + qi$ is $p - qi$, its mirror image in the real axis.`,
+          t`If the coefficients are real and $p + qi$ is a root, then $p - qi$ is a root too.`,
+          t`So if $2 + i$ is a root of a real quadratic, the other root is $2 - i$.`,
+          t`It is not the negative, $-2 - i$: that flips both signs.`,
+          t`Nor is it $-2 + i$: the real part stays the same.`,
+          t`This needs real coefficients: $x^2 - ix = 0$ has roots $0$ and $i$, but not $-i$.`,
+        ],
+        figure: {
+          alt: "The root 2 + i and its conjugate 2 − i, mirror images in the real axis, joined by a dashed line. The negative −2 − i, opposite 2 + i through the origin, and −2 + i, with only the real part flipped, are marked as wrong.",
+          view: { x: [-4.5, 4.5], y: [-2.5, 2.5] },
+          elements: [
+            { kind: "point", at: [2, 1], label: "2 + i", labelAt: "e", step: 3 },
+            { kind: "segment", from: [2, 1], to: [2, -1], dashed: true, tone: "good", step: 3 },
+            { kind: "point", at: [2, -1], label: "2 − i", labelAt: "e", tone: "good", step: 3 },
+            { kind: "segment", from: [2, 1], to: [-2, -1], dashed: true, tone: "muted", step: 4 },
+            { kind: "point", at: [-2, -1], label: "−2 − i", labelAt: "w", tone: "bad", step: 4 },
+            { kind: "segment", from: [2, 1], to: [-2, 1], dashed: true, tone: "muted", step: 5 },
+            { kind: "point", at: [-2, 1], label: "−2 + i", labelAt: "w", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Sum and product of roots",
+        points: [
+          t`Name the two roots $\alpha$ and $\beta$, the Greek letters alpha and beta.`,
+          t`Their sum is $\alpha + \beta = -\dfrac ba$: note the minus sign.`,
+          t`Their product is $\alpha\beta = \dfrac ca$, with no minus sign.`,
+          t`Both divide by $a$, the coefficient of $x^2$.`,
+          t`They hold for complex roots too: the roots of $x^2 - 2x + 5$ add to $2$, which is $-\dfrac ba$.`,
+          t`Those roots, $1 \pm 2i$, multiply to $(1 + 2i)(1 - 2i) = 1 - 4i^2 = 5$, which is $\dfrac ca$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Solve $x^2 - 6x + 10 = 0$.`,
       steps: [

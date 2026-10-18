@@ -67,20 +67,32 @@ def _c14_m2(v, p):  # range convention mixed up
     return principal + 2 * pi if principal < 0 else principal
 
 
-def _c14_m3(v, p):  # reference angle measured from the imaginary axis
+def _c14_m3(v, p):  # reference angle tan^-1|x/y|, measured from the imaginary axis
     px, py = v["x"], v["y"]
     if px == 0 or py == 0:
-        theta = atan2(px, py)  # axis point: real and imaginary roles swapped
-    else:
-        theta = _place(atan(Abs(px / py)), px, py)
-    return _in_range(theta, p)
+        raise ValueError("a point on an axis has no reference angle (its axis swap is C14-M5)")
+    return _in_range(_place(atan(Abs(px / py)), px, py), p)
 
 
 def _c14_m4(v, p):  # reference angle, not placed by quadrant
     return pi / 2 if v["x"] == 0 else atan(Abs(v["y"] / v["x"]))
 
 
-C14 = {"key": _c14_key, "C14-M1": _c14_m1, "C14-M2": _c14_m2, "C14-M3": _c14_m3, "C14-M4": _c14_m4}
+def _c14_m5(v, p):  # a point on an axis put on the other axis: real and imaginary roles swapped
+    px, py = v["x"], v["y"]
+    if px != 0 and py != 0:
+        raise ValueError("only a point on an axis can be put on the other axis")
+    return _in_range(atan2(px, py), p)
+
+
+C14 = {
+    "key": _c14_key,
+    "C14-M1": _c14_m1,
+    "C14-M2": _c14_m2,
+    "C14-M3": _c14_m3,
+    "C14-M4": _c14_m4,
+    "C14-M5": _c14_m5,
+}
 
 
 # ---------- C25 |z - a| = |z - b| ----------
@@ -97,8 +109,17 @@ def _circle_on_diameter(a, b):
     return expand((x - re(c)) ** 2 + (y - im(c)) ** 2 - Abs(a - b) ** 2 / 4)
 
 
-def _c25_m2(v, p):  # sign of the listed point(s) misread
+def _written_with_plus(c):  # |z - c| is written |z + ...| when c's leading part is negative
+    lead = re(c) if re(c) != 0 else im(c)
+    return lead < 0
+
+
+def _c25_flip(v, p, plus):  # the listed point(s) read with the wrong sign
     flip = p.get("flip", [])
+    for k in flip:
+        if _written_with_plus(v[k]) != plus:
+            form = "|z + a|" if plus else "|z - a|"
+            raise ValueError(f"point {k} is not written as {form}")
     a = -v["a"] if "a" in flip else v["a"]
     b = -v["b"] if "b" in flip else v["b"]
     return _bisector(a, b)
@@ -107,8 +128,9 @@ def _c25_m2(v, p):  # sign of the listed point(s) misread
 C25 = {
     "key": lambda v, p: _bisector(v["a"], v["b"]),
     "C25-M1": lambda v, p: _circle_on_diameter(v["a"], v["b"]),
-    "C25-M2": _c25_m2,
+    "C25-M2": lambda v, p: _c25_flip(v, p, plus=True),  # |z + a| read as from +a
     "C25-M3": lambda v, p: _line_through(v["a"], v["b"]),
+    "C25-M4": lambda v, p: _c25_flip(v, p, plus=False),  # |z - a| read as from -a
 }
 
 
@@ -215,8 +237,10 @@ def _c10(transform):
 C10 = {
     "key": _c10(lambda x, y: (x, y)),
     "C10-M1": _c10(lambda x, y: (y, x)),  # swaps the axes
-    "C10-M2": _c10(lambda x, y: (x, -y)),  # flips the sign of the imaginary part
-    "C10-M3": _c10(lambda x, y: (-x, y)),  # flips the sign of the real part
+    "C10-M2": _c10(lambda x, y: (x, Abs(y))),  # drops the minus sign of the imaginary part
+    "C10-M3": _c10(lambda x, y: (Abs(x), y)),  # drops the minus sign of the real part
+    # spreads one part's minus sign to the other part too; with no minus sign there is nothing to spread
+    "C10-M4": _c10(lambda x, y: (-Abs(x), -Abs(y)) if x < 0 or y < 0 else (x, y)),
 }
 
 
@@ -342,20 +366,22 @@ def _c03(kind):
             raise ValueError(kind)
         if op == "equate":  # (a1 x + p) + i(a2 y + q) = c + i d, x and y real
             a1, pp, c, a2, q, d = (v[k] for k in ("a1", "p", "c", "a2", "q", "d"))
-            if kind == "C03-M3":
-                d = -d
+            if kind == "C03-M3":  # drops the minus sign of a negative imaginary part
+                d = Abs(d)
+            if kind == "C03-M6":  # puts a minus sign on a positive imaginary part
+                d = -Abs(d)
             if kind == "C03-M4":  # equates real with imaginary
                 c, d = d, c
             if kind == "C03-M5":  # moves the constant without changing its sign
                 return (c + pp) / a1 + I * (d + q) / a2
-            if kind not in ("key", "C03-M3", "C03-M4"):
+            if kind not in ("key", "C03-M3", "C03-M4", "C03-M6"):
                 raise ValueError(kind)
             return (c - pp) / a1 + I * (d - q) / a2
         raise ValueError(op)
     return model
 
 
-C03 = {k: _c03(k) for k in ["key", "C03-M1", "C03-M2", "C03-M3", "C03-M4", "C03-M5"]}
+C03 = {k: _c03(k) for k in ["key", "C03-M1", "C03-M2", "C03-M3", "C03-M4", "C03-M5", "C03-M6"]}
 
 
 # ---------- C07 Purely real / purely imaginary (find real x) ----------
@@ -881,9 +907,11 @@ def _c24(kind):
             q, s_ = v["q"], v["s"]
             if kind == "key":
                 return expand(x**2 + y**2 + 2 * q * x + s_)
-            if kind == "C24-M1":
+            if kind in ("C24-M1", "C24-M2"):
+                raise ValueError(f"{kind} is about |kz - w| = R; from z conj(z) see C24-M8 and C24-M9")
+            if kind == "C24-M8":  # completes the square with the wrong sign: centre q, not -q
                 return expand(x**2 + y**2 - 2 * q * x + s_)
-            if kind == "C24-M2":  # treats r^2 as r
+            if kind == "C24-M9":  # squares the right side again: takes r^2 = q^2 - s as the radius
                 return _circle(-q, (q**2 - s_) ** 2)
             if kind == "C24-M6":  # z + conj(z) = x (forgets the 2)
                 return expand(x**2 + y**2 + q * x + s_)
@@ -892,7 +920,7 @@ def _c24(kind):
     return model
 
 
-C24 = {k: _c24(k) for k in ["key", "C24-M1", "C24-M2", "C24-M3", "C24-M4", "C24-M5", "C24-M6"]}
+C24 = {k: _c24(k) for k in ["key", "C24-M1", "C24-M2", "C24-M3", "C24-M4", "C24-M5", "C24-M6", "C24-M8", "C24-M9"]}
 
 
 # ---------- C26 Loci from algebraic conditions ----------

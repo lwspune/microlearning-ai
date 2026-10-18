@@ -10,12 +10,55 @@ export const c09: Concept = {
     reveal: t`$2 + i$ and $-(2 + i) = -2 - i$. Every non-zero complex number has exactly two square roots, and they are negatives of each other.`,
   },
   explanation: {
-    intuition: t`To find $\sqrt{a + ib}$, look for a number $x + iy$ whose square is $a + ib$. Squaring gives $(x^2 - y^2) + 2xyi$, so equate parts and solve. The two answers are always negatives of each other, written $\pm(x + iy)$.`,
-    formal: t`Set $(x + iy)^2 = a + ib$ and equate parts:
-$$x^2 - y^2 = a, \qquad 2xy = b.$$
-Solve for real $x$ and $y$. The sign of $b$ tells you whether $x$ and $y$ have the same sign ($b > 0$) or opposite signs ($b < 0$).
-
-The square root does **not** split over a sum: $\sqrt{a + ib} \ne \sqrt a + i\sqrt b$.`,
+    intuition: [
+      t`A **square root** of a number is a number whose square is that number.`,
+      t`So $2 + i$ is a square root of $3 + 4i$, because $(2 + i)^2 = 3 + 4i$.`,
+      t`To find $\sqrt{a + ib}$, look for a number $x + iy$, with $x$ and $y$ real, whose square is $a + ib$.`,
+      t`Square $x + iy$, then **equate parts** with $a + ib$: real with real, imaginary with imaginary.`,
+      t`There are always two answers, and each is the **negative** of the other, like $2 + i$ and $-2 - i$.`,
+      t`Write both at once as $\pm(x + iy)$, read "plus or minus $x + iy$".`,
+    ],
+    formal: [
+      {
+        title: "Two equations from one square",
+        points: [
+          t`Set $(x + iy)^2 = a + ib$, where $x$ and $y$ are real.`,
+          t`Expand the square: $x^2 + 2xyi + i^2y^2$.`,
+          t`Since $i^2 = -1$, this is $(x^2 - y^2) + 2xyi$.`,
+          t`Equate the real parts: $x^2 - y^2 = a$.`,
+          t`Equate the imaginary parts: $2xy = b$.`,
+          t`Keep the $2$ in $2xy$: the middle term of a squared sum is doubled.`,
+        ],
+      },
+      {
+        title: "Finding x and y",
+        points: [
+          t`Solve the two equations together for real $x$ and $y$.`,
+          t`Often whole numbers work: from $2xy = b$, try pairs with $xy = \frac{b}{2}$.`,
+          t`Keep the pair that also gives $x^2 - y^2 = a$.`,
+          t`Check by squaring: $(x + iy)^2$ should give back $a + ib$.`,
+        ],
+      },
+      {
+        title: "The signs of x and y",
+        points: [
+          t`The sign of $b$ decides whether $x$ and $y$ have the same sign.`,
+          t`If $b > 0$, then $xy > 0$: $x$ and $y$ have the same sign.`,
+          t`If $b < 0$, then $xy < 0$: $x$ and $y$ have opposite signs.`,
+          t`Recall: the **conjugate** of $x + iy$ is $x - iy$. A sign slip here gives the conjugate instead.`,
+          t`The two roots are $x + iy$ and $-(x + iy)$, written $\pm(x + iy)$.`,
+        ],
+      },
+      {
+        title: "No splitting over a sum",
+        points: [
+          t`The square root does **not** split over a sum.`,
+          t`So $\sqrt{a + ib}$ is not $\sqrt a + i\sqrt b$.`,
+          t`For example, $\sqrt 3 + 2i$ squares to $-1 + 4\sqrt 3\,i$, not $3 + 4i$.`,
+          t`Instead, set $(x + iy)^2 = a + ib$ and equate parts.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Find the square roots of $-5 + 12i$.`,
       steps: [

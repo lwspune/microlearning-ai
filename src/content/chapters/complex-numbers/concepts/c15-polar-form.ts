@@ -1,6 +1,24 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement, Pt } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The point r from 0 along the arrow at `deg` degrees from the positive real axis. */
+const tip = (r: number, deg: number): Pt => {
+  const a = (deg * Math.PI) / 180;
+  return [+(r * Math.cos(a)).toFixed(3), +(r * Math.sin(a)).toFixed(3)];
+};
+
+/** The initial arm along the positive real axis, labelled above it at `labelX`, clear of the axis numbers. */
+const initialArm = (len: number, labelX: number, step?: number): FigureElement[] => {
+  const s = step === undefined ? {} : { step };
+  return [
+    { kind: "segment", from: [0, 0], to: [len, 0], tone: "good", ...s },
+    { kind: "label", at: [labelX, 0], label: "initial arm", labelAt: "n", tone: "good", ...s },
+  ];
+};
+
+/** z at length 3 and angle 40°, as on the idea slide. */
+const z = tip(3, 40);
 
 export const c15: Concept = {
   id: "C15",
@@ -10,38 +28,125 @@ export const c15: Concept = {
     reveal: t`How far it is from the origin ($\sqrt2$) and which way it points ($\dfrac\pi4$). That is polar form: $\sqrt2\left(\cos\dfrac\pi4 + i\sin\dfrac\pi4\right)$.`,
   },
   explanation: {
-    intuition: t`Any non-zero complex number is a length and a direction. The length is $r = \lvert z \rvert$, the direction is $\theta = \arg z$, and $x = r\cos\theta$, $y = r\sin\theta$. Written this way, multiplication and powers become easy, as the next concepts show.`,
-    formal: t`$z = x + iy = r(\cos\theta + i\sin\theta) = re^{i\theta}$, with $r = \lvert z \rvert = \sqrt{x^2 + y^2}$ and $\theta = \arg z$ (the principal value, placed by quadrant).
-
-Going back: $x = r\cos\theta$ and $y = r\sin\theta$. The cosine goes with the real part and the sine with the imaginary part, and $r$ multiplies both.`,
+    intuition: [
+      t`Any non-zero complex number $z = x + iy$ is a point, with an arrow from $0$ to it.`,
+      t`Its **length** is how far $z$ is from $0$: recall, that is the modulus $r = \lvert z \rvert$.`,
+      t`Its **direction** is its argument $\theta = \arg z$: the turn from the **initial arm**, the positive real axis, to the arrow.`,
+      t`Going across, the arrow covers $x = r\cos\theta$: the real part.`,
+      t`Going up, it covers $y = r\sin\theta$: the imaginary part.`,
+      t`Written by its length and direction, multiplying and taking powers become easy, as the next lessons show.`,
+    ],
+    figure: {
+      alt: "The Argand plane with the point z = x + iy and an arrow from 0 to it, of length r. The arrow turns through θ from the initial arm, the positive real axis. Going across, it covers x = r cos θ along the real axis; going up, it covers y = r sin θ.",
+      view: { x: [-1, 4.6], y: [-0.8, 2.8] },
+      elements: [
+        { kind: "vector", to: z, tone: "muted", step: 1 },
+        { kind: "point", at: z, label: "z = x + iy", labelAt: "ne", step: 1 },
+        { kind: "label", at: tip(1.5, 40), label: "r", labelAt: "nw", step: 2 },
+        ...initialArm(3.4, 3.3, 3),
+        { kind: "turn", r: 3, to: 40, step: 3 },
+        { kind: "label", at: tip(1.5, 22), label: "θ", labelAt: "e", step: 3 },
+        { kind: "segment", from: [0, 0], to: [z[0], 0], tone: "muted", step: 4 },
+        { kind: "label", at: [1.6, 0], label: "x = r cos θ", labelAt: "n", tone: "muted", step: 4 },
+        { kind: "segment", from: [z[0], 0], to: z, label: "y = r sin θ", labelAt: "e", tone: "muted", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Polar form",
+        points: [
+          t`Put $x = r\cos\theta$ and $y = r\sin\theta$ into $z = x + iy$.`,
+          t`That gives $z = r\cos\theta + i\,r\sin\theta$.`,
+          t`Take out the common factor $r$: $z = r(\cos\theta + i\sin\theta)$.`,
+          t`This is the **polar form** of $z$: its length $r$, then its direction $\theta$.`,
+          t`The length is $r = \lvert z \rvert = \sqrt{x^2 + y^2}$.`,
+          t`The direction is $\theta = \arg z$: recall, the principal value, in $(-\pi, \pi]$, placed by the quadrant.`,
+        ],
+        figure: {
+          alt: "The point z on the Argand plane. Across, it is x = r cos θ along the real axis; up, it is y = r sin θ. So z = r cos θ + i r sin θ = r(cos θ + i sin θ). An arrow of length r = |z| turns through θ = arg z from the initial arm to z.",
+          view: { x: [-1, 4.6], y: [-1.6, 2.8] },
+          elements: [
+            ...initialArm(3.4, 3.3),
+            { kind: "point", at: z, label: "z", labelAt: "ne" },
+            { kind: "segment", from: [0, 0], to: [z[0], 0], tone: "muted", step: 1 },
+            { kind: "label", at: [1.6, 0], label: "x = r cos θ", labelAt: "n", tone: "muted", step: 1 },
+            { kind: "segment", from: [z[0], 0], to: z, label: "y = r sin θ", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "label", at: [0.2, -0.75], label: "z = r cos θ + i r sin θ", labelAt: "e", step: 2 },
+            { kind: "label", at: [0.55, -1.3], label: "= r(cos θ + i sin θ)", labelAt: "e", tone: "good", step: 3 },
+            { kind: "turn", r: 3, to: 40, step: 4 },
+            { kind: "label", at: tip(1.5, 40), label: "r = |z|", labelAt: "nw", step: 5 },
+            { kind: "label", at: tip(1.7, 25), label: "θ = arg z", labelAt: "e", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Euler form",
+        points: [
+          t`For short, $\cos\theta + i\sin\theta$ is written $e^{i\theta}$: this is **Euler's formula**.`,
+          t`So $z = re^{i\theta}$: this is the **Euler form** of $z$.`,
+          t`For example, $1 + i$ has length $\sqrt{1 + 1} = \sqrt2$ and direction $\frac\pi4$.`,
+          t`So its polar form is $\sqrt2\left(\cos\frac\pi4 + i\sin\frac\pi4\right)$.`,
+          t`And its Euler form is $\sqrt2\,e^{i\pi/4}$.`,
+        ],
+        figure: {
+          alt: "The point 1 + i on the Argand plane. An arrow of length √2 turns through π/4 from the initial arm to it. So 1 + i = √2(cos π/4 + i sin π/4), which is √2 e^(iπ/4) in Euler form.",
+          view: { x: [-1, 2.8], y: [-1.3, 1.8] },
+          elements: [
+            ...initialArm(2.2, 1.9),
+            { kind: "turn", r: 1.414, to: 45, step: 3 },
+            { kind: "point", at: [1, 1], label: "1 + i", labelAt: "ne", step: 3 },
+            { kind: "label", at: [0.5, 0.5], label: "√2", labelAt: "nw", step: 3 },
+            { kind: "label", at: tip(0.65, 22), label: "π/4", labelAt: "e", step: 3 },
+            { kind: "label", at: [0.1, -0.55], label: "√2(cos π/4 + i sin π/4)", labelAt: "e", step: 4 },
+            { kind: "label", at: [0.1, -0.95], label: "= √2 e^(iπ/4)", labelAt: "e", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Back to x + iy",
+        points: [
+          t`To go back, take $2\left(\cos\frac\pi3 + i\sin\frac\pi3\right)$: length $2$, direction $\frac\pi3$.`,
+          t`The cosine gives the real part: $x = r\cos\theta = 2\cos\frac\pi3 = 1$.`,
+          t`The sine gives the imaginary part: $y = r\sin\theta = 2\sin\frac\pi3 = \sqrt3$.`,
+          t`So the number is $1 + \sqrt3\,i$.`,
+          t`The length $r$ multiplies both parts, not only the cosine.`,
+          t`In general, $r(\cos\theta + i\sin\theta)$ equals $r\cos\theta + i\,r\sin\theta$.`,
+        ],
+        figure: {
+          alt: "An arrow of length 2 turns through π/3 from the initial arm. Across, it covers x = 2 cos π/3 = 1; up, it covers y = 2 sin π/3 = √3. So it ends at 1 + √3i.",
+          view: { x: [-1, 3.2], y: [-0.8, 2.4] },
+          elements: [
+            ...initialArm(2.4, 2.0),
+            { kind: "turn", r: 2, to: 60, step: 1 },
+            { kind: "label", at: [0.5, 0.866], label: "2", labelAt: "nw", step: 1 },
+            { kind: "label", at: tip(0.75, 30), label: "π/3", labelAt: "e", step: 1 },
+            { kind: "segment", from: [0, 0], to: [1, 0], step: 2 },
+            { kind: "label", at: [0.5, 0], label: "x = 1", labelAt: "s", step: 2 },
+            { kind: "segment", from: [1, 0], to: [1, 1.732], label: "y = √3", labelAt: "e", step: 3 },
+            { kind: "point", at: [1, 1.732], label: "1 + √3i", labelAt: "ne", step: 4 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Write $2 - 2i$ in polar form.`,
       steps: [
         t`$r = \sqrt{4 + 4} = 2\sqrt2$.`,
         t`The point is in quadrant IV with reference angle $\dfrac\pi4$, so $\theta = -\dfrac\pi4$.`,
-        t`So $2 - 2i = 2\sqrt2\left(\cos\left(-\dfrac\pi4\right) + i\sin\left(-\dfrac\pi4\right)\right)$.`,
+        t`So $2 - 2i$ $= 2\sqrt2\left(\cos\left(-\dfrac\pi4\right) + i\sin\left(-\dfrac\pi4\right)\right)$.`,
       ],
-      answer: t`$2\sqrt2\left(\cos\left(-\frac\pi4\right) + i\sin\left(-\frac\pi4\right)\right) = 2\sqrt2\,e^{-i\pi/4}$`,
+      answer: t`$2\sqrt2\left(\cos\left(-\frac\pi4\right) + i\sin\left(-\frac\pi4\right)\right)$ $= 2\sqrt2\,e^{-i\pi/4}$`,
       figure: {
-        alt: "2 − 2i is 2√2 from the origin, at angle −π/4: an eighth of a turn clockwise.",
+        alt: "2 − 2i is 2√2 from the origin. The arrow turns −π/4, an eighth of a turn clockwise, from the initial arm to reach it.",
         view: { x: [-1.3, 3.3], y: [-3.3, 1.3] },
         elements: [
-          { kind: "segment", from: [0, 0], to: [2, -2], label: "r = 2√2", labelAt: "ne", step: 1 },
-          { kind: "angle", at: [0, 0], from: -45, to: 0, label: "−π/4", step: 2 },
+          ...initialArm(3, 2.2),
+          { kind: "segment", from: [0, 0], to: [2, -2], label: "r = 2√2", labelAt: "sw", tone: "muted", dashed: true, step: 1 },
+          { kind: "turn", r: 2.828, to: -45, step: 2 },
+          { kind: "label", at: tip(1.2, -22), label: "−π/4", labelAt: "e", step: 2 },
           { kind: "point", at: [2, -2], label: "2 − 2i", labelAt: "se", step: 3 },
         ],
       },
-    },
-    figure: {
-      alt: "A point z at distance r from the origin and angle θ from the positive real axis. Its real part is r cos θ, along the axis, and its imaginary part is r sin θ, straight up.",
-      view: { x: [-1, 4], y: [-0.8, 2.8] },
-      elements: [
-        { kind: "segment", from: [0, 0], to: [2.298, 1.928], label: "r", labelAt: "nw", step: 1 },
-        { kind: "point", at: [2.298, 1.928], label: "z", labelAt: "ne", step: 1 },
-        { kind: "angle", at: [0, 0], from: 0, to: 40, label: "θ", step: 2 },
-        { kind: "segment", from: [0, 0], to: [2.298, 0], label: "r cos θ", labelAt: "n", tone: "muted", step: 3 },
-        { kind: "segment", from: [2.298, 0], to: [2.298, 1.928], label: "r sin θ", labelAt: "e", tone: "muted", step: 4 },
-      ],
     },
     visualSpec: t`A draggable point with its arrow, the radius $r$ and the angle $\theta$ labelled. Readouts show $x + iy$ and $r(\cos\theta + i\sin\theta)$ side by side, updating together.`,
   },

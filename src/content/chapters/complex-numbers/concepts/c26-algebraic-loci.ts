@@ -10,12 +10,124 @@ export const c26: Concept = {
     reveal: t`No, it's a circle. Equal distances give a line, but any other ratio gives a circle (the circle of Apollonius).`,
   },
   explanation: {
-    intuition: t`When a condition isn't one of the standard shapes, translate it: put $z = x + iy$, simplify, and read the curve from the Cartesian equation. Two patterns come up again and again: a ratio of distances (a circle unless the ratio is 1), and the real or imaginary part of a quotient being zero.`,
-    formal: t`**Ratio of distances:** $|z - a| = k|z - b|$. For $k = 1$ it is the perpendicular bisector; for $k \ne 1$ it is a circle. Square both sides: $|z - a|^2 = k^2|z - b|^2$, with $k$ **squared**.
-
-**Part of a quotient:** for $\operatorname{Re}\left(\dfrac{z - a}{z - b}\right) = 0$, multiply top and bottom by $\overline{z - b}$. The bottom becomes real and positive, so the condition is on the top: $\operatorname{Re}\big((z - a)\overline{(z - b)}\big) = 0$. The point $z = b$ is excluded.
-
-Purely imaginary means the **real** part is $0$; purely real means the **imaginary** part is $0$.`,
+    intuition: [
+      t`Recall: a **locus** is the set of all points $z$ that satisfy a condition.`,
+      t`Here the condition is $|z + 3| = 2|z|$: $z$ is twice as far from $-3$ as from $0$.`,
+      t`The point $1 + 2i$ is $2\sqrt5$ from $-3$ and $\sqrt5$ from $0$, so it is on the locus.`,
+      t`All such points form a circle, centre $1$ and radius $2$, though the condition is not $|z - a| = r$.`,
+      t`To find such a curve, put $z = x + iy$, simplify, and read the **Cartesian equation**, the equation in $x$ and $y$.`,
+      t`Two patterns come up often: a **ratio of distances**, like this one, and a part of a **quotient**, a division, being zero.`,
+    ],
+    formal: [
+      {
+        title: "Ratio of distances",
+        points: [
+          t`The condition $|z - a| = k|z - b|$, for a positive number $k$, is a ratio of distances.`,
+          t`It says the distance from $a$ is $k$ times the distance from $b$.`,
+          t`Recall: for $k = 1$ the distances are equal, so the locus is the perpendicular bisector of $ab$.`,
+          t`For $k = 2$, twice as far from $a$ as from $b$, the locus is a circle round $b$.`,
+          t`For $k = \frac12$, half as far, it is a circle round $a$.`,
+          t`So only $k = 1$ gives a line: any $k \ne 1$ gives a circle.`,
+        ],
+        figure: {
+          alt: "The points a = −3 and b = 0. For k = 1 the locus |z − a| = k|z − b| is the perpendicular bisector, the line x = −1.5. For k = 2 it is the circle with centre 1 and radius 2, round b. For k = ½ it is the circle with centre −4 and radius 2, round a.",
+          view: { x: [-6.6, 4], y: [-2.6, 2.8] },
+          elements: [
+            { kind: "point", at: [-3, 0], label: "a = −3", labelAt: "n", step: 1 },
+            { kind: "point", at: [0, 0], label: "b = 0", labelAt: "ne", step: 1 },
+            { kind: "line", through: [[-1.5, -1], [-1.5, 1]], label: "k = 1", labelAt: "w", dashed: true, step: 3 },
+            { kind: "circle", centre: [1, 0], r: 2, label: "k = 2", labelAt: "ne", step: 4 },
+            { kind: "circle", centre: [-4, 0], r: 2, step: 5 },
+            { kind: "label", at: [-5.414, 1.414], label: "k = ½", labelAt: "nw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Squaring squares k too",
+        points: [
+          t`To find the curve, put $z = x + iy$ and square both sides.`,
+          t`The factor $k$ is squared too: $|z - a|^2 = k^2|z - b|^2$.`,
+          t`Check with $1 + 2i$, on the circle $|z + 3| = 2|z|$: it is $2\sqrt5$ from $-3$ and $\sqrt5$ from $0$.`,
+          t`Squared, these distances are $20$ and $5$: the ratio $2$ has become $2^2 = 4$.`,
+          t`Keep $k$ on the distance from $b$: don't move it to $|z - a|$.`,
+          t`For $k = 1$ the $x^2$ and $y^2$ terms cancel, leaving a line; for $k \ne 1$ they don't, leaving a circle.`,
+        ],
+        figure: {
+          alt: "The circle |z + 3| = 2|z|, centre 1 and radius 2. Its point 1 + 2i is 2√5 from −3 and √5 from 0; squared, 20 = 4 × 5.",
+          view: { x: [-4, 3.6], y: [-2.6, 2.9] },
+          elements: [
+            { kind: "point", at: [-3, 0], label: "−3", labelAt: "nw" },
+            { kind: "point", at: [0, 0], label: "0", labelAt: "nw" },
+            { kind: "circle", centre: [1, 0], r: 2 },
+            { kind: "segment", from: [1, 2], to: [-3, 0], label: "2√5", labelAt: "nw", tone: "muted", step: 3 },
+            { kind: "segment", from: [1, 2], to: [0, 0], label: "√5", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "ne", step: 3 },
+            { kind: "label", at: [-1.3, -1.8], label: "20 = 4 × 5", labelAt: "w", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Part of a quotient",
+        points: [
+          t`The second pattern sets a part of a quotient $\frac{z - a}{z - b}$ to zero, say its real part.`,
+          t`To read that part, multiply top and bottom by $\overline{z - b}$, the conjugate of the bottom.`,
+          t`The bottom becomes $|z - b|^2$, which is real and positive.`,
+          t`So the condition moves to the top: $\operatorname{Re}\big((z - a)\overline{(z - b)}\big) = 0$.`,
+          t`The point $z = b$ is left out, since there the bottom is zero.`,
+          t`The same steps work when the imaginary part, $\operatorname{Im}$, is set to zero.`,
+        ],
+        figure: {
+          alt: "The points a = 2 and b = −2 of the quotient (z − a)/(z − b). The point b is drawn hollow: it is left out of the locus, because there the bottom is zero.",
+          view: { x: [-3.5, 3.5], y: [-1.6, 1.6] },
+          elements: [
+            { kind: "point", at: [2, 0], label: "a = 2", labelAt: "n", step: 1 },
+            { kind: "point", at: [-2, 0], label: "b = −2", labelAt: "n", hollow: true, step: 1 },
+            { kind: "label", at: [-2, -0.45], label: "left out", labelAt: "s", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "A quotient giving a circle",
+        points: [
+          t`Take $\operatorname{Re}\left(\frac{z - 2}{z + 2}\right) = 0$, with $z = x + iy$.`,
+          t`Multiply top and bottom by $\overline{z + 2} = \bar z + 2$.`,
+          t`The top is $(z - 2)(\bar z + 2)$, which equals $(x^2 + y^2 - 4) + 4iy$.`,
+          t`Its real part is zero: $x^2 + y^2 - 4 = 0$.`,
+          t`So the locus is the circle with centre $0$ and radius $2$, without $-2$.`,
+        ],
+        figure: {
+          alt: "The locus Re((z − 2)/(z + 2)) = 0: the circle x² + y² = 4, centre 0 and radius 2, through 2 and −2, with −2 left out.",
+          view: { x: [-3.5, 4], y: [-2.6, 2.6] },
+          elements: [
+            { kind: "point", at: [2, 0], label: "2", labelAt: "nw", step: 1 },
+            { kind: "point", at: [-2, 0], label: "−2", labelAt: "nw", hollow: true, step: 1 },
+            { kind: "circle", centre: [0, 0], r: 2, label: "x² + y² = 4", labelAt: "ne", step: 5 },
+            { kind: "label", at: [-2, -0.45], label: "left out", labelAt: "s", tone: "bad", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Purely real or purely imaginary",
+        points: [
+          t`Recall: a number with real part $0$ is **purely imaginary**; with imaginary part $0$, **purely real**.`,
+          t`So "$\frac{z - a}{z - b}$ is purely imaginary" means its real part is $0$.`,
+          t`For $\frac{z - 2}{z + 2}$ that gives the circle $x^2 + y^2 = 4$.`,
+          t`And "purely real" means its imaginary part is $0$.`,
+          t`For $\frac{z - 2}{z + 2}$ the top's imaginary part is $4y$, so $y = 0$: the real axis, without $-2$.`,
+          t`Use the part the question names: the other part gives a different curve.`,
+        ],
+        figure: {
+          alt: "For (z − 2)/(z + 2): real part zero gives the circle x² + y² = 4; imaginary part zero gives the real axis, y = 0. Both leave out −2.",
+          view: { x: [-3.5, 4.5], y: [-2.6, 2.6] },
+          elements: [
+            { kind: "point", at: [2, 0], label: "2", labelAt: "nw" },
+            { kind: "point", at: [-2, 0], label: "−2, left out", labelAt: "nw", hollow: true },
+            { kind: "circle", centre: [0, 0], r: 2, label: "Re = 0", labelAt: "ne", step: 3 },
+            { kind: "line", through: [[-1, 0], [1, 0]], label: "Im = 0", labelAt: "n", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find the locus $|z - 3| = 2|z|$.`,
       steps: [
@@ -39,12 +151,13 @@ Purely imaginary means the **real** part is $0$; purely real means the **imagina
       alt: "The points −3 and 0. The points z with |z + 3| = 2|z| (twice as far from −3 as from 0) form a circle, centre 1 and radius 2. For example 1 + 2i is 2√5 from −3 and √5 from 0.",
       view: { x: [-4, 4], y: [-2.6, 2.9] },
       elements: [
-        { kind: "point", at: [-3, 0], label: "−3", labelAt: "nw", step: 1 },
-        { kind: "point", at: [0, 0], label: "0", labelAt: "nw", step: 1 },
-        { kind: "segment", from: [1, 2], to: [-3, 0], label: "2√5", labelAt: "nw", tone: "muted", step: 2 },
-        { kind: "segment", from: [1, 2], to: [0, 0], label: "√5", labelAt: "e", tone: "muted", step: 2 },
-        { kind: "point", at: [1, 2], label: "z", labelAt: "ne", step: 2 },
-        { kind: "circle", centre: [1, 0], r: 2, step: 3 },
+        { kind: "point", at: [-3, 0], label: "−3", labelAt: "nw", step: 2 },
+        { kind: "point", at: [0, 0], label: "0", labelAt: "nw", step: 2 },
+        { kind: "segment", from: [1, 2], to: [-3, 0], label: "2√5", labelAt: "nw", tone: "muted", step: 3 },
+        { kind: "segment", from: [1, 2], to: [0, 0], label: "√5", labelAt: "e", tone: "muted", step: 3 },
+        { kind: "point", at: [1, 2], label: "1 + 2i", labelAt: "ne", step: 3 },
+        { kind: "circle", centre: [1, 0], r: 2, step: 4 },
+        { kind: "point", at: [1, 0], label: "centre 1", labelAt: "se", tone: "muted", step: 4 },
       ],
     },
     visualSpec: t`Two fixed points $a$ and $b$ with a ratio slider $k$. The locus redraws live: a straight line at $k = 1$, and circles round $a$ or $b$ as $k$ moves away from 1.`,

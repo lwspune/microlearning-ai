@@ -29,7 +29,7 @@ describe("toSeedPayload", () => {
   });
 
   it("keeps engine notes in the body", () => {
-    expect(byCode("C14").body).toMatchObject({ engineNotes: [expect.stringContaining("C14-M1")] });
+    expect(byCode("C14").body).toMatchObject({ engineNotes: expect.arrayContaining([expect.stringContaining("C14-M1")]) });
   });
 
   it("sends each item's solution", () => {

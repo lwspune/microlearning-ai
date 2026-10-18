@@ -236,7 +236,7 @@ Guests are anonymous logins with no profile.
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
    - Production check (first stop anything still listening on 3103, *before* building: a leftover server keeps serving its old build, and it also writes its not-found answers for new pages into the new build's `.next/server/route-cache`, so a fresh server then returns 404 for them until you rebuild): `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103` and `npm run e2e:performance -- http://localhost:3103`
-   - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
+   - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured. Not for chapter content (new concepts, slide reworks, item fixes): the owner reviews those live (2026-10-18); app and UI changes still need it.
      **Save it in the project:** `screenshots/<date>-<topic>/before-after.png`, raw shots in subfolders beside it (point `SHOTS` there). Never only in a temp folder. `screenshots/` is git-ignored.
    - Leave no test data behind (check `auth.users` and `attempts`).
 7. Show the user, then **merge** (`git merge --ff-only`) and delete the branch.
@@ -343,6 +343,7 @@ Guests are anonymous logins with no profile.
 | Slide reworks asked agents to split equations over ~35 characters, and the read-through looked fine, yet a Circle formula ran 19 px off a phone slide; a probe then found 19 more in 7 live chapters (one +673 px) | the same lesson again: only the screen shows width. `scripts/overflow-probe.mjs` measures every formula on a phone slide; agents and step 7 run it (PLAN.md backfill 8 holds the shipped ones) |
 | 16 content agents each opening a browser grew the page file to 25 GB; drive C fell to 0.2 GB and `next dev` crashed | at most ~10 agents at once on this machine; agents check figures with `scripts/figure-sheet.mjs` (waits for "load": "networkidle" never comes while other edits hot-reload) |
 | Functions ran in Vercel's default region (Washington) while Supabase is in Mumbai: each query cost ~250 ms and a chapter map took ~2 s | `vercel.json` pins `regions` to `bom1`; `src/lib/supabase/region.test.ts` |
+| Only 6 agents at a time, but 30 in a row (Complex Numbers), grew the page file to 23 GB again: free disk fell from 6.4 GB to 0.1 GB, and Node crashed in the probe, the shots and even vitest | a cap on agents at once is not enough; the page file grows over a long run and shrinks only on restart. Check free disk before each new agent and stop starting agents below 2 GB; restart the machine between big chapters |
 
 ## 7. Fine-tuning knobs
 

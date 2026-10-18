@@ -10,20 +10,121 @@ export const c28: Concept = {
     reveal: t`An ellipse: the total distance to the two pins stays fixed. With complex numbers that is $|z - a| + |z - b| = k$.`,
   },
   explanation: {
-    intuition: t`A constant **sum** of distances to two fixed points (the foci) traces an ellipse; a constant **difference** traces one branch of a hyperbola. But always compare the constant with the distance between the foci first: it decides whether the curve exists at all.`,
-    formal: t`Let $d = |a - b|$, the distance between the foci.
-
-**Sum** $|z - a| + |z - b| = k$:
-- $k > d$: an ellipse (major axis $k$)
-- $k = d$: the line segment from $a$ to $b$
-- $k < d$: no points
-
-**Difference** $|z - a| - |z - b| = k$ (with $k > 0$):
-- $k < d$: **one** branch of a hyperbola, the branch nearer $b$
-- $k = d$: a ray from $b$, pointing away from $a$
-- $k > d$: no points
-
-Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
+    intuition: [
+      t`Take two fixed points, here $-3$ and $3$: they are the **foci**, and each one is a **focus**.`,
+      t`Recall: $|z - a|$ is the distance from $z$ to $a$; this $z$ is $7$ from $-3$ and $3$ from $3$.`,
+      t`The points whose two distances **add** to $10$, as $7 + 3$ does, trace an **ellipse**, a closed oval round both foci.`,
+      t`A **hyperbola** is a pair of open curves, its two **branches**, each bending round one focus.`,
+      t`The points whose distances **differ** by $4$, as $7 - 3$ does, trace one branch: the one nearer $3$.`,
+      t`First compare the fixed sum or difference with the gap between the foci, here $6$: it decides if a curve exists.`,
+    ],
+    formal: [
+      {
+        title: "A fixed sum: an ellipse",
+        points: [
+          t`The **locus** of a condition is the set of all points $z$ that satisfy it.`,
+          t`Take two foci $a$ and $b$, and let $d = |a - b|$, the distance between them.`,
+          t`The locus $|z - a| + |z - b| = k$ is every point whose two distances add to $k$.`,
+          t`If $k > d$, this locus is an ellipse round both foci.`,
+          t`Its **major axis**, its longest line across, runs through both foci and is $k$ long.`,
+          t`So from its centre, midway between the foci, the ellipse reaches $\frac k2$ each way.`,
+        ],
+        figure: {
+          alt: "Foci a = −3 + i and b = 3 + i, a distance d apart. A point z has distances to them adding to k; all such points form an ellipse round both foci. Its major axis, through both foci, is k long, so it reaches k/2 from the centre each way, to −4 + i and 4 + i.",
+          view: { x: [-6, 6], y: [-2.3, 4.6] },
+          elements: [
+            { kind: "point", at: [-3, 1], label: "a = −3 + i", labelAt: "s", step: 2 },
+            { kind: "point", at: [3, 1], label: "b = 3 + i", labelAt: "s", step: 2 },
+            { kind: "segment", from: [-3, 1], to: [3, 1], dashed: true, tone: "muted", step: 2 },
+            { kind: "label", at: [-1.5, 1], label: "d", labelAt: "n", tone: "muted", step: 2 },
+            { kind: "point", at: [0, 3.646], label: "z", labelAt: "ne", step: 3 },
+            { kind: "segment", from: [0, 3.646], to: [-3, 1], dashed: true, tone: "muted", step: 3 },
+            { kind: "segment", from: [0, 3.646], to: [3, 1], dashed: true, tone: "muted", step: 3 },
+            { kind: "ellipse", centre: [0, 1], rx: 4, ry: 2.646, label: "sum = k", labelAt: "ne", step: 4 },
+            { kind: "segment", from: [-4, 1], to: [4, 1], tone: "good", step: 5 },
+            { kind: "label", at: [-1.5, 1], label: "k", labelAt: "s", tone: "good", step: 5 },
+            { kind: "point", at: [-4, 1], label: "−4 + i", labelAt: "w", tone: "good", step: 6 },
+            { kind: "point", at: [4, 1], label: "4 + i", labelAt: "e", tone: "good", step: 6 },
+            { kind: "label", at: [2, 1], label: "k/2", labelAt: "n", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "A sum of d or less",
+        points: [
+          t`A path from $a$ to $z$ to $b$ is never shorter than the straight one, so the two distances add to at least $d$.`,
+          t`They add to exactly $d$ only on the **line segment** from $a$ to $b$, the straight piece joining them.`,
+          t`So if $k = d$, the locus is that line segment.`,
+          t`If $k < d$, no point is close enough to both foci: the locus has no points.`,
+        ],
+        figure: {
+          alt: "Foci a = −3 + i and b = 3 + i, a distance d apart. A path from a to a point z off the line and on to b is longer than d. Only the points of the line segment from a to b have distances adding to exactly d, so that segment is the locus when k = d; when k < d there are no points.",
+          view: { x: [-5, 5], y: [-2.3, 4] },
+          elements: [
+            { kind: "point", at: [-3, 1], label: "a = −3 + i", labelAt: "s" },
+            { kind: "point", at: [3, 1], label: "b = 3 + i", labelAt: "s" },
+            { kind: "segment", from: [-3, 1], to: [3, 1], dashed: true, tone: "muted" },
+            { kind: "label", at: [-1.5, 1], label: "d", labelAt: "n", tone: "muted" },
+            { kind: "point", at: [-1, 3], label: "z", labelAt: "n", step: 1 },
+            { kind: "segment", from: [-3, 1], to: [-1, 3], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [-1, 3], to: [3, 1], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [-3, 1], to: [3, 1], tone: "good", step: 2 },
+            { kind: "label", at: [1.2, 1], label: "k = d: the segment", labelAt: "n", tone: "good", step: 3 },
+            { kind: "label", at: [2.5, -1.4], label: "k < d: no points", tone: "bad", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "A fixed difference: one branch",
+        points: [
+          t`Now take the locus $|z - a| - |z - b| = k$, with $k > 0$.`,
+          t`Then $|z - a|$ is the larger distance, so $z$ is nearer $b$ than $a$.`,
+          t`If $k < d$, the locus is **one** branch of a hyperbola: the branch nearer $b$.`,
+          t`The other branch, nearer $a$, is $|z - b| - |z - a| = k$ instead.`,
+          t`Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
+        ],
+        figure: {
+          alt: "Foci a = −3 + i and b = 3 + i. A point z is farther from a than from b by k; all such points form the branch of a hyperbola nearer b. The other branch, nearer a, is drawn dashed: it belongs to the locus only when the difference has an absolute value round it.",
+          view: { x: [-6, 6], y: [-2.6, 4.6] },
+          elements: [
+            { kind: "point", at: [-3, 1], label: "a = −3 + i", labelAt: "w" },
+            { kind: "point", at: [3, 1], label: "b = 3 + i", labelAt: "s" },
+            { kind: "point", at: [3, 3.5], label: "z", labelAt: "e", step: 1 },
+            { kind: "segment", from: [3, 3.5], to: [-3, 1], dashed: true, tone: "muted", step: 1 },
+            { kind: "segment", from: [3, 3.5], to: [3, 1], dashed: true, tone: "muted", step: 1 },
+            { kind: "hyperbola", centre: [0, 1], a: 2, b: 2.236, axis: "x", branch: 1, tone: "good", step: 3 },
+            { kind: "label", at: [3.64, -2.4], label: "difference = k", labelAt: "e", tone: "good", step: 3 },
+            { kind: "hyperbola", centre: [0, 1], a: 2, b: 2.236, axis: "x", branch: -1, dashed: true, tone: "muted", step: 4 },
+            { kind: "label", at: [-3.64, -2.4], label: "other branch", labelAt: "w", tone: "muted", step: 4 },
+            { kind: "hyperbola", centre: [0, 1], a: 2, b: 2.236, axis: "x", branch: -1, step: 5 },
+          ],
+        },
+      },
+      {
+        title: "A difference of d or more",
+        points: [
+          t`The two distances from $z$ to the foci never differ by more than $d$.`,
+          t`A **ray** is a half-line: it starts at a point and goes on for ever one way.`,
+          t`If $k = d$, the locus is the ray from $b$ pointing away from $a$.`,
+          t`On it, $z$ is exactly $d$ farther from $a$ than from $b$.`,
+          t`If $k > d$, no point qualifies: the locus has no points.`,
+        ],
+        figure: {
+          alt: "Foci a = −3 + i and b = 3 + i, a distance d apart. When the difference equals d, the locus is the ray starting at b and pointing away from a; a point z on it is d farther from a than from b. When the difference is more than d there are no points.",
+          view: { x: [-4.5, 7], y: [-2.3, 3.5] },
+          elements: [
+            { kind: "point", at: [-3, 1], label: "a = −3 + i", labelAt: "s" },
+            { kind: "segment", from: [-3, 1], to: [3, 1], dashed: true, tone: "muted" },
+            { kind: "label", at: [-1.5, 1], label: "d", labelAt: "n", tone: "muted" },
+            { kind: "vector", from: [3, 1], to: [6.8, 1], tone: "good", step: 3 },
+            { kind: "label", at: [5, 1], label: "difference = d", labelAt: "s", tone: "good", step: 3 },
+            { kind: "point", at: [3, 1], label: "b = 3 + i", labelAt: "nw" },
+            { kind: "point", at: [5, 1], label: "z", labelAt: "n", step: 4 },
+            { kind: "label", at: [0, -1.4], label: "k > d: no points", tone: "bad", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Describe $|z - 2i| + |z + 2i| = 6$.`,
       steps: [
@@ -47,14 +148,21 @@ Both branches appear only for $\big||z - a| - |z - b|\big| = k$.`,
       },
     },
     figure: {
-      alt: "Foci −3 and 3, 6 apart. The points whose distances to them add to 10 form an ellipse; the points 4 nearer 3 than −3 (difference 4) form one branch of a hyperbola, the branch nearer 3.",
+      alt: "Foci −3 and 3, 6 apart. A point z is 7 from −3 and 3 from 3. The points whose distances to the foci add to 10, as z's do, form an ellipse. A hyperbola has two branches; the points 4 nearer 3 than −3, as z is, form its branch nearer 3.",
       view: { x: [-6, 6], y: [-5.4, 4.8] },
       elements: [
         { kind: "point", at: [-3, 0], label: "−3", labelAt: "n", step: 1 },
-        { kind: "point", at: [3, 0], label: "3", labelAt: "n", step: 1 },
-        { kind: "ellipse", centre: [0, 0], rx: 5, ry: 4, label: "sum = 10", labelAt: "ne", step: 2 },
-        { kind: "hyperbola", centre: [0, 0], a: 2, b: 2.236, axis: "x", branch: 1, tone: "good", step: 3 },
-        { kind: "label", at: [4.82, -4.9], label: "difference = 4", labelAt: "w", tone: "good", step: 3 },
+        { kind: "point", at: [3, 0], label: "3", labelAt: "nw", step: 1 },
+        { kind: "point", at: [3.333, 2.981], label: "z", labelAt: "ne", step: 2 },
+        { kind: "segment", from: [3.333, 2.981], to: [-3, 0], label: "7", labelAt: "se", dashed: true, tone: "muted", step: 2 },
+        { kind: "segment", from: [3.333, 2.981], to: [3, 0], label: "3", labelAt: "e", dashed: true, tone: "muted", step: 2 },
+        { kind: "ellipse", centre: [0, 0], rx: 5, ry: 4, step: 3 },
+        { kind: "label", at: [-3.54, 2.83], label: "sum = 10", labelAt: "nw", step: 3 },
+        { kind: "hyperbola", centre: [0, 0], a: 2, b: 2.236, axis: "x", branch: -1, dashed: true, tone: "muted", step: 4 },
+        { kind: "hyperbola", centre: [0, 0], a: 2, b: 2.236, axis: "x", branch: 1, dashed: true, tone: "muted", step: 4 },
+        { kind: "hyperbola", centre: [0, 0], a: 2, b: 2.236, axis: "x", branch: 1, tone: "good", step: 5 },
+        { kind: "label", at: [4.82, -4.9], label: "difference = 4", labelAt: "w", tone: "good", step: 5 },
+        { kind: "segment", from: [-3, 0], to: [3, 0], label: "6", labelAt: "n", dashed: true, tone: "muted", step: 6 },
       ],
     },
     visualSpec: t`Two draggable foci and a slider for $k$. A toggle switches between sum and difference; as $k$ passes $d$, the ellipse squashes to a segment and vanishes (or the hyperbola branch flattens to a ray).`,

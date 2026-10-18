@@ -1,6 +1,13 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The circle the powers of i sit on, and the initial arm: the arrow from 0 to 1. */
+const cycleBase: FigureElement[] = [
+  { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
+  { kind: "segment", from: [0, 0], to: [1, 0], tone: "good" },
+  { kind: "label", at: [0.75, 0], label: "start", labelAt: "n", tone: "good" },
+];
 
 export const c02: Concept = {
   id: "C02",
@@ -10,16 +17,98 @@ export const c02: Concept = {
     reveal: t`They repeat every four: $i, -1, -i, 1$, then $i$ again. So every power of $i$ is one of just four values.`,
   },
   explanation: {
-    intuition: t`Each extra factor of $i$ moves one step around the cycle $i \to -1 \to -i \to 1 \to i$. The cycle has length 4, so only the remainder of the exponent on division by 4 matters.`,
-    formal: t`$i^1 = i$, $i^2 = -1$, $i^3 = i^2\cdot i = -i$, $i^4 = 1$.
-
-For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n = i^r$:
-- $r = 0$: $1$
-- $r = 1$: $i$
-- $r = 2$: $-1$
-- $r = 3$: $-i$
-
-**Negative exponents** work the same way, with $r$ still between 0 and 3: $i^{-2} = \dfrac{1}{i^2} = -1$, which matches $r = 2$ because $-2 = 4(-1) + 2$.`,
+    intuition: [
+      t`A **power** of $i$ multiplies $i$ by itself; the **exponent** counts the factors: $i^3 = i \cdot i \cdot i$.`,
+      t`Multiplying by $i$ is a **quarter turn**: the arrow from $0$ to $1$ turns $90^\circ$ **anticlockwise**, against a clock's hands, to $i$.`,
+      t`Recall $i^2 = -1$: a second quarter turn lands on $-1$.`,
+      t`A third quarter turn lands straight down, on $i^3 = -i$.`,
+      t`A fourth makes a full turn, back to $i^4 = 1$: the powers form a **cycle**, a loop that repeats.`,
+      t`Every 4 factors make a full turn, so only the **remainder** on dividing the exponent by 4 matters.`,
+    ],
+    formal: [
+      {
+        title: "The first four powers",
+        points: [
+          t`$i^1 = i$: one quarter turn from $1$.`,
+          t`$i^2 = -1$, by the definition of $i$.`,
+          t`$i^3 = i^2 \cdot i = -1 \cdot i = -i$.`,
+          t`$i^4 = (i^2)^2 = (-1)^2 = 1$, back at the start.`,
+          t`Then $i^5 = i^4 \cdot i = i$, and the same four values come round again.`,
+        ],
+        figure: {
+          alt: "The powers of i on a circle around the origin. An arm starts along the real axis at 1 and turns a quarter turn anticlockwise to i, then another to −1, another to −i, and a fourth back to 1.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            ...cycleBase,
+            { kind: "turn", r: 1, to: 90, label: "i¹ = i", labelAt: "ne", step: 1 },
+            { kind: "turn", r: 1, from: 90, to: 180, label: "i² = −1", labelAt: "nw", step: 2 },
+            { kind: "turn", r: 1, from: 180, to: 270, label: "i³ = −i", labelAt: "se", step: 3 },
+            { kind: "turn", r: 1, from: 270, to: 360, label: "i⁴ = 1", labelAt: "ne", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Only the remainder matters",
+        points: [
+          t`Write any integer $n$ as $n = 4q + r$, where the **quotient** $q$ is an integer.`,
+          t`The **remainder** $r$ is what is left over: $r \in \{0, 1, 2, 3\}$.`,
+          t`Each block of four factors is $i^4 = 1$: a full turn, back to the start.`,
+          t`So $i^n = i^r$: the blocks of four change nothing.`,
+          t`For example, $6 = 4 \times 1 + 2$, so $i^6 = i^2 = -1$.`,
+        ],
+        figure: {
+          alt: "An arm starts along the real axis at 1. Four quarter turns make one full turn, back to 1. Six quarter turns are one full turn and two more, landing at −1, where i² is.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            ...cycleBase,
+            { kind: "turn", r: 1, to: 360, label: "i⁴ = 1", labelAt: "ne", step: 3 },
+            { kind: "turn", r: 1, to: 540, label: "i⁶ = −1", labelAt: "nw", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "The value for each remainder",
+        points: [
+          t`Remainder $r$ means $r$ quarter turns from $1$, so $i^n = i^r$ exactly.`,
+          t`Remainder $0$: $i^n = 1$.`,
+          t`Remainder $1$: $i^n = i$.`,
+          t`Remainder $2$: $i^n = -1$.`,
+          t`Remainder $3$: $i^n = -i$.`,
+        ],
+        figure: {
+          alt: "The four remainders on a circle around the origin: remainder 0 stays at 1; remainder 1 is one quarter turn to i; remainder 2 is two quarter turns to −1; remainder 3 is three quarter turns to −i.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            ...cycleBase,
+            { kind: "point", at: [1, 0], label: "r = 0: 1", labelAt: "ne", step: 2 },
+            { kind: "turn", r: 1, to: 90, label: "r = 1: i", labelAt: "ne", step: 3 },
+            { kind: "turn", r: 1, to: 180, label: "r = 2: −1", labelAt: "nw", step: 4 },
+            { kind: "turn", r: 1, to: 270, label: "r = 3: −i", labelAt: "se", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Negative exponents",
+        points: [
+          t`A **negative exponent** means one over the power: $i^{-2} = \frac{1}{i^2}$.`,
+          t`Dividing by $i$ undoes a quarter turn, so it turns **clockwise**, the way a clock's hands go.`,
+          t`Two clockwise quarter turns give $i^{-2} = \frac{1}{-1} = -1$.`,
+          t`The same rule works, with the remainder $r$ still $0$, $1$, $2$ or $3$.`,
+          t`Here $-2 = 4 \times (-1) + 2$, so $r = 2$.`,
+          t`Remainder $2$ gives $-1$, which matches.`,
+        ],
+        figure: {
+          alt: "An arm starts along the real axis at 1 and turns two quarter turns clockwise, landing at −1: that is i⁻². Two quarter turns anticlockwise, for remainder 2, land at the same point.",
+          view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
+          elements: [
+            ...cycleBase,
+            { kind: "turn", r: 1, to: -180, tone: "bad", step: 3 },
+            { kind: "label", at: [-1.15, -0.05], label: "i⁻² = −1", labelAt: "sw", tone: "bad", step: 3 },
+            { kind: "turn", r: 1, to: 180, label: "r = 2", labelAt: "nw", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find $i^{58}$.`,
       steps: [
@@ -31,26 +120,22 @@ For any integer $n$, write $n = 4q + r$ with $r \in \{0, 1, 2, 3\}$. Then $i^n =
         alt: "58 is 14 full turns plus 2 quarter turns, so i⁵⁸ lands where i² does, at −1.",
         view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
         elements: [
-          { kind: "circle", centre: [0, 0], r: 1, dashed: true, tone: "muted" },
-          { kind: "point", at: [1, 0], tone: "muted" },
-          { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 180, label: "2 quarter turns", labelAt: "ne", step: 1 },
-          { kind: "point", at: [-1, 0], label: "i⁵⁸ = −1", labelAt: "nw", step: 2 },
+          ...cycleBase,
+          { kind: "turn", r: 1, to: 180, label: "2 quarter turns", labelAt: "nw", step: 1 },
+          { kind: "point", at: [-1, 0], step: 2 },
+          { kind: "label", at: [-1.15, -0.05], label: "i⁵⁸ = −1", labelAt: "sw", step: 2 },
         ],
       },
     },
     figure: {
-      alt: "The powers of i on a circle around the origin: each extra factor of i is a quarter turn anticlockwise, from 1 to i, −1, −i and back to 1.",
+      alt: "The powers of i on a circle around the origin. An arm starts along the real axis at 1; each extra factor of i turns it a quarter turn anticlockwise, from 1 to i, −1, −i and back to 1.",
       view: { x: [-1.8, 1.8], y: [-1.5, 1.5] },
       elements: [
-        { kind: "point", at: [1, 0], tone: "muted" },
-        { kind: "arc", centre: [0, 0], r: 1, from: 0, to: 90, step: 1 },
-        { kind: "point", at: [0, 1], label: "i¹ = i", labelAt: "ne", step: 1 },
-        { kind: "arc", centre: [0, 0], r: 1, from: 90, to: 180, step: 2 },
-        { kind: "point", at: [-1, 0], label: "i² = −1", labelAt: "nw", step: 2 },
-        { kind: "arc", centre: [0, 0], r: 1, from: 180, to: 270, step: 3 },
-        { kind: "point", at: [0, -1], label: "i³ = −i", labelAt: "se", step: 3 },
-        { kind: "arc", centre: [0, 0], r: 1, from: 270, to: 360, step: 4 },
-        { kind: "point", at: [1, 0], label: "i⁴ = 1", labelAt: "ne", step: 4 },
+        ...cycleBase,
+        { kind: "turn", r: 1, to: 90, label: "i¹ = i", labelAt: "ne", step: 2 },
+        { kind: "turn", r: 1, from: 90, to: 180, label: "i² = −1", labelAt: "nw", step: 3 },
+        { kind: "turn", r: 1, from: 180, to: 270, label: "i³ = −i", labelAt: "se", step: 4 },
+        { kind: "turn", r: 1, from: 270, to: 360, label: "i⁴ = 1", labelAt: "ne", step: 5 },
       ],
     },
     visualSpec: t`A clock with four positions ($1$, $i$, $-1$, $-i$) and a hand that steps once for each factor of $i$. Typing an exponent spins the hand that many steps, showing that only the remainder matters.`,

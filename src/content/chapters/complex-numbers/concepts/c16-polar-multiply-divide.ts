@@ -10,12 +10,88 @@ export const c16: Concept = {
     reveal: t`It doubled: $\dfrac\pi2 + \dfrac\pi2 = \pi$, the direction of $-1$. Multiplying adds angles.`,
   },
   explanation: {
-    intuition: t`In polar form multiplication is simple: multiply the lengths and add the angles. Division undoes it: divide the lengths and subtract the angles, top minus bottom.`,
-    formal: t`For $z_1 = r_1(\cos\theta_1 + i\sin\theta_1)$ and $z_2 = r_2(\cos\theta_2 + i\sin\theta_2)$:
-$$z_1z_2 = r_1r_2\big(\cos(\theta_1 + \theta_2) + i\sin(\theta_1 + \theta_2)\big)$$
-$$\frac{z_1}{z_2} = \frac{r_1}{r_2}\big(\cos(\theta_1 - \theta_2) + i\sin(\theta_1 - \theta_2)\big)$$
-
-So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \arg z_2$, up to a multiple of $2\pi$. For the principal value, bring the answer back into $(-\pi, \pi]$.`,
+    intuition: [
+      t`Recall: polar form gives a complex number by its length, the **modulus**, and its angle, the **argument**.`,
+      t`Take $z_1 = \sqrt3 + i$: length $2$, at angle $\dfrac\pi6$ from the **initial arm**, the positive real axis.`,
+      t`Take $z_2 = 1 + \sqrt3\,i$: length $2$, at angle $\dfrac\pi3$.`,
+      t`Their product is $z_1z_2 = 4i$, of length $2 \times 2 = 4$: the lengths **multiply**.`,
+      t`Its angle is $\dfrac\pi6 + \dfrac\pi3 = \dfrac\pi2$: from $z_1$'s angle, turn on by $z_2$'s, so the angles **add**.`,
+      t`A **quotient**, the result of a division, undoes this: divide the lengths and subtract the angles, top minus bottom.`,
+    ],
+    formal: [
+      {
+        title: "Multiplying in polar form",
+        points: [
+          t`Take $z_1 = r_1(\cos\theta_1 + i\sin\theta_1)$, with modulus $r_1$ and argument $\theta_1$.`,
+          t`Take $z_2 = r_2(\cos\theta_2 + i\sin\theta_2)$, with modulus $r_2$ and argument $\theta_2$.`,
+          t`The product $z_1z_2$ has modulus $r_1r_2$: the moduli multiply.`,
+          t`Its argument is $\theta_1 + \theta_2$: the arguments add.`,
+          t`So $z_1z_2$ equals $r_1r_2\big(\cos(\theta_1 + \theta_2)$ $+\, i\sin(\theta_1 + \theta_2)\big)$.`,
+          t`In short: $\arg(z_1z_2) = \arg z_1 + \arg z_2$.`,
+        ],
+        figure: {
+          alt: "z₁ is an arrow at angle θ₁ from the initial arm, and z₂ an arrow at angle θ₂. The product z₁z₂ is a longer arrow: its angle starts at θ₁ and turns on by θ₂, so it is θ₁ + θ₂.",
+          view: { x: [-1.2, 2.8], y: [-0.6, 2.8] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [2.4, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "vector", to: [1.45, 0.676], label: "z₁", labelAt: "e", step: 1 },
+            { kind: "turn", r: 0.6, to: 25, label: "θ₁", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "vector", to: [0.86, 1.229], label: "z₂", labelAt: "ne", step: 2 },
+            { kind: "turn", r: 0.95, to: 55, label: "θ₂", labelAt: "e", tone: "muted", step: 2 },
+            { kind: "vector", to: [0.417, 2.364], label: "z₁z₂", labelAt: "e", step: 3 },
+            { kind: "turn", r: 2, from: 25, to: 80, label: "+ θ₂", labelAt: "e", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Dividing in polar form",
+        points: [
+          t`The **quotient** $\dfrac{z_1}{z_2}$, for $z_2 \ne 0$, is the number that times $z_2$ gives back $z_1$.`,
+          t`So its modulus times $r_2$ is $r_1$: the moduli divide, giving $\dfrac{r_1}{r_2}$.`,
+          t`Its argument plus $\theta_2$ is $\theta_1$: the arguments subtract, top minus bottom.`,
+          t`So $\dfrac{z_1}{z_2}$ equals $\dfrac{r_1}{r_2}\big(\cos(\theta_1 - \theta_2)$ $+\, i\sin(\theta_1 - \theta_2)\big)$.`,
+          t`In short: $\arg\dfrac{z_1}{z_2} = \arg z_1 - \arg z_2$.`,
+        ],
+        figure: {
+          alt: "z₁ is an arrow at angle θ₁ from the initial arm and z₂ a shorter arrow at angle θ₂. The quotient z₁/z₂ has length r₁ ÷ r₂: its angle starts at θ₁ and turns back, clockwise, by θ₂, so it is θ₁ − θ₂.",
+          view: { x: [-1, 2.8], y: [-0.6, 2.8] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [2.4, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "vector", to: [0.621, 2.318], label: "z₁", labelAt: "e", step: 1 },
+            { kind: "turn", r: 2, to: 75, label: "θ₁", labelAt: "e", tone: "muted", step: 1 },
+            { kind: "vector", to: [1.45, 0.676], label: "z₂", labelAt: "e", step: 1 },
+            { kind: "turn", r: 1.1, to: 25, label: "θ₂", labelAt: "se", tone: "muted", step: 1 },
+            { kind: "vector", to: [0.964, 1.149], label: "z₁/z₂", labelAt: "e", step: 2 },
+            { kind: "turn", r: 1.2, from: 75, to: 50, label: "− θ₂", labelAt: "w", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Back to the principal argument",
+        points: [
+          t`Recall: the **principal argument** is the one value of the argument in $(-\pi, \pi]$.`,
+          t`A full turn, $2\pi$, ends in the same direction, so these rules hold only **up to a multiple of $2\pi$**.`,
+          t`If a sum or difference lands outside $(-\pi, \pi]$, add or subtract $2\pi$ to bring it back.`,
+          t`Take $z_1 = -1 + \sqrt3\,i$, at angle $\dfrac{2\pi}3$, and $z_2 = i$, at angle $\dfrac\pi2$.`,
+          t`The angles add: $\dfrac{2\pi}3 + \dfrac\pi2 = \dfrac{7\pi}6$, more than $\pi$, for $z_1z_2 = -\sqrt3 - i$.`,
+          t`Subtract $2\pi$: $\dfrac{7\pi}6 - 2\pi = -\dfrac{5\pi}6$, the principal argument, measured clockwise.`,
+        ],
+        figure: {
+          alt: "z₁ = −1 + √3i at angle 2π/3 and z₂ = i at angle π/2. Turning on from z₁'s angle by π/2 reaches 7π/6, the direction of z₁z₂ = −√3 − i, past the negative real axis. The same direction, turned clockwise from the initial arm, is −5π/6: the principal argument.",
+          view: { x: [-2.6, 1.8], y: [-1.8, 2.4] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [1.6, 0], label: "initial arm", labelAt: "n", tone: "good" },
+            { kind: "vector", to: [-1, 1.732], label: "z₁ = −1 + √3i", labelAt: "w", step: 4 },
+            { kind: "turn", r: 1.2, to: 120, label: "2π/3", labelAt: "w", tone: "muted", step: 4 },
+            { kind: "vector", to: [0, 1], label: "z₂ = i", labelAt: "e", step: 4 },
+            { kind: "turn", r: 0.7, to: 90, label: "π/2", labelAt: "e", tone: "muted", step: 4 },
+            { kind: "vector", to: [-1.732, -1], label: "z₁z₂ = −√3 − i", labelAt: "s", step: 5 },
+            { kind: "turn", r: 1.2, from: 120, to: 210, label: "+ π/2", labelAt: "nw", step: 5 },
+            { kind: "turn", r: 0.8, to: -150, label: "−5π/6", labelAt: "se", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Find $\dfrac{6\left(\cos\frac{2\pi}{3} + i\sin\frac{2\pi}{3}\right)}{3\left(\cos\frac{\pi}{6} + i\sin\frac{\pi}{6}\right)}$.`,
       steps: [
@@ -38,14 +114,16 @@ So $\arg(z_1z_2) = \arg z_1 + \arg z_2$ and $\arg\dfrac{z_1}{z_2} = \arg z_1 - \
       },
     },
     figure: {
-      alt: "z₁ has length 2 at angle π/6, and z₂ has length 1.5 at angle π/3. Their product has length 2 × 1.5 = 3 at angle π/6 + π/3 = π/2: it is 3i.",
-      view: { x: [-1.5, 3.2], y: [-0.6, 3.6] },
+      alt: "z₁ = √3 + i has length 2 at angle π/6 from the initial arm, and z₂ = 1 + √3i has length 2 at angle π/3. Their product z₁z₂ = 4i has length 2 × 2 = 4; its angle starts at π/6 and turns on by π/3, to π/2.",
+      view: { x: [-1.5, 3.2], y: [-0.6, 4.6] },
       elements: [
-        { kind: "vector", to: [1.732, 1], label: "z₁", labelAt: "e", tone: "muted", step: 1 },
-        { kind: "angle", at: [0, 0], from: 0, to: 30, label: "π/6", tone: "muted", step: 1 },
-        { kind: "vector", to: [0.75, 1.299], label: "z₂", labelAt: "nw", tone: "muted", step: 2 },
-        { kind: "angle", at: [0, 0], from: 30, to: 90, label: "+ π/3", step: 3 },
-        { kind: "vector", to: [0, 3], label: "z₁z₂ = 3i", labelAt: "e", step: 3 },
+        { kind: "segment", from: [0, 0], to: [3, 0], label: "initial arm", labelAt: "n", tone: "good" },
+        { kind: "vector", to: [1.732, 1], label: "z₁ = √3 + i", labelAt: "e", step: 2 },
+        { kind: "turn", r: 0.7, to: 30, label: "π/6", labelAt: "se", tone: "muted", step: 2 },
+        { kind: "vector", to: [1, 1.732], label: "z₂ = 1 + √3i", labelAt: "e", step: 3 },
+        { kind: "turn", r: 1.3, to: 60, label: "π/3", labelAt: "w", tone: "muted", step: 3 },
+        { kind: "vector", to: [0, 4], label: "z₁z₂ = 4i", labelAt: "e", step: 4 },
+        { kind: "turn", r: 2.5, from: 30, to: 90, label: "+ π/3", labelAt: "w", step: 5 },
       ],
     },
     visualSpec: t`Two arrows $z_1$ and $z_2$ with their angles. Their product appears as a third arrow whose angle is the sum and whose length is the product; a toggle switches to the quotient.`,

@@ -497,6 +497,9 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   `scripts/overflow-probe.mjs` (backfill 8). Conic Sections (C01–C14) done
   2026-10-16: all visual, figures on every formal slide, the eccentric
   angle drawn as a turn (C09, C10, C13); no split; 0 phone overflows.
+  Complex Numbers (C01–C30) done 2026-10-18: points, defined terms and
+  figures; misconceptions split in C03, C10, C14, C24 and C25; backfill
+  9(a) fixed; C23's hook reveal split (the only phone overflow).
 - **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
   17–20 before it is published: points on every idea and formal slide (the
   validator now requires them in drafts), and figures in its visual concepts.
@@ -566,6 +569,26 @@ every chapter from Circle on.
   build/e2e/seed cycle.
 - **Recommendation:** do, as one `fix:` commit on the next chapter's branch,
   once the owner agrees.
+
+### 9. Feedback a student sees is wrong or uses untaught terms (logged 2026-10-16, open)
+Learning: slide agents read each misconception's feedback closely, and in
+Complex Numbers they found shipped feedback that the rework may not touch.
+- **Scope:** (a) C27-M1 says "on the other half of the circle it is $-\theta$".
+  That holds only for $\theta = \pm\frac{\pi}{2}$; on the other arc the
+  argument is $\theta - \pi$. A student who picks "the whole circle" (Q1, Q2)
+  reads a false statement. (b) C09-M3's feedback uses $|z|$, which C11
+  teaches; C11 is not a prerequisite of C09. (c) C04's worked-example figure
+  crowds its "− (1 + 2i)" label between "11 + 10i" and "10 + 8i".
+- **Blast radius:** text of two remediations and one label; no item, key or
+  model changes. (a) and (b) show only after a wrong answer.
+- **Does it really apply:** (a) yes, it is false. (b) yes, but mild: the
+  rest of the feedback still works. (c) cosmetic.
+- **Risk and cost:** low and reversible; minutes, plus a reseed.
+- **Recommendation:** do (a) now: "on the other arc the argument is
+  negative ($\theta - \pi$)". (b) reword without $|z|$. (c) with backfill 8.
+- **Done (a), 2026-10-18** (owner: yes), on the Complex Numbers slides
+  branch: "on the other arc of the circle the argument is $\theta - \pi$,
+  not $\theta$".
 
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 

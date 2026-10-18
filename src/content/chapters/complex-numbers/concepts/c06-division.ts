@@ -10,19 +10,69 @@ export const c06: Concept = {
     reveal: t`$1 + i$, its conjugate: $(1 - i)(1 + i) = 1 - i^2 = 2$.`,
   },
   explanation: {
-    intuition: t`A number times its own conjugate is always real: $z\bar z = x^2 + y^2$. So multiply top **and** bottom by the conjugate of the bottom. The bottom becomes real, and the fraction's value doesn't change because you multiplied both. Then split the result into real and imaginary parts.`,
-    formal: t`For $c + id \ne 0$:
-$$\frac{a + ib}{c + id} = \frac{(a + ib)(c - id)}{(c + id)(c - id)} = \frac{(ac + bd) + i(bc - ad)}{c^2 + d^2}$$
-Special case: the reciprocal is $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$. The denominator is $c^2 + d^2$, a **plus** sign, because $(id)(-id) = -i^2d^2 = +d^2$.`,
+    intuition: [
+      t`In a fraction, the **top** is divided by the **bottom**: $\dfrac{6 + 4i}{2} = 3 + 2i$, each part halved.`,
+      t`A complex bottom, such as $2 - i$, can't be shared out like that: it has an $i$ in it.`,
+      t`Recall: its **conjugate** is $2 + i$, the sign of $i$ flipped, its mirror image across the real axis.`,
+      t`For $z = x + iy$, a number times its own conjugate is always real: $z\bar z = x^2 + y^2$.`,
+      t`Here $(2 - i)(2 + i) = 4 + 1 = 5$, a point on the real axis.`,
+      t`So multiply top **and** bottom by the bottom's conjugate: the value stays the same, and the bottom turns real.`,
+    ],
+    figure: {
+      alt: "The Argand plane with the bottom 2 − i as an arrow from the origin and its conjugate 2 + i as its mirror image across the real axis. Their product, 5, is an arrow along the positive real axis.",
+      view: { x: [-1, 7.5], y: [-2, 2.2] },
+      elements: [
+        { kind: "vector", to: [2, -1], step: 2 },
+        { kind: "point", at: [2, -1], label: "2 − i", labelAt: "se", step: 2 },
+        { kind: "segment", from: [2, -1], to: [2, 1], dashed: true, tone: "muted", step: 3 },
+        { kind: "vector", to: [2, 1], tone: "muted", step: 3 },
+        { kind: "point", at: [2, 1], label: "2 + i", labelAt: "ne", step: 3 },
+        { kind: "vector", to: [5, 0], tone: "good", step: 5 },
+        { kind: "point", at: [5, 0], label: "(2 − i)(2 + i) = 5", labelAt: "n", tone: "good", step: 5 },
+      ],
+    },
+    formal: [
+      {
+        title: "Making the bottom real",
+        points: [
+          t`Take $\dfrac{a + ib}{c + id}$, where $a, b, c, d$ are real and $c + id \ne 0$.`,
+          t`Multiply top and bottom by $c - id$, the conjugate of the bottom.`,
+          t`The new bottom is $(c + id)(c - id)$.`,
+          t`When it is expanded, its two $i$ terms, $-icd$ and $+icd$, cancel.`,
+          t`Its last term is $(id)(-id) = -i^2d^2$, which is $+d^2$ since $i^2 = -1$.`,
+          t`So the bottom is $c^2 + d^2$, with a **plus** sign, not $c^2 - d^2$.`,
+        ],
+      },
+      {
+        title: "The division rule",
+        points: [
+          t`The fraction is now $\dfrac{(a + ib)(c - id)}{c^2 + d^2}$.`,
+          t`The top expands, using $i^2 = -1$, to $(ac + bd) + i(bc - ad)$.`,
+          t`So $\dfrac{a + ib}{c + id}$ equals $\dfrac{(ac + bd) + i(bc - ad)}{c^2 + d^2}$.`,
+          t`Split it: the real part is $\dfrac{ac + bd}{c^2 + d^2}$.`,
+          t`The imaginary part is $\dfrac{bc - ad}{c^2 + d^2}$.`,
+        ],
+      },
+      {
+        title: "The reciprocal of z",
+        points: [
+          t`The **reciprocal** of $z$ is $\dfrac{1}{z}$, the number that gives $1$ when multiplied by $z$.`,
+          t`Take $z = c + id$, not zero, and put $1$ on top in the rule.`,
+          t`The top becomes $1 \cdot (c - id)$, which is $\bar z$, the conjugate of $z$.`,
+          t`$|z|$, the **modulus** of $z$, is its distance from $0$, so $|z|^2 = c^2 + d^2$.`,
+          t`So the bottom is $|z|^2$, and $\dfrac{1}{z} = \dfrac{\bar z}{|z|^2}$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`Write $\dfrac{4 + 3i}{2 - i}$ in the form $a + ib$.`,
       steps: [
         t`The bottom is $2 - i$, so multiply top and bottom by its conjugate, $2 + i$.`,
         t`Bottom: $(2 - i)(2 + i) = 4 + 1 = 5$.`,
-        t`Top: $(4 + 3i)(2 + i) = 8 + 4i + 6i + 3i^2 = 8 + 10i - 3 = 5 + 10i$.`,
+        t`Top: $(4 + 3i)(2 + i)$ $= 8 + 4i + 6i + 3i^2$ $= 8 + 10i - 3$ $= 5 + 10i$.`,
         t`Split: $\dfrac{5 + 10i}{5} = 1 + 2i$.`,
       ],
-      answer: t`$1 + 2i$. Check: $(1 + 2i)(2 - i) = 2 - i + 4i - 2i^2 = 4 + 3i$.`,
+      answer: t`$1 + 2i$. Check: $(1 + 2i)(2 - i)$ $= 2 - i + 4i - 2i^2$ $= 4 + 3i$.`,
     },
     visualSpec: t`An Argand plane with the denominator $w$ as an arrow and its conjugate $\bar w$ as its mirror image across the real axis. A slider moves $w$. The product $w\bar w$ always lands on the positive real axis at distance $|w|^2$, which is why the move works.`,
   },
