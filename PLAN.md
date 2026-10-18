@@ -583,6 +583,9 @@ Complex Numbers they found shipped feedback that the rework may not touch.
 - **Risk and cost:** low and reversible; minutes, plus a reseed.
 - **Recommendation:** do (a) now: "on the other arc the argument is
   negative ($\theta - \pi$)". (b) reword without $|z|$. (c) with backfill 8.
+- **Done (a), 2026-10-18** (owner: yes), on the Complex Numbers slides
+  branch: "on the other arc of the circle the argument is $\theta - \pi$,
+  not $\theta$".
 
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 

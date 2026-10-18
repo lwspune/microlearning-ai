@@ -216,7 +216,7 @@ export const c27: Concept = {
     {
       id: "C27-M1",
       mistake: "Taking a fixed argument of a quotient to give the whole circle",
-      remediation: t`The angle at $z$ has a sign: on the other half of the circle it is $-\theta$. A fixed argument gives one arc.`,
+      remediation: t`The angle at $z$ has a sign: on the other arc of the circle the argument is $\theta - \pi$, not $\theta$. A fixed argument gives one arc.`,
       fallback: { kind: "concept", id: "C16" },
     },
     {
