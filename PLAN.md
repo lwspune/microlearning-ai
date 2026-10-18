@@ -943,3 +943,6 @@ read from those rows or page images, never from a PDF's text layer.
   at 10 agents (owner) with 17 GB free. Book faults worked around: Misc I Q.6
   (log x at x = −1), Ex 2.3 Q.2 at θ = π/2 (dx/dθ = 0), Ex 1.3 Q.3 (iv) (81
   has no usable point).
+- Wave 4 started 2026-10-18 (branch `std12-calculus-2`): graphs locked and
+  committed (Indefinite Integration 11 · Definite Integration 7 · Application
+  of Definite Integration 4 · Differential Equations 9); 10 agents at a time.
