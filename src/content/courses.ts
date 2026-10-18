@@ -27,17 +27,21 @@ export type Course = {
   short: string;
   group: GroupId;
   tagline: string;
+  /** A school board: its page shows one standard at a time, which the student picks. */
+  board?: true;
   chapters: CourseChapter[];
 };
 
 export type Group = { id: GroupId; title: string; blurb: string };
 
 export const GROUPS: Group[] = [
-  { id: "school", title: "11th + 12th", blurb: "Boards and entrance exams, alongside Class 11 and 12." },
+  { id: "school", title: "K-12", blurb: "Boards and entrance exams, alongside Class 11 and 12." },
   { id: "graduate", title: "Graduates", blurb: "Defence and services exams after graduation." },
 ];
 
 export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths" };
+
+export const STANDARD_TITLE: Record<Standard, string> = { 11: "Std XI", 12: "Std XII" };
 
 const range = (from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, i) => `C${String(from + i).padStart(2, "0")}`);
@@ -66,10 +70,11 @@ const lpp = (unsure: string[]): CourseChapter => ({
 export const courses: Course[] = [
   {
     slug: "mh-board",
-    title: "Maharashtra Board 11th + 12th",
+    title: "Maharashtra Board",
     short: "MH Board",
     group: "school",
     tagline: "Maharashtra State Board, HSC Science",
+    board: true,
     // Book order: Std XI Part 1, then Part 2, then Std XII. A chapter without coverage is covered whole.
     chapters: [
       { chapter: "angle-measurement" },
@@ -109,10 +114,11 @@ export const courses: Course[] = [
   },
   {
     slug: "cbse",
-    title: "CBSE 11th + 12th",
+    title: "CBSE",
     short: "CBSE",
     group: "school",
     tagline: "CBSE Science, NCERT syllabus",
+    board: true,
     chapters: [{ chapter: "complex-numbers", coverage: { ids: [...CN_ALL, "C23"], unsure: ["C23"], status: "draft" } }, lpp(["C12", "C13"])],
   },
   {
@@ -221,6 +227,11 @@ export function findCourse(slug: string | null | undefined, list: Course[] = cou
 /** A group id from untrusted input (a cookie), or null. */
 export function parseGroup(value: string | null | undefined): GroupId | null {
   return GROUPS.find((g) => g.id === value)?.id ?? null;
+}
+
+/** A standard from untrusted input (a cookie), or null. */
+export function parseStandard(value: string | null | undefined): Standard | null {
+  return value === "11" ? 11 : value === "12" ? 12 : null;
 }
 
 /**

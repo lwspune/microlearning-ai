@@ -1,18 +1,29 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { parseGroup } from "@/content/courses";
-import { GROUP_COOKIE } from "@/server/courses";
+import { parseGroup, parseStandard } from "@/content/courses";
+import { GROUP_COOKIE, STANDARD_COOKIE } from "@/server/courses";
 
-/** Remembers the student's group on this browser. Unknown values are ignored. */
-export async function rememberGroup(value: string): Promise<void> {
-  const group = parseGroup(value);
-  if (!group) return;
-  (await cookies()).set(GROUP_COOKIE, group, {
+const YEAR = 60 * 60 * 24 * 365;
+
+async function remember(name: string, value: string): Promise<void> {
+  (await cookies()).set(name, value, {
     path: "/",
-    maxAge: 60 * 60 * 24 * 365,
+    maxAge: YEAR,
     sameSite: "lax",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
   });
+}
+
+/** Remembers the student's group on this browser. Unknown values are ignored. */
+export async function rememberGroup(value: string): Promise<void> {
+  const group = parseGroup(value);
+  if (group) await remember(GROUP_COOKIE, group);
+}
+
+/** Remembers the student's standard on this browser. Unknown values are ignored. */
+export async function rememberStandard(value: string): Promise<void> {
+  const standard = parseStandard(value);
+  if (standard) await remember(STANDARD_COOKIE, String(standard));
 }
