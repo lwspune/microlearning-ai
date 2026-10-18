@@ -943,3 +943,14 @@ read from those rows or page images, never from a PDF's text layer.
   at 10 agents (owner) with 17 GB free. Book faults worked around: Misc I Q.6
   (log x at x = −1), Ex 2.3 Q.2 at θ = π/2 (dx/dθ = 0), Ex 1.3 Q.3 (iv) (81
   has no usable point).
+- Wave 4 done 2026-10-18 (branch `std12-calculus-2`): Indefinite Integration
+  11 concepts / 65 items, Definite Integration 7 / 39, Application of Definite
+  Integration 4 / 24, Differential Equations 9 / 53; 10 agents at a time.
+  Antiderivative keys checked by differentiating back, definite ones by
+  numerical integration, ODE keys by an ODE solver (or by hand when a solver
+  can't run backwards); about 20 figure labels moved; 0 phone overflows;
+  same gates; seeded, DoD passed, merged. Book faults caught: Def Int 4.2
+  Ex.1 (151/3 for 57/2), Ex 4.2 I (9) key on the wrong interval, Ex 4.2 II
+  (4) key 0 for 8/21; Indef Int Ex 3.2(A) II (14); DE Ex 6.6 Q2 (log 2 =
+  0.6912), 6.4 Ex.2 sign, Misc II Q.2 iv). Lesson: a stale not-found review
+  page sometimes needs a dev-server restart (RUNBOOK).
