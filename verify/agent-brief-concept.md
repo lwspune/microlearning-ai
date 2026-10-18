@@ -38,6 +38,8 @@ a real conceptual error first (the textbook's own warnings and the classic exam 
   modelled mistake that fits them (a 5th or 6th, often a common slip) rather than rewriting every item the same
   way (all negative ratios, every quadratic flipped). Spread the keys too: no single answer (like
   "symmetric only") should be the key on most items, or a student learns to pick it.
+- **The key must not be readable off the stem.** If the answer is a point, value or line the stem already prints
+  (lines that meet at one line's given point, λ = 0), change the numbers so the student has to work for it.
 
 ## 2. Models: `verify/models/<pkg>/cNN.py`
 ```python
