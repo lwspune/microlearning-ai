@@ -10,17 +10,103 @@ export const c01: Concept = {
     reveal: t`Where it crosses the axes. Put $y = 0$: $2x = 20$, so $(10, 0)$. Put $x = 0$: $5y = 20$, so $(0, 4)$. Join them.`,
   },
   explanation: {
-    intuition: t`Every LPP constraint has a straight boundary line, and the quickest way to draw it is from where it crosses the axes. On the $x$-axis $y = 0$; on the $y$-axis $x = 0$. Each crossing then takes just one division.`,
-    formal: t`**Intercepts of $ax + by = c$:**
-- $x$-intercept: put $y = 0$, giving $\left(\dfrac{c}{a}, 0\right)$
-- $y$-intercept: put $x = 0$, giving $\left(0, \dfrac{c}{b}\right)$
-
-**Intercept form:** $\dfrac{x}{p} + \dfrac{y}{q} = 1$ is the line through $(p, 0)$ and $(0, q)$. The intercepts sit under $x$ and $y$. Clear the fractions to get $ax + by = c$.
-
-**Special lines:**
-- $x = k$: vertical, through $(k, 0)$
-- $y = k$: horizontal, through $(0, k)$
-- $ax + by = 0$: passes through the origin, so both intercepts are $(0, 0)$. Pick any other $x$ and solve for $y$ to get a second point.`,
+    intuition: [
+      t`In a **linear programming problem** (LPP), each condition on $x$ and $y$ is a **constraint**, like $2x + 5y \le 20$.`,
+      t`Its **boundary line**, $2x + 5y = 20$, is the straight edge between the points that meet it and those that don't.`,
+      t`Two points fix a line, and the quickest two are where it crosses the axes: its **intercepts**.`,
+      t`On the $x$-axis $y = 0$, so $2x = 20$ and the line crosses at $(10, 0)$.`,
+      t`On the $y$-axis $x = 0$, so $5y = 20$ and it crosses at $(0, 4)$.`,
+      t`Join the two crossings: each one took just one division.`,
+    ],
+    formal: [
+      {
+        title: "Intercepts of a line",
+        points: [
+          t`Take a line $ax + by = c$, with $a$, $b$, $c$ not zero, such as $3x + 4y = 12$.`,
+          t`The **$x$-intercept** is where it crosses the $x$-axis: put $y = 0$, so $ax = c$.`,
+          t`That gives $\left(\dfrac{c}{a}, 0\right)$: here $x = \dfrac{12}{3} = 4$, so $(4, 0)$.`,
+          t`The **$y$-intercept** is where it crosses the $y$-axis: put $x = 0$, so $by = c$.`,
+          t`That gives $\left(0, \dfrac{c}{b}\right)$: here $y = \dfrac{12}{4} = 3$, so $(0, 3)$.`,
+          t`Each time, divide $c$ by the coefficient of the variable that stays.`,
+        ],
+        figure: {
+          alt: "The line 3x + 4y = 12. Putting y = 0 gives its x-intercept (4, 0); putting x = 0 gives its y-intercept (0, 3).",
+          axes: "xy",
+          view: { x: [-1, 5.5], y: [-1, 4] },
+          elements: [
+            { kind: "line", through: [[4, 0], [0, 3]], step: 1 },
+            { kind: "label", at: [2.2, 1.6], label: "3x + 4y = 12", labelAt: "ne", step: 1 },
+            { kind: "point", at: [4, 0], label: "(4, 0)", labelAt: "ne", step: 3 },
+            { kind: "point", at: [0, 3], label: "(0, 3)", labelAt: "ne", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Intercept form",
+        points: [
+          t`The **intercept form** of a line is $\dfrac{x}{p} + \dfrac{y}{q} = 1$, like $\dfrac{x}{4} + \dfrac{y}{3} = 1$.`,
+          t`Put $y = 0$: then $x = p$, so the line passes through $(p, 0)$.`,
+          t`Put $x = 0$: then $y = q$, so it passes through $(0, q)$.`,
+          t`So the intercepts sit in the equation, under $x$ and under $y$.`,
+          t`Clear the fractions to get $ax + by = c$: multiplying by $12$ gives $3x + 4y = 12$.`,
+        ],
+        figure: {
+          alt: "The line x/4 + y/3 = 1. It passes through (p, 0) = (4, 0) and (0, q) = (0, 3), the numbers under x and y. Clearing the fractions gives the same line as 3x + 4y = 12.",
+          axes: "xy",
+          view: { x: [-1, 5.5], y: [-1, 4] },
+          elements: [
+            { kind: "line", through: [[4, 0], [0, 3]], step: 1 },
+            { kind: "label", at: [2.2, 1.6], label: "x/4 + y/3 = 1", labelAt: "ne", step: 1 },
+            { kind: "point", at: [4, 0], label: "(p, 0)", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "point", at: [0, 3], label: "(0, q)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "label", at: [2.2, 2.2], label: "3x + 4y = 12", labelAt: "ne", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Lines parallel to an axis",
+        points: [
+          t`The line $x = k$ is **vertical**, running straight up and down, through $(k, 0)$.`,
+          t`For $k \ne 0$ it never meets the $y$-axis, so it has no $y$-intercept.`,
+          t`The line $y = k$ is **horizontal**, running straight across, through $(0, k)$.`,
+          t`For $k \ne 0$ it never meets the $x$-axis, so it has no $x$-intercept.`,
+        ],
+        figure: {
+          alt: "The vertical line x = 3 through (3, 0), and the horizontal line y = 2 through (0, 2).",
+          axes: "xy",
+          view: { x: [-1, 5], y: [-1, 4] },
+          elements: [
+            { kind: "line", through: [[3, 0], [3, 1]], step: 1 },
+            { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "ne", step: 1 },
+            { kind: "label", at: [3, 3.3], label: "x = 3", labelAt: "e", step: 1 },
+            { kind: "line", through: [[0, 2], [1, 2]], step: 3 },
+            { kind: "point", at: [0, 2], label: "(0, 2)", labelAt: "ne", step: 3 },
+            { kind: "label", at: [4.2, 2], label: "y = 2", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Lines through the origin",
+        points: [
+          t`The line $ax + by = 0$ passes through the **origin** $(0, 0)$, where the axes meet.`,
+          t`Both its intercepts are $(0, 0)$, so they give only one point.`,
+          t`So pick any other $x$ and solve for $y$ to get a second point.`,
+          t`For $3x - 2y = 0$, put $x = 2$: $6 - 2y = 0$, so $y = 3$.`,
+          t`Join $(0, 0)$ and $(2, 3)$ to draw the line.`,
+        ],
+        figure: {
+          alt: "The line 3x − 2y = 0 through the origin (0, 0) and the point (2, 3), found by putting x = 2.",
+          axes: "xy",
+          view: { x: [-1.5, 4], y: [-1.5, 4] },
+          elements: [
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [2, 3], label: "(2, 3)", labelAt: "e", step: 4 },
+            { kind: "line", through: [[0, 0], [2, 3]], step: 5 },
+            { kind: "label", at: [2.4, 2.2], label: "3x − 2y = 0", labelAt: "e", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Draw the boundary line of $4x + 5y \le 40$.`,
       steps: [
@@ -46,10 +132,10 @@ export const c01: Concept = {
       axes: "xy",
       view: { x: [-1.2, 12], y: [-1.2, 6] },
       elements: [
-        { kind: "point", at: [10, 0], label: "(10, 0)", labelAt: "ne", step: 1 },
-        { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "ne", step: 2 },
-        { kind: "line", through: [[0, 4], [-5, 6]], step: 3 },
-        { kind: "label", at: [6.5, 2.8], label: "2x + 5y = 20", step: 3 },
+        { kind: "point", at: [10, 0], label: "(10, 0)", labelAt: "ne", step: 4 },
+        { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "ne", step: 5 },
+        { kind: "line", through: [[0, 4], [-5, 6]], step: 6 },
+        { kind: "label", at: [6.5, 2.8], label: "2x + 5y = 20", step: 6 },
       ],
     },
     visualSpec: t`Drag the two axis crossings; the line through them redraws and its equation updates in both forms, $ax + by = c$ and $\dfrac{x}{p} + \dfrac{y}{q} = 1$.`,

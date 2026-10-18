@@ -10,22 +10,53 @@ export const c12: Concept = {
     reveal: t`Name the decision variables first: $x$ = number of cakes, $y$ = number of pastries. Everything else is written in them: eggs give $3x + y \le 30$, and profit is $Z = 50x + 20y$.`,
   },
   explanation: {
-    intuition: t`Formulating an LPP is three translations. **Variables**: what you choose, such as how many of each product. **Objective**: what you maximise or minimise, written in those variables. **Constraints**: one per limited resource or requirement, every figure in the same unit. Then add $x, y \ge 0$, since you cannot make a negative number of anything.`,
-    formal: t`**Resource table:** one row per resource, one column per product (A is $x$, B is $y$), plus a limit column.
-- Row: A uses $a$, B uses $b$, limit $c$
-- Constraint: $ax + by \le c$ (or $\ge$)
-
-Each row becomes one constraint. The figure in A's column goes with $x$.
-
-**Direction:**
-- "at most", "available", "cannot exceed" $\Rightarrow$ $\le$
-- "at least", "minimum requirement" $\Rightarrow$ $\ge$
-
-**Units first:** convert every figure in a row to one unit before writing it, e.g. $30$ min $= \dfrac12$ h. Then clear fractions.
-
-**Objective:** profit $\Rightarrow$ maximise $Z = px + qy$; cost $\Rightarrow$ minimise $Z = px + qy$.
-
-**Always add:** $x \ge 0$, $y \ge 0$.`,
+    intuition: [
+      t`Recall: a **linear programming problem** (LPP) asks for the best value of an expression in $x$ and $y$, under constraints.`,
+      t`**Formulating** an LPP means turning a word problem into that maths, in three translations.`,
+      t`First, the **decision variables**: what you choose, such as how many of each product to make.`,
+      t`Second, the **objective**: what you make as large (**maximise**) or as small (**minimise**) as possible, written in those variables.`,
+      t`Third, the **constraints**: one for each limited **resource** (eggs, hours, money) or requirement, every figure in the same unit.`,
+      t`Then add $x, y \ge 0$, since you cannot make a negative number of anything.`,
+    ],
+    formal: [
+      {
+        title: "The resource table",
+        points: [
+          t`A **resource table** has one row per resource and one column per product.`,
+          t`Product A is counted by $x$, so the figures in its column go with $x$; B's go with $y$.`,
+          t`A last column holds each resource's limit.`,
+          t`Say a row reads: A uses $a$, B uses $b$, limit $c$.`,
+          t`That row becomes the constraint $ax + by \le c$ (or $\ge$).`,
+          t`Each row becomes one constraint, read across.`,
+        ],
+      },
+      {
+        title: "Choosing the direction",
+        points: [
+          t`The **direction** of a constraint is its sign, $\le$ or $\ge$.`,
+          t`"At most", "available" and "cannot exceed" set a ceiling on the total, so use $\le$.`,
+          t`"At least" and "minimum requirement" set a floor under the total, so use $\ge$.`,
+        ],
+      },
+      {
+        title: "Units first",
+        points: [
+          t`Every figure in one row must be in the same unit.`,
+          t`Convert before writing the constraint, e.g. $30$ min $= \dfrac12$ h.`,
+          t`Then clear fractions: multiply both sides by the same positive number.`,
+        ],
+      },
+      {
+        title: "Objective and sign conditions",
+        points: [
+          t`The **objective function** $Z$ is the objective written in $x$ and $y$.`,
+          t`With $p$ per unit of A and $q$ per unit of B, $Z = px + qy$.`,
+          t`For a profit, maximise $Z = px + qy$.`,
+          t`For a cost, minimise $Z = px + qy$.`,
+          t`Always add the **sign conditions** $x \ge 0$ and $y \ge 0$.`,
+        ],
+      },
+    ],
     worked: {
       prompt: t`A workshop makes $x$ lamps and $y$ fans. A lamp needs $3$ hours of wiring and $20$ minutes of packing; a fan needs $2$ hours of wiring and $40$ minutes of packing. At most $24$ hours of wiring and $5$ hours of packing are available. Profit is ₹$120$ per lamp and ₹$150$ per fan. Formulate the LPP.`,
       steps: [

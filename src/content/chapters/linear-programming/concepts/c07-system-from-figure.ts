@@ -1,6 +1,18 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The idea slide's region: 2x + 3y ≥ 6, x − 2y ≤ 4, x + y ≤ 7, x, y ≥ 0, with its labelled lines. */
+const fiveSided: FigureElement[] = [
+  { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [3, 0]] }, { kind: "halfPlane", through: [[0, -2], [2, -1]] }, { kind: "halfPlane", through: [[0, 7], [-1, 8]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }] },
+  { kind: "line", through: [[0, 2], [-3, 4]], tone: "muted" },
+  { kind: "label", at: [2.4, 0.4], label: "2x + 3y = 6", labelAt: "ne", tone: "muted" },
+  { kind: "line", through: [[0, -2], [2, -1]], tone: "muted" },
+  { kind: "label", at: [7, 1.5], label: "x − 2y = 4", labelAt: "se", tone: "muted" },
+  { kind: "line", through: [[0, 7], [-1, 8]], tone: "muted" },
+  { kind: "label", at: [4.5, 2.5], label: "x + y = 7", labelAt: "ne", tone: "muted" },
+];
+const fiveSidedView: Figure["view"] = { x: [-0.8, 9.4], y: [-0.8, 7.8] };
 
 export const c07: Concept = {
   id: "C07",
@@ -10,17 +22,83 @@ export const c07: Concept = {
     reveal: t`Yes, every line needs its own sign, but one point inside the shading settles them all at once. At $(2, 2)$: $2x + 3y = 10 \ge 6$, $x - 2y = -2 \le 4$, $x + y = 4 \le 7$. So the system is $2x + 3y \ge 6$, $x - 2y \le 4$, $x + y \le 7$, $x, y \ge 0$.`,
   },
   explanation: {
-    intuition: t`Each boundary line needs its own sign, and one point gives you all of them. Pick a point clearly inside the shading and substitute it into each line's expression. Bigger than the line's constant means $\ge$; smaller means $\le$. With options, strike out every one that disagrees, one line at a time.`,
-    formal: t`**Reading the system off a figure**
-
-1. Pick one point clearly inside the shading, not on any line.
-2. For each line $ax + by = c$, work out $ax + by$ at that point.
-3. More than $c$: the constraint is $ax + by \ge c$. Less than $c$: $ax + by \le c$.
-4. Add $x, y \ge 0$. With options, strike out any that disagrees, line by line.
-
-**Don't trust above and below.** Above a line means $\ge$ only when the coefficient of $y$ is positive. Above $x - 2y = 4$, a larger $y$ makes $x - 2y$ smaller, so the shading above it is $x - 2y \le 4$.
-
-**Don't assume the origin.** The origin is often outside the region, or on one of its lines, so it can't tell you the signs. A point you can see inside the shading always can.`,
+    intuition: [
+      t`Recall: the shaded **feasible region** is the set of points where every constraint holds.`,
+      t`Its **system** is that list of constraints: one for each boundary line, plus $x, y \ge 0$.`,
+      t`Each boundary line needs its own sign, $\ge$ or $\le$.`,
+      t`Any point inside the shading makes every one of those constraints true.`,
+      t`So one such point, put into each line in turn, gives you every sign.`,
+      t`With options, strike out every one that disagrees, one line at a time.`,
+    ],
+    formal: [
+      {
+        title: "Reading the system off a figure",
+        points: [
+          t`Pick one point clearly inside the shading, not on any line: here $(2, 2)$.`,
+          t`For each line $ax + by = c$, work out $ax + by$ at that point.`,
+          t`More than $c$ gives $ax + by \ge c$: $2x + 3y = 10 \ge 6$.`,
+          t`Less than $c$ gives $ax + by \le c$: $x + y = 4 \le 7$.`,
+          t`Add $x, y \ge 0$: the two axes bound the region too.`,
+          t`With options, strike out any that disagrees, line by line.`,
+        ],
+        figure: {
+          alt: "The shaded five-sided region bounded by 2x + 3y = 6, x − 2y = 4, x + y = 7 and the axes. The test point (2, 2) appears inside it; then the line 2x + 3y = 6 is highlighted, then x + y = 7, then the two stretches of the axes that bound the region.",
+          axes: "xy",
+          view: fiveSidedView,
+          elements: [
+            ...fiveSided,
+            { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 1 },
+            { kind: "line", through: [[0, 2], [-3, 4]], step: 3 },
+            { kind: "line", through: [[0, 7], [-1, 8]], step: 4 },
+            { kind: "segment", from: [3, 0], to: [4, 0], step: 5 },
+            { kind: "segment", from: [0, 2], to: [0, 7], step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Don't trust above and below",
+        points: [
+          t`Above a line means $\ge$ only when the **coefficient** of $y$, the number in front of it, is positive.`,
+          t`The shading here lies above the line $x - 2y = 4$.`,
+          t`There $y$ has coefficient $-2$, so a larger $y$ makes $x - 2y$ smaller.`,
+          t`So the shading above it is $x - 2y \le 4$, not $\ge$.`,
+          t`The test point agrees: at $(2, 2)$, $x - 2y = -2 \le 4$.`,
+        ],
+        figure: {
+          alt: "The shaded five-sided region. The line x − 2y = 4 is highlighted, with the shading above it. An arrow points straight up from the line, where y grows and x − 2y falls. The test point (2, 2) inside the shading gives x − 2y = −2.",
+          axes: "xy",
+          view: fiveSidedView,
+          elements: [
+            ...fiveSided,
+            { kind: "line", through: [[0, -2], [2, -1]], step: 2 },
+            { kind: "vector", from: [5, 0.5], to: [5, 1.8], label: "larger y", labelAt: "w", step: 3 },
+            { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Don't assume the origin",
+        points: [
+          t`The origin is often outside the region, so it can't tell you the signs.`,
+          t`Here it lies below $2x + 3y = 6$, outside the shading.`,
+          t`Its side of that line is $2x + 3y \le 6$: the wrong sign.`,
+          t`The origin can also lie on one of the lines, and then it decides nothing.`,
+          t`A point you can see inside the shading always can: $(2, 2)$ settles every line.`,
+        ],
+        figure: {
+          alt: "The shaded five-sided region. The origin is hollow, outside it, below the highlighted line 2x + 3y = 6; the origin's side of that line, the small triangle 2x + 3y ≤ 6, is shaded as the wrong side. Then the test point (2, 2) appears inside the region.",
+          axes: "xy",
+          view: fiveSidedView,
+          elements: [
+            ...fiveSided,
+            { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "bad", hollow: true, step: 1 },
+            { kind: "line", through: [[0, 2], [-3, 4]], step: 2 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[3, 0], [0, 2]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], tone: "bad", step: 3 },
+            { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 5 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`The shaded triangle, with corners $(0, 1)$, $(4, 1)$ and $(2, 3)$, is bounded by the lines $x + y = 5$, $x - y = -1$ and $y = 1$. Write the system of constraints it is the feasible region of.`,
       steps: [
@@ -50,18 +128,15 @@ export const c07: Concept = {
       },
     },
     figure: {
-      alt: "A shaded five-sided region in the first quadrant, bounded by the lines 2x + 3y = 6, x − 2y = 4 and x + y = 7 and the axes. The test point (2, 2) lies inside it and settles the sign of every line.",
+      alt: "A shaded five-sided region in the first quadrant, bounded by the lines 2x + 3y = 6, x − 2y = 4 and x + y = 7 and the axes. The test point (2, 2) appears inside it, then the three lines are highlighted: that one point settles the sign of every line.",
       axes: "xy",
-      view: { x: [-0.8, 8], y: [-0.8, 7.8] },
+      view: fiveSidedView,
       elements: [
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 2], [3, 0]] }, { kind: "halfPlane", through: [[0, -2], [2, -1]] }, { kind: "halfPlane", through: [[0, 7], [-1, 8]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
-        { kind: "line", through: [[0, 2], [-3, 4]], tone: "muted", step: 1 },
-        { kind: "label", at: [2.4, 0.4], label: "2x + 3y = 6", labelAt: "ne", tone: "muted", step: 1 },
-        { kind: "line", through: [[0, -2], [2, -1]], tone: "muted", step: 1 },
-        { kind: "label", at: [7, 1.5], label: "x − 2y = 4", labelAt: "se", tone: "muted", step: 1 },
-        { kind: "line", through: [[0, 7], [-1, 8]], tone: "muted", step: 1 },
-        { kind: "label", at: [4.5, 2.5], label: "x + y = 7", labelAt: "ne", tone: "muted", step: 1 },
-        { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 2 },
+        ...fiveSided.map((e) => ({ ...e, step: 1 })),
+        { kind: "point", at: [2, 2], label: "(2, 2)", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "line", through: [[0, 2], [-3, 4]], step: 5 },
+        { kind: "line", through: [[0, -2], [2, -1]], step: 5 },
+        { kind: "line", through: [[0, 7], [-1, 8]], step: 5 },
       ],
     },
     visualSpec: t`Drag a test point around the shaded region; each labelled line shows its expression's value at the point and the sign it gives, and options that disagree are struck out line by line.`,

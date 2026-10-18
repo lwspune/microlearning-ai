@@ -1,6 +1,30 @@
-import type { Concept } from "../../../types.ts";
+import type { Concept, Figure, FigureElement } from "../../../types.ts";
 
 const t = String.raw;
+
+/** The hook's region 2x + y ≤ 8, x ≤ 3, y ≤ 4, x, y ≥ 0; it appears at `step` when given. */
+function hookRegion(step?: number): FigureElement {
+  return {
+    kind: "region",
+    within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[3, 0], [3, 1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }],
+    ...(step === undefined ? {} : { step }),
+  };
+}
+
+/** The hook region's corners off the tied edge, (0, 0), (3, 0) and (0, 4), muted, at `step` when given. */
+function otherCorners(step?: number): FigureElement[] {
+  const at = step === undefined ? {} : { step };
+  return [
+    { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "muted", ...at },
+    { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "ne", tone: "muted", ...at },
+    { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "e", tone: "muted", ...at },
+  ];
+}
+
+/** The line 2x + y = 8, which holds the edge from (3, 2) to (2, 4). */
+const edgeLine: [[number, number], [number, number]] = [[3, 2], [2, 4]];
+
+const hookView: Figure["view"] = { x: [-0.54, 5.4], y: [-0.54, 5.4] };
 
 export const c11: Concept = {
   id: "C11",
@@ -10,19 +34,79 @@ export const c11: Concept = {
     reveal: t`Infinitely many. Both corners lie on the edge $2x + y = 8$, and $Z = 2x + y$ equals $8$ at **every** point of that edge, such as $(2.5, 3)$. The whole segment between the two corners is optimal, not just its ends.`,
   },
   explanation: {
-    intuition: t`Slide the line $Z = k$ across the region. Usually it leaves the region at one corner. But if the $Z = k$ lines are parallel to an edge, the sliding line reaches the whole edge at once, so every point of that edge gives the same best $Z$.`,
-    formal: t`**A tie at two corners**
-
-If $Z$ takes its optimum at two adjacent corners $A$ and $B$, it takes the same value at every point of the segment $AB$.
-
-- So there are **infinitely many** optimal solutions, never exactly two.
-- The optimal **value** is still one number.
-
-**Spot it**
-
-$Z$'s coefficients are proportional to an edge's line. $Z = 4x + 2y = 2(2x + y)$ is parallel to any edge $2x + y = c$.
-
-A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must be at the best value.`,
+    intuition: [
+      t`We want $Z = 2x + y$ as large as possible on the region $2x + y \le 8$, $x \le 3$, $y \le 4$, $x, y \ge 0$.`,
+      t`Recall: the points where $Z$ takes one value $k$ lie on a line, $Z = k$: here $Z = 4$.`,
+      t`Raise $k$ and the line slides outwards, staying parallel: here to $Z = 6$.`,
+      t`Usually the line last touches the region at a single corner, where two edges (sides) meet.`,
+      t`But these lines run parallel to the edge on $2x + y = 8$, so $Z = 8$ lies along that whole edge.`,
+      t`So every point of that edge is **optimal**, giving the best $Z$: $(2.5, 3)$ gives $5 + 3 = 8$.`,
+    ],
+    formal: [
+      {
+        title: "A tie at two corners",
+        points: [
+          t`Two corners are **adjacent** when one edge of the region joins them, like $A$ and $B$.`,
+          t`Say $Z$ takes its optimum at both $A$ and $B$: here $Z = 8$ at each.`,
+          t`Then $Z$ takes that same value at every point of the segment $AB$.`,
+          t`That is because the edge lies on the line $Z = 8$ itself.`,
+          t`A segment has infinitely many points, so there are **infinitely many** optimal solutions, never exactly two.`,
+          t`The optimal **value** is still one number: the maximum is $8$.`,
+        ],
+        figure: {
+          alt: "The region 2x + y ≤ 8, x ≤ 3, y ≤ 4 in the first quadrant, shaded, with corners (0, 0), (3, 0) and (0, 4). The adjacent corners A (3, 2) and B (2, 4) both give Z = 8. The edge AB is highlighted, the dashed line Z = 8 runs along it, more points of the edge appear, and a label reads: maximum 8.",
+          axes: "xy",
+          view: hookView,
+          elements: [
+            hookRegion(),
+            ...otherCorners(),
+            { kind: "point", at: [3, 2], label: "A", labelAt: "w", step: 1 },
+            { kind: "point", at: [2, 4], label: "B", labelAt: "sw", step: 1 },
+            { kind: "label", at: [3, 2], label: "Z = 8", labelAt: "e", tone: "good", step: 2 },
+            { kind: "label", at: [2, 4], label: "Z = 8", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "line", through: edgeLine, tone: "accent", dashed: true, step: 4 },
+            { kind: "segment", from: [3, 2], to: [2, 4], tone: "good", step: 3 },
+            { kind: "label", at: [3.6, 0.8], label: "Z = 8", labelAt: "e", tone: "accent", step: 4 },
+            { kind: "point", at: [2.75, 2.5], tone: "good", step: 5 },
+            { kind: "point", at: [2.5, 3], tone: "good", step: 5 },
+            { kind: "point", at: [2.25, 3.5], tone: "good", step: 5 },
+            { kind: "label", at: [3.3, 4.6], label: "maximum 8", labelAt: "e", tone: "good", step: 6 },
+          ],
+        },
+      },
+      {
+        title: "Spot a parallel edge",
+        points: [
+          t`To spot a tie early, look for an edge parallel to the lines $Z = k$.`,
+          t`Test with coefficients: they must be **proportional**, one set a fixed multiple of the other.`,
+          t`For example, $Z = 4x + 2y$ equals $2(2x + y)$.`,
+          t`So every line $Z = k$ is parallel to any edge $2x + y = c$: here $Z = 16$ lies along one.`,
+          t`A parallel edge is only a **candidate**, a possible place for the optimum.`,
+          t`So compare $Z$ at every corner: the tie must be at the best value, as $16$ is here.`,
+        ],
+        figure: {
+          alt: "The region 2x + y ≤ 8, x ≤ 3, y ≤ 4 in the first quadrant, shaded, with its edge on 2x + y = 8 highlighted. Dashed lines Z = 8 and Z = 12 for Z = 4x + 2y run parallel to it, and the dashed line Z = 16 lies along it. The corners are labelled with Z: (0, 0) 0, (3, 0) 12, (3, 2) 16, (2, 4) 16, (0, 4) 8, so the tie at 16 is the largest.",
+          axes: "xy",
+          view: hookView,
+          elements: [
+            hookRegion(),
+            { kind: "segment", from: [3, 2], to: [2, 4], step: 1 },
+            { kind: "label", at: [2.5, 3], label: "2x + y = 8", labelAt: "w", step: 1 },
+            { kind: "line", through: [[0, 4], [-1, 6]], tone: "muted", dashed: true, step: 3 },
+            { kind: "label", at: [1.25, 1.5], label: "Z = 8", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "line", through: [[0, 6], [-1, 8]], tone: "muted", dashed: true, step: 3 },
+            { kind: "label", at: [2.25, 1.5], label: "Z = 12", labelAt: "e", tone: "muted", step: 3 },
+            { kind: "line", through: edgeLine, tone: "accent", dashed: true, step: 4 },
+            { kind: "label", at: [3.6, 0.8], label: "Z = 16", labelAt: "e", tone: "accent", step: 4 },
+            { kind: "point", at: [0, 0], label: "Z = 0", labelAt: "ne", tone: "muted", step: 6 },
+            { kind: "point", at: [3, 0], label: "Z = 12", labelAt: "ne", tone: "muted", step: 6 },
+            { kind: "point", at: [0, 4], label: "Z = 8", labelAt: "se", tone: "muted", step: 6 },
+            { kind: "point", at: [3, 2], label: "Z = 16", labelAt: "e", tone: "good", step: 6 },
+            { kind: "point", at: [2, 4], label: "Z = 16", labelAt: "ne", tone: "good", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Maximise $Z = 2x + 2y$ subject to $x + y \le 5$, $x \le 4$, $y \le 3$, $x, y \ge 0$. Where is the maximum?`,
       steps: [
@@ -50,22 +134,22 @@ A parallel edge is only a candidate. Compare $Z$ at every corner: the tie must b
       },
     },
     figure: {
-      alt: "The region 2x + y ≤ 8, x ≤ 3, y ≤ 4 in the first quadrant, shaded, with corners (0, 0), (3, 0), (3, 2), (2, 4) and (0, 4). Dashed lines Z = 4 and Z = 6 run parallel to the edge 2x + y = 8. That edge, from (3, 2) to (2, 4), is highlighted: Z = 8 at both corners and at (2.5, 3) between them.",
+      alt: "The region 2x + y ≤ 8, x ≤ 3, y ≤ 4 in the first quadrant, shaded, with corners (0, 0), (3, 0), (3, 2), (2, 4) and (0, 4). Dashed lines Z = 4 and Z = 6 run parallel to the edge 2x + y = 8, and the dashed line Z = 8 lies along it. That edge, from (3, 2) to (2, 4), is highlighted: Z = 8 at both corners and at (2.5, 3) between them.",
       axes: "xy",
-      view: { x: [-0.54, 5.4], y: [-0.54, 5] },
+      view: hookView,
       elements: [
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 8], [-1, 10]] }, { kind: "halfPlane", through: [[3, 0], [3, 1]] }, { kind: "halfPlane", through: [[0, 4], [-1, 4]] }, { kind: "halfPlane", through: [[0, 0], [0, -1]] }, { kind: "halfPlane", through: [[0, 0], [1, 0]] }], step: 1 },
-        { kind: "point", at: [0, 0], label: "(0, 0)", labelAt: "ne", tone: "muted", step: 1 },
-        { kind: "point", at: [3, 0], label: "(3, 0)", labelAt: "ne", tone: "muted", step: 1 },
-        { kind: "point", at: [0, 4], label: "(0, 4)", labelAt: "e", tone: "muted", step: 1 },
+        hookRegion(1),
+        ...otherCorners(1),
         { kind: "line", through: [[0, 4], [-1, 6]], tone: "muted", dashed: true, step: 2 },
         { kind: "label", at: [1.25, 1.5], label: "Z = 4", labelAt: "e", tone: "muted", step: 2 },
-        { kind: "line", through: [[0, 6], [-1, 8]], tone: "muted", dashed: true, step: 2 },
-        { kind: "label", at: [2.25, 1.5], label: "Z = 6", labelAt: "e", tone: "muted", step: 2 },
-        { kind: "segment", from: [3, 2], to: [2, 4], tone: "good", step: 3 },
-        { kind: "point", at: [3, 2], label: "(3, 2), Z = 8", labelAt: "e", tone: "good", step: 3 },
-        { kind: "point", at: [2, 4], label: "(2, 4), Z = 8", labelAt: "ne", tone: "good", step: 3 },
-        { kind: "point", at: [2.5, 3], label: "(2.5, 3), Z = 8", labelAt: "ne", tone: "good", step: 4 },
+        { kind: "line", through: [[0, 6], [-1, 8]], tone: "muted", dashed: true, step: 3 },
+        { kind: "label", at: [2.25, 1.5], label: "Z = 6", labelAt: "e", tone: "muted", step: 3 },
+        { kind: "line", through: edgeLine, tone: "accent", dashed: true, step: 5 },
+        { kind: "label", at: [3.6, 0.8], label: "Z = 8", labelAt: "e", tone: "accent", step: 5 },
+        { kind: "segment", from: [3, 2], to: [2, 4], tone: "good", step: 5 },
+        { kind: "point", at: [3, 2], label: "(3, 2), Z = 8", labelAt: "e", tone: "good", step: 5 },
+        { kind: "point", at: [2, 4], label: "(2, 4), Z = 8", labelAt: "ne", tone: "good", step: 5 },
+        { kind: "point", at: [2.5, 3], label: "(2.5, 3), Z = 8", labelAt: "ne", tone: "good", step: 6 },
       ],
     },
     visualSpec: t`Slide the line Z = k across the region; when it is parallel to an edge, the whole edge lights up at the optimum, and dragging a point along that edge keeps Z fixed.`,

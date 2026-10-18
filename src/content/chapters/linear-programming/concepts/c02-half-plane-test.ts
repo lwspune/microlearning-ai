@@ -10,14 +10,90 @@ export const c02: Concept = {
     reveal: t`Try the origin: $0 + 0 \le 5$ is true. So it is the half containing the origin, plus the line itself.`,
   },
   explanation: {
-    intuition: t`A straight line cuts the plane into two halves. On one side $ax + by$ is less than $c$, on the other it is more, and on the line it equals $c$. Every point on a side gives the same answer, so one test point decides the whole side.`,
-    formal: t`**To graph $ax + by \le c$ (or $\ge c$):**
-
-1. Draw the line $ax + by = c$ (intercepts or any two points). With $\le$ or $\ge$ the line belongs to the region: draw it solid. Only $<$ and $>$ leave it out.
-2. Test a point not on the line. The origin is easiest: put $x = 0,\ y = 0$.
-3. True: keep the test point's side. False: keep the other side.
-
-**Line through the origin** ($c = 0$), like $y \le 3x$: the origin gives $0 \le 0$, true whichever side you mean, so it tells you nothing. Test $(1, 0)$ or $(0, 1)$ instead: at $(1, 0)$, $0 \le 3$ is true, so keep the side containing $(1, 0)$.`,
+    intuition: [
+      t`A straight line, like $x + y = 5$, cuts the plane in two: each side is a **half-plane**.`,
+      t`Take a line $ax + by = c$: at every point on it, $ax + by$ equals $c$.`,
+      t`On one side of the line, $ax + by$ is less than $c$.`,
+      t`On the other side, it is more than $c$.`,
+      t`Every point on the same side gives the same answer.`,
+      t`So one point, a **test point**, decides the whole side.`,
+    ],
+    formal: [
+      {
+        title: "Draw the boundary line",
+        points: [
+          t`To graph $ax + by \le c$ (or $\ge c$), first draw the line $ax + by = c$.`,
+          t`Recall: draw it through its two intercepts, or through any two of its points.`,
+          t`For $x + y \le 5$, that is the line through $(5, 0)$ and $(0, 5)$.`,
+          t`This line is the **boundary**: the edge between the two half-planes.`,
+          t`With $\le$ or $\ge$, points on the line belong to the region: draw it solid.`,
+          t`Only $<$ and $>$ leave the line out.`,
+        ],
+        figure: {
+          alt: "The line x + y = 5 drawn through (5, 0) and (0, 5). It is the boundary between the half-plane where x + y < 5, towards the origin, and the half-plane where x + y > 5. The point (2, 3) on the line gives 5 ≤ 5, true, so the line belongs to x + y ≤ 5.",
+          axes: "xy",
+          view: { x: [-2, 7], y: [-2, 7] },
+          elements: [
+            { kind: "point", at: [5, 0], tone: "muted", step: 3 },
+            { kind: "point", at: [0, 5], tone: "muted", step: 3 },
+            { kind: "line", through: [[0, 5], [-1, 6]], step: 3 },
+            { kind: "label", at: [3.5, 1.5], label: "x + y = 5", labelAt: "ne", step: 3 },
+            { kind: "label", at: [0.8, 1.2], label: "x + y < 5", tone: "muted", step: 4 },
+            { kind: "label", at: [4.4, 4.4], label: "x + y > 5", tone: "muted", step: 4 },
+            { kind: "point", at: [2, 3], tone: "good", label: "5 ≤ 5 true", labelAt: "ne", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Test a point off the line",
+        points: [
+          t`Next, pick a **test point**: any point that is not on the line.`,
+          t`The origin is easiest: put $x = 0,\ y = 0$.`,
+          t`For $x + y \le 5$ it gives $0 + 0 \le 5$, which is true.`,
+          t`True: keep the test point's side.`,
+          t`False: keep the other side.`,
+        ],
+        figure: {
+          alt: "The line x + y = 5. The origin is the test point: 0 ≤ 5 is true, so the half containing the origin is shaded, with the line, as x + y ≤ 5.",
+          axes: "xy",
+          view: { x: [-2, 7], y: [-2, 7] },
+          elements: [
+            { kind: "line", through: [[0, 5], [-1, 6]] },
+            { kind: "label", at: [3.5, 1.5], label: "x + y = 5", labelAt: "ne" },
+            { kind: "point", at: [0, 0], step: 2 },
+            { kind: "label", at: [0, 0], label: "0 ≤ 5 true", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [-1, 6]] }], step: 4 },
+            { kind: "label", at: [1.2, 2.4], label: "x + y ≤ 5", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Line through the origin",
+        points: [
+          t`A line with $c = 0$, like $y = 3x$, passes through the origin.`,
+          t`For $y \le 3x$, the origin gives $0 \le 0$: true whichever side you mean.`,
+          t`So the origin tells you nothing here.`,
+          t`Test $(1, 0)$ or $(0, 1)$ instead.`,
+          t`At $(1, 0)$, $y \le 3x$ gives $0 \le 3$, which is true.`,
+          t`So keep the line and the side containing $(1, 0)$.`,
+        ],
+        figure: {
+          alt: "The line y = 3x through the origin and (1, 3). The origin is on the line and gives 0 ≤ 0, which tells nothing. The point (1, 0) gives 0 ≤ 3, true, so the side containing (1, 0) is shaded, with the line, as y ≤ 3x.",
+          axes: "xy",
+          view: { x: [-2, 3], y: [-2, 4] },
+          elements: [
+            { kind: "line", through: [[0, 0], [1, 3]], step: 1 },
+            { kind: "label", at: [1.2, 3.6], label: "y = 3x", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, 0], tone: "muted", label: "0 ≤ 0", labelAt: "nw", step: 2 },
+            { kind: "point", at: [1, 0], tone: "muted", step: 4 },
+            { kind: "point", at: [0, 1], tone: "muted", step: 4 },
+            { kind: "point", at: [1, 0], tone: "good", label: "0 ≤ 3 true", labelAt: "ne", step: 5 },
+            { kind: "region", within: [{ kind: "halfPlane", through: [[0, 0], [-1, -3]] }], step: 6 },
+            { kind: "label", at: [2, 1.5], label: "y ≤ 3x", step: 6 },
+          ],
+        },
+      },
+    ],
     worked: {
       prompt: t`Which region does $x + 3y \ge 6$ describe?`,
       steps: [
@@ -42,15 +118,17 @@ export const c02: Concept = {
       },
     },
     figure: {
-      alt: "The line x + y = 5. The origin passes the test (0 ≤ 5 is true), so the half containing the origin is shaded, with the line.",
+      alt: "The line x + y = 5 cuts the plane in two. The point (1, 4) on it gives 1 + 4 = 5. The point (1, 1) on one side gives 1 + 1 < 5; the point (4, 3) on the other gives 4 + 3 > 5. The whole side containing (1, 1) is shaded as x + y < 5.",
       axes: "xy",
       view: { x: [-2, 7], y: [-2, 7] },
       elements: [
         { kind: "line", through: [[0, 5], [-1, 6]], step: 1 },
         { kind: "label", at: [3.5, 1.5], label: "x + y = 5", labelAt: "ne", step: 1 },
-        { kind: "point", at: [0, 0], tone: "good", label: "0 ≤ 5 true", labelAt: "ne", step: 2 },
-        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [-1, 6]] }], step: 3 },
-        { kind: "label", at: [1.2, 2.4], label: "x + y ≤ 5", step: 3 },
+        { kind: "point", at: [1, 4], label: "1 + 4 = 5", labelAt: "ne", step: 2 },
+        { kind: "point", at: [1, 1], tone: "good", label: "1 + 1 < 5", labelAt: "ne", step: 3 },
+        { kind: "point", at: [4, 3], tone: "bad", label: "4 + 3 > 5", labelAt: "ne", step: 4 },
+        { kind: "region", within: [{ kind: "halfPlane", through: [[0, 5], [-1, 6]] }], tone: "good", step: 5 },
+        { kind: "label", at: [-1.2, 2.4], label: "x + y < 5", tone: "good", step: 5 },
       ],
     },
     visualSpec: t`Drag a test point around a line $ax + by = c$; it turns green where the inequality is true and red where it is false, and its whole side shades when the student picks a side.`,
