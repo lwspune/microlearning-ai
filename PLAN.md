@@ -608,6 +608,16 @@ Complex Numbers they found shipped feedback that the rework may not touch.
   $\sqrt{a^2 + b^2}$ (from squaring and adding the two equations), not $|z|$,
   and checks against $a + ib$; C04's worked-example labels sit apart.
 
+### 10. A key that can be read off the stem (logged 2026-10-18, open)
+Learning: Std XII Line and Plane C05-Q6 (draft, fixed before shipping) asked
+where two lines meet, and they met at the first line's printed point, so the
+key could be copied from the stem. The agent brief now forbids it for new work.
+- **Scope:** unknown; shipped items have not been scanned. A first pass:
+  flag items whose key text appears verbatim in the stem, then read each.
+- **Recommendation:** run that scan after Std XII wave 2 and bring the
+  360 analysis (count, which chapters, fix cost) to the owner before
+  changing any shipped item.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
