@@ -935,10 +935,11 @@ read from those rows or page images, never from a PDF's text layer.
   its clipped segment, "n"/"s" labels centre on their anchor, and a key must
   not be readable off the stem (backfill 10). Agents check labels with a
   shared rough renderer before handing back.
-- Wave 3 started 2026-10-18 (branch `std12-calculus-1`): graphs locked and
-  committed (Differentiation 12 · Application of Derivatives 10).
-  Paused 2026-10-18 for a restart (owner): the Windows page file grew to 23 GB
-  and free disk fell to 4.7 GB. Done: Differentiation C01–C10 written and
-  reviewed (keys, overflow, figure sheets).
-  Next on resume: the queue (Differentiation C11, C12, then
-  Application of Derivatives C01–C10) at 5 agents.
+- Wave 3 done 2026-10-18 (branch `std12-calculus-1`): Differentiation 12
+  concepts / 72 items, Application of Derivatives 10 / 57; every key
+  re-derived (hand and sympy), every figure sheet checked (about 30 labels
+  moved), 0 phone overflows; same gates; seeded, DoD passed, merged. Paused
+  mid-wave for a Windows restart (page file 23 GB, free disk 4.7 GB); resumed
+  at 10 agents (owner) with 17 GB free. Book faults worked around: Misc I Q.6
+  (log x at x = −1), Ex 2.3 Q.2 at θ = π/2 (dx/dθ = 0), Ex 1.3 Q.3 (iv) (81
+  has no usable point).
