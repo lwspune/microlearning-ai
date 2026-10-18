@@ -500,9 +500,14 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   Complex Numbers (C01–C30) done 2026-10-18: points, defined terms and
   figures; misconceptions split in C03, C10, C14, C24 and C25; backfill
   9(a) fixed; C23's hook reveal split (the only phone overflow).
-- **Wave 4** (branch `std11-stats-probability`, drafts) must meet rules
-  17–20 before it is published: points on every idea and formal slide (the
-  validator now requires them in drafts), and figures in its visual concepts.
+- **Wave 4** done 2026-10-18 (branch `std11-stats-probability`): all 17
+  rewritten to rules 17–20 before publishing, one agent per concept. Figures
+  where they teach: Venn diagrams (Prob C05, C06), trees (C08, C10), a unit
+  square (C09), dice grids (C01, C02), number lines (Dispersion C01–C05, C07);
+  long hook and worked formulas split; 0 phone overflows. Prob C05 found
+  `venn()`'s caption on the frame edge: the helper now puts a two-set caption
+  just inside the top and a three-set one bottom left (no shipped figure
+  used it).
 
 ### 6. Venn labels on the rectangle's top edge (logged 2026-10-15, done 2026-10-15)
 Found in the Sets and Relations slide rework: a label at `y` 6.45–6.75 with
@@ -830,10 +835,9 @@ LaTeX or from the page images, never from extracted text (RUNBOOK 6).
   8 · Conic Sections 14); equation answers verified as loci; same gates;
   published and merged. The book teaches asymptotes and the hyperbola's
   director circle without exercises, so those items are authored.
-- Wave 4 paused 2026-10-15 (owner asked to pause at a clean point), branch
-  `std11-stats-probability`: 17 concepts, 102 items (Measures of Dispersion
-  7 · Probability 10) written, read through, verified (0 problems) and
-  committed as **draft**; 363 tests pass. Not yet done: set them approved,
-  seed, full Definition of done, course-page screenshot sheet, merge. No
-  figures in this wave (data tables are display-maths arrays, checked at
-  390 px). Wave 5 (calculus) not started; its graphs are drafted.
+- Wave 4 done 2026-10-18: 17 concepts, 102 items (Measures of Dispersion
+  7 · Probability 10), every key and distractor verified (0 problems); paused
+  2026-10-15 as drafts, then its slides rewritten as points with figures
+  (lesson-rework section above); same gates; published and merged. No
+  before/after sheet (owner, 2026-10-18: not for chapter content). Wave 5
+  (calculus) not started; its graphs are drafted.
