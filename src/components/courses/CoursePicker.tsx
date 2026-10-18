@@ -2,12 +2,13 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 import { RevealList } from "@/components/RevealList";
+import { Tabs } from "@/components/Tabs";
 import { linkCardShape } from "@/components/ui";
 import { chapters } from "@/content/chapters";
 import { type Course, courseSize, coursesIn, GROUPS, parseGroup, SUBJECTS } from "@/content/courses";
 import type { GroupId } from "@/content/types";
+import { rememberGroup } from "@/app/courses/actions";
 import { rememberedGroupValue } from "@/server/courses";
-import { GroupTabs } from "./GroupTabs";
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
@@ -51,17 +52,20 @@ function Picker({ initial }: { initial: GroupId }) {
   const panels = Object.fromEntries(
     GROUPS.map((g) => [
       g.id,
-      <RevealList key={g.id} spotlight className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {coursesIn(g.id).map((c, i) => (
-          <CourseCard key={c.slug} course={c} index={i} />
-        ))}
-      </RevealList>,
+      <div key={g.id}>
+        <p className="text-muted">{g.blurb}</p>
+        <RevealList spotlight className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {coursesIn(g.id).map((c, i) => (
+            <CourseCard key={c.slug} course={c} index={i} />
+          ))}
+        </RevealList>
+      </div>,
     ]),
-  ) as Record<GroupId, React.ReactNode>;
-  return <GroupTabs groups={GROUPS} initial={initial} panels={panels} />;
+  );
+  return <Tabs label="Where you are" tabs={GROUPS} initial={initial} panels={panels} remember={rememberGroup} />;
 }
 
-/** The course picker, opened on the group this browser chose before (11th + 12th by default). */
+/** The course picker, opened on the group this browser chose before (K-12 by default). */
 export async function CoursePicker() {
   return <Picker initial={parseGroup(await rememberedGroupValue()) ?? "school"} />;
 }
