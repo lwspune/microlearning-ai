@@ -20,9 +20,11 @@ import { trigonometricFunctions12 } from "./trigonometric-functions-12/index.ts"
 import { pairOfStraightLines } from "./pair-of-straight-lines/index.ts";
 import { vectors } from "./vectors/index.ts";
 import { lineAndPlane } from "./line-and-plane/index.ts";
+import { differentiation12 } from "./differentiation-12/index.ts";
+import { applicationOfDerivatives } from "./application-of-derivatives/index.ts";
 import { sequencesAndSeries } from "./sequences-and-series/index.ts";
 import { setsAndRelations } from "./sets-and-relations/index.ts";
 import { straightLine } from "./straight-line/index.ts";
 import { trigonometricFunctions } from "./trigonometric-functions/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives];
