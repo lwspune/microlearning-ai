@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`On $y = x^3 - 3x$, the point $(-1, 2)$ is a hilltop: every point close to it is lower. **Is $2$ the greatest value of $x^3 - 3x$?**`,
     reveal: t`No: at $x = 3$ the value is $27 - 9 = 18$. $2$ is only the greatest value **near** $x = -1$. That is a **local** maximum.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Zoom in on the curve $y = x^2$ near the point $(1, 1)$, closer and closer. It starts to look like a straight line. Which line?`,
     reveal: t`The line through $(1, 1)$ with the curve's slope there, $\frac{dy}{dx} = 2x = 2$: $y - 1 = 2(x - 1)$, that is, $y = 2x - 1$. This line is the **tangent** at $(1, 1)$.`,

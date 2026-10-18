@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A stone dropped in a pond sends out a circular ripple whose radius grows at a steady $5$ cm/sec. **Does the area inside the ripple grow at a steady rate too?**`,
     reveal: t`No. $A = \pi r^2$, so $\frac{dA}{dt} = 2\pi r\frac{dr}{dt}$ $= 10\pi r$. At $r = 2$ cm the area grows at $20\pi$ cm²/sec; at $r = 10$ cm, at $100\pi$ cm²/sec.`,

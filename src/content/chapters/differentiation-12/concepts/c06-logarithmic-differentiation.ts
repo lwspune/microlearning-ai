@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For $y = x^{\sin x}$, the power rule gives $\sin x\cdot x^{\sin x - 1}$. The exponential rule gives $x^{\sin x}\log x\cdot\cos x$. **Which one is right?**`,
     reveal: t`Neither on its own. Take logs: $\log y = \sin x\log x$. The product rule gives two terms, and $\frac{dy}{dx}$ turns out to be the **sum** of both answers.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You walk along the curve $y = x^2 - 4x + 3$ from left to right. **For which $x$ are you walking downhill?**`,
     reveal: t`For $x < 2$. The slope there, $y' = 2x - 4$, is negative. At $x = 2$ the slope is $0$, and after that it is positive: you climb.`,

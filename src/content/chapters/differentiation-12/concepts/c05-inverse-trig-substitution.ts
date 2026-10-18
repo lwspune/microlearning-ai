@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Differentiate $y = \sin^{-1}\left(\frac{2x}{1 + x^2}\right)$ for $-1 < x < 1$. **Straight through the chain rule the algebra is long. Can you do it in one line?**`,
     reveal: t`Put $x = \tan\theta$: $\frac{2\tan\theta}{1 + \tan^2\theta} = \sin 2\theta$. So $y = 2\theta = 2\tan^{-1}x$, and $\frac{dy}{dx} = \frac{2}{1 + x^2}$.`,

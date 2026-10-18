@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\sqrt{4.1}$ is a little more than $2$. Without a calculator, **how much more?**`,
     reveal: t`Near $x = 4$, the curve $y = \sqrt{x}$ is almost its tangent, of slope $\frac{1}{4}$. A step of $0.1$ raises the tangent by $0.025$, so $\sqrt{4.1} \approx 2.025$. The true value is $2.0248\ldots$`,

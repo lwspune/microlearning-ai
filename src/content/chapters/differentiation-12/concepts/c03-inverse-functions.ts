@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The curve $y = x^2$, $x \ge 0$, passes through $(3, 9)$ with slope $6$. Its mirror image in the line $y = x$ is $y = \sqrt{x}$, through $(9, 3)$. **Without differentiating** $\sqrt{x}$, what is its slope at $(9, 3)$?`,
     reveal: t`The mirror swaps every run and rise, so slope $6 = \frac{6}{1}$ becomes $\frac{1}{6}$. Check: $\frac{d}{dx}\sqrt{x}$ $= \frac{1}{2\sqrt{x}}$, which is $\frac{1}{6}$ at $x = 9$.`,

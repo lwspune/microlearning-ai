@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`If $x = t^2$ and $y = t^3$ with $t > 0$, is $\frac{d^2y}{dx^2}$ equal to $\frac{d^2y/dt^2}{d^2x/dt^2}$ $= \frac{6t}{2} = 3t$? Test it: here $y = x^{3/2}$.`,
     reveal: t`No. From $y = x^{3/2}$, $\frac{d^2y}{dx^2} = \frac{3}{4}x^{-1/2} = \frac{3}{4t}$. At $t = 1$ that is $\frac{3}{4}$, not $3$: second derivatives do not divide like first ones.`,

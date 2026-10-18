@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Expand $(2x + 1)^2 = 4x^2 + 4x + 1$: its derivative is $8x + 4$. **So why does the power rule's $2(2x + 1)$ give only half of it?**`,
     reveal: t`The power rule alone treats $2x + 1$ like a plain $x$. But $2x + 1$ grows twice as fast as $x$, so multiply by its derivative, $2$: $2(2x + 1)\cdot 2 = 8x + 4$.`,

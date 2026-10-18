@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A car covers $120$ km in $2$ hours. **Must its speedometer read exactly $60$ km/h at some moment?**`,
     reveal: t`Yes. $60$ km/h is the average speed: the slope of the chord of the distance-time graph. The speed at an instant is the slope of a tangent. Lagrange's mean value theorem says some tangent is parallel to the chord, so at that moment the speed is exactly $60$ km/h.`,

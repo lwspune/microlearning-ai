@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A ball is thrown straight up and caught at the same height a few seconds later. Was its velocity ever exactly $0$?`,
     reveal: t`Yes, at the top. Its height starts and ends equal and changes smoothly, so it rises, stops and falls. Velocity is the derivative of height, and at the top it is $0$. That is Rolle's theorem.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The line $y = 2x - 4$ never meets the curve $y = x^2$. **Yet one tangent of $y = x^2$ runs parallel to it. Where does it touch?**`,
     reveal: t`Parallel lines have equal slopes, so that tangent has slope $2$. On $y = x^2$, $\frac{dy}{dx} = 2x = 2$ gives $x = 1$: it touches at $(1, 1)$, along $y = 2x - 1$.`,

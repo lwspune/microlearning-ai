@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For $y = e^{x^2}$, can you write $y_2$ using only $x$, $y$ and $y_1$, with no $e$ at all?`,
     reveal: t`Yes. $y_1 = 2xe^{x^2} = 2xy$. Differentiate that again: $y_2 = 2y + 2xy_1$. So $y_2 - 2xy_1 - 2y = 0$, and the exponential has gone.`,

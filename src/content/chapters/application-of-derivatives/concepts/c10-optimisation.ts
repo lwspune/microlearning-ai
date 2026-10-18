@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A $20$ m rope is laid on the ground as a rectangle. **Which rectangle encloses the most area?**`,
     reveal: t`The $5$ m by $5$ m square. With sides $x$ and $10 - x$, the area is $A = x(10 - x)$. Its slope $A' = 10 - 2x$ is zero at $x = 5$, where $A = 25$ m$^2$.`,

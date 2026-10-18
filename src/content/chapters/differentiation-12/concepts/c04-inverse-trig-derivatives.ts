@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$y = \sin x$ has slope $\cos x$. **What is the slope of $y = \sin^{-1}x$ at $x = \frac{1}{2}$?**`,
     reveal: t`Turn it round: $x = \sin y$, so $\frac{dx}{dy} = \cos y$ and $\frac{dy}{dx} = \frac{1}{\cos y}$. At $x = \frac{1}{2}$, $y = \frac{\pi}{6}$, so the slope is $\frac{1}{\cos\frac{\pi}{6}} = \frac{2}{\sqrt{3}}$.`,

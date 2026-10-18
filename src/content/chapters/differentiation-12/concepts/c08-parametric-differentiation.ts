@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A ball thrown from the ground is at $x = 4t$, $y = 10t - 5t^2$ metres after $t$ seconds. At the start, $x$ grows at $4$ m/s and $y$ at $10$ m/s. What is the slope of its path at the start?`,
     reveal: t`Each instant it moves $4$ across for every $10$ up, so the slope is $\frac{10}{4} = \frac{5}{2}$: the rate of $y$ over the rate of $x$. Check: its path is $y = \frac{5x}{2} - \frac{5x^2}{16}$, with slope $\frac{5}{2}$ at $x = 0$.`,

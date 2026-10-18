@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The circle $x^2 + y^2 = 25$ is not one function $y = f(x)$: most $x$ give two values of $y$. **So how do you find its slope at $(3, 4)$ without solving for $y$?**`,
     reveal: t`Differentiate both sides, treating $y$ as a function of $x$: $2x + 2y\frac{dy}{dx} = 0$. So $\frac{dy}{dx} = -\frac{x}{y} = -\frac{3}{4}$ at $(3, 4)$.`,

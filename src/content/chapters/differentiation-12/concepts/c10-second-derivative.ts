@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For $y = x^3$, is $\frac{d^2y}{dx^2}$ the same as $\left(\frac{dy}{dx}\right)^2$? **The 2 sits where a square would go.**`,
     reveal: t`No. $\frac{dy}{dx} = 3x^2$, so $\left(\frac{dy}{dx}\right)^2 = 9x^4$. But differentiating $3x^2$ again gives $\frac{d^2y}{dx^2} = 6x$: the 2 counts differentiations.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A car has covered $s = t^2$ metres after $t$ seconds. At $t = 5$ it has gone $25$ m in $5$ s. **What does its speedometer show at that instant: $25$ m/s, $5$ m/s, or something else?**`,
     reveal: t`Something else. $25$ m is the distance, and $\dfrac{25}{5} = 5$ m/s is only the average over $5$ seconds. The car keeps speeding up, so at $t = 5$ it is faster than its average: the speedometer shows $\dfrac{ds}{dt} = 2t = 10$ m/s.`,

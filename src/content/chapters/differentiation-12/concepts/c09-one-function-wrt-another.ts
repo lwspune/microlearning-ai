@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Let $u = x^6$ and $v = x^2$. **How fast does $u$ change as $v$ changes?** Hint: write $u$ in terms of $v$.`,
     reveal: t`$u = (x^2)^3 = v^3$, so $\frac{du}{dv} = 3v^2 = 3x^4$. Dividing the two rates with respect to $x$ gives the same: $\frac{6x^5}{2x} = 3x^4$.`,

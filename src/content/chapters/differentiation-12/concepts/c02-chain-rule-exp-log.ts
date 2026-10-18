@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The curve $y = e^{x^2}$ is lowest at $x = 0$, so its slope there is $0$. **But $\frac{d}{dx}e^{x} = e^{x}$ suggests the slope is $e^{x^2}$, which is $1$ at $x = 0$. Which is right?**`,
     reveal: t`The slope is $0$. Here $e$ is raised to a function, so the chain rule multiplies by the inside's derivative: $\frac{d}{dx}e^{x^2} = e^{x^2}\cdot 2x$, which is $0$ at $x = 0$.`,
