@@ -68,7 +68,7 @@ export const c08: Concept = {
     worked: {
       prompt: t`Express $0.5\overline{27} = 0.52727\ldots$ as a fraction.`,
       steps: [
-        t`Split off the digit that doesn't repeat: $0.5\overline{27}$ equals $0.5$ plus $(0.027 + 0.00027 + 0.0000027 + \ldots)$.`,
+        t`Split off the digit that doesn't repeat: $0.5\overline{27}$ equals $0.5$ plus $(0.027 + 0.00027$ $+ 0.0000027 + \ldots)$.`,
         t`The bracket is a G.P. with $a = 0.027$ and $r = \frac{0.00027}{0.027} = 0.01$ (two digits repeat), and $|r| < 1$.`,
         t`Its sum to infinity is $\frac{a}{1 - r} = \frac{0.027}{0.99}$, which is $\frac{27}{990} = \frac{3}{110}$.`,
         t`Add the front part back: $\frac{1}{2} + \frac{3}{110} = \frac{55}{110} + \frac{3}{110}$, which is $\frac{58}{110} = \frac{29}{55}$.`,

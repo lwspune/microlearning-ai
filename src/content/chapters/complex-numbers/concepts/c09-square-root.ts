@@ -85,8 +85,8 @@ export const c09: Concept = {
     },
     {
       id: "C09-M3",
-      mistake: t`Mixing up $x^2$ and $y^2$: taking $x^2 = \dfrac{\lvert z \rvert - a}{2}$`,
-      remediation: t`Adding $x^2 - y^2 = a$ and $x^2 + y^2 = \lvert z \rvert$ gives $x^2 = \dfrac{\lvert z \rvert + a}{2}$. Square your answer to check it gives back $z$.`,
+      mistake: t`Mixing up $x^2$ and $y^2$: taking $x^2 = \dfrac{\sqrt{a^2 + b^2} - a}{2}$`,
+      remediation: t`Squaring and adding the two equations gives $x^2 + y^2 = \sqrt{a^2 + b^2}$. Adding this to $x^2 - y^2 = a$ gives $x^2 = \dfrac{\sqrt{a^2 + b^2} + a}{2}$. Square your answer to check it gives back $a + ib$.`,
       fallback: { kind: "concept", id: "C08" },
     },
     {

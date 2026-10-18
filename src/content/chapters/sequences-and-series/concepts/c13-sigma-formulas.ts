@@ -117,7 +117,7 @@ export const c13: Concept = {
       },
     ],
     worked: {
-      prompt: t`Find $(70^2 - 69^2) + (68^2 - 67^2) + (66^2 - 65^2) + \ldots + (2^2 - 1^2)$.`,
+      prompt: t`Find $(70^2 - 69^2) + (68^2 - 67^2)$ $+ (66^2 - 65^2) + \ldots$ $+ (2^2 - 1^2)$.`,
       steps: [
         t`Each bracket is $(2r)^2 - (2r - 1)^2$: $r = 35$ gives $70^2 - 69^2$ and $r = 1$ gives $2^2 - 1^2$. So $r$ runs from $1$ to $35$.`,
         t`Expand: $(2r)^2 - (2r - 1)^2$ $= 4r^2 - (4r^2 - 4r + 1)$ $= 4r - 1$. The sum is $\sum_{r=1}^{35} (4r - 1)$.`,

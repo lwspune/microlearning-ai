@@ -101,7 +101,7 @@ export const c17: Concept = {
           t`Find the first and the last of them: $a = 105$ and $l = 294$.`,
           t`Count them with $t_n$: $294 = 105 + (n - 1)7$, so $n - 1 = 27$ and $n = 28$.`,
           t`So the count is $\frac{l - a}{d} + 1$: the $+1$ is the first term itself.`,
-          t`Then $S_{28} = \frac{28}{2}(105 + 294) = 14 \times 399 = 5586$.`,
+          t`Then $S_{28} = \frac{28}{2}(105 + 294)$ $= 14 \times 399$ $= 5586$.`,
         ],
       },
       {
@@ -119,7 +119,7 @@ export const c17: Concept = {
     worked: {
       prompt: t`How many terms of the A.P. $9, 17, 25, \ldots$ must be taken to give a sum of $636$?`,
       steps: [
-        t`Here $a = 9$ and $d = 17 - 9 = 8$, so $S_n = \frac{n}{2}[18 + 8(n - 1)] = \frac{n}{2}(8n + 10) = 4n^2 + 5n$.`,
+        t`Here $a = 9$ and $d = 17 - 9 = 8$, so $S_n = \frac{n}{2}[18 + 8(n - 1)]$ $= \frac{n}{2}(8n + 10)$ $= 4n^2 + 5n$.`,
         t`Set $4n^2 + 5n = 636$: then $4n^2 + 5n - 636 = 0$, which factorises as $(n - 12)(4n + 53) = 0$.`,
         t`So $n = 12$ or $n = -\frac{53}{4}$. A number of terms is a natural number, so reject $-\frac{53}{4}$.`,
         t`Check: $t_{12} = 9 + 11(8) = 97$, and $\frac{12}{2}(9 + 97) = 6 \times 106 = 636$.`,

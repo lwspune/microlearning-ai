@@ -7,7 +7,7 @@ export const c09: Concept = {
   status: "approved",
   hook: {
     prompt: t`Neither $\cos 52.5^\circ$ nor $\cos 7.5^\circ$ is in your table. **Can you still find $\cos 52.5^\circ\cos 7.5^\circ$ exactly?**`,
-    reveal: t`Yes. The two angles add to $60^\circ$ and differ by $45^\circ$, so $2\cos 52.5^\circ\cos 7.5^\circ = \cos 60^\circ + \cos 45^\circ = \frac{1}{2} + \frac{\sqrt{2}}{2}$. Halve it: $\cos 52.5^\circ\cos 7.5^\circ = \frac{1 + \sqrt{2}}{4}$.`,
+    reveal: t`Yes. The two angles add to $60^\circ$ and differ by $45^\circ$, so $2\cos 52.5^\circ\cos 7.5^\circ = \cos 60^\circ + \cos 45^\circ$ $= \frac{1}{2} + \frac{\sqrt{2}}{2}$. Halve it: $\cos 52.5^\circ\cos 7.5^\circ = \frac{1 + \sqrt{2}}{4}$.`,
   },
   explanation: {
     intuition: [

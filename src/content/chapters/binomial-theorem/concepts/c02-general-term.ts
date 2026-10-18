@@ -27,7 +27,7 @@ export const c02: Concept = {
   status: "approved",
   hook: {
     prompt: t`The $5$th term of $\left(2x - \frac{1}{x}\right)^8$: **does it carry $^8C_5$ or $^8C_4$?**`,
-    reveal: t`$^8C_4$. The terms carry $^8C_0, {}^8C_1, {}^8C_2, \ldots$ in order, so the $5$th one has $^8C_4$: $T_5 = {}^8C_4\,(2x)^4\left(-\frac{1}{x}\right)^4 = 70 \cdot 16 = 1120$. The $x$'s cancel, and the even power makes it positive.`,
+    reveal: t`$^8C_4$. The terms carry $^8C_0, {}^8C_1, {}^8C_2, \ldots$ in order, so the $5$th one has $^8C_4$: $T_5 = {}^8C_4\,(2x)^4\left(-\frac{1}{x}\right)^4$ $= 70 \cdot 16$ $= 1120$. The $x$'s cancel, and the even power makes it positive.`,
   },
   explanation: {
     intuition: [

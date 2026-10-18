@@ -30,7 +30,7 @@ export const c08: Concept = {
   status: "approved",
   hook: {
     prompt: t`Neither $75^\circ$ nor $15^\circ$ is a standard angle. **Can you still find $\sin 75^\circ + \sin 15^\circ$ exactly?**`,
-    reveal: t`Yes. Turn the sum into a product: $\sin 75^\circ + \sin 15^\circ = 2\sin\frac{75^\circ + 15^\circ}{2}\cos\frac{75^\circ - 15^\circ}{2} = 2\sin 45^\circ\cos 30^\circ = 2 \cdot \frac{1}{\sqrt{2}} \cdot \frac{\sqrt{3}}{2} = \frac{\sqrt{6}}{2}$.`,
+    reveal: t`Yes. Turn the sum into a product: $\sin 75^\circ + \sin 15^\circ = 2\sin\frac{75^\circ + 15^\circ}{2}\cos\frac{75^\circ - 15^\circ}{2}$ $= 2\sin 45^\circ\cos 30^\circ$ $= 2 \cdot \frac{1}{\sqrt{2}} \cdot \frac{\sqrt{3}}{2}$ $= \frac{\sqrt{6}}{2}$.`,
   },
   explanation: {
     intuition: [

@@ -7,7 +7,7 @@ export const c03: Concept = {
   status: "approved",
   hook: {
     prompt: t`$x^2 + y^2 + 2x - 8y + 17 = 0$ has $x^2$ and $y^2$ with the same coefficient and no $xy$ term. **Is it a circle?**`,
-    reveal: t`Complete the squares: $(x + 1)^2 + (y - 4)^2 = 1 + 16 - 17 = 0$. A sum of two squares is $0$ only when both are $0$, so the only point on it is $(-1, 4)$: a circle of radius $0$, a **point circle**. Change $17$ to $18$ and the right side is $-1$: no point at all. Whether you get a real circle depends on the sign of $g^2 + f^2 - c$.`,
+    reveal: t`Complete the squares: $(x + 1)^2 + (y - 4)^2 = 1 + 16 - 17$ $= 0$. A sum of two squares is $0$ only when both are $0$, so the only point on it is $(-1, 4)$: a circle of radius $0$, a **point circle**. Change $17$ to $18$ and the right side is $-1$: no point at all. Whether you get a real circle depends on the sign of $g^2 + f^2 - c$.`,
   },
   explanation: {
     intuition: [

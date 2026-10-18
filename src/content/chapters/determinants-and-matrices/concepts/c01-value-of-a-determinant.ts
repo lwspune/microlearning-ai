@@ -32,7 +32,7 @@ export const c01: Concept = {
   status: "approved",
   hook: {
     prompt: t`$\begin{vmatrix} 7 & 9 \\ -4 & 3 \end{vmatrix}$ is a single number. **Is it $21 - 36 = -15$?**`,
-    reveal: t`No. A $2 \times 2$ determinant is $ad - bc$: $7 \times 3 - 9 \times (-4) = 21 - (-36) = 21 + 36 = 57$. The product $bc$ is negative here, and subtracting a negative adds it.`,
+    reveal: t`No. A $2 \times 2$ determinant is $ad - bc$: $7 \times 3 - 9 \times (-4) = 21 - (-36)$ $= 21 + 36$ $= 57$. The product $bc$ is negative here, and subtracting a negative adds it.`,
   },
   explanation: {
     intuition: [

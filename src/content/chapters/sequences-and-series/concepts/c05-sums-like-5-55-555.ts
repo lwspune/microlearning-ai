@@ -7,7 +7,7 @@ export const c05: Concept = {
   status: "approved",
   hook: {
     prompt: t`Add $9 + 99 + 999 + 9999$ in your head. **Is there a quick way?**`,
-    reveal: t`Each term is a power of $10$ minus $1$. So the sum is $(10 + 100 + 1000 + 10000) - 4 = 11110 - 4 = 11106$. Any repeated-digit number can be turned into a power of $10$ minus $1$ the same way, and that is the whole trick for $5 + 55 + 555 + \ldots$.`,
+    reveal: t`Each term is a power of $10$ minus $1$. So the sum is $(10 + 100 + 1000 + 10000) - 4 = 11110 - 4$ $= 11106$. Any repeated-digit number can be turned into a power of $10$ minus $1$ the same way, and that is the whole trick for $5 + 55 + 555 + \ldots$.`,
   },
   explanation: {
     intuition: [

@@ -7,7 +7,7 @@ export const c07: Concept = {
   status: "approved",
   hook: {
     prompt: t`Without a calculator: what is $(101)^4$?`,
-    reveal: t`$(101)^4 = (100 + 1)^4 = 100^4 + 4(100)^3 + 6(100)^2 + 4(100) + 1 = 100000000 + 4000000 + 60000 + 400 + 1 = 104060401$. Read the answer in pairs of digits: $1, 04, 06, 04, 01$. The coefficients $1, 4, 6, 4, 1$ sit right there.`,
+    reveal: t`$(101)^4 = (100 + 1)^4$ $= 100^4 + 4(100)^3 + 6(100)^2 + 4(100) + 1$ $= 100000000 + 4000000 + 60000 + 400 + 1$ $= 104060401$. Read the answer in pairs of digits: $1, 04, 06, 04, 01$. The coefficients $1, 4, 6, 4, 1$ sit right there.`,
   },
   explanation: {
     intuition: [

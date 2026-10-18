@@ -7,7 +7,7 @@ export const c03: Concept = {
   status: "approved",
   hook: {
     prompt: t`In $(1 + x)^{11}$ the coefficient of $x^7$ is $^{11}C_7 = 330$. **Is the coefficient of $x^7$ in $\left(x^2 + \frac{1}{x}\right)^{11}$ also $330$?**`,
-    reveal: t`No. Here $T_{r+1} = {}^{11}C_r(x^2)^{11-r}\left(\frac{1}{x}\right)^r = {}^{11}C_r\,x^{22-3r}$. For $x^7$, $22 - 3r = 7$, so $r = 5$: the term is $T_6$, not $T_8$, and the coefficient is $^{11}C_5 = 462$.`,
+    reveal: t`No. Here $T_{r+1} = {}^{11}C_r(x^2)^{11-r}\left(\frac{1}{x}\right)^r$ $= {}^{11}C_r\,x^{22-3r}$. For $x^7$, $22 - 3r = 7$, so $r = 5$: the term is $T_6$, not $T_8$, and the coefficient is $^{11}C_5 = 462$.`,
   },
   explanation: {
     intuition: [

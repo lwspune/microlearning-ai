@@ -547,7 +547,7 @@ and Series (now C15–C18). New chapters audit `ext` first (RUNBOOK 2.1).
 - **Recommendation:** partial. Do (a) now. For (b), the owner picks which
   basics to teach, starting with the ones above; the rest stay `ext`.
 
-### 8. Long maths runs off a phone screen (logged 2026-10-16, open)
+### 8. Long maths runs off a phone screen (logged 2026-10-16, done 2026-10-18)
 Learning: reading the slide text can't show which formula is too wide, only
 the screen can. Found on Circle C05 (now split). `scripts/overflow-probe.mjs`
 lists every formula wider than a 390 px slide; RUNBOOK 3 step 7 runs it on
@@ -569,8 +569,13 @@ every chapter from Circle on.
   build/e2e/seed cycle.
 - **Recommendation:** do, as one `fix:` commit on the next chapter's branch,
   once the owner agrees.
+- **Done 2026-10-18** (owner: yes): a fresh probe of all 13 live chapters
+  found 23 formulas, 17 of them in Sequences and Series. Each chain of
+  equalities is split at its `=` signs, the longest sums at a `+`; one long
+  formula in LP C10 pushed four short ones off with it. The probe now
+  reports 0 in every live chapter.
 
-### 9. Feedback a student sees is wrong or uses untaught terms (logged 2026-10-16, open)
+### 9. Feedback a student sees is wrong or uses untaught terms (logged 2026-10-16, done 2026-10-18)
 Learning: slide agents read each misconception's feedback closely, and in
 Complex Numbers they found shipped feedback that the rework may not touch.
 - **Scope:** (a) C27-M1 says "on the other half of the circle it is $-\theta$".
@@ -589,6 +594,9 @@ Complex Numbers they found shipped feedback that the rework may not touch.
 - **Done (a), 2026-10-18** (owner: yes), on the Complex Numbers slides
   branch: "on the other arc of the circle the argument is $\theta - \pi$,
   not $\theta$".
+- **Done (b) and (c), 2026-10-18:** C09-M3 writes the modulus as
+  $\sqrt{a^2 + b^2}$ (from squaring and adding the two equations), not $|z|$,
+  and checks against $a + ib$; C04's worked-example labels sit apart.
 
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 

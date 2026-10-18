@@ -15,7 +15,7 @@ export const c01: Concept = {
   status: "approved",
   hook: {
     prompt: t`$A(3, 2)$ and $B(7, 4)$. The points $(3, 7)$ and $(6, 1)$ are each as far from $A$ as from $B$. **Is there one equation that every such point satisfies?**`,
-    reveal: t`Yes. For $P(x, y)$, $PA^2 = PB^2$ gives $(x - 3)^2 + (y - 2)^2 = (x - 7)^2 + (y - 4)^2$. The $x^2$ and $y^2$ cancel, leaving $2x + y = 13$. Both points fit: $6 + 7 = 13$ and $12 + 1 = 13$. That equation is the **locus**: here, the perpendicular bisector of $AB$.`,
+    reveal: t`Yes. For $P(x, y)$, $PA^2 = PB^2$ gives $(x - 3)^2 + (y - 2)^2$ $= (x - 7)^2 + (y - 4)^2$. The $x^2$ and $y^2$ cancel, leaving $2x + y = 13$. Both points fit: $6 + 7 = 13$ and $12 + 1 = 13$. That equation is the **locus**: here, the perpendicular bisector of $AB$.`,
   },
   explanation: {
     intuition: [

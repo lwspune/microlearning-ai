@@ -13,7 +13,7 @@ export const c09: Concept = {
   status: "approved",
   hook: {
     prompt: t`No calculator: $\sqrt{1.02}$. **Is it closer to $1.01$ or to $1.02$?**`,
-    reveal: t`Closer to $1.01$. $\sqrt{1.02} = (1 + 0.02)^{1/2} \approx 1 + \frac{1}{2}(0.02) = 1.01$. The next term, $\frac{\frac{1}{2}\left(-\frac{1}{2}\right)}{2!}(0.02)^2 = -0.00005$, sharpens it to $1.00995$. A calculator gives $1.0099505\ldots$: two or three terms are already very close.`,
+    reveal: t`Closer to $1.01$. $\sqrt{1.02} = (1 + 0.02)^{1/2}$ $\approx 1 + \frac{1}{2}(0.02)$ $= 1.01$. The next term, $\frac{\frac{1}{2}\left(-\frac{1}{2}\right)}{2!}(0.02)^2 = -0.00005$, sharpens it to $1.00995$. A calculator gives $1.0099505\ldots$: two or three terms are already very close.`,
   },
   explanation: {
     intuition: [
