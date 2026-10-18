@@ -899,4 +899,11 @@ read from those rows or page images, never from a PDF's text layer.
 | 5. Probability | Probability Distributions · Binomial Distribution |
 
 **Status:**
-- Wave 1 started 2026-10-18 (branch `std12-logic-algebra`).
+- Wave 1 paused 2026-10-18 (owner asked to pause at a clean point), branch
+  `std12-logic-algebra`: graphs locked and committed; Mathematical Logic
+  (11) and Matrices (11) written, reviewed and committed as draft;
+  Trigonometric Functions C01–C05 the same; C06–C15 not started. Not yet
+  done: C06–C15, approve, gates, seed (new chapters before the DoD), merge.
+  To resume: the scratchpad's `x12p/queue.paused.txt` lists the 10 queued
+  prompts (regenerate with `w12_prompts.py trigonometric-functions-12` if the
+  scratchpad is gone, then drop C01–C05).
