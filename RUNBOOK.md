@@ -236,7 +236,7 @@ Guests are anonymous logins with no profile.
    - `npm run lint` · `npm run typecheck` · `npm test` · `npm run test:verify` · `npm run test:db` · `npm run content:verify`
    - Deploy build: plain `npm run build` (review pages off, as in production) must pass too.
    - Production check (first stop anything still listening on 3103, *before* building: a leftover server keeps serving its old build, and it also writes its not-found answers for new pages into the new build's `.next/server/route-cache`, so a fresh server then returns 404 for them until you rebuild): `REVIEW_ENABLED=true npm run build`, `npx next start -p 3103`, then `npm run smoke -- http://localhost:3103`, `npm run e2e -- http://localhost:3103` and `npm run e2e:roles -- http://localhost:3103` and `npm run e2e:people -- http://localhost:3103` and `npm run e2e:performance -- http://localhost:3103`
-   - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured.
+   - Screenshot sheet: before (`main`) vs after, phone + desktop, light + dark (`SCHEME`/`VIEWPORT`/`SHOTS` env on `npm run e2e`). List copy changes old vs new and screens that couldn't be captured. Not for chapter content (new concepts, slide reworks, item fixes): the owner reviews those live (2026-10-18); app and UI changes still need it.
      **Save it in the project:** `screenshots/<date>-<topic>/before-after.png`, raw shots in subfolders beside it (point `SHOTS` there). Never only in a temp folder. `screenshots/` is git-ignored.
    - Leave no test data behind (check `auth.users` and `attempts`).
 7. Show the user, then **merge** (`git merge --ff-only`) and delete the branch.
