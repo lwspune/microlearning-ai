@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A three-legged stool stands steady on any floor, but a four-legged chair can rock. Why?`,
     reveal: t`Three feet not in one line always lie on one plane, so all three touch the floor. A fourth foot can sit off the plane of the other three.`,

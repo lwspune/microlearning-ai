@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A drone flies straight from $A(1, 0, 2)$ towards $B(3, 1, 4)$ and keeps going. **Will it pass through $(7, 3, 8)$?**`,
     reveal: t`Yes. Each step from A to B moves it by $(2, 1, 2)$. From A to $(7, 3, 8)$ is $(6, 3, 6)$ $= 3(2, 1, 2)$: exactly three such steps. A point and a direction pin down the whole line.`,

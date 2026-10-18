@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A flagpole leans so that it makes $25^\circ$ with the vertical. The vertical is the ground's normal. What angle does the pole make with the ground?`,
     reveal: t`$65^\circ$, not $25^\circ$. The normal stands at $90^\circ$ to the ground, so a line's angle with a plane is $90^\circ$ minus its angle with the normal. That swap turns $\cos$ into $\sin$.`,

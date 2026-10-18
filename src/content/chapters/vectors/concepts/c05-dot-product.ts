@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Are $\vec a = 2\hat i - \hat j + 3\hat k$ and $\vec b = \hat i + 5\hat j + \hat k$ perpendicular? You can't draw space accurately enough to see.`,
     reveal: t`Yes. Multiply matching components and add: $2(1) + (-1)(5) + 3(1) = 0$. A zero dot product means the angle is $90^\circ$, and no drawing is needed.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A drone takes off and ends up $3$ m east, $4$ m north and $12$ m up from its base. **How far is it from the base in a straight line?**`,
     reveal: t`Not $3 + 4 + 12 = 19$ m: that is the walk along the edges. Along the ground it is $\sqrt{9 + 16} = 5$ m. Then straight up: $\sqrt{5^2 + 12^2} = 13$ m. In one go: $\sqrt{3^2 + 4^2 + 12^2}$ $= 13$ m.`,

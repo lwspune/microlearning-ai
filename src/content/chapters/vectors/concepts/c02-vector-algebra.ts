@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You walk $3$ m east, then $4$ m north. **Have you moved $7$ m from where you started?**`,
     reveal: t`No. The two moves add head to tail, and the result is the single arrow from start to finish. It is the long side of a right triangle: $\sqrt{3^2 + 4^2} = 5$ m. Lengths add only when the moves point the same way; vectors add by the triangle law.`,

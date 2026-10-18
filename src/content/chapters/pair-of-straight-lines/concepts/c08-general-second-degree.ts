@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x^2 - 4y^2 + 4y - 1 = 0$ and $x^2 - 4y^2 + 4y + 1 = 0$ differ only in the constant. **Which one is a pair of straight lines?**`,
     reveal: t`The first: $x^2 - (2y - 1)^2$ $= (x - 2y + 1)(x + 2y - 1)$. The second is $(2y - 1)^2 - x^2 = 2$, a curve. The constant must be just right, and a determinant finds it.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A straight pipe runs past a tap at $P$. Of all the straight pipes you could lay from $P$ to it, **which one is the shortest?**`,
     reveal: t`The one that meets it at a right angle. Any other pipe is the hypotenuse of a right triangle, so it is longer. That right angle is the one equation that pins down where the shortest pipe lands.`,

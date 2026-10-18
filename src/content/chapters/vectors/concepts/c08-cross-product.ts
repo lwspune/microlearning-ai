@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Find a vector that is at right angles to both $\hat i + \hat j$ and $\hat j + \hat k$.`,
     reveal: t`$\hat i - \hat j + \hat k$ works: its dot product with each is $0$. The cross product $(\hat i + \hat j)\times(\hat j + \hat k)$ builds such a vector in one step, with no guessing.`,

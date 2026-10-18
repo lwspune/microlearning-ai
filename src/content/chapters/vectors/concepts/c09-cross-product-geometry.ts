@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A parallelogram has sides of length $3$ and $5$. What is its area?`,
     reveal: t`It depends on the angle $\theta$ between the sides: the area is $15\sin\theta$, anything up to $15$. Given the sides as vectors, $|\vec a\times\vec b|$ builds that angle in.`,

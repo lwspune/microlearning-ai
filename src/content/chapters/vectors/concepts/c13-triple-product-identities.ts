@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c13: Concept = {
   id: "C13",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $\vec a = \hat i$, $\vec b = \hat j$, $\vec c = \hat k$, so $[\vec a\ \vec b\ \vec c] = 1$. What is $[\vec a + \vec b\ \ \vec b + \vec c\ \ \vec c + \vec a]$?`,
     reveal: t`The vectors are $\hat i + \hat j$, $\hat j + \hat k$, $\hat k + \hat i$, and their triple product is $2$. It is $2[\vec a\ \vec b\ \vec c]$ for any three vectors: multiplying out the bracket shows why.`,

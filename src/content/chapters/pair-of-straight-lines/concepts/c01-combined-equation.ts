@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The $X$-axis is $y = 0$ and the $Y$-axis is $x = 0$. **Can one equation describe both axes at once?**`,
     reveal: t`Yes: $xy = 0$. A product is $0$ exactly when one factor is $0$, so $xy = 0$ holds where $x = 0$ or $y = 0$: on one axis or the other.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For $\vec a = 2\hat i$, $\vec b = 3\hat j$ and $\vec c = \hat k$, work out $\vec a\cdot(\vec b\times\vec c)$ and $\vec c\cdot(\vec a\times\vec b)$. Are they equal?`,
     reveal: t`$\vec b\times\vec c = 3\hat i$, so the first is $6$. $\vec a\times\vec b = 6\hat k$, so the second is $6$ too. Both read $\vec a$, $\vec b$, $\vec c$ in the same cyclic order, and that never changes the value.`,

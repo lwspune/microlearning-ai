@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x^2 - xy - 6y^2 = 0$ is a single equation. **Yet its graph is two straight lines. How?**`,
     reveal: t`It factorises: $x^2 - xy - 6y^2$ $= (x - 3y)(x + 2y)$. A product is $0$ only when a factor is $0$. So every point lies on $x - 3y = 0$ or on $x + 2y = 0$: two lines through the origin.`,

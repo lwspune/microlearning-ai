@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A flyover crosses above a road. Their directions differ, so they are not parallel. **Do they meet?**`,
     reveal: t`No. In space, lines can miss each other without being parallel; such lines are **skew**. One number settles it: the lines lie in one plane exactly when $(\vec a_2 - \vec a_1)\cdot(\vec b_1\times\vec b_2) = 0$.`,

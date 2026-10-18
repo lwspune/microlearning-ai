@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two lines through $O$ meet at $60^\circ$. A third line cuts both of them. **Is the triangle they make always equilateral?**`,
     reveal: t`No. The third line must also make $60^\circ$ with each of the two lines. Tilt it, and the angle at $O$ can even become $120^\circ$, leaving $30^\circ$ at each of the other corners.`,

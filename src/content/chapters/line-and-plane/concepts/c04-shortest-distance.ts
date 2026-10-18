@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A straight road runs east along flat ground. A straight cable $6$ m up runs north, passing over it. They are not parallel and never meet. How close do they come?`,
     reveal: t`$6$ m, straight down from the cable to the road where it passes over. That vertical meets both at right angles; any other link between them slants, so it is longer.`,

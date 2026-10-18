@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Do the points $A(1, 0, 2)$, $B(2, 1, 4)$ and $C(-1, -2, -2)$ lie on one straight line?`,
     reveal: t`Yes. $\overrightarrow{AB} = \hat i + \hat j + 2\hat k$ and $\overrightarrow{AC} = -2\hat i - 2\hat j - 4\hat k$, so $\overrightarrow{AC} = -2\,\overrightarrow{AB}$. The two are parallel and share the point A, so all three points lie on one line, with B and C on opposite sides of A.`,

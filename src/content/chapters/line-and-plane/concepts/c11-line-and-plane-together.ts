@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Put the general point $(1 + \lambda, 2 - \lambda, 3)$ of a line into the plane $x + y + z = 6$. You get $6 = 6$, and no $\lambda$ is left. **Where does the line meet the plane?**`,
     reveal: t`Everywhere. The equation holds for every $\lambda$, so every point of the line is on the plane: the line lies in it. Had you got something false like $5 = 6$, no $\lambda$ would work and the line would never meet the plane.`,

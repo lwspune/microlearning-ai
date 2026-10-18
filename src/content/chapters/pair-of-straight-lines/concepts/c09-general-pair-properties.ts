@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The lines $y = x$ and $y = -x$ make the pair $x^2 - y^2 = 0$. Slide both, without turning them, so that they cross at $(1, 3)$. What is the new joint equation, and what is the angle now?`,
     reveal: t`$(x - 1)^2 - (y - 3)^2 = 0$: replace $x$ by $x - 1$ and $y$ by $y - 3$. The angle is still $90^\circ$, because sliding never turns a line.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The plane $x + y + z = 3$ passes through $(3, 0, 0)$, $(0, 3, 0)$ and $(0, 0, 3)$. **Which point of it is nearest the origin?**`,
     reveal: t`$(1, 1, 1)$. The nearest point lies straight out from $O$ along the normal $(1, 1, 1)$, and $1 + 1 + 1 = 3$ puts it on the plane. It is $\sqrt 3$ from $O$, less than $3$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The midpoint of $A(1, 2, 3)$ and $B(4, 8, 6)$ is $\frac{\vec a + \vec b}{2}$. Is the point one third of the way from A to B equal to $\frac{\vec a + \vec b}{3}$?`,
     reveal: t`No. $\frac{\vec a + \vec b}{3}$ is the point $\left(\frac{5}{3}, \frac{10}{3}, 3\right)$, which is not even on AB. One third of the way, R divides AB in $1 : 2$, so $\vec r = \frac{\vec b + 2\vec a}{3}$ $= 2\hat i + 4\hat j + 4\hat k$. A gets the bigger weight because R is nearer A.`,

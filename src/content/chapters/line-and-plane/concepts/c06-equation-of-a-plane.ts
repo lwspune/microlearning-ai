@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A flat sheet of glass passes through $A(1, 0, 2)$ and is at right angles to a rod along $\hat i + 2\hat j + 2\hat k$. **Does $B(3, 1, 0)$ lie on the sheet?**`,
     reveal: t`Yes. The step from A to B is $(2, 1, -2)$, and $(2, 1, -2)\cdot(1, 2, 2)$ $= 2 + 2 - 4 = 0$. A step at right angles to the rod stays in the sheet.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A long diagonal of a cube runs from the corner O to the opposite corner. **What angle does it make with each edge at O?** Is it $45^\circ$?`,
     reveal: t`Take the cube of side $1$: the diagonal is $\hat i + \hat j + \hat k$, of length $\sqrt 3$. Each direction cosine is $\frac{1}{\sqrt 3}$, so each angle is $\cos^{-1}\frac{1}{\sqrt 3} \approx 54.7^\circ$. A $45^\circ$ angle belongs to a face diagonal, not this one.`,

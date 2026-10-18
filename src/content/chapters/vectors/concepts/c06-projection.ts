@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A rope pulls a box along the floor with a force of $10$ N, at $60^\circ$ to the floor. How much of the pull acts along the floor?`,
     reveal: t`$10\cos 60^\circ = 5$ N. The part of a vector that lies along a direction is its **projection** on that direction; the dot product finds it without measuring any angle.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Does it matter where the brackets go? Work out $\hat i\times(\hat i\times\hat j)$ and $(\hat i\times\hat i)\times\hat j$.`,
     reveal: t`$\hat i\times\hat j = \hat k$, so the first is $\hat i\times\hat k = -\hat j$. But $\hat i\times\hat i = \vec 0$, so the second is $\vec 0$. The brackets matter, and one formula tells you exactly what $\vec a\times(\vec b\times\vec c)$ is.`,

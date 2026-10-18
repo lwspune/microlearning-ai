@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The lines $y = 0$ and $y = x$ meet at $45^\circ$. Their slopes are $0$ and $1$. **Is $y = \frac{1}{2}x$, with the average slope, the line that halves the angle between them?**`,
     reveal: t`No. The bisector makes $22.5^\circ$ with the $X$-axis, so its slope is $\tan 22.5^\circ = \sqrt{2} - 1 \approx 0.41$, not $0.5$. Angles halve; slopes do not average. This concept finds both bisectors straight from the pair's equation.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A slanted box has edges $2\hat i$, $3\hat j$ and $\hat i + \hat j + 4\hat k$ from one corner. What is its volume?`,
     reveal: t`$24$. The base is a $2$ by $3$ rectangle, area $6$. Only the $4\hat k$ part of the third edge lifts the top, so the height is $4$, and $6\times4 = 24$. The scalar triple product of the three edges gives $24$ straight away.`,

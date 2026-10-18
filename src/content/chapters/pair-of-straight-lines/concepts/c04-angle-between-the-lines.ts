@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Are the two lines of $5x^2 + 7xy - 5y^2 = 0$ perpendicular? Decide **without** finding the lines.`,
     reveal: t`Yes. The coefficients of $x^2$ and $y^2$ add to zero, $5 + (-5) = 0$. That alone makes the lines perpendicular, whatever the $xy$ term is.`,

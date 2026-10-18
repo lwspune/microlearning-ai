@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The line $\vec r = \lambda(\hat i + \hat j)$ lies on the floor. The line $\vec r = \hat k + \mu\hat j$ runs one unit above it. They never meet. Is there an angle between them?`,
     reveal: t`Yes, $45^\circ$. Lower the upper line onto the floor without turning it: it crosses the first at $45^\circ$. The angle between lines is the angle between their directions, $\hat i + \hat j$ and $\hat j$.`,

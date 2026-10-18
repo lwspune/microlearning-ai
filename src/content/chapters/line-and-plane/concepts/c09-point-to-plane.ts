@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A drone at $(1, 1, 1)$ hovers near a roof in the plane $2x + y + 2z = 9$. Putting the point in gives $2 + 1 + 2 - 9 = -4$. **Is the drone $-4$ units from the roof?**`,
     reveal: t`No. A distance is never negative, and $-4$ is scaled up by the normal's length $\sqrt{4 + 1 + 4} = 3$. The distance is $\dfrac{|-4|}{3} = \dfrac{4}{3}$ units.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The pair $2x^2 - 5xy + 2y^2 = 0$ passes through the origin. **Can you write the pair through the origin perpendicular to it, without factorising?**`,
     reveal: t`Yes: swap the coefficients of $x^2$ and $y^2$ and change the sign of the $xy$ term. That gives $2x^2 + 5xy + 2y^2 = 0$. Check: the given lines are $y = 2x$ and $y = \frac{x}{2}$, and the new ones, $y = -\frac{x}{2}$ and $y = -2x$, meet them at right angles.`,

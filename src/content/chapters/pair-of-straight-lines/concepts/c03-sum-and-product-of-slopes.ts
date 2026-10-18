@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The pair $6x^2 - 5xy + y^2 = 0$ is the lines $y = 2x$ and $y = 3x$. **Can you see the sum and the product of their slopes in the equation itself?**`,
     reveal: t`Yes. The sum is $2 + 3 = 5$ and the product is $2 \times 3 = 6$. In the equation $a = 6$, $2h = -5$ and $b = 1$, so $-\dfrac{2h}{b} = 5$ and $\dfrac{a}{b} = 6$. Both come straight from the coefficients, with no factorising.`,
