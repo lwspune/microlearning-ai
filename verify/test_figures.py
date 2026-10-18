@@ -101,10 +101,15 @@ class Venn(unittest.TestCase):
         (label,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"] == "7"]
         self.assertEqual((label["step"], label["tone"], label["at"]), (2, "bad", [5.0, 3.5]))
 
-    def test_a_note_sits_top_centre_above_the_circles(self):
+    def test_a_note_sits_top_centre_clear_of_the_frame_edge(self):
         fig = venn("Note", note=("A Δ B = {1, 3}", {"step": 3, "tone": "good"}))
         (note,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"].startswith("A Δ B")]
-        self.assertEqual((note["at"], note["step"], note["tone"]), ([5.0, 6.45], 3, "good"))
+        self.assertEqual((note["at"], note["labelAt"], note["step"], note["tone"]), ([5.0, 6.05], "n", 3, "good"))
+
+    def test_a_three_set_note_sits_bottom_left_clear_of_the_circles(self):
+        fig = venn("Note", names=("A", "B", "C"), note="each part counted once")
+        (note,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"] == "each part counted once"]
+        self.assertEqual((note["at"], note["labelAt"]), ([0.3, 0.3], "ne"))
 
     def test_long_set_names_grow_outward_from_the_upper_circles(self):
         fig = venn("Names", names=("Volleyball", "Chemistry", "Maths"))
