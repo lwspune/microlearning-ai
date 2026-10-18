@@ -55,7 +55,7 @@ export const graph: GraphNode[] = [
   },
   {
     id: "C09", slug: "general-pair-properties", title: "Angle, parallel pair and point of intersection", group: "General equation", tier: "adv", visual: true,
-    oneLiner: t`The angle depends only on $a, h, b$; the pair through a point parallel to $ax^2 + 2hxy + by^2 = 0$ shifts $x$ and $y$; the lines meet where both partial derivatives vanish`,
+    oneLiner: t`The angle depends only on $a, h, b$; the pair through a point parallel to $ax^2 + 2hxy + by^2 = 0$ shifts $x$ and $y$; the lines meet where the two separated lines cross`,
     prereqs: ["C04", "C08"], ext: [], sources: [S("General Second Degree Equation of Two Lines")],
   },
 ];
