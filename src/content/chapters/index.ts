@@ -7,10 +7,12 @@ import { compoundAndMultipleAngles } from "./compound-and-multiple-angles/index.
 import { conicSections } from "./conic-sections/index.ts";
 import { determinantsAndMatrices } from "./determinants-and-matrices/index.ts";
 import { linearProgramming } from "./linear-programming/index.ts";
+import { measuresOfDispersion } from "./measures-of-dispersion/index.ts";
 import { permutationsAndCombinations } from "./permutations-and-combinations/index.ts";
+import { probability } from "./probability/index.ts";
 import { sequencesAndSeries } from "./sequences-and-series/index.ts";
 import { setsAndRelations } from "./sets-and-relations/index.ts";
 import { straightLine } from "./straight-line/index.ts";
 import { trigonometricFunctions } from "./trigonometric-functions/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability];

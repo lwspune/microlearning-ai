@@ -75,6 +75,8 @@ export const courses: Course[] = [
       { chapter: "straight-line" },
       { chapter: "circle" },
       { chapter: "conic-sections" },
+      { chapter: "measures-of-dispersion" },
+      { chapter: "probability" },
       { chapter: "complex-numbers", coverage: cnMaharashtra },
       { chapter: "sequences-and-series" },
       { chapter: "permutations-and-combinations" },
