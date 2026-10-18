@@ -500,6 +500,11 @@ and for new work (AUTHORING.md 17–19, branch `lesson-slide-figures`).
   Complex Numbers (C01–C30) done 2026-10-18: points, defined terms and
   figures; misconceptions split in C03, C10, C14, C24 and C25; backfill
   9(a) fixed; C23's hook reveal split (the only phone overflow).
+  Linear Programming (C01–C13) done 2026-10-18: points and defined terms; the
+  12 visual concepts got a figure on every formal slide, mostly split from
+  their existing pictures (half-plane tests, regions, corners, sliding
+  objective lines); no split; 0 phone overflows. This completes the rework
+  of every chapter live before 2026-10-15.
 - **Wave 4** done 2026-10-18 (branch `std11-stats-probability`): all 17
   rewritten to rules 17–20 before publishing, one agent per concept. Figures
   where they teach: Venn diagrams (Prob C05, C06), trees (C08, C10), a unit
