@@ -954,3 +954,5 @@ read from those rows or page images, never from a PDF's text layer.
   (4) key 0 for 8/21; Indef Int Ex 3.2(A) II (14); DE Ex 6.6 Q2 (log 2 =
   0.6912), 6.4 Ex.2 sign, Misc II Q.2 iv). Lesson: a stale not-found review
   page sometimes needs a dev-server restart (RUNBOOK).
+- Wave 5 started 2026-10-18 (branch `std12-probability`): graphs locked and
+  committed (Probability Distributions 7 · Binomial Distribution 4).
