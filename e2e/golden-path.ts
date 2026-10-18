@@ -101,7 +101,12 @@ await (async () => {
     check((await page.getByRole("tab", { name: "11th + 12th", selected: true }).count()) === 1, "home: 11th + 12th courses shown first");
     await shot("00-home");
     await noSideScroll("home");
-    await page.getByRole("tab", { name: "Graduates" }).click();
+    // A click before hydration does nothing (the tabs are a client component), so retry until selected.
+    const graduates = page.getByRole("tab", { name: "Graduates" });
+    for (let i = 0; i < 20 && (await graduates.getAttribute("aria-selected")) !== "true"; i++) {
+      await graduates.click();
+      await page.waitForTimeout(250);
+    }
     const cds = page.getByRole("link", { name: /^CDS/ });
     await cds.waitFor();
     check(await cds.getByText("Coming soon", { exact: true }).isVisible(), "home: CDS (Graduates) is coming soon");
