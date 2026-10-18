@@ -938,7 +938,7 @@ read from those rows or page images, never from a PDF's text layer.
 - Wave 3 started 2026-10-18 (branch `std12-calculus-1`): graphs locked and
   committed (Differentiation 12 · Application of Derivatives 10).
   Paused 2026-10-18 for a restart (owner): the Windows page file grew to 23 GB
-  and free disk fell to 4.7 GB. Done: Differentiation C01–C10 written; C01–C07,
-  C09 reviewed; C08 and C10 keys checked, their figure sheets still to view.
-  Next on resume: C08/C10 figures, then queue (Differentiation C11, C12, then
+  and free disk fell to 4.7 GB. Done: Differentiation C01–C10 written and
+  reviewed (keys, overflow, figure sheets).
+  Next on resume: the queue (Differentiation C11, C12, then
   Application of Derivatives C01–C10) at 5 agents.
