@@ -3,7 +3,7 @@
 Fill in `<scratchpad>`, `<chapter>`, `<batch>` and `C0N` before sending; add the concept's design
 (hook, worked example, misconception IDs/mistakes/fallbacks, solution notes) in the agent's prompt.
 
-Repo: `C:\Users\vilas\Downloads\MicroLearningAI` (Next.js micro-learning app for Indian exam students). **Do not edit any file in the repo.** Write only your output file in the scratchpad:
+Repo: `C:\Users\vilas\Downloads\ConceptLadder` (Next.js micro-learning app for Indian exam students). **Do not edit any file in the repo.** Write only your output file in the scratchpad:
 `<scratchpad>`.
 
 ## Read first (skim, don't over-read)
@@ -21,7 +21,7 @@ A file `<scratchpad>/<batch>_c0N.py` (N = your concept number) that runs standal
 
 ```python
 import sys
-sys.path.insert(0, r"C:\Users\vilas\Downloads\MicroLearningAI\verify")
+sys.path.insert(0, r"C:\Users\vilas\Downloads\ConceptLadder\verify")
 from lpp_figures import figure, region, line, point, label
 
 CONCEPT = dict(

@@ -5,7 +5,7 @@ the chapter slug (`<chapter>`, e.g. `sets-and-relations`), its models package (`
 `sets_and_relations`), your concept (`CNN`, its slug, title, one-liner, scope), its prerequisite
 ancestors (the only concepts a misconception may fall back to), and the book questions to build from.
 
-Repo: `C:\Users\vilas\Downloads\MicroLearningAI` (a Next.js micro-learning app for Indian Class 11–12
+Repo: `C:\Users\vilas\Downloads\ConceptLadder` (a Next.js micro-learning app for Indian Class 11–12
 students; content is TypeScript, checked by a validator and a sympy verifier). **No git commands.**
 You may create or overwrite exactly these files, nothing else:
 1. `verify/models/<pkg>/cNN.py` — your answer models.
@@ -90,7 +90,7 @@ ITEMS = [dict(id="CNN-Q1", stem=r"...", inputs={"a": "3"}, params={...}, models=
 ## 4. Content: `<scratch>/cNN_content.py`
 ```python
 import sys
-sys.path.insert(0, r"C:\Users\vilas\Downloads\MicroLearningAI\verify")
+sys.path.insert(0, r"C:\Users\vilas\Downloads\ConceptLadder\verify")
 from figures import graph   # and any helper your prompt names
 
 CHAPTER = "<chapter>"

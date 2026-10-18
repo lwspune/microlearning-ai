@@ -2,7 +2,7 @@
 
 The prompt that sends you this brief gives: the chapter slug (`<chapter>`), its models package (`<pkg>`),
 your concept (`CNN`) and its file, and any figure that clearly teaches it. Repo:
-C:\Users\vilas\Downloads\MicroLearningAI, on the chapter's rework branch; do not commit, do not switch
+C:\Users\vilas\Downloads\ConceptLadder, on the chapter's rework branch; do not commit, do not switch
 branches. Other agents edit the chapter's other concepts at the same time: touch only your concept file (and
 its verifier model `verify/models/<pkg>/cNN.py`, only for a misconception split). Keep your own temporary
 files in a subfolder named for you (`<scratchpad>/<chapter>-cNN/`): other agents share the scratchpad, and a
