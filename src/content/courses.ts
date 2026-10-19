@@ -165,9 +165,9 @@ export const courses: Course[] = [
       { chapter: "permutations-and-combinations" },
       {
         // 3 of the 69 PYQs are about sets; keep what Functions builds on (roster form, power set,
-        // intervals, Cartesian product, relations).
+        // intervals, Cartesian product, relations). Approved by the owner 2026-10-19.
         chapter: "sets-and-relations",
-        coverage: { ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "draft" },
+        coverage: { ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "approved" },
         title: "Sets, Relations and Functions",
         more: [{ chapter: "functions" }],
       },
