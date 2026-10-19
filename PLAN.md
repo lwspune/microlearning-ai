@@ -1107,3 +1107,22 @@ mean deviation, correlation and regression) and Quadratic Equations, about
 derivative of an integral and periodic integrals, greatest-integer
 integrals, (a + √b)ⁿ parts and remainders, inradius, probability bounds,
 functional equations). About 45 concepts in all, items from NDA PYQs.
+
+**Status:**
+- Phase 1 done 2026-10-19 (merge e16f4df): 27 NDA chapters live, Std XII
+  Trigonometric Functions split three ways; golden path passed on live.
+  NDA's trims are drafts for the owner on `/review/courses`.
+- Phase 2a done 2026-10-19 (branch `nda-statistics-quadratics`): new pool
+  chapters Statistics (13 concepts, 76 items) and Quadratic Equations (10,
+  58), Std XI, from NDA PYQs (refs like `2023 Apr Q111`; NDA-style items
+  where no PYQ fits); every key re-derived by hand and by the verifier,
+  figure sheets checked (about 10 labels moved), 0 phone overflows. One
+  agent per concept, 10 at once. NDA's Statistics is the new chapter, then
+  Measures of Dispersion. The median slides teach averaging the two middle
+  values for even N; NDA's papers sometimes key the (N+1)/2-th value, and
+  the items avoid that case.
+- PYQ Vault keys found wrong in 2a (not yet reported): NDA 2022 Apr Q18
+  (the equation with roots a, b is x² − (α+β)x + αβ + c = 0, option A; B is
+  starred) and NDA 2024 Sep Q112 (options C and D are the same expression;
+  only D is starred).
+
