@@ -92,8 +92,8 @@ const cnMaharashtra: Coverage = {
 // two circles, angle between curves; owner, 2026-10-19). Keeps MH Board's maps as they were.
 const book = (chapter: string, last: number): CourseChapter => ({ chapter, coverage: { ids: range(1, last), status: "approved" } });
 
-// An NDA share of a pool chapter: the concepts NDA's syllabus asks, drafted 2026-10-19 for the owner.
-const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "draft" } });
+// An NDA share of a pool chapter: the concepts NDA's syllabus asks, approved by the owner 2026-10-19.
+const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
 
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
@@ -215,7 +215,7 @@ export const courses: Course[] = [
     // rest (Logarithms, Height & Distance, Binary Numbers) join as they're built.
     // NDA's syllabus has no polar coordinates, Rolle or mean value theorems, approximations,
     // continuous distributions, linear programming beyond graphing inequations, or Std XII angle
-    // between curves and two circles. Every trim is a draft for the owner.
+    // between curves and two circles. The owner approved every list on 2026-10-19.
     chapters: [
       { chapter: "angle-measurement", title: "Trigonometric Identities", more: [nda("trigonometric-functions", range(1, 9)), { chapter: "compound-and-multiple-angles" }] },
       { chapter: "straight-line", title: "Lines" },
@@ -230,7 +230,7 @@ export const courses: Course[] = [
         coverage: {
           ids: [...CN_ALL, "C09", "C13", "C17", "C20", "C21", "C22", "C23", ...CN_LOCI],
           unsure: ["C09", "C13", "C22", ...CN_LOCI],
-          status: "draft",
+          status: "approved",
         },
       },
       { chapter: "sequences-and-series", title: "Sequence & Series" },

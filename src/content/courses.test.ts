@@ -537,9 +537,9 @@ describe("the catalog", () => {
       for (const slug of ["mathematical-logic", "pair-of-straight-lines"]) expect(used).not.toContain(slug);
     });
 
-    it("keeps every trim a draft until the owner approves it", () => {
+    it("has every list approved by the owner (2026-10-19)", () => {
       const statuses = nda.chapters.flatMap(partsOf).flatMap((p) => (p.coverage ? [p.coverage.status] : []));
-      expect(new Set(statuses)).toEqual(new Set(["draft"]));
+      expect(new Set(statuses)).toEqual(new Set(["approved"]));
     });
   });
 
