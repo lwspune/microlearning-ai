@@ -1070,3 +1070,40 @@ builds on: roster form, power set, intervals, Cartesian product, relations.
   is negative, the obtuse angle; the acute one is the log(7/3) option, and
   the CET notes repeat the sign). The two-circles dump also reuses the ref
   2024 May Q146 for two different questions.
+
+## NDA Maths course (approved 2026-10-19, branch `nda-course`)
+
+Goal: NDA gets its own chapters under PYQ Vault's names (31 chapters, 2,280
+PYQs), built from the pool, plus the concepts NDA asks that the MH Board
+books don't teach. Sources: PYQ Vault's live NDA taxonomy, its 111 NDA →
+State Board rulings (`maths-nda-rulings.json`: 87 full, 12 partial, 12 not),
+and the UPSC NDA Maths syllabus (the PDFs on disk are scans). NDA leaves out
+Mathematical Logic, Linear Programming beyond "linear inequations by
+graphs", Pair of Straight Lines, Rolle/LMVT, approximations, continuous
+distributions and polar coordinates.
+
+**Owner's decisions (2026-10-19, all as recommended):**
+1. PYQ Vault's chapter names.
+2. A chapter appears on the NDA page once it has content (no empty "Coming
+   soon" cards for chapters still to build).
+3. Std X material (Quadratics, Height & Distance, central tendency, Binary)
+   is filed under Std XI on the NDA page.
+4. Trims of existing chapters are drafts the owner approves on
+   `/review/courses`.
+5. Phases below; phase 2 runs with the Std XI/XII autonomy.
+
+**Phase 1 (this branch):** a course chapter can take part of a pool chapter
+while another course chapter takes the rest (Std XII Trigonometric Functions
+feeds Trig Equations C01–C05, Properties of Triangle C07–C11 and Inverse
+Trigonometry C12–C15): parts of one pool chapter must list disjoint
+concepts, and such a chapter names its own `slug`. Then the 27 NDA chapters
+the pool already covers (the 26 in the analysis plus Statistics, which has
+dispersion now and grows in phase 2a), with draft lists where NDA trims.
+
+**Phase 2a:** Statistics (mean/median/mode, frequency tables and graphs,
+mean deviation, correlation and regression) and Quadratic Equations, about
+230 PYQs. **2b:** Logarithms, Height & Distance, Binary Numbers, the sphere.
+**2c:** gaps inside existing chapters (a sin θ + b cos θ, special matrices,
+derivative of an integral and periodic integrals, greatest-integer
+integrals, (a + √b)ⁿ parts and remainders, inradius, probability bounds,
+functional equations). About 45 concepts in all, items from NDA PYQs.
