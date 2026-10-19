@@ -32,5 +32,7 @@ import { sequencesAndSeries } from "./sequences-and-series/index.ts";
 import { setsAndRelations } from "./sets-and-relations/index.ts";
 import { straightLine } from "./straight-line/index.ts";
 import { trigonometricFunctions } from "./trigonometric-functions/index.ts";
+import { statistics } from "./statistics/index.ts";
+import { quadraticEquations } from "./quadratic-equations/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations];
