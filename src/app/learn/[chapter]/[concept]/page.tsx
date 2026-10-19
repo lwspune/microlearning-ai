@@ -52,7 +52,7 @@ async function ConceptSection({
     return <GuestStart next={withCourse(`/learn/${chapter}/${concept}`, course?.slug)} error={sp.error === "signin"} />;
   }
 
-  const mapHref = mapLink(course, ch, chapters).href;
+  const mapHref = mapLink(course, ch, chapters, ch.graph.find((n) => n.slug === concept)?.id).href;
   const refresher = typeof sp.from === "string" ? refresherFrom(ch, concept, sp.from) : null;
   const session = await getConceptSession(chapter, concept, userId, {
     allowLocked: refresher !== null,
@@ -101,7 +101,7 @@ async function ConceptContent({
   const published = ch?.concepts.some((c) => c.id === node?.id && c.status === "approved");
   if (!ch || !node || !published) notFound();
   const course = courseFrom((await searchParams).course, ch);
-  const map = mapLink(course, ch, chapters);
+  const map = mapLink(course, ch, chapters, node.id);
 
   return (
     <>

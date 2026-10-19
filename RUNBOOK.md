@@ -79,8 +79,13 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
    PYQ Vault's chapter names): `title` and `standard` override the pool
    chapter's, and `more: [{ chapter, coverage }]` takes in further pool
    chapters it teaches as one (MHT-CET's Limits is Limits + Continuity). The
-   course chapter's URL is its first pool chapter's slug; a pool chapter
-   belongs to at most one chapter of a course.
+   course chapter's URL is its first pool chapter's slug (or its own `slug`).
+   A course may also **split** a pool chapter between course chapters (NDA's
+   Trigonometric Equations, Properties of Triangle and Inverse Trigonometry
+   share Std XII Trigonometric Functions): every share lists its concepts,
+   no concept is in two shares, and each such course chapter names its own
+   `slug`. A share shows its list even as a draft, since a split drops
+   nothing; a lesson leads back to the course chapter holding its concept.
 3. **Coverage is verified with the owner.** Write it as `status: "draft"`;
    the owner reviews it on `/review/courses` (concepts × courses grid). Only
    after they approve, set `status: "approved"`: from then on students see
