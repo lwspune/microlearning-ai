@@ -212,7 +212,7 @@ export const courses: Course[] = [
     group: "school",
     tagline: "UPSC NDA & NA, Mathematics",
     // PYQ Vault's chapters that the pool covers (owner, 2026-10-19; PLAN.md "NDA Maths course"); the
-    // rest (Quadratic Equations, Logarithms, Height & Distance, Binary Numbers) join as they're built.
+    // rest (Logarithms, Height & Distance, Binary Numbers) join as they're built.
     // NDA's syllabus has no polar coordinates, Rolle or mean value theorems, approximations,
     // continuous distributions, linear programming beyond graphing inequations, or Std XII angle
     // between curves and two circles. Every trim is a draft for the owner.
@@ -221,8 +221,10 @@ export const courses: Course[] = [
       { chapter: "straight-line", title: "Lines" },
       { ...nda("circle", range(1, 8)), title: "Circles" },
       { chapter: "conic-sections", title: "Conics" },
-      { chapter: "measures-of-dispersion", title: "Statistics" },
+      // Averages, graphs, mean deviation, correlation and regression, then the book's variance and S.D.
+      { chapter: "statistics", more: [{ chapter: "measures-of-dispersion" }] },
       { chapter: "probability" },
+      { chapter: "quadratic-equations" },
       {
         chapter: "complex-numbers",
         coverage: {

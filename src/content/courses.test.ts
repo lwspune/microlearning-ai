@@ -475,6 +475,7 @@ describe("the catalog", () => {
             "Conics",
             "Statistics",
             "Probability",
+            "Quadratic Equations",
             "Complex Numbers",
             "Sequence & Series",
             "Permutation & Combination",
@@ -527,7 +528,8 @@ describe("the catalog", () => {
       expect(parts("Circles")).toEqual(["circle C01,C02,C03,C04,C05,C06,C07,C08"]);
       expect(parts("Linear Inequalities")).toEqual(["linear-programming C01,C02,C03,C04"]);
       expect(parts("Binomial Distribution")).toEqual(["probability-distributions C01,C02,C03,C04", "binomial-distribution"]);
-      expect(parts("Statistics")).toEqual(["measures-of-dispersion"]);
+      expect(parts("Statistics")).toEqual(["statistics", "measures-of-dispersion"]);
+      expect(parts("Quadratic Equations")).toEqual(["quadratic-equations"]);
     });
 
     it("leaves out what NDA's syllabus doesn't ask", () => {
