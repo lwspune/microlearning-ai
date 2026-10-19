@@ -1133,7 +1133,7 @@ functional equations). About 45 concepts in all, items from NDA PYQs.
   opens with Functions C07, so Functions is split for NDA), Heights and
   Distances (5, 30), Binary Numbers (4, 24), all Std XI, and the Sphere (2,
   12, Std XII) in NDA's 3D Geometry. Same gates as 2a.
-- More PYQ Vault keys found wrong in 2b (not yet reported): NDA 2018 Apr Q11
+- More PYQ Vault keys found wrong in 2b: NDA 2018 Apr Q11
   (3ˣ = 3 gives x = 1, option C; D = 3 is starred), NDA 2017 Sep Q2
   (remainder then quotient of 46 ÷ 6 is (100)₂ and (111)₂, option B; A is
   starred). Possibly wrong, passage missing from the bank: NDA 2025 Apr Q39
@@ -1147,11 +1147,14 @@ functional equations). About 45 concepts in all, items from NDA PYQs.
   (remainders and integer parts), Std XII Trigonometric Functions C16
   (inradius and circumradius), Probability C11 (bounds), Functions C12
   (functional equations); 6 items each. Same gates as 2a; 5 labels moved.
-- More PYQ Vault keys found wrong in 2c (not yet reported): NDA 2024 Apr Q12
+- More PYQ Vault keys found wrong in 2c: NDA 2024 Apr Q12
   (a nonsingular A with A³ = A need not be I, e.g. −I, so "A and B only",
   option A; D is starred). Possibly wrong, passage missing from the bank:
   NDA 2025 Apr Q34 (p = sin α + cos α has least value −√2; 1/√2 is starred)
   and Q96 (f(1)/f(4) = 1/9 is not an option; 9 is starred, i.e. f(4)/f(1)).
   NDA 2025 Apr Q22's worked solution expands (√2 + 1)³ wrongly (7 + 5√2, not
   5 + 7√2), though its key stands.
+- Owner 2026-10-19: merged 2c (1c1f74a; golden path passed on live) and
+  reported the seven 2b/2c questions above to PYQ Vault (Q22's solution
+  slip was not filed). The NDA plan is complete.
 
