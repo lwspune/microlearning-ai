@@ -470,6 +470,7 @@ describe("the catalog", () => {
           11,
           [
             "Trigonometric Identities",
+            "Height & Distance",
             "Lines",
             "Circles",
             "Conics",
@@ -481,6 +482,8 @@ describe("the catalog", () => {
             "Permutation & Combination",
             "Binomial Theorem",
             "Sets & Relations",
+            "Binary Numbers",
+            "Logarithms",
             "Functions",
             "Limits & Continuity",
             "Linear Inequalities",
@@ -522,7 +525,11 @@ describe("the catalog", () => {
       expect(parts("Matrices & Determinants")).toEqual(["determinants-and-matrices", "matrices"]);
       expect(parts("Limits & Continuity")).toEqual(["limits", "continuity C01,C02,C03,C04,C05"]);
       expect(parts("Differentiation")).toEqual(["differentiation", "differentiation-12"]);
-      expect(parts("3D Geometry")).toEqual(["line-and-plane", "vectors C07"]);
+      expect(parts("3D Geometry")).toEqual(["line-and-plane", "vectors C07", "sphere"]);
+      expect(parts("Logarithms")).toEqual(["functions C07", "logarithms"]);
+      expect(parts("Functions")).toEqual(["functions C01,C02,C03,C04,C05,C06,C08,C09,C10,C11"]);
+      expect(parts("Height & Distance")).toEqual(["heights-and-distances"]);
+      expect(parts("Binary Numbers")).toEqual(["binary-numbers"]);
       expect(parts("Vectors")).toEqual(["vectors C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12,C13"]);
       expect(parts("Application of Derivatives")).toEqual(["application-of-derivatives C01,C02,C03,C04,C08,C09,C10"]);
       expect(parts("Circles")).toEqual(["circle C01,C02,C03,C04,C05,C06,C07,C08"]);
@@ -537,9 +544,9 @@ describe("the catalog", () => {
       for (const slug of ["mathematical-logic", "pair-of-straight-lines"]) expect(used).not.toContain(slug);
     });
 
-    it("keeps every trim a draft until the owner approves it", () => {
+    it("has every list approved by the owner (2026-10-19)", () => {
       const statuses = nda.chapters.flatMap(partsOf).flatMap((p) => (p.coverage ? [p.coverage.status] : []));
-      expect(new Set(statuses)).toEqual(new Set(["draft"]));
+      expect(new Set(statuses)).toEqual(new Set(["approved"]));
     });
   });
 

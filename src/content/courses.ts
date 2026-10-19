@@ -92,8 +92,8 @@ const cnMaharashtra: Coverage = {
 // two circles, angle between curves; owner, 2026-10-19). Keeps MH Board's maps as they were.
 const book = (chapter: string, last: number): CourseChapter => ({ chapter, coverage: { ids: range(1, last), status: "approved" } });
 
-// An NDA share of a pool chapter: the concepts NDA's syllabus asks, drafted 2026-10-19 for the owner.
-const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "draft" } });
+// An NDA share of a pool chapter: the concepts NDA's syllabus asks, approved by the owner 2026-10-19.
+const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
 
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
@@ -212,12 +212,13 @@ export const courses: Course[] = [
     group: "school",
     tagline: "UPSC NDA & NA, Mathematics",
     // PYQ Vault's chapters that the pool covers (owner, 2026-10-19; PLAN.md "NDA Maths course"); the
-    // rest (Logarithms, Height & Distance, Binary Numbers) join as they're built.
+    // phase 2b chapters (Logarithms, Height & Distance, Binary Numbers, the sphere) are built for NDA.
     // NDA's syllabus has no polar coordinates, Rolle or mean value theorems, approximations,
     // continuous distributions, linear programming beyond graphing inequations, or Std XII angle
-    // between curves and two circles. Every trim is a draft for the owner.
+    // between curves and two circles. The owner approved every list on 2026-10-19.
     chapters: [
       { chapter: "angle-measurement", title: "Trigonometric Identities", more: [nda("trigonometric-functions", range(1, 9)), { chapter: "compound-and-multiple-angles" }] },
+      { chapter: "heights-and-distances", title: "Height & Distance" },
       { chapter: "straight-line", title: "Lines" },
       { ...nda("circle", range(1, 8)), title: "Circles" },
       { chapter: "conic-sections", title: "Conics" },
@@ -230,14 +231,17 @@ export const courses: Course[] = [
         coverage: {
           ids: [...CN_ALL, "C09", "C13", "C17", "C20", "C21", "C22", "C23", ...CN_LOCI],
           unsure: ["C09", "C13", "C22", ...CN_LOCI],
-          status: "draft",
+          status: "approved",
         },
       },
       { chapter: "sequences-and-series", title: "Sequence & Series" },
       { chapter: "permutations-and-combinations", title: "Permutation & Combination" },
       { chapter: "binomial-theorem" },
       { chapter: "sets-and-relations", title: "Sets & Relations" },
-      { chapter: "functions" },
+      { chapter: "binary-numbers" },
+      // Functions' logarithm rules (C07) open NDA's Logarithms; Functions keeps the rest.
+      { ...nda("functions", ["C07"]), slug: "logarithms", title: "Logarithms", more: [{ chapter: "logarithms" }] },
+      nda("functions", [...range(1, 6), ...range(8, 11)]),
       { chapter: "limits", title: "Limits & Continuity", more: [nda("continuity", range(1, 5))] },
       // "Linear inequations of two variables by graphs": the graphing half of Linear Programming.
       { ...nda("linear-programming", range(1, 4)), slug: "linear-inequalities", title: "Linear Inequalities", standard: 11 },
@@ -248,7 +252,7 @@ export const courses: Course[] = [
       { ...nda("trigonometric-functions-12", range(12, 15)), slug: "inverse-trigonometry", title: "Inverse Trigonometry" },
       // Direction cosines (Vectors C07) are 3D Geometry in NDA.
       nda("vectors", [...range(1, 6), ...range(8, 13)]),
-      { chapter: "line-and-plane", title: "3D Geometry", more: [nda("vectors", ["C07"])] },
+      { chapter: "line-and-plane", title: "3D Geometry", more: [nda("vectors", ["C07"]), { chapter: "sphere" }] },
       { chapter: "differentiation", standard: 12, more: [{ chapter: "differentiation-12" }] },
       nda("application-of-derivatives", [...range(1, 4), ...range(8, 10)]),
       { chapter: "indefinite-integration" },
