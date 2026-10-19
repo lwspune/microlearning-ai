@@ -9,6 +9,7 @@ import { c07 } from "./concepts/c07-conditional-probability.ts";
 import { c08 } from "./concepts/c08-multiplication-theorem.ts";
 import { c09 } from "./concepts/c09-independent-events.ts";
 import { c10 } from "./concepts/c10-total-probability-bayes.ts";
+import { c11 } from "./concepts/c11-bounds-on-probability.ts";
 import { graph } from "./graph.ts";
 
 export const probability: Chapter = {
@@ -18,5 +19,5 @@ export const probability: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
 };
