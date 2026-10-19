@@ -13,7 +13,9 @@ import {
   partScope,
   partsFor,
   partsOf,
+  practiceLink,
   resolveEntry,
+  slugOf,
   GROUPS,
   parseGroup,
   parseStandard,
@@ -324,6 +326,38 @@ describe("withCourse", () => {
 
   it("leaves the link alone without a course", () => {
     expect(withCourse("/learn/ch/a", undefined)).toBe("/learn/ch/a");
+  });
+});
+
+describe("practiceLink", () => {
+  const withVault = (pyqvault?: string) =>
+    course("a", { pyqvault: { exam: "mht-cet", subject: "maths" }, chapters: [{ chapter: "ch", pyqvault }] });
+
+  it("points a course chapter at its PYQ Vault chapter, marked as coming from Concept Ladder", () => {
+    const c = withVault("circle");
+    expect(practiceLink(c, c.chapters[0])).toEqual({
+      href: "https://www.pyqvault.com/questions/mht-cet/maths/circle?ref=conceptladder",
+      label: "Practise a questions on PYQ Vault",
+    });
+  });
+
+  it("is null for a chapter without a PYQ Vault chapter", () => {
+    const c = withVault(undefined);
+    expect(practiceLink(c, c.chapters[0])).toBeNull();
+  });
+
+  it("is checked: a chapter's PYQ Vault slug needs the course's exam, in slug form", () => {
+    const noExam = course("a", { chapters: [{ chapter: "ch", pyqvault: "circle" }] });
+    expect(validateCatalog([noExam], [ch])).toContain("a: chapter ch links to PYQ Vault, but the course names no PYQ Vault exam");
+    expect(validateCatalog([withVault("Bad Slug")], [ch])).toContain("a: PYQ Vault slug Bad Slug must be lowercase words joined by hyphens");
+    expect(validateCatalog([withVault("circle")], [ch])).toEqual([]);
+  });
+
+  it("links MHT-CET's Circle in the pilot, and nothing else yet (owner, 2026-10-19)", () => {
+    const cet = findCourse("mht-cet")!;
+    const linked = courses.flatMap((c) => c.chapters.filter((e) => practiceLink(c, e)).map((e) => `${c.slug}/${slugOf(e)}`));
+    expect(linked).toEqual(["mht-cet/circle"]);
+    expect(practiceLink(cet, entryFor(cet, "circle")!)?.href).toBe("https://www.pyqvault.com/questions/mht-cet/maths/circle?ref=conceptladder");
   });
 });
 

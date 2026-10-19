@@ -35,6 +35,8 @@ export type CourseChapter = CoursePart & {
   standard?: Standard;
   /** The other pool chapters it takes in, in teaching order. */
   more?: CoursePart[];
+  /** Its chapter's slug on PYQ Vault, where the course's past papers are practised. */
+  pyqvault?: string;
 };
 
 /** A course chapter with its pool chapters looked up. */
@@ -55,6 +57,8 @@ export type Course = {
   tagline: string;
   /** A school board: its page shows one standard at a time, which the student picks. */
   board?: true;
+  /** The course's exam and subject on PYQ Vault (its URL slugs), for chapters that link there. */
+  pyqvault?: { exam: string; subject: string };
   chapters: CourseChapter[];
 };
 
@@ -161,13 +165,15 @@ export const courses: Course[] = [
     short: "MHT-CET",
     group: "school",
     tagline: "Maharashtra engineering entrance",
+    // Two-way link with PYQ Vault, piloted on Circle (owner, 2026-10-19; PLAN.md "PYQ Vault link").
+    pyqvault: { exam: "mht-cet", subject: "maths" },
     // PYQ Vault's chapters and names (owner, 2026-10-19; PLAN.md "MHT-CET Maths course"): the whole
     // Std XII book and the Std XI chapters CET asks. Measures of Dispersion is out: none of the 2025–26
     // papers ask it, and the syllabus reportedly swapped it for Conic Sections.
     chapters: [
       book("compound-and-multiple-angles", 10),
       { chapter: "straight-line" },
-      { chapter: "circle" },
+      { chapter: "circle", pyqvault: "circle" },
       { chapter: "conic-sections" },
       { chapter: "complex-numbers", coverage: cnMaharashtra },
       { chapter: "permutations-and-combinations" },
@@ -295,6 +301,10 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
       if (slugs.has(slug)) errors.push(`${course.slug}: course chapter slug ${slug} used twice`);
       slugs.add(slug);
       if (!SLUG.test(slug)) errors.push(`${course.slug}: course chapter slug ${slug} must be lowercase words joined by hyphens`);
+      if (entry.pyqvault !== undefined) {
+        if (!course.pyqvault) errors.push(`${course.slug}: chapter ${slug} links to PYQ Vault, but the course names no PYQ Vault exam`);
+        if (!SLUG.test(entry.pyqvault)) errors.push(`${course.slug}: PYQ Vault slug ${entry.pyqvault} must be lowercase words joined by hyphens`);
+      }
     }
     errors.push(...validateShares(course));
 
@@ -407,6 +417,18 @@ export function mapLink(course: Course | null, chapter: Chapter, chapters: Chapt
   if (!course || !entry) return { href: `/learn/${chapter.slug}`, title: chapter.title };
   const resolved = resolveEntry(entry, chapters);
   return { href: `/courses/${course.slug}/${resolved.slug}`, title: `${course.short} · ${resolved.title}` };
+}
+
+const PYQ_VAULT = "https://www.pyqvault.com";
+
+/** Where a course chapter's past papers are practised on PYQ Vault, or null if it doesn't link there. */
+export function practiceLink(course: Course, entry: CourseChapter): { href: string; label: string } | null {
+  if (!course.pyqvault || !entry.pyqvault) return null;
+  const { exam, subject } = course.pyqvault;
+  return {
+    href: `${PYQ_VAULT}/questions/${exam}/${subject}/${entry.pyqvault}?ref=conceptladder`,
+    label: `Practise ${course.short} questions on PYQ Vault`,
+  };
 }
 
 export function coursesIn(group: GroupId, list: Course[] = courses): Course[] {

@@ -39,6 +39,15 @@ export function ArrowRightIcon({ className }: IconProps) {
   );
 }
 
+/** A link that leaves the site. */
+export function ExternalIcon({ className }: IconProps) {
+  return (
+    <svg {...base(className)}>
+      <path d="M11 4h5v5M16 4l-7 7M14 12v3.5a.5.5 0 01-.5.5h-9a.5.5 0 01-.5-.5v-9a.5.5 0 01.5-.5H8" />
+    </svg>
+  );
+}
+
 export function ArrowLeftIcon({ className }: IconProps) {
   return (
     <svg {...base(className)}>

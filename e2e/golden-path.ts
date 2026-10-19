@@ -165,6 +165,23 @@ await (async () => {
     );
     await shot("00-cet-limits");
     await noSideScroll("MHT-CET Limits");
+    check(!(await page.getByRole("link", { name: /PYQ Vault/ }).count()), "MHT-CET Limits: no PYQ Vault link outside the Circle pilot");
+
+    // The PYQ Vault pilot: MHT-CET's Circle links to its past papers there, in a new tab.
+    await page.goto(BASE + "/courses/mht-cet/circle");
+    const vault = page.getByRole("link", { name: /Practise MHT-CET questions on PYQ Vault/ });
+    await vault.waitFor();
+    check(
+      (await vault.getAttribute("href")) === "https://www.pyqvault.com/questions/mht-cet/maths/circle?ref=conceptladder",
+      `MHT-CET Circle: links to PYQ Vault's Circle (${await vault.getAttribute("href")})`,
+    );
+    check((await vault.getAttribute("target")) === "_blank", "MHT-CET Circle: PYQ Vault opens in a new tab");
+    check(((await vault.textContent()) ?? "").includes("opens in a new tab"), "MHT-CET Circle: the link tells screen readers it opens a new tab");
+    await shot("00-cet-circle");
+    await noSideScroll("MHT-CET Circle");
+    await page.goto(BASE + "/courses/mh-board/circle");
+    await page.locator("section[aria-labelledby=outline]").getByText("Centre–radius form").waitFor();
+    check(!(await page.getByRole("link", { name: /PYQ Vault/ }).count()), "MH Board Circle: no PYQ Vault link");
 
     // NDA splits Std XII Trigonometric Functions three ways: Properties of Triangle has only its share.
     await page.goto(BASE + "/courses/nda/properties-of-triangle");

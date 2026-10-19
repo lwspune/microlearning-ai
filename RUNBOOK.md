@@ -31,8 +31,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
    tagline live in `src/lib/brand.ts`; the ladder mark is `LadderIcon` in
    `src/components/icons.tsx`, and the app icon draws the same `LADDER_PATH`.
    `src/app/favicon.ico` is made from `/icon/512` (16, 32 and 48 px). Some
-   internal names keep the old brand on purpose: the npm package, the Vercel
-   and Supabase projects, and the hidden student login domain
+   internal names keep the old brand on purpose: the npm package, the GitHub
+   repo `lwspune/microlearning-ai`, the Vercel and Supabase projects (renaming
+   the repo would ripple into both; owner, 2026-10-19), and the hidden student login domain
    `students.microlearning.invalid`. Renaming that domain would lock out every
    existing student, because the database checks it.
 
