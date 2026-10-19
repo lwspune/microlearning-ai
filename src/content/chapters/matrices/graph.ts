@@ -70,4 +70,12 @@ export const graph: GraphNode[] = [
     oneLiner: "Name the unknowns, write one equation per condition, solve by inversion and answer in the problem's units",
     prereqs: ["C09"], ext: [], sources: [S("Solution of Linear Equations using Matrices")],
   },
+
+  // Matrix polynomials (MHT-CET; not in the book)
+  {
+    id: "C12", slug: "cayley-hamilton", title: "The Cayley–Hamilton theorem", group: "Matrix polynomials", tier: "adv",
+    oneLiner: t`A $2 \times 2$ matrix satisfies $A^2 - (\operatorname{tr}A)A + |A|I = O$; multiply through by $A^{-1}$ to get the inverse`,
+    prereqs: ["C06"], ext: ["matrix algebra"],
+    sources: ["cetdm-cayley-hamilton-for-2x2", "cetdm-inverse-as-alpha-i-plus-beta-a", "cetdm-factored-matrix-polynomial-gives-the-inverse"],
+  },
 ];

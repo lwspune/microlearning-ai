@@ -9,10 +9,10 @@ describe("Application of Derivatives chapter", () => {
     expect(validateChapter(applicationOfDerivatives)).toEqual([]);
   });
 
-  it("keeps the graph: 10 concepts, 6 edges", () => {
+  it("keeps the graph: 11 concepts, 7 edges (C11 angle between curves for MHT-CET)", () => {
     const edges = applicationOfDerivatives.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(applicationOfDerivatives.graph).toHaveLength(10);
-    expect(edges).toBe(6);
+    expect(applicationOfDerivatives.graph).toHaveLength(11);
+    expect(edges).toBe(7);
   });
 
   it("keeps edges transitively reduced", () => {
