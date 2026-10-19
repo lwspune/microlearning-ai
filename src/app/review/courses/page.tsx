@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { chapters } from "@/content/chapters";
-import { coveredIds, coursesIn, GROUPS, uniqueConcepts } from "@/content/courses";
+import { coveredIds, coursesIn, entryFor, GROUPS, partFor, resolveEntry, uniqueConcepts } from "@/content/courses";
 import { reviewEnabled } from "@/lib/review";
 
 export const metadata: Metadata = { title: "Course coverage" };
@@ -36,10 +36,10 @@ export default function CourseCoverageReview() {
             </h2>
             {pool.length === 0 && <p className="mt-2 text-muted">No chapters in this pool yet.</p>}
             {pool.map((chapter) => {
-              const inChapter = groupCourses.filter((c) => c.chapters.some((e) => e.chapter === chapter.slug));
+              const inChapter = groupCourses.filter((c) => entryFor(c, chapter.slug));
               const covered = new Map(inChapter.map((c) => [c.slug, coveredIds(c, chapter, { includeDraft: true })]));
               const unsure = new Map(
-                inChapter.map((c) => [c.slug, new Set(c.chapters.find((e) => e.chapter === chapter.slug)?.coverage?.unsure ?? [])]),
+                inChapter.map((c) => [c.slug, new Set(partFor(c, chapter.slug)!.coverage?.unsure ?? [])]),
               );
               const unique = uniqueConcepts(chapter, inChapter, { includeDraft: true });
               return (
@@ -52,13 +52,16 @@ export default function CourseCoverageReview() {
                           Concept
                         </th>
                         {inChapter.map((c) => {
-                          const status = c.chapters.find((e) => e.chapter === chapter.slug)?.coverage?.status ?? "whole chapter";
+                          const status = partFor(c, chapter.slug)!.coverage?.status ?? "whole chapter";
+                          // Where the course teaches it, when that's a chapter of its own (MHT-CET's Limits takes in Continuity).
+                          const within = resolveEntry(entryFor(c, chapter.slug)!, chapters).title;
                           return (
                             <th key={c.slug} scope="col" className="px-3 py-2 text-center">
                               {c.short}
                               <span className={`block text-xs font-medium ${status === "approved" ? "text-success" : "text-muted"}`}>
                                 {status} · {covered.get(c.slug)!.size}
                               </span>
+                              {within !== chapter.title && <span className="block text-xs font-normal text-muted">in {within}</span>}
                             </th>
                           );
                         })}
