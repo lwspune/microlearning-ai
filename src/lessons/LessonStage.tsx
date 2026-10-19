@@ -185,11 +185,11 @@ export function LessonStage({
 
       <footer className="flex items-center justify-between gap-3 border-t border-border bg-surface/60 px-5 py-3">
         <button type="button" className={secondaryButton} onClick={() => go(() => prev)} disabled={!canGoBack}>
-          ← Back
+          ← Previous Page
         </button>
         {canGoOn && (
           <button type="button" className={primaryButton} onClick={showStart ? toggleFullscreen : () => go(() => next)}>
-            {showStart ? "Start →" : next.index !== pos.index && slides[next.index].kind === "questions" ? "Try a question →" : "Next →"}
+            {showStart ? "Start →" : next.index !== pos.index && slides[next.index].kind === "questions" ? "Try a question →" : "Next Page →"}
           </button>
         )}
       </footer>
