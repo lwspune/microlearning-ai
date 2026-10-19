@@ -11,6 +11,7 @@ import { c09 } from "./concepts/c09-matrix-multiplication.ts";
 import { c10 } from "./concepts/c10-multiplication-properties.ts";
 import { c11 } from "./concepts/c11-transpose.ts";
 import { c12 } from "./concepts/c12-symmetric-and-skew.ts";
+import { c13 } from "./concepts/c13-special-square-matrices.ts";
 import { graph } from "./graph.ts";
 
 export const determinantsAndMatrices: Chapter = {
@@ -20,5 +21,5 @@ export const determinantsAndMatrices: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13],
 };

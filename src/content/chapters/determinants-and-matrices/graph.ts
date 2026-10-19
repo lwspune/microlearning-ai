@@ -73,4 +73,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`$A^T = A$ or $A^T = -A$ (diagonal all 0); every square matrix is $\frac{A + A^T}{2} + \frac{A - A^T}{2}$`,
     prereqs: ["C11"], ext: [], sources: [S("Properties of the Transpose of a Matrix")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C13", slug: "special-square-matrices", title: "Special square matrices", group: "Matrices", tier: "adv",
+    oneLiner: t`Orthogonal ($AA^T = I$), idempotent ($A^2 = A$), involutory ($A^2 = I$) and nilpotent ($A^k = O$) matrices; rotation matrices add their angles when multiplied`,
+    prereqs: ["C10", "C12"], ext: [], sources: [`nda/matrices-determinants#Special Matrices — Skew-Symmetric, Diagonal, Idempotent, Orthogonal, Rotation`],
+  },
 ];

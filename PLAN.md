@@ -1139,4 +1139,19 @@ functional equations). About 45 concepts in all, items from NDA PYQs.
   starred). Possibly wrong, passage missing from the bank: NDA 2025 Apr Q39
   (key D, (√3 + 3)a/4, vs (3 + √3)a/2 from its own working) and Q40 (the
   starred option is misprinted).
+- Phase 2c done 2026-10-19 (branch `nda-phase-2c`): nine NDA-only concepts
+  inside book chapters, outside the MH Board and MHT-CET lists: Compound
+  Angles C11 (a sin θ + b cos θ), Determinants and Matrices C13 (special
+  square matrices), Definite Integration C08–C10 (differentiating an
+  integral, periodic integrands, [x] and |x|), Binomial Theorem C10
+  (remainders and integer parts), Std XII Trigonometric Functions C16
+  (inradius and circumradius), Probability C11 (bounds), Functions C12
+  (functional equations); 6 items each. Same gates as 2a; 5 labels moved.
+- More PYQ Vault keys found wrong in 2c (not yet reported): NDA 2024 Apr Q12
+  (a nonsingular A with A³ = A need not be I, e.g. −I, so "A and B only",
+  option A; D is starred). Possibly wrong, passage missing from the bank:
+  NDA 2025 Apr Q34 (p = sin α + cos α has least value −√2; 1/√2 is starred)
+  and Q96 (f(1)/f(4) = 1/9 is not an option; 9 is starred, i.e. f(4)/f(1)).
+  NDA 2025 Apr Q22's worked solution expands (√2 + 1)³ wrongly (7 + 5√2, not
+  5 + 7√2), though its key stands.
 

@@ -9,10 +9,10 @@ describe("Definite Integration chapter", () => {
     expect(validateChapter(definiteIntegration)).toEqual([]);
   });
 
-  it("keeps the graph: 7 concepts, 5 edges", () => {
+  it("keeps the graph: 10 concepts, 8 edges (NDA phase 2c added one or more)", () => {
     const edges = definiteIntegration.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(definiteIntegration.graph).toHaveLength(7);
-    expect(edges).toBe(5);
+    expect(definiteIntegration.graph).toHaveLength(10);
+    expect(edges).toBe(8);
   });
 
   it("keeps edges transitively reduced", () => {

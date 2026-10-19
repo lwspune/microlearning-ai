@@ -11,6 +11,7 @@ import {
   findCourse,
   mapLink,
   partScope,
+  partsFor,
   partsOf,
   resolveEntry,
   GROUPS,
@@ -512,7 +513,7 @@ describe("the catalog", () => {
 
     it("splits Std XII Trigonometric Functions into PYQ Vault's three chapters, leaving out polar coordinates", () => {
       expect(parts("Trigonometric Equations")).toEqual(["trigonometric-functions-12 C01,C02,C03,C04,C05"]);
-      expect(parts("Properties of Triangle")).toEqual(["trigonometric-functions-12 C07,C08,C09,C10,C11"]);
+      expect(parts("Properties of Triangle")).toEqual(["trigonometric-functions-12 C07,C08,C09,C10,C11,C16"]);
       expect(parts("Inverse Trigonometry")).toEqual(["trigonometric-functions-12 C12,C13,C14,C15"]);
     });
 
@@ -527,7 +528,7 @@ describe("the catalog", () => {
       expect(parts("Differentiation")).toEqual(["differentiation", "differentiation-12"]);
       expect(parts("3D Geometry")).toEqual(["line-and-plane", "vectors C07", "sphere"]);
       expect(parts("Logarithms")).toEqual(["functions C07", "logarithms"]);
-      expect(parts("Functions")).toEqual(["functions C01,C02,C03,C04,C05,C06,C08,C09,C10,C11"]);
+      expect(parts("Functions")).toEqual(["functions C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12"]);
       expect(parts("Height & Distance")).toEqual(["heights-and-distances"]);
       expect(parts("Binary Numbers")).toEqual(["binary-numbers"]);
       expect(parts("Vectors")).toEqual(["vectors C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12,C13"]);
@@ -537,6 +538,34 @@ describe("the catalog", () => {
       expect(parts("Binomial Distribution")).toEqual(["probability-distributions C01,C02,C03,C04", "binomial-distribution"]);
       expect(parts("Statistics")).toEqual(["statistics", "measures-of-dispersion"]);
       expect(parts("Quadratic Equations")).toEqual(["quadratic-equations"]);
+    });
+
+    // Phase 2c: concepts NDA asks inside chapters the books already have (PLAN.md "NDA Maths course").
+    const gaps: [string, string][] = [
+      ["compound-and-multiple-angles", "a-sin-plus-b-cos"],
+      ["determinants-and-matrices", "special-square-matrices"],
+      ["definite-integration", "differentiating-an-integral"],
+      ["definite-integration", "periodic-integrands"],
+      ["definite-integration", "greatest-integer-and-modulus"],
+      ["binomial-theorem", "remainders-and-integer-parts"],
+      ["trigonometric-functions-12", "inradius-and-circumradius"],
+      ["probability", "bounds-on-probability"],
+      ["functions", "functional-equations"],
+    ];
+
+    it("covers the concepts NDA asks inside the books' chapters; MH Board and MHT-CET keep their lists", () => {
+      for (const [slug, concept] of gaps) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const id = ch.graph.find((n) => n.slug === concept)?.id;
+        expect(id, `${slug}/${concept} is in the graph`).toBeDefined();
+        expect(coveredIds(nda, ch).has(id!), `NDA covers ${slug}/${concept}`).toBe(true);
+        for (const other of ["mh-board", "mht-cet"]) {
+          const course = findCourse(other)!;
+          if (!partsFor(course, slug).length) continue;
+          expect(coveredIds(course, ch).has(id!), `${other} leaves out ${slug}/${concept}`).toBe(false);
+          expect(coveredIds(course, ch).size, `${other} keeps the rest of ${slug}`).toBe(ch.graph.length - gaps.filter(([s]) => s === slug).length);
+        }
+      }
     });
 
     it("leaves out what NDA's syllabus doesn't ask", () => {

@@ -9,10 +9,10 @@ describe("Binomial Theorem chapter", () => {
     expect(validateChapter(binomialTheorem)).toEqual([]);
   });
 
-  it("keeps the graph: 9 concepts, 8 edges", () => {
+  it("keeps the graph: 10 concepts, 9 edges (NDA phase 2c added one or more)", () => {
     const edges = binomialTheorem.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(binomialTheorem.graph).toHaveLength(9);
-    expect(edges).toBe(8);
+    expect(binomialTheorem.graph).toHaveLength(10);
+    expect(edges).toBe(9);
   });
 
   it("keeps edges transitively reduced", () => {

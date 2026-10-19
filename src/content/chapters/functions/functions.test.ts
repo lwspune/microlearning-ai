@@ -9,10 +9,10 @@ describe("Functions chapter", () => {
     expect(validateChapter(functions)).toEqual([]);
   });
 
-  it("keeps the graph: 11 concepts, 10 edges", () => {
+  it("keeps the graph: 12 concepts, 11 edges (NDA phase 2c added one or more)", () => {
     const edges = functions.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(functions.graph).toHaveLength(11);
-    expect(edges).toBe(10);
+    expect(functions.graph).toHaveLength(12);
+    expect(edges).toBe(11);
   });
 
   it("keeps edges transitively reduced", () => {

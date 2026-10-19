@@ -48,4 +48,21 @@ export const graph: GraphNode[] = [
     oneLiner: t`$\int_{-a}^{a} f(x)\,dx$ is $0$ for odd $f$ and $2\int_0^a f(x)\,dx$ for even $f$; $\int_0^{2a} f(x)\,dx = 2\int_0^a f(x)\,dx$ when $f(2a - x) = f(x)$`,
     prereqs: ["C05"], ext: ["odd and even functions"], sources: [S("Properties of Definite Integrals")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C08", slug: "differentiating-an-integral", title: "Differentiating an integral", group: "Beyond the book", tier: "adv",
+    oneLiner: t`$\frac{d}{dx}\int_a^{g(x)} f(t)\,dt = f(g(x))\,g'(x)$: the integral of a derivative and the derivative of an integral undo each other`,
+    prereqs: ["C02"], ext: ["chain rule (Differentiation)"], sources: [`nda/definite-integration#Fundamental Theorem, Periodic Integrals, and Leibniz Rule`],
+  },
+  {
+    id: "C09", slug: "periodic-integrands", title: "Periodic integrands", group: "Beyond the book", tier: "adv",
+    oneLiner: t`If $f$ has period $T$, every stretch of length $T$ gives the same integral, so $\int_0^{nT} f = n\int_0^T f$`,
+    prereqs: ["C05"], ext: ["period of a function"], sources: [`nda/definite-integration#Fundamental Theorem, Periodic Integrals, and Leibniz Rule`],
+  },
+  {
+    id: "C10", slug: "greatest-integer-and-modulus", title: "Integrands with [x] and |x|", group: "Beyond the book", tier: "adv",
+    oneLiner: t`Split the interval where $[x]$ jumps or the expression inside $|\ |$ changes sign; on each piece the integrand is a plain function`,
+    prereqs: ["C05"], ext: ["greatest integer and modulus (Functions)"], sources: [`nda/definite-integration#Integration of Absolute Value, Piecewise, and Greatest Integer Functions`],
+  },
 ];

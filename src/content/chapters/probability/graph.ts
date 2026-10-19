@@ -63,4 +63,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`$P(E_i \mid A) = \frac{P(E_i)P(A \mid E_i)}{\sum_j P(E_j)P(A \mid E_j)}$: work backwards from the result`,
     prereqs: ["C08"], ext: [], sources: [S("Bayes' Theorem")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C11", slug: "bounds-on-probability", title: "Bounds on probabilities", group: "Rules", tier: "adv",
+    oneLiner: t`$P(A \cap B)$ lies between $P(A) + P(B) - 1$ and the smaller of $P(A)$, $P(B)$; $P(A \cup B)$ is at most $P(A) + P(B)$`,
+    prereqs: ["C05"], ext: [], sources: [`nda/probability#Bounds on Probability`],
+  },
 ];

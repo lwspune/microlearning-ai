@@ -9,10 +9,10 @@ describe("Trigonometric Functions chapter", () => {
     expect(validateChapter(trigonometricFunctions12)).toEqual([]);
   });
 
-  it("keeps the graph: 15 concepts, 14 edges", () => {
+  it("keeps the graph: 16 concepts, 16 edges (NDA phase 2c added one or more)", () => {
     const edges = trigonometricFunctions12.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(trigonometricFunctions12.graph).toHaveLength(15);
-    expect(edges).toBe(14);
+    expect(trigonometricFunctions12.graph).toHaveLength(16);
+    expect(edges).toBe(16);
   });
 
   it("keeps edges transitively reduced", () => {

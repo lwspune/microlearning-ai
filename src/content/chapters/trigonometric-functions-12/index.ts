@@ -14,6 +14,7 @@ import { c12 } from "./concepts/c12-principal-values.ts";
 import { c13 } from "./concepts/c13-inverse-of-a-ratio.ts";
 import { c14 } from "./concepts/c14-inverse-properties.ts";
 import { c15 } from "./concepts/c15-inverse-trig-equations.ts";
+import { c16 } from "./concepts/c16-inradius-and-circumradius.ts";
 import { graph } from "./graph.ts";
 
 export const trigonometricFunctions12: Chapter = {
@@ -23,5 +24,5 @@ export const trigonometricFunctions12: Chapter = {
   subject: "maths",
   standard: 12,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16],
 };

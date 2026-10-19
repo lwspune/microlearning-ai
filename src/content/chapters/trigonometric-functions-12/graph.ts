@@ -92,4 +92,11 @@ export const graph: GraphNode[] = [
     oneLiner: "Combine the inverse terms with the properties, take the ratio of both sides, then keep only roots in the principal ranges",
     prereqs: ["C13", "C14"], ext: [], sources: [S("Properties of Inverse Trigonometric Functions")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C16", slug: "inradius-and-circumradius", title: "Inradius and circumradius", group: "Solution of a triangle", tier: "adv",
+    oneLiner: t`$R = \frac{a}{2\sin A} = \frac{abc}{4\Delta}$ and $r = \frac{\Delta}{s}$; a regular $n$-gon of side $a$ has $r = \frac{a}{2}\cot\frac{\pi}{n}$`,
+    prereqs: ["C07", "C10"], ext: [], sources: [`nda/properties-of-triangle#In-circle and Regular Polygon Geometry`],
+  },
 ];
