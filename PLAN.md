@@ -1158,3 +1158,31 @@ functional equations). About 45 concepts in all, items from NDA PYQs.
   reported the seven 2b/2c questions above to PYQ Vault (Q22's solution
   slip was not filed). The NDA plan is complete.
 
+
+## PYQ Vault link (approved 2026-10-19, branch `pyqvault-link-pilot`)
+
+Instead of MHT-CET phase 3 (CET practice inside Concept Ladder, which would copy
+PYQ Vault's practice, drill, mocks and analytics), the two sites link both ways:
+PYQ Vault is where students practise past papers, Concept Ladder where they learn
+the concept behind a miss.
+
+- **Concept Ladder → PYQ Vault:** a course chapter with a `pyqvault` slug (and a
+  course with `pyqvault: { exam, subject }`) shows "Practise <course> questions on
+  PYQ Vault", opening its chapter page in a new tab (`?ref=conceptladder`).
+- **PYQ Vault → Concept Ladder:** a "Learn: <concept> · Concept Ladder" chip beside
+  Guide/Notes (`src/lib/links/questionResources.ts`), mapped from PYQ Vault's
+  note-concept tag, else the subtopic, else no chip; the lesson link carries
+  `?course=<course>&ref=pyqvault`.
+
+**Pilot:** MHT-CET Circle (owner, 2026-10-19: Circle, new tab, OK to change PYQ
+Vault on its own branch). Then all 23 MHT-CET chapters (57% of their PYQs carry a
+note-concept tag), then NDA.
+
+**Status:**
+- Concept Ladder side live 2026-10-19. Another session's commit `70f3052` ("docs:
+  keep the GitHub repo name microlearning-ai") swept up this uncommitted work and
+  pushed it to main; the owner chose to keep it live and review after the fact.
+  Sheets: `screenshots/2026-10-19-pyqvault-link/` (before = live with the link
+  removed, which is exactly e8b4832's page). Tests: `practiceLink` and the catalog
+  check; the golden path checks the link, its new tab, and its absence elsewhere.
+- PYQ Vault side: next.
