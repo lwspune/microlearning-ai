@@ -88,8 +88,9 @@ const cnMaharashtra: Coverage = {
 // Linear Programming coverage, approved by the owner 2026-10-15. Class 12 in both boards and
 // MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it. C10 (unbounded
 // regions) is no longer doubtful for MH Board and MHT-CET: the HSC papers ask it (2026-10-18).
-// MH Board: the book's concepts in chapters where MHT-CET adds one the book doesn't teach (Cayley–Hamilton,
-// two circles, angle between curves; owner, 2026-10-19). Keeps MH Board's maps as they were.
+// The book's concepts, in chapters where another course adds one the book doesn't teach: MHT-CET's
+// Cayley–Hamilton, two circles and angle between curves, and NDA's phase 2c concepts (owner, 2026-10-19).
+// Keeps MH Board's and MHT-CET's maps as they were.
 const book = (chapter: string, last: number): CourseChapter => ({ chapter, coverage: { ids: range(1, last), status: "approved" } });
 
 // An NDA share of a pool chapter: the concepts NDA's syllabus asks, approved by the owner 2026-10-19.
@@ -112,32 +113,32 @@ export const courses: Course[] = [
     chapters: [
       { chapter: "angle-measurement" },
       { chapter: "trigonometric-functions" },
-      { chapter: "compound-and-multiple-angles" },
-      { chapter: "determinants-and-matrices" },
+      book("compound-and-multiple-angles", 10),
+      book("determinants-and-matrices", 12),
       { chapter: "straight-line" },
       book("circle", 8),
       { chapter: "conic-sections" },
       { chapter: "measures-of-dispersion" },
-      { chapter: "probability" },
-      { chapter: "functions" },
+      book("probability", 10),
+      book("functions", 11),
       { chapter: "limits" },
       { chapter: "continuity" },
       { chapter: "differentiation" },
       { chapter: "complex-numbers", coverage: cnMaharashtra },
       { chapter: "sequences-and-series" },
       { chapter: "permutations-and-combinations" },
-      { chapter: "binomial-theorem" },
+      book("binomial-theorem", 9),
       { chapter: "sets-and-relations" },
       { chapter: "mathematical-logic" },
       book("matrices", 11),
-      { chapter: "trigonometric-functions-12" },
+      book("trigonometric-functions-12", 15),
       { chapter: "pair-of-straight-lines" },
       { chapter: "vectors" },
       { chapter: "line-and-plane" },
       { chapter: "differentiation-12" },
       book("application-of-derivatives", 10),
       { chapter: "indefinite-integration" },
-      { chapter: "definite-integration" },
+      book("definite-integration", 7),
       { chapter: "application-of-definite-integration" },
       { chapter: "differential-equations" },
       { chapter: "probability-distributions" },
@@ -164,7 +165,7 @@ export const courses: Course[] = [
     // Std XII book and the Std XI chapters CET asks. Measures of Dispersion is out: none of the 2025–26
     // papers ask it, and the syllabus reportedly swapped it for Conic Sections.
     chapters: [
-      { chapter: "compound-and-multiple-angles" },
+      book("compound-and-multiple-angles", 10),
       { chapter: "straight-line" },
       { chapter: "circle" },
       { chapter: "conic-sections" },
@@ -176,13 +177,13 @@ export const courses: Course[] = [
         chapter: "sets-and-relations",
         coverage: { ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "approved" },
         title: "Sets, Relations and Functions",
-        more: [{ chapter: "functions" }],
+        more: [book("functions", 11)],
       },
       { chapter: "limits", more: [{ chapter: "continuity" }] },
       { chapter: "mathematical-logic" },
       // Examined as Std XII matrices; the Std XI determinants come first.
-      { chapter: "determinants-and-matrices", standard: 12, more: [{ chapter: "matrices" }] },
-      { chapter: "trigonometric-functions-12" },
+      { ...book("determinants-and-matrices", 12), standard: 12, more: [{ chapter: "matrices" }] },
+      book("trigonometric-functions-12", 15),
       { chapter: "pair-of-straight-lines" },
       { chapter: "vectors" },
       { chapter: "line-and-plane" },
@@ -190,10 +191,10 @@ export const courses: Course[] = [
       { chapter: "differentiation", standard: 12, more: [{ chapter: "differentiation-12" }] },
       { chapter: "application-of-derivatives", title: "Applications of Derivative" },
       { chapter: "indefinite-integration" },
-      { chapter: "definite-integration" },
+      book("definite-integration", 7),
       { chapter: "application-of-definite-integration", title: "Applications of Definite Integral" },
       { chapter: "differential-equations" },
-      { chapter: "probability", title: "Probability Distribution", standard: 12, more: [{ chapter: "probability-distributions" }] },
+      { ...book("probability", 10), title: "Probability Distribution", standard: 12, more: [{ chapter: "probability-distributions" }] },
       { chapter: "binomial-distribution" },
     ],
   },
@@ -241,14 +242,14 @@ export const courses: Course[] = [
       { chapter: "binary-numbers" },
       // Functions' logarithm rules (C07) open NDA's Logarithms; Functions keeps the rest.
       { ...nda("functions", ["C07"]), slug: "logarithms", title: "Logarithms", more: [{ chapter: "logarithms" }] },
-      nda("functions", [...range(1, 6), ...range(8, 11)]),
+      nda("functions", [...range(1, 6), ...range(8, 12)]),
       { chapter: "limits", title: "Limits & Continuity", more: [nda("continuity", range(1, 5))] },
       // "Linear inequations of two variables by graphs": the graphing half of Linear Programming.
       { ...nda("linear-programming", range(1, 4)), slug: "linear-inequalities", title: "Linear Inequalities", standard: 11 },
       { chapter: "determinants-and-matrices", title: "Matrices & Determinants", standard: 12, more: [{ chapter: "matrices" }] },
       // Std XII Trigonometric Functions is three NDA chapters (C06, polar coordinates, isn't in NDA).
       { ...nda("trigonometric-functions-12", range(1, 5)), slug: "trigonometric-equations", title: "Trigonometric Equations" },
-      { ...nda("trigonometric-functions-12", range(7, 11)), slug: "properties-of-triangle", title: "Properties of Triangle" },
+      { ...nda("trigonometric-functions-12", [...range(7, 11), "C16"]), slug: "properties-of-triangle", title: "Properties of Triangle" },
       { ...nda("trigonometric-functions-12", range(12, 15)), slug: "inverse-trigonometry", title: "Inverse Trigonometry" },
       // Direction cosines (Vectors C07) are 3D Geometry in NDA.
       nda("vectors", [...range(1, 6), ...range(8, 13)]),

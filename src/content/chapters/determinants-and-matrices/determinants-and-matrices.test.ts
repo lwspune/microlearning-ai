@@ -9,10 +9,10 @@ describe("Determinants and Matrices chapter", () => {
     expect(validateChapter(determinantsAndMatrices)).toEqual([]);
   });
 
-  it("keeps the graph: 12 concepts, 11 edges", () => {
+  it("keeps the graph: 13 concepts, 13 edges (NDA phase 2c added one or more)", () => {
     const edges = determinantsAndMatrices.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(determinantsAndMatrices.graph).toHaveLength(12);
-    expect(edges).toBe(11);
+    expect(determinantsAndMatrices.graph).toHaveLength(13);
+    expect(edges).toBe(13);
   });
 
   it("keeps edges transitively reduced", () => {

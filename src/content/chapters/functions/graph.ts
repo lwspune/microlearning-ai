@@ -70,4 +70,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Only a one-one onto $f$ has $f^{-1}$: write $y = f(x)$, solve for $x$; $f^{-1}(x) \ne \frac{1}{f(x)}$`,
     prereqs: ["C04", "C10"], ext: [], sources: [S("Inverse Functions")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C12", slug: "functional-equations", title: "Functional equations", group: "Functions", tier: "adv",
+    oneLiner: t`Find $f$ from a rule it obeys: put in clever values such as $x = 0$ or $x \to \frac{1}{x}$, or recognise $f(x + y) = f(x) + f(y)$ and its relatives`,
+    prereqs: ["C02"], ext: [], sources: [`nda/functions#Functional Equations`],
+  },
 ];

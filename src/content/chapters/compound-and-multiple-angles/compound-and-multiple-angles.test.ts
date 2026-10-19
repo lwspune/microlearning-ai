@@ -9,10 +9,10 @@ describe("Trigonometry – II (compound and multiple angles) chapter", () => {
     expect(validateChapter(compoundAndMultipleAngles)).toEqual([]);
   });
 
-  it("keeps the graph: 10 concepts, 11 edges", () => {
+  it("keeps the graph: 11 concepts, 12 edges (NDA phase 2c added one or more)", () => {
     const edges = compoundAndMultipleAngles.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(compoundAndMultipleAngles.graph).toHaveLength(10);
-    expect(edges).toBe(11);
+    expect(compoundAndMultipleAngles.graph).toHaveLength(11);
+    expect(edges).toBe(12);
   });
 
   it("keeps edges transitively reduced", () => {

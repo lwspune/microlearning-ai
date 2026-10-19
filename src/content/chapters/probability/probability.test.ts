@@ -9,10 +9,10 @@ describe("Probability chapter", () => {
     expect(validateChapter(probability)).toEqual([]);
   });
 
-  it("keeps the graph: 10 concepts, 9 edges", () => {
+  it("keeps the graph: 11 concepts, 10 edges (NDA phase 2c added one or more)", () => {
     const edges = probability.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(probability.graph).toHaveLength(10);
-    expect(edges).toBe(9);
+    expect(probability.graph).toHaveLength(11);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {

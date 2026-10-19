@@ -67,4 +67,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`With $A + B + C = \pi$: $\sin(A + B) = \sin C$, and $\tan A + \tan B + \tan C = \tan A\tan B\tan C$`,
     prereqs: ["C02", "C03", "C08"], ext: [], sources: [S("Trigonometric Functions of Angles of a Triangle")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C11", slug: "a-sin-plus-b-cos", title: "Greatest and least values of a sin θ + b cos θ", group: "Greatest and least values", tier: "adv",
+    oneLiner: t`Write $a\sin\theta + b\cos\theta = \sqrt{a^2 + b^2}\sin(\theta + \alpha)$: it runs from $-\sqrt{a^2 + b^2}$ to $\sqrt{a^2 + b^2}$`,
+    prereqs: ["C01"], ext: ["range of sine and cosine (Trigonometric Functions)"], sources: [`nda/trigonometric-identities#Maximum and Minimum of Trigonometric Expressions`],
+  },
 ];

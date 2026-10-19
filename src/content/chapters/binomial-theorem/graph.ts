@@ -58,4 +58,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Write the number as $a(1 + x)$ with small $x$, keep the first two or three terms`,
     prereqs: ["C08"], ext: [], sources: [S("Binomial Theorem for a Negative or Fractional Index")],
   },
+
+  // NDA: not in the book (PLAN.md "NDA Maths course", phase 2c)
+  {
+    id: "C10", slug: "remainders-and-integer-parts", title: "Remainders and integer parts", group: "Using the expansion", tier: "adv",
+    oneLiner: t`Write $9^n = (1 + 8)^n$ to find remainders; pair $(a + \sqrt{b})^n$ with $(a - \sqrt{b})^n$ to find integer and fractional parts`,
+    prereqs: ["C07"], ext: [], sources: [`nda/binomial-theorem#Integer and Fractional Parts of Binomial Expressions`, `nda/binomial-theorem#Remainders and Divisibility via Binomial Expansion`],
+  },
 ];
