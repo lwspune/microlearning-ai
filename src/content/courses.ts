@@ -22,9 +22,13 @@ export type CoursePart = { chapter: string; coverage?: Coverage };
 
 /**
  * A chapter in a course: one pool chapter, or several where the course teaches them as one
- * (MHT-CET's Limits is the pool's Limits and Continuity). Its slug is the first part's.
+ * (MHT-CET's Limits is the pool's Limits and Continuity), or a share of one that the course
+ * splits (NDA's Trigonometric Equations, Properties of Triangle and Inverse Trigonometry are
+ * three shares of Std XII Trigonometric Functions, with lists that don't overlap).
  */
 export type CourseChapter = CoursePart & {
+  /** Its URL slug; default: the first pool chapter's. A share of a split pool chapter names its own. */
+  slug?: string;
   /** The course's name for it; default: the first pool chapter's title. */
   title?: string;
   /** Default: the first pool chapter's standard. */
@@ -87,6 +91,9 @@ const cnMaharashtra: Coverage = {
 // MH Board: the book's concepts in chapters where MHT-CET adds one the book doesn't teach (Cayley–Hamilton,
 // two circles, angle between curves; owner, 2026-10-19). Keeps MH Board's maps as they were.
 const book = (chapter: string, last: number): CourseChapter => ({ chapter, coverage: { ids: range(1, last), status: "approved" } });
+
+// An NDA share of a pool chapter: the concepts NDA's syllabus asks, drafted 2026-10-19 for the owner.
+const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "draft" } });
 
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
@@ -204,7 +211,18 @@ export const courses: Course[] = [
     short: "NDA",
     group: "school",
     tagline: "UPSC NDA & NA, Mathematics",
+    // PYQ Vault's chapters that the pool covers (owner, 2026-10-19; PLAN.md "NDA Maths course"); the
+    // rest (Quadratic Equations, Logarithms, Height & Distance, Binary Numbers) join as they're built.
+    // NDA's syllabus has no polar coordinates, Rolle or mean value theorems, approximations,
+    // continuous distributions, linear programming beyond graphing inequations, or Std XII angle
+    // between curves and two circles. Every trim is a draft for the owner.
     chapters: [
+      { chapter: "angle-measurement", title: "Trigonometric Identities", more: [nda("trigonometric-functions", range(1, 9)), { chapter: "compound-and-multiple-angles" }] },
+      { chapter: "straight-line", title: "Lines" },
+      { ...nda("circle", range(1, 8)), title: "Circles" },
+      { chapter: "conic-sections", title: "Conics" },
+      { chapter: "measures-of-dispersion", title: "Statistics" },
+      { chapter: "probability" },
       {
         chapter: "complex-numbers",
         coverage: {
@@ -213,6 +231,30 @@ export const courses: Course[] = [
           status: "draft",
         },
       },
+      { chapter: "sequences-and-series", title: "Sequence & Series" },
+      { chapter: "permutations-and-combinations", title: "Permutation & Combination" },
+      { chapter: "binomial-theorem" },
+      { chapter: "sets-and-relations", title: "Sets & Relations" },
+      { chapter: "functions" },
+      { chapter: "limits", title: "Limits & Continuity", more: [nda("continuity", range(1, 5))] },
+      // "Linear inequations of two variables by graphs": the graphing half of Linear Programming.
+      { ...nda("linear-programming", range(1, 4)), slug: "linear-inequalities", title: "Linear Inequalities", standard: 11 },
+      { chapter: "determinants-and-matrices", title: "Matrices & Determinants", standard: 12, more: [{ chapter: "matrices" }] },
+      // Std XII Trigonometric Functions is three NDA chapters (C06, polar coordinates, isn't in NDA).
+      { ...nda("trigonometric-functions-12", range(1, 5)), slug: "trigonometric-equations", title: "Trigonometric Equations" },
+      { ...nda("trigonometric-functions-12", range(7, 11)), slug: "properties-of-triangle", title: "Properties of Triangle" },
+      { ...nda("trigonometric-functions-12", range(12, 15)), slug: "inverse-trigonometry", title: "Inverse Trigonometry" },
+      // Direction cosines (Vectors C07) are 3D Geometry in NDA.
+      nda("vectors", [...range(1, 6), ...range(8, 13)]),
+      { chapter: "line-and-plane", title: "3D Geometry", more: [nda("vectors", ["C07"])] },
+      { chapter: "differentiation", standard: 12, more: [{ chapter: "differentiation-12" }] },
+      nda("application-of-derivatives", [...range(1, 4), ...range(8, 10)]),
+      { chapter: "indefinite-integration" },
+      { chapter: "definite-integration" },
+      { chapter: "application-of-definite-integration", title: "Applications of Integration" },
+      { chapter: "differential-equations" },
+      // "Random variable as function on a sample space", then the binomial distribution.
+      { ...nda("probability-distributions", range(1, 4)), title: "Binomial Distribution", slug: "binomial-distribution", more: [{ chapter: "binomial-distribution" }] },
     ],
   },
   { slug: "cds", title: "CDS", short: "CDS", group: "graduate", tagline: "UPSC CDS, Elementary Mathematics", chapters: [] },
@@ -240,10 +282,16 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
     if (!SLUG.test(course.slug)) errors.push(`${course.slug}: slug must be lowercase words joined by hyphens`);
     if (!groups.has(course.group)) errors.push(`${course.slug}: unknown group ${course.group}`);
 
-    const listed = new Set<string>();
+    const slugs = new Set<string>();
+    for (const entry of course.chapters) {
+      const slug = slugOf(entry);
+      if (slugs.has(slug)) errors.push(`${course.slug}: course chapter slug ${slug} used twice`);
+      slugs.add(slug);
+      if (!SLUG.test(slug)) errors.push(`${course.slug}: course chapter slug ${slug} must be lowercase words joined by hyphens`);
+    }
+    errors.push(...validateShares(course));
+
     for (const entry of course.chapters.flatMap(partsOf)) {
-      if (listed.has(entry.chapter)) errors.push(`${course.slug}: chapter ${entry.chapter} listed twice`);
-      listed.add(entry.chapter);
       const chapter = chapters.find((c) => c.slug === entry.chapter);
       if (!chapter) {
         errors.push(`${course.slug}: unknown chapter ${entry.chapter}`);
@@ -256,6 +304,28 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
         errors.push(`${course.slug}: chapter ${chapter.slug} needs a standard (11 or 12)`);
       }
       if (entry.coverage) errors.push(...validateCoverage(`${course.slug}/${chapter.slug}`, entry.coverage, chapter));
+    }
+  }
+  return errors;
+}
+
+/** A pool chapter in several parts of a course is split: every part needs a list, and no concept may be in two. */
+function validateShares(course: Course): string[] {
+  const errors: string[] = [];
+  const bySlug = new Map<string, CoursePart[]>();
+  for (const part of course.chapters.flatMap(partsOf)) bySlug.set(part.chapter, [...(bySlug.get(part.chapter) ?? []), part]);
+  for (const [slug, shares] of bySlug) {
+    if (shares.length < 2) continue;
+    if (shares.some((p) => !p.coverage)) {
+      // Two parts of one course chapter, or a whole chapter listed again, rather than a split.
+      const sameEntry = course.chapters.some((e) => partsOf(e).filter((p) => p.chapter === slug).length > 1);
+      errors.push(sameEntry || shares.every((p) => !p.coverage) ? `${course.slug}: chapter ${slug} listed twice` : `${course.slug}: chapter ${slug} is split, so every part needs a list`);
+      continue;
+    }
+    const seen = new Set<ConceptId>();
+    for (const id of shares.flatMap((p) => p.coverage!.ids)) {
+      if (seen.has(id)) errors.push(`${course.slug}: concept ${id} of chapter ${slug} is in two course chapters`);
+      seen.add(id);
     }
   }
   return errors;
@@ -282,27 +352,51 @@ export function partsOf(entry: CourseChapter): CoursePart[] {
   return [{ chapter: entry.chapter, coverage: entry.coverage }, ...(entry.more ?? [])];
 }
 
-/** The course chapter that takes in pool chapter `chapterSlug`, or null. */
-export function entryFor(course: Course, chapterSlug: string): CourseChapter | null {
-  return course.chapters.find((e) => partsOf(e).some((p) => p.chapter === chapterSlug)) ?? null;
+/** A course chapter's URL slug. */
+export function slugOf(entry: CourseChapter): string {
+  return entry.slug ?? entry.chapter;
 }
 
-/** The part of the course that takes in pool chapter `chapterSlug`, or null. */
-export function partFor(course: Course, chapterSlug: string): CoursePart | null {
-  const entry = entryFor(course, chapterSlug);
-  return entry && partsOf(entry).find((p) => p.chapter === chapterSlug)!;
+/**
+ * The concepts of `chapter` a part of `course` shows: its list once approved (or for reviewers),
+ * and the whole chapter until then. A share of a split chapter shows its list at once: a split
+ * places concepts in course chapters and drops none, so there is nothing to wait for.
+ */
+export function partScope(course: Course, part: { coverage?: Coverage }, chapter: Chapter, { includeDraft = false } = {}): Set<ConceptId> {
+  const coverage = part.coverage;
+  const split = partsFor(course, chapter.slug).length > 1;
+  if (coverage && (coverage.status === "approved" || includeDraft || split)) return new Set(coverage.ids);
+  return new Set(chapter.graph.map((n) => n.id));
+}
+
+/** Every part of the course that takes in pool chapter `chapterSlug` (several when the course splits it). */
+export function partsFor(course: Course, chapterSlug: string): { entry: CourseChapter; part: CoursePart }[] {
+  return course.chapters.flatMap((entry) => partsOf(entry).filter((p) => p.chapter === chapterSlug).map((part) => ({ entry, part })));
+}
+
+/**
+ * The course chapter that takes in pool chapter `chapterSlug`, or null. With `concept`, the
+ * one whose share holds that concept, when the course splits the chapter.
+ */
+export function entryFor(course: Course, chapterSlug: string, concept?: { id: ConceptId; chapter: Chapter }): CourseChapter | null {
+  const found = partsFor(course, chapterSlug);
+  const holding = concept && found.find(({ part }) => partScope(course, part, concept.chapter).has(concept.id));
+  return (holding ?? found[0])?.entry ?? null;
 }
 
 /** Looks up a course chapter's pool chapters (the catalog is validated, so they exist). */
 export function resolveEntry(entry: CourseChapter, chapters: Chapter[]): ResolvedCourseChapter {
   const parts = partsOf(entry).map((p) => ({ chapter: chapters.find((c) => c.slug === p.chapter)!, coverage: p.coverage }));
   const first = parts[0].chapter;
-  return { slug: entry.chapter, title: entry.title ?? first.title, subject: first.subject, standard: entry.standard ?? first.standard, parts };
+  return { slug: slugOf(entry), title: entry.title ?? first.title, subject: first.subject, standard: entry.standard ?? first.standard, parts };
 }
 
-/** Where a lesson in `chapter` leads back to: the course's chapter that takes it in, or the chapter's own map. */
-export function mapLink(course: Course | null, chapter: Chapter, chapters: Chapter[]): { href: string; title: string } {
-  const entry = course && entryFor(course, chapter.slug);
+/**
+ * Where a lesson in `chapter` leads back to: the course chapter that takes it in (for a split
+ * chapter, the one holding concept `conceptId`), or the chapter's own map.
+ */
+export function mapLink(course: Course | null, chapter: Chapter, chapters: Chapter[], conceptId?: ConceptId): { href: string; title: string } {
+  const entry = course && entryFor(course, chapter.slug, conceptId ? { id: conceptId, chapter } : undefined);
   if (!course || !entry) return { href: `/learn/${chapter.slug}`, title: chapter.title };
   const resolved = resolveEntry(entry, chapters);
   return { href: `/courses/${course.slug}/${resolved.slug}`, title: `${course.short} · ${resolved.title}` };
@@ -331,11 +425,7 @@ export function parseStandard(value: string | null | undefined): Standard | null
  * until the coverage is approved; reviewers can ask for the draft.
  */
 export function coveredIds(course: Course, chapter: Chapter, { includeDraft = false } = {}): Set<ConceptId> {
-  const part = partFor(course, chapter.slug);
-  if (!part) return new Set();
-  const coverage = part.coverage;
-  if (coverage && (coverage.status === "approved" || includeDraft)) return new Set(coverage.ids);
-  return new Set(chapter.graph.map((n) => n.id));
+  return new Set(partsFor(course, chapter.slug).flatMap(({ part }) => [...partScope(course, part, chapter, { includeDraft })]));
 }
 
 /** Concepts of `chapter` that exactly one course covers, mapped to that course's slug. */
@@ -357,8 +447,9 @@ export function withCourse(href: string, course: string | undefined): string {
 /** What a student can open in the course today: its chapters, and the published concepts it covers. */
 export function courseSize(course: Course, chapters: Chapter[]): { chapters: number; concepts: number } {
   let concepts = 0;
-  for (const part of course.chapters.flatMap(partsOf)) {
-    const chapter = chapters.find((c) => c.slug === part.chapter);
+  // Each pool chapter once, even when the course splits it.
+  for (const slug of new Set(course.chapters.flatMap(partsOf).map((p) => p.chapter))) {
+    const chapter = chapters.find((c) => c.slug === slug);
     if (!chapter) continue;
     const covered = coveredIds(course, chapter);
     concepts += chapter.concepts.filter((c) => c.status === "approved" && covered.has(c.id)).length;

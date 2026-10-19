@@ -10,6 +10,7 @@ import {
   entryFor,
   findCourse,
   mapLink,
+  partScope,
   partsOf,
   resolveEntry,
   GROUPS,
@@ -97,6 +98,30 @@ describe("validateCatalog", () => {
     expect(errors).toContain("a: chapter ch listed twice");
   });
 
+  it("lets course chapters share a pool chapter when their lists don't overlap, each under its own slug", () => {
+    const split = (ids1: string[], ids2: string[]) =>
+      course("a", {
+        chapters: [
+          { chapter: "ch", slug: "first", coverage: { ids: ids1, status: "draft" } },
+          { chapter: "ch", slug: "second", coverage: { ids: ids2, status: "draft" } },
+        ],
+      });
+    expect(validateCatalog([split(["A"], ["B", "C"])], [ch])).toEqual([]);
+    expect(validateCatalog([split(["A", "B"], ["B"])], [ch])).toContain("a: concept B of chapter ch is in two course chapters");
+  });
+
+  it("needs a list on every share of a split pool chapter, and a slug of its own per course chapter", () => {
+    const errors = validateCatalog(
+      [course("a", { chapters: [{ chapter: "ch", coverage: { ids: ["A"], status: "draft" } }, { chapter: "ch" }] })],
+      [ch],
+    );
+    expect(errors).toContain("a: chapter ch is split, so every part needs a list");
+    expect(errors).toContain("a: course chapter slug ch used twice");
+    expect(validateCatalog([course("a", { chapters: [{ chapter: "ch", slug: "Bad Slug" }] })], [ch])).toContain(
+      "a: course chapter slug Bad Slug must be lowercase words joined by hyphens",
+    );
+  });
+
   it("rejects empty coverage (leave coverage out to mean the whole chapter)", () => {
     expect(validateCatalog([course("a", { chapters: [{ chapter: "ch", coverage: { ids: [], status: "draft" } }] })], [ch])).toEqual([
       "a/ch: coverage lists no concepts",
@@ -164,6 +189,48 @@ describe("course chapters made of several pool chapters", () => {
     expect(mapLink(c, continuity, pool)).toEqual({ href: "/courses/cet/limits", title: "cet · Limits" });
     expect(mapLink(c, matrices, pool)).toEqual({ href: "/courses/cet/ch", title: "cet · Determinants and Matrices" });
     expect(mapLink(null, continuity, pool)).toEqual({ href: "/learn/continuity", title: "Continuity" });
+  });
+
+  describe("a pool chapter split across course chapters", () => {
+    const trig = { ...chapter("trig"), title: "Trig", standard: 12 as const };
+    const split = course("nda", {
+      chapters: [
+        { chapter: "trig", slug: "equations", title: "Equations", coverage: { ids: ["A"], status: "approved" } },
+        { chapter: "trig", slug: "triangles", title: "Triangles", coverage: { ids: ["B", "C"], status: "approved" } },
+      ],
+    });
+
+    it("covers the union of its shares", () => {
+      expect(coveredIds(split, trig)).toEqual(new Set(["A", "B", "C"]));
+    });
+
+    it("shows each course chapter only its share, under its own slug and title", () => {
+      const [eq, tri] = split.chapters.map((e) => resolveEntry(e, [trig]));
+      expect([eq.slug, eq.title, tri.slug, tri.title]).toEqual(["equations", "Equations", "triangles", "Triangles"]);
+      expect(partScope(split, tri.parts[0], trig)).toEqual(new Set(["B", "C"]));
+    });
+
+    it("shows each share's own list even while it is a draft: a split places concepts, it drops none", () => {
+      const draft = course("nda", {
+        chapters: split.chapters.map((e) => ({ ...e, coverage: { ...e.coverage!, status: "draft" as const } })),
+      });
+      const [eq, tri] = draft.chapters.map((e) => resolveEntry(e, [trig]));
+      expect(partScope(draft, eq.parts[0], trig)).toEqual(new Set(["A"]));
+      expect(partScope(draft, tri.parts[0], trig)).toEqual(new Set(["B", "C"]));
+      // An unsplit draft still shows the whole chapter until the owner approves it.
+      const whole = course("cet", { chapters: [{ chapter: "trig", coverage: { ids: ["A"], status: "draft" } }] });
+      expect(partScope(whole, whole.chapters[0], trig)).toEqual(new Set(["A", "B", "C"]));
+    });
+
+    it("leads a lesson back to the course chapter holding that concept", () => {
+      expect(mapLink(split, trig, [trig], "C")).toEqual({ href: "/courses/nda/triangles", title: "nda · Triangles" });
+      expect(mapLink(split, trig, [trig], "A")).toEqual({ href: "/courses/nda/equations", title: "nda · Equations" });
+    });
+
+    it("counts each published concept once", () => {
+      const published = { ...trig, concepts: trig.graph.map((n) => ({ id: n.id, status: "approved" }) as Chapter["concepts"][number]) };
+      expect(courseSize(split, [published])).toEqual({ chapters: 2, concepts: 3 });
+    });
   });
 
   it("counts one chapter per course chapter and the published concepts across its parts", () => {
@@ -387,6 +454,90 @@ describe("the catalog", () => {
     it("takes from Sets and Relations only what Functions builds on, approved by the owner 2026-10-19", () => {
       const sets = partsOf(entryFor(cet, "sets-and-relations")!).find((p) => p.chapter === "sets-and-relations")!;
       expect(sets.coverage).toEqual({ ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "approved" });
+    });
+  });
+
+  // PYQ Vault's NDA chapters that the pool covers today (owner, 2026-10-19; PLAN.md "NDA Maths course").
+  describe("NDA", () => {
+    const nda = findCourse("nda")!;
+    const resolved = nda.chapters.map((e) => resolveEntry(e, chapters));
+    const parts = (title: string) =>
+      resolved.find((r) => r.title === title)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+
+    it("lists PYQ Vault's chapters by standard, in book order", () => {
+      expect(byStandard(resolved).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
+        [
+          11,
+          [
+            "Trigonometric Identities",
+            "Lines",
+            "Circles",
+            "Conics",
+            "Statistics",
+            "Probability",
+            "Complex Numbers",
+            "Sequence & Series",
+            "Permutation & Combination",
+            "Binomial Theorem",
+            "Sets & Relations",
+            "Functions",
+            "Limits & Continuity",
+            "Linear Inequalities",
+          ],
+        ],
+        [
+          12,
+          [
+            "Matrices & Determinants",
+            "Trigonometric Equations",
+            "Properties of Triangle",
+            "Inverse Trigonometry",
+            "Vectors",
+            "3D Geometry",
+            "Differentiation",
+            "Application of Derivatives",
+            "Indefinite Integration",
+            "Definite Integration",
+            "Applications of Integration",
+            "Differential Equations",
+            "Binomial Distribution",
+          ],
+        ],
+      ]);
+    });
+
+    it("splits Std XII Trigonometric Functions into PYQ Vault's three chapters, leaving out polar coordinates", () => {
+      expect(parts("Trigonometric Equations")).toEqual(["trigonometric-functions-12 C01,C02,C03,C04,C05"]);
+      expect(parts("Properties of Triangle")).toEqual(["trigonometric-functions-12 C07,C08,C09,C10,C11"]);
+      expect(parts("Inverse Trigonometry")).toEqual(["trigonometric-functions-12 C12,C13,C14,C15"]);
+    });
+
+    it("joins and trims pool chapters the way NDA's syllabus does", () => {
+      expect(parts("Trigonometric Identities")).toEqual([
+        "angle-measurement",
+        "trigonometric-functions C01,C02,C03,C04,C05,C06,C07,C08,C09",
+        "compound-and-multiple-angles",
+      ]);
+      expect(parts("Matrices & Determinants")).toEqual(["determinants-and-matrices", "matrices"]);
+      expect(parts("Limits & Continuity")).toEqual(["limits", "continuity C01,C02,C03,C04,C05"]);
+      expect(parts("Differentiation")).toEqual(["differentiation", "differentiation-12"]);
+      expect(parts("3D Geometry")).toEqual(["line-and-plane", "vectors C07"]);
+      expect(parts("Vectors")).toEqual(["vectors C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12,C13"]);
+      expect(parts("Application of Derivatives")).toEqual(["application-of-derivatives C01,C02,C03,C04,C08,C09,C10"]);
+      expect(parts("Circles")).toEqual(["circle C01,C02,C03,C04,C05,C06,C07,C08"]);
+      expect(parts("Linear Inequalities")).toEqual(["linear-programming C01,C02,C03,C04"]);
+      expect(parts("Binomial Distribution")).toEqual(["probability-distributions C01,C02,C03,C04", "binomial-distribution"]);
+      expect(parts("Statistics")).toEqual(["measures-of-dispersion"]);
+    });
+
+    it("leaves out what NDA's syllabus doesn't ask", () => {
+      const used = resolved.flatMap((r) => r.parts.map((p) => p.chapter.slug));
+      for (const slug of ["mathematical-logic", "pair-of-straight-lines"]) expect(used).not.toContain(slug);
+    });
+
+    it("keeps every trim a draft until the owner approves it", () => {
+      const statuses = nda.chapters.flatMap(partsOf).flatMap((p) => (p.coverage ? [p.coverage.status] : []));
+      expect(new Set(statuses)).toEqual(new Set(["draft"]));
     });
   });
 

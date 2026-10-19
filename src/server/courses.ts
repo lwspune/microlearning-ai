@@ -1,7 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { chapters } from "@/content/chapters";
-import { type Course, coveredIds, resolveEntry } from "@/content/courses";
+import { type Course, partScope, resolveEntry } from "@/content/courses";
 import type { Standard, SubjectId } from "@/content/types";
 import { getChapterMap } from "@/server/learning";
 
@@ -26,7 +26,7 @@ export async function courseProgress(course: Course, userId: string | null): Pro
   return Promise.all(
     course.chapters.map(async (entry) => {
       const chapter = resolveEntry(entry, chapters);
-      const maps = await Promise.all(chapter.parts.map((p) => getChapterMap(p.chapter.slug, userId, coveredIds(course, p.chapter))));
+      const maps = await Promise.all(chapter.parts.map((p) => getChapterMap(p.chapter.slug, userId, partScope(course, p, p.chapter))));
       const open = maps.flatMap((m) => m?.groups ?? []).flatMap((g) => g.concepts).filter((c) => c.state !== "unpublished");
       return {
         slug: chapter.slug,

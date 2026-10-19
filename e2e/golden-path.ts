@@ -165,6 +165,14 @@ await (async () => {
     );
     await shot("00-cet-limits");
     await noSideScroll("MHT-CET Limits");
+
+    // NDA splits Std XII Trigonometric Functions three ways: Properties of Triangle has only its share.
+    await page.goto(BASE + "/courses/nda/properties-of-triangle");
+    const ndaOutline = page.locator("section[aria-labelledby=outline]");
+    await ndaOutline.getByText("The sine rule").waitFor();
+    check(!(await ndaOutline.getByText("Principal solutions").count()), "NDA Properties of Triangle: no trigonometric equations (another NDA chapter's share)");
+    check(!(await ndaOutline.getByText("Principal values of inverse functions").count()), "NDA Properties of Triangle: no inverse functions");
+    await noSideScroll("NDA Properties of Triangle");
     await page.goto(BASE + "/");
 
     await page.getByRole("link", { name: /^JEE Main/ }).click();

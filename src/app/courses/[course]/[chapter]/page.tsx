@@ -6,16 +6,16 @@ import { ChapterMapSection, MapSkeleton } from "@/components/ChapterMap";
 import { ArrowLeftIcon } from "@/components/icons";
 import { eyebrow } from "@/components/ui";
 import { chapters } from "@/content/chapters";
-import { courses, coveredIds, findCourse, resolveEntry } from "@/content/courses";
+import { courses, findCourse, partScope, resolveEntry, slugOf } from "@/content/courses";
 
 export function generateStaticParams() {
-  return courses.flatMap((c) => c.chapters.map((e) => ({ course: c.slug, chapter: e.chapter })));
+  return courses.flatMap((c) => c.chapters.map((e) => ({ course: c.slug, chapter: slugOf(e) })));
 }
 
-/** The course and its chapter at `chapterSlug` (the chapter's first pool chapter), or null. */
+/** The course and its chapter at `chapterSlug`, or null. */
 function find(courseSlug: string, chapterSlug: string) {
   const course = findCourse(courseSlug);
-  const entry = course?.chapters.find((e) => e.chapter === chapterSlug);
+  const entry = course?.chapters.find((e) => slugOf(e) === chapterSlug);
   if (!course || !entry) return null;
   return { course, chapter: resolveEntry(entry, chapters) };
 }
@@ -43,7 +43,7 @@ async function CourseChapterContent({ params }: { params: PageProps<"/courses/[c
       <h1 className="mt-1 font-display text-4xl font-semibold tracking-tight">{chapter.title}</h1>
       <p className="mt-2 text-muted">The concepts {course.short} needs, one connected idea at a time.</p>
       <ChapterMapSection
-        parts={chapter.parts.map((p) => ({ slug: p.chapter.slug, scope: coveredIds(course, p.chapter) }))}
+        parts={chapter.parts.map((p) => ({ slug: p.chapter.slug, scope: partScope(course, p, p.chapter) }))}
         course={course.slug}
       />
     </>

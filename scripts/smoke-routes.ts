@@ -8,7 +8,7 @@
  * Usage: node scripts/smoke-routes.ts [baseUrl]   (default http://localhost:3000)
  */
 import { chapters } from "../src/content/chapters/index.ts";
-import { courses } from "../src/content/courses.ts";
+import { courses, slugOf } from "../src/content/courses.ts";
 
 const base = process.argv[2] ?? "http://localhost:3000";
 
@@ -33,7 +33,7 @@ const contentRoutes = chapters.flatMap((ch) => {
 
 const courseRoutes = courses.flatMap((c) => [
   [`/courses/${c.slug}`, "ok"],
-  ...c.chapters.map((e) => [`/courses/${c.slug}/${e.chapter}`, "ok"]),
+  ...c.chapters.map((e) => [`/courses/${c.slug}/${slugOf(e)}`, "ok"]),
 ]) as [string, "ok" | "missing"][];
 
 /** `marker`: text an ok page must contain; required for pages that are noindex on purpose. */

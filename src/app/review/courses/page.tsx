@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { chapters } from "@/content/chapters";
-import { coveredIds, coursesIn, entryFor, GROUPS, partFor, resolveEntry, uniqueConcepts } from "@/content/courses";
+import { coveredIds, coursesIn, entryFor, GROUPS, partsFor, resolveEntry, uniqueConcepts } from "@/content/courses";
 import { reviewEnabled } from "@/lib/review";
 
 export const metadata: Metadata = { title: "Course coverage" };
@@ -39,7 +39,7 @@ export default function CourseCoverageReview() {
               const inChapter = groupCourses.filter((c) => entryFor(c, chapter.slug));
               const covered = new Map(inChapter.map((c) => [c.slug, coveredIds(c, chapter, { includeDraft: true })]));
               const unsure = new Map(
-                inChapter.map((c) => [c.slug, new Set(partFor(c, chapter.slug)!.coverage?.unsure ?? [])]),
+                inChapter.map((c) => [c.slug, new Set(partsFor(c, chapter.slug).flatMap(({ part }) => part.coverage?.unsure ?? []))]),
               );
               const unique = uniqueConcepts(chapter, inChapter, { includeDraft: true });
               return (
@@ -52,9 +52,11 @@ export default function CourseCoverageReview() {
                           Concept
                         </th>
                         {inChapter.map((c) => {
-                          const status = partFor(c, chapter.slug)!.coverage?.status ?? "whole chapter";
-                          // Where the course teaches it, when that's a chapter of its own (MHT-CET's Limits takes in Continuity).
-                          const within = resolveEntry(entryFor(c, chapter.slug)!, chapters).title;
+                          const shares = partsFor(c, chapter.slug);
+                          const status = [...new Set(shares.map(({ part }) => part.coverage?.status ?? "whole chapter"))].join(" + ");
+                          // Where the course teaches it, when that's a chapter of its own (MHT-CET's Limits takes in
+                          // Continuity) or several (NDA splits Std XII Trigonometric Functions three ways).
+                          const within = shares.map(({ entry }) => resolveEntry(entry, chapters).title).join(" / ");
                           return (
                             <th key={c.slug} scope="col" className="px-3 py-2 text-center">
                               {c.short}
