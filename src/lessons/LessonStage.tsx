@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RenderedInlineNodes } from "@/components/RenderedRichText";
-import { card, primaryButton, secondaryButton } from "@/components/ui";
+import { card, compactButtonSize, primaryButtonShape, secondaryButtonShape } from "@/components/ui";
 import { type Position, backward, forward, offersStart, startAt } from "./navigation";
 import type { RenderedSlide } from "./renderDeck";
 import { SlideBody } from "./SlideBody";
@@ -184,12 +184,12 @@ export function LessonStage({
       </div>
 
       <footer className="flex items-center justify-between gap-3 border-t border-border bg-surface/60 px-5 py-3">
-        <button type="button" className={secondaryButton} onClick={() => go(() => prev)} disabled={!canGoBack}>
-          ← Back
+        <button type="button" className={`${secondaryButtonShape} ${compactButtonSize}`} onClick={() => go(() => prev)} disabled={!canGoBack}>
+          ← Previous Page
         </button>
         {canGoOn && (
-          <button type="button" className={primaryButton} onClick={showStart ? toggleFullscreen : () => go(() => next)}>
-            {showStart ? "Start →" : next.index !== pos.index && slides[next.index].kind === "questions" ? "Try a question →" : "Next →"}
+          <button type="button" className={`${primaryButtonShape} ${compactButtonSize}`} onClick={showStart ? toggleFullscreen : () => go(() => next)}>
+            {showStart ? "Start →" : next.index !== pos.index && slides[next.index].kind === "questions" ? "Try a question →" : "Next Page →"}
           </button>
         )}
       </footer>

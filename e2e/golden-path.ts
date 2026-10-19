@@ -304,7 +304,7 @@ await (async () => {
     await shot("03-hook-fullscreen");
     await page.evaluate(() => document.exitFullscreen());
     await page.waitForFunction(() => document.fullscreenElement === null);
-    check(await stage.getByRole("button", { name: "Next →" }).isVisible(), "after leaving full screen the button is Next: Start doesn't come back");
+    check(await stage.getByRole("button", { name: "Next Page →" }).isVisible(), "after leaving full screen the button is Next Page: Start doesn't come back");
 
     // Keyboard: the right arrow advances.
     await page.keyboard.press("ArrowRight");
@@ -321,20 +321,20 @@ await (async () => {
     await page.getByRole("heading", { name: "The idea" }).waitFor();
     ok("swipe left advances to the next slide");
 
-    // Back returns, Next goes on.
-    await page.getByRole("button", { name: "← Back" }).click();
+    // Previous Page returns, Next Page goes on.
+    await page.getByRole("button", { name: "← Previous Page" }).click();
     await page.getByText(`2 / ${total}`).waitFor();
-    ok("Back returns to the previous slide");
-    await page.getByRole("button", { name: "Next →" }).click();
+    ok("Previous Page returns to the previous slide");
+    await page.getByRole("button", { name: "Next Page →" }).click();
     await page.getByRole("heading", { name: "Precisely" }).or(page.getByRole("heading", { name: "The idea" })).first().waitFor();
 
     let shotFormal = false;
-    while (await page.getByRole("button", { name: "Next →" }).count()) {
+    while (await page.getByRole("button", { name: "Next Page →" }).count()) {
       if (!shotFormal && (await page.getByRole("heading", { name: "Precisely" }).isVisible())) {
         await shot("05-formal");
         shotFormal = true;
       }
-      await page.getByRole("button", { name: "Next →" }).click();
+      await page.getByRole("button", { name: "Next Page →" }).click();
     }
     await page.getByRole("heading", { name: "Worked example" }).waitFor();
     await shot("06-worked");
@@ -523,7 +523,7 @@ await (async () => {
     await shot("18-idea-figure");
     await noSideScroll("idea figure");
     while (!(await page.getByRole("heading", { name: "Worked example" }).isVisible())) {
-      await page.getByRole("button", { name: "Next →" }).click();
+      await page.getByRole("button", { name: "Next Page →" }).click();
     }
     check(await figure.isVisible(), "worked example shows a figure");
     while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {

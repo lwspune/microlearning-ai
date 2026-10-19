@@ -7,9 +7,22 @@
 const press =
   "transition duration-150 hover:-translate-y-px active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 disabled:pointer-events-none";
 
-export const primaryButton = `inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 font-medium text-background shadow-card hover:shadow-lift disabled:opacity-50 ${press}`;
+/**
+ * Button looks without a size. Add exactly one size (below), since two padding classes in one
+ * string conflict.
+ */
+export const primaryButtonShape = `inline-flex items-center justify-center gap-2 rounded-xl bg-accent font-medium text-background shadow-card hover:shadow-lift disabled:opacity-50 ${press}`;
+export const secondaryButtonShape = `inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card font-medium shadow-card hover:border-border-strong disabled:opacity-40 ${press}`;
 
-export const secondaryButton = `inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-5 py-3 font-medium shadow-card hover:border-border-strong disabled:opacity-40 ${press}`;
+/** The usual button size. */
+const buttonSize = "px-5 py-3";
+
+/** Smaller on a phone and kept to one line from 360px up (narrower, a long label may wrap): two buttons side by side. */
+export const compactButtonSize = "whitespace-nowrap max-[359px]:whitespace-normal px-3.5 py-2.5 text-sm sm:px-5 sm:py-3 sm:text-base";
+
+export const primaryButton = `${primaryButtonShape} ${buttonSize}`;
+
+export const secondaryButton = `${secondaryButtonShape} ${buttonSize}`;
 
 /**
  * Card shape without colours. Variants add exactly one border colour and one

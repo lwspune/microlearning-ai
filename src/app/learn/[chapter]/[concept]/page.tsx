@@ -109,11 +109,11 @@ async function ConceptContent({
         <div>
           <Link
             href={map.href}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-semibold text-accent shadow-card hover:border-border-strong"
           >
             <ArrowLeftIcon className="h-4 w-4" /> {map.title}
           </Link>
-          <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight md:text-3xl">{node.title}</h1>
+          <h1 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">{node.title}</h1>
         </div>
         <p className={`${eyebrow} pb-1`}>{node.group}</p>
       </div>

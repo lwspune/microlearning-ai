@@ -47,9 +47,9 @@ describe("LessonStage", () => {
     expect(out).not.toContain(">second<");
   });
 
-  it("offers Next, and no Back on the first point of the first slide", () => {
+  it("offers Next Page, and no Previous Page on the first point of the first slide (owner, 2026-10-19)", () => {
     const out = html();
-    expect(out).toMatch(/<button[^>]*>Next →<\/button>/);
-    expect(out).toMatch(/<button[^>]*disabled=""[^>]*>← Back<\/button>/);
+    expect(out).toMatch(/<button[^>]*>Next Page →<\/button>/);
+    expect(out).toMatch(/<button[^>]*disabled=""[^>]*>← Previous Page<\/button>/);
   });
 });
