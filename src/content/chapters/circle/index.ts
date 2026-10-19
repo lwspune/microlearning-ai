@@ -7,6 +7,7 @@ import { c05 } from "./concepts/c05-parametric-form.ts";
 import { c06 } from "./concepts/c06-tangent-at-a-point.ts";
 import { c07 } from "./concepts/c07-condition-of-tangency.ts";
 import { c08 } from "./concepts/c08-tangents-from-a-point.ts";
+import { c09 } from "./concepts/c09-two-circles.ts";
 import { graph } from "./graph.ts";
 
 export const circle: Chapter = {
@@ -16,5 +17,5 @@ export const circle: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09],
 };

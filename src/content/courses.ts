@@ -84,6 +84,10 @@ const cnMaharashtra: Coverage = {
 // Linear Programming coverage, approved by the owner 2026-10-15. Class 12 in both boards and
 // MHT-CET; JEE Main dropped it in 2024 and NDA's syllabus doesn't list it. C10 (unbounded
 // regions) is no longer doubtful for MH Board and MHT-CET: the HSC papers ask it (2026-10-18).
+// MH Board: the book's concepts in chapters where MHT-CET adds one the book doesn't teach (Cayley–Hamilton,
+// two circles, angle between curves; owner, 2026-10-19). Keeps MH Board's maps as they were.
+const book = (chapter: string, last: number): CourseChapter => ({ chapter, coverage: { ids: range(1, last), status: "approved" } });
+
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
   coverage: { ids: range(1, 13), unsure, status: "approved" },
@@ -104,7 +108,7 @@ export const courses: Course[] = [
       { chapter: "compound-and-multiple-angles" },
       { chapter: "determinants-and-matrices" },
       { chapter: "straight-line" },
-      { chapter: "circle" },
+      book("circle", 8),
       { chapter: "conic-sections" },
       { chapter: "measures-of-dispersion" },
       { chapter: "probability" },
@@ -118,13 +122,13 @@ export const courses: Course[] = [
       { chapter: "binomial-theorem" },
       { chapter: "sets-and-relations" },
       { chapter: "mathematical-logic" },
-      { chapter: "matrices" },
+      book("matrices", 11),
       { chapter: "trigonometric-functions-12" },
       { chapter: "pair-of-straight-lines" },
       { chapter: "vectors" },
       { chapter: "line-and-plane" },
       { chapter: "differentiation-12" },
-      { chapter: "application-of-derivatives" },
+      book("application-of-derivatives", 10),
       { chapter: "indefinite-integration" },
       { chapter: "definite-integration" },
       { chapter: "application-of-definite-integration" },

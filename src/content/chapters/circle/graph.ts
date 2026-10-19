@@ -53,4 +53,12 @@ export const graph: GraphNode[] = [
     oneLiner: t`Length of tangent $= \sqrt{S_{11}}$; perpendicular tangents to $x^2 + y^2 = a^2$ meet on $x^2 + y^2 = 2a^2$`,
     prereqs: ["C03", "C07"], ext: [], sources: [S("Tangents from a Point and the Director Circle")],
   },
+
+  // Two circles (MHT-CET; the book has it only in a side box)
+  {
+    id: "C09", slug: "two-circles", title: "Two circles and their common tangents", group: "Two circles", tier: "adv", visual: true,
+    oneLiner: t`Compare the distance between the centres with $r_1 + r_2$ and $|r_1 - r_2|$: it decides touching, cutting and the number of common tangents`,
+    prereqs: ["C03"], ext: ["distance formula"],
+    sources: ["cetcir-relative-position-and-common-tangents", "cetcir-touching-conditions"],
+  },
 ];

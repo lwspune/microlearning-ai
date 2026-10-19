@@ -65,4 +65,12 @@ export const graph: GraphNode[] = [
     oneLiner: "Write the quantity to optimise in one variable using the constraint, find its critical point, and check it is the maximum or minimum asked for",
     prereqs: ["C09"], ext: ["mensuration formulas"], sources: [S("Maxima and Minima")],
   },
+
+  // Angle between curves (MHT-CET; one book exercise)
+  {
+    id: "C11", slug: "angle-between-curves", title: "Angle between two curves", group: "Angle between curves", tier: "adv", visual: true,
+    oneLiner: t`At a common point, the angle between two curves is the angle between their tangents; they cut at right angles when $m_1m_2 = -1$`,
+    prereqs: ["C01"], ext: ["angle between two lines"],
+    sources: ["cetaod-slopes-at-intersection", "cetaod-angle-between-curves", "cetaod-curve-meets-axis-angle", "cetaod-orthogonal-intersection"],
+  },
 ];

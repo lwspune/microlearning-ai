@@ -364,6 +364,26 @@ describe("the catalog", () => {
       }
     });
 
+    // Gaps the book doesn't teach, built for MHT-CET from its PYQs (PLAN.md "MHT-CET Maths course", phase 2).
+    const gaps: [string, string][] = [
+      ["matrices", "cayley-hamilton"],
+      ["circle", "two-circles"],
+      ["application-of-derivatives", "angle-between-curves"],
+    ];
+
+    it("covers the three concepts the book doesn't teach; MH Board keeps its book list", () => {
+      const board = findCourse("mh-board")!;
+      for (const [slug, concept] of gaps) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const id = ch.graph.find((n) => n.slug === concept)?.id;
+        expect(id, `${slug}/${concept} is in the graph`).toBeDefined();
+        expect(coveredIds(cet, ch).has(id!)).toBe(true);
+        const book = partsOf(entryFor(board, slug)!)[0].coverage!;
+        expect(book.status).toBe("approved");
+        expect(new Set(book.ids)).toEqual(new Set(ch.graph.filter((n) => n.id !== id).map((n) => n.id)));
+      }
+    });
+
     it("takes from Sets and Relations only what Functions builds on, as a draft for the owner", () => {
       const sets = partsOf(entryFor(cet, "sets-and-relations")!).find((p) => p.chapter === "sets-and-relations")!;
       expect(sets.coverage).toEqual({ ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "draft" });

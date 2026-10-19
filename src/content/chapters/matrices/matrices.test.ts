@@ -9,10 +9,10 @@ describe("Matrices chapter", () => {
     expect(validateChapter(matrices)).toEqual([]);
   });
 
-  it("keeps the graph: 11 concepts, 9 edges", () => {
+  it("keeps the graph: 12 concepts, 10 edges (C12 Cayley–Hamilton for MHT-CET)", () => {
     const edges = matrices.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(matrices.graph).toHaveLength(11);
-    expect(edges).toBe(9);
+    expect(matrices.graph).toHaveLength(12);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {

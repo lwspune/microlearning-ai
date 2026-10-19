@@ -1049,3 +1049,24 @@ builds on: roster form, power set, intervals, Cartesian product, relations.
   PYQs, since the book doesn't teach them), with MH Board coverage lists for
   `matrices`, `circle` and `application-of-derivatives`.
 - **Phase 3 (later, ask first):** CET-level practice from PYQ Vault.
+
+**Status:**
+- Phase 1 done 2026-10-19 (merge 9d22ff8): 23 chapters live, five of them
+  joining two pool chapters; owner OK'd the before/after sheet. The Sets
+  part's list (C01, C02, C09–C13) is still a draft for the owner on
+  `/review/courses`.
+- Phase 2 done 2026-10-19 (branch `mhtcet-gap-concepts`): Matrices C12
+  Cayley–Hamilton, Circle C09 two circles, Application of Derivatives C11
+  angle between curves, 6 items each from CET PYQs (refs like
+  `2024 May Q139`); every key re-derived by the verifier and by hand,
+  figure sheets checked (about 12 labels moved), 0 phone overflows. MH
+  Board's maps unchanged (approved book lists for those chapters). One
+  agent per concept, 3 at once. The local golden path kept timing out on
+  this machine's hotspot link to Supabase (the same page loaded in 0.5–41 s
+  run to run), so it was run against the deployed site instead.
+- PYQ Vault keys found wrong while building (fix in PYQ Vault):
+  2024 May Q111 (curves y = 2x², x = 2y² don't meet at (1, 1); at
+  (1/2, 1/2) the angle is tan⁻¹(3/4)); 2025 April Q141 (the starred option
+  is negative, the obtuse angle; the acute one is the log(7/3) option, and
+  the CET notes repeat the sign). The two-circles dump also reuses the ref
+  2024 May Q146 for two different questions.
