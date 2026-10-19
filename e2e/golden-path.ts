@@ -142,6 +142,31 @@ await (async () => {
     check((await page.getByRole("tab", { name: "Std XII", selected: true }).count()) === 1, "board: the standard carries over to CBSE");
     await page.goto(BASE + "/");
 
+    // An entrance exam names its chapters its own way: MHT-CET's Limits takes in the pool's Continuity.
+    await page.goto(BASE + "/courses/mht-cet");
+    const cetLimits = page.getByRole("link", { name: /Limits/ });
+    await cetLimits.waitFor();
+    const cetHeadings = await page.locator("main h3").filter({ visible: true }).allInnerTexts();
+    check(cetHeadings.join("|").toUpperCase() === "STD XI|STD XII", `MHT-CET: Std XI and Std XII headings (got ${cetHeadings.join("|")})`);
+    check(!(await page.getByRole("link", { name: /Continuity/ }).count()), "MHT-CET: Continuity is not a chapter of its own");
+    check(!(await page.getByRole("link", { name: /Measures of Dispersion/ }).count()), "MHT-CET: Measures of Dispersion is left out");
+    await shot("00-cet-course");
+    await noSideScroll("MHT-CET course");
+    await cetLimits.click();
+    await page.waitForURL("**/courses/mht-cet/limits");
+    const cetOutline = page.locator("section[aria-labelledby=outline]");
+    await cetOutline.getByText("Continuity at a point").waitFor();
+    check(await cetOutline.getByText("Limits and one-sided limits").isVisible(), "MHT-CET Limits: the map has the pool's Limits concepts");
+    const cetReady = page.locator("section[aria-labelledby=ready]");
+    const toContinuity = cetReady.getByRole("link", { name: /Continuity at a point/ });
+    check(
+      (await toContinuity.getAttribute("href")) === "/learn/continuity/continuity-at-a-point?course=mht-cet",
+      `MHT-CET Limits: a Continuity concept opens in its own chapter, keeping the course (${await toContinuity.getAttribute("href")})`,
+    );
+    await shot("00-cet-limits");
+    await noSideScroll("MHT-CET Limits");
+    await page.goto(BASE + "/");
+
     await page.getByRole("link", { name: /^JEE Main/ }).click();
     await page.waitForURL("**/courses/jee-main");
     await page.getByRole("link", { name: /Complex Numbers/ }).waitFor();

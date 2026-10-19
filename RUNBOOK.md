@@ -75,7 +75,12 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
 2. **Adding a chapter to a course:** `{ chapter, coverage }`, where
    `coverage.ids` lists the concepts the course covers and `unsure` marks the
    doubtful ones. Leave `coverage` out only when the course covers the whole
-   chapter.
+   chapter. Name a course's chapters the way the course does (for an exam,
+   PYQ Vault's chapter names): `title` and `standard` override the pool
+   chapter's, and `more: [{ chapter, coverage }]` takes in further pool
+   chapters it teaches as one (MHT-CET's Limits is Limits + Continuity). The
+   course chapter's URL is its first pool chapter's slug; a pool chapter
+   belongs to at most one chapter of a course.
 3. **Coverage is verified with the owner.** Write it as `status: "draft"`;
    the owner reviews it on `/review/courses` (concepts × courses grid). Only
    after they approve, set `status: "approved"`: from then on students see

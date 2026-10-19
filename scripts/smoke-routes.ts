@@ -53,6 +53,8 @@ const routes: [path: string, expect: "ok" | "missing", marker?: string][] = [
   ["/courses/not-a-course", "missing"],
   ["/courses/cds/complex-numbers", "missing"], // a chapter outside the course
   ["/courses/jee-main/not-a-chapter", "missing"],
+  ["/courses/mht-cet/continuity", "missing"], // a part of MHT-CET's Limits, not a chapter of its own
+  ["/courses/mht-cet/measures-of-dispersion", "missing"], // left out of MHT-CET
   ...courseRoutes,
   ...contentRoutes,
 ];

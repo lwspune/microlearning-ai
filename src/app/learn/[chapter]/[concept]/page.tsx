@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { ArrowLeftIcon, LockIcon } from "@/components/icons";
 import { card, eyebrow, primaryButton } from "@/components/ui";
 import { chapters } from "@/content/chapters";
-import { type Course, coveredIds, findCourse, withCourse } from "@/content/courses";
+import { type Course, coveredIds, entryFor, findCourse, mapLink, withCourse } from "@/content/courses";
 import type { Chapter } from "@/content/types";
 import { gateFor } from "@/engine/unlock";
 import { currentViewer } from "@/server/viewer";
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps<"/learn/[chapter]/[
 /** The course the learner came from (`?course=`), if it's real and includes this chapter. */
 function courseFrom(value: string | string[] | undefined, ch: Chapter): Course | null {
   const course = findCourse(typeof value === "string" ? value : null);
-  return course?.chapters.some((c) => c.chapter === ch.slug) ? course : null;
+  return course && entryFor(course, ch.slug) ? course : null;
 }
 
 async function ConceptSection({
@@ -52,7 +52,7 @@ async function ConceptSection({
     return <GuestStart next={withCourse(`/learn/${chapter}/${concept}`, course?.slug)} error={sp.error === "signin"} />;
   }
 
-  const mapHref = course ? `/courses/${course.slug}/${chapter}` : `/learn/${chapter}`;
+  const mapHref = mapLink(course, ch, chapters).href;
   const refresher = typeof sp.from === "string" ? refresherFrom(ch, concept, sp.from) : null;
   const session = await getConceptSession(chapter, concept, userId, {
     allowLocked: refresher !== null,
@@ -101,16 +101,17 @@ async function ConceptContent({
   const published = ch?.concepts.some((c) => c.id === node?.id && c.status === "approved");
   if (!ch || !node || !published) notFound();
   const course = courseFrom((await searchParams).course, ch);
+  const map = mapLink(course, ch, chapters);
 
   return (
     <>
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
         <div>
           <Link
-            href={course ? `/courses/${course.slug}/${chapter}` : `/learn/${chapter}`}
+            href={map.href}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-foreground"
           >
-            <ArrowLeftIcon className="h-4 w-4" /> {course ? `${course.short} · ${ch.title}` : ch.title}
+            <ArrowLeftIcon className="h-4 w-4" /> {map.title}
           </Link>
           <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight md:text-3xl">{node.title}</h1>
         </div>

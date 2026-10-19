@@ -25,7 +25,7 @@ async function ChapterContent({ params }: { params: PageProps<"/learn/[chapter]"
       <p className={`${eyebrow} mt-6`}>Chapter</p>
       <h1 className="mt-1 font-display text-4xl font-semibold tracking-tight">{ch.title}</h1>
       <p className="mt-2 text-muted">One connected idea at a time. Each concept unlocks once you&apos;ve mastered what it builds on.</p>
-      <ChapterMapSection slug={chapter} />
+      <ChapterMapSection parts={[{ slug: chapter }]} />
     </>
   );
 }

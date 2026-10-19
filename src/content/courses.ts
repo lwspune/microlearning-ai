@@ -17,8 +17,30 @@ export type Coverage = {
   status: "draft" | "approved";
 };
 
-/** A chapter in a course. No coverage: the course covers the whole chapter. */
-export type CourseChapter = { chapter: string; coverage?: Coverage };
+/** A pool chapter a course takes concepts from. No coverage: the course covers the whole chapter. */
+export type CoursePart = { chapter: string; coverage?: Coverage };
+
+/**
+ * A chapter in a course: one pool chapter, or several where the course teaches them as one
+ * (MHT-CET's Limits is the pool's Limits and Continuity). Its slug is the first part's.
+ */
+export type CourseChapter = CoursePart & {
+  /** The course's name for it; default: the first pool chapter's title. */
+  title?: string;
+  /** Default: the first pool chapter's standard. */
+  standard?: Standard;
+  /** The other pool chapters it takes in, in teaching order. */
+  more?: CoursePart[];
+};
+
+/** A course chapter with its pool chapters looked up. */
+export type ResolvedCourseChapter = {
+  slug: string;
+  title: string;
+  subject: SubjectId;
+  standard?: Standard;
+  parts: { chapter: Chapter; coverage?: Coverage }[];
+};
 
 export type Course = {
   slug: string;
@@ -127,7 +149,42 @@ export const courses: Course[] = [
     short: "MHT-CET",
     group: "school",
     tagline: "Maharashtra engineering entrance",
-    chapters: [{ chapter: "complex-numbers", coverage: cnMaharashtra }, lpp([])],
+    // PYQ Vault's chapters and names (owner, 2026-10-19; PLAN.md "MHT-CET Maths course"): the whole
+    // Std XII book and the Std XI chapters CET asks. Measures of Dispersion is out: none of the 2025–26
+    // papers ask it, and the syllabus reportedly swapped it for Conic Sections.
+    chapters: [
+      { chapter: "compound-and-multiple-angles" },
+      { chapter: "straight-line" },
+      { chapter: "circle" },
+      { chapter: "conic-sections" },
+      { chapter: "complex-numbers", coverage: cnMaharashtra },
+      { chapter: "permutations-and-combinations" },
+      {
+        // 3 of the 69 PYQs are about sets; keep what Functions builds on (roster form, power set,
+        // intervals, Cartesian product, relations).
+        chapter: "sets-and-relations",
+        coverage: { ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "draft" },
+        title: "Sets, Relations and Functions",
+        more: [{ chapter: "functions" }],
+      },
+      { chapter: "limits", more: [{ chapter: "continuity" }] },
+      { chapter: "mathematical-logic" },
+      // Examined as Std XII matrices; the Std XI determinants come first.
+      { chapter: "determinants-and-matrices", standard: 12, more: [{ chapter: "matrices" }] },
+      { chapter: "trigonometric-functions-12" },
+      { chapter: "pair-of-straight-lines" },
+      { chapter: "vectors" },
+      { chapter: "line-and-plane" },
+      lpp([]),
+      { chapter: "differentiation", standard: 12, more: [{ chapter: "differentiation-12" }] },
+      { chapter: "application-of-derivatives", title: "Applications of Derivative" },
+      { chapter: "indefinite-integration" },
+      { chapter: "definite-integration" },
+      { chapter: "application-of-definite-integration", title: "Applications of Definite Integral" },
+      { chapter: "differential-equations" },
+      { chapter: "probability", title: "Probability Distribution", standard: 12, more: [{ chapter: "probability-distributions" }] },
+      { chapter: "binomial-distribution" },
+    ],
   },
   {
     slug: "jee-main",
@@ -180,7 +237,7 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
     if (!groups.has(course.group)) errors.push(`${course.slug}: unknown group ${course.group}`);
 
     const listed = new Set<string>();
-    for (const entry of course.chapters) {
+    for (const entry of course.chapters.flatMap(partsOf)) {
       if (listed.has(entry.chapter)) errors.push(`${course.slug}: chapter ${entry.chapter} listed twice`);
       listed.add(entry.chapter);
       const chapter = chapters.find((c) => c.slug === entry.chapter);
@@ -216,6 +273,37 @@ function validateCoverage(where: string, coverage: Coverage, chapter: Chapter): 
   return errors;
 }
 
+/** The pool chapters a course chapter takes concepts from: its first, then the others. */
+export function partsOf(entry: CourseChapter): CoursePart[] {
+  return [{ chapter: entry.chapter, coverage: entry.coverage }, ...(entry.more ?? [])];
+}
+
+/** The course chapter that takes in pool chapter `chapterSlug`, or null. */
+export function entryFor(course: Course, chapterSlug: string): CourseChapter | null {
+  return course.chapters.find((e) => partsOf(e).some((p) => p.chapter === chapterSlug)) ?? null;
+}
+
+/** The part of the course that takes in pool chapter `chapterSlug`, or null. */
+export function partFor(course: Course, chapterSlug: string): CoursePart | null {
+  const entry = entryFor(course, chapterSlug);
+  return entry && partsOf(entry).find((p) => p.chapter === chapterSlug)!;
+}
+
+/** Looks up a course chapter's pool chapters (the catalog is validated, so they exist). */
+export function resolveEntry(entry: CourseChapter, chapters: Chapter[]): ResolvedCourseChapter {
+  const parts = partsOf(entry).map((p) => ({ chapter: chapters.find((c) => c.slug === p.chapter)!, coverage: p.coverage }));
+  const first = parts[0].chapter;
+  return { slug: entry.chapter, title: entry.title ?? first.title, subject: first.subject, standard: entry.standard ?? first.standard, parts };
+}
+
+/** Where a lesson in `chapter` leads back to: the course's chapter that takes it in, or the chapter's own map. */
+export function mapLink(course: Course | null, chapter: Chapter, chapters: Chapter[]): { href: string; title: string } {
+  const entry = course && entryFor(course, chapter.slug);
+  if (!course || !entry) return { href: `/learn/${chapter.slug}`, title: chapter.title };
+  const resolved = resolveEntry(entry, chapters);
+  return { href: `/courses/${course.slug}/${resolved.slug}`, title: `${course.short} · ${resolved.title}` };
+}
+
 export function coursesIn(group: GroupId, list: Course[] = courses): Course[] {
   return list.filter((c) => c.group === group);
 }
@@ -239,9 +327,9 @@ export function parseStandard(value: string | null | undefined): Standard | null
  * until the coverage is approved; reviewers can ask for the draft.
  */
 export function coveredIds(course: Course, chapter: Chapter, { includeDraft = false } = {}): Set<ConceptId> {
-  const entry = course.chapters.find((c) => c.chapter === chapter.slug);
-  if (!entry) return new Set();
-  const coverage = entry.coverage;
+  const part = partFor(course, chapter.slug);
+  if (!part) return new Set();
+  const coverage = part.coverage;
   if (coverage && (coverage.status === "approved" || includeDraft)) return new Set(coverage.ids);
   return new Set(chapter.graph.map((n) => n.id));
 }
@@ -265,8 +353,8 @@ export function withCourse(href: string, course: string | undefined): string {
 /** What a student can open in the course today: its chapters, and the published concepts it covers. */
 export function courseSize(course: Course, chapters: Chapter[]): { chapters: number; concepts: number } {
   let concepts = 0;
-  for (const entry of course.chapters) {
-    const chapter = chapters.find((c) => c.slug === entry.chapter);
+  for (const part of course.chapters.flatMap(partsOf)) {
+    const chapter = chapters.find((c) => c.slug === part.chapter);
     if (!chapter) continue;
     const covered = coveredIds(course, chapter);
     concepts += chapter.concepts.filter((c) => c.status === "approved" && covered.has(c.id)).length;

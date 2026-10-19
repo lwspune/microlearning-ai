@@ -115,12 +115,24 @@ function ConceptCard({ href, c }: { href: string; c: MapConcept }) {
   );
 }
 
-/** `course`: show only the concepts that course covers, and keep the course on every link. */
-export async function ChapterMapSection({ slug, course }: { slug: string; course?: { slug: string; scope: Set<ConceptId> } }) {
+type ChapterConcept = MapConcept & { chapter: string };
+
+/**
+ * One map over `parts`: a pool chapter, or several that a course teaches as one chapter. A part's
+ * `scope` shows only the concepts the course covers; `course` stays on every link.
+ */
+export async function ChapterMapSection({ parts, course }: { parts: { slug: string; scope?: Set<ConceptId> }[]; course?: string }) {
   const viewer = await currentViewer();
-  const map = await getChapterMap(slug, viewer?.userId ?? null, course?.scope, gateFor(viewer?.profile?.role ?? null));
-  if (!map) notFound();
-  const hrefOf = (c: MapConcept) => withCourse(`/learn/${slug}/${c.slug}`, course?.slug);
+  const gate = gateFor(viewer?.profile?.role ?? null);
+  const maps = await Promise.all(parts.map((p) => getChapterMap(p.slug, viewer?.userId ?? null, p.scope, gate)));
+  if (maps.some((m) => !m)) notFound();
+  const map = {
+    groups: maps.flatMap((m) =>
+      m!.groups.map((g) => ({ key: `${m!.slug}/${g.name}`, name: g.name, concepts: g.concepts.map((c): ChapterConcept => ({ ...c, chapter: m!.slug })) })),
+    ),
+  };
+  const hrefOf = (c: ChapterConcept) => withCourse(`/learn/${c.chapter}/${c.slug}`, course);
+  const keyOf = (c: ChapterConcept) => `${c.chapter}/${c.code}`;
   const all = map.groups.flatMap((g) => g.concepts);
   const due = all.filter((c) => isOpen(c.state) && c.due);
   // In progress first, then new ones, in chapter order.
@@ -143,7 +155,7 @@ export async function ChapterMapSection({ slug, course }: { slug: string; course
           {map.groups.map((g) => {
             const done = g.concepts.filter((c) => c.state === "mastered").length;
             return (
-              <li key={g.name} className="grid grid-cols-[7.5rem_1fr_auto] items-center gap-3">
+              <li key={g.key} className="grid grid-cols-[7.5rem_1fr_auto] items-center gap-3">
                 <span className="truncate text-muted">{g.name}</span>
                 <span className="h-1.5 overflow-hidden rounded-full bg-surface" aria-hidden="true">
                   <span className="block h-full rounded-full bg-accent" style={{ width: `${(done / g.concepts.length) * 100}%` }} />
@@ -167,7 +179,7 @@ export async function ChapterMapSection({ slug, course }: { slug: string; course
             <p className="mt-1 text-sm text-muted">Two quick questions each keep these fresh.</p>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {due.map((c) => (
-                <li key={c.code}>
+                <li key={keyOf(c)}>
                   <Link
                     href={hrefOf(c)}
                     className={`${linkCardShape} flex items-center justify-between gap-3 border-border bg-warning-surface p-4 hover:border-border-strong`}
@@ -192,7 +204,7 @@ export async function ChapterMapSection({ slug, course }: { slug: string; course
           ) : (
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {toDo.map((c, i) => (
-                <li key={c.code} className={i === 0 ? "sm:col-span-2" : undefined}>
+                <li key={keyOf(c)} className={i === 0 ? "sm:col-span-2" : undefined}>
                   {i === 0 ? <FeaturedCard href={hrefOf(c)} c={c} /> : <ConceptCard href={hrefOf(c)} c={c} />}
                 </li>
               ))}
@@ -208,7 +220,7 @@ export async function ChapterMapSection({ slug, course }: { slug: string; course
           {map.groups.map((g) => {
             const done = g.concepts.filter((c) => c.state === "mastered").length;
             return (
-              <div key={g.name} className="mt-8">
+              <div key={g.key} className="mt-8">
                 <h3 className="flex items-baseline justify-between gap-3">
                   <span className="font-display text-lg font-semibold">{g.name}</span>
                   <span className="text-sm text-muted tabular-nums">
@@ -217,7 +229,7 @@ export async function ChapterMapSection({ slug, course }: { slug: string; course
                 </h3>
                 <ol className="mt-3 ml-3 border-l-2 border-border">
                   {g.concepts.map((c) => (
-                    <PathRow key={c.code} href={hrefOf(c)} c={c} />
+                    <PathRow key={keyOf(c)} href={hrefOf(c)} c={c} />
                   ))}
                 </ol>
               </div>

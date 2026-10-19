@@ -7,7 +7,11 @@ import {
   courseSize,
   coveredIds,
   courses,
+  entryFor,
   findCourse,
+  mapLink,
+  partsOf,
+  resolveEntry,
   GROUPS,
   parseGroup,
   parseStandard,
@@ -74,6 +78,25 @@ describe("validateCatalog", () => {
     expect(errors).toContain("a/ch: unsure concept C is not in the list");
   });
 
+  it("checks the parts a course chapter takes from other pool chapters like its first one", () => {
+    const two = chapter("two");
+    const errors = validateCatalog(
+      [
+        course("a", {
+          chapters: [
+            { chapter: "ch", more: [{ chapter: "nope" }, { chapter: "two", coverage: { ids: ["Z"], status: "draft" } }] },
+            { chapter: "x", more: [{ chapter: "ch" }] },
+          ],
+        }),
+      ],
+      [ch, two, chapter("x")],
+    );
+    expect(errors).toContain("a: unknown chapter nope");
+    expect(errors).toContain("a/two: unknown concept Z");
+    // A pool chapter belongs to one course chapter, so its concepts aren't counted twice.
+    expect(errors).toContain("a: chapter ch listed twice");
+  });
+
   it("rejects empty coverage (leave coverage out to mean the whole chapter)", () => {
     expect(validateCatalog([course("a", { chapters: [{ chapter: "ch", coverage: { ids: [], status: "draft" } }] })], [ch])).toEqual([
       "a/ch: coverage lists no concepts",
@@ -100,6 +123,56 @@ describe("coveredIds", () => {
 
   it("is empty for a chapter the course doesn't include", () => {
     expect(coveredIds(course("a", { chapters: [] }), ch)).toEqual(new Set());
+  });
+
+  it("finds a pool chapter that a course chapter takes in as a later part", () => {
+    const c = course("a", { chapters: [{ chapter: "other", more: [{ chapter: "ch", coverage: { ids: ["C"], status: "approved" } }] }] });
+    expect(coveredIds(c, ch)).toEqual(new Set(["C"]));
+  });
+});
+
+describe("course chapters made of several pool chapters", () => {
+  const limits = { ...chapter("limits"), title: "Limits" };
+  const continuity = { ...chapter("continuity"), title: "Continuity" };
+  const matrices = { ...chapter("matrices"), title: "Matrices", standard: 12 as const };
+  const c = course("cet", {
+    chapters: [
+      { chapter: "limits", more: [{ chapter: "continuity", coverage: { ids: ["A"], status: "approved" } }] },
+      { chapter: "ch", title: "Determinants and Matrices", standard: 12, more: [{ chapter: "matrices" }] },
+    ],
+  });
+  const pool = [limits, continuity, matrices, ch];
+
+  it("lists its parts in order: the first pool chapter, then the others", () => {
+    expect(partsOf(c.chapters[0]).map((p) => p.chapter)).toEqual(["limits", "continuity"]);
+    expect(partsOf({ chapter: "ch" }).map((p) => p.chapter)).toEqual(["ch"]);
+  });
+
+  it("finds the course chapter a pool chapter belongs to, or null", () => {
+    expect(entryFor(c, "continuity")?.chapter).toBe("limits");
+    expect(entryFor(c, "limits")?.chapter).toBe("limits");
+    expect(entryFor(c, "nope")).toBeNull();
+  });
+
+  it("takes its title and standard from the first pool chapter unless the course names them", () => {
+    expect(resolveEntry(c.chapters[0], pool)).toMatchObject({ slug: "limits", title: "Limits", standard: 11, subject: "maths" });
+    expect(resolveEntry(c.chapters[1], pool)).toMatchObject({ slug: "ch", title: "Determinants and Matrices", standard: 12 });
+    expect(resolveEntry(c.chapters[1], pool).parts.map((p) => p.chapter.slug)).toEqual(["ch", "matrices"]);
+  });
+
+  it("leads a lesson back to the course chapter that takes in its pool chapter", () => {
+    expect(mapLink(c, continuity, pool)).toEqual({ href: "/courses/cet/limits", title: "cet · Limits" });
+    expect(mapLink(c, matrices, pool)).toEqual({ href: "/courses/cet/ch", title: "cet · Determinants and Matrices" });
+    expect(mapLink(null, continuity, pool)).toEqual({ href: "/learn/continuity", title: "Continuity" });
+  });
+
+  it("counts one chapter per course chapter and the published concepts across its parts", () => {
+    const published = (x: Chapter): Chapter => ({
+      ...x,
+      concepts: x.graph.map((n) => ({ id: n.id, status: "approved" }) as Chapter["concepts"][number]),
+    });
+    // limits: A, B, C; continuity: only A covered.
+    expect(courseSize({ ...c, chapters: [c.chapters[0]] }, [published(limits), published(continuity)])).toEqual({ chapters: 1, concepts: 4 });
   });
 });
 
@@ -226,6 +299,75 @@ describe("the catalog", () => {
       expect(coverage.unsure ?? []).toEqual([]);
       expect(coverage.status).toBe("approved");
     }
+  });
+
+  // PYQ Vault's MHT-CET chapters, approved by the owner 2026-10-19 (PLAN.md "MHT-CET Maths course").
+  describe("MHT-CET", () => {
+    const cet = findCourse("mht-cet")!;
+    const resolved = cet.chapters.map((e) => resolveEntry(e, chapters));
+
+    it("lists PYQ Vault's chapters by standard, in book order", () => {
+      expect(byStandard(resolved).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
+        [
+          11,
+          [
+            "Trigonometry – II",
+            "Straight Line",
+            "Circle",
+            "Conic Sections",
+            "Complex Numbers",
+            "Permutations and Combinations",
+            "Sets, Relations and Functions",
+            "Limits",
+          ],
+        ],
+        [
+          12,
+          [
+            "Mathematical Logic",
+            "Determinants and Matrices",
+            "Trigonometric Functions",
+            "Pair of Straight Lines",
+            "Vectors",
+            "Line and Plane",
+            "Linear Programming",
+            "Differentiation",
+            "Applications of Derivative",
+            "Indefinite Integration",
+            "Definite Integration",
+            "Applications of Definite Integral",
+            "Differential Equations",
+            "Probability Distribution",
+            "Binomial Distribution",
+          ],
+        ],
+      ]);
+    });
+
+    it("joins the pool chapters PYQ Vault teaches as one", () => {
+      const joined = Object.fromEntries(
+        resolved.filter((r) => r.parts.length > 1).map((r) => [r.title, r.parts.map((p) => p.chapter.slug)]),
+      );
+      expect(joined).toEqual({
+        "Sets, Relations and Functions": ["sets-and-relations", "functions"],
+        Limits: ["limits", "continuity"],
+        "Determinants and Matrices": ["determinants-and-matrices", "matrices"],
+        Differentiation: ["differentiation", "differentiation-12"],
+        "Probability Distribution": ["probability", "probability-distributions"],
+      });
+    });
+
+    it("leaves out what the current syllabus and papers don't ask", () => {
+      const used = resolved.flatMap((r) => r.parts.map((p) => p.chapter.slug));
+      for (const slug of ["measures-of-dispersion", "sequences-and-series", "angle-measurement", "trigonometric-functions", "binomial-theorem"]) {
+        expect(used).not.toContain(slug);
+      }
+    });
+
+    it("takes from Sets and Relations only what Functions builds on, as a draft for the owner", () => {
+      const sets = partsOf(entryFor(cet, "sets-and-relations")!).find((p) => p.chapter === "sets-and-relations")!;
+      expect(sets.coverage).toEqual({ ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "draft" });
+    });
   });
 
   it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {

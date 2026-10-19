@@ -6,17 +6,18 @@ import { ChapterMapSection, MapSkeleton } from "@/components/ChapterMap";
 import { ArrowLeftIcon } from "@/components/icons";
 import { eyebrow } from "@/components/ui";
 import { chapters } from "@/content/chapters";
-import { courses, coveredIds, findCourse } from "@/content/courses";
+import { courses, coveredIds, findCourse, resolveEntry } from "@/content/courses";
 
 export function generateStaticParams() {
   return courses.flatMap((c) => c.chapters.map((e) => ({ course: c.slug, chapter: e.chapter })));
 }
 
+/** The course and its chapter at `chapterSlug` (the chapter's first pool chapter), or null. */
 function find(courseSlug: string, chapterSlug: string) {
   const course = findCourse(courseSlug);
-  const chapter = chapters.find((c) => c.slug === chapterSlug);
-  if (!course || !chapter || !course.chapters.some((e) => e.chapter === chapter.slug)) return null;
-  return { course, chapter };
+  const entry = course?.chapters.find((e) => e.chapter === chapterSlug);
+  if (!course || !entry) return null;
+  return { course, chapter: resolveEntry(entry, chapters) };
 }
 
 export async function generateMetadata({ params }: PageProps<"/courses/[course]/[chapter]">): Promise<Metadata> {
@@ -41,7 +42,10 @@ async function CourseChapterContent({ params }: { params: PageProps<"/courses/[c
       <p className={`${eyebrow} mt-6`}>{course.short} · Chapter</p>
       <h1 className="mt-1 font-display text-4xl font-semibold tracking-tight">{chapter.title}</h1>
       <p className="mt-2 text-muted">The concepts {course.short} needs, one connected idea at a time.</p>
-      <ChapterMapSection slug={chapter.slug} course={{ slug: course.slug, scope: coveredIds(course, chapter) }} />
+      <ChapterMapSection
+        parts={chapter.parts.map((p) => ({ slug: p.chapter.slug, scope: coveredIds(course, p.chapter) }))}
+        course={course.slug}
+      />
     </>
   );
 }
