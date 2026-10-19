@@ -976,3 +976,76 @@ read from those rows or page images, never from a PDF's text layer.
   NDA get their own chapters, built later, taking the relevant concepts from
   this pool rather than listing the MH Board chapters with coverage. Check
   each course's chapter names against PYQ Vault first. Not started.
+
+## MHT-CET Maths course (approved 2026-10-19, branch `mhtcet-course`)
+
+Goal: the MHT-CET course gets its own chapters, named and split the way PYQ
+Vault names them, each taking its concepts from the MH Board pool. Mastery
+stays per concept, so nothing is built twice.
+
+**Sources.** PYQ Vault's live MHT-CET Maths taxonomy (26 chapters, about
+3,400 PYQs 2021–2026); its per-subtopic State Board rulings
+(`Question_Bank/scripts/syllabus/data/maths-cet-rulings.json`: 81 full, 4
+partial); the CET letter for 2024-25 (`NDA_Subjects_Content/Programs/CET_Syllabus`):
+whole Std XII, plus ten named Std XI chapters, at 10 of the 50 questions.
+
+**Owner's decisions (2026-10-19, all as recommended):**
+1. PYQ Vault's chapter names and split, so a student sees the same chapters
+   in both products. Five course chapters combine pool chapters.
+2. Measures of Dispersion left out: 0 PYQs in 2025–26, and the current
+   syllabus is reported to have dropped it while adding Conic Sections
+   (45 PYQs, from 3 before 2025). Confirm with the CET Cell PDF when it is
+   published.
+3. Three new concepts for gaps the pool lacks: Cayley–Hamilton and matrix
+   polynomials (19 PYQs, not in the book), two circles (10 PYQs, a side box
+   in the book), angle between curves (8 PYQs, one book exercise). MHT-CET
+   only for now; MH Board gets coverage lists that keep its maps unchanged.
+   Quadratic Equations (7 PYQs, Std X) skipped.
+4. CET-level practice from PYQ Vault's PYQs: later, after the course is live.
+5. Phases as below. Phase 2 runs with the Std XI/XII autonomy.
+
+| Std | MHT-CET chapter | Pool chapters | PYQs |
+|---|---|---|---|
+| XI | Trigonometry - II | compound-and-multiple-angles | 61 |
+| XI | Straight Line | straight-line | 75 |
+| XI | Circle | circle | 71 |
+| XI | Conic Sections | conic-sections | 44 |
+| XI | Complex Numbers | complex-numbers (22, approved) | 67 |
+| XI | Permutations and Combinations | permutations-and-combinations | 65 |
+| XI | Sets, Relations and Functions | sets-and-relations (draft: 7 of 16) + functions | 66 |
+| XI | Limits | limits + continuity | 137 |
+| XII | Mathematical Logic | mathematical-logic | 151 |
+| XII | Determinants and Matrices | determinants-and-matrices (XI) + matrices | 102 |
+| XII | Trigonometric Functions | trigonometric-functions-12 | 312 |
+| XII | Pair of Straight Lines | pair-of-straight-lines | 73 |
+| XII | Vectors | vectors | 334 |
+| XII | Line and Plane | line-and-plane | 304 |
+| XII | Linear Programming | linear-programming (approved) | 69 |
+| XII | Differentiation | differentiation (XI) + differentiation-12 | 237 |
+| XII | Applications of Derivative | application-of-derivatives | 253 |
+| XII | Indefinite Integration | indefinite-integration | 249 |
+| XII | Definite Integration | definite-integration | 132 |
+| XII | Applications of Definite Integral | application-of-definite-integration | 78 |
+| XII | Differential Equations | differential-equations | 216 |
+| XII | Probability Distribution | probability (XI) + probability-distributions | 159 |
+| XII | Binomial Distribution | binomial-distribution | 86 |
+
+Not listed: Measures of Dispersion, Sequences and Series (11 PYQs, 1 in
+2026), Quadratic Equations, Angle Measurement, Std XI Trigonometric
+Functions, Binomial Theorem. Only 3 of the 69 "Sets, Relations and
+Functions" PYQs are about sets, so that part's draft list is what Functions
+builds on: roster form, power set, intervals, Cartesian product, relations.
+
+**Phases:**
+- **Phase 1 (this branch): course chapters made of several pool chapters.**
+  A course chapter keeps its `{ chapter, coverage }` shape and may add a
+  `title`, a `standard` and `more` parts; its URL stays
+  `/courses/<course>/<first pool slug>`, so existing courses don't change.
+  Its map merges the parts (one progress ring, one outline); lessons keep
+  their `/learn/<pool chapter>/...` URLs, and the lesson's way back goes to
+  the course chapter. The MHT-CET catalog above goes in. Before/after sheet
+  before merging.
+- **Phase 2:** the three new concepts, built the usual way (items from CET
+  PYQs, since the book doesn't teach them), with MH Board coverage lists for
+  `matrices`, `circle` and `application-of-derivatives`.
+- **Phase 3 (later, ask first):** CET-level practice from PYQ Vault.
