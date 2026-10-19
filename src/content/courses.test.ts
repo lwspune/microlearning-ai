@@ -384,9 +384,9 @@ describe("the catalog", () => {
       }
     });
 
-    it("takes from Sets and Relations only what Functions builds on, as a draft for the owner", () => {
+    it("takes from Sets and Relations only what Functions builds on, approved by the owner 2026-10-19", () => {
       const sets = partsOf(entryFor(cet, "sets-and-relations")!).find((p) => p.chapter === "sets-and-relations")!;
-      expect(sets.coverage).toEqual({ ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "draft" });
+      expect(sets.coverage).toEqual({ ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "approved" });
     });
   });
 
