@@ -18,7 +18,7 @@ export const graph: GraphNode[] = [
   },
   {
     id: "C02", slug: "sphere-conditions", title: "A sphere from conditions", group: "The sphere", tier: "adv",
-    oneLiner: t`A diameter's ends, a concentric sphere through a point, or a tangent plane (radius $=$ distance from the centre) fix the sphere`,
+    oneLiner: t`A concentric sphere through a point, a tangent plane (radius $=$ distance from the centre) or intercepts on the axes fix the sphere`,
     prereqs: ["C01"], ext: ["distance of a point from a plane (Line and Plane)"], sources: [S("Sphere")],
   },
 ];
