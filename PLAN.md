@@ -1125,4 +1125,18 @@ functional equations). About 45 concepts in all, items from NDA PYQs.
   (the equation with roots a, b is x² − (α+β)x + αβ + c = 0, option A; B is
   starred) and NDA 2024 Sep Q112 (options C and D are the same expression;
   only D is starred).
+- Owner 2026-10-19: reported NDA 2022 Apr Q18 and 2024 Sep Q112 to PYQ
+  Vault; approved every NDA list (branch `nda-lists-approved`, sheet
+  `screenshots/2026-10-19-nda-lists/`).
+- Phase 2b done 2026-10-19 (branch `nda-phase-2b`, built on the approval
+  branch): pool chapters Logarithms (4 concepts, 22 items; NDA's Logarithms
+  opens with Functions C07, so Functions is split for NDA), Heights and
+  Distances (5, 30), Binary Numbers (4, 24), all Std XI, and the Sphere (2,
+  12, Std XII) in NDA's 3D Geometry. Same gates as 2a.
+- More PYQ Vault keys found wrong in 2b (not yet reported): NDA 2018 Apr Q11
+  (3ˣ = 3 gives x = 1, option C; D = 3 is starred), NDA 2017 Sep Q2
+  (remainder then quotient of 46 ÷ 6 is (100)₂ and (111)₂, option B; A is
+  starred). Possibly wrong, passage missing from the bank: NDA 2025 Apr Q39
+  (key D, (√3 + 3)a/4, vs (3 + √3)a/2 from its own working) and Q40 (the
+  starred option is misprinted).
 
