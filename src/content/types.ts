@@ -74,7 +74,7 @@ export type ItemVerify = {
 export type ItemSource =
   | { kind: "authored" }
   | { kind: "pyqvault-practice"; ref: string }
-  | { kind: "exam-style"; exam: "NDA" | "MHT-CET" | "JEE"; ref?: string };
+  | { kind: "exam-style"; exam: "NDA" | "MHT-CET" | "JEE" | "CBSE"; ref?: string };
 
 /** A point in the complex plane as [real part, imaginary part]. */
 export type Pt = [number, number];

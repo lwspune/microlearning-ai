@@ -466,6 +466,9 @@ describe("the catalog", () => {
       }
     });
 
+    // Concepts built for CBSE alone (PLAN.md "CBSE Maths course", phase 2).
+    const CBSE_ONLY = ["absolute-extrema"];
+
     // Gaps the book doesn't teach, built for MHT-CET from its PYQs (PLAN.md "MHT-CET Maths course", phase 2).
     const gaps: [string, string][] = [
       ["matrices", "cayley-hamilton"],
@@ -482,7 +485,8 @@ describe("the catalog", () => {
         expect(coveredIds(cet, ch).has(id!)).toBe(true);
         const book = partsOf(entryFor(board, slug)!)[0].coverage!;
         expect(book.status).toBe("approved");
-        expect(new Set(book.ids)).toEqual(new Set(ch.graph.filter((n) => n.id !== id).map((n) => n.id)));
+        const others = ch.graph.filter((n) => n.id !== id && !CBSE_ONLY.includes(n.slug));
+        expect(new Set(book.ids)).toEqual(new Set(others.map((n) => n.id)));
       }
     });
 
@@ -629,11 +633,13 @@ describe("the catalog", () => {
             "Relations and Functions",
             "Trigonometric Functions",
             "Complex Numbers and Quadratic Equations",
+            "Linear Inequalities",
             "Permutations and Combinations",
             "Binomial Theorem",
             "Sequences and Series",
             "Straight Lines",
             "Conic Sections",
+            "Introduction to Three Dimensional Geometry",
             "Limits and Derivatives",
             "Statistics",
             "Probability",
@@ -690,7 +696,9 @@ describe("the catalog", () => {
       expect(parts("Matrices")).toEqual(["determinants-and-matrices C07,C08,C09,C10,C11,C12"]);
       expect(parts("Determinants")).toEqual(["determinants-and-matrices C01,C02,C06", "matrices C04,C05,C06,C07,C08,C09,C11"]);
       expect(parts("Continuity and Differentiability")).toEqual(["continuity C01,C02,C03,C05", "differentiation C02", "differentiation-12"]);
-      expect(parts("Application of Derivatives")).toEqual(["application-of-derivatives C03,C04,C08,C09,C10"]);
+      expect(parts("Linear Inequalities")).toEqual(["linear-inequalities"]);
+      expect(parts("Introduction to Three Dimensional Geometry")).toEqual(["introduction-to-3d-geometry"]);
+      expect(parts("Application of Derivatives")).toEqual(["application-of-derivatives C03,C04,C08,C09,C10,C12"]);
       expect(parts("Integrals")).toEqual([
         "indefinite-integration C01,C02,C03,C04,C06,C07,C08,C09,C10,C11",
         "definite-integration C02,C03,C04,C05,C06,C07,C10",
@@ -708,11 +716,13 @@ describe("the catalog", () => {
         "relations-and-functions",
         "trigonometric-functions",
         "complex-numbers",
+        "linear-inequalities",
         "permutations-and-combinations",
         "binomial-theorem",
         "sequences-and-series",
         "straight-lines",
         "conic-sections",
+        "introduction-to-3d-geometry",
         "limits-and-derivatives",
         "statistics",
         "probability",
@@ -736,6 +746,17 @@ describe("the catalog", () => {
       const used = resolved.flatMap((r) => r.parts.map((p) => p.chapter.slug));
       for (const slug of ["mathematical-logic", "pair-of-straight-lines", "binomial-distribution", "probability-distributions", "sphere", "quadratic-equations"]) {
         expect(used).not.toContain(slug);
+      }
+    });
+
+    // Phase 2: what CBSE asks that the MH Board books don't teach (PLAN.md "CBSE Maths course").
+    it("covers absolute extrema on a closed interval; the other courses keep their lists", () => {
+      const ch = chapters.find((c) => c.slug === "application-of-derivatives")!;
+      const id = ch.graph.find((n) => n.slug === "absolute-extrema")?.id;
+      expect(id, "application-of-derivatives/absolute-extrema is in the graph").toBeDefined();
+      expect(coveredIds(cbse, ch).has(id!)).toBe(true);
+      for (const other of ["mh-board", "mht-cet", "nda"]) {
+        expect(coveredIds(findCourse(other)!, ch).has(id!), `${other} leaves it out`).toBe(false);
       }
     });
 
