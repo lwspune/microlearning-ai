@@ -613,6 +613,138 @@ describe("the catalog", () => {
     });
   });
 
+  // NCERT's chapters, as PYQ Vault names them, that the pool covers today (PLAN.md "CBSE Maths course").
+  describe("CBSE", () => {
+    const cbse = findCourse("cbse")!;
+    const resolved = cbse.chapters.map((e) => resolveEntry(e, chapters));
+    const parts = (title: string) =>
+      resolved.find((r) => r.title === title)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+
+    it("lists NCERT's chapters by class, in book order", () => {
+      expect(byStandard(resolved).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
+        [
+          11,
+          [
+            "Sets",
+            "Relations and Functions",
+            "Trigonometric Functions",
+            "Complex Numbers and Quadratic Equations",
+            "Permutations and Combinations",
+            "Binomial Theorem",
+            "Sequences and Series",
+            "Straight Lines",
+            "Conic Sections",
+            "Limits and Derivatives",
+            "Statistics",
+            "Probability",
+          ],
+        ],
+        [
+          12,
+          [
+            "Relations and Functions",
+            "Inverse Trigonometric Functions",
+            "Matrices",
+            "Determinants",
+            "Continuity and Differentiability",
+            "Application of Derivatives",
+            "Integrals",
+            "Application of Integrals",
+            "Differential Equations",
+            "Vector Algebra",
+            "Three Dimensional Geometry",
+            "Linear Programming",
+            "Probability",
+          ],
+        ],
+      ]);
+    });
+
+    it("takes from each pool chapter what the rationalised NCERT books and CBSE's 2022–26 papers ask", () => {
+      const byClass = (standard: 11 | 12, title: string) => {
+        const r = resolved.find((x) => x.title === title && x.standard === standard)!;
+        return r.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+      };
+      expect(parts("Sets")).toEqual(["sets-and-relations C01,C02,C03,C04,C05,C09"]);
+      expect(byClass(11, "Relations and Functions")).toEqual([
+        "sets-and-relations C12,C13,C14",
+        "functions C01,C02,C03,C05,C06,C08,C09",
+      ]);
+      expect(parts("Trigonometric Functions")).toEqual([
+        "angle-measurement C01,C02,C03,C05",
+        "trigonometric-functions C01,C02,C03,C04,C05,C06,C07,C09",
+        "compound-and-multiple-angles C01,C02,C03,C04,C05,C06,C08,C09",
+      ]);
+      expect(parts("Complex Numbers and Quadratic Equations")).toEqual(["complex-numbers C01,C02,C03,C04,C05,C06,C07,C08,C10,C11,C12"]);
+      expect(parts("Permutations and Combinations")).toEqual(["permutations-and-combinations C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12"]);
+      expect(parts("Binomial Theorem")).toEqual(["binomial-theorem C01,C06,C07,C10"]);
+      expect(parts("Sequences and Series")).toEqual(["sequences-and-series C15,C16,C17,C01,C02,C03,C04,C05,C10,C11"]);
+      expect(parts("Straight Lines")).toEqual(["straight-line C01,C03,C04,C05,C06,C07,C08,C09,C10,C11,C12"]);
+      expect(parts("Conic Sections")).toEqual(["circle C01,C03,C04", "conic-sections C01,C02,C03,C06,C07,C08,C11,C12"]);
+      expect(parts("Limits and Derivatives")).toEqual(["limits C01,C02,C03,C04,C05,C07", "differentiation C01,C03,C04,C05,C06"]);
+      expect(parts("Statistics")).toEqual(["statistics C04,C10", "measures-of-dispersion C01,C02,C03,C04,C05"]);
+      expect(byClass(11, "Probability")).toEqual(["probability C01,C02,C03,C04,C05,C06"]);
+
+      expect(byClass(12, "Relations and Functions")).toEqual(["sets-and-relations C15,C16", "functions C04,C10,C11"]);
+      expect(parts("Inverse Trigonometric Functions")).toEqual(["trigonometric-functions-12 C12,C13,C14,C15"]);
+      expect(parts("Matrices")).toEqual(["determinants-and-matrices C07,C08,C09,C10,C11,C12"]);
+      expect(parts("Determinants")).toEqual(["determinants-and-matrices C01,C02,C06", "matrices C04,C05,C06,C07,C08,C09,C11"]);
+      expect(parts("Continuity and Differentiability")).toEqual(["continuity C01,C02,C03,C05", "differentiation C02", "differentiation-12"]);
+      expect(parts("Application of Derivatives")).toEqual(["application-of-derivatives C03,C04,C08,C09,C10"]);
+      expect(parts("Integrals")).toEqual([
+        "indefinite-integration C01,C02,C03,C04,C06,C07,C08,C09,C10,C11",
+        "definite-integration C02,C03,C04,C05,C06,C07,C10",
+      ]);
+      expect(parts("Application of Integrals")).toEqual(["application-of-definite-integration"]);
+      expect(parts("Differential Equations")).toEqual(["differential-equations C01,C03,C04,C06,C07,C08,C09"]);
+      expect(parts("Vector Algebra")).toEqual(["vectors C01,C02,C03,C04,C05,C06,C08,C09"]);
+      expect(parts("Three Dimensional Geometry")).toEqual(["vectors C07", "line-and-plane C01,C02,C03,C04,C05"]);
+      expect(byClass(12, "Probability")).toEqual(["probability C07,C08,C09,C10"]);
+    });
+
+    it("gives each course chapter its own URL", () => {
+      expect(cbse.chapters.map(slugOf)).toEqual([
+        "sets",
+        "relations-and-functions",
+        "trigonometric-functions",
+        "complex-numbers",
+        "permutations-and-combinations",
+        "binomial-theorem",
+        "sequences-and-series",
+        "straight-lines",
+        "conic-sections",
+        "limits-and-derivatives",
+        "statistics",
+        "probability",
+        "relations-and-functions-12",
+        "inverse-trigonometric-functions",
+        "matrices",
+        "determinants",
+        "continuity-and-differentiability",
+        "application-of-derivatives",
+        "integrals",
+        "application-of-integrals",
+        "differential-equations",
+        "vector-algebra",
+        "three-dimensional-geometry",
+        "linear-programming",
+        "probability-12",
+      ]);
+    });
+
+    it("leaves out what CBSE doesn't teach", () => {
+      const used = resolved.flatMap((r) => r.parts.map((p) => p.chapter.slug));
+      for (const slug of ["mathematical-logic", "pair-of-straight-lines", "binomial-distribution", "probability-distributions", "sphere", "quadratic-equations"]) {
+        expect(used).not.toContain(slug);
+      }
+    });
+
+    it("has every list approved (owner: 'you approve', 2026-10-20)", () => {
+      const statuses = cbse.chapters.flatMap(partsOf).flatMap((p) => (p.coverage ? [p.coverage.status] : []));
+      expect(new Set(statuses)).toEqual(new Set(["approved"]));
+    });
+  });
+
   it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {
     for (const slug of ["mh-board", "mht-cet"]) {
       const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;

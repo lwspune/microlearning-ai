@@ -635,6 +635,14 @@ key could be copied from the stem. The agent brief now forbids it for new work.
 - **Recommendation:** decline; change nothing. Close unless the owner wants
   the three coincidences reworded.
 
+### 11. NDA's Linear Inequalities has no one-variable inequalities (logged 2026-10-20, open)
+Learning: the CBSE build (phase 2) adds a pool chapter on linear inequalities
+in one variable (rules, number line, systems, word problems). NDA's Linear
+Inequalities is only the graphing half of Linear Programming (C01–C04).
+- **Scope:** one NDA course chapter; NDA's maps and progress would gain
+  concepts. Check NDA's PYQs for one-variable inequalities before proposing.
+- **Recommendation:** decide after CBSE phase 2 ships; ask the owner first.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
@@ -1190,3 +1198,54 @@ note-concept tag), then NDA.
   removed, which is exactly e8b4832's page). Tests: `practiceLink` and the catalog
   check; the golden path checks the link, its new tab, and its absence elsewhere.
 - PYQ Vault side: next.
+
+## CBSE Maths course (approved 2026-10-20, branch `cbse-course`)
+
+Goal: CBSE gets NCERT's Class 11 and 12 chapters under NCERT's names (as PYQ
+Vault has them: 14 + 13), built from the pool, plus the few things the MH
+Board books don't teach. Sources: PYQ Vault's NCERT section lists and its
+NCERT → State Board rulings (`Question_Bank/scripts/syllabus/data/maths-ncert-*.json`,
+121 of 128 sections fully in the MH books), the rationalised NCERT exercises in
+PYQ Vault (`CBSE Class 11`: 1,159 rows; `CBSE Class 12`: 1,414) and CBSE's
+2022–26 board papers (1,766 PYQs).
+
+**Owner's decisions (2026-10-20):**
+1. "You approve": I settle and approve the lists myself, against the NCERT
+   exercises and the board papers.
+2. Phase 2 runs with the Std XI/XII autonomy.
+3. `google-button-blue` merged first (afb46cc).
+
+**Phase 1 (this branch):** 25 course chapters the pool covers. Six pool
+chapters are split between two CBSE chapters (Sets and Relations three ways;
+Functions, Differentiation, Probability, Determinants and Matrices, Vectors two).
+What the lists leave out, and why:
+- Out of the rationalised books: induction, general and middle terms, polar
+  form, square roots and quadratics in Complex Numbers (only Ex 4.1 is left),
+  shift of origin, limits at infinity and exponential limits, coefficient of
+  variation, elementary operations, properties of determinants, tangents and
+  normals, approximations, Rolle and LMVT, limit of a sum, forming a DE by
+  eliminating constants, triple products, planes, the binomial distribution.
+- Kept though doubtful, because the exercises or papers ask them: dictionary
+  rank and chords (P&C Misc), divisibility by the binomial theorem (Ex 7.1 Q13),
+  locus and lines through an intersection (Straight Lines Misc), P(A ∪ B ∪ C)
+  (Probability Misc Eg.11), correcting a mean (Statistics Misc), |x| integrands,
+  intersecting lines and the foot of a perpendicular (papers to 2026), growth
+  and cooling models (2024–25 case studies), derivative with respect to another
+  function and parametric second derivatives (2024–26).
+- Random variables left out: 36 PYQs in 2022–25, none in 2026, and no exercise
+  in the current NCERT book. Revisit if the 2027 papers ask them.
+- Linear Programming keeps its approved list (C12, C13 unsure).
+
+**Phase 2: the gaps.** New pool chapters, Std XI: Linear Inequalities (one
+variable: rules, number line, systems, word problems; NCERT Ex 5.1 + Misc, 59
+rows) and Introduction to Three Dimensional Geometry (axes, planes, octants;
+distance formula; loci and centroids; Ex 11.1, 11.2 + Misc, 29 rows). One new
+concept: Application of Derivatives, absolute maximum and minimum on a closed
+interval (11 PYQs 2024–26; MH Board and MHT-CET keep their lists). Items from
+NCERT exercises and CBSE PYQs.
+
+**Later (ask first):** PYQ Vault links for CBSE chapters, once PYQ Vault's side is pushed.
+
+**Status:**
+- Phase 1 built 2026-10-20: tests first (`courses.test.ts` "CBSE"), sheet
+  `screenshots/2026-10-20-cbse-course/`.

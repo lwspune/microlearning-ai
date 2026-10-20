@@ -100,6 +100,10 @@ const book = (chapter: string, last: number): CourseChapter => ({ chapter, cover
 // An NDA share of a pool chapter: the concepts NDA's syllabus asks, approved by the owner 2026-10-19.
 const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
 
+// A CBSE share of a pool chapter: what the rationalised NCERT book's exercises and CBSE's 2022–26 board
+// papers ask, settled against both in PYQ Vault; approved on the owner's say-so 2026-10-20 ("you approve").
+const cbse = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
+
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
   coverage: { ids: range(1, 13), unsure, status: "approved" },
@@ -157,7 +161,89 @@ export const courses: Course[] = [
     group: "school",
     tagline: "CBSE Science, NCERT syllabus",
     board: true,
-    chapters: [{ chapter: "complex-numbers", coverage: { ids: [...CN_ALL, "C23"], unsure: ["C23"], status: "draft" } }, lpp(["C12", "C13"])],
+    // NCERT's chapters and names, as PYQ Vault has them (PLAN.md "CBSE Maths course"). The rationalised
+    // books dropped mathematical induction, general and middle terms, A.P. as a topic of its own, polar
+    // form, tangents and normals, Rolle and the mean value theorems, planes and the binomial distribution;
+    // the 2026 papers ask no random variables. Linear Inequalities and Introduction to Three Dimensional
+    // Geometry join once the pool has them.
+    chapters: [
+      { ...cbse("sets-and-relations", [...range(1, 5), "C09"]), slug: "sets", title: "Sets" },
+      {
+        ...cbse("sets-and-relations", range(12, 14)),
+        slug: "relations-and-functions",
+        title: "Relations and Functions",
+        more: [cbse("functions", [...range(1, 3), "C05", "C06", "C08", "C09"])],
+      },
+      {
+        ...cbse("angle-measurement", [...range(1, 3), "C05"]),
+        slug: "trigonometric-functions",
+        title: "Trigonometric Functions",
+        more: [cbse("trigonometric-functions", [...range(1, 7), "C09"]), cbse("compound-and-multiple-angles", [...range(1, 6), "C08", "C09"])],
+      },
+      // Ex 4.1 and its miscellaneous exercise only: no polar form, square roots or quadratics.
+      { ...cbse("complex-numbers", [...range(1, 8), ...range(10, 12)]), title: "Complex Numbers and Quadratic Equations" },
+      cbse("permutations-and-combinations", [...range(1, 6), ...range(8, 12)]),
+      cbse("binomial-theorem", ["C01", "C06", "C07", "C10"]),
+      // G.P. and the means; the miscellaneous exercise leans on A.P. from Class 10.
+      cbse("sequences-and-series", [...range(15, 17), ...range(1, 5), "C10", "C11"]),
+      { ...cbse("straight-line", ["C01", ...range(3, 12)]), title: "Straight Lines", slug: "straight-lines" },
+      {
+        ...cbse("circle", ["C01", "C03", "C04"]),
+        slug: "conic-sections",
+        title: "Conic Sections",
+        more: [cbse("conic-sections", [...range(1, 3), ...range(6, 8), "C11", "C12"])],
+      },
+      {
+        ...cbse("limits", [...range(1, 5), "C07"]),
+        slug: "limits-and-derivatives",
+        title: "Limits and Derivatives",
+        more: [cbse("differentiation", ["C01", ...range(3, 6)])],
+      },
+      // Mean deviation (with correcting a mean), then the book's range, variance and S.D.
+      { ...cbse("statistics", ["C04", "C10"]), more: [cbse("measures-of-dispersion", range(1, 5))] },
+      cbse("probability", range(1, 6)),
+      {
+        ...cbse("sets-and-relations", ["C15", "C16"]),
+        slug: "relations-and-functions-12",
+        title: "Relations and Functions",
+        standard: 12,
+        more: [cbse("functions", ["C04", "C10", "C11"])],
+      },
+      { ...cbse("trigonometric-functions-12", range(12, 15)), slug: "inverse-trigonometric-functions", title: "Inverse Trigonometric Functions" },
+      { ...cbse("determinants-and-matrices", range(7, 12)), slug: "matrices", title: "Matrices", standard: 12 },
+      {
+        ...cbse("determinants-and-matrices", ["C01", "C02", "C06"]),
+        slug: "determinants",
+        title: "Determinants",
+        standard: 12,
+        more: [cbse("matrices", [...range(4, 9), "C11"])],
+      },
+      {
+        ...cbse("continuity", [...range(1, 3), "C05"]),
+        slug: "continuity-and-differentiability",
+        title: "Continuity and Differentiability",
+        standard: 12,
+        more: [cbse("differentiation", ["C02"]), { chapter: "differentiation-12" }],
+      },
+      cbse("application-of-derivatives", ["C03", "C04", ...range(8, 10)]),
+      {
+        ...cbse("indefinite-integration", [...range(1, 4), ...range(6, 11)]),
+        slug: "integrals",
+        title: "Integrals",
+        more: [cbse("definite-integration", [...range(2, 7), "C10"])],
+      },
+      { chapter: "application-of-definite-integration", slug: "application-of-integrals", title: "Application of Integrals" },
+      cbse("differential-equations", ["C01", "C03", "C04", ...range(6, 9)]),
+      { ...cbse("vectors", [...range(1, 6), "C08", "C09"]), slug: "vector-algebra", title: "Vector Algebra" },
+      {
+        ...cbse("vectors", ["C07"]),
+        slug: "three-dimensional-geometry",
+        title: "Three Dimensional Geometry",
+        more: [cbse("line-and-plane", range(1, 5))],
+      },
+      lpp(["C12", "C13"]),
+      { ...cbse("probability", range(7, 10)), slug: "probability-12", standard: 12 },
+    ],
   },
   {
     slug: "mht-cet",
