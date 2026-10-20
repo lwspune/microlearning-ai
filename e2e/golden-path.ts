@@ -130,10 +130,19 @@ await (async () => {
     }
     check(await lpp.isVisible(), "board: Std XII shows Linear Programming");
     check(!(await complex.isVisible()), "board: Std XII hides the Std XI chapters");
+    // Each choice is saved by a server action; on a slow link one lands well after 500 ms, so wait for its
+    // cookie before the next key (a reload while one is in flight can leave the older value).
+    const saved = async (std: string) => {
+      for (let i = 0; i < 60 && !(await page.context().cookies()).some((c) => c.name === "ml_standard" && c.value === std); i++) {
+        await page.waitForTimeout(250);
+      }
+    };
+    await saved("12");
     await page.keyboard.press("ArrowLeft");
     check((await page.getByRole("tab", { name: "Std XI", selected: true }).count()) === 1, "board: the left arrow moves to Std XI");
+    await saved("11");
     await page.keyboard.press("ArrowRight");
-    await page.waitForTimeout(500); // the choice is saved by a server action
+    await saved("12");
     await page.reload();
     await lpp.waitFor();
     check((await page.getByRole("tab", { name: "Std XII", selected: true }).count()) === 1, "board: Std XII is remembered after a reload");
@@ -263,8 +272,8 @@ await (async () => {
     };
     const toQuestions = async () => {
       await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
-      while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {
-        await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).click();
+      while (await page.getByRole("button", { name: /Start →|Next Page →|Try a question →/ }).count()) {
+        await page.getByRole("button", { name: /Start →|Next Page →|Try a question →/ }).click();
       }
       await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     };
@@ -447,8 +456,8 @@ await (async () => {
     check(await page.getByRole("link", { name: "Back to Conjugate →" }).first().isVisible(), "refresher shows a way back to Conjugate");
     check((await counter()).startsWith("1 /"), "refresher starts at the first slide");
     await shot("14-refresher");
-    while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {
-      await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).click();
+    while (await page.getByRole("button", { name: /Start →|Next Page →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Start →|Next Page →|Try a question →/ }).click();
     }
     for (let i = 0; i < 2; i++) {
       if (i > 0) await nextQ();
@@ -515,7 +524,7 @@ await (async () => {
     await page.locator("section[aria-labelledby=ready]").getByRole("link", { name: /^Argand plane/ }).click();
     await page.getByRole("heading", { name: "Think about this" }).filter({ visible: true }).waitFor();
     while (!(await page.getByRole("heading", { name: "The idea" }).isVisible())) {
-      await page.getByRole("button", { name: /Start →|Next →/ }).click();
+      await page.getByRole("button", { name: /Start →|Next Page →/ }).click();
     }
     const figure = stage.locator("svg[role=img]");
     check(await figure.isVisible(), "idea slide shows a figure");
@@ -526,8 +535,8 @@ await (async () => {
       await page.getByRole("button", { name: "Next Page →" }).click();
     }
     check(await figure.isVisible(), "worked example shows a figure");
-    while (await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).count()) {
-      await page.getByRole("button", { name: /Start →|Next →|Try a question →/ }).click();
+    while (await page.getByRole("button", { name: /Start →|Next Page →|Try a question →/ }).count()) {
+      await page.getByRole("button", { name: /Start →|Next Page →|Try a question →/ }).click();
     }
     await page.locator("fieldset[data-item-id]:visible button[data-key]").first().waitFor();
     check((await page.getByRole("button", { name: "See the solution" }).count()) === 0, "no solution before answering");
