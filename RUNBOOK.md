@@ -157,6 +157,10 @@ Guests are anonymous logins with no profile.
      settings: **manual linking on** (a guest linking Google needs it). Auth →
      URL configuration → redirect URLs: `https://www.conceptladder.in/auth/callback`,
      `http://localhost:3000/auth/callback`.
+   - Consent screen **published** (Audience → Publish app); it needs the
+     privacy policy link `https://www.conceptladder.in/privacy`
+     (`src/app/privacy/page.tsx`; contact connect.pyqvault@gmail.com). While
+     it is in Testing, only listed test users can sign in with Google.
    - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` in `.env.local` and Vercel (build time).
      Anything not shaped like a Google client id turns Google's button and
      One Tap off and leaves the redirect button.

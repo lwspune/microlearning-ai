@@ -57,6 +57,12 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
         </Link>{" "}
         instead; no login needed.
       </p>
+      <p className="mt-2 text-sm text-muted">
+        <Link href="/privacy" className="font-medium text-accent underline underline-offset-4">
+          Privacy
+        </Link>
+        : how we use your information.
+      </p>
     </main>
   );
 }

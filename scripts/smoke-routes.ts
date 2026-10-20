@@ -49,7 +49,8 @@ const routes: [path: string, expect: "ok" | "missing", marker?: string][] = [
   ["/learn/not-a-chapter", "missing"],
   ["/review/courses", "ok"],
   // Deliberately noindex, so it must prove itself by its own content (see below).
-  ["/login", "ok", "Your academy creates your login."],
+  ["/login", "ok", "Students: continue with Google."],
+  ["/privacy", "ok", "Deleting your data"],
   ["/courses/not-a-course", "missing"],
   ["/courses/cds/complex-numbers", "missing"], // a chapter outside the course
   ["/courses/jee-main/not-a-chapter", "missing"],
