@@ -18,6 +18,7 @@ export function SlideDeck({
   conceptSlug,
   session,
   refresher,
+  guest,
 }: {
   chapterHref: string;
   mapHref: string;
@@ -26,6 +27,8 @@ export function SlideDeck({
   session: Open;
   /** Set when the learner was sent here to fix a gap in a later concept. */
   refresher: RefresherInfo | null;
+  /** Learning as a guest: the mastery screen offers to keep progress with Google. */
+  guest: boolean;
 }) {
   const { slides } = session;
   const questionsIndex = slides.findIndex((s) => s.kind === "questions");
@@ -63,6 +66,7 @@ export function SlideDeck({
             progress={session.progress}
             nextConcept={session.nextConcept && { href: withCourse(`${chapterHref}/${session.nextConcept.slug}`, course), title: session.nextConcept.title }}
             onReread={reread}
+            guest={guest}
           />
         </div>
       )}

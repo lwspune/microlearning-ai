@@ -65,6 +65,11 @@ export function safeNext(next: string | null, role: Role): string | null {
   return url.pathname + url.search;
 }
 
+/** Where a sign-in lands: `next` if this role may open it, else the role's own area. */
+export function landingFor(role: Role, next: string | null): string {
+  return safeNext(next, role) ?? homeFor(role);
+}
+
 export type Credentials = { ok: true; email: string; password: string } | { ok: false; error: string };
 
 /**

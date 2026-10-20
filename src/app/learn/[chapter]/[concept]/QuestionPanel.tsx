@@ -11,6 +11,7 @@ import type { RefresherInfo } from "./SlideDeck";
 import { SolutionPanel, SolutionToggle } from "./SolutionReveal";
 import { FigureFrame } from "@/figures/FigureFrame";
 import { FigureView } from "@/figures/FigureView";
+import { GoogleSignIn } from "@/components/auth/GoogleSignIn";
 import { CheckIcon } from "@/components/icons";
 import { card, primaryButton, secondaryButton } from "@/components/ui";
 
@@ -69,6 +70,7 @@ export function QuestionPanel({
   progress,
   nextConcept,
   onReread,
+  guest,
 }: {
   title: string;
   /** Base of concept links: /learn/<chapter>. */
@@ -84,6 +86,8 @@ export function QuestionPanel({
   /** "Next concept" on the mastery screen; null when nothing open is left. */
   nextConcept: { href: string; title: string } | null;
   onReread: () => void;
+  /** Learning as a guest: mastery offers to keep the progress with Google (One Tap too). */
+  guest: boolean;
 }) {
   const [question, setQuestion] = useState<Question>(initialQuestion);
   const [selected, setSelected] = useState<string | null>(null);
@@ -171,6 +175,13 @@ export function QuestionPanel({
             Keep practising
           </button>
         </div>
+        {guest && (
+          <div className="mx-auto mt-8 max-w-sm border-t border-border pt-6">
+            <p className="font-semibold">Keep this progress on any device</p>
+            <p className="mt-1 mb-4 text-sm text-muted">Sign in with Google. Everything you&apos;ve mastered comes with you.</p>
+            <GoogleSignIn next={withCourse(`${chapterHref}/${conceptSlug}`, course)} oneTap />
+          </div>
+        )}
       </div>
     );
   }

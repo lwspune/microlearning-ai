@@ -83,6 +83,7 @@ async function ConceptSection({
       course={course?.slug}
       conceptSlug={concept}
       session={session}
+      guest={viewer.guest}
       refresher={refresher && { title: refresher.fromTitle, href: withCourse(`/learn/${chapter}/${refresher.fromSlug}`, course?.slug) }}
     />
   );

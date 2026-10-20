@@ -1,8 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { homeFor, parseCredentials, type Role, safeNext } from "@/lib/auth/routing";
+import { landingFor, parseCredentials, type Role } from "@/lib/auth/routing";
 import { createSessionClient } from "@/lib/supabase/server";
+import { claimProfile } from "@/server/googleSignIn";
 
 /** `email` comes back on failure so the form keeps it (React resets a form after its action). */
 export type LoginState = { error: string | null; email?: string };
@@ -36,7 +37,20 @@ export async function signIn(_state: LoginState, form: FormData): Promise<LoginS
 
   const role = profile.role as Role;
   const next = form.get("next");
-  redirect(safeNext(typeof next === "string" ? next : null, role) ?? homeFor(role));
+  redirect(landingFor(role, typeof next === "string" ? next : null));
+}
+
+export type GoogleResult = { ok: true; destination: string } | { ok: false; error: string };
+
+/**
+ * Called by the browser once Google's sign-in (or a guest's link) has set the
+ * session: gives a new Google login its student profile, then says where to
+ * go. No redirect here, so a page can stay where it is.
+ */
+export async function finishGoogleSignIn(next: string | null): Promise<GoogleResult> {
+  const role = await claimProfile();
+  if (!role) return { ok: false, error: "Google sign-in didn't complete. Please try again." };
+  return { ok: true, destination: landingFor(role, typeof next === "string" && next.length <= 300 ? next : null) };
 }
 
 export async function signOut(): Promise<void> {
