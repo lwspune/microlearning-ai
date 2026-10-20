@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { finishGoogleSignIn } from "@/app/login/actions";
-import { secondaryButton } from "@/components/ui";
 import { callbackUrl, isIdentityTaken, makeNonce, resolveGoogleClientId } from "@/lib/auth/google";
 import { createBrowserSupabase } from "@/lib/supabase/browser";
 
@@ -37,7 +36,7 @@ type GoogleAccountsId = {
   prompt(): void;
   renderButton(
     el: HTMLElement,
-    options: { type: "standard"; theme: "outline" | "filled_black"; size: "large"; text: "continue_with"; shape: "rectangular"; width: number },
+    options: { type: "standard"; theme: "filled_blue"; size: "large"; text: "continue_with"; shape: "rectangular"; width: number },
   ): void;
 };
 
@@ -81,6 +80,14 @@ async function signInWithGoogleToken(credential: string, nonce: string): Promise
 }
 
 const FAILED = "Google sign-in didn't complete. Please try again.";
+
+/**
+ * The redirect button in Google's own blue, so it matches the button Google
+ * draws (theme "filled_blue"). Google's brand colours, not theme tokens:
+ * they stay the same in light and dark. White on #1a73e8 is 4.6:1 (AA).
+ */
+const GOOGLE_BLUE_BUTTON =
+  "flex min-h-11 w-full items-center rounded bg-[#1a73e8] p-0.5 font-medium text-white shadow-card hover:bg-[#1765cc] hover:shadow-lift disabled:opacity-50";
 
 export function GoogleSignIn({ next, oneTap = false }: { next: string | null; oneTap?: boolean }) {
   const router = useRouter();
@@ -133,7 +140,7 @@ export function GoogleSignIn({ next, oneTap = false }: { next: string | null; on
         });
         id.renderButton(el, {
           type: "standard",
-          theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "filled_black" : "outline",
+          theme: "filled_blue",
           size: "large",
           text: "continue_with",
           shape: "rectangular",
@@ -177,9 +184,11 @@ export function GoogleSignIn({ next, oneTap = false }: { next: string | null; on
       {busy ? (
         <p className="flex min-h-11 items-center justify-center text-sm font-medium text-muted">Signing you in…</p>
       ) : drawn === false ? (
-        <button type="button" onClick={redirectToGoogle} className={`${secondaryButton} w-full`}>
-          <GoogleLogo className="h-4 w-4" />
-          Continue with Google
+        <button type="button" onClick={redirectToGoogle} className={GOOGLE_BLUE_BUTTON}>
+          <span className="grid h-10 w-10 place-items-center rounded-[3px] bg-white">
+            <GoogleLogo className="h-[18px] w-[18px]" />
+          </span>
+          <span className="flex-1 pr-11 text-center">Continue with Google</span>
         </button>
       ) : (
         // min-h stops the card jumping while Google draws its button.
