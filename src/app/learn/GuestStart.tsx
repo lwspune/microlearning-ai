@@ -1,7 +1,8 @@
+import { GoogleSignIn } from "@/components/auth/GoogleSignIn";
 import { card, eyebrow, primaryButton } from "@/components/ui";
 import { startAsGuest } from "./actions";
 
-/** Starts a guest session (no sign-up) and returns to `next`. */
+/** Starts a guest session (no sign-up) and returns to `next`, or signs in with Google (One Tap offered too). */
 export function GuestStart({ next, error }: { next: string; error?: boolean }) {
   return (
     <section className={`${card} mx-auto mt-6 max-w-lg p-8`} aria-labelledby="guest-start">
@@ -21,6 +22,8 @@ export function GuestStart({ next, error }: { next: string; error?: boolean }) {
           Start as guest
         </button>
       </form>
+      <p className="mt-6 mb-3 text-sm text-muted">Or sign in with Google to keep your progress on any device.</p>
+      <GoogleSignIn next={next} oneTap />
     </section>
   );
 }

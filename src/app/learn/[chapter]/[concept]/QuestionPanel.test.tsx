@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Progress, Question } from "@/server/learning";
 
 vi.mock("../../actions", () => ({ submitAnswer: vi.fn() }));
+vi.mock("@/app/login/actions", () => ({ finishGoogleSignIn: vi.fn() }));
 const { QuestionPanel } = await import("./QuestionPanel");
 
 const question: Question = {
@@ -26,6 +27,7 @@ const html = (q: Question = question, p: Progress = progress) =>
       progress={p}
       nextConcept={null}
       onReread={() => {}}
+      guest={false}
     />,
   );
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { type Area, areaOfPath, areasFor, homeFor, parseCredentials, pathAllowedFor, type Role, safeNext } from "./routing";
+import { type Area, areaOfPath, areasFor, homeFor, landingFor, parseCredentials, pathAllowedFor, type Role, safeNext } from "./routing";
 
 /** Sign-in routing (PLAN.md Phase 2): where each role lands, and what a `?next=` may point at. Ported from CrackSSB. */
 
@@ -121,5 +121,15 @@ describe("parseCredentials: checked before the auth server is asked", () => {
     expect(parseCredentials(form({ email: "a@b.co", password: "" })).ok).toBe(false);
     expect(parseCredentials(form({ email: "a@b.co", password: "x".repeat(201) })).ok).toBe(false);
     expect(parseCredentials(form({ email: "a@b.co", password: "  spaced  " }))).toMatchObject({ password: "  spaced  " });
+  });
+});
+
+describe("landingFor", () => {
+  it("goes to `next` when the role may open it, else the role's own area", () => {
+    expect(landingFor("student", "/learn/circle?course=mht-cet")).toBe("/learn/circle?course=mht-cet");
+    expect(landingFor("student", "/teach")).toBe("/learn");
+    expect(landingFor("teacher", null)).toBe("/teach");
+    expect(landingFor("teacher", "https://evil.test/teach")).toBe("/teach");
+    expect(landingFor("superadmin", "/teach/students")).toBe("/teach/students");
   });
 });
