@@ -77,8 +77,11 @@ owner chose not to add it for now.
 
 ## Also parked (details in PLAN.md)
 
-- Self sign-up; Google sign-in; staff reset a student's password
-  (PLAN.md Phase 2, "Later").
+- Staff reset a student's password (PLAN.md Phase 2, "Later"). Self
+  sign-up with Google shipped 2026-10-20 (RUNBOOK 2b.9).
+- Merge a guest's progress into an existing Google login. Today a guest who
+  continues with a Google account that already has a login switches to that
+  login and leaves the guest's progress behind (parked 2026-10-20).
 - Teacher present mode; "ask the class" live polls (PLAN.md "Teachers").
 - CAPTCHA on guest sign-in and cleanup of inactive guests before a public
   launch (PLAN.md "Follow-ups").

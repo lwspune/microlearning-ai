@@ -15,7 +15,10 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 2. `.env.local` (gitignored, never committed):
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
    `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_PASSWORD`,
-   `SUPABASE_ACCESS_TOKEN` (personal token, account-wide), `SUPABASE_PROJECT_REF`.
+   `SUPABASE_ACCESS_TOKEN` (personal token, account-wide; it expires, and
+   then every DB test fails with "Invalid access token": make a new one in
+   Supabase → Account → Access Tokens), `SUPABASE_PROJECT_REF`,
+   `NEXT_PUBLIC_GOOGLE_CLIENT_ID` (also in Vercel; see 2b.9).
 3. Link the CLI once: `npx supabase link --project-ref <ref>` (it reads
    `SUPABASE_DB_PASSWORD` from the environment; don't pass it as an argument).
 4. `npm run dev` → http://localhost:3000. `/review` (content review) works in
@@ -128,9 +131,35 @@ Guests are anonymous logins with no profile.
    (`src/server/performance.ts`), never with the service role. Clock-based
    labels ("3 days ago") are made in server functions, not in a component
    (React's purity lint forbids `Date.now()` in render).
-8. The advisor warns that `create_academy` and `can_create_person` are
-   security-definer functions signed-in users can run: intended, they are the
-   API and check the caller themselves.
+8. The advisor warns that `create_academy`, `can_create_person` and
+   `claim_student_profile` are security-definer functions signed-in users can
+   run: intended, they are the API and check the caller themselves.
+9. **Google sign-in** (self sign-up, 2026-10-20; ported from PYQ Vault).
+   Anyone may continue with Google on `/login`, the "Start learning" card and
+   a guest's Mastered screen (`src/components/auth/GoogleSignIn.tsx`; One Tap
+   is offered on the last two). A new Google login claims a **solo student**
+   profile in the database (`claim_student_profile`: name and email from
+   `auth.users`, never the browser; guests and password logins can't claim; an
+   existing profile is never changed, so staff who sign in with Google stay
+   staff, as Supabase attaches Google to a login with the same confirmed
+   email). A **guest links** Google instead of signing in, keeping the same
+   user id and progress; if that Google account already has a login, it signs
+   into that one and the guest's progress stays behind. Google draws its own
+   button and signs in on the page (`signInWithIdToken` with a nonce), so its
+   window names Concept Ladder; when its script can't run, a plain button
+   uses Supabase's redirect flow through `/auth/callback`.
+   **Setup (owner, dashboards):**
+   - Google Cloud project **Concept Ladder** → OAuth consent screen (app name
+     Concept Ladder) → Credentials → OAuth client (Web). Authorized JavaScript
+     origins: `https://www.conceptladder.in`, `http://localhost:3000`.
+     Authorized redirect URI: `https://<project-ref>.supabase.co/auth/v1/callback`.
+   - Supabase → Auth → Providers → Google: on, client id + secret. Auth →
+     settings: **manual linking on** (a guest linking Google needs it). Auth →
+     URL configuration → redirect URLs: `https://www.conceptladder.in/auth/callback`,
+     `http://localhost:3000/auth/callback`.
+   - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` in `.env.local` and Vercel (build time).
+     Anything not shaped like a Google client id turns Google's button and
+     One Tap off and leaves the redirect button.
 
 ## 3. Adding a concept (the content loop)
 

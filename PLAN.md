@@ -388,8 +388,12 @@ password is never stored in the repo.
 - **R3 (parked 2026-10-14):** classes and the teacher dashboard. Kept
   simple for now; the full plan and its open decisions are in
   [SUGGESTIONS.md](SUGGESTIONS.md).
-- **Later:** self sign-up; Google sign-in; staff reset a student's
-  password (own academy only, new one shown once).
+- **Google sign-in (branch `google-sign-in`, approved 2026-10-20):**
+  anyone may continue with Google and becomes a solo student
+  (`claim_student_profile`); a guest links Google and keeps their progress;
+  Google's own button plus One Tap, as in PYQ Vault. Details: RUNBOOK 2b.9.
+- **Later:** staff reset a student's password (own academy only, new one
+  shown once).
 
 ## Backfill ledger
 
