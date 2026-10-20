@@ -648,6 +648,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      claim_student_profile: { Args: never; Returns: undefined }
       concept_ancestors: {
         Args: { p_concept: string }
         Returns: {
