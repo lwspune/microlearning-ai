@@ -57,6 +57,8 @@ export type Course = {
   tagline: string;
   /** A school board: its page shows one standard at a time, which the student picks. */
   board?: true;
+  /** The year a board's page opens on for a student who hasn't picked one; default: its first. */
+  defaultStandard?: Standard;
   /** The course's exam and subject on PYQ Vault (its URL slugs), for chapters that link there. */
   pyqvault?: { exam: string; subject: string };
   chapters: CourseChapter[];
@@ -121,6 +123,8 @@ export const courses: Course[] = [
     group: "school",
     tagline: "Maharashtra State Board, SSC and HSC Science",
     board: true,
+    // Std XI and XII students came first; Std IX and X joined on 2026-10-21 (owner: open on XI).
+    defaultStandard: 11,
     // Book order: Std X Part 1, Std XI Part 1, then Part 2, then Std XII. A chapter without coverage
     // is covered whole.
     chapters: [
@@ -575,6 +579,13 @@ export function findCourse(slug: string | null | undefined, list: Course[] = cou
 /** A group id from untrusted input (a cookie), or null. */
 export function parseGroup(value: string | null | undefined): GroupId | null {
   return GROUPS.find((g) => g.id === value)?.id ?? null;
+}
+
+/** The year a board's page opens on: the one the student picked, else the course's default, else the first. */
+export function openingStandard(course: Course, standards: Standard[], remembered: Standard | null): Standard {
+  if (remembered && standards.includes(remembered)) return remembered;
+  if (course.defaultStandard && standards.includes(course.defaultStandard)) return course.defaultStandard;
+  return standards[0];
 }
 
 /** A standard from untrusted input (a cookie), or null. */

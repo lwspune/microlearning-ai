@@ -7,7 +7,7 @@ import { rememberStandard } from "@/app/courses/actions";
 import { ProgressRing } from "@/components/ProgressRing";
 import { Tabs } from "@/components/Tabs";
 import { card, eyebrow, linkCard } from "@/components/ui";
-import { byStandard, courses, findCourse, GROUPS, parseStandard, STANDARD_TITLE, SUBJECTS } from "@/content/courses";
+import { byStandard, courses, findCourse, GROUPS, openingStandard, parseStandard, STANDARD_TITLE, SUBJECTS } from "@/content/courses";
 import type { SubjectId } from "@/content/types";
 import { currentUserId } from "@/lib/supabase/server";
 import { type CourseChapterProgress, courseProgress, rememberedStandardValue } from "@/server/courses";
@@ -79,8 +79,7 @@ async function Chapters({ slug }: { slug: string }) {
   // A board shows one standard at a time; an entrance exam spans both years in one list.
   if (!course.board || standards.length < 2) return <Subjects course={slug} progress={progress} id="subject" headings />;
 
-  const remembered = parseStandard(await rememberedStandardValue());
-  const initial = remembered && standards.includes(remembered) ? remembered : standards[0];
+  const initial = openingStandard(course, standards, parseStandard(await rememberedStandardValue()));
   const panels = Object.fromEntries(
     standards.map((std) => [std, <Subjects key={std} course={slug} progress={progress.filter((p) => p.standard === std)} id={`std${std}`} headings={false} />]),
   );

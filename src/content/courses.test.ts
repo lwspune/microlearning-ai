@@ -24,6 +24,7 @@ import {
   validateCatalog,
   withCourse,
   byStandard,
+  openingStandard,
 } from "./courses";
 import type { Chapter, GraphNode, Standard } from "./types";
 
@@ -838,6 +839,25 @@ describe("the catalog", () => {
       const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;
       expect(coverage.unsure ?? []).toEqual([]);
     }
+  });
+});
+
+describe("openingStandard", () => {
+  const board = course("b", { board: true, defaultStandard: 11 });
+
+  it("opens on the year the student picked, if the course has it", () => {
+    expect(openingStandard(board, [10, 11, 12], 12)).toBe(12);
+  });
+
+  it("otherwise opens on the course's default year, then on the first", () => {
+    expect(openingStandard(board, [10, 11, 12], null)).toBe(11);
+    expect(openingStandard(board, [10, 11, 12], 9)).toBe(11);
+    expect(openingStandard(board, [9, 10], null)).toBe(9);
+    expect(openingStandard(course("c", { board: true }), [10, 11], null)).toBe(10);
+  });
+
+  it("opens the Maharashtra Board on Std XI for a first visit (owner, 2026-10-21)", () => {
+    expect(findCourse("mh-board")!.defaultStandard).toBe(11);
   });
 });
 
