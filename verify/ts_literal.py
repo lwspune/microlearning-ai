@@ -31,13 +31,15 @@ def lit(v) -> str:
 def figure_ts(fig: dict, indent: int) -> str:
     """`figure: {...},` with its key at `indent` spaces."""
     p = " " * indent
-    assert {"alt", "view", "elements"} <= set(fig) <= {"alt", "axes", "view", "elements"}, f"figure keys: {sorted(fig)}"
+    assert {"alt", "view", "elements"} <= set(fig) <= {"alt", "axes", "chart", "view", "elements"}, f"figure keys: {sorted(fig)}"
     elements = "".join(f"{p}    {lit(e)},\n" for e in fig["elements"])
     axes = f"{p}  axes: {lit(fig['axes'])},\n" if "axes" in fig else ""
+    chart = f"{p}  chart: {lit(fig['chart'])},\n" if "chart" in fig else ""
     return (
         f"{p}figure: {{\n"
         f"{p}  alt: {lit(fig['alt'])},\n"
         f"{axes}"
+        f"{chart}"
         f"{p}  view: {lit(fig['view'])},\n"
         f"{p}  elements: [\n{elements}{p}  ],\n"
         f"{p}}},\n"

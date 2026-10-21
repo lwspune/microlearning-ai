@@ -79,6 +79,11 @@ class Literals(unittest.TestCase):
         out = figure_ts({**FIG, "axes": "xy"}, 6)
         self.assertEqual(out, FIG_TS.replace('path.",\n', 'path.",\n        axes: "xy",\n', 1))
 
+    def test_a_chart_keeps_its_steps_and_titles_after_its_axes(self):
+        chart = {"x": 10, "y": 5, "xTitle": "Marks", "yTitle": "Students"}
+        out = figure_ts({**FIG, "axes": "xy", "chart": chart}, 6)
+        self.assertIn('        axes: "xy",\n        chart: { x: 10, y: 5, xTitle: "Marks", yTitle: "Students" },\n', out)
+
     def test_solution_steps_are_template_literals(self):
         self.assertEqual(
             solution_ts({"steps": [r"Subtract: $\sqrt{4}$.", "So $2$."]}, 6),
