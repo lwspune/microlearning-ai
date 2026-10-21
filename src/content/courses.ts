@@ -339,8 +339,9 @@ export const courses: Course[] = [
       { ...nda("functions", ["C07"]), slug: "logarithms", title: "Logarithms", more: [{ chapter: "logarithms" }] },
       nda("functions", [...range(1, 6), ...range(8, 12)]),
       { chapter: "limits", title: "Limits & Continuity", more: [nda("continuity", range(1, 5))] },
-      // "Linear inequations of two variables by graphs": the graphing half of Linear Programming.
-      { ...nda("linear-programming", range(1, 4)), slug: "linear-inequalities", title: "Linear Inequalities", standard: 11 },
+      // One-variable inequalities first (NDA asks double inequalities and signs; built for CBSE, owner
+      // 2026-10-21), then "linear inequations of two variables by graphs": the graphing half of Linear Programming.
+      { chapter: "linear-inequalities", more: [nda("linear-programming", range(1, 4))] },
       { chapter: "determinants-and-matrices", title: "Matrices & Determinants", standard: 12, more: [{ chapter: "matrices" }] },
       // Std XII Trigonometric Functions is three NDA chapters (C06, polar coordinates, isn't in NDA).
       { ...nda("trigonometric-functions-12", range(1, 5)), slug: "trigonometric-equations", title: "Trigonometric Equations" },

@@ -572,7 +572,8 @@ describe("the catalog", () => {
       expect(parts("Vectors")).toEqual(["vectors C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12,C13"]);
       expect(parts("Application of Derivatives")).toEqual(["application-of-derivatives C01,C02,C03,C04,C08,C09,C10"]);
       expect(parts("Circles")).toEqual(["circle C01,C02,C03,C04,C05,C06,C07,C08"]);
-      expect(parts("Linear Inequalities")).toEqual(["linear-programming C01,C02,C03,C04"]);
+      // One variable first (built for CBSE, 2026-10-21; PLAN.md backfill 11), then graphing in two.
+      expect(parts("Linear Inequalities")).toEqual(["linear-inequalities", "linear-programming C01,C02,C03,C04"]);
       expect(parts("Binomial Distribution")).toEqual(["probability-distributions C01,C02,C03,C04", "binomial-distribution"]);
       expect(parts("Statistics")).toEqual(["statistics", "measures-of-dispersion"]);
       expect(parts("Quadratic Equations")).toEqual(["quadratic-equations"]);
