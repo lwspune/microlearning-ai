@@ -396,7 +396,7 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
         if (!SLUG.test(entry.pyqvault)) errors.push(`${course.slug}: PYQ Vault slug ${entry.pyqvault} must be lowercase words joined by hyphens`);
       }
     }
-    errors.push(...validateShares(course));
+    errors.push(...validateShares(course, chapters));
 
     for (const entry of course.chapters.flatMap(partsOf)) {
       const chapter = chapters.find((c) => c.slug === entry.chapter);
@@ -416,23 +416,34 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
   return errors;
 }
 
-/** A pool chapter in several parts of a course is split: every part needs a list, and no concept may be in two. */
-function validateShares(course: Course): string[] {
+/**
+ * A pool chapter in several parts of a course is split: every part needs a list, and no concept
+ * may be in two, except in course chapters of different years (a board teaches A.P. in Std X and
+ * again in Std XI).
+ */
+function validateShares(course: Course, chapters: Chapter[]): string[] {
   const errors: string[] = [];
-  const bySlug = new Map<string, CoursePart[]>();
-  for (const part of course.chapters.flatMap(partsOf)) bySlug.set(part.chapter, [...(bySlug.get(part.chapter) ?? []), part]);
-  for (const [slug, shares] of bySlug) {
-    if (shares.length < 2) continue;
+  const bySlug = new Map<string, { part: CoursePart; standard?: Standard }[]>();
+  for (const entry of course.chapters) {
+    const standard = entry.standard ?? chapters.find((c) => c.slug === partsOf(entry)[0].chapter)?.standard;
+    for (const part of partsOf(entry)) bySlug.set(part.chapter, [...(bySlug.get(part.chapter) ?? []), { part, standard }]);
+  }
+  for (const [slug, held] of bySlug) {
+    if (held.length < 2) continue;
+    const shares = held.map((h) => h.part);
     if (shares.some((p) => !p.coverage)) {
       // Two parts of one course chapter, or a whole chapter listed again, rather than a split.
       const sameEntry = course.chapters.some((e) => partsOf(e).filter((p) => p.chapter === slug).length > 1);
       errors.push(sameEntry || shares.every((p) => !p.coverage) ? `${course.slug}: chapter ${slug} listed twice` : `${course.slug}: chapter ${slug} is split, so every part needs a list`);
       continue;
     }
-    const seen = new Set<ConceptId>();
-    for (const id of shares.flatMap((p) => p.coverage!.ids)) {
-      if (seen.has(id)) errors.push(`${course.slug}: concept ${id} of chapter ${slug} is in two course chapters`);
-      seen.add(id);
+    const seen = new Set<string>();
+    for (const { part, standard } of held) {
+      for (const id of part.coverage!.ids) {
+        const key = `${standard} ${id}`;
+        if (seen.has(key)) errors.push(`${course.slug}: concept ${id} of chapter ${slug} is in two course chapters`);
+        seen.add(key);
+      }
     }
   }
   return errors;
@@ -483,12 +494,19 @@ export function partsFor(course: Course, chapterSlug: string): { entry: CourseCh
 
 /**
  * The course chapter that takes in pool chapter `chapterSlug`, or null. With `concept`, the
- * one whose share holds that concept, when the course splits the chapter.
+ * one whose share holds that concept, when the course splits the chapter; of several (a concept
+ * taught in two years), the one in `standard` if given, else the first.
  */
-export function entryFor(course: Course, chapterSlug: string, concept?: { id: ConceptId; chapter: Chapter }): CourseChapter | null {
+export function entryFor(
+  course: Course,
+  chapterSlug: string,
+  concept?: { id: ConceptId; chapter: Chapter },
+  prefer?: { standard: Standard; chapters: Chapter[] },
+): CourseChapter | null {
   const found = partsFor(course, chapterSlug);
-  const holding = concept && found.find(({ part }) => partScope(course, part, concept.chapter).has(concept.id));
-  return (holding ?? found[0])?.entry ?? null;
+  const holding = concept ? found.filter(({ part }) => partScope(course, part, concept.chapter).has(concept.id)) : [];
+  const inYear = prefer && holding.find(({ entry }) => resolveEntry(entry, prefer.chapters).standard === prefer.standard);
+  return (inYear ?? holding[0] ?? found[0])?.entry ?? null;
 }
 
 /** Looks up a course chapter's pool chapters (the catalog is validated, so they exist). */
@@ -500,10 +518,18 @@ export function resolveEntry(entry: CourseChapter, chapters: Chapter[]): Resolve
 
 /**
  * Where a lesson in `chapter` leads back to: the course chapter that takes it in (for a split
- * chapter, the one holding concept `conceptId`), or the chapter's own map.
+ * chapter, the one holding concept `conceptId`, in the student's `standard` if it is in two
+ * years), or the chapter's own map.
  */
-export function mapLink(course: Course | null, chapter: Chapter, chapters: Chapter[], conceptId?: ConceptId): { href: string; title: string } {
-  const entry = course && entryFor(course, chapter.slug, conceptId ? { id: conceptId, chapter } : undefined);
+export function mapLink(
+  course: Course | null,
+  chapter: Chapter,
+  chapters: Chapter[],
+  conceptId?: ConceptId,
+  standard?: Standard | null,
+): { href: string; title: string } {
+  const prefer = standard ? { standard, chapters } : undefined;
+  const entry = course && entryFor(course, chapter.slug, conceptId ? { id: conceptId, chapter } : undefined, prefer);
   if (!course || !entry) return { href: `/learn/${chapter.slug}`, title: chapter.title };
   const resolved = resolveEntry(entry, chapters);
   return { href: `/courses/${course.slug}/${resolved.slug}`, title: `${course.short} · ${resolved.title}` };

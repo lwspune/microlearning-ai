@@ -113,6 +113,18 @@ describe("validateCatalog", () => {
     expect(validateCatalog([split(["A", "B"], ["B"])], [ch])).toContain("a: concept B of chapter ch is in two course chapters");
   });
 
+  it("lets a board teach a concept in two years, but not twice in one year", () => {
+    const twoYears = (standards: [Standard, Standard]) =>
+      course("a", {
+        chapters: [
+          { chapter: "ch", slug: "first", standard: standards[0], coverage: { ids: ["A", "B"], status: "approved" } },
+          { chapter: "ch", slug: "second", standard: standards[1], coverage: { ids: ["B", "C"], status: "approved" } },
+        ],
+      });
+    expect(validateCatalog([twoYears([10, 11])], [ch])).toEqual([]);
+    expect(validateCatalog([twoYears([11, 11])], [ch])).toContain("a: concept B of chapter ch is in two course chapters");
+  });
+
   it("needs a list on every share of a split pool chapter, and a slug of its own per course chapter", () => {
     const errors = validateCatalog(
       [course("a", { chapters: [{ chapter: "ch", coverage: { ids: ["A"], status: "draft" } }, { chapter: "ch" }] })],
@@ -228,6 +240,20 @@ describe("course chapters made of several pool chapters", () => {
     it("leads a lesson back to the course chapter holding that concept", () => {
       expect(mapLink(split, trig, [trig], "C")).toEqual({ href: "/courses/nda/triangles", title: "nda · Triangles" });
       expect(mapLink(split, trig, [trig], "A")).toEqual({ href: "/courses/nda/equations", title: "nda · Equations" });
+    });
+
+    it("leads a concept taught in two years back to the year the student picked, else the first", () => {
+      const board = course("mh", {
+        chapters: [
+          { chapter: "trig", slug: "ratios", title: "Ratios", standard: 10, coverage: { ids: ["A", "B"], status: "approved" } },
+          { chapter: "trig", slug: "trig", title: "Trig", coverage: { ids: ["A", "B", "C"], status: "approved" } },
+        ],
+      });
+      expect(mapLink(board, trig, [trig], "A", 12).href).toBe("/courses/mh/trig");
+      expect(mapLink(board, trig, [trig], "A", 10).href).toBe("/courses/mh/ratios");
+      expect(mapLink(board, trig, [trig], "A").href).toBe("/courses/mh/ratios");
+      expect(mapLink(board, trig, [trig], "A", 11).href).toBe("/courses/mh/ratios");
+      expect(mapLink(board, trig, [trig], "C", 10).href).toBe("/courses/mh/trig");
     });
 
     it("counts each published concept once", () => {

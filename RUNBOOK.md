@@ -90,6 +90,10 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
    no concept is in two shares, and each such course chapter names its own
    `slug`. A share shows its list even as a draft, since a split drops
    nothing; a lesson leads back to the course chapter holding its concept.
+   A board may hold one concept in two course chapters **of different
+   years** (Std X Arithmetic Progression and Std XI Sequences and Series share
+   Series C15–C18): mastery carries over, and the lesson leads back to the
+   year the student last picked on the course page, else the first.
 3. **Coverage is verified with the owner.** Write it as `status: "draft"`;
    the owner reviews it on `/review/courses` (concepts × courses grid). Only
    after they approve, set `status: "approved"`: from then on students see
