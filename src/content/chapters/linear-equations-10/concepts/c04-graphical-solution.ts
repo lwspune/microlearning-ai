@@ -86,7 +86,7 @@ export const c04: Concept = {
             { kind: "line", through: [[0, 1], [1, -1]], tone: "muted" },
             { kind: "segment", from: [0, 3], to: [-1, 3], dashed: true, label: "x = −1", labelAt: "n", step: 1 },
             { kind: "segment", from: [-1, 0], to: [-1, 3], dashed: true, label: "y = 3", labelAt: "w", step: 2 },
-            { kind: "point", at: [-1, 3], label: "(−1, 3)", labelAt: "ne", tone: "good", step: 3 },
+            { kind: "point", at: [-1, 3], label: "(−1, 3)", labelAt: "nw", tone: "good", step: 3 },
             { kind: "point", at: [3, -1], label: "not (3, −1)", labelAt: "n", tone: "bad", hollow: true, step: 3 },
             { kind: "point", at: [2, 0], label: "(2, 0): one line only", labelAt: "ne", tone: "bad", hollow: true, step: 5 },
           ],
