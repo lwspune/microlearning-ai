@@ -25,7 +25,7 @@ import {
   withCourse,
   byStandard,
 } from "./courses";
-import type { Chapter, GraphNode } from "./types";
+import type { Chapter, GraphNode, Standard } from "./types";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
   return { id, slug: id.toLowerCase(), title: id, oneLiner: "", group: "g", tier: "core", prereqs, ext: [], sources: [] };
@@ -48,7 +48,7 @@ describe("validateCatalog", () => {
   });
 
   it("needs a K-12 chapter to name its standard; a Graduates chapter has none", () => {
-    expect(validateCatalog([course("a")], [{ ...ch, standard: undefined }])).toContain("a: chapter ch needs a standard (11 or 12)");
+    expect(validateCatalog([course("a")], [{ ...ch, standard: undefined }])).toContain("a: chapter ch needs a standard (9 to 12)");
     const grad = chapter("g", "graduate");
     expect(validateCatalog([course("b", { group: "graduate", chapters: [{ chapter: "g" }] })], [grad])).toEqual([]);
   });
@@ -284,15 +284,19 @@ describe("lookups", () => {
   });
 
   it("parses only known standards", () => {
+    expect(parseStandard("9")).toBe(9);
+    expect(parseStandard("10")).toBe(10);
     expect(parseStandard("11")).toBe(11);
     expect(parseStandard("12")).toBe(12);
-    expect(parseStandard("10")).toBeNull();
+    expect(parseStandard("8")).toBeNull();
+    expect(parseStandard("13")).toBeNull();
+    expect(parseStandard("09")).toBeNull();
     expect(parseStandard("11 ")).toBeNull();
     expect(parseStandard(undefined)).toBeNull();
   });
 
-  it("titles the standards as Std XI and Std XII", () => {
-    expect(STANDARD_TITLE).toEqual({ 11: "Std XI", 12: "Std XII" });
+  it("titles the standards Std IX to Std XII", () => {
+    expect(STANDARD_TITLE).toEqual({ 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" });
   });
 
   it("finds a course by slug, or null", () => {
@@ -776,10 +780,12 @@ describe("the catalog", () => {
 });
 
 describe("byStandard", () => {
-  const ch = (slug: string, standard?: 11 | 12) => ({ slug, standard });
+  const ch = (slug: string, standard?: Standard) => ({ slug, standard });
 
-  it("puts 11th chapters before 12th, keeping the course's order within each", () => {
-    expect(byStandard([ch("lpp", 12), ch("cn", 11), ch("sets", 11)])).toEqual([
+  it("puts the years in order, 9th to 12th, keeping the course's order within each", () => {
+    expect(byStandard([ch("lpp", 12), ch("cn", 11), ch("ap", 10), ch("sets", 11), ch("sets-9", 9)])).toEqual([
+      { standard: 9, chapters: [ch("sets-9", 9)] },
+      { standard: 10, chapters: [ch("ap", 10)] },
       { standard: 11, chapters: [ch("cn", 11), ch("sets", 11)] },
       { standard: 12, chapters: [ch("lpp", 12)] },
     ]);

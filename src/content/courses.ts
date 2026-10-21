@@ -65,13 +65,13 @@ export type Course = {
 export type Group = { id: GroupId; title: string; blurb: string };
 
 export const GROUPS: Group[] = [
-  { id: "school", title: "K-12", blurb: "Boards and entrance exams, alongside Class 11 and 12." },
+  { id: "school", title: "K-12", blurb: "Boards and entrance exams, from Class 9 to 12." },
   { id: "graduate", title: "Graduates", blurb: "Defence and services exams after graduation." },
 ];
 
 export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths" };
 
-export const STANDARD_TITLE: Record<Standard, string> = { 11: "Std XI", 12: "Std XII" };
+export const STANDARD_TITLE: Record<Standard, string> = { 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" };
 
 const range = (from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, i) => `C${String(from + i).padStart(2, "0")}`);
@@ -115,7 +115,7 @@ export const courses: Course[] = [
     title: "Maharashtra Board",
     short: "MH Board",
     group: "school",
-    tagline: "Maharashtra State Board, HSC Science",
+    tagline: "Maharashtra State Board, SSC and HSC Science",
     board: true,
     // Book order: Std XI Part 1, then Part 2, then Std XII. A chapter without coverage is covered whole.
     chapters: [
@@ -365,9 +365,9 @@ export const courses: Course[] = [
   { slug: "capf", title: "CAPF", short: "CAPF", group: "graduate", tagline: "UPSC CAPF (AC), General Ability", chapters: [] },
 ];
 
-/** A course's chapters grouped by school year: 11th, then 12th, then any without one; course order within each. */
+/** A course's chapters grouped by school year, 9th to 12th, then any without one; course order within each. */
 export function byStandard<T extends { standard?: Standard }>(list: T[]): { standard?: Standard; chapters: T[] }[] {
-  return ([11, 12, undefined] as const)
+  return ([9, 10, 11, 12, undefined] as const)
     .map((standard) => ({ standard, chapters: list.filter((c) => c.standard === standard) }))
     .filter((g) => g.chapters.length > 0);
 }
@@ -408,7 +408,7 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
         errors.push(`${course.slug}: chapter ${chapter.slug} belongs to the ${chapter.group} pool, not ${course.group}`);
       }
       if (chapter.group === "school" && chapter.standard === undefined) {
-        errors.push(`${course.slug}: chapter ${chapter.slug} needs a standard (11 or 12)`);
+        errors.push(`${course.slug}: chapter ${chapter.slug} needs a standard (9 to 12)`);
       }
       if (entry.coverage) errors.push(...validateCoverage(`${course.slug}/${chapter.slug}`, entry.coverage, chapter));
     }
@@ -536,7 +536,8 @@ export function parseGroup(value: string | null | undefined): GroupId | null {
 
 /** A standard from untrusted input (a cookie), or null. */
 export function parseStandard(value: string | null | undefined): Standard | null {
-  return value === "11" ? 11 : value === "12" ? 12 : null;
+  const standard = Number(value);
+  return value && String(standard) === value && standard in STANDARD_TITLE ? (standard as Standard) : null;
 }
 
 /**
