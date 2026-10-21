@@ -34,8 +34,8 @@ export const c09: Concept = {
         points: [
           t`Distance $=$ speed $\times$ time, so time $=$ distance $\div$ speed.`,
           t`So $20$ km upstream takes $\frac{20}{x - y}$ hours.`,
-          t`And $30$ km downstream takes $\frac{30}{x + y}$ hours.`,
-          t`If the two trips take $7$ hours in all, then $\frac{20}{x - y} + \frac{30}{x + y}$ $= 7$.`,
+          t`And $39$ km downstream takes $\frac{39}{x + y}$ hours.`,
+          t`If the two trips take $7$ hours in all, then $\frac{20}{x - y} + \frac{39}{x + y}$ $= 7$.`,
           t`A second trip gives a second equation of the same kind.`,
           t`Every time must be in hours: $40$ minutes is $\frac{40}{60} = \frac{2}{3}$ hour, not $0.40$ hour.`,
         ],
@@ -44,7 +44,7 @@ export const c09: Concept = {
         title: "Make the pair linear",
         points: [
           t`Put $\frac{1}{x - y} = m$ and $\frac{1}{x + y} = n$.`,
-          t`Then $\frac{20}{x - y} + \frac{30}{x + y}$ $= 7$ becomes $20m + 30n = 7$.`,
+          t`Then $\frac{20}{x - y} + \frac{39}{x + y}$ $= 7$ becomes $20m + 39n = 7$.`,
           t`Solve the two linear equations in $m$ and $n$ by elimination.`,
           t`Then go back: $m = \frac{1}{5}$ means $\frac{1}{x - y} = \frac{1}{5}$, so $x - y = 5$.`,
           t`In the same way, $n = \frac{1}{13}$ means $x + y = 13$.`,
