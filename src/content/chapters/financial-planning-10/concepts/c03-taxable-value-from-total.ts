@@ -198,19 +198,19 @@ export const c03: Concept = {
     {
       id: "C03-Q6",
       source: { kind: "pyqvault-practice", ref: "mh-ssc-10/alg-2024-jul/Q2(B)(iv)" },
-      stem: t`The price of a wrist watch belt for the customer is ₹ 691.48, including GST at CGST $9\%$ and SGST $9\%$. What is the taxable value of the belt?`,
-      verify: { kind: "value", inputs: { A: "69148/100", r: "18" }, params: { ask: "taxable" } },
+      stem: t`The price of a wrist watch belt for the customer is ₹ 692.07, including GST at CGST $9\%$ and SGST $9\%$. What is the taxable value of the belt?`,
+      verify: { kind: "value", inputs: { A: "69207/100", r: "18" }, params: { ask: "taxable" } },
       options: [
-        { key: "A", text: t`₹ 586`, correct: true, value: "586" },
-        { key: "B", text: t`₹ 634.39`, correct: false, misconceptionId: "C03-M2", value: "63439/100" },
-        { key: "C", text: t`₹ 815.95`, correct: false, misconceptionId: "C03-M3", value: "16319/20" },
-        { key: "D", text: t`₹ 105.48`, correct: false, misconceptionId: "C03-M5", value: "2637/25" },
+        { key: "A", text: t`₹ 586.50`, correct: true, value: "1173/2" },
+        { key: "B", text: t`₹ 634.93`, correct: false, misconceptionId: "C03-M2", value: "63493/100" },
+        { key: "C", text: t`₹ 816.64`, correct: false, misconceptionId: "C03-M3", value: "20416/25" },
+        { key: "D", text: t`₹ 105.57`, correct: false, misconceptionId: "C03-M5", value: "10557/100" },
       ],
       solution: {
         steps: [
           t`CGST $9\%$ and SGST $9\%$ make GST $18\%$.`,
-          t`Taxable value $= 691.48 \times \frac{100}{118}$.`,
-          t`$= 586$, so the taxable value is ₹ 586.`,
+          t`Taxable value $= 692.07 \times \frac{100}{118}$.`,
+          t`$= 586.50$, so the taxable value is ₹ 586.50.`,
         ],
       },
     },

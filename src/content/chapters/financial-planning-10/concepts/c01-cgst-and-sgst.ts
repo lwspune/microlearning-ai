@@ -102,8 +102,8 @@ export const c01: Concept = {
     },
     {
       id: "C01-M3",
-      mistake: "Counting only one half: adding CGST to the taxable value but leaving out SGST",
-      remediation: t`The buyer pays both halves of the GST: price $=$ taxable value $+$ CGST $+$ SGST.`,
+      mistake: "Charging only half the GST: CGST alone within a state (leaving out SGST), or IGST at half the rate between states",
+      remediation: t`The buyer pays the whole GST. Within a state that is both halves, CGST $+$ SGST; between states it is IGST at the whole rate.`,
       fallback: { kind: "none" },
     },
     {
@@ -126,9 +126,9 @@ export const c01: Concept = {
     },
   ],
   engineNotes: [
-    "C01-M3 applies only to price and tax-amount items (Q4, Q5); C01-M4 only to items that ask which taxes apply (Q1, Q5).",
-    "C01-M5 applies only when the invoice has more than one article (Q3); C01-M6 only when the rate is found from amounts (Q2).",
-    "All five items are sales within one state; an IGST item would test C01-M4 the other way round.",
+    "C01-M3 applies only to price and tax-amount items (Q4, Q5, Q6); C01-M4 only to items that ask which taxes apply (Q1, Q5 within a state; Q6 between states).",
+    "C01-M5 applies only when the invoice has more than one article (Q3, Q6); C01-M6 only when the rate is found from amounts (Q2).",
+    "C01-M1 and C01-M2 apply only within a state: between states their halving never happens, so Q6 cannot catch them.",
   ],
   items: [
     {
@@ -223,6 +223,25 @@ export const c01: Concept = {
           t`Surat and Rajkot are both in Gujarat, so the sale is within one state: CGST and SGST, not IGST.`,
           t`GST $= \frac{5}{100} \times 250000 = 12500$, that is ₹ 12,500.`,
           t`Half each: CGST ₹ 6,250 and SGST ₹ 6,250.`,
+        ],
+      },
+    },
+    {
+      id: "C01-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-ssc-10-text/alg-financial-planning-10/PS4A Q.4" },
+      stem: t`A trader in Thane, Maharashtra sold $3$ water purifiers to a shop in Indore, Madhya Pradesh. The taxable value of each purifier is ₹ 8,400 and the rate of GST is $18\%$. Which tax does the tax invoice show, and how much?`,
+      verify: { kind: "value", inputs: { n: "3", v: "8400", r: "18" }, params: { ask: "taxes", within: "no" } },
+      options: [
+        { key: "A", text: t`CGST ₹ 2,268 and SGST ₹ 2,268`, correct: false, misconceptionId: "C01-M4", value: "(2268, 2268, 0)" },
+        { key: "B", text: t`IGST ₹ 1,512`, correct: false, misconceptionId: "C01-M5", value: "(0, 0, 1512)" },
+        { key: "C", text: t`IGST ₹ 4,536`, correct: true, value: "(0, 0, 4536)" },
+        { key: "D", text: t`IGST ₹ 2,268`, correct: false, misconceptionId: "C01-M3", value: "(0, 0, 2268)" },
+      ],
+      solution: {
+        steps: [
+          t`Thane is in Maharashtra and Indore is in Madhya Pradesh: the sale is between two states, so the tax is IGST.`,
+          t`Taxable value $= 3 \times 8400 = 25200$, that is ₹ 25,200.`,
+          t`IGST is at the whole rate: $\frac{18}{100} \times 25200 = 4536$, so IGST ₹ 4,536.`,
         ],
       },
     },

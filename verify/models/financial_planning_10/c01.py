@@ -84,14 +84,14 @@ def m2(v, p):
 
 
 def m3(v, p):
-    """Counts only one half: the buyer pays CGST but not SGST."""
+    """Charges only half the GST: CGST alone within a state, IGST at half the rate between states."""
     ask = _ask(p, "price", "taxes")
-    if not _within(p):
-        raise ValueError("within a state only")
     half = _value(v) * v["r"] / 200
     if ask == "price":
+        if not _within(p):
+            raise ValueError("within a state only")
         return _value(v) + half
-    return Tuple(half, 0, 0)
+    return Tuple(half, 0, 0) if _within(p) else Tuple(0, 0, half)
 
 
 def m4(v, p):
@@ -105,7 +105,7 @@ def m4(v, p):
 
 def m5(v, p):
     """Works out the tax on one article when the invoice has several."""
-    ask = _ask(p, "cgst", "price")
+    ask = _ask(p, "cgst", "price", "taxes")
     if v.get("n", Integer(1)) == 1:
         raise ValueError("needs more than one article")
     one = dict(v, n=Integer(1))
