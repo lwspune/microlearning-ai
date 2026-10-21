@@ -63,7 +63,7 @@ export const graph: GraphNode[] = [
     prereqs: ["C01"], ext: [], sources: [WORD],
   },
   {
-    id: "C09", slug: "speed-and-boat-problems", title: "Speed, boat and work problems", group: "Reducible equations and word problems", tier: "adv",
+    id: "C09", slug: "speed-and-boat-problems", title: "Speed and boat problems", group: "Reducible equations and word problems", tier: "adv",
     oneLiner: t`Upstream speed is $x - y$, downstream $x + y$; time $=$ distance $\div$ speed gives equations in $\frac{1}{x - y}$ and $\frac{1}{x + y}$`,
     prereqs: ["C07", "C08"], ext: [], sources: [WORD],
   },
