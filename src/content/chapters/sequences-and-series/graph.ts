@@ -11,6 +11,7 @@ const t = String.raw;
 const GP = "mh-sb-11/sequences-series-11#Geometric Progression — General Term and Sum";
 const AP_NCERT = "ncert-10/c10ArithmeticProgressions";
 const AP_SSC = "mh-ssc-10/algebra#Arithmetic Progression";
+const AP_TEXT = (sub: string) => `mh-ssc-10-text/alg-arithmetic-progression-10#${sub}`;
 
 export const graph: GraphNode[] = [
   // Sequences and A.P. (Std X work, taught first at the owner's request, 2026-10-16; ids C15–C18 so the
@@ -20,10 +21,22 @@ export const graph: GraphNode[] = [
     oneLiner: t`A sequence is a list in order, $t_n$ its $n$th term; a series adds the terms, $S_n$ the first $n$`,
     prereqs: [], ext: [], sources: [AP_NCERT, AP_SSC],
   },
+  // C19–C21: the Std X book's A.P. work beyond C15–C18 (PLAN.md "Std IX and X Maths"), shown in the
+  // Maharashtra Board's Std X Arithmetic Progression; Std XI's Sequences and Series keeps C01–C18.
+  {
+    id: "C19", slug: "recognising-an-ap", title: "Is it an A.P.?", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`Check that $t_{n+1} - t_n$ is the same every time; from $a$ and $d$ the terms are $a, a + d, a + 2d, \ldots$`,
+    prereqs: ["C15"], ext: [], sources: [AP_TEXT("Concept of Arithmetic Progression"), AP_TEXT("Common Difference of an A.P.")],
+  },
   {
     id: "C16", slug: "ap-nth-term", title: "A.P. and its nth term", group: "Sequences and A.P.", tier: "core",
     oneLiner: t`An A.P. adds the same $d$ each time: $t_n = a + (n-1)d$`,
     prereqs: ["C15"], ext: [], sources: [AP_NCERT, AP_SSC],
+  },
+  {
+    id: "C20", slug: "counting-terms", title: "Counting the terms of an A.P.", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`Which term is $560$? How many multiples of $4$ lie between $10$ and $250$? Set $t_n$ equal to it and solve for a whole $n$`,
+    prereqs: ["C16"], ext: [], sources: [AP_TEXT("nth Term of an A.P.")],
   },
   {
     id: "C17", slug: "ap-sum", title: "Sum of n terms of an A.P.", group: "Sequences and A.P.", tier: "core",
@@ -34,6 +47,11 @@ export const graph: GraphNode[] = [
     id: "C18", slug: "numbers-in-ap", title: "Three or four numbers in A.P.", group: "Sequences and A.P.", tier: "core",
     oneLiner: t`Take $a - d, a, a + d$ so the sum fixes $a$; for consecutive terms $2b = a + c$`,
     prereqs: ["C16"], ext: [], sources: [AP_NCERT, AP_SSC],
+  },
+  {
+    id: "C21", slug: "ap-word-problems", title: "A.P. in daily life", group: "Sequences and A.P.", tier: "core",
+    oneLiner: t`Savings, instalments, seats in rows: find $a$ and $d$, then decide whether the question wants one term $t_n$ or a total $S_n$`,
+    prereqs: ["C17"], ext: [], sources: [AP_TEXT("Word Problems and Applications")],
   },
   // Geometric progressions
   {

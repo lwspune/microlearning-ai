@@ -9,14 +9,15 @@ describe("Sequences and Series chapter", () => {
     expect(validateChapter(sequencesAndSeries)).toEqual([]);
   });
 
-  it("keeps the graph: 18 concepts, 18 edges", () => {
+  it("keeps the graph: 21 concepts, 21 edges", () => {
     const edges = sequencesAndSeries.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(sequencesAndSeries.graph).toHaveLength(18);
-    expect(edges).toBe(18);
+    expect(sequencesAndSeries.graph).toHaveLength(21);
+    expect(edges).toBe(21);
   });
 
   it("opens with sequences and A.P., which the G.P. and H.P. concepts build on", () => {
-    expect(sequencesAndSeries.graph.slice(0, 4).map((n) => n.id)).toEqual(["C15", "C16", "C17", "C18"]);
+    // C19–C21 are the Std X book's further A.P. work, in book order among C15–C18.
+    expect(sequencesAndSeries.graph.slice(0, 7).map((n) => n.id)).toEqual(["C15", "C19", "C16", "C20", "C17", "C18", "C21"]);
     const node = (id: string) => sequencesAndSeries.graph.find((n) => n.id === id)!;
     expect(node("C01").prereqs).toContain("C16");
     expect(node("C09").prereqs).toContain("C16");

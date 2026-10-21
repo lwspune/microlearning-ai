@@ -104,6 +104,10 @@ const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, co
 // papers ask, settled against both in PYQ Vault; approved on the owner's say-so 2026-10-20 ("you approve").
 const cbse = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
 
+// Sequences and Series C19–C21 are Std X work for the Maharashtra Board's Std X Arithmetic Progression
+// (PLAN.md "Std IX and X Maths"); every other use of the chapter keeps C01–C18.
+const SERIES_XI = range(1, 18);
+
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
   coverage: { ids: range(1, 13), unsure, status: "approved" },
@@ -117,8 +121,21 @@ export const courses: Course[] = [
     group: "school",
     tagline: "Maharashtra State Board, SSC and HSC Science",
     board: true,
-    // Book order: Std XI Part 1, then Part 2, then Std XII. A chapter without coverage is covered whole.
+    // Book order: Std X Part 1, Std XI Part 1, then Part 2, then Std XII. A chapter without coverage
+    // is covered whole.
     chapters: [
+      { chapter: "linear-equations-10" },
+      { chapter: "quadratic-equations-10" },
+      {
+        chapter: "sequences-and-series",
+        slug: "arithmetic-progression",
+        title: "Arithmetic Progression",
+        standard: 10,
+        coverage: { ids: ["C15", "C19", "C16", "C20", "C17", "C18", "C21"], status: "approved" },
+      },
+      { chapter: "financial-planning-10" },
+      { chapter: "probability-10" },
+      { chapter: "statistics-10" },
       { chapter: "angle-measurement" },
       { chapter: "trigonometric-functions" },
       book("compound-and-multiple-angles", 10),
@@ -133,7 +150,7 @@ export const courses: Course[] = [
       { chapter: "continuity" },
       { chapter: "differentiation" },
       { chapter: "complex-numbers", coverage: cnMaharashtra },
-      { chapter: "sequences-and-series" },
+      book("sequences-and-series", 18),
       { chapter: "permutations-and-combinations" },
       book("binomial-theorem", 9),
       { chapter: "sets-and-relations" },
@@ -330,7 +347,7 @@ export const courses: Course[] = [
           status: "approved",
         },
       },
-      { chapter: "sequences-and-series", title: "Sequence & Series" },
+      { ...nda("sequences-and-series", SERIES_XI), title: "Sequence & Series" },
       { chapter: "permutations-and-combinations", title: "Permutation & Combination" },
       { chapter: "binomial-theorem" },
       { chapter: "sets-and-relations", title: "Sets & Relations" },
