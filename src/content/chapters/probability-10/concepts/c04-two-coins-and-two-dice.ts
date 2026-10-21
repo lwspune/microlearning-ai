@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Raju says a sum of $11$ on two dice is as likely as a sum of $12$: $11 = 5 + 6$ and $12 = 6 + 6$, one way each. **Is he right?**`,
     reveal: t`No. A sum of $11$ comes from $(5, 6)$ and $(6, 5)$: $2$ outcomes. A sum of $12$ comes only from $(6, 6)$. So $P(11) = \frac{2}{36}$ but $P(12) = \frac{1}{36}$.`,

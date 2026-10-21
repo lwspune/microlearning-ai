@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A boat goes at $10$ km/hr in still water, and the river flows at $2$ km/hr. Does a trip of $24$ km upstream and $24$ km back take as long as $48$ km on a still lake?`,
     reveal: t`No. Upstream the boat makes $8$ km/hr, so $24$ km takes $3$ hours. Downstream it makes $12$ km/hr, so the way back takes $2$ hours. That is $5$ hours, but $48 \div 10 = 4.8$ hours on the lake.`,

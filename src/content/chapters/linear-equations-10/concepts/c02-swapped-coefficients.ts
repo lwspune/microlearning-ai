@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $1001x + 999y = 3001$ and $999x + 1001y = 2999$. **Can you do it without multiplying by $999$ or $1001$?**`,
     reveal: t`Yes. Add them: $2000x + 2000y = 6000$, so $x + y = 3$. Subtract them: $2x - 2y = 2$, so $x - y = 1$. Adding these two gives $2x = 4$, so $x = 2$ and $y = 1$.`,

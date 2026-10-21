@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x^2 + 10x + 2 = 0$ does not factorise, and completing the square takes many steps. **Is there one formula that solves it at once?**`,
     reveal: t`Yes. Here $a = 1$, $b = 10$, $c = 2$, so $b^2 - 4ac = 100 - 8 = 92$. Then $x = \frac{-10 \pm \sqrt{92}}{2}$ $= \frac{-10 \pm 2\sqrt{23}}{2}$ $= -5 \pm \sqrt{23}$.`,

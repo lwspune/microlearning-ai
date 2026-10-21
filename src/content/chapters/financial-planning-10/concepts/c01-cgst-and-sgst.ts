@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A restaurant bill shows food ₹ 400, CGST ₹ 10 and SGST ₹ 10. The menu says GST is $5\%$. **Has the restaurant charged $5\%$ twice?**`,
     reveal: t`No. $5\%$ of ₹ 400 is ₹ 20. Inside one state, GST is shared equally: ₹ 10 is CGST for the Centre and ₹ 10 is SGST for the State.`,

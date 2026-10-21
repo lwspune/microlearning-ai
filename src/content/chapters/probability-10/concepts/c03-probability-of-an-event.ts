@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bag has $1$ red ball and $99$ blue balls. A ball is picked at random. It is either red or blue. **Is the chance of red $\frac{1}{2}$?**`,
     reveal: t`No. There are $100$ balls, and only $1$ of them is red. So $P(\text{red}) = \frac{1}{100}$. Count the balls, not the colours.`,

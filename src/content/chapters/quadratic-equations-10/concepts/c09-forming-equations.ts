@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Write down a quadratic equation whose roots are $4$ and $7$. **Can you do it without any trial and error?**`,
     reveal: t`Yes. $(x - 4)(x - 7) = 0$ is true only when $x = 4$ or $x = 7$. Expand it: $x^2 - 11x + 28 = 0$. Here $11 = 4 + 7$ and $28 = 4 \times 7$.`,

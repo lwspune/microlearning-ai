@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $\frac{1}{x} + \frac{1}{y} = 5$ and $\frac{1}{x} - \frac{1}{y} = 1$. The letters sit in denominators, so these are not linear. **Can elimination still work?**`,
     reveal: t`Yes. Treat $\frac{1}{x}$ and $\frac{1}{y}$ as the unknowns. Adding gives $\frac{2}{x} = 6$, so $\frac{1}{x} = 3$ and $x = \frac{1}{3}$. Then $\frac{1}{y} = 5 - 3 = 2$, so $y = \frac{1}{2}$.`,

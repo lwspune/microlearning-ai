@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Try to find $x$ and $y$ with $x + y = 3$ and $x + y = 6$ at the same time. **Why can't you?**`,
     reveal: t`$x + y$ can't be $3$ and $6$ at once. On a graph, the two lines are parallel: they never meet, so no point lies on both. These simultaneous equations have no solution.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two numbers have sum $4$ and product $1$. **Find the sum of their squares** without finding the numbers.`,
     reveal: t`Call them $\alpha$ and $\beta$. $(\alpha + \beta)^2 = \alpha^2 + 2\alpha\beta + \beta^2$, so $\alpha^2 + \beta^2$ $= 4^2 - 2 \times 1 = 14$. The numbers are $2 \pm \sqrt{3}$, but you never needed them.`,

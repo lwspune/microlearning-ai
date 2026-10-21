@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You buy one share of MV ₹ 1,000 through a broker who charges $0.1\%$. **Is ₹ 1,000 all you pay?**`,
     reveal: t`No. You also pay brokerage, $0.1\%$ of ₹ 1,000 = ₹ 1, and $18\%$ GST on that ₹ 1, which is ₹ 0.18. So you pay ₹ 1,001.18.`,

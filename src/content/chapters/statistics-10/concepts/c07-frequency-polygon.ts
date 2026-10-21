@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A histogram has bars on $10$–$20$, $20$–$30$ and $30$–$40$, of heights $6$, $9$ and $4$. A line joins the midpoints of the bar tops. **Where must the line come down to the $x$-axis so the shape closes?**`,
     reveal: t`At $x = 5$ and $x = 45$. These are the class marks of the empty classes $0$–$10$ and $40$–$50$. Their frequency is $0$, so the line comes down there.`,

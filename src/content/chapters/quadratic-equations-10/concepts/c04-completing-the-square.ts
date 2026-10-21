@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$(x + 3)^2 = 25$ is easy: $x + 3$ is $5$ or $-5$. **Can you turn $x^2 + 6x = 16$ into that shape?**`,
     reveal: t`Add $9$ to both sides: $x^2 + 6x + 9 = 25$, and $x^2 + 6x + 9 = (x + 3)^2$. So $(x + 3)^2 = 25$, giving $x = 2$ or $x = -8$. Adding the missing $9$ is called **completing the square**.`,

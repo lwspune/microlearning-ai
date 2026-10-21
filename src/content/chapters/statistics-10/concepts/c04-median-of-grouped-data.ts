@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$40$ students: $15$ scored in $0$–$10$, $10$ in $10$–$20$ and $15$ in $20$–$30$. The middle student is in $10$–$20$. **Which mark is the median?**`,
     reveal: t`The middle is the $20$th student. $15$ students are below $10$, so we need $5$ more of the $10$ in $10$–$20$. Spread evenly, that is halfway in: about $15$ marks.`,

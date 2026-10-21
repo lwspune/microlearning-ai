@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Find the mean of 498, 499, 500, 501 and 507 in your head. **Is there a shortcut that avoids adding the big numbers?**`,
     reveal: t`Measure each number from 500: $-2, -1, 0, 1, 7$. These add to 5, so on average the numbers are $\frac{5}{5} = 1$ above 500. The mean is $500 + 1 = 501$.`,

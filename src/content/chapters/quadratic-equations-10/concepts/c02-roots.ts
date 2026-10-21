@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Which of $2$ and $-2$ makes $x^2 + x - 6 = 0$ true? **Both? One? Neither?**`,
     reveal: t`Put $x = 2$: $4 + 2 - 6 = 0$, true. Put $x = -2$: $4 - 2 - 6 = -4$, not $0$. So only $2$ is a root.`,

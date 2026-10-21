@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shop pays ₹ 150 GST when it buys a fan. It collects ₹ 186 GST when it sells the fan. **Does the shop pay ₹ 186 to the government?**`,
     reveal: t`No. The ₹ 150 it paid on purchase is already with the government, so the shop gets credit for it. It pays only ₹ 186 $-$ ₹ 150 = ₹ 36.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Without solving $x^2 - 10x + 21 = 0$, **can you say what its two roots add up to?**`,
     reveal: t`Yes: $10$. The roots are $3$ and $7$; their sum is $10$ and their product is $21$. Both numbers already sit in the equation.`,

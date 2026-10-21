@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shop's table: $6$ sales in $10$–$20$, $12$ in $20$–$30$, $2$ in $30$–$40$. The busiest class is $20$–$30$. **Is the mode its middle, $25$?**`,
     reveal: t`No. The class before has more values than the class after, so the values crowd towards $20$. The mode is $20 + \frac{6}{16} \times 10$ $= 23.75$, a little below $25$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a class of $30$ students, $10$ chose mango as their favourite fruit. The class draws its choices as slices of one round 'pie'. How wide, in degrees, should mango's slice be?`,
     reveal: t`Mango is $\frac{10}{30} = \frac{1}{3}$ of the class. So it gets $\frac{1}{3}$ of the full turn: $\frac{1}{3} \times 360^\circ = 120^\circ$.`,

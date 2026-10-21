@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Riya lists pairs that make $x + y = 5$ true: $(0, 5)$, $(2, 3)$, $(4, 1)$ and $(5, 0)$. **She plots them. What shape do they make?**`,
     reveal: t`They lie on one straight line. Every solution of $x + y = 5$ is on that line, and every point of the line is a solution. That line is the **graph** of the equation.`,

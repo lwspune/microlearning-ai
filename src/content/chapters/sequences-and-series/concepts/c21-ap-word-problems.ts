@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c21: Concept = {
   id: "C21",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`₹ 1,000 earns $10$ percent simple interest. The interest after $1$, $2$ and $3$ years is ₹ 100, ₹ 200 and ₹ 300. Meera says the interest after $3$ years is $100 + 200 + 300 = 600$ rupees. **Is she right?**`,
     reveal: t`No. ₹ 300 is the interest after $3$ years: it already counts all three years, ₹ 100 each. Adding the list counts the early years again. The question wants one term, $t_3 = 300$, not the total $S_3$.`,

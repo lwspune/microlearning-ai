@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Weekly wages have class marks ₹ 1,500, ₹ 2,500, ₹ 3,500 and ₹ 4,500. Subtract $2500$ from each, then divide by $1000$. **What numbers are left, and can they still give the mean?**`,
     reveal: t`They become $-1, 0, 1, 2$. Yes: find the mean of these small numbers, multiply it by $1000$ and add $2500$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x + y = 10$ and $x - y = 2$. **What happens to $y$ if you add the two equations?**`,
     reveal: t`The $+y$ and $-y$ cancel, leaving $2x = 12$, so $x = 6$. Then $6 + y = 10$ gives $y = 4$. Removing one variable like this is called **elimination**.`,

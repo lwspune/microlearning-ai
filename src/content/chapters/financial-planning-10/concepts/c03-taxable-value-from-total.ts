@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bill says ₹ 1,120, including $12\%$ GST. **Is the GST $12\%$ of ₹ 1,120, that is ₹ 134.40?**`,
     reveal: t`No. GST is $12\%$ of the taxable value, not of the total. The taxable value is ₹ 1,000, so the GST is ₹ 120, and ₹ 1,000 $+$ ₹ 120 = ₹ 1,120.`,

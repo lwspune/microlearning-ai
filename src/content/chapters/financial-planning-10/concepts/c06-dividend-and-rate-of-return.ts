@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A company pays a $10\%$ dividend on its shares of FV ₹ 100. Riya bought one share for ₹ 100; Om bought one for ₹ 200. **Did they earn the same return?**`,
     reveal: t`No. Both get ₹ 10, because the dividend is $10\%$ of the FV. But Riya gets ₹ 10 on ₹ 100 paid, a $10\%$ return. Om gets ₹ 10 on ₹ 200 paid, only a $5\%$ return.`,

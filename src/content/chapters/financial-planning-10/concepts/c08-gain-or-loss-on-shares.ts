@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ravi buys 10 shares of FV ₹ 100 at MV ₹ 200. He gets a $15\%$ dividend, then sells them at MV ₹ 190. **The MV fell, so did he lose money?**`,
     reveal: t`Not yet. The fall costs him $10 \times 10$ = ₹ 100, but the dividend brings $10 \times 15$ = ₹ 150. Before brokerage he is ₹ 50 up.`,

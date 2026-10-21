@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Heights, rounded to the nearest cm, are grouped as $141$–$145$ and $146$–$150$. Bars drawn on these limits leave a gap from $145$ to $146$. **Where does a true height of $145.7$ cm go?**`,
     reveal: t`It rounds to $146$, so it belongs to $146$–$150$. Split the gap in half, at $145.5$: the classes become $140.5$–$145.5$ and $145.5$–$150.5$. Now $145.7$ has a place, and the bars touch.`,

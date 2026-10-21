@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c19: Concept = {
   id: "C19",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Meena lists $7, 11, 15, 20, \ldots$ and says: the first jump is $4$, so this is an A.P. with $d = 4$. **Is she right?**`,
     reveal: t`No. The jumps are $11 - 7 = 4$, $15 - 11 = 4$, but $20 - 15 = 5$. One jump is different, so the list is not an A.P. Check every difference, not just the first.`,

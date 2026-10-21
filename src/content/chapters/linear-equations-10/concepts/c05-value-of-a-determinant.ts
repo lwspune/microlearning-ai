@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\begin{vmatrix} 6 & -2 \\ 5 & 3 \end{vmatrix}$ stands for one number. **Is it $18 - 10 = 8$?**`,
     reveal: t`No. It is $ad - bc$: $6 \times 3 - (-2) \times 5$ $= 18 - (-10)$ $= 28$. The up product is negative, and subtracting a negative adds.`,

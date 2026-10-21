@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shirt has a printed price of ₹ 2,000. The shop gives $10\%$ off and charges $5\%$ GST. **Is the bill ₹ 2,000 $- 10\% + 5\%$, that is ₹ 1,900?**`,
     reveal: t`No. The discount comes off first: ₹ 2,000 $-$ ₹ 200 $=$ ₹ 1,800. GST is $5\%$ of ₹ 1,800, that is ₹ 90. The bill is ₹ 1,890, not ₹ 1,900.`,

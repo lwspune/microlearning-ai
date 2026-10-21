@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Without expanding anything, which values of $x$ make $(x - 4)(x + 7) = 0$ true?`,
     reveal: t`A product is $0$ only when one of its factors is $0$. So $x - 4 = 0$ or $x + 7 = 0$, which gives $x = 4$ or $x = -7$. Watch the sign: $x + 7 = 0$ gives $-7$, not $7$.`,

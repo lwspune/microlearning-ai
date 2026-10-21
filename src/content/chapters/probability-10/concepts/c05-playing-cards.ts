@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Raju says a pack of cards has $16$ face cards: the king, queen, jack and ace of each suit. **Is he right?**`,
     reveal: t`No. A **face card** shows a face: only the king, queen and jack do. That is $3$ in each suit, so $3 \times 4 = 12$ face cards. An ace is not a face card.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Lockers in a school are numbered $31$ to $40$. You are given one locker at random. **How many possible lockers are there? Is it $40 - 31 = 9$?**`,
     reveal: t`No, it is $10$. List them: $31, 32, \ldots, 40$. Subtracting leaves out one end. Listing every outcome is the safe way to count, and that list is the sample space.`,

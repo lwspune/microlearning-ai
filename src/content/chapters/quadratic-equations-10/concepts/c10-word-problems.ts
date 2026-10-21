@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two consecutive natural numbers multiply to $56$. Solving $x(x + 1) = 56$ gives $x = 7$ or $x = -8$. **What are the numbers?**`,
     reveal: t`$-8$ is not a natural number, so throw it out. The numbers are $7$ and $8$: $7 \times 8 = 56$.`,

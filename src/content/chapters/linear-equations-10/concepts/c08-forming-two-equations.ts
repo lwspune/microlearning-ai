@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two pens and one notebook cost ₹ 40. One pen and two notebooks cost ₹ 50. What does one pen cost?`,
     reveal: t`Let a pen cost ₹ $x$ and a notebook ₹ $y$. The two sentences give $2x + y = 40$ and $x + 2y = 50$. Eliminating $y$ gives $x = 10$: a pen costs ₹ 10 and a notebook ₹ 20. Two unknowns need two sentences, one equation each.`,

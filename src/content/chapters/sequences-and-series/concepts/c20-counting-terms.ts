@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c20: Concept = {
   id: "C20",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You read a book from page $15$ to page $40$, both included. **Did you read $40 - 15 = 25$ pages?**`,
     reveal: t`No, you read $26$. $40 - 15$ counts the steps from page to page, and the first page needs no step. Pages $15, 16, \ldots, 40$ form an A.P. with $d = 1$, so there are $\frac{40 - 15}{1} + 1 = 26$ terms.`,

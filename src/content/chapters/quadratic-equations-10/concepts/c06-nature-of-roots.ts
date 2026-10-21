@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x^2 + 6x + 9 = 0$ and $x^2 + 6x + 10 = 0$ differ only by $1$. **Do they have the same kind of roots?**`,
     reveal: t`No. The first is $(x + 3)^2 = 0$: one root, $-3$, twice. The second is $(x + 3)^2 = -1$: no square is negative, so no real root. One number, $b^2 - 4ac$, tells them apart without solving.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A share has ₹ 10 printed on it, but it sells for ₹ 32 in the market. **What do 40 such shares cost?**`,
     reveal: t`₹ 1,280. You pay the market price, ₹ 32, for each share: $40 \times 32 = 1280$. The printed ₹ 10 is only its face value.`,

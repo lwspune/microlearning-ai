@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ten cards bear the numbers 1 to 10. One card is drawn. Riya says only two numbers are complete squares: 4 and 9. **Is she right?**`,
     reveal: t`No. $1 = 1^2$ is a complete square too. The event is $\{1, 4, 9\}$, so it has $3$ sample points, not $2$.`,

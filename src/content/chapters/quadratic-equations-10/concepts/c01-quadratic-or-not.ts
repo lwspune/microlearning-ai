@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$x^2 - 2x + 5 = x^2$ has an $x^2$ in it. **Is it a quadratic equation?**`,
     reveal: t`No. Take $x^2$ from both sides: $-2x + 5 = 0$. The highest power left is $1$, so it is a linear equation. Always simplify before you decide.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A scheme is worth ₹ 50 crore and has 2 crore units, each of face value ₹ 10. Ravi invests ₹ 1,000. **Does he get 100 units?**`,
     reveal: t`No. He pays today's value of a unit, the NAV: ₹ 50 crore $\div$ 2 crore units = ₹ 25. So he gets $1000 \div 25 = 40$ units.`,

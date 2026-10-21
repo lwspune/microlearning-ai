@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A coach knows only that $6$ runners took $10$ to $20$ minutes and $4$ runners took $20$ to $30$ minutes. **Can we still find the mean time?**`,
     reveal: t`Yes, closely enough: let each runner stand at the middle of the class, $15$ or $25$ minutes. The total is $6 \times 15 + 4 \times 25$ $= 190$, so the mean is $\frac{190}{10} = 19$ minutes.`,

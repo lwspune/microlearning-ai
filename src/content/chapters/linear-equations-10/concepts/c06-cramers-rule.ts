@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $2x + y = 7$ and $x + 3y = 11$ without adding or subtracting the equations. **Can three small determinants do it?**`,
     reveal: t`Yes. $D = 2 \times 3 - 1 \times 1 = 5$. Put the constants in the $x$ column: $D_x = 7 \times 3 - 11 \times 1 = 10$. Put them in the $y$ column: $D_y = 2 \times 11 - 1 \times 7 = 15$. So $x = \frac{10}{5} = 2$ and $y = \frac{15}{5} = 3$. Check: $2 + 9 = 11$.`,
