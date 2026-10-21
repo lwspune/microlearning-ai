@@ -45,5 +45,12 @@ import { quadraticEquations10 } from "./quadratic-equations-10/index.ts";
 import { financialPlanning10 } from "./financial-planning-10/index.ts";
 import { probability10 } from "./probability-10/index.ts";
 import { statistics10 } from "./statistics-10/index.ts";
+import { similarity10 } from "./similarity-10/index.ts";
+import { pythagoras10 } from "./pythagoras-10/index.ts";
+import { circle10 } from "./circle-10/index.ts";
+import { constructions10 } from "./constructions-10/index.ts";
+import { coordinateGeometry10 } from "./coordinate-geometry-10/index.ts";
+import { trigonometry10 } from "./trigonometry-10/index.ts";
+import { mensuration10 } from "./mensuration-10/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations, logarithms, heightsAndDistances, binaryNumbers, sphere, linearInequalities, introductionTo3dGeometry, linearEquations10, quadraticEquations10, financialPlanning10, probability10, statistics10];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations, logarithms, heightsAndDistances, binaryNumbers, sphere, linearInequalities, introductionTo3dGeometry, linearEquations10, quadraticEquations10, financialPlanning10, probability10, statistics10, similarity10, pythagoras10, circle10, constructions10, coordinateGeometry10, trigonometry10, mensuration10];

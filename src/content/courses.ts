@@ -125,7 +125,7 @@ export const courses: Course[] = [
     board: true,
     // Std XI and XII students came first; Std IX and X joined on 2026-10-21 (owner: open on XI).
     defaultStandard: 11,
-    // Book order: Std X Part 1, Std XI Part 1, then Part 2, then Std XII. A chapter without coverage
+    // Book order: Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII. A chapter without coverage
     // is covered whole.
     chapters: [
       { chapter: "linear-equations-10" },
@@ -140,6 +140,13 @@ export const courses: Course[] = [
       { chapter: "financial-planning-10" },
       { chapter: "probability-10" },
       { chapter: "statistics-10" },
+      { chapter: "similarity-10" },
+      { chapter: "pythagoras-10" },
+      { chapter: "circle-10" },
+      { chapter: "constructions-10" },
+      { chapter: "coordinate-geometry-10" },
+      { chapter: "trigonometry-10" },
+      { chapter: "mensuration-10" },
       { chapter: "angle-measurement" },
       { chapter: "trigonometric-functions" },
       book("compound-and-multiple-angles", 10),

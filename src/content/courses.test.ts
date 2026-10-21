@@ -805,7 +805,7 @@ describe("the catalog", () => {
     const series = chapters.find((c) => c.slug === "sequences-and-series")!;
     const AP_X = ["C15", "C19", "C16", "C20", "C17", "C18", "C21"];
 
-    it("lists the Std X Part 1 chapters in book order", () => {
+    it("lists the Std X chapters in book order, Part 1 then Part 2", () => {
       expect(resolved.filter((r) => r.standard === 10).map((r) => r.title)).toEqual([
         "Linear Equations in Two Variables",
         "Quadratic Equations",
@@ -813,6 +813,13 @@ describe("the catalog", () => {
         "Financial Planning",
         "Probability",
         "Statistics",
+        "Similarity",
+        "Pythagoras Theorem",
+        "Circle",
+        "Geometric Constructions",
+        "Co-ordinate Geometry",
+        "Trigonometry",
+        "Mensuration",
       ]);
     });
 
