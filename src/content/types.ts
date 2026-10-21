@@ -146,7 +146,7 @@ export type FigureElement = {
   | { kind: "region"; within: Shape[] }
 );
 
-/** A figure on the Argand plane or the xy-plane, drawn with axes. Equal scale on both axes. */
+/** A figure on the Argand plane or the xy-plane, drawn with axes. Equal scale on both axes, except in a chart. */
 export type Figure = {
   /** Read by screen readers in place of the picture: what it shows, in words. */
   alt: string;
@@ -157,6 +157,12 @@ export type Figure = {
   axes?: "argand" | "xy" | "none";
   /** The visible window: real parts from x[0] to x[1], imaginary parts from y[0] to y[1]. */
   view: { x: [number, number]; y: [number, number] };
+  /**
+   * A data chart (histogram, frequency polygon): x and y scale separately to a 400 × 240
+   * plot, and both axes run along its bottom and left edges, numbered every `x` and `y`
+   * units from the view's start. Round shapes don't belong in a chart (they would stretch).
+   */
+  chart?: { x: number; y: number; xTitle?: string; yTitle?: string };
   elements: FigureElement[];
 };
 

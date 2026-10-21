@@ -347,6 +347,23 @@ describe("validateChapter", () => {
       expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element [34]/));
     });
 
+    it("needs a chart's steps positive, and keeps round shapes out of a chart (its scales differ)", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            axes: "xy",
+            chart: { x: 0, y: 5 },
+            elements: [
+              { kind: "circle", centre: [0, 0], r: 1 },
+              { kind: "segment", from: [0, 0], to: [1, 1] },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure.*chart steps must be positive/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*round shapes don't belong in a chart/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 2/));
+    });
+
     it("rejects LaTeX in a label (labels are plain text)", () => {
       expect(
         errorsAfter((ch) => (c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "$z$" }] }))),

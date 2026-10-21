@@ -9,6 +9,8 @@ import type { Figure, Pt } from "@/content/types";
 export type View = Figure["view"];
 
 export const WIDTH = 400;
+/** A chart's plot height; its x and y scales differ. */
+export const CHART_HEIGHT = 240;
 
 export type Frame = {
   width: number;
@@ -18,16 +20,24 @@ export type Frame = {
   px: (p: Pt) => [number, number];
 };
 
-export function frameFor(view: View): Frame {
+export function frameFor(view: View, chart?: Figure["chart"]): Frame {
   const [x0, x1] = view.x;
   const [y0, y1] = view.y;
   const scale = WIDTH / (x1 - x0);
+  const yScale = chart ? CHART_HEIGHT / (y1 - y0) : scale;
   return {
     width: WIDTH,
-    height: (y1 - y0) * scale,
+    height: (y1 - y0) * yScale,
     scale,
-    px: ([x, y]) => [(x - x0) * scale, (y1 - y) * scale],
+    px: ([x, y]) => [(x - x0) * scale, (y1 - y) * yScale],
   };
+}
+
+/** A chart's ticks: every multiple of `step` from lo to hi, both ends included. */
+export function chartTicks(lo: number, hi: number, step: number): number[] {
+  const out: number[] = [];
+  for (let k = Math.ceil(lo / step - 1e-9); k * step <= hi + 1e-9; k++) out.push(Math.round(k * step * 1e6) / 1e6);
+  return out;
 }
 
 /** Rounds to 2 decimals for compact SVG paths (and avoids "-0"). */

@@ -207,6 +207,34 @@ describe("FigureView: a turning arm", () => {
     ]);
   });
 
+  describe("a data chart (histograms, frequency polygons)", () => {
+    // 400 px wide for 0 to 100 (4 px per unit); 240 px tall for 0 to 40 (6 px per unit).
+    const chart = (elements: Figure["elements"], view: Figure["view"] = { x: [0, 100], y: [0, 40] }): Figure => ({
+      alt: "A chart",
+      axes: "xy",
+      chart: { x: 10, y: 10, xTitle: "Marks", yTitle: "Students" },
+      view,
+      elements,
+    });
+    const nums = (out: string) => [...out.matchAll(/<text[^>]*>([^<]+)<\/text>/g)].map((m) => m[1]);
+
+    it("scales x and y separately, so small frequencies are not squashed flat", () => {
+      expect(html({ figure: chart([{ kind: "point", at: [50, 20] }]) })).toMatch(/<circle[^>]*cx="200" cy="120"/);
+    });
+
+    it("draws both axes along the bottom and left edges, numbered every step, with titles", () => {
+      const out = html({ figure: chart([]) });
+      expect(nums(out)).toEqual(expect.arrayContaining(["0", "10", "50", "100", "20", "40", "Marks", "Students"]));
+      expect(out).toMatch(/viewBox="-\d+ -\d+ /); // room outside the plot for the numbers
+    });
+
+    it("numbers a chart that starts away from 0 from its first class", () => {
+      const out = nums(html({ figure: chart([], { x: [30, 100], y: [0, 10] }) }));
+      expect(out).toEqual(expect.arrayContaining(["30", "40", "100", "0", "10"]));
+      expect(out).not.toContain("20");
+    });
+  });
+
   it("traces the angle swept in pieces that keep pace with the arm", () => {
     const pieces = trace(html({ figure: turnFig({ to: 90 }), stagger: 1 }));
     expect(pieces.length).toBeGreaterThan(2);

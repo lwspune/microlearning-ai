@@ -3,6 +3,7 @@ import type { Figure, FigureElement, Pt, Shape } from "@/content/types";
 import {
   arcPath,
   arrowHead,
+  chartTicks,
   clipLine,
   clipRay,
   fmt,
@@ -149,13 +150,63 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
   }
 }
 
+/** Room around a chart's plot for its numbers and titles. */
+const CHART_PAD = { left: 40, top: 20, right: 12, bottom: 38 } as const;
+
+const num = (v: number) => `${v < 0 ? "−" : ""}${Math.abs(v)}`;
+
+/** A chart's axes: along the plot's bottom and left edges, numbered every step from the view's start. */
+function ChartAxes({ view, f, chart }: { view: View; f: Frame; chart: NonNullable<Figure["chart"]> }) {
+  const xs = chartTicks(view.x[0], view.x[1], chart.x);
+  const ys = chartTicks(view.y[0], view.y[1], chart.y);
+  // One 0 at the corner when both axes start there.
+  const yNumbered = ys.filter((v) => !(v === 0 && xs[0] === 0 && view.y[0] === 0));
+  return (
+    <g aria-hidden="true">
+      <g stroke="var(--border)" strokeWidth={1}>
+        {xs.map((v) => (
+          <line key={`gx${v}`} x1={fmt(f.px([v, 0])[0])} x2={fmt(f.px([v, 0])[0])} y1={0} y2={fmt(f.height)} />
+        ))}
+        {ys.map((v) => (
+          <line key={`gy${v}`} y1={fmt(f.px([0, v])[1])} y2={fmt(f.px([0, v])[1])} x1={0} x2={fmt(f.width)} />
+        ))}
+      </g>
+      <g stroke="var(--muted)" strokeWidth={1.5}>
+        <line x1={0} x2={fmt(f.width)} y1={fmt(f.height)} y2={fmt(f.height)} />
+        <line y1={0} y2={fmt(f.height)} x1={0} x2={0} />
+      </g>
+      <g fill="var(--muted)" fontSize={11}>
+        {xs.map((v) => (
+          <text key={`tx${v}`} x={fmt(f.px([v, 0])[0])} y={fmt(f.height + 15)} textAnchor="middle">
+            {num(v)}
+          </text>
+        ))}
+        {yNumbered.map((v) => (
+          <text key={`ty${v}`} x={-6} y={fmt(f.px([0, v])[1] + 4)} textAnchor="end">
+            {num(v)}
+          </text>
+        ))}
+        {chart.xTitle && (
+          <text x={fmt(f.width / 2)} y={fmt(f.height + 32)} textAnchor="middle" fontStyle="italic">
+            {chart.xTitle}
+          </text>
+        )}
+        {chart.yTitle && (
+          <text x={0} y={-8} textAnchor="start" fontStyle="italic">
+            {chart.yTitle}
+          </text>
+        )}
+      </g>
+    </g>
+  );
+}
+
 function Axes({ view, f, xy }: { view: View; f: Frame; xy: boolean }) {
   const xs = ticks(...view.x);
   const ys = ticks(...view.y);
   const hasX = view.y[0] < 0 && view.y[1] > 0;
   const hasY = view.x[0] < 0 && view.x[1] > 0;
   const [ox, oy] = f.px([hasY ? 0 : view.x[0], hasX ? 0 : view.y[0]]);
-  const num = (v: number) => `${v < 0 ? "−" : ""}${Math.abs(v)}`;
   const yLabel = (v: number) => (xy ? num(v) : v === 1 ? "i" : v === -1 ? "−i" : `${num(v)}i`);
   return (
     <g aria-hidden="true">
@@ -469,7 +520,8 @@ function Label({ el, view, f, motion }: { el: FigureElement; view: View; f: Fram
 export function FigureView(props: Props) {
   const { figure, className } = props;
   const id = useId().replace(/[^a-zA-Z0-9-]/g, "");
-  const f = frameFor(figure.view);
+  const f = frameFor(figure.view, figure.chart);
+  const pad = figure.chart ? CHART_PAD : { left: 0, top: 0, right: 0, bottom: 0 };
   const starts = stepStarts(figure, props.stagger ?? 0);
   const visible = figure.elements
     .flatMap((el, i) => {
@@ -482,7 +534,7 @@ export function FigureView(props: Props) {
 
   return (
     <svg
-      viewBox={`0 0 ${fmt(f.width)} ${fmt(f.height)}`}
+      viewBox={`${fmt(-pad.left)} ${fmt(-pad.top)} ${fmt(f.width + pad.left + pad.right)} ${fmt(f.height + pad.top + pad.bottom)}`}
       role="img"
       aria-labelledby={`${id}-title`}
       className={className}
@@ -492,7 +544,11 @@ export function FigureView(props: Props) {
       {regions.map(({ el, i, motion }) => (
         <ElementView key={i} el={el} id={`${id}-r${i}`} view={figure.view} f={f} motion={motion} />
       ))}
-      {figure.axes !== "none" && <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />}
+      {figure.chart ? (
+        <ChartAxes view={figure.view} f={f} chart={figure.chart} />
+      ) : (
+        figure.axes !== "none" && <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />
+      )}
       {others.map(({ el, i, motion, start }) => (
         <ElementView key={i} el={el} id={`${id}-e${i}`} view={figure.view} f={f} motion={motion} start={start} />
       ))}

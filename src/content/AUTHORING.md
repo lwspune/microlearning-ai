@@ -111,6 +111,15 @@ is. Figures are data ([types.ts](types.ts) `Figure`), drawn by
     segments the figure shows equal (the same count on each equal side).
     Never draw a right angle by hand with a `curve`: its size would change
     with the view. (Added 2026-10-21 for Std IX and X geometry.)
+22. **[S]** Draw a histogram, frequency polygon or other data graph as a
+    **chart**: `chart: { x, y, xTitle, yTitle }` with `axes: "xy"`. Its x and y
+    scales differ (frequencies stay tall), its axes run along the bottom and
+    left edges numbered every `x` and `y` units from the view's start, so a
+    view may start at the first class (30, not 0). Never draw your own axes
+    with `axes: "none"`, and keep round shapes out of a chart (the validator
+    refuses them). A pie diagram is not a chart: `axes: "none"` and sectors.
+    (Added 2026-10-21: equal scales had flattened Std X charts and hidden their
+    numbers.)
 
 ## Lesson slides
 

@@ -40,9 +40,11 @@ the Std IX waves will wire these up, so name the topic plainly.
 ## Figures
 - Geometry (Std IX and X Part 2): mark right angles with `rightAngle` and equal sides with segment `ticks`
   (AUTHORING.md 21); never draw a right angle as a `curve`.
-- Data pictures (histogram, frequency polygon, pie diagram): use `axes: "xy"` with plain numbers for bars and
-  polygons (bars are four `segment`s each, or a `region` of half-planes), and `axes: "none"` for a pie (a
-  `circle`, `segment` radii, and `region`s of `sector` shapes inside the disc). Write a small helper in your
+- Data pictures: a histogram, frequency polygon or other data graph is a **chart** (AUTHORING.md 22):
+  `axes: "xy"` plus `chart: { x: <class width>, y: <frequency step>, xTitle, yTitle }`, with the view running
+  from the first class's start (or a class width before it) and from 0 to just above the top frequency. Bars
+  are four `segment`s each (or a `region` of half-planes). A pie diagram is not a chart: `axes: "none"`, a
+  `circle`, `segment` radii, and `region`s of `sector` shapes inside the disc. Write a small helper in your
   content file so every figure is built the same way.
 - A table of data is display maths (`$$\begin{array}{c|c} … \end{array}$$`), at most 3 columns and 8 rows
   (agent-brief-concept.md section 3).
