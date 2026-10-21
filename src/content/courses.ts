@@ -57,6 +57,8 @@ export type Course = {
   tagline: string;
   /** A school board: its page shows one standard at a time, which the student picks. */
   board?: true;
+  /** The year a board's page opens on for a student who hasn't picked one; default: its first. */
+  defaultStandard?: Standard;
   /** The course's exam and subject on PYQ Vault (its URL slugs), for chapters that link there. */
   pyqvault?: { exam: string; subject: string };
   chapters: CourseChapter[];
@@ -65,13 +67,13 @@ export type Course = {
 export type Group = { id: GroupId; title: string; blurb: string };
 
 export const GROUPS: Group[] = [
-  { id: "school", title: "K-12", blurb: "Boards and entrance exams, alongside Class 11 and 12." },
+  { id: "school", title: "K-12", blurb: "Boards and entrance exams, from Class 9 to 12." },
   { id: "graduate", title: "Graduates", blurb: "Defence and services exams after graduation." },
 ];
 
 export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths" };
 
-export const STANDARD_TITLE: Record<Standard, string> = { 11: "Std XI", 12: "Std XII" };
+export const STANDARD_TITLE: Record<Standard, string> = { 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" };
 
 const range = (from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, i) => `C${String(from + i).padStart(2, "0")}`);
@@ -104,6 +106,10 @@ const nda = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, co
 // papers ask, settled against both in PYQ Vault; approved on the owner's say-so 2026-10-20 ("you approve").
 const cbse = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
 
+// Sequences and Series C19–C21 are Std X work for the Maharashtra Board's Std X Arithmetic Progression
+// (PLAN.md "Std IX and X Maths"); every other use of the chapter keeps C01–C18.
+const SERIES_XI = range(1, 18);
+
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
   coverage: { ids: range(1, 13), unsure, status: "approved" },
@@ -115,10 +121,25 @@ export const courses: Course[] = [
     title: "Maharashtra Board",
     short: "MH Board",
     group: "school",
-    tagline: "Maharashtra State Board, HSC Science",
+    tagline: "Maharashtra State Board, SSC and HSC Science",
     board: true,
-    // Book order: Std XI Part 1, then Part 2, then Std XII. A chapter without coverage is covered whole.
+    // Std XI and XII students came first; Std IX and X joined on 2026-10-21 (owner: open on XI).
+    defaultStandard: 11,
+    // Book order: Std X Part 1, Std XI Part 1, then Part 2, then Std XII. A chapter without coverage
+    // is covered whole.
     chapters: [
+      { chapter: "linear-equations-10" },
+      { chapter: "quadratic-equations-10" },
+      {
+        chapter: "sequences-and-series",
+        slug: "arithmetic-progression",
+        title: "Arithmetic Progression",
+        standard: 10,
+        coverage: { ids: ["C15", "C19", "C16", "C20", "C17", "C18", "C21"], status: "approved" },
+      },
+      { chapter: "financial-planning-10" },
+      { chapter: "probability-10" },
+      { chapter: "statistics-10" },
       { chapter: "angle-measurement" },
       { chapter: "trigonometric-functions" },
       book("compound-and-multiple-angles", 10),
@@ -133,7 +154,7 @@ export const courses: Course[] = [
       { chapter: "continuity" },
       { chapter: "differentiation" },
       { chapter: "complex-numbers", coverage: cnMaharashtra },
-      { chapter: "sequences-and-series" },
+      book("sequences-and-series", 18),
       { chapter: "permutations-and-combinations" },
       book("binomial-theorem", 9),
       { chapter: "sets-and-relations" },
@@ -330,7 +351,7 @@ export const courses: Course[] = [
           status: "approved",
         },
       },
-      { chapter: "sequences-and-series", title: "Sequence & Series" },
+      { ...nda("sequences-and-series", SERIES_XI), title: "Sequence & Series" },
       { chapter: "permutations-and-combinations", title: "Permutation & Combination" },
       { chapter: "binomial-theorem" },
       { chapter: "sets-and-relations", title: "Sets & Relations" },
@@ -365,9 +386,9 @@ export const courses: Course[] = [
   { slug: "capf", title: "CAPF", short: "CAPF", group: "graduate", tagline: "UPSC CAPF (AC), General Ability", chapters: [] },
 ];
 
-/** A course's chapters grouped by school year: 11th, then 12th, then any without one; course order within each. */
+/** A course's chapters grouped by school year, 9th to 12th, then any without one; course order within each. */
 export function byStandard<T extends { standard?: Standard }>(list: T[]): { standard?: Standard; chapters: T[] }[] {
-  return ([11, 12, undefined] as const)
+  return ([9, 10, 11, 12, undefined] as const)
     .map((standard) => ({ standard, chapters: list.filter((c) => c.standard === standard) }))
     .filter((g) => g.chapters.length > 0);
 }
@@ -396,7 +417,7 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
         if (!SLUG.test(entry.pyqvault)) errors.push(`${course.slug}: PYQ Vault slug ${entry.pyqvault} must be lowercase words joined by hyphens`);
       }
     }
-    errors.push(...validateShares(course));
+    errors.push(...validateShares(course, chapters));
 
     for (const entry of course.chapters.flatMap(partsOf)) {
       const chapter = chapters.find((c) => c.slug === entry.chapter);
@@ -408,7 +429,7 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
         errors.push(`${course.slug}: chapter ${chapter.slug} belongs to the ${chapter.group} pool, not ${course.group}`);
       }
       if (chapter.group === "school" && chapter.standard === undefined) {
-        errors.push(`${course.slug}: chapter ${chapter.slug} needs a standard (11 or 12)`);
+        errors.push(`${course.slug}: chapter ${chapter.slug} needs a standard (9 to 12)`);
       }
       if (entry.coverage) errors.push(...validateCoverage(`${course.slug}/${chapter.slug}`, entry.coverage, chapter));
     }
@@ -416,23 +437,34 @@ export function validateCatalog(list: Course[], chapters: Chapter[]): string[] {
   return errors;
 }
 
-/** A pool chapter in several parts of a course is split: every part needs a list, and no concept may be in two. */
-function validateShares(course: Course): string[] {
+/**
+ * A pool chapter in several parts of a course is split: every part needs a list, and no concept
+ * may be in two, except in course chapters of different years (a board teaches A.P. in Std X and
+ * again in Std XI).
+ */
+function validateShares(course: Course, chapters: Chapter[]): string[] {
   const errors: string[] = [];
-  const bySlug = new Map<string, CoursePart[]>();
-  for (const part of course.chapters.flatMap(partsOf)) bySlug.set(part.chapter, [...(bySlug.get(part.chapter) ?? []), part]);
-  for (const [slug, shares] of bySlug) {
-    if (shares.length < 2) continue;
+  const bySlug = new Map<string, { part: CoursePart; standard?: Standard }[]>();
+  for (const entry of course.chapters) {
+    const standard = entry.standard ?? chapters.find((c) => c.slug === partsOf(entry)[0].chapter)?.standard;
+    for (const part of partsOf(entry)) bySlug.set(part.chapter, [...(bySlug.get(part.chapter) ?? []), { part, standard }]);
+  }
+  for (const [slug, held] of bySlug) {
+    if (held.length < 2) continue;
+    const shares = held.map((h) => h.part);
     if (shares.some((p) => !p.coverage)) {
       // Two parts of one course chapter, or a whole chapter listed again, rather than a split.
       const sameEntry = course.chapters.some((e) => partsOf(e).filter((p) => p.chapter === slug).length > 1);
       errors.push(sameEntry || shares.every((p) => !p.coverage) ? `${course.slug}: chapter ${slug} listed twice` : `${course.slug}: chapter ${slug} is split, so every part needs a list`);
       continue;
     }
-    const seen = new Set<ConceptId>();
-    for (const id of shares.flatMap((p) => p.coverage!.ids)) {
-      if (seen.has(id)) errors.push(`${course.slug}: concept ${id} of chapter ${slug} is in two course chapters`);
-      seen.add(id);
+    const seen = new Set<string>();
+    for (const { part, standard } of held) {
+      for (const id of part.coverage!.ids) {
+        const key = `${standard} ${id}`;
+        if (seen.has(key)) errors.push(`${course.slug}: concept ${id} of chapter ${slug} is in two course chapters`);
+        seen.add(key);
+      }
     }
   }
   return errors;
@@ -483,12 +515,19 @@ export function partsFor(course: Course, chapterSlug: string): { entry: CourseCh
 
 /**
  * The course chapter that takes in pool chapter `chapterSlug`, or null. With `concept`, the
- * one whose share holds that concept, when the course splits the chapter.
+ * one whose share holds that concept, when the course splits the chapter; of several (a concept
+ * taught in two years), the one in `standard` if given, else the first.
  */
-export function entryFor(course: Course, chapterSlug: string, concept?: { id: ConceptId; chapter: Chapter }): CourseChapter | null {
+export function entryFor(
+  course: Course,
+  chapterSlug: string,
+  concept?: { id: ConceptId; chapter: Chapter },
+  prefer?: { standard: Standard; chapters: Chapter[] },
+): CourseChapter | null {
   const found = partsFor(course, chapterSlug);
-  const holding = concept && found.find(({ part }) => partScope(course, part, concept.chapter).has(concept.id));
-  return (holding ?? found[0])?.entry ?? null;
+  const holding = concept ? found.filter(({ part }) => partScope(course, part, concept.chapter).has(concept.id)) : [];
+  const inYear = prefer && holding.find(({ entry }) => resolveEntry(entry, prefer.chapters).standard === prefer.standard);
+  return (inYear ?? holding[0] ?? found[0])?.entry ?? null;
 }
 
 /** Looks up a course chapter's pool chapters (the catalog is validated, so they exist). */
@@ -500,10 +539,18 @@ export function resolveEntry(entry: CourseChapter, chapters: Chapter[]): Resolve
 
 /**
  * Where a lesson in `chapter` leads back to: the course chapter that takes it in (for a split
- * chapter, the one holding concept `conceptId`), or the chapter's own map.
+ * chapter, the one holding concept `conceptId`, in the student's `standard` if it is in two
+ * years), or the chapter's own map.
  */
-export function mapLink(course: Course | null, chapter: Chapter, chapters: Chapter[], conceptId?: ConceptId): { href: string; title: string } {
-  const entry = course && entryFor(course, chapter.slug, conceptId ? { id: conceptId, chapter } : undefined);
+export function mapLink(
+  course: Course | null,
+  chapter: Chapter,
+  chapters: Chapter[],
+  conceptId?: ConceptId,
+  standard?: Standard | null,
+): { href: string; title: string } {
+  const prefer = standard ? { standard, chapters } : undefined;
+  const entry = course && entryFor(course, chapter.slug, conceptId ? { id: conceptId, chapter } : undefined, prefer);
   if (!course || !entry) return { href: `/learn/${chapter.slug}`, title: chapter.title };
   const resolved = resolveEntry(entry, chapters);
   return { href: `/courses/${course.slug}/${resolved.slug}`, title: `${course.short} · ${resolved.title}` };
@@ -534,9 +581,17 @@ export function parseGroup(value: string | null | undefined): GroupId | null {
   return GROUPS.find((g) => g.id === value)?.id ?? null;
 }
 
+/** The year a board's page opens on: the one the student picked, else the course's default, else the first. */
+export function openingStandard(course: Course, standards: Standard[], remembered: Standard | null): Standard {
+  if (remembered && standards.includes(remembered)) return remembered;
+  if (course.defaultStandard && standards.includes(course.defaultStandard)) return course.defaultStandard;
+  return standards[0];
+}
+
 /** A standard from untrusted input (a cookie), or null. */
 export function parseStandard(value: string | null | undefined): Standard | null {
-  return value === "11" ? 11 : value === "12" ? 12 : null;
+  const standard = Number(value);
+  return value && String(standard) === value && standard in STANDARD_TITLE ? (standard as Standard) : null;
 }
 
 /**

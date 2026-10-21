@@ -59,9 +59,9 @@ Related: [PLAN.md](PLAN.md) (what and why) · [src/content/AUTHORING.md](src/con
 3. Register the chapter in `src/content/chapters/index.ts`, with its `group`
    (`school` = K-12, `graduate` = Graduates) and `subject`. The group
    is the concept pool: only that group's courses can use the chapter. A
-   `school` chapter also names its `standard` (11 or 12): a board's page
-   (`board: true`) shows one standard at a time behind a Std XI / Std XII
-   switch, remembered per browser; an exam's page lists both under headings.
+   `school` chapter also names its `standard` (9 to 12): a board's page
+   (`board: true`) shows one standard at a time behind a Std IX to Std XII
+   switch (only the years that have chapters), remembered per browser; an exam's page lists both under headings.
    The catalog check refuses a missing standard.
 4. Create `verify/models/<chapter_with_underscores>.py` with a `MODELS` dict.
 5. **Add it to its courses** (section 2a). Its course card says "Coming
@@ -90,6 +90,10 @@ course covers). `src/content/courses.test.ts` validates it on every `npm test`.
    no concept is in two shares, and each such course chapter names its own
    `slug`. A share shows its list even as a draft, since a split drops
    nothing; a lesson leads back to the course chapter holding its concept.
+   A board may hold one concept in two course chapters **of different
+   years** (Std X Arithmetic Progression and Std XI Sequences and Series share
+   Series C15–C18): mastery carries over, and the lesson leads back to the
+   year the student last picked on the course page, else the first.
 3. **Coverage is verified with the owner.** Write it as `status: "draft"`;
    the owner reviews it on `/review/courses` (concepts × courses grid). Only
    after they approve, set `status: "approved"`: from then on students see
@@ -231,7 +235,10 @@ Guests are anonymous logins with no profile.
 5e. **Whole-concept agents (Std XI, a whole chapter at once):** one agent per
    concept does steps 1–5d itself, from
    [verify/agent-brief-concept.md](verify/agent-brief-concept.md) plus that
-   concept's scope, book refs (a pool, not a quota) and neighbours. Its files:
+   concept's scope, book refs (a pool, not a quota) and neighbours. Std IX
+   and X concepts also follow [verify/agent-brief-std-ix-x.md](verify/agent-brief-std-ix-x.md)
+   (audience, the chapter's source pack of book and SSC board rows, the
+   book's question forms), with a pool file of just that concept's rows. Its files:
    `verify/models/<pkg>/cNN.py` (the chapter's models package lazy-loads one
    module per concept), its scratch `cNN_spec.py`/`cNN_content.py`, and the
    built concept file. It checks itself with

@@ -8,7 +8,7 @@ import { getChapterMap } from "@/server/learning";
 /** The student's group (K-12 or Graduates), remembered per browser until profiles exist. */
 export const GROUP_COOKIE = "ml_group";
 
-/** The student's standard (11 or 12), picked on a board's page; one choice for every board. */
+/** The student's standard (9 to 12), picked on a board's page; one choice for every board. */
 export const STANDARD_COOKIE = "ml_standard";
 
 export async function rememberedGroupValue(): Promise<string | undefined> {

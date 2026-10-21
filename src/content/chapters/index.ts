@@ -40,5 +40,10 @@ import { binaryNumbers } from "./binary-numbers/index.ts";
 import { sphere } from "./sphere/index.ts";
 import { linearInequalities } from "./linear-inequalities/index.ts";
 import { introductionTo3dGeometry } from "./introduction-to-3d-geometry/index.ts";
+import { linearEquations10 } from "./linear-equations-10/index.ts";
+import { quadraticEquations10 } from "./quadratic-equations-10/index.ts";
+import { financialPlanning10 } from "./financial-planning-10/index.ts";
+import { probability10 } from "./probability-10/index.ts";
+import { statistics10 } from "./statistics-10/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations, logarithms, heightsAndDistances, binaryNumbers, sphere, linearInequalities, introductionTo3dGeometry];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations, logarithms, heightsAndDistances, binaryNumbers, sphere, linearInequalities, introductionTo3dGeometry, linearEquations10, quadraticEquations10, financialPlanning10, probability10, statistics10];

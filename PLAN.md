@@ -646,6 +646,19 @@ Inequalities is only the graphing half of Linear Programming (C01–C04).
   and a sign question (2019 Sep Q7), so NDA's Linear Inequalities now takes the whole
   `linear-inequalities` chapter, then Linear Programming C01–C04. Same URL; mastery carries over.
 
+### 12. Right angles drawn by hand (logged 2026-10-21, open)
+Learning: Std IX and X geometry needs right-angle and equal-side marks on
+nearly every figure, so the figure tool now has `rightAngle` and segment
+`ticks` (AUTHORING.md 21), drawn at a fixed size on screen. Earlier chapters
+drew right angles as three-point `curve`s in plane units, so their size
+changes with the view.
+- **Scope:** 29 marks: Heights and Distances 24, Application of Derivatives 5.
+  No chapter marks equal sides.
+- **Does it apply:** only cosmetically; the existing marks are correct and
+  readable at their views.
+- **Recommendation:** defer; swap them only if a figure is touched anyway, or
+  as one small batch with a figure-sheet check. Ask the owner first.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
@@ -1263,3 +1276,89 @@ NCERT exercises and CBSE PYQs.
   "then", since "II and VI" and "VI and II" read alike); 0 phone overflows. No source row
   was found wrong. Ex 11.2 Q3(i)'s solution calls its triangle isosceles; it is also
   right-angled (not a wrong key).
+
+## Std IX and X Maths, Maharashtra State Board (approved 2026-10-21)
+
+Goal: the Balbharati Std IX and Std X books (Part 1 Algebra, Part 2
+Geometry; 16 + 13 chapters) in the Maharashtra Board course, built the way
+Std XI and XII were. Estimate ~230 new concepts, ~1,300 items.
+
+**Sources.** PYQ Vault has every chapter transcribed with worked solutions:
+`Question_Bank/scripts/mh-sb-9/data/<chapter>-9.questions.json` (Std IX) and
+`scripts/mh-ssc-10-text/data/<alg|geo>-<chapter>-10.questions.json` (Std X),
+plus the SSC board papers 2016–2026 (`scripts/mh-ssc-10/data/alg-*` and
+`geo-*`). Textbook PDFs: `C:\Vilas\LWS_Pune\NDA_Subjects_Content\Subjects\State-Board\01. 9th`
+and `02. 10th`. Read maths from PYQ Vault's LaTeX or the page images, never
+the PDF text layer (Std IX Polynomials' exponents flatten silently).
+
+**Owner's decisions (2026-10-21, "ok" to every recommendation):**
+1. One course: the Maharashtra Board course's switch becomes Std IX / X / XI / XII.
+2. Std X first (the board year, 11 years of papers), then Std IX. The Std IX
+   waves wire the Std X graphs' `ext` items to the new Std IX concepts.
+3. Constructions are kept, as step-order and "what this construction gives"
+   items; the drawing stays on paper.
+4. Proofs are taught in the board's "complete the activity" form: which
+   reason justifies this step.
+5. Std XI/XII autonomy: I lock each graph against the book and publish and
+   merge each wave once every gate passes. The owner reviews live.
+6. Reuse a pool concept only where it matches the book exactly (A.P. in Series
+   C15–C18, Quadratic Equations C01–C05, Statistics, Heights and Distances,
+   Probability, Sets, Cramer's rule, trigonometric ratios), joined with `more`;
+   everything else is a new pool chapter with standard 9 or 10.
+
+**Later (ask first):** the Std XI/XII chapters' `ext` items on Std X basics
+could become real edges into Std IX/X concepts, so routing reaches the Std X
+gap. That reworks shipped graphs (backfill ledger 7).
+
+**Waves** (a branch each; one agent per concept, at most 10 at once; stop
+launching below 2 GB free disk):
+
+| Wave | Chapters |
+|---|---|
+| 0. Tooling | Standards 9–12, the four-year switch, copy; figure marks `rightAngle` and segment `ticks` |
+| 1. Std X Algebra | Linear Equations in Two Variables · Quadratic Equations · Arithmetic Progression · Financial Planning · Probability · Statistics |
+| 2. Std X Geometry | Similarity · Pythagoras Theorem · Circle · Geometric Constructions · Co-ordinate Geometry · Trigonometry · Mensuration |
+| 3. Std IX Algebra | Sets · Real Numbers · Polynomials · Ratio and Proportion · Linear Equations in Two Variables · Financial Planning · Statistics |
+| 4. Std IX Geometry | Basic Concepts in Geometry · Parallel Lines · Triangles · Constructions of Triangles · Quadrilaterals · Circle · Co-ordinate Geometry · Trigonometry · Surface Area and Volume |
+
+**Status:**
+- Wave 0 built 2026-10-21 (branch `ssc-tooling`): tests first. A year's tab
+  appears only once it has chapters, so the switch shows on the course page
+  with Wave 1; the two branches merge together, with one before/after sheet.
+  Also on `ssc-tooling`: a board may hold one concept in two course chapters of
+  different years (owner chose "share across years", 2026-10-21); the lesson
+  leads back to the year the student picked.
+- Wave 1 graphs locked 2026-10-21 (branch `ssc-x-algebra`, on top of
+  `ssc-tooling`): 41 new concepts in five Std X pool chapters plus Series
+  C19–C21; Std X Arithmetic Progression shares Series C15–C18 with Std XI;
+  every other course's Series pinned to C01–C18. Only C15–C18 were reused (the
+  other pool candidates are NDA-level or Std XI 3×3).
+- **Paused 2026-10-21 (owner: "pause at clean point").** Written, read by
+  hand (every key and distractor) and committed as drafts: Linear Equations
+  C01–C09, Quadratic Equations C01–C10, Series C19–C21, Financial Planning
+  C01–C03 (25 of 44). Still to write: Financial Planning C04–C09, Probability
+  C01–C05, Statistics C01–C08 (19); prompts and row pools are regenerated by
+  the session scratchpad's `w1/make_prompts.py` (copy it into the next
+  session's scratchpad or rebuild from this section). Fixes owed before
+  publishing: FP C01 needs an item with IGST as the key (all five are within
+  one state); FP C03 Q6's key is the only whole-rupee option. Then the wave's
+  gates: figure sheets (LE C03, C04; one swapped point lies on a line),
+  overflow probe (LE C02 Q5's long stem), read-through on /review, publish,
+  before/after sheet for the Std X tab, merge both branches.
+  Disk: C: was at 3.4 GB free with six agents; ten at once took it from 5.3
+  to 3.5 GB, so run six at a time.
+- **Wave 1 built 2026-10-21 (resumed after the pause):** all 44 concepts, 257
+  items (Linear Equations 9/50, Quadratic Equations 10/59, Series C19–C21 3/18,
+  Financial Planning 9/53, Probability 5/30, Statistics 8/47), approved
+  (078b27b). Every key and distractor re-derived by hand and by the verifier
+  (0 problems over the whole pool), every lesson read (one slide example in LE
+  C09 fixed), figure sheets checked, 0 phone overflows on slides and items. New
+  tooling on the way: **chart figures** (separate x and y scales, axes numbered
+  along the edges; AUTHORING.md 22) after Std X histograms and frequency
+  polygons came out flat and unnumbered, and `figure_ts` writes `chart`.
+  Before/after sheet: `screenshots/2026-10-21-std-x-algebra/`.
+  **Order of the last steps:** the live map reads a chapter's concepts from the
+  database, so seeding first would show Series C19–C21 in live Std XI and NDA
+  before the merge pins them out. So: merge `ssc-tooling` and `ssc-x-algebra`,
+  push, wait for the deploy, then `npm run content:seed`, then the golden path
+  on live. Until the seed the Std X cards read "Coming soon".

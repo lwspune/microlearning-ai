@@ -106,7 +106,8 @@ export type FigureElement = {
   | { kind: "point"; at: Pt; hollow?: boolean }
   /** An arrow; `from` defaults to the origin. */
   | { kind: "vector"; from?: Pt; to: Pt }
-  | { kind: "segment"; from: Pt; to: Pt; dashed?: boolean }
+  /** `ticks` marks equal sides: 1 to 3 short strokes across its middle, the same count on each equal side. */
+  | { kind: "segment"; from: Pt; to: Pt; dashed?: boolean; ticks?: 1 | 2 | 3 }
   /** The whole line through two points, clipped to the view. */
   | { kind: "line"; through: [Pt, Pt]; dashed?: boolean }
   /** Starts at `from` (excluded) in the direction `angle`, in degrees. */
@@ -137,13 +138,15 @@ export type FigureElement = {
   | { kind: "turn"; centre?: Pt; r: number; from?: number; to: number }
   /** A small arc marking an angle at `at`, anticlockwise from `from` to `to` degrees. */
   | { kind: "angle"; at: Pt; from: number; to: number }
+  /** A right angle's square mark at `at`, between the arms at `from` and `from` + 90 degrees. */
+  | { kind: "rightAngle"; at: Pt; from: number }
   /** Text alone, anchored at a point. */
   | { kind: "label"; at: Pt }
   /** Shaded overlap of the shapes. */
   | { kind: "region"; within: Shape[] }
 );
 
-/** A figure on the Argand plane or the xy-plane, drawn with axes. Equal scale on both axes. */
+/** A figure on the Argand plane or the xy-plane, drawn with axes. Equal scale on both axes, except in a chart. */
 export type Figure = {
   /** Read by screen readers in place of the picture: what it shows, in words. */
   alt: string;
@@ -154,6 +157,12 @@ export type Figure = {
   axes?: "argand" | "xy" | "none";
   /** The visible window: real parts from x[0] to x[1], imaginary parts from y[0] to y[1]. */
   view: { x: [number, number]; y: [number, number] };
+  /**
+   * A data chart (histogram, frequency polygon): x and y scale separately to a 400 × 240
+   * plot, and both axes run along its bottom and left edges, numbered every `x` and `y`
+   * units from the view's start. Round shapes don't belong in a chart (they would stretch).
+   */
+  chart?: { x: number; y: number; xTitle?: string; yTitle?: string };
   elements: FigureElement[];
 };
 
@@ -221,7 +230,7 @@ export type GroupId = "school" | "graduate";
 
 export type SubjectId = "maths";
 
-export type Standard = 11 | 12;
+export type Standard = 9 | 10 | 11 | 12;
 
 export type Chapter = {
   slug: string;
@@ -229,7 +238,7 @@ export type Chapter = {
   /** The pool this chapter's concepts belong to; courses of other groups can't use it. */
   group: GroupId;
   subject: SubjectId;
-  /** The school year it's taught in (11th or 12th); course pages group chapters by it. */
+  /** The school year it's taught in (9th to 12th); course pages group chapters by it. */
   standard?: Standard;
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */

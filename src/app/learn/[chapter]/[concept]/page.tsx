@@ -5,9 +5,10 @@ import { Suspense } from "react";
 import { ArrowLeftIcon, LockIcon } from "@/components/icons";
 import { card, eyebrow, primaryButton } from "@/components/ui";
 import { chapters } from "@/content/chapters";
-import { type Course, coveredIds, entryFor, findCourse, mapLink, withCourse } from "@/content/courses";
+import { type Course, coveredIds, entryFor, findCourse, mapLink, parseStandard, withCourse } from "@/content/courses";
 import type { Chapter } from "@/content/types";
 import { gateFor } from "@/engine/unlock";
+import { rememberedStandardValue } from "@/server/courses";
 import { currentViewer } from "@/server/viewer";
 import { refresherFrom } from "@/lessons/refresher";
 import { getConceptSession } from "@/server/learning";
@@ -52,7 +53,8 @@ async function ConceptSection({
     return <GuestStart next={withCourse(`/learn/${chapter}/${concept}`, course?.slug)} error={sp.error === "signin"} />;
   }
 
-  const mapHref = mapLink(course, ch, chapters, ch.graph.find((n) => n.slug === concept)?.id).href;
+  const standard = parseStandard(await rememberedStandardValue());
+  const mapHref = mapLink(course, ch, chapters, ch.graph.find((n) => n.slug === concept)?.id, standard).href;
   const refresher = typeof sp.from === "string" ? refresherFrom(ch, concept, sp.from) : null;
   const session = await getConceptSession(chapter, concept, userId, {
     allowLocked: refresher !== null,
@@ -102,7 +104,7 @@ async function ConceptContent({
   const published = ch?.concepts.some((c) => c.id === node?.id && c.status === "approved");
   if (!ch || !node || !published) notFound();
   const course = courseFrom((await searchParams).course, ch);
-  const map = mapLink(course, ch, chapters, node.id);
+  const map = mapLink(course, ch, chapters, node.id, parseStandard(await rememberedStandardValue()));
 
   return (
     <>

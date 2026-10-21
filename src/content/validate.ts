@@ -274,8 +274,10 @@ export function validateFigure(fig: Figure, where: string, maxStep?: number): st
   if (!finite(...x, ...y) || x[0] >= x[1] || y[0] >= y[1]) {
     errors.push(`${where}: view must run from a smaller to a larger value on both axes`);
   }
+  if (fig.chart && !(fig.chart.x > 0 && fig.chart.y > 0)) errors.push(`${where}: chart steps must be positive numbers`);
   fig.elements.forEach((el, i) => {
     const at = `${where} element ${i + 1} (${el.kind})`;
+    if (fig.chart && isRound(el)) errors.push(`${at}: round shapes don't belong in a chart (its x and y scales differ)`);
     if (el.step !== undefined) {
       if (!Number.isInteger(el.step) || el.step < 1) errors.push(`${at}: step must be a whole number from 1`);
       else if (maxStep !== undefined && el.step > maxStep) errors.push(`${at}: step ${el.step} is outside 1 to ${maxStep}`);
@@ -286,6 +288,13 @@ export function validateFigure(fig: Figure, where: string, maxStep?: number): st
     errors.push(...elementProblems(el).map((p) => `${at}: ${p}`));
   });
   return errors;
+}
+
+const ROUND = new Set(["circle", "ellipse", "hyperbola", "arc", "turn", "angle", "rightAngle"]);
+
+/** Shapes that a chart's unequal x and y scales would stretch out of shape. */
+function isRound(el: FigureElement): boolean {
+  return ROUND.has(el.kind) || (el.kind === "region" && el.within.some((sh) => sh.kind !== "halfPlane"));
 }
 
 function elementProblems(el: FigureElement): string[] {
@@ -300,7 +309,8 @@ function elementProblems(el: FigureElement): string[] {
     }
     case "segment":
       if (!finitePts(el.from, el.to)) return ["coordinates must be finite numbers"];
-      return samePt(el.from, el.to) ? ["a segment needs two different points"] : [];
+      if (samePt(el.from, el.to)) return ["a segment needs two different points"];
+      return el.ticks === undefined || [1, 2, 3].includes(el.ticks) ? [] : ["a segment takes 1, 2 or 3 tick marks"];
     case "line":
       if (!finitePts(...el.through)) return ["coordinates must be finite numbers"];
       return samePt(...el.through) ? ["a line needs two different points"] : [];
@@ -318,6 +328,8 @@ function elementProblems(el: FigureElement): string[] {
       return el.a > 0 && el.b > 0 ? [] : ["semi-axes must be positive"];
     case "angle":
       return finitePts(el.at) && finite(el.from, el.to) ? [] : ["coordinates must be finite numbers"];
+    case "rightAngle":
+      return finitePts(el.at) && finite(el.from) ? [] : ["coordinates must be finite numbers"];
     case "turn":
       if (!finitePts(el.centre ?? [0, 0]) || !finite(el.r, el.from ?? 0, el.to)) return ["coordinates must be finite numbers"];
       if (el.r <= 0) return ["the arm's length must be positive"];

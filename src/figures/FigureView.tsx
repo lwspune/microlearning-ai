@@ -3,6 +3,7 @@ import type { Figure, FigureElement, Pt, Shape } from "@/content/types";
 import {
   arcPath,
   arrowHead,
+  chartTicks,
   clipLine,
   clipRay,
   fmt,
@@ -53,8 +54,11 @@ const LABEL_OFFSET = {
 const LABEL_PX = 15;
 const LABEL_CHAR_PX = 8.5;
 
-/** Angle marks are drawn at a fixed size on screen. */
+/** Angle marks are drawn at a fixed size on screen: the arc's radius, the right angle's side, a tick's half-length and spacing. */
 const ANGLE_MARK_PX = 22;
+const RIGHT_MARK_PX = 12;
+const TICK_HALF_PX = 6;
+const TICK_GAP_PX = 6;
 
 /** How fast a turning arm rotates, and the size of the pieces its trace draws in. */
 const TURN_DEG_PER_S = 90;
@@ -139,9 +143,62 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
       return el.points.findLast(([x, y]) => x >= view.x[0] && x <= view.x[1] && y >= view.y[0] && y <= view.y[1]) ?? null;
     case "angle":
       return polar(el.at, (ANGLE_MARK_PX * 1.5) / f.scale, (el.from + el.to) / 2);
+    case "rightAngle":
+      return polar(el.at, (RIGHT_MARK_PX * 2) / f.scale, el.from + 45);
     case "region":
       return null; // label a region with a separate label element
   }
+}
+
+/** Room around a chart's plot for its numbers and titles. */
+const CHART_PAD = { left: 40, top: 20, right: 12, bottom: 38 } as const;
+
+const num = (v: number) => `${v < 0 ? "−" : ""}${Math.abs(v)}`;
+
+/** A chart's axes: along the plot's bottom and left edges, numbered every step from the view's start. */
+function ChartAxes({ view, f, chart }: { view: View; f: Frame; chart: NonNullable<Figure["chart"]> }) {
+  const xs = chartTicks(view.x[0], view.x[1], chart.x);
+  const ys = chartTicks(view.y[0], view.y[1], chart.y);
+  // One 0 at the corner when both axes start there.
+  const yNumbered = ys.filter((v) => !(v === 0 && xs[0] === 0 && view.y[0] === 0));
+  return (
+    <g aria-hidden="true">
+      <g stroke="var(--border)" strokeWidth={1}>
+        {xs.map((v) => (
+          <line key={`gx${v}`} x1={fmt(f.px([v, 0])[0])} x2={fmt(f.px([v, 0])[0])} y1={0} y2={fmt(f.height)} />
+        ))}
+        {ys.map((v) => (
+          <line key={`gy${v}`} y1={fmt(f.px([0, v])[1])} y2={fmt(f.px([0, v])[1])} x1={0} x2={fmt(f.width)} />
+        ))}
+      </g>
+      <g stroke="var(--muted)" strokeWidth={1.5}>
+        <line x1={0} x2={fmt(f.width)} y1={fmt(f.height)} y2={fmt(f.height)} />
+        <line y1={0} y2={fmt(f.height)} x1={0} x2={0} />
+      </g>
+      <g fill="var(--muted)" fontSize={11}>
+        {xs.map((v) => (
+          <text key={`tx${v}`} x={fmt(f.px([v, 0])[0])} y={fmt(f.height + 15)} textAnchor="middle">
+            {num(v)}
+          </text>
+        ))}
+        {yNumbered.map((v) => (
+          <text key={`ty${v}`} x={-6} y={fmt(f.px([0, v])[1] + 4)} textAnchor="end">
+            {num(v)}
+          </text>
+        ))}
+        {chart.xTitle && (
+          <text x={fmt(f.width / 2)} y={fmt(f.height + 32)} textAnchor="middle" fontStyle="italic">
+            {chart.xTitle}
+          </text>
+        )}
+        {chart.yTitle && (
+          <text x={0} y={-8} textAnchor="start" fontStyle="italic">
+            {chart.yTitle}
+          </text>
+        )}
+      </g>
+    </g>
+  );
 }
 
 function Axes({ view, f, xy }: { view: View; f: Frame; xy: boolean }) {
@@ -150,7 +207,6 @@ function Axes({ view, f, xy }: { view: View; f: Frame; xy: boolean }) {
   const hasX = view.y[0] < 0 && view.y[1] > 0;
   const hasY = view.x[0] < 0 && view.x[1] > 0;
   const [ox, oy] = f.px([hasY ? 0 : view.x[0], hasX ? 0 : view.y[0]]);
-  const num = (v: number) => `${v < 0 ? "−" : ""}${Math.abs(v)}`;
   const yLabel = (v: number) => (xy ? num(v) : v === 1 ? "i" : v === -1 ? "−i" : `${num(v)}i`);
   return (
     <g aria-hidden="true">
@@ -268,7 +324,15 @@ function ElementView({ el, id, view, f, motion, start }: { el: FigureElement; id
       );
     }
     case "segment":
-      return line(el.from, el.to, drawn(motion, el.dashed), el.dashed);
+      if (!el.ticks) return line(el.from, el.to, drawn(motion, el.dashed), el.dashed);
+      return (
+        <g>
+          {line(el.from, el.to, drawn(motion, el.dashed), el.dashed)}
+          {equalMarks(f, el.from, el.to, el.ticks).map(([a, b], i) => (
+            <line key={i} {...motion} {...stroke} strokeWidth={2} x1={fmt(a[0])} y1={fmt(a[1])} x2={fmt(b[0])} y2={fmt(b[1])} />
+          ))}
+        </g>
+      );
     case "line": {
       const seg = clipLine(view, ...el.through);
       return seg && line(seg[0], seg[1], drawn(motion, el.dashed), el.dashed);
@@ -311,11 +375,36 @@ function ElementView({ el, id, view, f, motion, start }: { el: FigureElement; id
       return <TurnView el={el} f={f} color={color} start={start} />;
     case "angle":
       return <path {...drawn(motion)} {...stroke} strokeWidth={1.75} pathLength={1} d={arcPath(f, el.at, ANGLE_MARK_PX / f.scale, el.from, el.to)} />;
+    case "rightAngle": {
+      const [x, y] = f.px(el.at);
+      const arm = (deg: number) => [Math.cos((deg * Math.PI) / 180) * RIGHT_MARK_PX, -Math.sin((deg * Math.PI) / 180) * RIGHT_MARK_PX];
+      const [ux, uy] = arm(el.from);
+      const [vx, vy] = arm(el.from + 90);
+      const d = `M ${fmt(x + ux)} ${fmt(y + uy)} L ${fmt(x + ux + vx)} ${fmt(y + uy + vy)} L ${fmt(x + vx)} ${fmt(y + vy)}`;
+      return <path {...drawn(motion)} {...stroke} strokeWidth={1.75} strokeLinejoin="round" pathLength={1} d={d} />;
+    }
     case "label":
       return null; // drawn with the labels
     case "region":
       return <Region el={el} id={id} view={view} f={f} color={color} motion={motion} />;
   }
+}
+
+/** Equal-side marks: `count` short strokes across the segment's middle, in pixels. */
+function equalMarks(f: Frame, from: Pt, to: Pt, count: number): [[number, number], [number, number]][] {
+  const [ax, ay] = f.px(from);
+  const [bx, by] = f.px(to);
+  const len = Math.hypot(bx - ax, by - ay);
+  const [dx, dy] = [(bx - ax) / len, (by - ay) / len];
+  const [mx, my] = [(ax + bx) / 2, (ay + by) / 2];
+  return Array.from({ length: count }, (_, k) => {
+    const shift = (k - (count - 1) / 2) * TICK_GAP_PX;
+    const [cx, cy] = [mx + shift * dx, my + shift * dy];
+    return [
+      [cx + TICK_HALF_PX * dy, cy - TICK_HALF_PX * dx],
+      [cx - TICK_HALF_PX * dy, cy + TICK_HALF_PX * dx],
+    ];
+  });
 }
 
 /**
@@ -431,7 +520,8 @@ function Label({ el, view, f, motion }: { el: FigureElement; view: View; f: Fram
 export function FigureView(props: Props) {
   const { figure, className } = props;
   const id = useId().replace(/[^a-zA-Z0-9-]/g, "");
-  const f = frameFor(figure.view);
+  const f = frameFor(figure.view, figure.chart);
+  const pad = figure.chart ? CHART_PAD : { left: 0, top: 0, right: 0, bottom: 0 };
   const starts = stepStarts(figure, props.stagger ?? 0);
   const visible = figure.elements
     .flatMap((el, i) => {
@@ -444,7 +534,7 @@ export function FigureView(props: Props) {
 
   return (
     <svg
-      viewBox={`0 0 ${fmt(f.width)} ${fmt(f.height)}`}
+      viewBox={`${fmt(-pad.left)} ${fmt(-pad.top)} ${fmt(f.width + pad.left + pad.right)} ${fmt(f.height + pad.top + pad.bottom)}`}
       role="img"
       aria-labelledby={`${id}-title`}
       className={className}
@@ -454,7 +544,11 @@ export function FigureView(props: Props) {
       {regions.map(({ el, i, motion }) => (
         <ElementView key={i} el={el} id={`${id}-r${i}`} view={figure.view} f={f} motion={motion} />
       ))}
-      {figure.axes !== "none" && <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />}
+      {figure.chart ? (
+        <ChartAxes view={figure.view} f={f} chart={figure.chart} />
+      ) : (
+        figure.axes !== "none" && <Axes view={figure.view} f={f} xy={figure.axes === "xy"} />
+      )}
       {others.map(({ el, i, motion, start }) => (
         <ElementView key={i} el={el} id={`${id}-e${i}`} view={figure.view} f={f} motion={motion} start={start} />
       ))}

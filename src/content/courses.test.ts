@@ -24,8 +24,9 @@ import {
   validateCatalog,
   withCourse,
   byStandard,
+  openingStandard,
 } from "./courses";
-import type { Chapter, GraphNode } from "./types";
+import type { Chapter, GraphNode, Standard } from "./types";
 
 function node(id: string, prereqs: string[] = []): GraphNode {
   return { id, slug: id.toLowerCase(), title: id, oneLiner: "", group: "g", tier: "core", prereqs, ext: [], sources: [] };
@@ -48,7 +49,7 @@ describe("validateCatalog", () => {
   });
 
   it("needs a K-12 chapter to name its standard; a Graduates chapter has none", () => {
-    expect(validateCatalog([course("a")], [{ ...ch, standard: undefined }])).toContain("a: chapter ch needs a standard (11 or 12)");
+    expect(validateCatalog([course("a")], [{ ...ch, standard: undefined }])).toContain("a: chapter ch needs a standard (9 to 12)");
     const grad = chapter("g", "graduate");
     expect(validateCatalog([course("b", { group: "graduate", chapters: [{ chapter: "g" }] })], [grad])).toEqual([]);
   });
@@ -111,6 +112,18 @@ describe("validateCatalog", () => {
       });
     expect(validateCatalog([split(["A"], ["B", "C"])], [ch])).toEqual([]);
     expect(validateCatalog([split(["A", "B"], ["B"])], [ch])).toContain("a: concept B of chapter ch is in two course chapters");
+  });
+
+  it("lets a board teach a concept in two years, but not twice in one year", () => {
+    const twoYears = (standards: [Standard, Standard]) =>
+      course("a", {
+        chapters: [
+          { chapter: "ch", slug: "first", standard: standards[0], coverage: { ids: ["A", "B"], status: "approved" } },
+          { chapter: "ch", slug: "second", standard: standards[1], coverage: { ids: ["B", "C"], status: "approved" } },
+        ],
+      });
+    expect(validateCatalog([twoYears([10, 11])], [ch])).toEqual([]);
+    expect(validateCatalog([twoYears([11, 11])], [ch])).toContain("a: concept B of chapter ch is in two course chapters");
   });
 
   it("needs a list on every share of a split pool chapter, and a slug of its own per course chapter", () => {
@@ -230,6 +243,20 @@ describe("course chapters made of several pool chapters", () => {
       expect(mapLink(split, trig, [trig], "A")).toEqual({ href: "/courses/nda/equations", title: "nda · Equations" });
     });
 
+    it("leads a concept taught in two years back to the year the student picked, else the first", () => {
+      const board = course("mh", {
+        chapters: [
+          { chapter: "trig", slug: "ratios", title: "Ratios", standard: 10, coverage: { ids: ["A", "B"], status: "approved" } },
+          { chapter: "trig", slug: "trig", title: "Trig", coverage: { ids: ["A", "B", "C"], status: "approved" } },
+        ],
+      });
+      expect(mapLink(board, trig, [trig], "A", 12).href).toBe("/courses/mh/trig");
+      expect(mapLink(board, trig, [trig], "A", 10).href).toBe("/courses/mh/ratios");
+      expect(mapLink(board, trig, [trig], "A").href).toBe("/courses/mh/ratios");
+      expect(mapLink(board, trig, [trig], "A", 11).href).toBe("/courses/mh/ratios");
+      expect(mapLink(board, trig, [trig], "C", 10).href).toBe("/courses/mh/trig");
+    });
+
     it("counts each published concept once", () => {
       const published = { ...trig, concepts: trig.graph.map((n) => ({ id: n.id, status: "approved" }) as Chapter["concepts"][number]) };
       expect(courseSize(split, [published])).toEqual({ chapters: 2, concepts: 3 });
@@ -284,15 +311,19 @@ describe("lookups", () => {
   });
 
   it("parses only known standards", () => {
+    expect(parseStandard("9")).toBe(9);
+    expect(parseStandard("10")).toBe(10);
     expect(parseStandard("11")).toBe(11);
     expect(parseStandard("12")).toBe(12);
-    expect(parseStandard("10")).toBeNull();
+    expect(parseStandard("8")).toBeNull();
+    expect(parseStandard("13")).toBeNull();
+    expect(parseStandard("09")).toBeNull();
     expect(parseStandard("11 ")).toBeNull();
     expect(parseStandard(undefined)).toBeNull();
   });
 
-  it("titles the standards as Std XI and Std XII", () => {
-    expect(STANDARD_TITLE).toEqual({ 11: "Std XI", 12: "Std XII" });
+  it("titles the standards Std IX to Std XII", () => {
+    expect(STANDARD_TITLE).toEqual({ 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" });
   });
 
   it("finds a course by slug, or null", () => {
@@ -767,6 +798,42 @@ describe("the catalog", () => {
     });
   });
 
+  // PLAN.md "Std IX and X Maths" (owner, 2026-10-21).
+  describe("Maharashtra Board Std X", () => {
+    const board = findCourse("mh-board")!;
+    const resolved = board.chapters.map((e) => resolveEntry(e, chapters));
+    const series = chapters.find((c) => c.slug === "sequences-and-series")!;
+    const AP_X = ["C15", "C19", "C16", "C20", "C17", "C18", "C21"];
+
+    it("lists the Std X Part 1 chapters in book order", () => {
+      expect(resolved.filter((r) => r.standard === 10).map((r) => r.title)).toEqual([
+        "Linear Equations in Two Variables",
+        "Quadratic Equations",
+        "Arithmetic Progression",
+        "Financial Planning",
+        "Probability",
+        "Statistics",
+      ]);
+    });
+
+    it("teaches A.P. from Sequences and Series C15–C18 plus the Std X book's C19–C21", () => {
+      const ap = resolved.find((r) => r.slug === "arithmetic-progression")!;
+      expect(ap.parts.map((p) => [p.chapter.slug, p.coverage?.ids])).toEqual([["sequences-and-series", AP_X]]);
+      expect(ap.parts[0].coverage?.status).toBe("approved");
+    });
+
+    it("leaves C19–C21 out of every other course's Sequences and Series", () => {
+      const xi = resolved.find((r) => r.slug === "sequences-and-series")!;
+      expect(xi.standard).toBe(11);
+      for (const c of courses) {
+        const parts = partsFor(c, "sequences-and-series").filter(({ entry }) => resolveEntry(entry, chapters).standard !== 10);
+        for (const { part } of parts) {
+          for (const id of ["C19", "C20", "C21"]) expect(partScope(c, part, series).has(id), `${c.slug} leaves ${id} out`).toBe(false);
+        }
+      }
+    });
+  });
+
   it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {
     for (const slug of ["mh-board", "mht-cet"]) {
       const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;
@@ -775,11 +842,32 @@ describe("the catalog", () => {
   });
 });
 
-describe("byStandard", () => {
-  const ch = (slug: string, standard?: 11 | 12) => ({ slug, standard });
+describe("openingStandard", () => {
+  const board = course("b", { board: true, defaultStandard: 11 });
 
-  it("puts 11th chapters before 12th, keeping the course's order within each", () => {
-    expect(byStandard([ch("lpp", 12), ch("cn", 11), ch("sets", 11)])).toEqual([
+  it("opens on the year the student picked, if the course has it", () => {
+    expect(openingStandard(board, [10, 11, 12], 12)).toBe(12);
+  });
+
+  it("otherwise opens on the course's default year, then on the first", () => {
+    expect(openingStandard(board, [10, 11, 12], null)).toBe(11);
+    expect(openingStandard(board, [10, 11, 12], 9)).toBe(11);
+    expect(openingStandard(board, [9, 10], null)).toBe(9);
+    expect(openingStandard(course("c", { board: true }), [10, 11], null)).toBe(10);
+  });
+
+  it("opens the Maharashtra Board on Std XI for a first visit (owner, 2026-10-21)", () => {
+    expect(findCourse("mh-board")!.defaultStandard).toBe(11);
+  });
+});
+
+describe("byStandard", () => {
+  const ch = (slug: string, standard?: Standard) => ({ slug, standard });
+
+  it("puts the years in order, 9th to 12th, keeping the course's order within each", () => {
+    expect(byStandard([ch("lpp", 12), ch("cn", 11), ch("ap", 10), ch("sets", 11), ch("sets-9", 9)])).toEqual([
+      { standard: 9, chapters: [ch("sets-9", 9)] },
+      { standard: 10, chapters: [ch("ap", 10)] },
       { standard: 11, chapters: [ch("cn", 11), ch("sets", 11)] },
       { standard: 12, chapters: [ch("lpp", 12)] },
     ]);

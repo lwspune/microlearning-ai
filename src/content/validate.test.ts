@@ -330,6 +330,40 @@ describe("validateChapter", () => {
       expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 3/));
     });
 
+    it("rejects a right-angle mark off the plane, and tick marks other than 1 to 3", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            elements: [
+              { kind: "rightAngle", at: [0, Number.NaN], from: 0 },
+              { kind: "segment", from: [0, 0], to: [1, 0], ticks: 4 as 3 },
+              { kind: "rightAngle", at: [0, 0], from: 90 },
+              { kind: "segment", from: [0, 0], to: [1, 0], ticks: 2 },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*finite/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 2.*1, 2 or 3 tick marks/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element [34]/));
+    });
+
+    it("needs a chart's steps positive, and keeps round shapes out of a chart (its scales differ)", () => {
+      const errors = errorsAfter(
+        (ch) =>
+          (c3(ch).explanation.figure = figure({
+            axes: "xy",
+            chart: { x: 0, y: 5 },
+            elements: [
+              { kind: "circle", centre: [0, 0], r: 1 },
+              { kind: "segment", from: [0, 0], to: [1, 1] },
+            ],
+          })),
+      );
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure.*chart steps must be positive/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*round shapes don't belong in a chart/));
+      expect(errors).not.toContainEqual(expect.stringMatching(/C3 idea figure element 2/));
+    });
+
     it("rejects LaTeX in a label (labels are plain text)", () => {
       expect(
         errorsAfter((ch) => (c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "$z$" }] }))),
