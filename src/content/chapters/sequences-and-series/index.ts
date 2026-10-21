@@ -17,6 +17,9 @@ import { c15 } from "./concepts/c15-sequences-and-series.ts";
 import { c16 } from "./concepts/c16-ap-nth-term.ts";
 import { c17 } from "./concepts/c17-ap-sum.ts";
 import { c18 } from "./concepts/c18-numbers-in-ap.ts";
+import { c19 } from "./concepts/c19-recognising-an-ap.ts";
+import { c20 } from "./concepts/c20-counting-terms.ts";
+import { c21 } from "./concepts/c21-ap-word-problems.ts";
 import { graph } from "./graph.ts";
 
 export const sequencesAndSeries: Chapter = {
@@ -26,5 +29,5 @@ export const sequencesAndSeries: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21],
 };
