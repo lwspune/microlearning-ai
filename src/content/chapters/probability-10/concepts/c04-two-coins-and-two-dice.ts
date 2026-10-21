@@ -32,10 +32,9 @@ export const c04: Concept = {
         figure: {
           alt: "A 6 by 6 grid of dots: the first die's number across, the second die's number up. The dots (2, 3) and (3, 2) are marked as two different outcomes, then the 6 doublets on the diagonal.",
           axes: "xy",
-          view: { x: [0, 7.5], y: [0, 7.5] },
+          chart: { x: 1, y: 1, xTitle: "1st die", yTitle: "2nd die" },
+          view: { x: [0.5, 6.5], y: [0.5, 6.5] },
           elements: [
-            { kind: "label", at: [7.1, 0.5], label: "1st die", labelAt: "n", tone: "muted" },
-            { kind: "label", at: [0.5, 7.1], label: "2nd die", labelAt: "e", tone: "muted" },
             { kind: "point", at: [1, 1], tone: "muted", step: 1 },
             { kind: "point", at: [1, 2], tone: "muted", step: 1 },
             { kind: "point", at: [1, 3], tone: "muted", step: 1 },
@@ -106,10 +105,9 @@ export const c04: Concept = {
         figure: {
           alt: "The 6 by 6 grid of dice outcomes. First the 4 dots with sum 5 are marked, then the 15 dots below the diagonal, where the first number is greater than the second.",
           axes: "xy",
-          view: { x: [0, 7.5], y: [0, 7.5] },
+          chart: { x: 1, y: 1, xTitle: "1st die", yTitle: "2nd die" },
+          view: { x: [0.5, 6.5], y: [0.5, 6.5] },
           elements: [
-            { kind: "label", at: [7.1, 0.5], label: "1st die", labelAt: "n", tone: "muted" },
-            { kind: "label", at: [0.5, 7.1], label: "2nd die", labelAt: "e", tone: "muted" },
             { kind: "point", at: [1, 1], tone: "muted" },
             { kind: "point", at: [1, 2], tone: "muted" },
             { kind: "point", at: [1, 3], tone: "muted" },
@@ -192,10 +190,9 @@ export const c04: Concept = {
       figure: {
         alt: "The 6 by 6 grid of dice outcomes with the 4 dots whose product is 6 marked: (1, 6), (6, 1), (2, 3) and (3, 2).",
         axes: "xy",
-        view: { x: [0, 7.5], y: [0, 7.5] },
+        chart: { x: 1, y: 1, xTitle: "1st die", yTitle: "2nd die" },
+        view: { x: [0.5, 6.5], y: [0.5, 6.5] },
         elements: [
-          { kind: "label", at: [7.1, 0.5], label: "1st die", labelAt: "n", tone: "muted" },
-          { kind: "label", at: [0.5, 7.1], label: "2nd die", labelAt: "e", tone: "muted" },
           { kind: "point", at: [1, 1], tone: "muted" },
           { kind: "point", at: [1, 2], tone: "muted" },
           { kind: "point", at: [1, 3], tone: "muted" },
