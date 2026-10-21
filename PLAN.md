@@ -635,13 +635,16 @@ key could be copied from the stem. The agent brief now forbids it for new work.
 - **Recommendation:** decline; change nothing. Close unless the owner wants
   the three coincidences reworded.
 
-### 11. NDA's Linear Inequalities has no one-variable inequalities (logged 2026-10-20, open)
+### 11. NDA's Linear Inequalities has no one-variable inequalities (logged 2026-10-20, done 2026-10-21)
 Learning: the CBSE build (phase 2) adds a pool chapter on linear inequalities
 in one variable (rules, number line, systems, word problems). NDA's Linear
 Inequalities is only the graphing half of Linear Programming (C01–C04).
 - **Scope:** one NDA course chapter; NDA's maps and progress would gain
   concepts. Check NDA's PYQs for one-variable inequalities before proposing.
 - **Recommendation:** decide after CBSE phase 2 ships; ask the owner first.
+- **Done 2026-10-21 (owner: "fix it"):** NDA's papers ask a double inequality (2020 Apr Q10)
+  and a sign question (2019 Sep Q7), so NDA's Linear Inequalities now takes the whole
+  `linear-inequalities` chapter, then Linear Programming C01–C04. Same URL; mastery carries over.
 
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
