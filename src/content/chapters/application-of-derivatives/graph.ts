@@ -73,4 +73,11 @@ export const graph: GraphNode[] = [
     prereqs: ["C01"], ext: ["angle between two lines"],
     sources: ["cetaod-slopes-at-intersection", "cetaod-angle-between-curves", "cetaod-curve-meets-axis-angle", "cetaod-orthogonal-intersection"],
   },
+
+  // Built for CBSE (PLAN.md "CBSE Maths course", phase 2): NCERT 6.4.1, which the MH Board book doesn't teach.
+  {
+    id: "C12", slug: "absolute-extrema", title: "Absolute maximum and minimum on a closed interval", group: "Increasing functions and extremes", tier: "core", visual: true,
+    oneLiner: t`On $[a, b]$, work out $f$ at every critical point inside and at both ends: the largest value is the absolute maximum, the smallest the absolute minimum`,
+    prereqs: ["C09"], ext: [], sources: ["cbse-12/application-of-derivatives#Absolute Maximum and Minimum on a Closed Interval"],
+  },
 ];

@@ -164,8 +164,8 @@ export const courses: Course[] = [
     // NCERT's chapters and names, as PYQ Vault has them (PLAN.md "CBSE Maths course"). The rationalised
     // books dropped mathematical induction, general and middle terms, A.P. as a topic of its own, polar
     // form, tangents and normals, Rolle and the mean value theorems, planes and the binomial distribution;
-    // the 2026 papers ask no random variables. Linear Inequalities and Introduction to Three Dimensional
-    // Geometry join once the pool has them.
+    // the 2026 papers ask no random variables. Linear Inequalities, Introduction to Three Dimensional
+    // Geometry and absolute extrema were built for CBSE (phase 2).
     chapters: [
       { ...cbse("sets-and-relations", [...range(1, 5), "C09"]), slug: "sets", title: "Sets" },
       {
@@ -182,6 +182,7 @@ export const courses: Course[] = [
       },
       // Ex 4.1 and its miscellaneous exercise only: no polar form, square roots or quadratics.
       { ...cbse("complex-numbers", [...range(1, 8), ...range(10, 12)]), title: "Complex Numbers and Quadratic Equations" },
+      { chapter: "linear-inequalities" },
       cbse("permutations-and-combinations", [...range(1, 6), ...range(8, 12)]),
       cbse("binomial-theorem", ["C01", "C06", "C07", "C10"]),
       // G.P. and the means; the miscellaneous exercise leans on A.P. from Class 10.
@@ -193,6 +194,7 @@ export const courses: Course[] = [
         title: "Conic Sections",
         more: [cbse("conic-sections", [...range(1, 3), ...range(6, 8), "C11", "C12"])],
       },
+      { chapter: "introduction-to-3d-geometry" },
       {
         ...cbse("limits", [...range(1, 5), "C07"]),
         slug: "limits-and-derivatives",
@@ -225,7 +227,7 @@ export const courses: Course[] = [
         standard: 12,
         more: [cbse("differentiation", ["C02"]), { chapter: "differentiation-12" }],
       },
-      cbse("application-of-derivatives", ["C03", "C04", ...range(8, 10)]),
+      cbse("application-of-derivatives", ["C03", "C04", ...range(8, 10), "C12"]),
       {
         ...cbse("indefinite-integration", [...range(1, 4), ...range(6, 11)]),
         slug: "integrals",
@@ -281,7 +283,8 @@ export const courses: Course[] = [
       { chapter: "line-and-plane" },
       lpp([]),
       { chapter: "differentiation", standard: 12, more: [{ chapter: "differentiation-12" }] },
-      { chapter: "application-of-derivatives", title: "Applications of Derivative" },
+      // The book's ten and MHT-CET's angle between curves; CBSE's absolute extrema (C12) stays out.
+      { ...book("application-of-derivatives", 11), title: "Applications of Derivative" },
       { chapter: "indefinite-integration" },
       book("definite-integration", 7),
       { chapter: "application-of-definite-integration", title: "Applications of Definite Integral" },
