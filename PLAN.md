@@ -1249,3 +1249,14 @@ NCERT exercises and CBSE PYQs.
 **Status:**
 - Phase 1 built 2026-10-20: tests first (`courses.test.ts` "CBSE"), sheet
   `screenshots/2026-10-20-cbse-course/`.
+- Phase 1 merged 2026-10-21 (e978655); golden path passed on live after fixing two stale
+  steps in the e2e (the "Next Page" rename of d8d4905, and a fixed wait before a reload).
+- Phase 2 built 2026-10-21 (branch `cbse-gaps`): Linear Inequalities (6 concepts, 35 items)
+  and Introduction to Three Dimensional Geometry (5 concepts, 29 items), both Std XI pool
+  chapters, and Application of Derivatives C12, absolute extrema (6 items, CBSE PYQs and
+  NCERT). MHT-CET pinned to C01–C11 of that chapter, so no other course's map changed.
+  One agent per concept, 10 at once; every key re-derived by hand and by the verifier;
+  figure sheets checked (C12's labels moved; 3D C01's octant options reworded to say
+  "then", since "II and VI" and "VI and II" read alike); 0 phone overflows. No source row
+  was found wrong. Ex 11.2 Q3(i)'s solution calls its triangle isosceles; it is also
+  right-angled (not a wrong key).
