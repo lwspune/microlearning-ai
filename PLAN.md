@@ -1347,3 +1347,18 @@ launching below 2 GB free disk):
   before/after sheet for the Std X tab, merge both branches.
   Disk: C: was at 3.4 GB free with six agents; ten at once took it from 5.3
   to 3.5 GB, so run six at a time.
+- **Wave 1 built 2026-10-21 (resumed after the pause):** all 44 concepts, 257
+  items (Linear Equations 9/50, Quadratic Equations 10/59, Series C19–C21 3/18,
+  Financial Planning 9/53, Probability 5/30, Statistics 8/47), approved
+  (078b27b). Every key and distractor re-derived by hand and by the verifier
+  (0 problems over the whole pool), every lesson read (one slide example in LE
+  C09 fixed), figure sheets checked, 0 phone overflows on slides and items. New
+  tooling on the way: **chart figures** (separate x and y scales, axes numbered
+  along the edges; AUTHORING.md 22) after Std X histograms and frequency
+  polygons came out flat and unnumbered, and `figure_ts` writes `chart`.
+  Before/after sheet: `screenshots/2026-10-21-std-x-algebra/`.
+  **Order of the last steps:** the live map reads a chapter's concepts from the
+  database, so seeding first would show Series C19–C21 in live Std XI and NDA
+  before the merge pins them out. So: merge `ssc-tooling` and `ssc-x-algebra`,
+  push, wait for the deploy, then `npm run content:seed`, then the golden path
+  on live. Until the seed the Std X cards read "Coming soon".
