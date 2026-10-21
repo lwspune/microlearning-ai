@@ -10,6 +10,7 @@ import { c08 } from "./concepts/c08-increasing-decreasing.ts";
 import { c09 } from "./concepts/c09-maxima-and-minima.ts";
 import { c10 } from "./concepts/c10-optimisation.ts";
 import { c11 } from "./concepts/c11-angle-between-curves.ts";
+import { c12 } from "./concepts/c12-absolute-extrema.ts";
 import { graph } from "./graph.ts";
 
 export const applicationOfDerivatives: Chapter = {
@@ -19,5 +20,5 @@ export const applicationOfDerivatives: Chapter = {
   subject: "maths",
   standard: 12,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
 };
