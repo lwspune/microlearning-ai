@@ -187,6 +187,26 @@ describe("FigureView: a turning arm", () => {
     expect(out![1]).toContain("transform-origin:250px 200px");
   });
 
+  // view 8 units wide: 50px per unit; [0, 0] is at (150, 250).
+  const bare = (elements: Figure["elements"], view = fig.view): Figure => ({ ...fig, axes: "none", view, elements });
+
+  it("marks a right angle with a small square of fixed size, whatever the zoom", () => {
+    expect(html({ figure: bare([{ kind: "rightAngle", at: [0, 0], from: 0 }]) })).toContain('d="M 162 250 L 162 238 L 150 238"');
+    // 16 units wide: 25px per unit, so [0, 0] is at (75, 125); the square is still 12px.
+    const zoomedOut = bare([{ kind: "rightAngle", at: [0, 0], from: 90 }], { x: [-3, 13], y: [-7, 5] });
+    expect(html({ figure: zoomedOut })).toContain('d="M 75 113 L 63 113 L 63 125"');
+  });
+
+  it("marks equal sides with ticks across the segment's middle", () => {
+    const out = html({ figure: bare([{ kind: "segment", from: [0, 0], to: [4, 0], ticks: 2 }]) });
+    const lines = [...out.matchAll(/<line[^>]*x1="([\d.]+)" y1="([\d.]+)" x2="([\d.]+)" y2="([\d.]+)"/g)].map((m) => m.slice(1).map(Number));
+    expect(lines).toEqual([
+      [150, 250, 350, 250],
+      [247, 244, 247, 256],
+      [253, 244, 253, 256],
+    ]);
+  });
+
   it("traces the angle swept in pieces that keep pace with the arm", () => {
     const pieces = trace(html({ figure: turnFig({ to: 90 }), stagger: 1 }));
     expect(pieces.length).toBeGreaterThan(2);

@@ -53,8 +53,11 @@ const LABEL_OFFSET = {
 const LABEL_PX = 15;
 const LABEL_CHAR_PX = 8.5;
 
-/** Angle marks are drawn at a fixed size on screen. */
+/** Angle marks are drawn at a fixed size on screen: the arc's radius, the right angle's side, a tick's half-length and spacing. */
 const ANGLE_MARK_PX = 22;
+const RIGHT_MARK_PX = 12;
+const TICK_HALF_PX = 6;
+const TICK_GAP_PX = 6;
 
 /** How fast a turning arm rotates, and the size of the pieces its trace draws in. */
 const TURN_DEG_PER_S = 90;
@@ -139,6 +142,8 @@ function labelAnchor(el: FigureElement, view: View, f: Frame): Pt | null {
       return el.points.findLast(([x, y]) => x >= view.x[0] && x <= view.x[1] && y >= view.y[0] && y <= view.y[1]) ?? null;
     case "angle":
       return polar(el.at, (ANGLE_MARK_PX * 1.5) / f.scale, (el.from + el.to) / 2);
+    case "rightAngle":
+      return polar(el.at, (RIGHT_MARK_PX * 2) / f.scale, el.from + 45);
     case "region":
       return null; // label a region with a separate label element
   }
@@ -268,7 +273,15 @@ function ElementView({ el, id, view, f, motion, start }: { el: FigureElement; id
       );
     }
     case "segment":
-      return line(el.from, el.to, drawn(motion, el.dashed), el.dashed);
+      if (!el.ticks) return line(el.from, el.to, drawn(motion, el.dashed), el.dashed);
+      return (
+        <g>
+          {line(el.from, el.to, drawn(motion, el.dashed), el.dashed)}
+          {equalMarks(f, el.from, el.to, el.ticks).map(([a, b], i) => (
+            <line key={i} {...motion} {...stroke} strokeWidth={2} x1={fmt(a[0])} y1={fmt(a[1])} x2={fmt(b[0])} y2={fmt(b[1])} />
+          ))}
+        </g>
+      );
     case "line": {
       const seg = clipLine(view, ...el.through);
       return seg && line(seg[0], seg[1], drawn(motion, el.dashed), el.dashed);
@@ -311,11 +324,36 @@ function ElementView({ el, id, view, f, motion, start }: { el: FigureElement; id
       return <TurnView el={el} f={f} color={color} start={start} />;
     case "angle":
       return <path {...drawn(motion)} {...stroke} strokeWidth={1.75} pathLength={1} d={arcPath(f, el.at, ANGLE_MARK_PX / f.scale, el.from, el.to)} />;
+    case "rightAngle": {
+      const [x, y] = f.px(el.at);
+      const arm = (deg: number) => [Math.cos((deg * Math.PI) / 180) * RIGHT_MARK_PX, -Math.sin((deg * Math.PI) / 180) * RIGHT_MARK_PX];
+      const [ux, uy] = arm(el.from);
+      const [vx, vy] = arm(el.from + 90);
+      const d = `M ${fmt(x + ux)} ${fmt(y + uy)} L ${fmt(x + ux + vx)} ${fmt(y + uy + vy)} L ${fmt(x + vx)} ${fmt(y + vy)}`;
+      return <path {...drawn(motion)} {...stroke} strokeWidth={1.75} strokeLinejoin="round" pathLength={1} d={d} />;
+    }
     case "label":
       return null; // drawn with the labels
     case "region":
       return <Region el={el} id={id} view={view} f={f} color={color} motion={motion} />;
   }
+}
+
+/** Equal-side marks: `count` short strokes across the segment's middle, in pixels. */
+function equalMarks(f: Frame, from: Pt, to: Pt, count: number): [[number, number], [number, number]][] {
+  const [ax, ay] = f.px(from);
+  const [bx, by] = f.px(to);
+  const len = Math.hypot(bx - ax, by - ay);
+  const [dx, dy] = [(bx - ax) / len, (by - ay) / len];
+  const [mx, my] = [(ax + bx) / 2, (ay + by) / 2];
+  return Array.from({ length: count }, (_, k) => {
+    const shift = (k - (count - 1) / 2) * TICK_GAP_PX;
+    const [cx, cy] = [mx + shift * dx, my + shift * dy];
+    return [
+      [cx + TICK_HALF_PX * dy, cy - TICK_HALF_PX * dx],
+      [cx - TICK_HALF_PX * dy, cy + TICK_HALF_PX * dx],
+    ];
+  });
 }
 
 /**

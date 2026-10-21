@@ -300,7 +300,8 @@ function elementProblems(el: FigureElement): string[] {
     }
     case "segment":
       if (!finitePts(el.from, el.to)) return ["coordinates must be finite numbers"];
-      return samePt(el.from, el.to) ? ["a segment needs two different points"] : [];
+      if (samePt(el.from, el.to)) return ["a segment needs two different points"];
+      return el.ticks === undefined || [1, 2, 3].includes(el.ticks) ? [] : ["a segment takes 1, 2 or 3 tick marks"];
     case "line":
       if (!finitePts(...el.through)) return ["coordinates must be finite numbers"];
       return samePt(...el.through) ? ["a line needs two different points"] : [];
@@ -318,6 +319,8 @@ function elementProblems(el: FigureElement): string[] {
       return el.a > 0 && el.b > 0 ? [] : ["semi-axes must be positive"];
     case "angle":
       return finitePts(el.at) && finite(el.from, el.to) ? [] : ["coordinates must be finite numbers"];
+    case "rightAngle":
+      return finitePts(el.at) && finite(el.from) ? [] : ["coordinates must be finite numbers"];
     case "turn":
       if (!finitePts(el.centre ?? [0, 0]) || !finite(el.r, el.from ?? 0, el.to)) return ["coordinates must be finite numbers"];
       if (el.r <= 0) return ["the arm's length must be positive"];

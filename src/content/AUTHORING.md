@@ -105,6 +105,12 @@ is. Figures are data ([types.ts](types.ts) `Figure`), drawn by
 16. **[S]** A question may show a figure with its stem (`item.figure`, e.g.
     "the shaded region is ..."). It is shown whole, so its elements carry no
     `step`, and it must not give the answer away (a solution figure may).
+21. **[R]** Mark geometry the way the book does, with the built-in marks:
+    `rightAngle` (at the vertex, `from` = one arm's direction; the other arm
+    is 90° anticlockwise) for every right angle, and `ticks: 1 | 2 | 3` on
+    segments the figure shows equal (the same count on each equal side).
+    Never draw a right angle by hand with a `curve`: its size would change
+    with the view. (Added 2026-10-21 for Std IX and X geometry.)
 
 ## Lesson slides
 
