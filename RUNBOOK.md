@@ -235,7 +235,10 @@ Guests are anonymous logins with no profile.
 5e. **Whole-concept agents (Std XI, a whole chapter at once):** one agent per
    concept does steps 1–5d itself, from
    [verify/agent-brief-concept.md](verify/agent-brief-concept.md) plus that
-   concept's scope, book refs (a pool, not a quota) and neighbours. Its files:
+   concept's scope, book refs (a pool, not a quota) and neighbours. Std IX
+   and X concepts also follow [verify/agent-brief-std-ix-x.md](verify/agent-brief-std-ix-x.md)
+   (audience, the chapter's source pack of book and SSC board rows, the
+   book's question forms), with a pool file of just that concept's rows. Its files:
    `verify/models/<pkg>/cNN.py` (the chapter's models package lazy-loads one
    module per concept), its scratch `cNN_spec.py`/`cNN_content.py`, and the
    built concept file. It checks itself with
