@@ -1362,3 +1362,16 @@ launching below 2 GB free disk):
   before the merge pins them out. So: merge `ssc-tooling` and `ssc-x-algebra`,
   push, wait for the deploy, then `npm run content:seed`, then the golden path
   on live. Until the seed the Std X cards read "Coming soon".
+- Wave 1 live 2026-10-22 (merge 30af17f, seeded after the deploy; golden path
+  and smoke passed on live). First visit to the MH Board page opens on Std XI.
+- **Wave 2 built 2026-10-23 (branch `ssc-x-geometry`):** all 48 concepts, 278
+  items (Similarity 7/41, Pythagoras Theorem 6/35, Circle 10/57, Geometric
+  Constructions 3/18, Co-ordinate Geometry 9/52, Trigonometry 5/28, Mensuration
+  8/47), approved (8b63920). Every key and distractor re-derived by hand (fixed
+  on the way: two items that repeated another concept's board row, a negative
+  distance and fractional counts as distractors); verifier 0 problems over the
+  whole pool; every lesson read (four small fixes); 0 phone overflows after two
+  formula splits. Figure sheets showed widespread label clashes from agents
+  placing labels blind, fixed by a second pass of 8 agents; the concept brief
+  now has agents look at their own sheets. Five agents at once (owner,
+  2026-10-22). New chapters only, so the seed can follow the deploy as before.
