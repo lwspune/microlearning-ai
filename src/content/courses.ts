@@ -125,9 +125,16 @@ export const courses: Course[] = [
     board: true,
     // Std XI and XII students came first; Std IX and X joined on 2026-10-21 (owner: open on XI).
     defaultStandard: 11,
-    // Book order: Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII. A chapter without coverage
-    // is covered whole.
+    // Book order: Std IX Part 1 and Part 2, Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII.
+    // A chapter without coverage is covered whole.
     chapters: [
+      { chapter: "sets-9" },
+      { chapter: "real-numbers-9" },
+      { chapter: "polynomials-9" },
+      { chapter: "ratio-and-proportion-9" },
+      { chapter: "linear-equations-9" },
+      { chapter: "financial-planning-9" },
+      { chapter: "statistics-9" },
       { chapter: "linear-equations-10" },
       { chapter: "quadratic-equations-10" },
       {

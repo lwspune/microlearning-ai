@@ -23,6 +23,11 @@ Change numbers where the brief says to (two models agreeing, a key readable off 
 
 The pack's `question` text is PYQ Vault's LaTeX in `\( … \)`; rewrite it with `$…$` for this app.
 
+**Std IX** packs (`mh-sb-9`) have only `book` rows: Std IX has no board exam. Cite them the same way, e.g.
+`mh-sb-9/polynomials-9/Ex 3.5 Q9(i)`. A Std IX student's earlier knowledge is `("ext", "<topic> (Std VIII)")`.
+Your pool is the rows your prompt lists plus your sections' rows no other concept claims; write extra items
+with new numbers in the book's style where the pool is short (at least five items in all).
+
 ## The book's question forms
 - **"Complete the activity"** (fill the boxes): ask for the value of one box, or the next line, with the
   activity's earlier lines in the stem.

@@ -805,6 +805,18 @@ describe("the catalog", () => {
     const series = chapters.find((c) => c.slug === "sequences-and-series")!;
     const AP_X = ["C15", "C19", "C16", "C20", "C17", "C18", "C21"];
 
+    it("lists the Std IX Algebra chapters in book order", () => {
+      expect(resolved.filter((r) => r.standard === 9).map((r) => r.title)).toEqual([
+        "Sets",
+        "Real Numbers",
+        "Polynomials",
+        "Ratio and Proportion",
+        "Linear Equations in Two Variables",
+        "Financial Planning",
+        "Statistics",
+      ]);
+    });
+
     it("lists the Std X chapters in book order, Part 1 then Part 2", () => {
       expect(resolved.filter((r) => r.standard === 10).map((r) => r.title)).toEqual([
         "Linear Equations in Two Variables",
