@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A square tile of side $10$ cm has the largest possible circle painted inside it. How much of the tile is left unpainted? $(\pi = 3.14)$`,
     reveal: t`No new formula is needed: whole minus part. The circle's radius is $5$ cm, so the answer is $100 - 3.14 \times 5^2$ $= 100 - 78.5 = 21.5$ cm$^2$.`,

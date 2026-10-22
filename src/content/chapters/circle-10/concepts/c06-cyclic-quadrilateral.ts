@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A carpenter wants to know if the four corners of a wooden frame lie on one circle. She may measure only two of its angles. Which two should she measure, and what must they add up to?`,
     reveal: t`Two opposite angles. If they add up to $180^\circ$, the four corners lie on one circle; if not, they don't.`,

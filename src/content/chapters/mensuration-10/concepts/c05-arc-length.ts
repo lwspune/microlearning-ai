@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A round pizza has a crust $96$ cm long all the way round. It is cut from the centre into $8$ equal slices. How long is the crust on one slice?`,
     reveal: t`$12$ cm. Each slice has a $45^\circ$ angle at the centre, $\frac{45}{360} = \frac{1}{8}$ of a full turn, so it gets $\frac{1}{8}$ of the crust.`,

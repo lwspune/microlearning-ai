@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You stand at a point P outside a round pond. You want straight paths from P that just graze the edge. How many are there, and where do they touch?`,
     reveal: t`Two. They touch where the circle with OP as diameter cuts the pond's edge, because there the radius meets the path at $90^\circ$.`,

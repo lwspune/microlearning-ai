@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two triangles share their top vertex, and their bases lie on one line: one base is 2 cm, the other 7 cm. Can you compare their areas without knowing the height?`,
     reveal: t`Yes. Both have the same height, so the areas are in the ratio of the bases, $2 : 7$.`,

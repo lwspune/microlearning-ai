@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A chord cuts a circle into two arcs. The small arc's angle at the centre is $40^\circ$. **Is the big arc $140^\circ$ or $320^\circ$?**`,
     reveal: t`$320^\circ$. The two arcs make the whole circle, and a full turn about the centre is $360^\circ$. So the big arc is $360^\circ - 40^\circ = 320^\circ$. $140^\circ$ uses $180^\circ$, which is only half a turn.`,

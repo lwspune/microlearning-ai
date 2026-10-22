@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\theta$ is an acute angle and $\sin\theta = \frac{8}{17}$. Without finding $\theta$, can you find $\tan\theta$?`,
     reveal: t`Yes: $\tan\theta = \frac{8}{15}$. Draw a right-angled triangle with opposite side $8$ and hypotenuse $17$. Pythagoras gives the third side: $\sqrt{289 - 64} = 15$.`,

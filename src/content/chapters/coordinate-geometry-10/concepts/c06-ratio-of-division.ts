@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The point $P(4, 3)$ lies on the segment joining $A(-2, 0)$ and $B(6, 4)$. How many times as long as $PB$ is $AP$?`,
     reveal: t`$AP$ is $3$ times $PB$. Across, $P$ is $6$ of the $8$ units from $A$ to $B$, so $AP : PB = 6 : 2 = 3 : 1$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`From a point P outside a circle, a secant meets the circle 5 cm and 20 cm from P. How long is the tangent from P?`,
     reveal: t`$10$ cm. $PT^2 = 5 \times 20 = 100$: the square of the tangent equals the near distance times the far distance.`,

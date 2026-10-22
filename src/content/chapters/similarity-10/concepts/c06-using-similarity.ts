@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A girl $1.5$ m tall casts a shadow $2$ m long. At the same moment a tree casts a shadow $10$ m long. How tall is the tree?`,
     reveal: t`The tree's shadow is $5$ times the girl's, so the tree is $5$ times as tall: $1.5 \times 5 = 7.5$ m. Similar triangles make this exact.`,

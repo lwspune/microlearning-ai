@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A flagpole stands 25 m away from you on level ground. You can't climb it or drop a tape from its top. How can one angle tell you its height?`,
     reveal: t`Measure the angle you look up through: say $45^\circ$. The pole, the ground and your line of sight make a right-angled triangle, and $\tan 45^\circ = \dfrac{h}{25} = 1$. So the pole is 25 m tall.`,

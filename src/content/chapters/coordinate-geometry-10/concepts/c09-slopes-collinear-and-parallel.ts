@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Points $A(0, 1)$, $B(2, 5)$ and $C(5, 11)$ are marked on a field. Can one straight wire pass through all three?`,
     reveal: t`Yes. Slope of $AB$ $= \frac{4}{2} = 2$ and slope of $BC = \frac{6}{3} = 2$. Equal slopes through the shared point $B$ make one line.`,

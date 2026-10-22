@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In $\square ABCD$, $A(0, 0)$, $B(3, 1)$, $C(4, 4)$ and $D(1, 3)$. Every side is $\sqrt{10}$. Is $\square ABCD$ a square?`,
     reveal: t`No. Its diagonals are $AC = \sqrt{32}$ and $BD = \sqrt{8}$. A square needs equal diagonals, so $\square ABCD$ is a rhombus.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`From a point R outside a round pond, two straight paths just touch the pond's edge. **Is one path to the edge longer than the other?**`,
     reveal: t`No. The two **tangent segments** drawn from one outside point to a circle are always equal: $RM = RN$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two circles of radii $3$ cm and $1$ cm are drawn so that they touch at one point. How far apart are their centres?`,
     reveal: t`It depends on how they touch. Side by side, $3 + 1 = 4$ cm. With the small circle inside the big one, $3 - 1 = 2$ cm. Either way, the point of contact lies on the line joining the centres.`,

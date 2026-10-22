@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A wheel stands on a straight road, touching it at one point of its rim. The hub is hidden under a cover. Using only the rim, can you draw the road's line through that point?`,
     reveal: t`Yes. Draw a chord from the point and an angle inscribed on it. The road makes that same angle with the chord, on the other side. If the hub shows, it is quicker: the road is perpendicular to the spoke.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A flat triangular plate has corners at $A(0, 0)$, $B(6, 0)$ and $C(3, 9)$. At which point will it balance on one finger?`,
     reveal: t`At its centroid, $(3, 3)$. Average the corners: $x = \frac{0 + 6 + 3}{3} = 3$ and $y = \frac{0 + 0 + 9}{3} = 3$.`,

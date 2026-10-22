@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$BC = 7$ cm. You need the point $C'$ on $BC$ with $BC' = \frac{2}{3}$ of $BC$, that is $4.666\ldots$ cm. A ruler can't measure that. How can you mark $C'$ exactly?`,
     reveal: t`Draw a ray from $B$ and mark $3$ equal steps on it with compasses. Join the 3rd mark to $C$, and draw a parallel to it through the 2nd mark. The parallel cuts $BC$ at exactly $\frac{2}{3}$ of the way.`,

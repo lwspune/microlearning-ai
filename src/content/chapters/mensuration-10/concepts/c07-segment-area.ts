@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Cut a quarter from a round cake, from the centre. Then slice that quarter straight across, from one end of its crust to the other. Which piece is bigger: the triangle at the centre, or the thin crust piece?`,
     reveal: t`The triangle. It is $\frac{1}{2}r^2$, while the quarter is $\frac{\pi r^2}{4} \approx 0.785r^2$. So the crust piece is only about $0.285r^2$.`,

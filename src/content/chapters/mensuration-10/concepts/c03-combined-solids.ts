@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Glue a cone onto a hemisphere of the same radius to make a toy. Is the toy's volume the two volumes added? Is its surface area the two total surface areas added?`,
     reveal: t`The volume, yes: every bit of both solids is still inside the toy. The surface area, no: the two flat circles are glued face to face and hidden, so only the two curved surfaces are outside.`,

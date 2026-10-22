@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At $\theta = 60^\circ$: $\sec\theta - \cos\theta$ $= 2 - \frac{1}{2} = \frac{3}{2}$, and $\sin\theta\tan\theta$ $= \frac{\sqrt{3}}{2} \times \sqrt{3} = \frac{3}{2}$. **Does this prove that $\sec\theta - \cos\theta$ equals $\sin\theta\tan\theta$ for every $\theta$?**`,
     reveal: t`No. One angle only checks one case. A proof changes one side, line by line, into the other, using rules true for every $\theta$: $\sec\theta - \cos\theta$ $= \frac{1 - \cos^2\theta}{\cos\theta} = \frac{\sin^2\theta}{\cos\theta}$ $= \sin\theta\tan\theta$.`,

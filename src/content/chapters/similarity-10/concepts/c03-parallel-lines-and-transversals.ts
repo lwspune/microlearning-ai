@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Three straight parallel canals cross two straight roads. On the first road the gaps between the canals are 30 m and 45 m. On the second road the first gap is 40 m. Is the second gap 55 m?`,
     reveal: t`No, it is 60 m. The gaps keep the same **ratio**, not the same difference: $30 : 45 = 2 : 3$ and $40 : 60 = 2 : 3$.`,

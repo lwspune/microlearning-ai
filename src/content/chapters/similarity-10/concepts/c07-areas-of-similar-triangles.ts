@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle is enlarged so that every side becomes **twice** as long. Does its area also become twice as much?`,
     reveal: t`No, it becomes **four** times as much. The enlarged triangle holds four copies of the small one: area grows by $2^2 = 4$.`,

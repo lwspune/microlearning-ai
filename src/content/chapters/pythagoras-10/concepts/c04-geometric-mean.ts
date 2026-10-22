@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The perpendicular from the right angle of a right-angled triangle cuts the hypotenuse into $2$ cm and $8$ cm. Is the perpendicular $5$ cm, the average of the parts?`,
     reveal: t`No, it is $4$ cm. It is the geometric mean of the parts: $\sqrt{2 \times 8} = \sqrt{16} = 4$.`,

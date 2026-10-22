@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In $\triangle ABC$, $AB = 4$, $AC = 8$ and $BC = 9$. The bisector of $\angle A$ meets BC at D. **Is D the midpoint of BC?**`,
     reveal: t`No. D divides BC in the ratio $AB : AC = 4 : 8 = 1 : 2$. So $BD = 3$ and $DC = 6$. The bisector halves the angle, not the opposite side.`,

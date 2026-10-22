@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`On a map with square blocks, $A$ is at $(1, 2)$ and $B$ at $(10, 14)$. An ant walks along the grid lines from $A$ to $B$. A crow flies straight. How far does each go?`,
     reveal: t`The ant walks $9 + 12 = 21$ units. The crow flies $15$ units: its path is the hypotenuse of a right-angled triangle with sides $9$ and $12$.`,

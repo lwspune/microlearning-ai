@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A cone and a cylinder have the same circular base and the same height. You fill the cone with water and pour it into the cylinder. How many cone-fuls fill the cylinder?`,
     reveal: t`Three. A cone holds exactly one third of the cylinder with the same base and height, so its volume is $\frac{1}{3}\pi r^2 h$.`,

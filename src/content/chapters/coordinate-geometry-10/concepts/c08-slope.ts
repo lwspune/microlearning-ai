@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ramp $P$ rises $3$ m while going $4$ m across. Ramp $Q$ rises $2$ m while going $3$ m across. Which ramp is steeper?`,
     reveal: t`Compare rise ÷ across: $\frac{3}{4} = 0.75$ and $\frac{2}{3} \approx 0.67$. Ramp $P$ is steeper: it rises more for each metre across. That ratio is its **slope**.`,

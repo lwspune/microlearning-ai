@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Cut a cone straight across, parallel to its base, and lift off the small cone on top. The piece left behind looks like a bucket. How would you find how much it holds?`,
     reveal: t`Take the volume of the whole cone and subtract the small cone. That subtraction always simplifies to one formula: $V = \frac{1}{3}\pi h$ $\times (r_1^2 + r_2^2 + r_1 r_2)$.`,

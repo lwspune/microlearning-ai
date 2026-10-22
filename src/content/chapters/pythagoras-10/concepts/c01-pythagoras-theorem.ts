@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A field is $45$ m long and $28$ m wide. Raju walks along two sides, from one corner to the opposite corner: $73$ m. Sita cuts straight across. How far does she walk?`,
     reveal: t`$53$ m. Her path and the two sides make a right-angled triangle, with her path opposite the right angle. $28^2 + 45^2 = 784 + 2025$ $= 2809 = 53^2$.`,

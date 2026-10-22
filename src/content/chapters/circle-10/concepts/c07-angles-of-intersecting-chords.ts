@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two chords cross inside a circle. The arc in front of the angle they make is $100^\circ$; the arc behind, in front of the opposite angle, is $40^\circ$. How big is the angle?`,
     reveal: t`$70^\circ$: half of $100^\circ + 40^\circ$. The angle at a crossing point uses both arcs, not just the one in front of it.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two sticks of $6$ cm and $8$ cm are hinged at one end. At a right angle their free ends are $10$ cm apart. Open the hinge wider than $90^\circ$: are the ends more or less than $10$ cm apart?`,
     reveal: t`More. Opening the angle pushes the free ends apart, so the third side's square is more than $6^2 + 8^2$. Close the hinge below $90^\circ$ and it is less. This concept finds exactly how much.`,

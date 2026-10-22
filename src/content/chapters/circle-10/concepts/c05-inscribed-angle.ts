@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A circular path passes through both goalposts of a football goal. Three friends stand at different places on it, all in front of the goal. Who sees the goal at the widest angle?`,
     reveal: t`All three see it at the same angle. Each friend's angle stands on the same arc between the goalposts, and angles inscribed in the same arc are equal.`,

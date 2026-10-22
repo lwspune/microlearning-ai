@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Work out $\sin^2 30^\circ + \cos^2 30^\circ$. Then do the same for $60^\circ$. **What do you notice?**`,
     reveal: t`Both are $1$: $\frac{1}{4} + \frac{3}{4} = 1$ and $\frac{3}{4} + \frac{1}{4} = 1$. In fact $\sin^2\theta + \cos^2\theta = 1$ for every angle $\theta$. A statement like this is an identity.`,

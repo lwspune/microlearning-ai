@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A line parallel to the base of a triangle cuts one side into $2$ cm at the top and $4$ cm below. On the other side the top piece is $3$ cm. Is the bottom piece $5$ cm or $6$ cm?`,
     reveal: t`$6$ cm. The line keeps the **ratio** of the pieces, not their difference: $2 : 4 = 1 : 2$, so the other side is $3 : 6$.`,

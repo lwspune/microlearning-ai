@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Three villages lie on flat ground. $A$ to $B$ is $3$ km, $B$ to $C$ is $4$ km, and $A$ to $C$ is $7$ km. **Do the three straight roads between them make a triangle?**`,
     reveal: t`No. $3 + 4 = 7$, so going from $A$ to $B$ to $C$ is exactly as long as going straight from $A$ to $C$. $B$ lies **on** the straight road from $A$ to $C$: the three villages are collinear.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An equilateral triangle has sides of $10$ cm. Fold it along its height. In each half, how long is the shortest side?`,
     reveal: t`$5$ cm. The fold cuts the base into two equal parts. Each half is a right-angled triangle with angles $30^\circ$, $60^\circ$, $90^\circ$, and its hypotenuse is a $10$ cm side. So the side opposite $30^\circ$ is half the hypotenuse.`,

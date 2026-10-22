@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Builders in ancient Egypt tied $12$ equally spaced knots in a rope. They pegged it out as a triangle with sides of $3$, $4$ and $5$ spaces. **Why did this always give them a perfect square corner?**`,
     reveal: t`$3^2 + 4^2 = 9 + 16$ $= 25 = 5^2$. When the squares fit like this, the angle opposite the longest side is exactly $90^\circ$. This is the **converse** of Pythagoras theorem.`,

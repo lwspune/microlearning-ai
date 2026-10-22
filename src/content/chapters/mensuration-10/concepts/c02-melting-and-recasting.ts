@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A solid metal cube of side $4$ cm is melted and recast into small cubes of side $1$ cm. How many small cubes are made?`,
     reveal: t`$64$, not $4$. Melting keeps the volume: the big cube holds $4^3 = 64$ cm$^3$ and each small cube $1$ cm$^3$. The side shrinks $4$ times, but the volume $64$ times.`,

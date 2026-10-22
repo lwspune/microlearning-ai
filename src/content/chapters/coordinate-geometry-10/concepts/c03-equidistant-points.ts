@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A water tank is to be built on a straight road along the X-axis. It must be equally far from two houses at A$(1, 3)$ and B$(5, 1)$. Where on the road should it stand?`,
     reveal: t`Let it stand at $(x, 0)$. Equal distances have equal squares: $(x - 1)^2 + 9$ $= (x - 5)^2 + 1$. The $x^2$ cancels, $8x = 16$, so the tank stands at $(2, 0)$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle with angles $50^\circ$, $60^\circ$ and $70^\circ$ is enlarged so that every side doubles. What happens to its angles?`,
     reveal: t`Nothing: they stay $50^\circ$, $60^\circ$ and $70^\circ$. Enlarging changes the size, not the shape. The new triangle is **similar** to the old one: equal angles, sides in proportion.`,

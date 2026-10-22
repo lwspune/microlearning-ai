@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle has sides $8$, $10$ and $12$, with no right angle. Is the median to the side $12$ longer or shorter than $6$?`,
     reveal: t`Longer. $8^2 + 10^2 = 2AM^2 + 2 \times 6^2$ gives $164 = 2AM^2 + 72$, so $AM^2 = 46$ and $AM = \sqrt{46} \approx 6.8$. It is exactly half the side only when there is a right angle.`,

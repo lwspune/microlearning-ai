@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two friends live at $A(1, 1)$ and $B(7, 4)$ on a town map. They meet on the straight road $AB$, at a point twice as far from $A$ as from $B$. Where do they meet?`,
     reveal: t`At $(5, 3)$. The meeting point divides $AB$ in the ratio $2 : 1$, so it is two-thirds of the way from $A$: $x = 1 + 4 = 5$ and $y = 1 + 2 = 3$.`,

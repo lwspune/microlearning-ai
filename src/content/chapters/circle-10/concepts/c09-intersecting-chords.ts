@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two chords cross inside a circle. One is cut into parts 2 and 6. The other is cut into a part 3 and an unknown part. **Is the unknown part 5 or 4?**`,
     reveal: t`It is 4. The parts of the two chords **multiply** to the same number: $2 \times 6 = 12$ and $3 \times 4 = 12$. Guessing 5 only makes the sums equal, and that is not the rule.`,

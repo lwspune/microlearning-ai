@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A wheel of radius $35$ cm stands on a flat road. A pebble lies on the road, $84$ cm from the point where the wheel touches it. How far is the pebble from the hub of the wheel?`,
     reveal: t`$91$ cm. The spoke to the touching point is perpendicular to the road. So hub, touching point and pebble make a right-angled triangle: $35^2 + 84^2$ $= 1225 + 7056$ $= 8281 = 91^2$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A round pizza of radius $14$ cm is cut from the centre into $8$ equal slices. What is the area of one slice? $\left(\pi = \frac{22}{7}\right)$`,
     reveal: t`Each slice is $\frac{1}{8}$ of the pizza, a sector of $360^\circ \div 8 = 45^\circ$. The pizza is $\frac{22}{7} \times 14^2 = 616$ cm$^2$, so one slice is $616 \div 8 = 77$ cm$^2$.`,

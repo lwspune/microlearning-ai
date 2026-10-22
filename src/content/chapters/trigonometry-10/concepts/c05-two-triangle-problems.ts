@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two eagles fly at the same height, $10\sqrt{3}$ m. A boy sees one at an angle of elevation of $60^\circ$, and the other, on the same side, at $30^\circ$. How far apart are the eagles?`,
     reveal: t`$20$ m. Each eagle makes its own right triangle with the boy. $\tan 60^\circ$ puts the first $10$ m away along the ground, and $\tan 30^\circ$ puts the second $30$ m away. Both are on the same side, so they are $30 - 10 = 20$ m apart.`,

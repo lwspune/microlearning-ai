@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A tangent touches a circle at Q. A chord from Q cuts off an arc of $140^\circ$ inside the angle it makes with the tangent. **Is that angle $140^\circ$, $90^\circ$ or $70^\circ$?**`,
     reveal: t`$70^\circ$. The angle between a tangent and a chord is half the arc inside it, just like an inscribed angle. Only a radius meets the tangent at $90^\circ$.`,
