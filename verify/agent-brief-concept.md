@@ -143,5 +143,14 @@ node scripts/check-concept.ts <chapter> src/content/chapters/<chapter>/concepts/
 `0 problem(s)`. Then read your `.ts` file once, top to bottom, as the student would: every number right, every
 option distinct and plausible, every remediation matching its option.
 
+**Look at your figures** (visual concepts). Placing labels by calculation is not enough: in the Std X Geometry
+wave most blind-placed figures had clashes. With `npm run dev` on :3000 (ask your caller if it is not running):
+```
+node scripts/figure-sheet.mjs <scratch>/sheets <chapter> <slug>
+```
+Read `<slug>-light.png` with the Read tool (it shows images) and zoom in on busy spots by cropping. Fix, rebuild,
+look again until no label touches another label, a dot, a tick, an arc or a line; no side label sits on its own
+segment; every angle label sits inside its angle near its arc; no frame is blank; nothing is cut off at the edge.
+
 ## Reply
 The file paths, the misconceptions (one line each), and anything you were unsure of (one line each). Short.
