@@ -13,6 +13,7 @@ BOOK = {
     "e": Float("1.6e-19"),  # C
     "m_e": Float("9.1e-31"),  # kg
     "R": Float("8.314"),  # J/(mol K)
+    "atm": Float("1.013e5"),  # N/m^2, one atmosphere
 }
 
 

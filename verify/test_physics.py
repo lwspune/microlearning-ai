@@ -39,6 +39,7 @@ class Book(unittest.TestCase):
         self.assertEqual(BOOK["e"], Float("1.6e-19"))
         self.assertEqual(BOOK["m_e"], Float("9.1e-31"))
         self.assertEqual(BOOK["R"], Float("8.314"))
+        self.assertEqual(BOOK["atm"], Float("1.013e5"))
 
 
 if __name__ == "__main__":
