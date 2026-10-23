@@ -14,6 +14,11 @@ BOOK = {
     "m_e": Float("9.1e-31"),  # kg
     "R": Float("8.314"),  # J/(mol K)
     "atm": Float("1.013e5"),  # N/m^2, one atmosphere
+    "k_B": Float("1.38e-23"),  # J/K, Boltzmann's constant
+    "sigma": Float("5.67e-8"),  # W/(m^2 K^4), Stefan's constant
+    "b_wien": Float("2.897e-3"),  # m K, Wien's constant
+    "u": Float("1.66e-27"),  # kg, atomic mass unit
+    "N_A": Float("6.02e23"),  # per mol, Avogadro's number
 }
 
 
