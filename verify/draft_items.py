@@ -15,7 +15,7 @@ A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
     ask=None,                           # optional projection, an expression in z
     models=["key", "C02-M1", "C02-M2", "C02-M3"],  # key first, then one per distractor
     text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
-    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°) | pct (..%)
+    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°) | pct (..%) | unit:<unit> (.. m/s)
     value={"key": "x-2"},               # optional per-model value overrides (loci/points)
     figure={...},                       # optional: a Figure dict shown with the stem (no steps)
     source='{ kind: "authored" }',      # optional, TypeScript literal
@@ -111,6 +111,8 @@ def option_text(val, fmt) -> str:
         return f"${latex(val)}\\%$"
     if fmt == "deg":  # an angle in degrees
         return f"${latex(val)}^\\circ$"
+    if fmt and fmt.startswith("unit:"):  # a physical quantity: unit:<unit in \mathrm form>, e.g. unit:m\,s^{-2}
+        return f"${latex(val, mul_symbol='times')}\\ \\mathrm{{{fmt[5:]}}}$"
     if isinstance(val, Tuple):
         return "$(" + ", ".join(latex(v) for v in val) + ")$"
     return f"${latex(val)}$"

@@ -38,6 +38,17 @@ class OptionText(unittest.TestCase):
     def test_pct_writes_a_percent_sign(self):
         self.assertEqual(option_text(60, "pct"), r"$60\%$")
 
+    def test_unit_writes_the_value_then_its_unit(self):
+        from sympy import Float
+
+        self.assertEqual(option_text(Float("4.9"), r"unit:m/s"), r"$4.9\ \mathrm{m/s}$")
+        self.assertEqual(option_text(12, r"unit:kg\,m^2"), r"$12\ \mathrm{kg\,m^2}$")
+
+    def test_unit_writes_powers_of_ten_with_a_times_sign(self):
+        from sympy import Float
+
+        self.assertEqual(option_text(Float("6.67e-11"), r"unit:N\,m^2/kg^2"), r"$6.67 \times 10^{-11}\ \mathrm{N\,m^2/kg^2}$")
+
     def test_quadrant_is_unchanged(self):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
