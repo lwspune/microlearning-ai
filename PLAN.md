@@ -1397,3 +1397,18 @@ launching below 2 GB free disk):
   Std XI is backfill ledger 13), and the income tax table needed a sideways
   scroll on a phone (now in lakh). Course order is the book's: Std IX Part 1,
   then Std X.
+- Wave 3 live 2026-10-23 (main de4424f; seeded only its 7 chapters after the
+  deploy, 35 s; golden path passed on live).
+- **Wave 4 built 2026-10-23 (branch `ssc-ix-geometry`):** Std IX Part 2, all 41
+  concepts, 237 items (Basic Concepts in Geometry 4/24, Parallel Lines 4/22,
+  Triangles 8/46, Constructions of Triangles 3/17, Quadrilaterals 5/29, Circle
+  4/23, Co-ordinate Geometry 4/24, Trigonometry 4/24, Surface Area and Volume
+  5/28), approved (a2c1a3b). Every key and distractor re-derived by hand, every
+  figure sheet looked at (three label fixes: the quadrant turn arrow, the
+  90° − θ label, a re-render of Quadrilaterals C02), every lesson read; 0 phone
+  overflows. Book keys found wrong and kept as distractors: Basic Geometry
+  Ex 1.1 Q3(v), Surface Area Prob Q2 (glass taken off once). All five agents
+  stalled at once for ~35 min (an outage) and resumed where they stopped. Same
+  branch: the Std X wording pass (prerequisites now name the Std IX chapter or
+  the earlier standard), and `content:seed -- <chapter>...` (seed only named
+  chapters). Course order: Std IX Part 1, Part 2, then Std X.
