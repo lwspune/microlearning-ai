@@ -1444,7 +1444,11 @@ papers `mh-hsc-12-pyq/data/*-12-pyq` (16 chapters, 366 rows).
    the Std XII board rows by chapter).
 
 **Waves:** 1 Std XII Part 1 (8 chapters), 2 Std XII Part 2 (8), 3 Std XI
-chapters 1–7, 4 Std XI chapters 8–14; about 200 concepts in all. Each wave:
-graphs, one agent per concept (five at a time), every key and distractor
-re-derived by hand, every figure sheet looked at, every lesson read, phone
-probe, approve, merge, seed only its chapters, live check.
+chapters 1–7, 4 Std XI chapters 8–14; about 200 concepts in all. Owner,
+2026-10-23: **no agents; write sequentially**, so every concept is written in the
+main session, one at a time. Each wave: graphs, concepts one by one, every key
+and distractor re-derived, every figure sheet looked at, every lesson read,
+phone probe, approve, merge, seed only its chapters, live check.
+The subject switch (foundation 2) is built and checked in the browser
+(dd4b99d); it stays hidden until a Std has physics chapters, so it ships with
+wave 1.
