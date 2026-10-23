@@ -199,6 +199,7 @@ export const courses: Course[] = [
       // Std XII Physics, Balbharati book order (PLAN.md "Std XI and XII Physics").
       { chapter: "rotational-dynamics" },
       { chapter: "fluids" },
+      { chapter: "kinetic-theory" },
     ],
   },
   {

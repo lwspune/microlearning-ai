@@ -889,7 +889,7 @@ describe("the catalog", () => {
 
     it("lists the Std XII physics chapters in book order", () => {
       const physics = resolved.filter((r) => r.subject === "physics");
-      expect(physics.map((r) => r.title)).toEqual(["Rotational Dynamics", "Mechanical Properties of Fluids"]);
+      expect(physics.map((r) => r.title)).toEqual(["Rotational Dynamics", "Mechanical Properties of Fluids", "Kinetic Theory of Gases and Radiation"]);
       expect(new Set(physics.map((r) => r.standard))).toEqual(new Set([12]));
     });
   });
