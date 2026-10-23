@@ -47,7 +47,7 @@ export const c02: Concept = {
         t`$U = \dfrac{5}{2} \times 2 \times 8.314 \times 300$.`,
         t`$U \approx 12\,470\ \mathrm{J}$.`,
       ],
-      answer: t`$U \approx 1.25 \times 10^{4}\ \mathrm{J}$`,
+      answer: t`$U \approx 12\,470\ \mathrm{J}$`,
     },
     visualSpec: t`Heat a gas in a cylinder with the piston locked and watch its molecules speed up; then push the piston in instead and watch the same speed-up.`,
   },
