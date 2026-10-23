@@ -201,6 +201,7 @@ export const courses: Course[] = [
       { chapter: "fluids" },
       { chapter: "kinetic-theory" },
       { chapter: "thermodynamics" },
+      { chapter: "oscillations" },
     ],
   },
   {
