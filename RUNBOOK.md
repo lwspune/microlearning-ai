@@ -238,7 +238,10 @@ Guests are anonymous logins with no profile.
    concept's scope, book refs (a pool, not a quota) and neighbours. Std IX
    and X concepts also follow [verify/agent-brief-std-ix-x.md](verify/agent-brief-std-ix-x.md)
    (audience, the chapter's source pack of book and SSC board rows, the
-   book's question forms), with a pool file of just that concept's rows. Its files:
+   book's question forms), with a pool file of just that concept's rows. Physics
+   concepts follow [verify/agent-brief-physics.md](verify/agent-brief-physics.md)
+   (units, rounding with `sig`, the book's constants) and are written in the main
+   session, one at a time. Its files:
    `verify/models/<pkg>/cNN.py` (the chapter's models package lazy-loads one
    module per concept), its scratch `cNN_spec.py`/`cNN_content.py`, and the
    built concept file. It checks itself with
