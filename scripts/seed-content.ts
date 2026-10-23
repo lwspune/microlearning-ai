@@ -1,14 +1,20 @@
 /**
- * Seeds every chapter into the database: structural validation, then the
+ * Seeds chapters into the database: structural validation, then the
  * sympy verifier, then one seed_chapter() call (one transaction) per chapter.
  * Stops before any write if a check fails.
  *
- * Usage: node scripts/seed-content.ts   (reads .env.local)
+ * Usage: node scripts/seed-content.ts [chapter-slug ...]   (reads .env.local)
+ * With no slugs it seeds every chapter (the verifier then takes about two
+ * hours); with slugs it checks and seeds only those chapters.
  */
 import { spawnSync } from "node:child_process";
-import { chapters } from "../src/content/chapters/index.ts";
+import { chapters as catalog } from "../src/content/chapters/index.ts";
+import { pickChapters } from "../src/content/pickChapters.ts";
 import { toSeedPayload } from "../src/content/seedPayload.ts";
 import { validateChapter } from "../src/content/validate.ts";
+
+const slugs = process.argv.slice(2);
+const chapters = pickChapters(catalog, slugs);
 
 try {
   process.loadEnvFile(".env.local");
@@ -33,7 +39,10 @@ if (structural.length) {
 console.log(`structure: ${chapters.length} chapter(s) valid`);
 
 // 2. Answers (re-derived with sympy).
-const verify = spawnSync("npm run content:verify", { shell: true, stdio: "inherit" });
+const verifyCommand = slugs.length
+  ? `node scripts/export-content.ts .content && python verify/verify_content.py ${chapters.map((c) => `.content/${c.slug}.json`).join(" ")}`
+  : "npm run content:verify";
+const verify = spawnSync(verifyCommand, { shell: true, stdio: "inherit" });
 if (verify.status !== 0) {
   console.error("Answer verification failed; nothing was written.");
   process.exit(1);
