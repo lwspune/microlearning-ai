@@ -1386,3 +1386,14 @@ launching below 2 GB free disk):
   placing labels blind, fixed by a second pass of 8 agents; the concept brief
   now has agents look at their own sheets. Five agents at once (owner,
   2026-10-22). New chapters only, so the seed can follow the deploy as before.
+- **Wave 3 built 2026-10-23 (branch `ssc-ix-algebra`):** Std IX Part 1, all 60
+  concepts, 348 items (Sets 7/38, Real Numbers 13/78, Polynomials 11/66, Ratio
+  and Proportion 9/51, Linear Equations in Two Variables 7/40, Financial
+  Planning 4/24, Statistics 9/51), approved (87538d4). Std IX packs are
+  book-only (no board rows). Every key and distractor re-derived by hand
+  (fixed on the way: three distractors in Real Numbers and Polynomials); every
+  lesson read (one spelling fix); 0 phone overflows on slides and items. Two
+  figure fixes: the Venn `U` label sat on the frame's top edge (helper fixed,
+  Std XI is backfill ledger 13), and the income tax table needed a sideways
+  scroll on a phone (now in lakh). Course order is the book's: Std IX Part 1,
+  then Std X.
