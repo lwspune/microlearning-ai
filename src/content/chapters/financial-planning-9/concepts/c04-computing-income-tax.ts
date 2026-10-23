@@ -125,7 +125,7 @@ export const c04: Concept = {
     {
       id: "C04-Q1",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/financial-planning-9/Income Tax SolvedEx.1" },
-      stem: t`Each part of the taxable income (in rupees) is taxed at its own rate: $$\begin{array}{l|c|c} \text{Taxable income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 250000 & \text{Nil} & \text{Nil} \\ 250001 \text{ to } 300000 & 5\% & \text{Nil} \\ 300001 \text{ to } 500000 & 5\% & 5\% \\ 500001 \text{ to } 1000000 & 20\% & 20\% \\ \text{above } 1000000 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Mhatre is 50 years old. His taxable income is ₹ 10,50,000. What is the income tax payable, with both cesses?`,
+      stem: t`Each part of the taxable income is taxed at its own rate (income in lakh rupees; 1 lakh = ₹ 1,00,000): $$\begin{array}{l|c|c} \text{Income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 2.5 & \text{Nil} & \text{Nil} \\ 2.5 \text{ to } 3 & 5\% & \text{Nil} \\ 3 \text{ to } 5 & 5\% & 5\% \\ 5 \text{ to } 10 & 20\% & 20\% \\ \text{above } 10 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Mhatre is 50 years old. His taxable income is ₹ 10,50,000. What is the income tax payable, with both cesses?`,
       verify: { kind: "value", inputs: { I: "1050000", age: "50" }, params: { ask: "total" } },
       options: [
         { key: "A", text: t`₹ 15,450`, correct: false, misconceptionId: "C04-M2", value: "15450" },
@@ -145,7 +145,7 @@ export const c04: Concept = {
     {
       id: "C04-Q2",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/financial-planning-9/Prob Q8(ii)" },
-      stem: t`Each part of the taxable income (in rupees) is taxed at its own rate: $$\begin{array}{l|c|c} \text{Taxable income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 250000 & \text{Nil} & \text{Nil} \\ 250001 \text{ to } 300000 & 5\% & \text{Nil} \\ 300001 \text{ to } 500000 & 5\% & 5\% \\ 500001 \text{ to } 1000000 & 20\% & 20\% \\ \text{above } 1000000 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Khan is 65 years old. His taxable income is ₹ 4,50,000. What is the income tax payable, with both cesses?`,
+      stem: t`Each part of the taxable income is taxed at its own rate (income in lakh rupees; 1 lakh = ₹ 1,00,000): $$\begin{array}{l|c|c} \text{Income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 2.5 & \text{Nil} & \text{Nil} \\ 2.5 \text{ to } 3 & 5\% & \text{Nil} \\ 3 \text{ to } 5 & 5\% & 5\% \\ 5 \text{ to } 10 & 20\% & 20\% \\ \text{above } 10 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Khan is 65 years old. His taxable income is ₹ 4,50,000. What is the income tax payable, with both cesses?`,
       verify: { kind: "value", inputs: { I: "450000", age: "65" }, params: { ask: "total" } },
       options: [
         { key: "A", text: t`₹ 10,300`, correct: false, misconceptionId: "C04-M4", value: "10300" },
@@ -165,7 +165,7 @@ export const c04: Concept = {
     {
       id: "C04-Q3",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/financial-planning-9/Income Tax SolvedEx.3" },
-      stem: t`Each part of the taxable income (in rupees) is taxed at its own rate: $$\begin{array}{l|c|c} \text{Taxable income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 250000 & \text{Nil} & \text{Nil} \\ 250001 \text{ to } 300000 & 5\% & \text{Nil} \\ 300001 \text{ to } 500000 & 5\% & 5\% \\ 500001 \text{ to } 1000000 & 20\% & 20\% \\ \text{above } 1000000 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mrs. Hinduja is 50 years old. Last year her taxable income was ₹ 16,30,000. What is the income tax payable, with both cesses?`,
+      stem: t`Each part of the taxable income is taxed at its own rate (income in lakh rupees; 1 lakh = ₹ 1,00,000): $$\begin{array}{l|c|c} \text{Income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 2.5 & \text{Nil} & \text{Nil} \\ 2.5 \text{ to } 3 & 5\% & \text{Nil} \\ 3 \text{ to } 5 & 5\% & 5\% \\ 5 \text{ to } 10 & 20\% & 20\% \\ \text{above } 10 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mrs. Hinduja is 50 years old. Last year her taxable income was ₹ 16,30,000. What is the income tax payable, with both cesses?`,
       verify: { kind: "value", inputs: { I: "1630000", age: "50" }, params: { ask: "total" } },
       options: [
         { key: "A", text: t`₹ 3,50,400`, correct: false, misconceptionId: "C04-M5", value: "350400" },
@@ -185,7 +185,7 @@ export const c04: Concept = {
     {
       id: "C04-Q4",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/financial-planning-9/Ex 6.2 Q2" },
-      stem: t`Each part of the taxable income (in rupees) is taxed at its own rate: $$\begin{array}{l|c|c} \text{Taxable income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 250000 & \text{Nil} & \text{Nil} \\ 250001 \text{ to } 300000 & 5\% & \text{Nil} \\ 300001 \text{ to } 500000 & 5\% & 5\% \\ 500001 \text{ to } 1000000 & 20\% & 20\% \\ \text{above } 1000000 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Kartarsingh is 48 years old. After his deductions, his taxable income is ₹ 4,41,000. What is the income tax payable, with both cesses?`,
+      stem: t`Each part of the taxable income is taxed at its own rate (income in lakh rupees; 1 lakh = ₹ 1,00,000): $$\begin{array}{l|c|c} \text{Income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 2.5 & \text{Nil} & \text{Nil} \\ 2.5 \text{ to } 3 & 5\% & \text{Nil} \\ 3 \text{ to } 5 & 5\% & 5\% \\ 5 \text{ to } 10 & 20\% & 20\% \\ \text{above } 10 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Kartarsingh is 48 years old. After his deductions, his taxable income is ₹ 4,41,000. What is the income tax payable, with both cesses?`,
       verify: { kind: "value", inputs: { I: "441000", age: "48" }, params: { ask: "total" } },
       options: [
         { key: "A", text: t`₹ 7,261.50`, correct: false, misconceptionId: "C04-M4", value: "14523/2" },
@@ -205,7 +205,7 @@ export const c04: Concept = {
     {
       id: "C04-Q5",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/financial-planning-9/Prob Q8(i)" },
-      stem: t`Each part of the taxable income (in rupees) is taxed at its own rate: $$\begin{array}{l|c|c} \text{Taxable income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 250000 & \text{Nil} & \text{Nil} \\ 250001 \text{ to } 300000 & 5\% & \text{Nil} \\ 300001 \text{ to } 500000 & 5\% & 5\% \\ 500001 \text{ to } 1000000 & 20\% & 20\% \\ \text{above } 1000000 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Kadam is 35 years old and has a taxable income of ₹ 13,35,000. What is the income tax payable, with both cesses?`,
+      stem: t`Each part of the taxable income is taxed at its own rate (income in lakh rupees; 1 lakh = ₹ 1,00,000): $$\begin{array}{l|c|c} \text{Income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 2.5 & \text{Nil} & \text{Nil} \\ 2.5 \text{ to } 3 & 5\% & \text{Nil} \\ 3 \text{ to } 5 & 5\% & 5\% \\ 5 \text{ to } 10 & 20\% & 20\% \\ \text{above } 10 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Kadam is 35 years old and has a taxable income of ₹ 13,35,000. What is the income tax payable, with both cesses?`,
       verify: { kind: "value", inputs: { I: "1335000", age: "35" }, params: { ask: "total" } },
       options: [
         { key: "A", text: t`₹ 2,16,815`, correct: false, misconceptionId: "C04-M4", value: "216815" },
@@ -225,7 +225,7 @@ export const c04: Concept = {
     {
       id: "C04-Q6",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/financial-planning-9/Income Tax SolvedEx.2" },
-      stem: t`Each part of the taxable income (in rupees) is taxed at its own rate: $$\begin{array}{l|c|c} \text{Taxable income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 250000 & \text{Nil} & \text{Nil} \\ 250001 \text{ to } 300000 & 5\% & \text{Nil} \\ 300001 \text{ to } 500000 & 5\% & 5\% \\ 500001 \text{ to } 1000000 & 20\% & 20\% \\ \text{above } 1000000 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Ahmed is 62 years old. His taxable income is ₹ 7,20,000. How much is the education cess and the secondary and higher education cess together?`,
+      stem: t`Each part of the taxable income is taxed at its own rate (income in lakh rupees; 1 lakh = ₹ 1,00,000): $$\begin{array}{l|c|c} \text{Income} & \text{Under 60} & \text{60 to 80} \\ \hline \text{up to } 2.5 & \text{Nil} & \text{Nil} \\ 2.5 \text{ to } 3 & 5\% & \text{Nil} \\ 3 \text{ to } 5 & 5\% & 5\% \\ 5 \text{ to } 10 & 20\% & 20\% \\ \text{above } 10 & 30\% & 30\% \end{array}$$ Then $2\%$ education cess and $1\%$ secondary and higher education cess are added, on the income tax. Mr. Ahmed is 62 years old. His taxable income is ₹ 7,20,000. How much is the education cess and the secondary and higher education cess together?`,
       verify: { kind: "value", inputs: { I: "720000", age: "62" }, params: { ask: "cess" } },
       options: [
         { key: "A", text: t`₹ 1,620`, correct: true, value: "1620" },
