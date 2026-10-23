@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A salary rises by the same amount every year. It is ₹ 5,000 after $2$ years and ₹ 5,600 after $5$ years. **What was it at the start?**`,
     reveal: t`The $3$ years between added ₹ 600, so the increment is ₹ 200 a year. At the start it was $5000 - 2 \times 200 = 4600$, that is ₹ 4,600. Each fact in the story was an equation.`,

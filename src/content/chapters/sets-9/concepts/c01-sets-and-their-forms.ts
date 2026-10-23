@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Is **'the good singers in your class'** a set? Is **'the students in your class born in May'** a set?`,
     reveal: t`Only the second. Anyone can check a birth date, so everyone agrees who belongs. 'Good' is an opinion, so the first collection is not **well-defined**, and it is not a set.`,

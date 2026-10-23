@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Factorise $(a + b)^2 + 5(a + b) + 6$. **It looks long.** What if you call $a + b$ just $m$?`,
     reveal: t`It becomes $m^2 + 5m + 6 = (m + 2)(m + 3)$. Put $a + b$ back for $m$: the answer is $(a + b + 2)(a + b + 3)$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ravi is 30 years old. His taxable income is ₹ 5,10,000. He says: **I am in the $20\%$ slab, so my income tax is $20\%$ of ₹ 5,10,000 = ₹ 1,02,000.** Is he right?`,
     reveal: t`No. Only the ₹ 10,000 above ₹ 5,00,000 is taxed at $20\%$, which is ₹ 2,000. The slab below adds a fixed ₹ 12,500. His income tax is ₹ 14,500, before the cess.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A square tile has an area of $2$ square units. How long is its side? Try $1.4^2 = 1.96$ and $1.42^2 = 2.0164$. Is there a fraction whose square is exactly $2$?`,
     reveal: t`No. The side is $\sqrt{2} = 1.41421356\ldots$ Its digits never end and no block ever repeats, so no fraction $\frac{p}{q}$ equals it. Yet it is a real length, and it has its own point on the number line.`,

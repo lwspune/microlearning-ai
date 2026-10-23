@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c13: Concept = {
   id: "C13",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Which numbers $y$ have $|y| = 4$? **So how many answers does $|x - 10| = 4$ have?**`,
     reveal: t`Both $4$ and $-4$ have absolute value $4$, so $x - 10 = 4$ or $x - 10 = -4$. That gives two answers: $x = 14$ or $x = 6$.`,

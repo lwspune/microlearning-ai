@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ravi is 30 and earns ₹ 3,00,000 a year. He puts ₹ 60,000 into PPF. A friend says: **3,00,000 is more than 2,50,000, so Ravi must pay income tax.** Is the friend right?`,
     reveal: t`No. The PPF saving is taken off first. Taxable income $= 300000 - 60000$ = ₹ 2,40,000. That is within the Nil limit of ₹ 2,50,000, so no tax is due.`,

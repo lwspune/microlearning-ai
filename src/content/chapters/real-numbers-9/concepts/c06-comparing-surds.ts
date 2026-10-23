@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$5\sqrt{2}$ has the bigger number outside the root. $3\sqrt{5}$ has the bigger number under the root. Which is bigger?`,
     reveal: t`Square both. $(5\sqrt{2})^2 = 25 \times 2 = 50$ and $(3\sqrt{5})^2 = 9 \times 5 = 45$. Since $50 > 45$, $5\sqrt{2} > 3\sqrt{5}$.`,

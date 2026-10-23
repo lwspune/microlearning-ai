@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a test, $6$ students scored in $0$–$10$, $9$ in $10$–$20$ and $8$ in $20$–$30$. How many students scored less than $20$?`,
     reveal: t`Everyone in $0$–$10$ and $10$–$20$ scored below $20$: $6 + 9 = 15$ students. Adding the frequencies down the table like this gives the **cumulative frequency**.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Is $\frac{1}{\sqrt{3} - \sqrt{2}}$ equal to $\sqrt{3} + \sqrt{2}$? Multiply $\sqrt{3} + \sqrt{2}$ by $\sqrt{3} - \sqrt{2}$ to check.`,
     reveal: t`Yes. $(\sqrt{3} + \sqrt{2})(\sqrt{3} - \sqrt{2})$ $= 3 - 2 = 1$. So $\sqrt{3} + \sqrt{2}$ is exactly $\frac{1}{\sqrt{3} - \sqrt{2}}$. Multiplying by a **conjugate** clears the root.`,

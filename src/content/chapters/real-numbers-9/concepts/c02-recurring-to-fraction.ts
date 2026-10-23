@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Is $0.999\ldots$ (the $9$s never stop) a little less than $1$, or equal to $1$?`,
     reveal: t`Equal to $1$. Let $x = 0.999\ldots$ Then $10x = 9.999\ldots$ Subtract: $10x - x = 9$, so $9x = 9$ and $x = 1$.`,

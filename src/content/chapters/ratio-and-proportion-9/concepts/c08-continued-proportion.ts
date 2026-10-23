@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Fill the box so the ratio carries on: $4 : 6 = 6 : \square$.`,
     reveal: t`$\dfrac{4}{6} = \dfrac{6}{c}$ gives $4c = 36$, so $c = 9$. Then $4$, $6$, $9$ are in continued proportion: $6^2 = 36 = 4 \times 9$.`,

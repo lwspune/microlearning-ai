@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`If $\frac{a}{b} = \frac{3}{2}$, what is the value of $\frac{a + b}{b}$? You are not told $a$ or $b$.`,
     reveal: t`Add $1$ to both sides: $\frac{a}{b} + 1 = \frac{3}{2} + 1$, so $\frac{a + b}{b} = \frac{5}{2}$. Every pair $a$, $b$ in the ratio $3 : 2$ gives $\frac{5}{2}$.`,

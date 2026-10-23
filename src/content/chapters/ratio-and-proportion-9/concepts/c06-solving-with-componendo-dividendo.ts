@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Solve $\frac{\sqrt{x} + 1}{\sqrt{x} - 1} = 3$. Cross-multiplying gives a tangle of roots. Is there a quicker way?`,
     reveal: t`Yes. Componendo-dividendo gives $\frac{\sqrt{x}}{1} = \frac{3 + 1}{3 - 1} = 2$ at once. So $\sqrt{x} = 2$ and $x = 4$. Check: $\frac{2 + 1}{2 - 1} = 3$.`,

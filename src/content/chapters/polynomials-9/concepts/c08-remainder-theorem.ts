@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Dividing $x^{31} + 31$ by $x + 1$ by long division takes 31 steps. Can you find the remainder in one line?`,
     reveal: t`Yes. Put $x = -1$: $(-1)^{31} + 31$ $= -1 + 31 = 30$. The remainder is $30$.`,

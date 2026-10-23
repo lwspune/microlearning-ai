@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Is $\sqrt{9} + \sqrt{16}$ equal to $\sqrt{25}$?`,
     reveal: t`No. $\sqrt{9} + \sqrt{16} = 3 + 4 = 7$, but $\sqrt{25} = 5$. Roots do not add like that. Only like surds combine.`,

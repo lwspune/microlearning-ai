@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Your mean score in $4$ tests is $15$. You score $25$ in the fifth test. Is your new mean $\dfrac{15 + 25}{2} = 20$?`,
     reveal: t`No. The $4$ tests give a total of $4 \times 15 = 60$. The new total is $60 + 25 = 85$, so the new mean is $\dfrac{85}{5} = 17$.`,

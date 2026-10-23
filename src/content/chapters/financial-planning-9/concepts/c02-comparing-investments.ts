@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Asha invested ₹ 1,00,000 and gained ₹ 10,000. Bala invested ₹ 40,000 and gained ₹ 6,000. **Asha gained more rupees. Did she invest better?**`,
     reveal: t`No. Asha gained $\frac{10000}{100000} \times 100 = 10\%$. Bala gained $\frac{6000}{40000} \times 100 = 15\%$. Each ₹ 100 of Bala's money earned more.`,

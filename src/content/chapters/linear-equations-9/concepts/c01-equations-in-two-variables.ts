@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Meera thinks of two whole numbers that add up to $10$. Can you tell which two numbers she has in mind?`,
     reveal: t`Not from this alone. $1$ and $9$, $2$ and $8$, $6$ and $4$ all work. One equation in two unknowns has many solutions. A second fact is needed to fix the pair.`,

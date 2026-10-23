@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $82$, interchange its digits to get $28$, and subtract: $82 - 28 = 54$. Try $61 - 16$ too. **Why is the answer always a multiple of $9$?**`,
     reveal: t`A number with digits $x$ and $y$ is $10x + y$. With its digits interchanged it is $10y + x$. Their difference is $9x - 9y = 9(x - y)$, always $9$ times the gap between the digits.`,

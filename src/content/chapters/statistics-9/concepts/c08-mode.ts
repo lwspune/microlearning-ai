@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A shoe shop sold pairs of sizes $6$, $7$, $8$, $7$, $9$, $7$, $6$, $7$ today. The mean size is $7.125$, and no shoe has that size. Which size should the shop order most?`,
     reveal: t`Size $7$: it was sold $4$ times, more often than any other size. The value that occurs most often is the **mode**.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ravi's team has Asha, Ravi and Joseph. Sameer's team has Joseph and Sara. The coach writes one list of every player in either team, and a second list of the players in both teams. **Who is on each list?**`,
     reveal: t`First list: Asha, Ravi, Joseph and Sara, with Joseph written once. Second list: only Joseph. The first list is the **union** of the two teams; the second is their **intersection**.`,

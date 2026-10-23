@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\dfrac{4}{6} = \dfrac{10}{15}$. Is $\dfrac{4 \times 10}{6 \times 15}$ equal to $\dfrac{4}{6}$ too?`,
     reveal: t`No. Each ratio is $k = \dfrac{2}{3}$, but $\dfrac{40}{90} = \dfrac{4}{9} = k^2$. Writing $4 = 6k$ and $10 = 15k$ shows why: the two $k$'s multiply. This is the k-method.`,

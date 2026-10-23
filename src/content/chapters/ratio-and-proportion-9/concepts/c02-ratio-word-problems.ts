@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two sisters are $5$ and $10$ years old, so their ages are in the ratio $1 : 2$. Will their ages still be in the ratio $1 : 2$ after $5$ years?`,
     reveal: t`No. They will be $10$ and $15$, and $10 : 15 = 2 : 3$. Adding the same number to both changes the ratio, so we work with the ages, not the ratio's terms.`,

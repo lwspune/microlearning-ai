@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`If $y = 2x$ and $x + y = 12$, what are $x$ and $y$?`,
     reveal: t`Put $2x$ in place of $y$: $x + 2x = 12$. So $3x = 12$ and $x = 4$. Then $y = 2 \times 4 = 8$.`,

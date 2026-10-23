@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A ribbon is $2$ m long and another is $50$ cm long. Riya says their lengths are in the ratio $2 : 50$, that is $1 : 25$. Is she right?`,
     reveal: t`No. $2$ m $= 200$ cm, so the ratio is $200 : 50$, that is $4 : 1$. The first ribbon is four times as long, not one twenty-fifth.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$A = \{2, 4, 6\}$. Which numbers are **not** in $A$? Is it $\{1, 3, 5\}$, or $\{0, 1, 3, 5, 7, 8, 9\}$?`,
     reveal: t`Both can be right. Among the numbers $1$ to $6$ it is $\{1, 3, 5\}$; among the digits $0$ to $9$ it is $\{0, 1, 3, 5, 7, 8, 9\}$. 'Not in $A$' has a meaning only after we fix the set we choose from: the **universal set**.`,

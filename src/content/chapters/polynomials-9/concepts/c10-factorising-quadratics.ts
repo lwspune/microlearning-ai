@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Multiplying is easy: $(2x + 1)(x + 4)$ $= 2x^2 + 8x + x + 4$ $= 2x^2 + 9x + 4$. **Going back**, how would you know to split $9x$ as $8x + x$?`,
     reveal: t`The two parts multiply to $2 \times 4 = 8$, the first coefficient times the constant. And $8 \times 1 = 8$ with $8 + 1 = 9$. Find those two numbers and the factors follow.`,

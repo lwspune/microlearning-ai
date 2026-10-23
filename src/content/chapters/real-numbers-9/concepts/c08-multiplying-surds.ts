@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Work out $\sqrt{4} \times \sqrt{9}$. Now work out $\sqrt{36}$. **What do you notice?**`,
     reveal: t`$\sqrt{4} \times \sqrt{9} = 2 \times 3 = 6$, and $\sqrt{36} = 6$ too. Multiplying the roots is the same as taking the root of the product. That is how surds multiply.`,

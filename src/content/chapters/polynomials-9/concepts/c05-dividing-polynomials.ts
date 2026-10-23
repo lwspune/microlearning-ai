@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$17 \div 5$ gives quotient $3$ and remainder $2$, because $17 = 5 \times 3 + 2$. Can $x^2 + 5x + 7$ be divided by $x + 2$ the same way?`,
     reveal: t`Yes. $(x + 2)(x + 3) = x^2 + 5x + 6$, which is $1$ short. So $x^2 + 5x + 7$ $= (x + 2)(x + 3) + 1$: quotient $x + 3$, remainder $1$.`,

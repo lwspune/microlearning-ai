@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$3x + 5y = 9$ and $5x + 3y = 7$. **Can you find $x + y$ without finding $x$ and $y$?**`,
     reveal: t`Add the two equations: $8x + 8y = 16$. Divide by $8$: $x + y = 2$. Combining equations like this is the heart of **elimination**.`,

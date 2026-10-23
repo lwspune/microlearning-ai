@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Riya writes $(x + 1)(x + 2) = x^2 + 2$. **Is she right?** Try $x = 1$ on both sides.`,
     reveal: t`No. At $x = 1$ the left side is $2 \times 3 = 6$, but $x^2 + 2 = 3$. She missed two products. Every term must multiply every term: $x^2 + 2x + x + 2$ $= x^2 + 3x + 2$, which gives $6$.`,

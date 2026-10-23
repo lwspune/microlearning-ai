@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\sqrt{20}$ and $\sqrt{45}$ look unrelated. Are they both whole-number multiples of one surd?`,
     reveal: t`Yes. $\sqrt{20} = \sqrt{4 \times 5}$ $= 2\sqrt{5}$ and $\sqrt{45} = \sqrt{9 \times 5}$ $= 3\sqrt{5}$. Both are multiples of $\sqrt{5}$, so they are like surds.`,

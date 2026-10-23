@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Five players scored $4$, $6$, $8$, $13$ and $94$ runs. Their mean is $25$, more than four of the five scores. Which single score better describes a typical player?`,
     reveal: t`The middle score, $8$: two players scored less and two scored more. This middle value is the **median**, and one huge score does not pull it up.`,

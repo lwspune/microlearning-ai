@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\dfrac{x}{2} + \dfrac{y}{5} = 3$ has fractions in it. **Can you rewrite it with no fractions at all?**`,
     reveal: t`Multiply every term by $10$: $5x + 2y = 30$. It is now an ordinary linear equation, ready for elimination.`,

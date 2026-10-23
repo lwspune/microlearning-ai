@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Asha visits five vegetable stalls and writes down the price of tomatoes. Ravi copies the same five prices from Asha's notebook. They hold the same numbers. Is their data the same kind?`,
     reveal: t`No. Asha collected the prices herself, first-hand, so hers is **primary data**. Ravi took data someone else collected, so his is **secondary data**. The kind depends on who collected it, not on the numbers.`,

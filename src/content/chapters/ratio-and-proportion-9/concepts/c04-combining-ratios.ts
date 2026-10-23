@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A recipe uses flour : sugar $= 2 : 3$ and sugar : butter $= 4 : 5$. Is flour : sugar : butter $= 2 : 3 : 5$?`,
     reveal: t`No. Sugar is $3$ parts in one ratio and $4$ in the other. Make it $12$ in both: $8 : 12$ and $12 : 15$. So the ratio is $8 : 12 : 15$.`,

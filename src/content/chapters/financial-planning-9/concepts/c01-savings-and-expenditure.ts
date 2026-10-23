@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Meera spends $80\%$ of her pocket money and saves ₹ 50. Her friend says: add $80\%$ of ₹ 50 to ₹ 50, so she gets ₹ 90. Is that right?`,
     reveal: t`No. The ₹ 50 she saves is the other $20\%$ of her money. So $20\%$ of her money is ₹ 50, and all of it is ₹ 250.`,

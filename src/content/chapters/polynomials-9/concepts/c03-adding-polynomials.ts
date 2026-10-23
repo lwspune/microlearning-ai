@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Riya writes $(5x + 3) - (2x + 1) = 3x + 4$. Is she right?`,
     reveal: t`No. The minus sign changes every term in the bracket: $5x + 3 - 2x - 1$ $= 3x + 2$.`,

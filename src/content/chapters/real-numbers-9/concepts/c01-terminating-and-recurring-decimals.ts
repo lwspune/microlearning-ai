@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\frac{3}{40}$ has a much bigger denominator than $\frac{1}{3}$. **Which one has a decimal form that ends?**`,
     reveal: t`$\frac{3}{40} = 0.075$ ends, but $\frac{1}{3} = 0.333\ldots$ never ends. The size of the denominator does not decide it; its prime factors do.`,

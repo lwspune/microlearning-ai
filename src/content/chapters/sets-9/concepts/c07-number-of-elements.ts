@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a class of $40$, $25$ students like mangoes and $22$ like bananas. But $25 + 22 = 47$, more than the whole class. **How can that be?**`,
     reveal: t`Some students like both fruits. They are counted in the $25$ and again in the $22$. If $10$ like both, then $25 + 22 - 10 = 37$ like at least one fruit, and $40 - 37 = 3$ like neither.`,

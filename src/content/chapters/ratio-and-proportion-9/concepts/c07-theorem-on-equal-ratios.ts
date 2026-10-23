@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\dfrac{2}{5} = \dfrac{6}{15}$. Add the numerators and add the denominators: $\dfrac{2 + 6}{5 + 15}$. Is this bigger than, smaller than, or equal to $\dfrac{2}{5}$?`,
     reveal: t`Equal: $\dfrac{8}{20} = \dfrac{2}{5}$. When ratios are equal, adding numerators and adding denominators gives the same ratio again. This is the theorem on equal ratios.`,

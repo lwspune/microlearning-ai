@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Name a number between $0.7$ and $0.8$. Now name one between $0.7$ and $0.71$. **Can you always find one more?**`,
     reveal: t`$0.75$ works, and so does $0.705$. Add a decimal place whenever you need room: you never run out. Between any two rational numbers lie infinitely many more.`,

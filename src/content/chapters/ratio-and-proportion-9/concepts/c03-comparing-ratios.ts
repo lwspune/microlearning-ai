@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Which is bigger, $\frac{5}{8}$ or $\frac{7}{11}$? Both are just over a half.`,
     reveal: t`Cross-multiply: $5 \times 11 = 55$ and $7 \times 8 = 56$. Since $55 < 56$, $\frac{5}{8} < \frac{7}{11}$, by a hair.`,

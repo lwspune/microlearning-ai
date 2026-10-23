@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Asha writes the colours of our flag in the order saffron, white, green. Ravi writes them as green, white, saffron. **Have they written the same set?**`,
     reveal: t`Yes. Both lists have exactly the same three colours, and the order of listing does not change a set. Such sets are called **equal sets**. And the set holding only white is made of colours from the flag set, so it is a **subset** of it.`,

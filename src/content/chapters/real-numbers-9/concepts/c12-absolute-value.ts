@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`One lift goes 5 floors up. Another goes 5 floors down, which we write as $-5$. Which lift travelled farther?`,
     reveal: t`Neither. Both travelled 5 floors. A distance has no sign: $|5| = 5$ and $|-5| = 5$. This is the absolute value.`,

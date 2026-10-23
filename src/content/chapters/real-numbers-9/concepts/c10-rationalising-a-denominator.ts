@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Take $\sqrt{2} = 1.414$. Which is easier to work out by hand: $\frac{1}{\sqrt{2}}$ or $\frac{\sqrt{2}}{2}$? **Are they equal?**`,
     reveal: t`They are equal: $\frac{1}{\sqrt{2}} \times \frac{\sqrt{2}}{\sqrt{2}}$ $= \frac{\sqrt{2}}{2}$. And $\frac{1.414}{2} = 0.707$ is easy, while $1 \div 1.414$ is hard. Moving the surd out of the denominator is called rationalising.`,

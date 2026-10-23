@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Heights are grouped in the classes $140$–$145$ and $145$–$150$ cm. Riya is exactly $145$ cm tall. Which class is she counted in, and which single number stands for that class?`,
     reveal: t`She goes in $145$–$150$: an upper limit belongs to the next class. The class is represented by its middle, $\dfrac{145 + 150}{2} = 147.5$, its **class mark**.`,

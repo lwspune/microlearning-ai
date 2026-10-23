@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$p(x) = x^2 + x + 41$ gives $p(1) = 43$, $p(2) = 47$ and $p(3) = 53$: all primes. Is $p(x)$ a prime for every whole number $x$?`,
     reveal: t`No. $p(40) = 40^2 + 40 + 41$ $= 1600 + 81 = 1681$, and $1681 = 41 \times 41$.`,

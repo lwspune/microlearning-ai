@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Shop P sold $30$ pens, $12$ of them blue. Shop Q sold $60$ pens, $18$ of them blue. Which shop sells more blue?`,
     reveal: t`Both answers can be right. Q sold more blue pens, $18 > 12$. But blue is a bigger **share** of P's sales: $\dfrac{12}{30} = 40\%$ against $\dfrac{18}{60} = 30\%$. A sub-divided bar shows the first fact; a percentage bar shows the second.`,

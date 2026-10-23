@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$\sqrt{5}\,x + 1$ and $\sqrt{x} + 1$ look alike. **Is either of them a polynomial?**`,
     reveal: t`Only the first. In $\sqrt{5}\,x$ the root is on the number, and $x$ has index $1$. But $\sqrt{x} = x^{\frac{1}{2}}$, and a polynomial allows only whole-number indices.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Look at $\{x \mid x + 7 = 7\}$. **Is this set empty?**`,
     reveal: t`No. $x + 7 = 7$ gives $x = 0$, so the set is $\{0\}$. It holds one element, the number $0$. A set is empty only when nothing at all is inside.`,

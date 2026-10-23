@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Without dividing, can you tell whether $x - 1$ divides $x^5 + x^4 - 2$ exactly?`,
     reveal: t`Yes. Put $x = 1$: $1 + 1 - 2 = 0$. The remainder is $0$, so $x - 1$ is a factor.`,

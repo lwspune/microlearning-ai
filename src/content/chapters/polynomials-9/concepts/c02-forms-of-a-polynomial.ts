@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Is the coefficient form $(1, 4)$ the polynomial $x + 4$ or $x^2 + 4$?`,
     reveal: t`It is $x + 4$. For $x^2 + 4$ we write $x^2 + 0x + 4$, so its coefficient form is $(1, 0, 4)$. The $0$ holds the place of $x$.`,

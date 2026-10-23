@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Divide $x^2 + 5x + 7$ by $x + 2$ using only the numbers $1$, $5$, $7$ and $-2$. **Can you?**`,
     reveal: t`Bring down $1$. Then $1 \times (-2) = -2$ and $5 - 2 = 3$. Then $3 \times (-2) = -6$ and $7 - 6 = 1$. The quotient is $x + 3$ and the remainder is $1$.`,

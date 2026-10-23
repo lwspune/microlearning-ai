@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A teacher tallies the marks of $40$ students into the classes $0$–$10$, $10$–$20$, …, $40$–$50$. Her frequencies add up to $43$. What went wrong?`,
     reveal: t`Three marks sat on a class limit, such as $20$, and each was tallied in two classes. In exclusive classes $20$ goes only in $20$–$30$, so the frequencies must add up to exactly $40$.`,

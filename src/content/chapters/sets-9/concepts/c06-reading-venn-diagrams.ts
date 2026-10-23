@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a Venn diagram, the number $45$ is written where circles $A$ and $B$ overlap. Is $45$ an element of $A$, of $B$, of both, or of neither?`,
     reveal: t`Of both. The overlap lies inside circle $A$ and inside circle $B$, so $45 \in A$ and $45 \in B$. Reading a Venn diagram means knowing which circles each region lies inside.`,

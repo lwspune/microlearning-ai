@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A purse holds $10$ coins, some of ₹ 2 and some of ₹ 5, worth ₹ 29 in all. **How many ₹ 5 coins are there?**`,
     reveal: t`Say there are $x$ coins of ₹ 2 and $y$ coins of ₹ 5. Then $x + y = 10$ and $2x + 5y = 29$. Subtract twice the first: $3y = 9$, so $y = 3$. Two facts gave two equations.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You know $(x + 2)(x + 3) = x^2 + 5x + 6$. **What is $(\sqrt{5} + 2)(\sqrt{5} + 3)$?**`,
     reveal: t`Multiply the same way, term by term: $5 + 3\sqrt{5} + 2\sqrt{5} + 6$. Now collect: $11 + 5\sqrt{5}$. Surds multiply like letters, except $\sqrt{5} \times \sqrt{5} = 5$.`,

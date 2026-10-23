@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Five friends have $2$, $3$, $3$, $4$ and $8$ chocolates. If they pool them and share equally, how many does each friend get?`,
     reveal: t`Together they have $2 + 3 + 3 + 4 + 8 = 20$ chocolates. Shared among $5$ friends, each gets $\dfrac{20}{5} = 4$. This fair share is the **mean**.`,
