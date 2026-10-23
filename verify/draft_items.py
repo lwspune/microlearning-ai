@@ -88,7 +88,7 @@ def quantity_text(val) -> str:
     """A physical number: a x 10^n when it is 10^5 or more, or below 10^-3; otherwise as it is."""
     val = sympify(val)
     if val.is_number and val.is_real and val != 0 and not (Rational(1, 1000) <= abs(val) < 100000):
-        mantissa, exponent = f"{float(val):.2e}".split("e")
+        mantissa, exponent = f"{float(val):.6e}".split("e")  # values come rounded by sig(); keep their figures
         mantissa = mantissa.rstrip("0").rstrip(".")
         return f"{mantissa} \\times 10^{{{int(exponent)}}}"
     return latex(val, mul_symbol="times")

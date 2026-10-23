@@ -57,6 +57,11 @@ class OptionText(unittest.TestCase):
         self.assertEqual(option_text(Float("0.000123"), "unit:m"), r"$1.23 \times 10^{-4}\ \mathrm{m}$")
         self.assertEqual(option_text(Integer(18000), "unit:J"), r"$18000\ \mathrm{J}$")
 
+    def test_unit_keeps_the_figures_the_value_was_rounded_to(self):
+        from sympy import Integer
+
+        self.assertEqual(option_text(Integer(101800), "unit:N/m^2"), r"$1.018 \times 10^{5}\ \mathrm{N/m^2}$")
+
     def test_quadrant_is_unchanged(self):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
