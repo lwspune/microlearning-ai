@@ -112,7 +112,7 @@ def venn(alt, names=("A", "B"), shade=None, counts=None, universe="U", note=None
             elements.append({"kind": "label", "at": at, "label": name, "labelAt": "nw" if side < 0 else "ne"})
         else:  # the lower circle: name just outside its lower right
             elements.append({"kind": "label", "at": [round(c[0] + r, 2), round(c[1] - r * 0.55, 2)], "label": name, "labelAt": "e"})
-    elements.append({"kind": "label", "at": [x1 - 0.5, y1 - 0.6], "label": universe, "labelAt": "n"})
+    elements.append({"kind": "label", "at": [x1 - 0.3, y1 - 0.2], "label": universe, "labelAt": "sw"})
     if note:
         text, opts = note if isinstance(note, tuple) else (note, {})
         at, side = ([5.0, 6.05], "n") if n == 2 else ([0.3, 0.3], "ne")

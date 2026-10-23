@@ -106,6 +106,11 @@ class Venn(unittest.TestCase):
         (note,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"].startswith("A Δ B")]
         self.assertEqual((note["at"], note["labelAt"], note["step"], note["tone"]), ([5.0, 6.05], "n", 3, "good"))
 
+    def test_the_universe_name_hangs_inside_the_top_right_corner(self):
+        # anchored just under the frame's top edge and growing down-left, so the edge never runs through it
+        (u,) = [e for e in venn("U")["elements"] if e["kind"] == "label" and e["label"] == "U"]
+        self.assertEqual((u["at"], u["labelAt"]), ([9.7, 6.8], "sw"))
+
     def test_a_three_set_note_sits_bottom_left_clear_of_the_circles(self):
         fig = venn("Note", names=("A", "B", "C"), note="each part counted once")
         (note,) = [e for e in fig["elements"] if e["kind"] == "label" and e["label"] == "each part counted once"]
