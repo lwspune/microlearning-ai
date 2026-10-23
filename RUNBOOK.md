@@ -264,6 +264,12 @@ Guests are anonymous logins with no profile.
    concept file isn't registered.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
+   The whole pool takes about two hours (Definite Integration alone dominates).
+   For a wave, verify only its chapters: export once, copy their
+   `.content/<chapter>.json` files into a scratch folder, and run
+   `python -u verify/verify_content.py <folder>` (Std IX Algebra: 348 items in
+   22 s). Run the whole pool only when shared verifier code (`verify/*.py`
+   other than figures) changes.
    Look for KaTeX errors and sideways scrolling: `node scripts/overflow-probe.mjs <chapter> <slug>...`
    lists every formula wider than a phone slide, with its TeX. Anything on
    a slide you wrote or changed must be split into `$…$ $…$` pieces before
