@@ -59,5 +59,14 @@ import { ratioAndProportion9 } from "./ratio-and-proportion-9/index.ts";
 import { linearEquations9 } from "./linear-equations-9/index.ts";
 import { financialPlanning9 } from "./financial-planning-9/index.ts";
 import { statistics9 } from "./statistics-9/index.ts";
+import { basicGeometry9 } from "./basic-geometry-9/index.ts";
+import { parallelLines9 } from "./parallel-lines-9/index.ts";
+import { triangles9 } from "./triangles-9/index.ts";
+import { constructions9 } from "./constructions-9/index.ts";
+import { quadrilaterals9 } from "./quadrilaterals-9/index.ts";
+import { circle9 } from "./circle-9/index.ts";
+import { coordinateGeometry9 } from "./coordinate-geometry-9/index.ts";
+import { trigonometry9 } from "./trigonometry-9/index.ts";
+import { surfaceAreaVolume9 } from "./surface-area-volume-9/index.ts";
 
-export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations, logarithms, heightsAndDistances, binaryNumbers, sphere, linearInequalities, introductionTo3dGeometry, linearEquations10, quadraticEquations10, financialPlanning10, probability10, statistics10, similarity10, pythagoras10, circle10, constructions10, coordinateGeometry10, trigonometry10, mensuration10, sets9, realNumbers9, polynomials9, ratioAndProportion9, linearEquations9, financialPlanning9, statistics9];
+export const chapters: Chapter[] = [complexNumbers, linearProgramming, setsAndRelations, sequencesAndSeries, permutationsAndCombinations, binomialTheorem, determinantsAndMatrices, angleMeasurement, trigonometricFunctions, compoundAndMultipleAngles, straightLine, circle, conicSections, measuresOfDispersion, probability, functions, limits, continuity, differentiation, mathematicalLogic, matrices, trigonometricFunctions12, pairOfStraightLines, vectors, lineAndPlane, differentiation12, applicationOfDerivatives, indefiniteIntegration, definiteIntegration, applicationOfDefiniteIntegration, differentialEquations, probabilityDistributions, binomialDistribution, statistics, quadraticEquations, logarithms, heightsAndDistances, binaryNumbers, sphere, linearInequalities, introductionTo3dGeometry, linearEquations10, quadraticEquations10, financialPlanning10, probability10, statistics10, similarity10, pythagoras10, circle10, constructions10, coordinateGeometry10, trigonometry10, mensuration10, sets9, realNumbers9, polynomials9, ratioAndProportion9, linearEquations9, financialPlanning9, statistics9, basicGeometry9, parallelLines9, triangles9, constructions9, quadrilaterals9, circle9, coordinateGeometry9, trigonometry9, surfaceAreaVolume9];

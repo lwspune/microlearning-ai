@@ -805,7 +805,7 @@ describe("the catalog", () => {
     const series = chapters.find((c) => c.slug === "sequences-and-series")!;
     const AP_X = ["C15", "C19", "C16", "C20", "C17", "C18", "C21"];
 
-    it("lists the Std IX Algebra chapters in book order", () => {
+    it("lists the Std IX chapters in book order, Part 1 then Part 2", () => {
       expect(resolved.filter((r) => r.standard === 9).map((r) => r.title)).toEqual([
         "Sets",
         "Real Numbers",
@@ -814,6 +814,15 @@ describe("the catalog", () => {
         "Linear Equations in Two Variables",
         "Financial Planning",
         "Statistics",
+        "Basic Concepts in Geometry",
+        "Parallel Lines",
+        "Triangles",
+        "Constructions of Triangles",
+        "Quadrilaterals",
+        "Circle",
+        "Co-ordinate Geometry",
+        "Trigonometry",
+        "Surface Area and Volume",
       ]);
     });
 
