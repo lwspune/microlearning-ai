@@ -1,0 +1,285 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c06: Concept = {
+  id: "C06",
+  status: "draft",
+  hook: {
+    prompt: t`A gas in a cylinder, standing in a large water bath, is let out slowly against a piston. Its temperature never changes, yet it keeps doing work. Where does the energy come from?`,
+    reveal: t`Heat flows in from the bath all the time. Since its temperature is fixed, the gas's internal energy stays the same, so every joule of that heat becomes work.`,
+  },
+  explanation: {
+    intuition: [
+      t`In an **isothermal** process, the temperature stays fixed.`,
+      t`The gas must be in good contact with its surroundings and change slowly, so heat can flow to keep $T$ steady.`,
+      t`Then $pV$ stays constant (Boyle's law): on a $p$-$V$ graph, the path is a curve called an **isotherm**.`,
+      t`As the gas expands along it, the work it does is the area under the curve.`,
+      t`An ideal gas's $U$ depends only on $T$, so $\Delta U = 0$ and all the heat taken in becomes work.`,
+    ],
+    formal: [
+      {
+        title: "Isothermal process",
+        points: [
+          t`An **isothermal process** takes place at constant temperature: $\Delta T = 0$.`,
+          t`It needs good thermal contact with the surroundings and a very slow change.`,
+          t`For an ideal gas, $pV = nRT$ = constant: Boyle's law.`,
+          t`Each temperature has its own isotherm on the $p$-$V$ graph; a hotter one lies further out.`,
+        ],
+        figure: {
+          alt: "A p-V graph. At point 3, an isotherm at temperature T1. At point 4, a second isotherm further out, at a higher temperature T2.",
+          chart: { x: 1, y: 1, xTitle: "V (L)", yTitle: "p (10⁵ Pa)" },
+          view: { x: [0, 7], y: [0, 7] },
+          elements: [
+            { kind: "curve", points: [[0.9, 6.6667], [1.0525, 5.7007], [1.205, 4.9793], [1.3575, 4.4199], [1.51, 3.9735], [1.6625, 3.609], [1.815, 3.3058], [1.9675, 3.0496], [2.12, 2.8302], [2.2725, 2.6403], [2.425, 2.4742], [2.5775, 2.3278], [2.73, 2.1978], [2.8825, 2.0815], [3.035, 1.9769], [3.1875, 1.8824], [3.34, 1.7964], [3.4925, 1.718], [3.645, 1.6461], [3.7975, 1.58], [3.95, 1.519], [4.1025, 1.4625], [4.255, 1.4101], [4.4075, 1.3613], [4.56, 1.3158], [4.7125, 1.2732], [4.865, 1.2333], [5.0175, 1.1958], [5.17, 1.1605], [5.3225, 1.1273], [5.475, 1.0959], [5.6275, 1.0662], [5.78, 1.0381], [5.9325, 1.0114], [6.085, 0.986], [6.2375, 0.9619], [6.39, 0.939], [6.5425, 0.9171], [6.695, 0.8962], [6.8475, 0.8762], [7, 0.8571]], step: 3 },
+            { kind: "label", at: [5.2, 1.15], label: "T1", labelAt: "ne", step: 3 },
+            { kind: "curve", points: [[1.45, 6.8966], [1.5887, 6.2943], [1.7275, 5.7887], [1.8662, 5.3583], [2.005, 4.9875], [2.1437, 4.6647], [2.2825, 4.3812], [2.4213, 4.1301], [2.56, 3.9063], [2.6987, 3.7054], [2.8375, 3.5242], [2.9762, 3.3599], [3.115, 3.2103], [3.2537, 3.0734], [3.3925, 2.9477], [3.5312, 2.8319], [3.67, 2.7248], [3.8087, 2.6255], [3.9475, 2.5332], [4.0862, 2.4472], [4.225, 2.3669], [4.3637, 2.2916], [4.5025, 2.221], [4.6412, 2.1546], [4.78, 2.0921], [4.9188, 2.033], [5.0575, 1.9773], [5.1963, 1.9245], [5.335, 1.8744], [5.4737, 1.8269], [5.6125, 1.7817], [5.7512, 1.7388], [5.89, 1.6978], [6.0288, 1.6587], [6.1675, 1.6214], [6.3063, 1.5857], [6.445, 1.5516], [6.5838, 1.5189], [6.7225, 1.4875], [6.8613, 1.4575], [7, 1.4286]], step: 4 },
+            { kind: "label", at: [5.2, 1.95], label: "T2 > T1", labelAt: "ne", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Work and heat",
+        points: [
+          t`$W = \displaystyle\int_{V_1}^{V_2} \dfrac{nRT}{V}\,dV = nRT\ln\dfrac{V_2}{V_1} = 2.303\,nRT\log_{10}\dfrac{V_2}{V_1}$.`,
+          t`Since $p_1V_1 = p_2V_2$, also $W = nRT\ln\dfrac{p_1}{p_2}$.`,
+          t`$U$ depends only on $T$, so $\Delta U = 0$, and the first law gives $Q = W$.`,
+          t`On expansion the gas takes in heat; on compression it gives out heat.`,
+        ],
+        figure: {
+          alt: "A p-V graph: an isotherm through states A and B. At point 1, the area under it from A to B is shaded: the work done.",
+          chart: { x: 1, y: 1, xTitle: "V (L)", yTitle: "p (10⁵ Pa)" },
+          view: { x: [0, 7], y: [0, 7] },
+          elements: [
+            { kind: "curve", points: [[0.9, 6.6667], [1.0525, 5.7007], [1.205, 4.9793], [1.3575, 4.4199], [1.51, 3.9735], [1.6625, 3.609], [1.815, 3.3058], [1.9675, 3.0496], [2.12, 2.8302], [2.2725, 2.6403], [2.425, 2.4742], [2.5775, 2.3278], [2.73, 2.1978], [2.8825, 2.0815], [3.035, 1.9769], [3.1875, 1.8824], [3.34, 1.7964], [3.4925, 1.718], [3.645, 1.6461], [3.7975, 1.58], [3.95, 1.519], [4.1025, 1.4625], [4.255, 1.4101], [4.4075, 1.3613], [4.56, 1.3158], [4.7125, 1.2732], [4.865, 1.2333], [5.0175, 1.1958], [5.17, 1.1605], [5.3225, 1.1273], [5.475, 1.0959], [5.6275, 1.0662], [5.78, 1.0381], [5.9325, 1.0114], [6.085, 0.986], [6.2375, 0.9619], [6.39, 0.939], [6.5425, 0.9171], [6.695, 0.8962], [6.8475, 0.8762], [7, 0.8571]] },
+            { kind: "point", at: [1.5, 4], label: "A", labelAt: "ne" },
+            { kind: "point", at: [4, 1.5], label: "B", labelAt: "ne" },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[1.5, 0], [1.7083333333333333, 0]] }, { kind: "halfPlane", through: [[1.7083333333333333, 0], [1.7083333333333333, 3.5122]] }, { kind: "halfPlane", through: [[1.7083333333333333, 3.5122], [1.5, 4]] }, { kind: "halfPlane", through: [[1.5, 4], [1.5, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[1.7083333333333333, 0], [1.9166666666666667, 0]] }, { kind: "halfPlane", through: [[1.9166666666666667, 0], [1.9166666666666667, 3.1304]] }, { kind: "halfPlane", through: [[1.9166666666666667, 3.1304], [1.7083333333333333, 3.5122]] }, { kind: "halfPlane", through: [[1.7083333333333333, 3.5122], [1.7083333333333333, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[1.9166666666666667, 0], [2.125, 0]] }, { kind: "halfPlane", through: [[2.125, 0], [2.125, 2.8235]] }, { kind: "halfPlane", through: [[2.125, 2.8235], [1.9166666666666667, 3.1304]] }, { kind: "halfPlane", through: [[1.9166666666666667, 3.1304], [1.9166666666666667, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.125, 0], [2.3333333333333335, 0]] }, { kind: "halfPlane", through: [[2.3333333333333335, 0], [2.3333333333333335, 2.5714]] }, { kind: "halfPlane", through: [[2.3333333333333335, 2.5714], [2.125, 2.8235]] }, { kind: "halfPlane", through: [[2.125, 2.8235], [2.125, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.3333333333333335, 0], [2.541666666666667, 0]] }, { kind: "halfPlane", through: [[2.541666666666667, 0], [2.541666666666667, 2.3607]] }, { kind: "halfPlane", through: [[2.541666666666667, 2.3607], [2.3333333333333335, 2.5714]] }, { kind: "halfPlane", through: [[2.3333333333333335, 2.5714], [2.3333333333333335, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.541666666666667, 0], [2.75, 0]] }, { kind: "halfPlane", through: [[2.75, 0], [2.75, 2.1818]] }, { kind: "halfPlane", through: [[2.75, 2.1818], [2.541666666666667, 2.3607]] }, { kind: "halfPlane", through: [[2.541666666666667, 2.3607], [2.541666666666667, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.75, 0], [2.958333333333333, 0]] }, { kind: "halfPlane", through: [[2.958333333333333, 0], [2.958333333333333, 2.0282]] }, { kind: "halfPlane", through: [[2.958333333333333, 2.0282], [2.75, 2.1818]] }, { kind: "halfPlane", through: [[2.75, 2.1818], [2.75, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.958333333333333, 0], [3.166666666666667, 0]] }, { kind: "halfPlane", through: [[3.166666666666667, 0], [3.166666666666667, 1.8947]] }, { kind: "halfPlane", through: [[3.166666666666667, 1.8947], [2.958333333333333, 2.0282]] }, { kind: "halfPlane", through: [[2.958333333333333, 2.0282], [2.958333333333333, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.166666666666667, 0], [3.375, 0]] }, { kind: "halfPlane", through: [[3.375, 0], [3.375, 1.7778]] }, { kind: "halfPlane", through: [[3.375, 1.7778], [3.166666666666667, 1.8947]] }, { kind: "halfPlane", through: [[3.166666666666667, 1.8947], [3.166666666666667, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.375, 0], [3.5833333333333335, 0]] }, { kind: "halfPlane", through: [[3.5833333333333335, 0], [3.5833333333333335, 1.6744]] }, { kind: "halfPlane", through: [[3.5833333333333335, 1.6744], [3.375, 1.7778]] }, { kind: "halfPlane", through: [[3.375, 1.7778], [3.375, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.5833333333333335, 0], [3.7916666666666665, 0]] }, { kind: "halfPlane", through: [[3.7916666666666665, 0], [3.7916666666666665, 1.5824]] }, { kind: "halfPlane", through: [[3.7916666666666665, 1.5824], [3.5833333333333335, 1.6744]] }, { kind: "halfPlane", through: [[3.5833333333333335, 1.6744], [3.5833333333333335, 0]] }], step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.7916666666666665, 0], [4, 0]] }, { kind: "halfPlane", through: [[4, 0], [4, 1.5]] }, { kind: "halfPlane", through: [[4, 1.5], [3.7916666666666665, 1.5824]] }, { kind: "halfPlane", through: [[3.7916666666666665, 1.5824], [3.7916666666666665, 0]] }], step: 1 },
+            { kind: "label", at: [2, 0.6], label: "W = area", labelAt: "ne", step: 1 },
+          ],
+        },
+      },
+    ],
+    worked: {
+      prompt: t`$2$ moles of an ideal gas at $300\ \mathrm{K}$ expand isothermally from $10$ litres to $20$ litres. Find the work done by the gas and the heat it takes in. (Take $R = 8.314\ \mathrm{J\,mol^{-1}K^{-1}}$.)`,
+      steps: [
+        t`Isothermal: $W = nRT\ln\dfrac{V_2}{V_1}$.`,
+        t`$W = 2 \times 8.314 \times 300 \times \ln 2$.`,
+        t`$W \approx 4988 \times 0.693 \approx 3458\ \mathrm{J}$.`,
+        t`$\Delta U = 0$, so $Q = W \approx 3458\ \mathrm{J}$.`,
+      ],
+      answer: t`$W = Q \approx 3458\ \mathrm{J}$`,
+      figure: {
+        alt: "A p-V graph: the isotherm for 2 moles at 300 K. At step 1, states at 10 and 20 litres. At step 3, the area under the curve between them is shaded.",
+        chart: { x: 5, y: 1, xTitle: "V (L)", yTitle: "p (10⁵ Pa)" },
+        view: { x: [0, 25], y: [0, 7] },
+        elements: [
+          { kind: "curve", points: [[8, 6.2355], [8.425, 5.9209], [8.85, 5.6366], [9.275, 5.3783], [9.7, 5.1427], [10.125, 4.9268], [10.55, 4.7283], [10.975, 4.5452], [11.4, 4.3758], [11.825, 4.2185], [12.25, 4.0722], [12.675, 3.9356], [13.1, 3.8079], [13.525, 3.6883], [13.95, 3.5759], [14.375, 3.4702], [14.8, 3.3705], [15.225, 3.2765], [15.65, 3.1875], [16.075, 3.1032], [16.5, 3.0233], [16.925, 2.9474], [17.35, 2.8752], [17.775, 2.8064], [18.2, 2.7409], [18.625, 2.6783], [19.05, 2.6186], [19.475, 2.5614], [19.9, 2.5067], [20.325, 2.4543], [20.75, 2.404], [21.175, 2.3558], [21.6, 2.3094], [22.025, 2.2649], [22.45, 2.222], [22.875, 2.1807], [23.3, 2.1409], [23.725, 2.1026], [24.15, 2.0656], [24.575, 2.0299], [25, 1.9954]] },
+          { kind: "point", at: [10, 4.988], label: "1", labelAt: "ne", step: 1 },
+          { kind: "point", at: [20, 2.494], label: "2", labelAt: "ne", step: 1 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[10, 0], [10.833333333333334, 0]] }, { kind: "halfPlane", through: [[10.833333333333334, 0], [10.833333333333334, 4.6047]] }, { kind: "halfPlane", through: [[10.833333333333334, 4.6047], [10, 4.9884]] }, { kind: "halfPlane", through: [[10, 4.9884], [10, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[10.833333333333334, 0], [11.666666666666666, 0]] }, { kind: "halfPlane", through: [[11.666666666666666, 0], [11.666666666666666, 4.2758]] }, { kind: "halfPlane", through: [[11.666666666666666, 4.2758], [10.833333333333334, 4.6047]] }, { kind: "halfPlane", through: [[10.833333333333334, 4.6047], [10.833333333333334, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[11.666666666666666, 0], [12.5, 0]] }, { kind: "halfPlane", through: [[12.5, 0], [12.5, 3.9907]] }, { kind: "halfPlane", through: [[12.5, 3.9907], [11.666666666666666, 4.2758]] }, { kind: "halfPlane", through: [[11.666666666666666, 4.2758], [11.666666666666666, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[12.5, 0], [13.333333333333334, 0]] }, { kind: "halfPlane", through: [[13.333333333333334, 0], [13.333333333333334, 3.7413]] }, { kind: "halfPlane", through: [[13.333333333333334, 3.7413], [12.5, 3.9907]] }, { kind: "halfPlane", through: [[12.5, 3.9907], [12.5, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[13.333333333333334, 0], [14.166666666666668, 0]] }, { kind: "halfPlane", through: [[14.166666666666668, 0], [14.166666666666668, 3.5212]] }, { kind: "halfPlane", through: [[14.166666666666668, 3.5212], [13.333333333333334, 3.7413]] }, { kind: "halfPlane", through: [[13.333333333333334, 3.7413], [13.333333333333334, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[14.166666666666668, 0], [15, 0]] }, { kind: "halfPlane", through: [[15, 0], [15, 3.3256]] }, { kind: "halfPlane", through: [[15, 3.3256], [14.166666666666668, 3.5212]] }, { kind: "halfPlane", through: [[14.166666666666668, 3.5212], [14.166666666666668, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[15, 0], [15.833333333333332, 0]] }, { kind: "halfPlane", through: [[15.833333333333332, 0], [15.833333333333332, 3.1506]] }, { kind: "halfPlane", through: [[15.833333333333332, 3.1506], [15, 3.3256]] }, { kind: "halfPlane", through: [[15, 3.3256], [15, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[15.833333333333332, 0], [16.666666666666668, 0]] }, { kind: "halfPlane", through: [[16.666666666666668, 0], [16.666666666666668, 2.993]] }, { kind: "halfPlane", through: [[16.666666666666668, 2.993], [15.833333333333332, 3.1506]] }, { kind: "halfPlane", through: [[15.833333333333332, 3.1506], [15.833333333333332, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[16.666666666666668, 0], [17.5, 0]] }, { kind: "halfPlane", through: [[17.5, 0], [17.5, 2.8505]] }, { kind: "halfPlane", through: [[17.5, 2.8505], [16.666666666666668, 2.993]] }, { kind: "halfPlane", through: [[16.666666666666668, 2.993], [16.666666666666668, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[17.5, 0], [18.333333333333336, 0]] }, { kind: "halfPlane", through: [[18.333333333333336, 0], [18.333333333333336, 2.7209]] }, { kind: "halfPlane", through: [[18.333333333333336, 2.7209], [17.5, 2.8505]] }, { kind: "halfPlane", through: [[17.5, 2.8505], [17.5, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[18.333333333333336, 0], [19.166666666666664, 0]] }, { kind: "halfPlane", through: [[19.166666666666664, 0], [19.166666666666664, 2.6026]] }, { kind: "halfPlane", through: [[19.166666666666664, 2.6026], [18.333333333333336, 2.7209]] }, { kind: "halfPlane", through: [[18.333333333333336, 2.7209], [18.333333333333336, 0]] }], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[19.166666666666664, 0], [20, 0]] }, { kind: "halfPlane", through: [[20, 0], [20, 2.4942]] }, { kind: "halfPlane", through: [[20, 2.4942], [19.166666666666664, 2.6026]] }, { kind: "halfPlane", through: [[19.166666666666664, 2.6026], [19.166666666666664, 0]] }], step: 3 },
+        ],
+      },
+    },
+    figure: {
+      alt: "A p-V graph. First an isotherm, a curve along which p V is constant. Then states A and B on it. Then the area under the curve from A to B shaded: the work done. Last, the label Q = W.",
+      chart: { x: 1, y: 1, xTitle: "V (L)", yTitle: "p (10⁵ Pa)" },
+      view: { x: [0, 7], y: [0, 7] },
+      elements: [
+        { kind: "curve", points: [[0.9, 6.6667], [1.0525, 5.7007], [1.205, 4.9793], [1.3575, 4.4199], [1.51, 3.9735], [1.6625, 3.609], [1.815, 3.3058], [1.9675, 3.0496], [2.12, 2.8302], [2.2725, 2.6403], [2.425, 2.4742], [2.5775, 2.3278], [2.73, 2.1978], [2.8825, 2.0815], [3.035, 1.9769], [3.1875, 1.8824], [3.34, 1.7964], [3.4925, 1.718], [3.645, 1.6461], [3.7975, 1.58], [3.95, 1.519], [4.1025, 1.4625], [4.255, 1.4101], [4.4075, 1.3613], [4.56, 1.3158], [4.7125, 1.2732], [4.865, 1.2333], [5.0175, 1.1958], [5.17, 1.1605], [5.3225, 1.1273], [5.475, 1.0959], [5.6275, 1.0662], [5.78, 1.0381], [5.9325, 1.0114], [6.085, 0.986], [6.2375, 0.9619], [6.39, 0.939], [6.5425, 0.9171], [6.695, 0.8962], [6.8475, 0.8762], [7, 0.8571]], step: 1 },
+        { kind: "point", at: [1.5, 4], label: "A", labelAt: "ne", step: 2 },
+        { kind: "point", at: [4, 1.5], label: "B", labelAt: "ne", step: 2 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[1.5, 0], [1.7083333333333333, 0]] }, { kind: "halfPlane", through: [[1.7083333333333333, 0], [1.7083333333333333, 3.5122]] }, { kind: "halfPlane", through: [[1.7083333333333333, 3.5122], [1.5, 4]] }, { kind: "halfPlane", through: [[1.5, 4], [1.5, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[1.7083333333333333, 0], [1.9166666666666667, 0]] }, { kind: "halfPlane", through: [[1.9166666666666667, 0], [1.9166666666666667, 3.1304]] }, { kind: "halfPlane", through: [[1.9166666666666667, 3.1304], [1.7083333333333333, 3.5122]] }, { kind: "halfPlane", through: [[1.7083333333333333, 3.5122], [1.7083333333333333, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[1.9166666666666667, 0], [2.125, 0]] }, { kind: "halfPlane", through: [[2.125, 0], [2.125, 2.8235]] }, { kind: "halfPlane", through: [[2.125, 2.8235], [1.9166666666666667, 3.1304]] }, { kind: "halfPlane", through: [[1.9166666666666667, 3.1304], [1.9166666666666667, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.125, 0], [2.3333333333333335, 0]] }, { kind: "halfPlane", through: [[2.3333333333333335, 0], [2.3333333333333335, 2.5714]] }, { kind: "halfPlane", through: [[2.3333333333333335, 2.5714], [2.125, 2.8235]] }, { kind: "halfPlane", through: [[2.125, 2.8235], [2.125, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.3333333333333335, 0], [2.541666666666667, 0]] }, { kind: "halfPlane", through: [[2.541666666666667, 0], [2.541666666666667, 2.3607]] }, { kind: "halfPlane", through: [[2.541666666666667, 2.3607], [2.3333333333333335, 2.5714]] }, { kind: "halfPlane", through: [[2.3333333333333335, 2.5714], [2.3333333333333335, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.541666666666667, 0], [2.75, 0]] }, { kind: "halfPlane", through: [[2.75, 0], [2.75, 2.1818]] }, { kind: "halfPlane", through: [[2.75, 2.1818], [2.541666666666667, 2.3607]] }, { kind: "halfPlane", through: [[2.541666666666667, 2.3607], [2.541666666666667, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.75, 0], [2.958333333333333, 0]] }, { kind: "halfPlane", through: [[2.958333333333333, 0], [2.958333333333333, 2.0282]] }, { kind: "halfPlane", through: [[2.958333333333333, 2.0282], [2.75, 2.1818]] }, { kind: "halfPlane", through: [[2.75, 2.1818], [2.75, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[2.958333333333333, 0], [3.166666666666667, 0]] }, { kind: "halfPlane", through: [[3.166666666666667, 0], [3.166666666666667, 1.8947]] }, { kind: "halfPlane", through: [[3.166666666666667, 1.8947], [2.958333333333333, 2.0282]] }, { kind: "halfPlane", through: [[2.958333333333333, 2.0282], [2.958333333333333, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.166666666666667, 0], [3.375, 0]] }, { kind: "halfPlane", through: [[3.375, 0], [3.375, 1.7778]] }, { kind: "halfPlane", through: [[3.375, 1.7778], [3.166666666666667, 1.8947]] }, { kind: "halfPlane", through: [[3.166666666666667, 1.8947], [3.166666666666667, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.375, 0], [3.5833333333333335, 0]] }, { kind: "halfPlane", through: [[3.5833333333333335, 0], [3.5833333333333335, 1.6744]] }, { kind: "halfPlane", through: [[3.5833333333333335, 1.6744], [3.375, 1.7778]] }, { kind: "halfPlane", through: [[3.375, 1.7778], [3.375, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.5833333333333335, 0], [3.7916666666666665, 0]] }, { kind: "halfPlane", through: [[3.7916666666666665, 0], [3.7916666666666665, 1.5824]] }, { kind: "halfPlane", through: [[3.7916666666666665, 1.5824], [3.5833333333333335, 1.6744]] }, { kind: "halfPlane", through: [[3.5833333333333335, 1.6744], [3.5833333333333335, 0]] }], step: 3 },
+        { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[3.7916666666666665, 0], [4, 0]] }, { kind: "halfPlane", through: [[4, 0], [4, 1.5]] }, { kind: "halfPlane", through: [[4, 1.5], [3.7916666666666665, 1.5824]] }, { kind: "halfPlane", through: [[3.7916666666666665, 1.5824], [3.7916666666666665, 0]] }], step: 3 },
+        { kind: "label", at: [2, 0.6], label: "Q = W", labelAt: "ne", step: 4 },
+      ],
+    },
+    visualSpec: t`Let a gas in a warm bath push a piston out slowly and watch it trace an isotherm, heat flowing in as fast as work flows out.`,
+  },
+  misconceptions: [
+    {
+      id: "C06-M1",
+      mistake: t`Uses $\log_{10}$ instead of $\ln$.`,
+      remediation: t`$W = nRT\ln\dfrac{V_2}{V_1}$, with the natural log; with $\log_{10}$, multiply by $2.303$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M2",
+      mistake: "Turns the volume ratio upside down.",
+      remediation: t`$W = nRT\ln\dfrac{V_2}{V_1}$, final over initial: positive on expansion, negative on compression.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M3",
+      mistake: t`Uses the starting pressure times $\Delta V$, as if the pressure stayed fixed.`,
+      remediation: t`In an isothermal change $p$ falls as $V$ grows; the work is the area under the curve, $nRT\ln\dfrac{V_2}{V_1}$.`,
+      fallback: { kind: "concept", id: "C03" },
+    },
+    {
+      id: "C06-M4",
+      mistake: "Mixes up isothermal and adiabatic.",
+      remediation: t`Isothermal: $T$ fixed, heat flows freely, $\Delta U = 0$. Adiabatic: no heat flows, $Q = 0$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M5",
+      mistake: "Mixes up isothermal and isochoric.",
+      remediation: t`Isothermal: $T$ fixed while $p$ and $V$ change. Isochoric: $V$ fixed, so $W = 0$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M6",
+      mistake: "Mixes up isothermal and isobaric.",
+      remediation: t`Isothermal: $T$ fixed. Isobaric: $p$ fixed.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M7",
+      mistake: "Thinks no heat flows when the temperature stays constant.",
+      remediation: t`Heat must flow in to make up for the work done; it just doesn't change $U$. So $Q = W$, not 0.`,
+      fallback: { kind: "concept", id: "C04" },
+    },
+    {
+      id: "C06-M8",
+      mistake: "Thinks the volume changes by the same percentage as the pressure.",
+      remediation: t`$pV$ is constant: $V_2 = \dfrac{V_1}{0.9} \approx 1.111\,V_1$, an $11.1\%$ rise, not $10\%$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M9",
+      mistake: "Takes the volume to be proportional to the pressure.",
+      remediation: t`At constant temperature $V \propto \dfrac{1}{p}$: lower pressure, larger volume.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M10",
+      mistake: "Thinks a fixed temperature keeps the volume fixed.",
+      remediation: t`At fixed $T$, $p$ and $V$ still change, keeping $pV$ constant.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  items: [
+    {
+      id: "C06-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2025-february/Q.14" },
+      stem: t`$0.5$ mole of a gas at $300\ \mathrm{K}$ expands isothermally from $2.0$ litres to $6.0$ litres. How much work does it do? (Take $R = 8.314\ \mathrm{J\,mol^{-1}K^{-1}}$.)`,
+      verify: { kind: "value", inputs: { n: "0.5", T: "300", V1: "2", V2: "6" }, params: { ask: "W_nT" } },
+      options: [
+        { key: "A", text: t`$595\ \mathrm{J}$`, correct: false, misconceptionId: "C06-M1", value: "595" },
+        { key: "B", text: t`$-1370\ \mathrm{J}$`, correct: false, misconceptionId: "C06-M2", value: "-1370" },
+        { key: "C", text: t`$2494\ \mathrm{J}$`, correct: false, misconceptionId: "C06-M3", value: "2494" },
+        { key: "D", text: t`$1370\ \mathrm{J}$`, correct: true, value: "1370" },
+      ],
+      solution: {
+        steps: [
+          t`$W = nRT\ln\dfrac{V_2}{V_1} = 0.5 \times 8.314 \times 300 \times \ln 3$.`,
+          t`$W \approx 1247 \times 1.0986 \approx 1370\ \mathrm{J}$.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/thermodynamics-12-phy/Ex Q.8" },
+      stem: t`An ideal gas expands isothermally, doing work on its surroundings. What does the first law give?`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "law" } },
+      options: [
+        { key: "A", text: t`$\Delta U = 0$, so the heat taken in equals the work done: $Q = W$`, correct: true, value: "dU0_QW" },
+        { key: "B", text: t`$Q = 0$, so $\Delta U = -W$`, correct: false, misconceptionId: "C06-M4", value: "Q0_dUminusW" },
+        { key: "C", text: t`$W = 0$, so $\Delta U = Q$`, correct: false, misconceptionId: "C06-M5", value: "W0_dUQ" },
+        { key: "D", text: t`$Q = 0$ and $\Delta U = 0$, since the temperature does not change`, correct: false, misconceptionId: "C06-M7", value: "all_zero" },
+      ],
+      solution: {
+        steps: [
+          t`An ideal gas's internal energy depends only on $T$, which is fixed: $\Delta U = 0$.`,
+          t`So $Q = \Delta U + W = W$: the heat taken in equals the work done.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2017-march/Q.1(i)" },
+      stem: t`The pressure of an ideal gas falls by $10\%$ at constant temperature. What happens to its volume?`,
+      verify: { kind: "value", inputs: { dp_pct: "-10" }, params: { ask: "dV_pct", sf: "3" } },
+      options: [
+        { key: "A", text: t`It increases by about $11.1\%$`, correct: true, value: "11.1000000000000" },
+        { key: "B", text: t`It increases by $10\%$`, correct: false, misconceptionId: "C06-M8", value: "10" },
+        { key: "C", text: t`It decreases by $10\%$`, correct: false, misconceptionId: "C06-M9", value: "-10" },
+        { key: "D", text: t`It does not change`, correct: false, misconceptionId: "C06-M10", value: "0" },
+      ],
+      solution: {
+        steps: [
+          t`$p_1V_1 = p_2V_2$ with $p_2 = 0.9\,p_1$, so $V_2 = \dfrac{V_1}{0.9} \approx 1.111\,V_1$.`,
+          t`The volume rises by about $11.1\%$.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/thermodynamics-12-phy/Solved Ex.4.7" },
+      stem: t`$1.0$ litre of an ideal gas at $1.01 \times 10^{5}\ \mathrm{Pa}$ is compressed isothermally to $\dfrac{1}{15}$ of its volume. How much work does the gas do?`,
+      verify: { kind: "value", inputs: { p1: "1.01e5", V1: "1", V2: "1/15" }, params: { ask: "W_pV" } },
+      options: [
+        { key: "A", text: t`$-94.27\ \mathrm{J}$`, correct: false, misconceptionId: "C06-M3", value: "-94.2700000000000" },
+        { key: "B", text: t`$-273.5\ \mathrm{J}$`, correct: true, value: "-273.500000000000" },
+        { key: "C", text: t`$-118.8\ \mathrm{J}$`, correct: false, misconceptionId: "C06-M1", value: "-118.800000000000" },
+        { key: "D", text: t`$273.5\ \mathrm{J}$`, correct: false, misconceptionId: "C06-M2", value: "273.500000000000" },
+      ],
+      solution: {
+        steps: [
+          t`$W = p_1V_1\ln\dfrac{V_2}{V_1} = 1.01 \times 10^{5} \times 10^{-3} \times \ln\dfrac{1}{15}$.`,
+          t`$W = 101 \times (-2.708) \approx -273.5\ \mathrm{J}$: work is done on the gas.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2020-february/Q.2(ii)" },
+      stem: t`Under what conditions can a gas undergo an isothermal change?`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "how" } },
+      options: [
+        { key: "A", text: t`In good thermal contact with its surroundings, and changed very slowly`, correct: true, value: "contact_slow" },
+        { key: "B", text: t`Well insulated from its surroundings, and changed very quickly`, correct: false, misconceptionId: "C06-M4", value: "insulated_fast" },
+        { key: "C", text: t`Held in a rigid container, so its volume cannot change`, correct: false, misconceptionId: "C06-M5", value: "rigid" },
+        { key: "D", text: t`Kept under a free piston, so its pressure cannot change`, correct: false, misconceptionId: "C06-M6", value: "constant_pressure" },
+      ],
+      solution: {
+        steps: [
+          t`To keep $T$ fixed, heat must flow in or out as fast as work is done.`,
+          t`So the gas needs good thermal contact with its surroundings and a very slow change.`,
+        ],
+      },
+    },
+  ],
+};
