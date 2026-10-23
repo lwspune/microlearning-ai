@@ -11,7 +11,7 @@ export const c11: Concept = {
   },
   explanation: {
     intuition: [
-      t`To **rationalize** a denominator is to make it rational, with no root left.`,
+      t`To **rationalise** a denominator is to make it rational, with no root left.`,
       t`For $\frac{3}{\sqrt{5}}$, multiplying top and bottom by $\sqrt{5}$ was enough.`,
       t`For $\frac{1}{\sqrt{5} - \sqrt{3}}$, multiplying by $\sqrt{5} - \sqrt{3}$ leaves $8 - 2\sqrt{15}$ below.`,
       t`The **conjugate** of $\sqrt{5} - \sqrt{3}$ is $\sqrt{5} + \sqrt{3}$: same terms, sign changed.`,
@@ -31,7 +31,7 @@ export const c11: Concept = {
         ],
       },
       {
-        title: "Rationalizing step by step",
+        title: "Rationalising step by step",
         points: [
           t`Write the conjugate of the denominator: change the sign between its terms.`,
           t`Multiply the top **and** the bottom by it, so the value does not change.`,
@@ -53,7 +53,7 @@ export const c11: Concept = {
       },
     ],
     worked: {
-      prompt: t`Rationalize the denominator: $\frac{8}{3\sqrt{2} + \sqrt{5}}$.`,
+      prompt: t`Rationalise the denominator: $\frac{8}{3\sqrt{2} + \sqrt{5}}$.`,
       steps: [
         t`The conjugate of $3\sqrt{2} + \sqrt{5}$ is $3\sqrt{2} - \sqrt{5}$.`,
         t`Multiply the top and the bottom by $3\sqrt{2} - \sqrt{5}$.`,
@@ -104,7 +104,7 @@ export const c11: Concept = {
     {
       id: "C11-Q1",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/real-numbers-9/Ex 2.4 Q2(i)" },
-      stem: t`Rationalize the denominator: $\frac{1}{\sqrt{7} + \sqrt{2}}$`,
+      stem: t`Rationalise the denominator: $\frac{1}{\sqrt{7} + \sqrt{2}}$`,
       verify: { kind: "value", inputs: { num: "1", p: "1", m: "7", q: "1", n: "2", s: "1" } },
       options: [
         { key: "A", text: t`$\frac{\sqrt{7} - \sqrt{2}}{5}$`, correct: true, value: "1/(sqrt(2) + sqrt(7))" },
@@ -124,7 +124,7 @@ export const c11: Concept = {
     {
       id: "C11-Q2",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/real-numbers-9/Ex 2.4 Q2(ii)" },
-      stem: t`Rationalize the denominator: $\frac{3}{2\sqrt{5} - 3\sqrt{2}}$`,
+      stem: t`Rationalise the denominator: $\frac{3}{2\sqrt{5} - 3\sqrt{2}}$`,
       verify: { kind: "value", inputs: { num: "3", p: "2", m: "5", q: "3", n: "2", s: "-1" } },
       options: [
         { key: "A", text: t`$\frac{6\sqrt{5} + 9\sqrt{2}}{4}$`, correct: false, misconceptionId: "C11-M3", value: "9*sqrt(2)/4 + 3*sqrt(5)/2" },
@@ -144,7 +144,7 @@ export const c11: Concept = {
     {
       id: "C11-Q3",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/real-numbers-9/Ex 2.4 Q2(iii)" },
-      stem: t`Rationalize the denominator: $\frac{4}{7 + 4\sqrt{3}}$`,
+      stem: t`Rationalise the denominator: $\frac{4}{7 + 4\sqrt{3}}$`,
       verify: { kind: "value", inputs: { num: "4", p: "7", m: "1", q: "4", n: "3", s: "1" } },
       options: [
         { key: "A", text: t`$28 + 16\sqrt{3}$`, correct: false, misconceptionId: "C11-M2", value: "16*sqrt(3) + 28" },
@@ -164,7 +164,7 @@ export const c11: Concept = {
     {
       id: "C11-Q4",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/real-numbers-9/Ex 2.4 Q2(iv)" },
-      stem: t`Rationalize the denominator and simplify: $\frac{\sqrt{5} - \sqrt{3}}{\sqrt{5} + \sqrt{3}}$`,
+      stem: t`Rationalise the denominator and simplify: $\frac{\sqrt{5} - \sqrt{3}}{\sqrt{5} + \sqrt{3}}$`,
       verify: { kind: "value", inputs: { num: "sqrt(5) - sqrt(3)", p: "1", m: "5", q: "1", n: "3", s: "1" } },
       options: [
         { key: "A", text: t`$1$`, correct: false, misconceptionId: "C11-M2", value: "1" },
@@ -184,7 +184,7 @@ export const c11: Concept = {
     {
       id: "C11-Q5",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/real-numbers-9/Prob Q8(v)" },
-      stem: t`Rationalize the denominator: $\frac{12}{4\sqrt{3} - \sqrt{2}}$`,
+      stem: t`Rationalise the denominator: $\frac{12}{4\sqrt{3} - \sqrt{2}}$`,
       verify: { kind: "value", inputs: { num: "12", p: "4", m: "3", q: "1", n: "2", s: "-1" } },
       options: [
         { key: "A", text: t`$\frac{24\sqrt{3} + 6\sqrt{2}}{5}$`, correct: false, misconceptionId: "C11-M3", value: "6*sqrt(2)/5 + 24*sqrt(3)/5" },
@@ -204,7 +204,7 @@ export const c11: Concept = {
     {
       id: "C11-Q6",
       source: { kind: "pyqvault-practice", ref: "mh-sb-9/real-numbers-9/Prob Q8(iv)" },
-      stem: t`Rationalize the denominator: $\frac{1}{3\sqrt{5} + 2\sqrt{2}}$`,
+      stem: t`Rationalise the denominator: $\frac{1}{3\sqrt{5} + 2\sqrt{2}}$`,
       verify: { kind: "value", inputs: { num: "1", p: "3", m: "5", q: "2", n: "2", s: "1" } },
       options: [
         { key: "A", text: t`$\frac{1}{37}$`, correct: false, misconceptionId: "C11-M4", value: "1/37" },
