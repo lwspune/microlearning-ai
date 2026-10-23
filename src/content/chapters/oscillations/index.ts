@@ -10,6 +10,7 @@ import { c08 } from "./concepts/c08-simple-pendulum.ts";
 import { c09 } from "./concepts/c09-seconds-pendulum.ts";
 import { c10 } from "./concepts/c10-angular-shm.ts";
 import { c11 } from "./concepts/c11-damped-forced.ts";
+import { c12 } from "./concepts/c12-composition.ts";
 import { graph } from "./graph.ts";
 
 export const oscillations: Chapter = {
@@ -20,5 +21,5 @@ export const oscillations: Chapter = {
   // Balbharati Physics Std XII (PLAN.md "Std XI and XII Physics").
   standard: 12,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
 };
