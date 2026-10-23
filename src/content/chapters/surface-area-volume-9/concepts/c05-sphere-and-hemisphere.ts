@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`One ball has radius $r$; a bigger ball has radius $2r$. How many times the leather does the bigger ball need, and how many times the air does it hold?`,
     reveal: t`Surface area goes with $r^2$, so $2^2 = 4$ times the leather. Volume goes with $r^3$, so $2^3 = 8$ times the air.`,

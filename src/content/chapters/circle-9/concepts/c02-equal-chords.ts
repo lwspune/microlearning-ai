@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A circle has radius $5$ cm. You draw many chords in it, each $8$ cm long. Where do all their midpoints lie?`,
     reveal: t`On a smaller circle with the same centre and radius $3$ cm. Every $8$ cm chord is exactly $3$ cm from the centre: equal chords are equally far from it.`,

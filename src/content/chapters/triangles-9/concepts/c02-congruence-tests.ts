@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Riya and Sameer each cut out a triangle with sides $5$ cm and $7$ cm and an angle of $40^\circ$. Must the two triangles fit exactly on each other?`,
     reveal: t`Not always. If the $40^\circ$ angle sits between the two sides in both, they fit. If it sits elsewhere, two different triangles are possible. Where the equal parts sit decides it.`,

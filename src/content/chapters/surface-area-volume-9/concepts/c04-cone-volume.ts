@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A cone-shaped glass and a cylinder-shaped glass have the same round mouth and the same height. How many full cone-glasses of water fill the cylinder-glass?`,
     reveal: t`Three. A cone holds exactly one third of the cylinder on the same base and height, so its volume is $\frac{1}{3}\pi r^2 h$.`,

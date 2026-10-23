@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A cardboard triangle balances on a pencil tip at just one point. How can you find that point with only a ruler?`,
     reveal: t`Join each vertex to the midpoint of the opposite side. The three lines meet at one point, the **centroid**, and the triangle balances there.`,

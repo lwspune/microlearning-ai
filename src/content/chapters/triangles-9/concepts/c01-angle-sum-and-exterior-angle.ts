@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Cut a triangle out of paper and tear off its three corners. Put the corners side by side, points together. What do they make?`,
     reveal: t`A straight line, for every triangle: the three angles of a triangle add up to $180^\circ$.`,

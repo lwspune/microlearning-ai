@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two pairs of parallel rails cross and make a parallelogram. One corner measures $70^\circ$. Without a protractor, what are the other three corners?`,
     reveal: t`$110^\circ$, $70^\circ$ and $110^\circ$. Angles next to each other add to $180^\circ$, and opposite angles are equal.`,

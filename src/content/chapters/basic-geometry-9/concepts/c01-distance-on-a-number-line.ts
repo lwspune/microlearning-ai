@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A lift goes up from level $-1$ (the basement) to floor $6$. Ravi says it went up $6 - 1 = 5$ floors. How many floors did it really go up?`,
     reveal: t`$7$ floors: $1$ floor up to the ground floor $0$, then $6$ more. That is $6 - (-1) = 7$, the larger number minus the smaller, keeping the sign.`,

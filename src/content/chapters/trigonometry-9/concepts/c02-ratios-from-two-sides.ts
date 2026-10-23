@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A wire runs from the top of a $20$ m pole to the ground, $21$ m from the pole's foot. $\theta$ is the angle the wire makes with the ground. What is $\sin\theta$?`,
     reveal: t`$\sin\theta = \frac{20}{29}$. The wire is the hypotenuse, and nobody gave its length. Pythagoras finds it: $\sqrt{400 + 441} = 29$ m. Then $\sin\theta = \frac{20}{29}$.`,

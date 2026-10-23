@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two sticks, $60$ cm and $40$ cm long, are tied together at their midpoints, crossing at any angle. A string is tied tight around their four ends. What shape does the string make?`,
     reveal: t`Always a parallelogram, whatever the angle. The sticks are its diagonals, and they bisect each other. That is one of the tests for a parallelogram.`,

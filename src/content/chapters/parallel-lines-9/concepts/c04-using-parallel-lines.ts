@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Line AB $\parallel$ line CD. A path runs from A to a point E between the lines, then on to C. It makes $30^\circ$ with line AB and $45^\circ$ with line CD, both angles opening towards E. How big is the angle at E?`,
     reveal: t`$75^\circ$. A line through E, parallel to AB, splits the angle at E into $30^\circ$ and $45^\circ$: two pairs of alternate angles.`,

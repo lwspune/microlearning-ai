@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`No table, no calculator: what is $\frac{\sin 18^\circ}{\cos 72^\circ}$?`,
     reveal: t`It is $1$. $18^\circ + 72^\circ = 90^\circ$, so $\cos 72^\circ = \sin 18^\circ$. A number divided by itself is $1$.`,

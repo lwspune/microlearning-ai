@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A gardener wants the largest round flower bed that fits inside a triangular plot. Where should she put its centre?`,
     reveal: t`Where the bisectors of the plot's angles meet. That point is equally far from all three fences, and that distance is the bed's radius.`,

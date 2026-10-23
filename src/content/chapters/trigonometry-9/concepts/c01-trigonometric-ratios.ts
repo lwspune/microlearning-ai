@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ramp 1 rises 3 m along a slope 5 m long. Ramp 2 rises 6 m along a slope 10 m long. Which ramp is steeper?`,
     reveal: t`Neither. $\frac{3}{5} = \frac{6}{10}$, so both make the same angle with the ground. For a fixed angle, rise ÷ slope is fixed: it is called the **sine** of the angle.`,

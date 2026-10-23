@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Home to the shop is $3$ km, the shop to the park is $4$ km, and home to the park is $7$ km. Which of the three lies between the other two?`,
     reveal: t`The shop: $3 + 4 = 7$, so the two short trips make up the long one. All three lie on one straight road, with the shop in the middle.`,

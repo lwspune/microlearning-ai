@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A party cap is a cone with no base. Cut it along a slanting edge and open it out flat. What shape is the paper?`,
     reveal: t`A **sector**, a slice of a circle. Its radius is the cap's slant height $l$ and its curved edge is the rim, $2\pi r$ long. That sector's area is the curved surface, $\pi r l$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A paper label wraps exactly once round a tin. You cut it straight down and lay it flat. What shape is it, and how long is it?`,
     reveal: t`A rectangle. Its length is the distance round the tin, $2\pi r$, and its width is the tin's height $h$. So the label's area, the tin's curved surface, is $2\pi rh$.`,

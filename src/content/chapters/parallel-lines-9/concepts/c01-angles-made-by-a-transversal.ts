@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A railway line cuts across two straight roads. At each crossing, the rails and the road make angles. How many angles are made at the two crossings in all?`,
     reveal: t`$8$: four at each crossing. A line that cuts two lines like this is a **transversal**, and its eight angles come in named pairs.`,

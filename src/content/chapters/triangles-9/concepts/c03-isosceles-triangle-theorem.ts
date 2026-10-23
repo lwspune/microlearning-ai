@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Cut out a paper triangle with two equal sides. Fold it so that the two equal sides lie on each other. What happens to the other two corners?`,
     reveal: t`They land exactly on each other. The angles opposite the two equal sides are equal.`,

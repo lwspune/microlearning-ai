@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A carpenter checks that a door frame is a true rectangle by measuring its two diagonals. Why does that work?`,
     reveal: t`A rectangle's diagonals are always equal. If the two measures differ, the frame is not a rectangle.`,

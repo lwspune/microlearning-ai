@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A cube of side 4 cm and a flat box 8 cm by 4 cm by 2 cm hold the same space. Which needs more paper to wrap?`,
     reveal: t`The flat box. Both hold $64$ cubic cm, but the cube's cover is $6 \times 16 = 96$ sq. cm and the box's is $2(32 + 8 + 16) = 112$ sq. cm.`,

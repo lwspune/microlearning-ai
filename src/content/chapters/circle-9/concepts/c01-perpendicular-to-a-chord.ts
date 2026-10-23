@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A round plate has radius 25 cm. A straight stick 48 cm long lies across it, both ends on the rim. How far is the middle of the stick from the centre of the plate?`,
     reveal: t`7 cm. The line from the centre to the middle of the stick is perpendicular to it, so $25^2 = d^2 + 24^2$, which gives $d = 7$.`,

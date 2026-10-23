@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle has perimeter $10$ cm, $\angle B = 40^\circ$ and $\angle C = 80^\circ$. No side is given, so you can't draw the base $BC$ first. Which segment can you draw first?`,
     reveal: t`The perimeter itself. Lay $AB$, $BC$ and $CA$ end to end on one line: a $10$ cm segment $PQ$. At its ends draw $20^\circ$ and $40^\circ$, half of each base angle; the rays meet at $A$.`,

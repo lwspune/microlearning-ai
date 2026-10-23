@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A carpenter checks two shelves with a slanting support that crosses both. Between the shelves, on the same side of the support, she measures $63^\circ$ and $117^\circ$. Are the shelves parallel?`,
     reveal: t`Yes. These are interior angles on the same side, and $63^\circ + 117^\circ = 180^\circ$. One pair of angles is enough: this is the interior angles test.`,

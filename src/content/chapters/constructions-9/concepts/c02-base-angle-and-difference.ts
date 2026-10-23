@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle has base $BC = 5.5$ cm and $\angle B = 50^\circ$. Side AB is 2 cm longer than AC, but neither length is known. How can ruler and compass find A?`,
     reveal: t`Mark D on the arm of $\angle B$, 2 cm from B. The rest of AB, the piece DA, then equals AC. So A is equally far from D and C: it is where the perpendicular bisector of seg DC meets the arm.`,

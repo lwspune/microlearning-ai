@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The side view of a ramp is a trapezium: its top and its bottom edge are parallel. The slope meets the ground at $25^\circ$. What angle does it make with the flat top?`,
     reveal: t`$155^\circ$. The two angles at the ends of the sloping side add to $180^\circ$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangle has sides 3 cm, 4 cm and 6 cm. A bigger copy of the same shape has its 3 cm side drawn as 9 cm. Is its 6 cm side 12 cm or 18 cm?`,
     reveal: t`18 cm. The copy is 3 times as big, so every side is multiplied by 3. Adding 6 cm to each side would change the shape.`,

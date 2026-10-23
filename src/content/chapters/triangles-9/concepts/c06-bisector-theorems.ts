@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A lamp post must stand equally far from two houses $A$ and $B$. Is the midpoint of $AB$ the only place for it?`,
     reveal: t`No. It can stand anywhere on the perpendicular bisector of $AB$: every point on that line is equally far from $A$ and $B$.`,

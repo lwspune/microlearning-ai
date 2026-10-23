@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The points $(2, -3)$, $(2, 0)$, $(2, 1)$ and $(2, 4)$ are plotted. What kind of line joins them, and what do all its points share?`,
     reveal: t`They lie on a line parallel to the Y-axis, 2 units to its right. Every point on it has $x = 2$, so the line is called $x = 2$.`,

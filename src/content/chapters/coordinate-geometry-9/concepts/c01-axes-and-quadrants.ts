@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A town map puts the bus stand at its centre. One road runs east–west through it, another north–south. A shop is 4 km west and 1 km north of the bus stand. Which quarter of the map is the shop in, and how can two numbers tell you?`,
     reveal: t`Take east and north as positive, west and south as negative. The shop is at $(-4, 1)$. A negative first number means west, a positive second number means north: the top-left quarter, called **Quadrant II**.`,

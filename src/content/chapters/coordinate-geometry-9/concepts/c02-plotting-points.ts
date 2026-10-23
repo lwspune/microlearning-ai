@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ravi marks the point $(2, 5)$ and Sara marks the point $(5, 2)$ on the same graph paper. Have they marked the same point?`,
     reveal: t`No. $(2, 5)$ is 2 units right and 5 up; $(5, 2)$ is 5 units right and 2 up. The order of the two numbers fixes the point.`,

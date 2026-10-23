@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Draw $\triangle ABC$ with $BC = 5$ cm and $\angle B = 60^\circ$. You are not told $AB$ or $AC$. You only know $AB + AC = 7$ cm. Where does $A$ go?`,
     reveal: t`Lay the whole $7$ cm along the arm of $\angle B$, ending at $D$. $A$ must be as far from $C$ as from $D$, so it is where the perpendicular bisector of seg $DC$ cuts the arm.`,

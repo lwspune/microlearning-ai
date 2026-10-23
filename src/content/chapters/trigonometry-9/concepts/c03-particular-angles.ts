@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Cut a square along its diagonal. Each half is a right triangle with a $45^\circ$ angle. **Does $\tan 45^\circ$ depend on the size of the square?**`,
     reveal: t`No. The two sides at the right angle are sides of the square, so they are equal. Opposite over adjacent is then $1$, so $\tan 45^\circ = 1$ for every square.`,

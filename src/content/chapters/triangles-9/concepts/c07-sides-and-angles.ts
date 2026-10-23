@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Can you make a triangle from sticks $3$ cm, $4$ cm and $9$ cm long?`,
     reveal: t`No. Laid along the $9$ cm stick, the other two reach only $3 + 4 = 7$ cm, so their ends never meet.`,

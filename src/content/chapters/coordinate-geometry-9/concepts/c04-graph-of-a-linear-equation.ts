@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`$(0, 4)$, $(1, 3)$ and $(4, 0)$ are three solutions of $x + y = 4$. If you plot them and join them, do you get a triangle?`,
     reveal: t`No. All three lie on one straight line. Every solution of $x + y = 4$ lies on that line: it is the graph of the equation.`,

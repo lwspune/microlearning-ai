@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A pencil lies along a ruler from the $3$ cm mark to the $11$ cm mark. At which mark is the middle of the pencil?`,
     reveal: t`At the $7$ cm mark. The pencil is $11 - 3 = 8$ cm long, so each half is $4$ cm, and $3 + 4 = 7$. The $4$ cm is a length; the $7$ cm mark is a place.`,

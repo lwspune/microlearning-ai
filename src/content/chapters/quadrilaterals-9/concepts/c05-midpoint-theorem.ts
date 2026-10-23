@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A triangular roof frame has a crossbar fixed at the midpoints of its two sloping beams. The bottom beam is $4.2$ m long. How long is the crossbar, and is it level?`,
     reveal: t`It is $2.1$ m long, and it is level, parallel to the bottom beam. The segment joining two midpoints is parallel to the third side and half of it.`,

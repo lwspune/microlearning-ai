@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A straight road crosses two parallel railway tracks. At the first track, the road makes a $60^\circ$ angle. What angle does it make at the second track?`,
     reveal: t`Also $60^\circ$. Parallel tracks point the same way, so the road crosses both with the same tilt. All eight angles follow from that one.`,
