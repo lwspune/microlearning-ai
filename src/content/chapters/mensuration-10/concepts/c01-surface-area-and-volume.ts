@@ -248,7 +248,7 @@ export const c01: Concept = {
       id: "C01-M6",
       mistake: t`Uses a circle's circumference $2\pi r$ where its area $\pi r^2$ belongs (a base or a flat face).`,
       remediation: t`A circle's area is $\pi r^2$, in square units; its circumference $2\pi r$ is a length. Bases and flat faces need the area.`,
-      fallback: { kind: "ext", topic: "circumference and area of a circle" },
+      fallback: { kind: "ext", topic: "circumference and area of a circle (Std VII)" },
     },
   ],
   engineNotes: [

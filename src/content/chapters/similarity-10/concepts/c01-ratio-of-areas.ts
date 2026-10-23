@@ -203,13 +203,13 @@ export const c01: Concept = {
       id: "C01-M1",
       mistake: "Compares only the bases, even when the heights differ (so a common base seems to give equal areas).",
       remediation: t`Area depends on base and height together: $\frac{A_1}{A_2} = \frac{b_1 \times h_1}{b_2 \times h_2}$. The bases alone decide only when the heights are equal.`,
-      fallback: { kind: "ext", topic: "area of a triangle (Std IX)" },
+      fallback: { kind: "ext", topic: "area of a triangle (Std VII)" },
     },
     {
       id: "C01-M2",
       mistake: "Compares only the heights, even when the bases differ (so triangles between the same parallels seem equal in area).",
       remediation: "Equal heights are only half the story: then the areas are in the ratio of the bases. Use base times height for each triangle.",
-      fallback: { kind: "ext", topic: "area of a triangle (Std IX)" },
+      fallback: { kind: "ext", topic: "area of a triangle (Std VII)" },
     },
     {
       id: "C01-M3",

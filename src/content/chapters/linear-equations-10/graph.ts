@@ -19,7 +19,7 @@ export const graph: GraphNode[] = [
   {
     id: "C01", slug: "elimination", title: "Solving by elimination", group: "Solving a pair", tier: "core",
     oneLiner: t`Make the coefficients of one variable equal, add or subtract to remove it, then substitute back for the other`,
-    prereqs: [], ext: ["linear equations in two variables (Std IX)"], sources: [METHODS],
+    prereqs: [], ext: ["linear equations in two variables (Std IX Linear Equations in Two Variables)"], sources: [METHODS],
   },
   {
     id: "C02", slug: "swapped-coefficients", title: "Equations with swapped coefficients", group: "Solving a pair", tier: "adv",

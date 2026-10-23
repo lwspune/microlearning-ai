@@ -16,7 +16,7 @@ export const graph: GraphNode[] = [
   {
     id: "C01", slug: "constructing-a-similar-triangle", title: "Constructing a similar triangle", group: "Constructions", tier: "core", visual: true,
     oneLiner: t`To make $\triangle A'BC'$ with $AB : A'B = m : n$, mark the larger of $m$ and $n$ equal parts on a ray from B, join, and draw parallels`,
-    prereqs: [], ext: ["similar triangles (Std X Similarity)", "constructing a triangle from given parts (Std IX Constructions)"], sources: [S("Construction of a Similar Triangle")],
+    prereqs: [], ext: ["similar triangles (Std X Similarity)", "constructing a triangle from given parts (Std IX Constructions of Triangles)"], sources: [S("Construction of a Similar Triangle")],
   },
   {
     id: "C02", slug: "tangent-at-a-point", title: "Tangent at a point on the circle", group: "Constructions", tier: "core", visual: true,

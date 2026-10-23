@@ -39,7 +39,7 @@ export const graph: GraphNode[] = [
   {
     id: "C05", slug: "arc-length", title: "Length of an arc", group: "Circles", tier: "core", visual: true,
     oneLiner: t`An arc of $\theta^\circ$ is $\frac{\theta}{360} \times 2\pi r$ long; a sector's perimeter adds the two radii`,
-    prereqs: [], ext: ["circumference and area of a circle"], sources: [S("Circumference of a Circle"), SECTOR],
+    prereqs: [], ext: ["circumference and area of a circle (Std VII)"], sources: [S("Circumference of a Circle"), SECTOR],
   },
   {
     id: "C06", slug: "sector-area", title: "Area of a sector", group: "Circles", tier: "core", visual: true,

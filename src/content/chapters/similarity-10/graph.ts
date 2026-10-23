@@ -19,7 +19,7 @@ export const graph: GraphNode[] = [
   {
     id: "C01", slug: "ratio-of-areas", title: "Ratio of areas of two triangles", group: "Areas and proportional segments", tier: "core", visual: true,
     oneLiner: t`$\frac{A_1}{A_2} = \frac{b_1 h_1}{b_2 h_2}$: with equal heights the areas are in the ratio of the bases, with equal bases in the ratio of the heights`,
-    prereqs: [], ext: ["area of a triangle (Std IX)"], sources: [AREAS],
+    prereqs: [], ext: ["area of a triangle (Std VII)"], sources: [AREAS],
   },
   {
     id: "C02", slug: "basic-proportionality", title: "Basic proportionality theorem", group: "Areas and proportional segments", tier: "core", visual: true,

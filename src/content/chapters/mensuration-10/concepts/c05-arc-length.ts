@@ -186,7 +186,7 @@ export const c05: Concept = {
       id: "C05-M1",
       mistake: t`Uses the sector-area rule $\frac{\theta}{360} \times \pi r^2$ for the arc's length.`,
       remediation: t`An arc is part of the circumference $2\pi r$, so $l = \frac{\theta}{360} \times 2\pi r$. The rule with $\pi r^2$ gives a sector's area.`,
-      fallback: { kind: "ext", topic: "circumference and area of a circle" },
+      fallback: { kind: "ext", topic: "circumference and area of a circle (Std VII)" },
     },
     {
       id: "C05-M2",

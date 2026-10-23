@@ -16,7 +16,7 @@ export const graph: GraphNode[] = [
   {
     id: "C01", slug: "cgst-and-sgst", title: "CGST, SGST and IGST", group: "GST", tier: "core",
     oneLiner: t`Within a state, GST is split equally into CGST and SGST; a sale to another state pays IGST at the whole rate`,
-    prereqs: [], ext: ["percentages"], sources: [GST],
+    prereqs: [], ext: ["percentages (Std VIII)"], sources: [GST],
   },
   {
     id: "C02", slug: "discount-then-gst", title: "Discount, then GST", group: "GST", tier: "core",
