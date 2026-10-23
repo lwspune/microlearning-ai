@@ -198,6 +198,7 @@ export const courses: Course[] = [
       lpp([]),
       // Std XII Physics, Balbharati book order (PLAN.md "Std XI and XII Physics").
       { chapter: "rotational-dynamics" },
+      { chapter: "fluids" },
     ],
   },
   {
