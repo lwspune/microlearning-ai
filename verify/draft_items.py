@@ -28,7 +28,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from sympy import I, Tuple, latex, simplify, symbols, sympify, expand
+from sympy import I, Rational, Tuple, latex, simplify, symbols, sympify, expand
 
 from ts_literal import figure_ts
 
@@ -84,6 +84,16 @@ def polar_text(val) -> str:
     return f"${radius}\\left({trig}\\right)$"
 
 
+def quantity_text(val) -> str:
+    """A physical number: a x 10^n when it is 10^5 or more, or below 10^-3; otherwise as it is."""
+    val = sympify(val)
+    if val.is_number and val.is_real and val != 0 and not (Rational(1, 1000) <= abs(val) < 100000):
+        mantissa, exponent = f"{float(val):.2e}".split("e")
+        mantissa = mantissa.rstrip("0").rstrip(".")
+        return f"{mantissa} \\times 10^{{{int(exponent)}}}"
+    return latex(val, mul_symbol="times")
+
+
 def option_text(val, fmt) -> str:
     """An option's text, written from its value so the two can't disagree."""
     if fmt == "pair":  # a complex value standing for the pair (x, y)
@@ -112,7 +122,7 @@ def option_text(val, fmt) -> str:
     if fmt == "deg":  # an angle in degrees
         return f"${latex(val)}^\\circ$"
     if fmt and fmt.startswith("unit:"):  # a physical quantity: unit:<unit in \mathrm form>, e.g. unit:m\,s^{-2}
-        return f"${latex(val, mul_symbol='times')}\\ \\mathrm{{{fmt[5:]}}}$"
+        return f"${quantity_text(val)}\\ \\mathrm{{{fmt[5:]}}}$"
     if isinstance(val, Tuple):
         return "$(" + ", ".join(latex(v) for v in val) + ")$"
     return f"${latex(val)}$"

@@ -49,6 +49,14 @@ class OptionText(unittest.TestCase):
 
         self.assertEqual(option_text(Float("6.67e-11"), r"unit:N\,m^2/kg^2"), r"$6.67 \times 10^{-11}\ \mathrm{N\,m^2/kg^2}$")
 
+    def test_unit_writes_large_and_small_numbers_in_powers_of_ten(self):
+        from sympy import Float, Integer
+
+        self.assertEqual(option_text(Integer(7110000), "unit:J"), r"$7.11 \times 10^{6}\ \mathrm{J}$")
+        self.assertEqual(option_text(Integer(568000), "unit:J"), r"$5.68 \times 10^{5}\ \mathrm{J}$")
+        self.assertEqual(option_text(Float("0.000123"), "unit:m"), r"$1.23 \times 10^{-4}\ \mathrm{m}$")
+        self.assertEqual(option_text(Integer(18000), "unit:J"), r"$18000\ \mathrm{J}$")
+
     def test_quadrant_is_unchanged(self):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
