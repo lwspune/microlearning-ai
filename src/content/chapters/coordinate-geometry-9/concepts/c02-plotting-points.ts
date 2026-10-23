@@ -1,0 +1,422 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c02: Concept = {
+  id: "C02",
+  status: "draft",
+  hook: {
+    prompt: t`Ravi marks the point $(2, 5)$ and Sara marks the point $(5, 2)$ on the same graph paper. Have they marked the same point?`,
+    reveal: t`No. $(2, 5)$ is 2 units right and 5 up; $(5, 2)$ is 5 units right and 2 up. The order of the two numbers fixes the point.`,
+  },
+  explanation: {
+    intuition: [
+      t`The **co-ordinates** $(x, y)$ of a point tell you how to reach it from the origin $O$.`,
+      t`To plot $A(-4, 3)$, first go 4 units left along the X-axis, because $x = -4$ is negative.`,
+      t`Then go 3 units up, parallel to the Y-axis, because $y = 3$ is positive.`,
+      t`The order matters: $x$ is always written first and $y$ second.`,
+      t`A point on an axis has a zero co-ordinate: $B(0, -2)$ is on the Y-axis, 2 units below $O$.`,
+      t`Count unit steps from $O$, not grid lines, and never from the corner of the paper.`,
+    ],
+    formal: [
+      {
+        title: "Plotting a point",
+        points: [
+          t`To plot $K(3, -2)$, start at the origin $O(0, 0)$.`,
+          t`Move along the X-axis: right if $x$ is positive, left if it is negative. Here, 3 units right.`,
+          t`Then move parallel to the Y-axis: up if $y$ is positive, down if negative. Here, 2 units down.`,
+          t`Mark the point there and name it with its co-ordinates: $K(3, -2)$.`,
+        ],
+        figure: {
+          alt: "The origin O is marked. An arrow goes 3 units right along the X-axis, then an arrow goes 2 units down, parallel to the Y-axis. The point K(3, −2) is marked where it ends.",
+          axes: "xy",
+          view: { x: [-4, 5], y: [-4, 3] },
+          elements: [
+            { kind: "point", at: [0, 0], label: "O", labelAt: "nw", step: 1 },
+            { kind: "vector", from: [0, 0], to: [3, 0], tone: "good", step: 2 },
+            { kind: "label", at: [1.5, 0], label: "3 right", labelAt: "n", step: 2 },
+            { kind: "vector", from: [3, 0], to: [3, -2], tone: "good", step: 3 },
+            { kind: "label", at: [3, -1], label: "2 down", labelAt: "e", step: 3 },
+            { kind: "point", at: [3, -2], label: "K(3, −2)", labelAt: "se", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Reading co-ordinates",
+        points: [
+          t`A **perpendicular** meets a line at a right angle. From a marked point $G$, draw one to each axis.`,
+          t`The perpendicular to the X-axis meets it at $-3$, so the $x$ co-ordinate of $G$ is $-3$.`,
+          t`The perpendicular to the Y-axis meets it at 4, so the $y$ co-ordinate of $G$ is 4.`,
+          t`Write $x$ first: $G(-3, 4)$. The point $(4, -3)$ is somewhere else.`,
+        ],
+        figure: {
+          alt: "A point G is marked. A dashed perpendicular from G meets the X-axis at −3, and another meets the Y-axis at 4. Then the point (4, −3) is marked elsewhere, in the fourth quadrant.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-4, 5] },
+          elements: [
+            { kind: "point", at: [-3, 4], label: "G(−3, 4)", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [-3, 4], to: [-3, 0], dashed: true, tone: "good", step: 2 },
+            { kind: "point", at: [-3, 0], step: 2, tone: "good" },
+            { kind: "rightAngle", at: [-3, 0], from: 0, step: 2 },
+            { kind: "segment", from: [-3, 4], to: [0, 4], dashed: true, tone: "good", step: 3 },
+            { kind: "point", at: [0, 4], step: 3, tone: "good" },
+            { kind: "rightAngle", at: [0, 4], from: 90, step: 3 },
+            { kind: "point", at: [4, -3], label: "(4, −3)", labelAt: "sw", step: 4, tone: "bad" },
+          ],
+        },
+      },
+      {
+        title: "Points on the axes",
+        points: [
+          t`A point on the X-axis is neither above nor below it, so its $y$ co-ordinate is 0: $H(-4, 0)$.`,
+          t`A point on the Y-axis is neither left nor right of it, so its $x$ co-ordinate is 0: $J(0, -3)$.`,
+          t`The origin lies on both axes, so both its co-ordinates are 0: $O(0, 0)$.`,
+          t`Keep the zero in its own place: $(0, -3)$ and $(-3, 0)$ are different points.`,
+        ],
+        figure: {
+          alt: "H(−4, 0) is marked on the X-axis, then J(0, −3) on the Y-axis, then the origin O(0, 0). Then the point (−3, 0) is marked on the X-axis, away from J.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [-4, 0], label: "H(−4, 0)", labelAt: "nw", step: 1 },
+            { kind: "point", at: [0, -3], label: "J(0, −3)", labelAt: "e", step: 2 },
+            { kind: "point", at: [0, 0], label: "O(0, 0)", labelAt: "ne", step: 3 },
+            { kind: "point", at: [-3, 0], label: "(−3, 0)", labelAt: "ne", step: 4, tone: "bad" },
+          ],
+        },
+      },
+    ],
+    worked: {
+      prompt: t`Plot $A(3, 0)$, $B(3, 3)$ and $C(0, 3)$, and join $AB$ and $BC$. What figure do they form with the origin $O$?`,
+      steps: [
+        t`$A(3, 0)$: go 3 units right. Since $y = 0$, $A$ lies on the X-axis.`,
+        t`$B(3, 3)$: go 3 units right, then 3 units up.`,
+        t`$C(0, 3)$: since $x = 0$, $C$ lies on the Y-axis, 3 units above $O$.`,
+        t`Join $AB$ and $BC$. With $OA$ and $OC$ on the axes, $OABC$ has four sides of 3 units and four right angles.`,
+      ],
+      answer: t`$OABC$ is a square of side 3 units.`,
+      figure: {
+        alt: "A(3, 0) is marked on the X-axis. Arrows go 3 right and 3 up to B(3, 3). C(0, 3) is marked on the Y-axis. Then AB and BC are joined: with OA and OC on the axes, OABC has four equal sides and four right angles.",
+        axes: "xy",
+        view: { x: [-1.5, 4.5], y: [-1.5, 4.5] },
+        elements: [
+          { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+          { kind: "point", at: [3, 0], label: "A(3, 0)", labelAt: "ne", step: 1 },
+          { kind: "vector", from: [0, 0], to: [3, 0], tone: "muted", step: 2 },
+          { kind: "vector", from: [3, 0], to: [3, 3], tone: "muted", step: 2 },
+          { kind: "point", at: [3, 3], label: "B(3, 3)", labelAt: "ne", step: 2 },
+          { kind: "point", at: [0, 3], label: "C(0, 3)", labelAt: "nw", step: 3 },
+          { kind: "segment", from: [0, 0], to: [3, 0], ticks: 1, step: 4 },
+          { kind: "segment", from: [3, 0], to: [3, 3], ticks: 1, step: 4 },
+          { kind: "segment", from: [3, 3], to: [0, 3], ticks: 1, step: 4 },
+          { kind: "segment", from: [0, 3], to: [0, 0], ticks: 1, step: 4 },
+          { kind: "rightAngle", at: [0, 0], from: 0, step: 4 },
+          { kind: "rightAngle", at: [3, 0], from: 90, step: 4 },
+          { kind: "rightAngle", at: [3, 3], from: 180, step: 4 },
+          { kind: "rightAngle", at: [0, 3], from: 270, step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "The origin O is marked. An arrow goes 4 units left along the X-axis, then an arrow goes 3 units up to the point A(−4, 3). Then B(0, −2) is marked on the Y-axis, 2 units below O.",
+      axes: "xy",
+      view: { x: [-5, 5], y: [-4, 4] },
+      elements: [
+        { kind: "point", at: [0, 0], label: "O", labelAt: "ne", step: 1 },
+        { kind: "vector", from: [0, 0], to: [-4, 0], tone: "good", step: 2 },
+        { kind: "label", at: [-2, 0], label: "4 left", labelAt: "n", step: 2 },
+        { kind: "vector", from: [-4, 0], to: [-4, 3], tone: "good", step: 3 },
+        { kind: "label", at: [-4, 1.5], label: "3 up", labelAt: "e", step: 3 },
+        { kind: "point", at: [-4, 3], label: "A(−4, 3)", labelAt: "ne", step: 3 },
+        { kind: "point", at: [0, -2], label: "B(0, −2)", labelAt: "e", step: 5 },
+      ],
+    },
+    visualSpec: t`Drag a point over the grid; dashed perpendiculars to the axes show its $x$ and $y$, with their signs, as it crosses each axis.`,
+  },
+  misconceptions: [
+    {
+      id: "C02-M1",
+      mistake: t`Writes or plots the pair in the wrong order, $(y, x)$: the up-down move first.`,
+      remediation: t`Co-ordinates are an ordered pair: $x$, the move along the X-axis, always comes first, and $y$, the move parallel to the Y-axis, second.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C02-M2",
+      mistake: "Drops the signs: writes a move left or down as a positive number.",
+      remediation: "The direction gives the sign: right and up are positive, left and down are negative.",
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C02-M3",
+      mistake: "Counts grid lines, not unit steps: reading, counts both end lines (one too many); plotting, counts the axis as 1 (one step short).",
+      remediation: t`Count the steps between grid lines, not the lines: from $O$, the first step lands on 1.`,
+      fallback: { kind: "ext", topic: "the number line (Std VII)" },
+    },
+    {
+      id: "C02-M4",
+      mistake: "Reads the co-ordinates from the bottom-left corner of the grid instead of from the origin.",
+      remediation: t`Co-ordinates are measured from the origin $O$, where the axes cross, not from the corner of the graph paper.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+  ],
+  engineNotes: [
+    t`C02-M1 gives the key when $x = y$, and C02-M2 when neither co-ordinate is negative: diagnose them with $x \ne y$ and a negative co-ordinate.`,
+    "C02-M4 only shows when a point is read off a figure; its model takes the grid's bottom-left corner (cx, cy) as inputs.",
+  ],
+  items: [
+    {
+      id: "C02-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-9/coordinate-geometry-9/Prob Q2(i)" },
+      stem: t`In the figure, what are the co-ordinates of the point $Q$?`,
+      figure: {
+        alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. Four points are marked: Q, R, T and M.",
+        axes: "xy",
+        view: { x: [-5, 5], y: [-4, 4] },
+        elements: [
+          { kind: "point", at: [-2, 2], label: "Q", labelAt: "nw" },
+          { kind: "point", at: [4, -1], label: "R", labelAt: "se" },
+          { kind: "point", at: [0, -1], label: "T", labelAt: "e" },
+          { kind: "point", at: [3, 0], label: "M", labelAt: "n" },
+        ],
+      },
+      verify: { kind: "value", inputs: { x: "-2", y: "2", cx: "-5", cy: "-4" } },
+      options: [
+        { key: "A", text: t`$(-2, 2)$`, correct: true, value: "(-2, 2)" },
+        { key: "B", text: t`$(2, -2)$`, correct: false, misconceptionId: "C02-M1", value: "(2, -2)" },
+        { key: "C", text: t`$(2, 2)$`, correct: false, misconceptionId: "C02-M2", value: "(2, 2)" },
+        { key: "D", text: t`$(-3, 3)$`, correct: false, misconceptionId: "C02-M3", value: "(-3, 3)" },
+      ],
+      solution: {
+        steps: [
+          t`The perpendicular from $Q$ meets the X-axis at $-2$: $Q$ is 2 units left of the Y-axis, so $x = -2$.`,
+          t`The perpendicular from $Q$ meets the Y-axis at 2: $Q$ is 2 units above the X-axis, so $y = 2$.`,
+          t`Write $x$ first: the co-ordinates are $Q(-2, 2)$.`,
+        ],
+        figure: {
+          alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. Point Q with dashed perpendiculars to the axes, meeting them at −2 and 2.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [-2, 2], label: "Q", labelAt: "nw" },
+            { kind: "segment", from: [-2, 2], to: [-2, 0], dashed: true, tone: "good", step: 1 },
+            { kind: "point", at: [-2, 0], step: 1, tone: "good" },
+            { kind: "rightAngle", at: [-2, 0], from: 0, step: 1 },
+            { kind: "segment", from: [-2, 2], to: [0, 2], dashed: true, tone: "good", step: 2 },
+            { kind: "point", at: [0, 2], step: 2, tone: "good" },
+            { kind: "rightAngle", at: [0, 2], from: 90, step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-9/coordinate-geometry-9/Prob Q2(i)" },
+      stem: t`In the figure, what are the co-ordinates of the point $R$?`,
+      figure: {
+        alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. Four points are marked: Q, R, T and M.",
+        axes: "xy",
+        view: { x: [-5, 5], y: [-4, 4] },
+        elements: [
+          { kind: "point", at: [-2, 2], label: "Q", labelAt: "nw" },
+          { kind: "point", at: [4, -1], label: "R", labelAt: "se" },
+          { kind: "point", at: [0, -1], label: "T", labelAt: "e" },
+          { kind: "point", at: [3, 0], label: "M", labelAt: "n" },
+        ],
+      },
+      verify: { kind: "value", inputs: { x: "4", y: "-1", cx: "-5", cy: "-4" } },
+      options: [
+        { key: "A", text: t`$(-1, 4)$`, correct: false, misconceptionId: "C02-M1", value: "(-1, 4)" },
+        { key: "B", text: t`$(4, 1)$`, correct: false, misconceptionId: "C02-M2", value: "(4, 1)" },
+        { key: "C", text: t`$(9, 3)$`, correct: false, misconceptionId: "C02-M4", value: "(9, 3)" },
+        { key: "D", text: t`$(4, -1)$`, correct: true, value: "(4, -1)" },
+      ],
+      solution: {
+        steps: [
+          t`The perpendicular from $R$ meets the X-axis at 4, so $x = 4$.`,
+          t`The perpendicular from $R$ meets the Y-axis at $-1$: $R$ is 1 unit below the X-axis, so $y = -1$.`,
+          t`Count from $O$, not from the corner of the grid, and write $x$ first: $R(4, -1)$.`,
+        ],
+        figure: {
+          alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. Point R with dashed perpendiculars to the axes, meeting them at 4 and −1.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [4, -1], label: "R", labelAt: "se" },
+            { kind: "segment", from: [4, -1], to: [4, 0], dashed: true, tone: "good", step: 1 },
+            { kind: "point", at: [4, 0], step: 1, tone: "good" },
+            { kind: "rightAngle", at: [4, 0], from: 180, step: 1 },
+            { kind: "segment", from: [4, -1], to: [0, -1], dashed: true, tone: "good", step: 2 },
+            { kind: "point", at: [0, -1], step: 2, tone: "good" },
+            { kind: "rightAngle", at: [0, -1], from: 0, step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-9/coordinate-geometry-9/Prob Q2(ii)" },
+      stem: t`In the figure, what are the co-ordinates of the point $T$?`,
+      figure: {
+        alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. Four points are marked: Q, R, T and M.",
+        axes: "xy",
+        view: { x: [-5, 5], y: [-4, 4] },
+        elements: [
+          { kind: "point", at: [-2, 2], label: "Q", labelAt: "nw" },
+          { kind: "point", at: [4, -1], label: "R", labelAt: "se" },
+          { kind: "point", at: [0, -1], label: "T", labelAt: "e" },
+          { kind: "point", at: [3, 0], label: "M", labelAt: "n" },
+        ],
+      },
+      verify: { kind: "value", inputs: { x: "0", y: "-1", cx: "-5", cy: "-4" } },
+      options: [
+        { key: "A", text: t`$(0, -2)$`, correct: false, misconceptionId: "C02-M3", value: "(0, -2)" },
+        { key: "B", text: t`$(0, -1)$`, correct: true, value: "(0, -1)" },
+        { key: "C", text: t`$(-1, 0)$`, correct: false, misconceptionId: "C02-M1", value: "(-1, 0)" },
+        { key: "D", text: t`$(0, 1)$`, correct: false, misconceptionId: "C02-M2", value: "(0, 1)" },
+      ],
+      solution: {
+        steps: [
+          t`$T$ lies on the Y-axis, so it is neither left nor right of it: $x = 0$.`,
+          t`From $O$, $T$ is 1 unit down, so $y = -1$.`,
+          t`So the co-ordinates are $T(0, -1)$.`,
+        ],
+        figure: {
+          alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. The Y-axis is highlighted; an arrow goes from O 1 unit down to T.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [0, -1], label: "T", labelAt: "e" },
+            { kind: "line", through: [[0, -1], [0, 1]], tone: "good", step: 1 },
+            { kind: "vector", from: [0, 0], to: [0, -1], tone: "accent", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-9/coordinate-geometry-9/Prob Q2(ii)" },
+      stem: t`In the figure, what are the co-ordinates of the point $M$?`,
+      figure: {
+        alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. Four points are marked: Q, R, T and M.",
+        axes: "xy",
+        view: { x: [-5, 5], y: [-4, 4] },
+        elements: [
+          { kind: "point", at: [-2, 2], label: "Q", labelAt: "nw" },
+          { kind: "point", at: [4, -1], label: "R", labelAt: "se" },
+          { kind: "point", at: [0, -1], label: "T", labelAt: "e" },
+          { kind: "point", at: [3, 0], label: "M", labelAt: "n" },
+        ],
+      },
+      verify: { kind: "value", inputs: { x: "3", y: "0", cx: "-5", cy: "-4" } },
+      options: [
+        { key: "A", text: t`$(8, 4)$`, correct: false, misconceptionId: "C02-M4", value: "(8, 4)" },
+        { key: "B", text: t`$(3, 0)$`, correct: true, value: "(3, 0)" },
+        { key: "C", text: t`$(0, 3)$`, correct: false, misconceptionId: "C02-M1", value: "(0, 3)" },
+        { key: "D", text: t`$(4, 0)$`, correct: false, misconceptionId: "C02-M3", value: "(4, 0)" },
+      ],
+      solution: {
+        steps: [
+          t`$M$ lies on the X-axis, so it is neither above nor below it: $y = 0$.`,
+          t`From $O$, $M$ is 3 units to the right, so $x = 3$.`,
+          t`Write $x$ first: the co-ordinates are $M(3, 0)$.`,
+        ],
+        figure: {
+          alt: "A grid with the X-axis and Y-axis crossing at O, x from −5 to 5 and y from −4 to 4. The X-axis is highlighted; an arrow goes from O 3 units right to M.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [3, 0], label: "M", labelAt: "n" },
+            { kind: "line", through: [[-1, 0], [1, 0]], tone: "good", step: 1 },
+            { kind: "vector", from: [0, 0], to: [3, 0], tone: "accent", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-9/coordinate-geometry-9/Ex 7.1 Q3" },
+      stem: t`Four points U, V, W and Z are marked in the figure. Which of them is the point $P(2, -3)$?`,
+      figure: {
+        alt: "A grid with the X-axis and Y-axis crossing at O, x and y from −4 to 4. Four points are marked: U, V, W and Z.",
+        axes: "xy",
+        view: { x: [-4, 4], y: [-4, 4] },
+        elements: [
+          { kind: "point", at: [-3, 2], label: "U", labelAt: "nw" },
+          { kind: "point", at: [2, 3], label: "V", labelAt: "ne" },
+          { kind: "point", at: [1, -2], label: "W", labelAt: "sw" },
+          { kind: "point", at: [2, -3], label: "Z", labelAt: "se" },
+        ],
+      },
+      verify: { kind: "value", inputs: { x: "2", y: "-3" }, params: { task: "plot", pts: "U:-3,2;V:2,3;W:1,-2;Z:2,-3" } },
+      options: [
+        { key: "A", text: t`Point W`, correct: false, misconceptionId: "C02-M3", value: "W" },
+        { key: "B", text: t`Point Z`, correct: true, value: "Z" },
+        { key: "C", text: t`Point U`, correct: false, misconceptionId: "C02-M1", value: "U" },
+        { key: "D", text: t`Point V`, correct: false, misconceptionId: "C02-M2", value: "V" },
+      ],
+      solution: {
+        steps: [
+          t`Start at $O$. Since $x = 2$ is positive, go 2 units right along the X-axis.`,
+          t`Since $y = -3$ is negative, go 3 units down, parallel to the Y-axis.`,
+          t`You land on $Z$, so $Z$ is the point $P(2, -3)$.`,
+        ],
+        figure: {
+          alt: "A grid with x and y from −4 to 4 and points U, V, W and Z. An arrow goes from O 2 units right, then an arrow goes 3 units down, ending at Z.",
+          axes: "xy",
+          view: { x: [-4, 4], y: [-4, 4] },
+          elements: [
+            { kind: "point", at: [-3, 2], label: "U", labelAt: "nw" },
+            { kind: "point", at: [2, 3], label: "V", labelAt: "ne" },
+            { kind: "point", at: [1, -2], label: "W", labelAt: "sw" },
+            { kind: "point", at: [2, -3], label: "Z", labelAt: "se" },
+            { kind: "vector", from: [0, 0], to: [2, 0], tone: "good", step: 1 },
+            { kind: "vector", from: [2, 0], to: [2, -3], tone: "good", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C02-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-9/coordinate-geometry-9/Ex 7.1 Q3" },
+      stem: t`Four points U, V, W and Z are marked in the figure. Which of them is the point $N(-3, -4)$?`,
+      figure: {
+        alt: "A grid with the X-axis and Y-axis crossing at O, x and y from −5 to 5. Four points are marked: U, V, W and Z.",
+        axes: "xy",
+        view: { x: [-5, 5], y: [-5, 5] },
+        elements: [
+          { kind: "point", at: [3, 4], label: "U", labelAt: "ne" },
+          { kind: "point", at: [-3, -4], label: "V", labelAt: "se" },
+          { kind: "point", at: [-4, -3], label: "W", labelAt: "nw" },
+          { kind: "point", at: [-2, -3], label: "Z", labelAt: "ne" },
+        ],
+      },
+      verify: { kind: "value", inputs: { x: "-3", y: "-4" }, params: { task: "plot", pts: "U:3,4;V:-3,-4;W:-4,-3;Z:-2,-3" } },
+      options: [
+        { key: "A", text: t`Point V`, correct: true, value: "V" },
+        { key: "B", text: t`Point W`, correct: false, misconceptionId: "C02-M1", value: "W" },
+        { key: "C", text: t`Point U`, correct: false, misconceptionId: "C02-M2", value: "U" },
+        { key: "D", text: t`Point Z`, correct: false, misconceptionId: "C02-M3", value: "Z" },
+      ],
+      solution: {
+        steps: [
+          t`Start at $O$. Since $x = -3$ is negative, go 3 units left along the X-axis.`,
+          t`Since $y = -4$ is negative, go 4 units down, parallel to the Y-axis.`,
+          t`You land on $V$, so $V$ is the point $N(-3, -4)$.`,
+        ],
+        figure: {
+          alt: "A grid with x and y from −5 to 5 and points U, V, W and Z. An arrow goes from O 3 units left, then an arrow goes 4 units down, ending at V.",
+          axes: "xy",
+          view: { x: [-5, 5], y: [-5, 5] },
+          elements: [
+            { kind: "point", at: [3, 4], label: "U", labelAt: "ne" },
+            { kind: "point", at: [-3, -4], label: "V", labelAt: "se" },
+            { kind: "point", at: [-4, -3], label: "W", labelAt: "nw" },
+            { kind: "point", at: [-2, -3], label: "Z", labelAt: "ne" },
+            { kind: "vector", from: [0, 0], to: [-3, 0], tone: "good", step: 1 },
+            { kind: "vector", from: [-3, 0], to: [-3, -4], tone: "good", step: 2 },
+          ],
+        },
+      },
+    },
+  ],
+};
