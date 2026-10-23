@@ -143,8 +143,10 @@ node scripts/check-concept.ts <chapter> src/content/chapters/<chapter>/concepts/
 `0 problem(s)`. Then read your `.ts` file once, top to bottom, as the student would: every number right, every
 option distinct and plausible, every remediation matching its option.
 
-**Look at your figures** (visual concepts). Placing labels by calculation is not enough: in the Std X Geometry
-wave most blind-placed figures had clashes. With `npm run dev` on :3000 (ask your caller if it is not running):
+**Look at your figures** (every concept with a figure, visual or not). Placing labels by calculation is not
+enough: in the Std X Geometry wave most blind-placed figures had clashes. The review page shows only registered
+concepts, so first run `python verify/build_index.py <chapter>` (it rewrites the chapter's `index.ts`; that is
+allowed), then, with `npm run dev` on :3000 (ask your caller if it is not running):
 ```
 node scripts/figure-sheet.mjs <scratch>/sheets <chapter> <slug>
 ```
