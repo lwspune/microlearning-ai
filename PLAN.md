@@ -659,6 +659,17 @@ changes with the view.
 - **Recommendation:** defer; swap them only if a figure is touched anyway, or
   as one small batch with a figure-sheet check. Ask the owner first.
 
+### 13. The Venn diagram's U sat on the frame's top edge (logged 2026-10-23, open)
+Learning: `venn()` in verify/figures.py anchored the universe name at
+(9.5, 6.4) growing north, so the rectangle's top edge ran through the "U".
+The helper now hangs it inside the top-right corner, at (9.7, 6.8) growing
+south-west (test_figures), and Std IX Sets was built with the new placement.
+- **Scope:** Std XI Sets and Relations, 45 "U" labels in C03–C08.
+- **Does it apply:** yes, the same clash shows on every figure; cosmetic only,
+  since the letter stays readable.
+- **Recommendation:** one small batch (rebuild the six concepts' figures,
+  then check a figure sheet). Ask the owner first.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
