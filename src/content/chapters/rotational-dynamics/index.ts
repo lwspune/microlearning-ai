@@ -1,0 +1,14 @@
+import type { Chapter } from "../../types.ts";
+import { c01 } from "./concepts/c01-angular-kinematics.ts";
+import { graph } from "./graph.ts";
+
+export const rotationalDynamics: Chapter = {
+  slug: "rotational-dynamics",
+  title: "Rotational Dynamics",
+  group: "school",
+  subject: "physics",
+  // Balbharati Physics Std XII (PLAN.md "Std XI and XII Physics").
+  standard: 12,
+  graph,
+  concepts: [c01],
+};

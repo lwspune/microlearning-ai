@@ -1,0 +1,351 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c01: Concept = {
+  id: "C01",
+  status: "draft",
+  hook: {
+    prompt: t`On a merry-go-round, Riya sits at the edge and Aman sits halfway to the centre. In one full turn, who turns through the larger angle? Who moves faster?`,
+    reveal: t`Both turn through the same angle, $2\pi$ rad, so they share one angular velocity. Riya covers a longer arc in the same time, so she moves faster: $v = r\omega$.`,
+  },
+  explanation: {
+    intuition: [
+      t`A body **rotates** when every particle moves in a circle about one line, the **axis of rotation**.`,
+      t`In the same time, every particle turns through the same angle $\theta$.`,
+      t`So the whole body has one **angular velocity** $\omega$: the angle turned per second.`,
+      t`A particle farther from the axis covers a longer arc, so it moves faster: $v = r\omega$.`,
+      t`When the spin speeds up or slows down, the rate of change of $\omega$ is the **angular acceleration** $\alpha$.`,
+    ],
+    formal: [
+      {
+        title: "Angular displacement and velocity",
+        points: [
+          t`The **angular displacement** $\theta$ is the angle the radius turns through, in radians.`,
+          t`One revolution is $2\pi$ rad, so $N$ rotations give $\theta = 2\pi N$.`,
+          t`**Angular velocity** $\omega = \dfrac{d\theta}{dt}$, in rad/s.`,
+          t`At **frequency** $n$ rev/s, $\omega = 2\pi n$; with **period** $T$, $\omega = \dfrac{2\pi}{T}$.`,
+          t`Divide rpm (revolutions per minute) by 60 for rev/s: $300\ \mathrm{rpm} = 5$ rev/s.`,
+          t`$\vec{\omega}$ lies along the axis: curl the right-hand fingers with the turning, and the thumb points along $\vec{\omega}$.`,
+        ],
+        figure: {
+          alt: "A wheel, centre O. A radius turns from OA through an angle theta to OP.",
+          axes: "none",
+          view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "good" },
+            { kind: "point", at: [3, 0], label: "A", labelAt: "e" },
+            { kind: "turn", r: 3, to: 60, step: 1 },
+            { kind: "label", at: [1, 0.45], label: "θ", step: 1 },
+            { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "ne", step: 1 },
+          ],
+        },
+      },
+      {
+        title: "Linear speed from angular speed",
+        points: [
+          t`A particle at distance $r$ from the axis moves along an arc $s = r\theta$.`,
+          t`Divide by the time taken: its **linear speed** is $v = r\omega$.`,
+          t`$\vec{v}$ is along the tangent; in vector form $\vec{v} = \vec{\omega} \times \vec{r}$.`,
+          t`Every particle of a rigid body has the same $\omega$.`,
+          t`So $v$ grows with $r$: particles farther from the axis move faster.`,
+          t`Use the radius, not the diameter: $r = \dfrac{D}{2}$.`,
+        ],
+        figure: {
+          alt: "A wheel, centre O, radius r. An arc s is marked from A to P. Then a speed arrow v along the tangent at P. Then a shorter arrow at Q, halfway out.",
+          axes: "none",
+          view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [1.5, 2.598] },
+            { kind: "label", at: [1.3, 0.65], label: "r" },
+            { kind: "arc", centre: [0, 0], r: 3, from: 0, to: 60, label: "s = rθ", labelAt: "e", step: 1 },
+            { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "e", step: 2 },
+            { kind: "vector", from: [1.5, 2.598], to: [-0.232, 3.598], label: "v", labelAt: "n", step: 2 },
+            { kind: "point", at: [0.75, 1.299], label: "Q", labelAt: "e", step: 5 },
+            { kind: "vector", from: [0.75, 1.299], to: [-0.116, 1.799], tone: "good", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Angular acceleration",
+        points: [
+          t`**Angular acceleration** $\alpha = \dfrac{d\omega}{dt}$, in rad/s², the rate of change of $\omega$.`,
+          t`A rim particle then speeds up along the tangent: **tangential acceleration** $a_T = r\alpha$.`,
+          t`$\vec{\alpha}$ is along $\vec{\omega}$ when speeding up and opposite to it when slowing down.`,
+          t`In **U.C.M.** (uniform circular motion), $\omega$ is constant, so $\alpha = 0$ and $a_T = 0$.`,
+          t`Its velocity still turns, so it still accelerates, towards the centre (next concept).`,
+        ],
+        figure: {
+          alt: "A wheel, centre O. At the rim point P the speed v points along the tangent; a tangential acceleration arrow lies along it. Last, an arrow from P points towards the centre O.",
+          axes: "none",
+          view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [1.5, 2.598], tone: "muted" },
+            { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "e" },
+            { kind: "vector", from: [1.5, 2.598], to: [0.461, 3.198], label: "aT", labelAt: "ne", tone: "good", step: 2 },
+            { kind: "vector", from: [1.5, 2.598], to: [0.8, 1.386], label: "towards O", labelAt: "se", tone: "muted", step: 5 },
+          ],
+        },
+      },
+      {
+        title: "Equations of rotational motion",
+        points: [
+          t`With constant $\alpha$, the equations of motion carry over: $\theta$ for $s$, $\omega$ for $v$, $\alpha$ for $a$.`,
+          t`$\omega = \omega_0 + \alpha t$`,
+          t`$\theta = \omega_0 t + \dfrac{1}{2}\alpha t^2$`,
+          t`$\omega^2 = \omega_0^2 + 2\alpha\theta$`,
+          t`Also $\theta = \dfrac{\omega_0 + \omega}{2}\,t$: the average $\omega$ times the time, the area under the $\omega$–$t$ graph.`,
+          t`Work in rad and rad/s, or in rev and rev/s, but never mix the two.`,
+        ],
+        figure: {
+          alt: "A graph of omega against time: a straight line rising from omega nought at t = 0. Last, the area under it is shaded and marked theta.",
+          chart: { x: 1, y: 1, xTitle: "t (s)", yTitle: "ω (rad/s)" },
+          view: { x: [0, 6], y: [0, 5] },
+          elements: [
+            { kind: "point", at: [0, 1], label: "ω₀", labelAt: "se", step: 2 },
+            { kind: "segment", from: [0, 1], to: [5, 4], label: "ω = ω₀ + αt", labelAt: "nw", step: 2 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[0, 0], [5, 0]] }, { kind: "halfPlane", through: [[5, 0], [5, 4]] }, { kind: "halfPlane", through: [[5, 4], [0, 1]] }, { kind: "halfPlane", through: [[0, 1], [0, 0]] }], step: 5 },
+            { kind: "label", at: [2.5, 1.2], label: "θ = area", step: 5 },
+          ],
+        },
+      },
+    ],
+    worked: {
+      prompt: t`A fan turning at $150\ \mathrm{rpm}$ is switched off. It slows uniformly and stops after 25 rotations. How long does it take to stop?`,
+      steps: [
+        t`$\omega_0 = 2\pi \times \dfrac{150}{60} = 5\pi\ \mathrm{rad/s}$, and finally $\omega = 0$.`,
+        t`$\theta = 2\pi N = 2\pi \times 25$ $= 50\pi\ \mathrm{rad}$.`,
+        t`$\alpha$ is constant, so $\theta = \dfrac{\omega_0 + \omega}{2}\,t$.`,
+        t`$50\pi = \dfrac{5\pi + 0}{2}\,t$, so $t = 20\ \mathrm{s}$.`,
+      ],
+      answer: t`$t = 20\ \mathrm{s}$`,
+      figure: {
+        alt: "A graph of omega against time: omega starts at 5 pi, about 15.7 rad/s, and falls in a straight line to zero at t = 20 s. The triangle under it is shaded and marked theta = 50 pi.",
+        chart: { x: 4, y: 4, xTitle: "t (s)", yTitle: "ω (rad/s)" },
+        view: { x: [0, 24], y: [0, 18] },
+        elements: [
+          { kind: "point", at: [0, 15.71], label: "ω₀ = 5π", labelAt: "e", step: 1 },
+          { kind: "segment", from: [0, 15.71], to: [20, 0], step: 3 },
+          { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[0, 0], [20, 0]] }, { kind: "halfPlane", through: [[20, 0], [0, 15.71]] }, { kind: "halfPlane", through: [[0, 15.71], [0, 0]] }], step: 3 },
+          { kind: "label", at: [5, 4], label: "θ = 50π", step: 3 },
+          { kind: "point", at: [20, 0], step: 4 },
+          { kind: "label", at: [21.2, 2.2], label: "t = 20 s", step: 4 },
+        ],
+      },
+    },
+    figure: {
+      alt: "A wheel seen face on, centre O. A radius turns through an angle theta. Then a speed arrow is drawn along the tangent at a rim point P, and a shorter one at a point Q halfway out on the same radius.",
+      axes: "none",
+      view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+      elements: [
+        { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+        { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+        { kind: "turn", r: 3, to: 60, step: 2 },
+        { kind: "label", at: [1, 0.45], label: "θ", step: 2 },
+        { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "e", step: 4 },
+        { kind: "vector", from: [1.5, 2.598], to: [-0.232, 3.598], label: "v", labelAt: "n", step: 4 },
+        { kind: "point", at: [0.75, 1.299], label: "Q", labelAt: "e", step: 4 },
+        { kind: "vector", from: [0.75, 1.299], to: [-0.116, 1.799], tone: "good", step: 4 },
+      ],
+    },
+    visualSpec: t`Drag a slider for $\omega$ and watch a near and a far particle sweep the same angle while the far one's speed arrow grows.`,
+  },
+  misconceptions: [
+    {
+      id: "C01-M1",
+      mistake: "Mixes revolutions and radians: uses a number of rotations as radians, or reports radians as revolutions.",
+      remediation: t`One revolution is $2\pi$ rad. Convert with $\theta = 2\pi N$ and $\omega = 2\pi n$, then keep every angle in rad and every speed in rad/s.`,
+      fallback: { kind: "ext", topic: "radian measure (Std XI Maths)" },
+    },
+    {
+      id: "C01-M2",
+      mistake: "Reads rpm as revolutions per second.",
+      remediation: t`rpm counts revolutions per minute: divide by 60 first. $300\ \mathrm{rpm} = 5$ rev/s, so $\omega = 10\pi\ \mathrm{rad/s}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M3",
+      mistake: t`Uses one speed for the whole time, as if $\omega$ never changed: $\theta = \omega t$.`,
+      remediation: t`When $\omega$ changes at a steady rate, the angle is the average $\omega$ times the time: $\theta = \dfrac{\omega_0 + \omega}{2}\,t$.`,
+      fallback: { kind: "ext", topic: "kinematical equations of motion (Std XI Physics)" },
+    },
+    {
+      id: "C01-M4",
+      mistake: "Uses the diameter in place of the radius.",
+      remediation: t`$r$ is the distance from the axis to the particle. Halve the diameter first: $r = \dfrac{D}{2}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C01-M5",
+      mistake: "Takes the arc length as the angle, forgetting to divide by the radius.",
+      remediation: t`An angle in radians is arc over radius, $\theta = \dfrac{s}{r}$: a pure number, with no metres left in it.`,
+      fallback: { kind: "ext", topic: "radian measure (Std XI Maths)" },
+    },
+  ],
+  items: [
+    {
+      id: "C01-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/rotational-dynamics-12-phy/Solved Ex.1.1" },
+      stem: t`A ceiling fan turning at $90\ \mathrm{rpm}$ is switched off. It slows at a constant rate and stops after 21 rotations. How long does it take to stop?`,
+      verify: { kind: "value", inputs: { n0: "90", N: "21" }, params: { ask: "t_stop" } },
+      options: [
+        { key: "A", text: t`$28\ \mathrm{s}$`, correct: true, value: "28" },
+        { key: "B", text: t`$4.46\ \mathrm{s}$`, correct: false, misconceptionId: "C01-M1", value: "4.46000000000000" },
+        { key: "C", text: t`$0.467\ \mathrm{s}$`, correct: false, misconceptionId: "C01-M2", value: "0.467000000000000" },
+        { key: "D", text: t`$14\ \mathrm{s}$`, correct: false, misconceptionId: "C01-M3", value: "14" },
+      ],
+      solution: {
+        steps: [
+          t`$\omega_0 = 2\pi \times \dfrac{90}{60} = 3\pi\ \mathrm{rad/s}$, and finally $\omega = 0$.`,
+          t`$\theta = 2\pi \times 21 = 42\pi\ \mathrm{rad}$.`,
+          t`$\theta = \dfrac{\omega_0 + \omega}{2}\,t$ gives $42\pi = 1.5\pi\, t$.`,
+          t`So $t = 28\ \mathrm{s}$.`,
+        ],
+        figure: {
+          alt: "A graph of omega against time: omega falls in a straight line from 3 pi, about 9.4 rad/s, to zero at t = 28 s. The triangle under it is shaded and marked theta = 42 pi.",
+          chart: { x: 4, y: 2, xTitle: "t (s)", yTitle: "ω (rad/s)" },
+          view: { x: [0, 32], y: [0, 12] },
+          elements: [
+            { kind: "point", at: [0, 9.42], label: "ω₀ = 3π", labelAt: "e", step: 1 },
+            { kind: "segment", from: [0, 9.42], to: [28, 0], step: 3 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[0, 0], [28, 0]] }, { kind: "halfPlane", through: [[28, 0], [0, 9.42]] }, { kind: "halfPlane", through: [[0, 9.42], [0, 0]] }], step: 3 },
+            { kind: "label", at: [7, 2.4], label: "θ = 42π", step: 3 },
+            { kind: "point", at: [28, 0], step: 4 },
+            { kind: "label", at: [29.4, 1.5], label: "t = 28 s", step: 4 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/rotational-dynamics-12-phy/Ex Q.12" },
+      stem: t`A bicycle wheel on its stand starts from rest and reaches $120\ \mathrm{rpm}$ in $10\ \mathrm{s}$, with uniform angular acceleration. How many revolutions does it make in these $10\ \mathrm{s}$?`,
+      verify: { kind: "value", inputs: { n: "120", t: "10" }, params: { ask: "revs" } },
+      options: [
+        { key: "A", text: t`$10\ \mathrm{rev}$`, correct: true, value: "10" },
+        { key: "B", text: t`$62.8\ \mathrm{rev}$`, correct: false, misconceptionId: "C01-M1", value: "62.8000000000000" },
+        { key: "C", text: t`$600\ \mathrm{rev}$`, correct: false, misconceptionId: "C01-M2", value: "600" },
+        { key: "D", text: t`$20\ \mathrm{rev}$`, correct: false, misconceptionId: "C01-M3", value: "20" },
+      ],
+      solution: {
+        steps: [
+          t`$\omega = 2\pi \times \dfrac{120}{60} = 4\pi\ \mathrm{rad/s}$, from $\omega_0 = 0$.`,
+          t`$\theta = \dfrac{0 + 4\pi}{2} \times 10$ $= 20\pi\ \mathrm{rad}$.`,
+          t`Revolutions $= \dfrac{20\pi}{2\pi} = 10$.`,
+        ],
+        figure: {
+          alt: "A graph of omega against time: omega rises in a straight line from zero to 4 pi, about 12.6 rad/s, at t = 10 s. The triangle under it is shaded and marked theta = 20 pi.",
+          chart: { x: 2, y: 4, xTitle: "t (s)", yTitle: "ω (rad/s)" },
+          view: { x: [0, 12], y: [0, 16] },
+          elements: [
+            { kind: "segment", from: [0, 0], to: [10, 12.57], step: 1 },
+            { kind: "point", at: [10, 12.57], label: "4π", labelAt: "e", step: 1 },
+            { kind: "region", tone: "muted", within: [{ kind: "halfPlane", through: [[0, 0], [10, 0]] }, { kind: "halfPlane", through: [[10, 0], [10, 12.57]] }, { kind: "halfPlane", through: [[10, 12.57], [0, 0]] }], step: 2 },
+            { kind: "label", at: [7, 3], label: "θ = 20π", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/rotational-dynamics-12-phy/Ex Q.12" },
+      stem: t`An ant is stuck to the rim of a bicycle wheel of diameter $1\ \mathrm{m}$. The wheel turns steadily at $120\ \mathrm{rpm}$. What is the ant's linear speed?`,
+      verify: { kind: "value", inputs: { D: "1", n: "120" }, params: { ask: "v" } },
+      options: [
+        { key: "A", text: t`$377\ \mathrm{m/s}$`, correct: false, misconceptionId: "C01-M2", value: "377" },
+        { key: "B", text: t`$12.6\ \mathrm{m/s}$`, correct: false, misconceptionId: "C01-M4", value: "12.6000000000000" },
+        { key: "C", text: t`$6.28\ \mathrm{m/s}$`, correct: true, value: "6.28000000000000" },
+        { key: "D", text: t`$1\ \mathrm{m/s}$`, correct: false, misconceptionId: "C01-M1", value: "1" },
+      ],
+      solution: {
+        steps: [
+          t`$r = \dfrac{D}{2} = 0.5\ \mathrm{m}$.`,
+          t`$\omega = 2\pi \times \dfrac{120}{60} = 4\pi\ \mathrm{rad/s}$.`,
+          t`$v = r\omega = 0.5 \times 4\pi$ $\approx 6.28\ \mathrm{m/s}$.`,
+        ],
+        figure: {
+          alt: "A wheel, centre O, with radius r to the ant at P on the rim, and the ant's speed arrow v along the tangent.",
+          axes: "none",
+          view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [1.5, 2.598], label: "r = 0.5 m", labelAt: "nw", step: 1 },
+            { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "e", step: 1 },
+            { kind: "vector", from: [1.5, 2.598], to: [-0.232, 3.598], label: "v", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2016-march/Q.2(i)" },
+      stem: t`A particle performs U.C.M. with tangential speed $v$ along a horizontal circle of diameter $D$. What is its angular displacement in time $t$?`,
+      verify: { kind: "value", inputs: { v: "v", D: "D", t: "t" }, params: { ask: "theta" } },
+      options: [
+        { key: "A", text: t`$\dfrac{2vt}{D}$`, correct: true, value: "2*t*v/D" },
+        { key: "B", text: t`$\dfrac{vt}{\pi D}$`, correct: false, misconceptionId: "C01-M1", value: "t*v/(pi*D)" },
+        { key: "C", text: t`$\dfrac{vt}{D}$`, correct: false, misconceptionId: "C01-M4", value: "t*v/D" },
+        { key: "D", text: t`$vt$`, correct: false, misconceptionId: "C01-M5", value: "t*v" },
+      ],
+      solution: {
+        steps: [
+          t`The radius is $r = \dfrac{D}{2}$, so $\omega = \dfrac{v}{r} = \dfrac{2v}{D}$.`,
+          t`$\omega$ is constant in U.C.M., so $\theta = \omega t = \dfrac{2vt}{D}$.`,
+        ],
+        figure: {
+          alt: "A circle, centre O, radius D over 2. A particle at P moves with speed v along the tangent; the angle theta it has turned through is marked at O.",
+          axes: "none",
+          view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [3, 0], tone: "muted" },
+            { kind: "segment", from: [0, 0], to: [1.5, 2.598], label: "r = D/2", labelAt: "nw", step: 1 },
+            { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "e", step: 1 },
+            { kind: "vector", from: [1.5, 2.598], to: [-0.232, 3.598], label: "v", labelAt: "n", step: 1 },
+            { kind: "angle", at: [0, 0], from: 0, to: 60, label: "θ", step: 2 },
+          ],
+        },
+      },
+    },
+    {
+      id: "C01-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2020-february/Q.6" },
+      stem: t`A wheel of diameter $0.8\ \mathrm{m}$ speeds up uniformly from $60\ \mathrm{rpm}$ to $180\ \mathrm{rpm}$ in $4\ \mathrm{s}$. What is the tangential acceleration of a point on its rim?`,
+      verify: { kind: "value", inputs: { D: "0.8", n1: "60", n2: "180", t: "4" }, params: { ask: "aT" } },
+      options: [
+        { key: "A", text: t`$1.26\ \mathrm{m/s^2}$`, correct: true, value: "1.26000000000000" },
+        { key: "B", text: t`$0.2\ \mathrm{m/s^2}$`, correct: false, misconceptionId: "C01-M1", value: "0.200000000000000" },
+        { key: "C", text: t`$75.4\ \mathrm{m/s^2}$`, correct: false, misconceptionId: "C01-M2", value: "75.4000000000000" },
+        { key: "D", text: t`$2.51\ \mathrm{m/s^2}$`, correct: false, misconceptionId: "C01-M4", value: "2.51000000000000" },
+      ],
+      solution: {
+        steps: [
+          t`$r = 0.4\ \mathrm{m}$; $\omega_1 = 2\pi\ \mathrm{rad/s}$ and $\omega_2 = 6\pi\ \mathrm{rad/s}$.`,
+          t`$\alpha = \dfrac{6\pi - 2\pi}{4} = \pi\ \mathrm{rad/s^2}$.`,
+          t`$a_T = r\alpha = 0.4\pi$ $\approx 1.26\ \mathrm{m/s^2}$.`,
+        ],
+        figure: {
+          alt: "A wheel, centre O, radius r = 0.4 m to a rim point P. The tangential acceleration arrow aT lies along the tangent at P.",
+          axes: "none",
+          view: { x: [-4.2, 4.2], y: [-3.6, 4.4] },
+          elements: [
+            { kind: "circle", centre: [0, 0], r: 3, tone: "muted" },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "sw" },
+            { kind: "segment", from: [0, 0], to: [1.5, 2.598], label: "r = 0.4 m", labelAt: "nw", step: 1 },
+            { kind: "point", at: [1.5, 2.598], label: "P", labelAt: "e", step: 1 },
+            { kind: "vector", from: [1.5, 2.598], to: [0.201, 3.348], label: "aT", labelAt: "n", tone: "good", step: 3 },
+          ],
+        },
+      },
+    },
+  ],
+};

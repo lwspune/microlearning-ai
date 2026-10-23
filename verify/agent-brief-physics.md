@@ -13,7 +13,7 @@ until Std XI Physics is live.
 
 ## Sources: your chapter's pack
 `<scratch>/phy/packs/<chapter>.pack.json` has
-- `book`: every question of the book chapter (`ref` like `mh-sb-12/rotational-dynamics/Ex Q2(iii)`, `subtopic`,
+- `book`: every question of the book chapter (`ref` like `mh-sb-12/rotational-dynamics-12-phy/Ex.Q2(iii)`, `subtopic`,
   `format`, `question`, the book's `answer` where it prints one, a worked `solution`, and an `erratum` note where
   PYQ Vault found the book's answer wrong: follow the erratum, never the misprint);
 - `board`: the chapter's HSC board questions (`ref`, `year`, `question`, `options` and `key` for MCQs,

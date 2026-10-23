@@ -883,6 +883,17 @@ describe("the catalog", () => {
     });
   });
 
+  // PLAN.md "Std XI and XII Physics" (owner, 2026-10-23).
+  describe("Maharashtra Board Std XII Physics", () => {
+    const resolved = findCourse("mh-board")!.chapters.map((e) => resolveEntry(e, chapters));
+
+    it("lists the Std XII physics chapters in book order", () => {
+      const physics = resolved.filter((r) => r.subject === "physics");
+      expect(physics.map((r) => r.title)).toEqual(["Rotational Dynamics"]);
+      expect(new Set(physics.map((r) => r.standard))).toEqual(new Set([12]));
+    });
+  });
+
   it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {
     for (const slug of ["mh-board", "mht-cet"]) {
       const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;

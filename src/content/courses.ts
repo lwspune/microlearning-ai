@@ -125,7 +125,7 @@ export const courses: Course[] = [
     board: true,
     // Std XI and XII students came first; Std IX and X joined on 2026-10-21 (owner: open on XI).
     defaultStandard: 11,
-    // Book order: Std IX Part 1 and Part 2, Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII.
+    // Book order: Std IX Part 1 and Part 2, Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII; physics after maths.
     // A chapter without coverage is covered whole.
     chapters: [
       { chapter: "sets-9" },
@@ -196,6 +196,8 @@ export const courses: Course[] = [
       { chapter: "probability-distributions" },
       { chapter: "binomial-distribution" },
       lpp([]),
+      // Std XII Physics, Balbharati book order (PLAN.md "Std XI and XII Physics").
+      { chapter: "rotational-dynamics" },
     ],
   },
   {
