@@ -369,8 +369,9 @@ languages, written by me (owner, 2026-10-25: I approve; they check in the app).
    `DB_TEST_PENDING=supabase/migrations/<file>.sql` runs it first inside each
    rolled-back transaction. Run only the affected test files, with
    `--no-file-parallelism`: DDL in every transaction otherwise queues on locks.
-3. Dry-run the SQL in a rolled-back transaction, then `npx supabase db push --dry-run`,
-   then `npx supabase db push --yes`.
+3. Dry-run the SQL in a rolled-back transaction, then `npm run db:push -- --dry-run`,
+   then `npm run db:push -- --yes` (it reads `.env.local` itself, so it runs under the
+   project's `npm run *` permission, auto mode included).
 4. Run `npm run test:db`, then regenerate types with `npm run db:types`.
 5. Check the security advisor (Management API `advisors/security`): only the
    intended "RLS enabled, no policy" INFO notes are acceptable.
