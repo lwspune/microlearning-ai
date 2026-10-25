@@ -16,6 +16,7 @@ import { c14 } from "./concepts/c14-counting-relations.ts";
 import { c15 } from "./concepts/c15-reflexive-symmetric-transitive.ts";
 import { c16 } from "./concepts/c16-equivalence-relations.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const setsAndRelations: Chapter = {
   slug: "sets-and-relations",
@@ -25,4 +26,34 @@ export const setsAndRelations: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "set",
+    "element",
+    "subset",
+    "proper subset",
+    "power set",
+    "universal set",
+    "empty set",
+    "Venn diagram",
+    "union",
+    "intersection",
+    "complement",
+    "disjoint",
+    "interval",
+    "roster method",
+    "set-builder",
+    "ordered pair",
+    "Cartesian product",
+    "relation",
+    "domain",
+    "co-domain",
+    "range",
+    "reflexive",
+    "symmetric",
+    "transitive",
+    "equivalence relation",
+    "equivalence class",
+  ],
+  translations,
 };
