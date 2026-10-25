@@ -13,6 +13,7 @@ import { c11 } from "./concepts/c11-transpose.ts";
 import { c12 } from "./concepts/c12-symmetric-and-skew.ts";
 import { c13 } from "./concepts/c13-special-square-matrices.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const determinantsAndMatrices: Chapter = {
   slug: "determinants-and-matrices",
@@ -22,4 +23,37 @@ export const determinantsAndMatrices: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "determinant",
+    "matrix",
+    "matrices",
+    "row",
+    "column",
+    "minor",
+    "cofactor",
+    "leading diagonal",
+    "transpose",
+    "row operation",
+    "Cramer's rule",
+    "consistent",
+    "collinear",
+    "square matrix",
+    "row matrix",
+    "column matrix",
+    "diagonal matrix",
+    "scalar matrix",
+    "identity matrix",
+    "unit matrix",
+    "zero matrix",
+    "null matrix",
+    "upper triangular",
+    "lower triangular",
+    "singular",
+    "non-singular",
+    "scalar",
+    "symmetric",
+    "skew-symmetric",
+  ],
+  translations,
 };
