@@ -30,6 +30,7 @@ import { c28 } from "./concepts/c28-conic-loci.ts";
 import { c29 } from "./concepts/c29-greatest-least-modulus.ts";
 import { c30 } from "./concepts/c30-regions-areas.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const complexNumbers: Chapter = {
   slug: "complex-numbers",
@@ -39,4 +40,30 @@ export const complexNumbers: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "complex number",
+    "imaginary unit",
+    "real part",
+    "imaginary part",
+    "standard form",
+    "conjugate",
+    "modulus",
+    "argument",
+    "principal argument",
+    "Argand plane",
+    "real axis",
+    "imaginary axis",
+    "purely real",
+    "purely imaginary",
+    "polar form",
+    "Euler form",
+    "De Moivre's theorem",
+    "cube root of unity",
+    "square root",
+    "discriminant",
+    "locus",
+    "perpendicular bisector",
+  ],
+  translations,
 };
