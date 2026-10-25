@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Geist, Geist_Mono, Noto_Sans_Devanagari } from "next/font/google";
 import { Suspense } from "react";
 import "katex/dist/katex.min.css";
 import { SiteHeader, SiteHeaderFallback } from "@/components/SiteHeader";
@@ -23,6 +23,16 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT"],
 });
 
+/**
+ * Hindi and Marathi lessons. After Geist and Fraunces in the font stacks, so it only draws
+ * Devanagari; not preloaded, so a browser fetches it only for a page with Devanagari text.
+ */
+const devanagari = Noto_Sans_Devanagari({
+  variable: "--font-devanagari",
+  subsets: ["devanagari"],
+  preload: false,
+});
+
 export const metadata: Metadata = {
   title: { default: BRAND.name, template: `%s · ${BRAND.name}` },
   description: BRAND.tagline,
@@ -37,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${devanagari.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">
         <Suspense fallback={<SiteHeaderFallback />}>
           <SiteHeader />

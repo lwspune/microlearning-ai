@@ -34,7 +34,9 @@ export function SolutionPanel({ solution, panelId }: { solution: RenderedSolutio
     <div key={plays} ref={panelRef} id={panelId} data-solution className={`${card} mt-4 p-5`}>
       <p className="font-display text-lg font-semibold">Solution</p>
       <div className={`mt-4 ${solution.figure ? "grid gap-6 md:grid-cols-2 md:items-start" : ""}`}>
-        <StepList steps={solution.steps} stagger={STEP_S} />
+        <div lang={solution.lang}>
+          <StepList steps={solution.steps} stagger={STEP_S} />
+        </div>
         {solution.figure && (
           <FigureFrame>
             <FigureView figure={solution.figure} stagger={STEP_S} className="h-auto w-full" />

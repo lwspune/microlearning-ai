@@ -62,9 +62,9 @@
   --color-warning-surface: var(--warning-surface);
   --shadow-card: var(--shadow-card);
   --shadow-lift: var(--shadow-lift);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-sans), var(--font-devanagari);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-fraunces);
+  --font-display: var(--font-fraunces), var(--font-devanagari);
 
   --animate-slide-in: slide-in 0.25s ease-out;
   @keyframes slide-in {
