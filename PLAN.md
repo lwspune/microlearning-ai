@@ -1452,3 +1452,14 @@ phone probe, approve, merge, seed only its chapters, live check.
 The subject switch (foundation 2) is built and checked in the browser
 (dd4b99d); it stays hidden until a Std has physics chapters, so it ships with
 wave 1.
+
+**Status, 2026-10-25 (owner: "lets merge the work done so far"; no before/after
+sheet, owner):** wave 1 goes live in part. Std XII chapters 1–5 are approved and
+merged: Rotational Dynamics (12 concepts), Mechanical Properties of Fluids (11),
+Kinetic Theory of Gases and Radiation (12), Thermodynamics (12) and Oscillations
+(12), 59 concepts and 295 items, every key and distractor verified in sympy,
+every figure sheet looked at in light and dark. The subject switch goes live
+with them. Book answer-key errors followed as PYQ Vault records them (e.g.
+Thermodynamics Ex Q.5 and Q.6 signs, Oscillations Ex Q.12 units and Ex Q.15
+direction). Still to come in wave 1: chapters 6–8 (Superposition of Waves, Wave
+Optics, Electrostatics), on a new branch from main.
