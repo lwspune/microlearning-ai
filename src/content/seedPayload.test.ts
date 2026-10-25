@@ -1,6 +1,26 @@
 import { describe, expect, it } from "vitest";
 import { complexNumbers } from "./chapters/complex-numbers/index.ts";
 import { toSeedPayload } from "./seedPayload.ts";
+import { translateConcept } from "./translate.ts";
+import type { Concept, ConceptTranslation, Lang } from "./types.ts";
+
+/** A stand-in translation: the English text tagged with the language (the payload doesn't check it). */
+function tagged(c: Concept, lang: Lang, status: ConceptTranslation["status"]): ConceptTranslation {
+  const tag = (s: string) => `${lang}: ${s}`;
+  const ex = c.explanation;
+  return {
+    id: c.id,
+    lang,
+    status,
+    source: "",
+    hook: { prompt: tag(c.hook.prompt), reveal: tag(c.hook.reveal) },
+    intuition: typeof ex.intuition === "string" ? tag(ex.intuition) : ex.intuition.map(tag),
+    formal: typeof ex.formal === "string" ? tag(ex.formal) : ex.formal.map((s) => ("points" in s ? { title: tag(s.title), points: s.points.map(tag) } : { body: tag(s.body) })),
+    worked: { prompt: tag(ex.worked.prompt), steps: ex.worked.steps.map(tag), answer: tag(ex.worked.answer) },
+    remediation: Object.fromEntries(c.misconceptions.map((m) => [m.id, tag(m.remediation)])),
+    solutions: Object.fromEntries(c.items.map((i) => [i.id, i.solution.steps.map(tag)])),
+  };
+}
 
 describe("toSeedPayload", () => {
   const payload = toSeedPayload(complexNumbers, true);
@@ -52,5 +72,26 @@ describe("toSeedPayload", () => {
   it("marks items verified only when told the verifier passed", () => {
     expect(byCode("C06").items.every((i) => i.verified)).toBe(true);
     expect(toSeedPayload(complexNumbers, false).concepts.flatMap((c) => c.items).some((i) => i.verified)).toBe(false);
+  });
+
+  describe("translations", () => {
+    const c06 = complexNumbers.concepts.find((c) => c.id === "C06")!;
+    const chapter = { ...complexNumbers, translations: [tagged(c06, "hi", "approved"), tagged(c06, "mr", "draft")] };
+    const sent = toSeedPayload(chapter, true).concepts.find((c) => c.code === "C06")!.translations;
+
+    it("sends approved translations only", () => {
+      expect(sent.map((t) => t.lang)).toEqual(["hi"]);
+    });
+
+    it("sends the translated concept whole, with the English figures", () => {
+      const hi = translateConcept(c06, tagged(c06, "hi", "approved"));
+      expect(sent[0].body).toEqual({ hook: hi.hook, explanation: hi.explanation, engineNotes: hi.engineNotes });
+      expect(sent[0].remediation).toEqual(Object.fromEntries(hi.misconceptions.map((m) => [m.id, m.remediation])));
+      expect(sent[0].solutions).toEqual(Object.fromEntries(hi.items.map((i) => [i.id, i.solution])));
+    });
+
+    it("sends none for a concept nobody translated", () => {
+      expect(byCode("C07").translations).toEqual([]);
+    });
   });
 });

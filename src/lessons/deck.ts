@@ -1,5 +1,6 @@
-import { leadIn } from "@/content/leadIn";
-import type { Concept, Figure, FormalSection } from "@/content/types";
+// Relative, with the extension: the content checks (run by plain Node scripts) import this file.
+import { leadIn } from "../content/leadIn.ts";
+import type { Concept, Figure, FormalSection } from "../content/types.ts";
 
 /**
  * A concept as a slide deck. Slide ids are stable ("hook", "formal-2",
@@ -35,9 +36,14 @@ function sections(text: string): string[] {
 
 type FormalSlide = { title: string; figure?: Figure } & ({ body: string } | { points: string[] });
 
+/** The formal text as its slides' sections: a string split at blank lines, or the sections as written. */
+export function formalParts<S extends { body: string } | { title: string; points: string[] }>(formal: string | S[]): (S | { body: string })[] {
+  return typeof formal === "string" ? sections(formal).map((body) => ({ body })) : formal;
+}
+
 /** Each formal slide: titled by its title or lead-in, else by the slide it continues. */
 export function formalSlides(formal: Concept["explanation"]["formal"]): FormalSlide[] {
-  const parts: FormalSection[] = typeof formal === "string" ? sections(formal).map((body) => ({ body })) : formal;
+  const parts: FormalSection[] = formalParts(formal);
   let title = "Precisely";
   return parts.map((part) => {
     const figure = part.figure && { figure: part.figure };

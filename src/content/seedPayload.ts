@@ -1,4 +1,5 @@
-import type { Chapter, Concept, Fallback, Figure, ItemSource, ItemVerify, Solution, Tier } from "./types.ts";
+import { translateConcept } from "./translate.ts";
+import type { Chapter, Concept, Fallback, Figure, ItemSource, ItemVerify, Lang, Solution, Tier } from "./types.ts";
 
 /** The JSON shape `seed_chapter(p jsonb)` expects (supabase/migrations/*_seed_chapter.sql). */
 export type SeedPayload = {
@@ -30,6 +31,8 @@ type SeedConcept = {
     figure: Figure | null;
     options: { key: string; text: string; is_correct: boolean; misconception: string | null; value: string }[];
   }[];
+  /** Approved translations, merged with the English: remediation by misconception code, solutions by item code. */
+  translations: { lang: Lang; body: Pick<Concept, "hook" | "explanation" | "engineNotes">; remediation: Record<string, string>; solutions: Record<string, Solution> }[];
 };
 
 /**
@@ -78,6 +81,19 @@ export function toSeedPayload(chapter: Chapter, verified: boolean): SeedPayload 
             value: o.value,
           })),
         })),
+        translations: c
+          ? (chapter.translations ?? [])
+              .filter((t) => t.id === c.id && t.status === "approved")
+              .map((t) => {
+                const tc = translateConcept(c, t);
+                return {
+                  lang: t.lang,
+                  body: { hook: tc.hook, explanation: tc.explanation, engineNotes: tc.engineNotes },
+                  remediation: Object.fromEntries(tc.misconceptions.map((m) => [m.id, m.remediation])),
+                  solutions: Object.fromEntries(tc.items.map((i) => [i.id, i.solution])),
+                };
+              })
+          : [],
       };
     }),
   };

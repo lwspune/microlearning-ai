@@ -1,4 +1,5 @@
 import { leadIn } from "./leadIn.ts";
+import { translateConcept, validateTranslations } from "./translate.ts";
 import type { Chapter, Concept, ConceptId, Figure, FigureElement, GraphNode, Item, Pt, Shape } from "./types";
 
 /** Minimum items per authored concept, so mastery and review never repeat an item too soon. */
@@ -12,7 +13,22 @@ export const OPTIONS = 4;
  * separately by the sympy verifier. Returns one message per problem; [] = valid.
  */
 export function validateChapter(chapter: Chapter): string[] {
-  return [...validateGraph(chapter.graph), ...validateConcepts(chapter), ...validateTeaching(chapter), ...chapter.concepts.flatMap(validateText)];
+  return [
+    ...validateGraph(chapter.graph),
+    ...validateConcepts(chapter),
+    ...validateTeaching(chapter),
+    ...chapter.concepts.flatMap(validateText),
+    ...validateTranslations(chapter),
+    ...translatedText(chapter),
+  ];
+}
+
+/** The text checks again on each translated concept. */
+function translatedText(chapter: Chapter): string[] {
+  return (chapter.translations ?? []).flatMap((tr) => {
+    const en = chapter.concepts.find((c) => c.id === tr.id);
+    return en ? validateText(translateConcept(en, tr)).map((e) => `${tr.lang} ${e}`) : [];
+  });
 }
 
 /** Control characters other than newlines: what a mangled escape leaves (the `\t` of `\times` becomes a tab). */
