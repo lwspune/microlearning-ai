@@ -89,9 +89,9 @@ export const c11: Concept = {
     worked: {
       prompt: t`A Carnot engine works between $400\ \mathrm{K}$ and $300\ \mathrm{K}$ and takes in $1200\ \mathrm{J}$ of heat per cycle. Find its efficiency, the work it does and the heat it rejects.`,
       steps: [
-        t`$\eta = 1 - \dfrac{T_C}{T_H} = 1 - \dfrac{300}{400} = 0.25 = 25\%$.`,
+        t`$\eta = 1 - \dfrac{T_C}{T_H}$ $= 1 - \dfrac{300}{400}$ $= 0.25 = 25\%$.`,
         t`$W = \eta Q_H = 0.25 \times 1200 = 300\ \mathrm{J}$.`,
-        t`$Q_C = Q_H - W = 1200 - 300 = 900\ \mathrm{J}$.`,
+        t`$Q_C = Q_H - W$ $= 1200 - 300$ $= 900\ \mathrm{J}$.`,
         t`Check: $\dfrac{Q_C}{Q_H} = \dfrac{900}{1200} = \dfrac{300}{400} = \dfrac{T_C}{T_H}$.`,
       ],
       answer: t`$\eta = 25\%$, $W = 300\ \mathrm{J}$, $Q_C = 900\ \mathrm{J}$`,

@@ -86,10 +86,10 @@ export const c11: Concept = {
     worked: {
       prompt: t`Water flows through a horizontal pipe. At A its speed is $1\ \mathrm{m/s}$ and its pressure $2.0 \times 10^5\ \mathrm{N/m^2}$; at B its speed is $3\ \mathrm{m/s}$. Find the pressure at B.`,
       steps: [
-        t`Same level: $p_A + \dfrac{1}{2}\rho v_A^2 = p_B + \dfrac{1}{2}\rho v_B^2$.`,
+        t`Same level: $p_A + \dfrac{1}{2}\rho v_A^2$ $= p_B + \dfrac{1}{2}\rho v_B^2$.`,
         t`$p_B = p_A - \dfrac{1}{2}\rho\left(v_B^2 - v_A^2\right)$.`,
-        t`$p_B = 2.0 \times 10^5 - \dfrac{1}{2} \times 1000 \times (9 - 1)$.`,
-        t`$p_B = 2.0 \times 10^5 - 4000 = 1.96 \times 10^5\ \mathrm{N/m^2}$.`,
+        t`$p_B = 2.0 \times 10^5$ $- \dfrac{1}{2} \times 1000 \times (9 - 1)$.`,
+        t`$p_B = 2.0 \times 10^5 - 4000$ $= 1.96 \times 10^5\ \mathrm{N/m^2}$.`,
       ],
       answer: t`$p_B = 1.96 \times 10^5\ \mathrm{N/m^2}$`,
       figure: {

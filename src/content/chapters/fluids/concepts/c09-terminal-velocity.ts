@@ -87,7 +87,7 @@ export const c09: Concept = {
       steps: [
         t`$r = 10^{-5}\ \mathrm{m}$; air is so much lighter than water that its upthrust can be left out.`,
         t`Weight = drag: $\dfrac{4}{3}\pi r^3\rho g = 6\pi\eta rv_t$.`,
-        t`$v_t = \dfrac{2}{9}\dfrac{r^2\rho g}{\eta} = \dfrac{2 \times 10^{-10} \times 1000 \times 9.8}{9 \times 1.8 \times 10^{-5}}$.`,
+        t`$v_t = \dfrac{2}{9}\dfrac{r^2\rho g}{\eta}$ $= \dfrac{2 \times 10^{-10} \times 1000 \times 9.8}{9 \times 1.8 \times 10^{-5}}$.`,
         t`$v_t \approx 0.0121\ \mathrm{m/s}$.`,
       ],
       answer: t`$v_t \approx 0.0121\ \mathrm{m/s}$`,

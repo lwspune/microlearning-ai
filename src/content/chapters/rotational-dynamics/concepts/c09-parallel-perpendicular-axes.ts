@@ -95,10 +95,10 @@ export const c09: Concept = {
     worked: {
       prompt: t`A uniform rod has mass $0.6\ \mathrm{kg}$ and length $0.8\ \mathrm{m}$. What is its moment of inertia about an axis through one end, perpendicular to the rod?`,
       steps: [
-        t`About its centre: $I_c = \dfrac{ML^2}{12} = \dfrac{0.6 \times 0.64}{12} = 0.032\ \mathrm{kg\,m^2}$.`,
+        t`About its centre: $I_c = \dfrac{ML^2}{12}$ $= \dfrac{0.6 \times 0.64}{12}$ $= 0.032\ \mathrm{kg\,m^2}$.`,
         t`The end is $h = \dfrac{L}{2} = 0.4\ \mathrm{m}$ from the centre.`,
         t`$I = I_c + Mh^2 = 0.032 + 0.6 \times 0.16$.`,
-        t`$I = 0.128\ \mathrm{kg\,m^2}$; check: $\dfrac{ML^2}{3} = 0.128$.`,
+        t`$I = 0.128\ \mathrm{kg\,m^2}$; check: $\dfrac{ML^2}{3}$ $= 0.128$.`,
       ],
       answer: t`$I = 0.128\ \mathrm{kg\,m^2}$`,
       figure: {

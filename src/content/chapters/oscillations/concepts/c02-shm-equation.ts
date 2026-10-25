@@ -39,7 +39,7 @@ export const c02: Concept = {
     worked: {
       prompt: t`A body of mass $0.8\ \mathrm{kg}$ hangs from a spring of force constant $10\ \mathrm{N/m}$. Find its angular frequency, period and frequency.`,
       steps: [
-        t`$\omega = \sqrt{\dfrac{k}{m}} = \sqrt{\dfrac{10}{0.8}} = \sqrt{12.5} \approx 3.54\ \mathrm{rad/s}$.`,
+        t`$\omega = \sqrt{\dfrac{k}{m}}$ $= \sqrt{\dfrac{10}{0.8}}$ $= \sqrt{12.5} \approx 3.54\ \mathrm{rad/s}$.`,
         t`$T = \dfrac{2\pi}{\omega} = \dfrac{6.283}{3.54}$.`,
         t`$T \approx 1.78\ \mathrm{s}$.`,
         t`$n = \dfrac{1}{T} \approx 0.563\ \mathrm{Hz}$.`,

@@ -41,7 +41,7 @@ export const c10: Concept = {
     worked: {
       prompt: t`A magnet of moment of inertia $4 \times 10^{-6}\ \mathrm{kg\,m^2}$ and magnetic moment $2\ \mathrm{A\,m^2}$ oscillates in a field of $2 \times 10^{-5}\ \mathrm{T}$. Find its period.`,
       steps: [
-        t`$c = \mu B = 2 \times 2 \times 10^{-5} = 4 \times 10^{-5}\ \mathrm{N\,m/rad}$.`,
+        t`$c = \mu B = 2 \times 2 \times 10^{-5}$ $= 4 \times 10^{-5}\ \mathrm{N\,m/rad}$.`,
         t`$\dfrac{I}{\mu B} = \dfrac{4 \times 10^{-6}}{4 \times 10^{-5}} = 0.1\ \mathrm{s^2}$.`,
         t`$T = 2\pi\sqrt{0.1}$.`,
         t`$T \approx 1.99\ \mathrm{s}$.`,

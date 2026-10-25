@@ -42,7 +42,7 @@ export const c11: Concept = {
       prompt: t`A turntable with moment of inertia $0.6\ \mathrm{kg\,m^2}$ spins freely at $45\ \mathrm{rpm}$. A $0.2\ \mathrm{kg}$ lump of clay sticks to it $0.5\ \mathrm{m}$ from the axis. What is its new speed?`,
       steps: [
         t`No external torque, so $I_1n_1 = I_2n_2$.`,
-        t`$I_2 = I_1 + mx^2 = 0.6 + 0.2 \times 0.25 = 0.65\ \mathrm{kg\,m^2}$.`,
+        t`$I_2 = I_1 + mx^2$ $= 0.6 + 0.2 \times 0.25$ $= 0.65\ \mathrm{kg\,m^2}$.`,
         t`$n_2 = \dfrac{I_1n_1}{I_2} = \dfrac{0.6 \times 45}{0.65}$.`,
         t`$n_2 \approx 41.5\ \mathrm{rpm}$.`,
       ],

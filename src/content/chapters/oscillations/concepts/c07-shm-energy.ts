@@ -69,8 +69,8 @@ export const c07: Concept = {
       prompt: t`A particle of mass $200\ \mathrm{g}$ performs S.H.M. of amplitude $7\ \mathrm{cm}$ with a total energy of $10^{-2}\ \mathrm{J}$. Find its maximum speed and its period.`,
       steps: [
         t`At the mean position all of $E$ is kinetic: $E = \dfrac{1}{2}mv_{max}^2$.`,
-        t`$v_{max} = \sqrt{\dfrac{2E}{m}} = \sqrt{\dfrac{2 \times 10^{-2}}{0.2}} \approx 0.316\ \mathrm{m/s}$.`,
-        t`$v_{max} = A\omega$, so $\omega = \dfrac{0.316}{0.07} \approx 4.52\ \mathrm{rad/s}$.`,
+        t`$v_{max} = \sqrt{\dfrac{2E}{m}}$ $= \sqrt{\dfrac{2 \times 10^{-2}}{0.2}}$ $\approx 0.316\ \mathrm{m/s}$.`,
+        t`$v_{max} = A\omega$, so $\omega = \dfrac{0.316}{0.07}$ $\approx 4.52\ \mathrm{rad/s}$.`,
         t`$T = \dfrac{2\pi}{\omega} \approx 1.39\ \mathrm{s}$.`,
       ],
       answer: t`$v_{max} \approx 0.316\ \mathrm{m/s}$, $T \approx 1.39\ \mathrm{s}$`,

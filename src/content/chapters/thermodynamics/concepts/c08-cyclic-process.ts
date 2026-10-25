@@ -73,7 +73,7 @@ export const c08: Concept = {
       prompt: t`A gas goes round the cycle $A \to B \to C \to D \to A$: $A$ ($1\ \mathrm{L}$, $4 \times 10^{5}\ \mathrm{Pa}$), $B$ ($4\ \mathrm{L}$, $4 \times 10^{5}\ \mathrm{Pa}$), $C$ ($4\ \mathrm{L}$, $1 \times 10^{5}\ \mathrm{Pa}$), $D$ ($1\ \mathrm{L}$, $1 \times 10^{5}\ \mathrm{Pa}$). Find the net work per cycle and the net heat taken in.`,
       steps: [
         t`$A \to B$: $W = 4 \times 10^{5} \times 3 \times 10^{-3} = 1200\ \mathrm{J}$.`,
-        t`$B \to C$ and $D \to A$ are at constant volume: no work. $C \to D$: $W = 1 \times 10^{5} \times \left(-3 \times 10^{-3}\right) = -300\ \mathrm{J}$.`,
+        t`$B \to C$ and $D \to A$ are at constant volume: no work. $C \to D$: $W = 1 \times 10^{5} \times \left(-3 \times 10^{-3}\right)$ $= -300\ \mathrm{J}$.`,
         t`Net work $= 1200 - 300 = 900\ \mathrm{J}$, the enclosed area $3 \times 10^{5} \times 3 \times 10^{-3}$.`,
         t`$\Delta U = 0$ over the cycle, so $Q = W = 900\ \mathrm{J}$.`,
       ],

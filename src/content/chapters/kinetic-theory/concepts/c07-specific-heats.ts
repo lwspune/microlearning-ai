@@ -44,7 +44,7 @@ export const c07: Concept = {
         t`$C_P = \gamma C_V$ and $C_P - C_V = 4000$.`,
         t`$(\gamma - 1)C_V = 4000$, so $C_V = \dfrac{4000}{0.4}$.`,
         t`$C_V = 10000\ \mathrm{J\,kg^{-1}K^{-1}}$.`,
-        t`$C_P = 1.4 \times 10000 = 14000\ \mathrm{J\,kg^{-1}K^{-1}}$.`,
+        t`$C_P = 1.4 \times 10000$ $= 14000\ \mathrm{J\,kg^{-1}K^{-1}}$.`,
       ],
       answer: t`$C_V = 10000$, $C_P = 14000\ \mathrm{J\,kg^{-1}K^{-1}}$`,
     },

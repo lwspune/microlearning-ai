@@ -41,8 +41,8 @@ export const c06: Concept = {
       {
         title: "Work and heat",
         points: [
-          t`$W = \displaystyle\int_{V_1}^{V_2} \dfrac{nRT}{V}\,dV = nRT\ln\dfrac{V_2}{V_1} = 2.303\,nRT\log_{10}\dfrac{V_2}{V_1}$.`,
-          t`Since $p_1V_1 = p_2V_2$, also $W = nRT\ln\dfrac{p_1}{p_2}$.`,
+          t`$W = \displaystyle\int_{V_1}^{V_2} \dfrac{nRT}{V}\,dV$ $= nRT\ln\dfrac{V_2}{V_1}$ $= 2.303\,nRT\log_{10}\dfrac{V_2}{V_1}$.`,
+          t`Since $p_1V_1 = p_2V_2$, also $W = nRT$ $\ln\dfrac{p_1}{p_2}$.`,
           t`$U$ depends only on $T$, so $\Delta U = 0$, and the first law gives $Q = W$.`,
           t`On expansion the gas takes in heat; on compression it gives out heat.`,
         ],

@@ -43,7 +43,7 @@ export const c05: Concept = {
         t`$\omega = \dfrac{2\pi}{12} = \dfrac{\pi}{6}\ \mathrm{rad/s}$, and $x = A\sin\omega t$.`,
         t`$x = 10\sin\dfrac{\pi}{6} = 5\ \mathrm{cm}$.`,
         t`$v = A\omega\cos\omega t = 10 \times \dfrac{\pi}{6} \times \cos\dfrac{\pi}{6}$.`,
-        t`$v \approx 10 \times 0.524 \times 0.866 \approx 4.53\ \mathrm{cm/s}$.`,
+        t`$v \approx 10 \times 0.524 \times 0.866$ $\approx 4.53\ \mathrm{cm/s}$.`,
       ],
       answer: t`$x = 5\ \mathrm{cm}$, $v \approx 4.53\ \mathrm{cm/s}$`,
     },

@@ -44,7 +44,7 @@ export const c11: Concept = {
       steps: [
         t`$A = 200 \times 10^{-4} = 0.02\ \mathrm{m^2}$, $T = 127 + 273 = 400\ \mathrm{K}$, $t = 60\ \mathrm{s}$.`,
         t`For a blackbody, $Q = \sigma A T^4 t$.`,
-        t`$Q = 5.67 \times 10^{-8} \times 0.02 \times (400)^4 \times 60$.`,
+        t`$Q = 5.67 \times 10^{-8} \times 0.02$ $\times (400)^4 \times 60$.`,
         t`$Q \approx 1742\ \mathrm{J}$.`,
       ],
       answer: t`$Q \approx 1742\ \mathrm{J}$`,
