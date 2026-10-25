@@ -4,9 +4,19 @@ import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { safeLearnPath } from "@/lib/safeNext";
 import { createSessionClient, currentUserId } from "@/lib/supabase/server";
+import type { LessonLanguage } from "@/content/languages";
 import type { RenderedBlock } from "@/lib/renderedText";
 import { renderRichText } from "@/lib/richText";
-import { nextQuestionFor, type Question, type RenderedSolution, type Route, routeAfterMiss, solutionFor } from "@/server/learning";
+import { rememberedLanguage } from "@/server/language";
+import {
+  nextQuestionFor,
+  type Question,
+  type RenderedSolution,
+  type Route,
+  routeAfterMiss,
+  solutionFor,
+  translatedRemediation,
+} from "@/server/learning";
 
 export type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -30,6 +40,8 @@ export type AnswerResult = {
   correct: boolean;
   correctKey: string;
   remediation: RenderedBlock[] | null;
+  /** The language the remediation is in. */
+  remediationLang: LessonLanguage;
   /** Different questions right (by latest answer), and missed ones still to retry. */
   streak: number;
   toRetry: number;
@@ -77,17 +89,20 @@ export async function submitAnswer(itemId: string, optionKey: string): Promise<A
   const r = data as RecordAttemptResult;
 
   try {
-    const [next, solution, route] = await Promise.all([
+    const lang = await rememberedLanguage();
+    const [next, solution, route, remediation] = await Promise.all([
       nextQuestionFor(itemId, userId),
-      solutionFor(itemId),
+      solutionFor(itemId, lang),
       r.correct ? null : routeAfterMiss(itemId, userId),
+      r.remediation ? translatedRemediation(itemId, userId, lang) : null,
     ]);
     return {
       ok: true,
       data: {
         correct: r.correct,
         correctKey: r.correct_key,
-        remediation: r.remediation ? renderRichText(r.remediation) : null,
+        remediation: r.remediation ? renderRichText(remediation ?? r.remediation) : null,
+        remediationLang: remediation ? lang : "en",
         streak: r.streak,
         toRetry: r.to_retry,
         needed: r.needed,

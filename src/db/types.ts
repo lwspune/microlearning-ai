@@ -166,6 +166,39 @@ export type Database = {
           },
         ]
       }
+      concept_translations: {
+        Row: {
+          body: Json
+          concept_id: string
+          lang: string
+        }
+        Insert: {
+          body: Json
+          concept_id: string
+          lang: string
+        }
+        Update: {
+          body?: Json
+          concept_id?: string
+          lang?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "concept_translations_concept_id_fkey"
+            columns: ["concept_id"]
+            isOneToOne: false
+            referencedRelation: "concepts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "concept_translations_concept_id_fkey"
+            columns: ["concept_id"]
+            isOneToOne: false
+            referencedRelation: "published_concepts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       concepts: {
         Row: {
           body: Json | null
@@ -271,6 +304,39 @@ export type Database = {
           },
         ]
       }
+      item_translations: {
+        Row: {
+          item_id: string
+          lang: string
+          solution: Json
+        }
+        Insert: {
+          item_id: string
+          lang: string
+          solution: Json
+        }
+        Update: {
+          item_id?: string
+          lang?: string
+          solution?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "item_translations_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "item_translations_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "published_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       items: {
         Row: {
           code: string
@@ -372,6 +438,32 @@ export type Database = {
             columns: ["concept_id"]
             isOneToOne: false
             referencedRelation: "published_concepts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      misconception_translations: {
+        Row: {
+          lang: string
+          misconception_id: string
+          remediation: string
+        }
+        Insert: {
+          lang: string
+          misconception_id: string
+          remediation: string
+        }
+        Update: {
+          lang?: string
+          misconception_id?: string
+          remediation?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "misconception_translations_misconception_id_fkey"
+            columns: ["misconception_id"]
+            isOneToOne: false
+            referencedRelation: "misconceptions"
             referencedColumns: ["id"]
           },
         ]

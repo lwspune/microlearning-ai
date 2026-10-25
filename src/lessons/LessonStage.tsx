@@ -21,6 +21,7 @@ const subscribeFullscreen = (cb: () => void) => {
  * preview behaves exactly as learners see it.
  *
  * - `banner`: above the header (the refresher bar).
+ * - `lang`: the slides' language when it isn't English (the controls stay English).
  * - `questions`: rendered under the slide and kept mounted; given whether the questions slide is
  *   showing, and a way back to the first slide.
  */
@@ -30,12 +31,15 @@ export function LessonStage({
   startIndex = 0,
   banner,
   questions,
+  lang,
 }: {
   slides: RenderedSlide[];
   label: string;
   startIndex?: number;
   banner?: ReactNode;
   questions?: (api: { active: boolean; reread: () => void }) => ReactNode;
+  /** The slides' language when not English: on the text, not the English controls around it. */
+  lang?: string;
 }) {
   const [pos, setPos] = useState<Position>(() => startAt(slides, startIndex));
   // Set on the first move or full screen, so Start never comes back (even after leaving full screen).
@@ -173,10 +177,11 @@ export function LessonStage({
           aria-label={`${pos.index + 1} of ${slides.length}: ${slide.title}`}
           className="mx-auto max-w-3xl leading-relaxed motion-safe:animate-slide-in md:text-xl"
         >
-          <h2 ref={headingRef} tabIndex={-1} className="font-display text-3xl font-semibold tracking-tight outline-none md:text-4xl">
+          {/* Formal slides take their titles from the text; the others' titles are English chrome. */}
+          <h2 lang={slide.id.startsWith("formal-") ? lang : undefined} ref={headingRef} tabIndex={-1} className="font-display text-3xl font-semibold tracking-tight outline-none md:text-4xl">
             <RenderedInlineNodes nodes={slide.heading} />
           </h2>
-          <div className="mt-5">
+          <div className="mt-5" lang={lang}>
             <SlideBody slide={slide} shown={pos.shown} />
           </div>
         </div>

@@ -11,6 +11,7 @@ import { c09 } from "./concepts/c09-product-to-sum.ts";
 import { c10 } from "./concepts/c10-angles-of-a-triangle.ts";
 import { c11 } from "./concepts/c11-a-sin-plus-b-cos.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const compoundAndMultipleAngles: Chapter = {
   slug: "compound-and-multiple-angles",
@@ -20,4 +21,24 @@ export const compoundAndMultipleAngles: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "initial arm",
+    "unit circle",
+    "quadrant",
+    "sine",
+    "cosine",
+    "tangent",
+    "reciprocal",
+    "compound angle",
+    "allied angle",
+    "double angle",
+    "half angle",
+    "triple angle",
+    "multiple angle",
+    "complement",
+    "supplement",
+    "co-ratio",
+  ],
+  translations,
 };

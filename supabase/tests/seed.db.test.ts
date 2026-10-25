@@ -27,8 +27,11 @@ function item(code: string) {
   };
 }
 
+/** C02 in Hindi: its body, its one remediation and both solutions. */
+const HINDI = { lang: "hi", body: { hook: { prompt: "प्रश्न", reveal: "उत्तर" } }, remediation: { "C02-M1": "सुधार" }, solutions: { "C02-Q1": SOLUTION, "C02-Q2": SOLUTION } };
+
 /** C01 ← C02; C02 authored with one misconception and two items. */
-function payload(overrides: Partial<{ c01Prereqs: string[]; items: string[] }> = {}): Payload {
+function payload(overrides: Partial<{ c01Prereqs: string[]; items: string[]; translations: unknown[] }> = {}): Payload {
   return {
     slug: "t",
     title: "T",
@@ -39,6 +42,7 @@ function payload(overrides: Partial<{ c01Prereqs: string[]; items: string[] }> =
         status: "approved", body: { hook: { prompt: "p", reveal: "r" } },
         misconceptions: [{ code: "C02-M1", mistake: "m", remediation: "r", fallback: { kind: "concept", id: "C01" } }],
         items: (overrides.items ?? ["C02-Q1", "C02-Q2"]).map(item),
+        translations: overrides.translations ?? [],
       },
     ],
   };
@@ -149,6 +153,58 @@ describe("seed_chapter", () => {
     const p = payload();
     (p.concepts[1] as { items: { solution: unknown }[] }).items[0].solution = { steps: ["one", 2] };
     await expect(rolledBack(seed(p))).rejects.toThrow(/items_solution_shape/);
+  });
+
+  describe("translations", () => {
+    const TR = `select
+  (select count(*) from concept_translations t join concepts c on c.id = t.concept_id where c.chapter_id = ${T}) as concepts,
+  (select count(*) from misconception_translations t join misconceptions m on m.id = t.misconception_id join concepts c on c.id = m.concept_id where c.chapter_id = ${T}) as misconceptions,
+  (select count(*) from item_translations t join items i on i.id = t.item_id join concepts c on c.id = i.concept_id where c.chapter_id = ${T}) as items;`;
+
+    it("stores a concept's translation with its remediation and solutions", async () => {
+      const rows = await rolledBackSelect(
+        seed(payload({ translations: [HINDI] })),
+        `select t.lang, t.body, (select m.remediation from misconception_translations m where m.lang = 'hi') as remediation,
+           (select array_agg(i.solution) from item_translations i where i.lang = 'hi') as solutions
+         from concept_translations t join concepts c on c.id = t.concept_id where c.chapter_id = ${T};`,
+      );
+      expect(rows).toEqual([{ lang: "hi", body: HINDI.body, remediation: "सुधार", solutions: [SOLUTION, SOLUTION] }]);
+    });
+
+    it("is idempotent, and removes translations that left the content", async () => {
+      expect(await rolledBackSelect(seed(payload({ translations: [HINDI] })) + seed(payload({ translations: [HINDI] })), TR)).toEqual([
+        { concepts: 1, misconceptions: 1, items: 2 },
+      ]);
+      expect(await rolledBackSelect(seed(payload({ translations: [HINDI] })) + seed(payload()), TR)).toEqual([
+        { concepts: 0, misconceptions: 0, items: 0 },
+      ]);
+    });
+
+    it("rejects a language other than Hindi or Marathi", async () => {
+      await expect(rolledBack(seed(payload({ translations: [{ ...HINDI, lang: "ta" }] })))).rejects.toThrow(/concept_translations_lang_check/);
+    });
+
+    it("rejects a translated solution with fewer than two steps", async () => {
+      const bad = { ...HINDI, solutions: { ...HINDI.solutions, "C02-Q1": { steps: ["only one"] } } };
+      await expect(rolledBack(seed(payload({ translations: [bad] })))).rejects.toThrow(/item_translations_solution_shape/);
+    });
+
+    it("rejects a translation naming a misconception or item the concept doesn't have", async () => {
+      await expect(rolledBack(seed(payload({ translations: [{ ...HINDI, remediation: { "C02-M9": "x" } }] })))).rejects.toThrow(
+        /translation of C02 names unknown misconception C02-M9/,
+      );
+      await expect(rolledBack(seed(payload({ translations: [{ ...HINDI, solutions: { "C02-Q9": SOLUTION } }] })))).rejects.toThrow(
+        /translation of C02 names unknown item C02-Q9/,
+      );
+    });
+
+    for (const role of ["anon", "authenticated"]) {
+      it(`${role} cannot read translations`, async () => {
+        for (const table of ["concept_translations", "misconception_translations", "item_translations"]) {
+          await expect(rolledBack(`set local role ${role}; select * from ${table};`)).rejects.toThrow(/permission denied for table/);
+        }
+      });
+    }
   });
 
   for (const role of ["anon", "authenticated"]) {

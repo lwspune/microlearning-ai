@@ -225,6 +225,30 @@ export type Concept = {
   engineNotes?: string[];
 };
 
+/** A lesson language besides English (PLAN.md "Hindi and Marathi lessons"). */
+export type Lang = "hi" | "mr";
+
+/**
+ * A concept's text in Hindi or Marathi: the English concept's text fields in the same shape,
+ * with the same maths (AUTHORING.md, Translations). Figures, stems and options stay English.
+ */
+export type ConceptTranslation = {
+  id: ConceptId;
+  lang: Lang;
+  status: "draft" | "approved";
+  /** `textFingerprint` of the English concept it translates; the check prints the current one. */
+  source: string;
+  hook: { prompt: string; reveal: string };
+  intuition: string | string[];
+  /** The English formal text section by section; figures stay with the English. */
+  formal: string | ({ body: string } | { title: string; points: string[] })[];
+  worked: { prompt: string; steps: string[]; answer: string };
+  /** One per misconception, by id. */
+  remediation: Record<MisconceptionId, string>;
+  /** Each item's solution steps, by item id. */
+  solutions: Record<string, string[]>;
+};
+
 /** The two audiences. Each has its own concept pool; a student stays in one. */
 export type GroupId = "school" | "graduate";
 
@@ -243,4 +267,7 @@ export type Chapter = {
   graph: GraphNode[];
   /** Fully authored concepts; every graph node gets one eventually. */
   concepts: Concept[];
+  /** Terms a translation keeps in English (Latin script) wherever the English text uses them. */
+  glossary?: string[];
+  translations?: ConceptTranslation[];
 };

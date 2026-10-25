@@ -1,4 +1,5 @@
 import "server-only";
+import { LESSON_LANGUAGES, type LessonLanguage } from "@/content/languages";
 import type { Concept, ConceptId, Figure, GraphNode, Solution, Tier } from "@/content/types";
 import { conceptStates, type ConceptState, inScope, nextConceptAfter } from "@/engine/unlock";
 import { type NextItem, nextItem } from "@/engine/nextItem";
@@ -59,6 +60,10 @@ export type ConceptSession =
       code: string;
       title: string;
       slides: RenderedSlide[];
+      /** The language the slides are in: the one asked for, or English when the concept has no translation into it. */
+      language: LessonLanguage;
+      /** English and every language this concept is translated into, in the switch's order. */
+      languages: LessonLanguage[];
       question: Question;
       progress: Progress;
       /** Where "Next concept" goes once this one is mastered; null when nothing open is left. */
@@ -182,7 +187,7 @@ export async function getConceptSession(
   chapterSlug: string,
   conceptSlug: string,
   userId: string,
-  options: { allowLocked?: boolean; scope?: Set<ConceptId>; gate?: boolean } = {},
+  options: { allowLocked?: boolean; scope?: Set<ConceptId>; gate?: boolean; lang?: LessonLanguage } = {},
 ): Promise<ConceptSession | null> {
   const loaded = await loadGraph(chapterSlug);
   if (!loaded) return null;
@@ -198,14 +203,21 @@ export async function getConceptSession(
   if (state === "locked" && !options.allowLocked) return { kind: "locked" };
 
   const db = createAdminClient();
-  const [{ data: body, error: be }, { data: items, error: ie }, { data: needed, error: ne }, { data: reviewNeeded, error: re }] =
-    await Promise.all([
-      db.from("published_concepts").select("body").eq("id", concept.id).single(),
-      db.from("published_items").select("id").eq("concept_id", concept.id).order("code"),
-      db.rpc("mastery_streak_needed"),
-      db.rpc("review_answers_needed"),
-    ]);
+  const [
+    { data: body, error: be },
+    { data: translations, error: te },
+    { data: items, error: ie },
+    { data: needed, error: ne },
+    { data: reviewNeeded, error: re },
+  ] = await Promise.all([
+    db.from("published_concepts").select("body").eq("id", concept.id).single(),
+    db.from("concept_translations").select("lang, body").eq("concept_id", concept.id),
+    db.from("published_items").select("id").eq("concept_id", concept.id).order("code"),
+    db.rpc("mastery_streak_needed"),
+    db.rpc("review_answers_needed"),
+  ]);
   if (be) throw be;
+  if (te) throw te;
   if (ie) throw ie;
   if (ne) throw ne;
   if (re) throw re;
@@ -219,7 +231,9 @@ export async function getConceptSession(
     .order("id");
   if (ae) throw ae;
 
-  const content = body.body as Pick<Concept, "hook" | "explanation">;
+  const translated = options.lang && options.lang !== "en" ? translations.find((t) => t.lang === options.lang) : undefined;
+  // A translation is the English body with its text translated (seedPayload).
+  const content = (translated ?? body).body as Pick<Concept, "hook" | "explanation">;
   const own = rows.find((r) => r.concept_id === concept.id);
 
   return {
@@ -227,6 +241,8 @@ export async function getConceptSession(
     code: concept.code,
     title: concept.title,
     slides: renderDeck(buildDeck(content)),
+    language: translated ? options.lang! : "en",
+    languages: LESSON_LANGUAGES.map((l) => l.id).filter((id) => id === "en" || translations.some((t) => t.lang === id)),
     question: await questionAfter(itemIds, attempts, userId),
     nextConcept: (() => {
       const code = nextConceptAfter(graph, open, states, concept.code, options.gate);
@@ -272,18 +288,50 @@ function questionAfter(itemIds: string[], attempts: { item_id: string; correct: 
 }
 
 /** An item's step-by-step solution with its math rendered. */
-export type RenderedSolution = { steps: RenderedInline[][]; figure: Figure | null };
+export type RenderedSolution = { steps: RenderedInline[][]; figure: Figure | null; lang: LessonLanguage };
 
 /**
  * The solution to a published item. Call only after the learner's attempt is
  * recorded: it gives the answer away.
  */
-export async function solutionFor(itemId: string): Promise<RenderedSolution | null> {
-  const { data, error } = await createAdminClient().from("published_items").select("solution").eq("id", itemId).single();
+export async function solutionFor(itemId: string, lang: LessonLanguage = "en"): Promise<RenderedSolution | null> {
+  const db = createAdminClient();
+  const [{ data, error }, { data: translated, error: te }] = await Promise.all([
+    db.from("published_items").select("solution").eq("id", itemId).single(),
+    lang === "en" ? { data: null, error: null } : db.from("item_translations").select("solution").eq("item_id", itemId).eq("lang", lang).maybeSingle(),
+  ]);
   if (error) throw error;
-  // Shape enforced by the items_solution_shape constraint and the content validator.
-  const s = data.solution as unknown as Solution | null;
-  return s ? { steps: s.steps.map(renderInlineText), figure: s.figure ?? null } : null;
+  if (te) throw te;
+  // Shape enforced by the items_solution_shape constraints and the content validator.
+  const s = (translated ?? data).solution as unknown as Solution | null;
+  return s ? { steps: s.steps.map(renderInlineText), figure: s.figure ?? null, lang: translated ? lang : "en" } : null;
+}
+
+/**
+ * The remediation for the learner's latest answer to `itemId`, in `lang`; null when that answer
+ * revealed no misconception or the misconception has no translation (the English one then stands).
+ */
+export async function translatedRemediation(itemId: string, userId: string, lang: LessonLanguage): Promise<string | null> {
+  if (lang === "en") return null;
+  const db = createAdminClient();
+  const { data: latest, error } = await db
+    .from("attempts")
+    .select("misconception_id")
+    .eq("user_id", userId)
+    .eq("item_id", itemId)
+    .order("id", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  if (!latest?.misconception_id) return null;
+  const { data, error: te } = await db
+    .from("misconception_translations")
+    .select("remediation")
+    .eq("misconception_id", latest.misconception_id)
+    .eq("lang", lang)
+    .maybeSingle();
+  if (te) throw te;
+  return data?.remediation ?? null;
 }
 
 /** Where a repeated mistake should send the learner. */

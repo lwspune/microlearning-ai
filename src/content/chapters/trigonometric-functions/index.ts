@@ -10,6 +10,7 @@ import { c08 } from "./concepts/c08-eliminating-theta.ts";
 import { c09 } from "./concepts/c09-range-and-period.ts";
 import { c10 } from "./concepts/c10-polar-coordinates.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const trigonometricFunctions: Chapter = {
   slug: "trigonometric-functions",
@@ -19,4 +20,31 @@ export const trigonometricFunctions: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "initial arm",
+    "terminal arm",
+    "standard position",
+    "quadrant",
+    "clockwise",
+    "anticlockwise",
+    "trigonometric function",
+    "sine",
+    "cosine",
+    "tangent",
+    "cosecant",
+    "secant",
+    "cotangent",
+    "reciprocal",
+    "unit circle",
+    "hypotenuse",
+    "reference angle",
+    "identity",
+    "identities",
+    "periodic",
+    "period",
+    "range",
+    "polar co-ordinates",
+  ],
+  translations,
 };

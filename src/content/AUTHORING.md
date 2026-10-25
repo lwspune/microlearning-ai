@@ -155,3 +155,42 @@ discussed, arms that jumped instead of turning.
     The validator requires points in every draft concept; published concepts
     keep their text until reworked (PLAN.md backfill ledger 5). The concept
     briefs (`verify/agent-brief*.md`) and `build_concepts.py` produce points.
+
+## Translations (Hindi and Marathi)
+
+PLAN.md "Hindi and Marathi lessons". A concept may have a Hindi (`hi`) and a
+Marathi (`mr`) translation in `translations/<lang>/cNN.ts`, registered in
+the chapter's `translations/index.ts`. It carries only the English concept's
+text: hook, intuition, formal, worked example, each misconception's
+remediation and each item's solution steps. Figures, stems and options stay
+English. Start from `node scripts/translation-skeleton.ts <chapter> <id>`:
+it prints the English text in the translation's shape, with its `source`.
+
+23. **[S]** The same shape as the English: the same points, sections, worked
+    steps, misconceptions and solution steps, and a bold lead-in wherever the
+    English has one (it titles the slide).
+24. **[S]** The same maths: every `$…$` of an English string appears in its
+    translation, unchanged; word order may move it, nothing may add to it.
+    Copy maths, never retype it, and edit with the Edit tool, not a shell
+    (a shell turns `\f` of `\frac` into a control character).
+25. **[S]** Written in Devanagari, in both languages: any string with English
+    words gets Devanagari words (a danda alone doesn't count). A string that
+    is only maths stays as it is. Hindi ends sentences with `।`, Marathi
+    with `.`.
+26. **[S]** The chapter's `glossary` (its `index.ts`) lists the book's terms.
+    Wherever the English string uses one, the translation keeps it in
+    English letters. Gloss it in brackets where the English defines it:
+    `**terminal arm** (अंतिम भुजा)`. A term-only title gets a gloss too.
+    Leave words that are also everyday words ("minute", "second") out of the
+    glossary.
+27. **[S]** `source` is the English text's fingerprint. When the English
+    changes, an approved translation fails the check (the message prints the
+    new `source`) until it is updated; set it back to `draft` to let the
+    concept fall back to English meanwhile.
+28. **[R]** Write as a teacher talks in class: plain Hindi or Marathi for the
+    sentence, the book's maths words in English (angle, radius, arc,
+    quadrant). Hindi uses the polite imperative (`जोड़िए`), Marathi the
+    plain one (`जोडा`). Digits stay 0–9.
+29. **[R]** Check every translated concept on
+    `/review/<chapter>/<concept>/slides?lang=hi` (and `mr`), and run
+    `node scripts/overflow-probe.mjs <chapter> --lang=hi <slug>...`.

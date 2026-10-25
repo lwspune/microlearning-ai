@@ -275,7 +275,11 @@ export function QuestionPanel({
               {result.correct && <CheckIcon className="h-5 w-5" />}
               {result.correct ? "Correct!" : "Not quite."}
             </p>
-            {result.remediation && <RenderedRichText blocks={result.remediation} className="mt-2" />}
+            {result.remediation && (
+              <div lang={result.remediationLang}>
+                <RenderedRichText blocks={result.remediation} className="mt-2" />
+              </div>
+            )}
             {reviewOutcome && result.review.done && (
               <p className="mt-3 border-t border-border pt-3 font-medium">
                 {reviewOutcome.passed

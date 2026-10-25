@@ -2,7 +2,9 @@
 
 import { cookies } from "next/headers";
 import { parseGroup, parseStandard, parseSubject } from "@/content/courses";
+import { LESSON_LANGUAGES } from "@/content/languages";
 import { GROUP_COOKIE, STANDARD_COOKIE, SUBJECT_COOKIE } from "@/server/courses";
+import { LANGUAGE_COOKIE } from "@/server/language";
 
 const YEAR = 60 * 60 * 24 * 365;
 
@@ -32,4 +34,10 @@ export async function rememberStandard(value: string): Promise<void> {
 export async function rememberSubject(value: string): Promise<void> {
   const subject = parseSubject(value);
   if (subject) await remember(SUBJECT_COOKIE, subject);
+}
+
+/** Remembers the student's lesson language on this browser. Unknown values are ignored. */
+export async function rememberLanguage(value: string): Promise<void> {
+  const language = LESSON_LANGUAGES.find((l) => l.id === value);
+  if (language) await remember(LANGUAGE_COOKIE, language.id);
 }

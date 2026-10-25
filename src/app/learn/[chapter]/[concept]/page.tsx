@@ -9,6 +9,7 @@ import { type Course, coveredIds, entryFor, findCourse, mapLink, parseStandard, 
 import type { Chapter } from "@/content/types";
 import { gateFor } from "@/engine/unlock";
 import { rememberedStandardValue } from "@/server/courses";
+import { rememberedLanguage } from "@/server/language";
 import { currentViewer } from "@/server/viewer";
 import { refresherFrom } from "@/lessons/refresher";
 import { getConceptSession } from "@/server/learning";
@@ -60,6 +61,7 @@ async function ConceptSection({
     allowLocked: refresher !== null,
     scope: course ? coveredIds(course, ch) : undefined,
     gate: gateFor(viewer.profile?.role ?? null),
+    lang: await rememberedLanguage(),
   });
   if (!session) notFound();
   if (session.kind === "locked") {
