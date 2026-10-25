@@ -192,6 +192,10 @@ describe("validateChapter: translations", () => {
     );
   });
 
+  it("doesn't count a danda alone as Devanagari", () => {
+    expect(errorsAfter((tr) => (tr.worked.steps[1] = "So they are।"))).toContainEqual(expect.stringMatching(/hi C2: worked.steps.1 has no Devanagari/));
+  });
+
   it("accepts a string that is only maths, copied as it is", () => {
     const ch = chapter();
     ch.concepts[0].explanation.worked.answer = t`$30^\circ$`;

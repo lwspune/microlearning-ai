@@ -85,7 +85,8 @@ export function translateConcept(en: Concept, tr: ConceptTranslation): Concept {
 }
 
 const MATH = /\$\$[\s\S]+?\$\$|\$[^$]+?\$/g;
-const DEVANAGARI = /[ऀ-ॿ]/;
+/** Devanagari letters and signs; the dandas (U+0964, U+0965) are punctuation, so they don't count. */
+const DEVANAGARI = /[ऀ-ॣ०-ॿ]/;
 
 /** The words around the maths, without bold markers. */
 const prose = (s: string) => s.replace(MATH, " ").replaceAll("**", "");
