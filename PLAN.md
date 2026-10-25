@@ -1521,8 +1521,8 @@ AUTHORING.md. 3. The other seven chapters, one at a time, each seeded and
 checked live.
 
 **Status, 2026-10-25 (owner: "merge", "continue"):** live: the switch, the
-translation checks and tables, and five chapters in both languages, Angle and
+translation checks and tables, and six chapters in both languages, Angle and
 its Measurement (7), Trigonometry I (10), Trigonometry II (10), Sets and
-Relations (16) and Determinants and Matrices (C01–C12). `npm run e2e:languages`
-covers the switch. Next: Complex Numbers (the MH 22), Sequences and Series, and
-Functions.
+Relations (16), Determinants and Matrices (C01–C12) and Complex Numbers (the MH
+22). `npm run e2e:languages` covers the switch. Next: Sequences and Series
+(C01–C18), then Functions (C01–C11).
