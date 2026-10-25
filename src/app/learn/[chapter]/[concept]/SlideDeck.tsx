@@ -37,11 +37,6 @@ export function SlideDeck({
 
   return (
     <>
-      {session.languages.length > 1 && (
-        <div className="mb-3 flex justify-end">
-          <LanguageSwitch current={session.language} available={session.languages} />
-        </div>
-      )}
       <LessonStage
         slides={slides}
         lang={session.language === "en" ? undefined : session.language}
@@ -49,16 +44,24 @@ export function SlideDeck({
         // A refresher always starts at the beginning: rereading is the point.
         startIndex={startedBefore && !refresher ? questionsIndex : 0}
         banner={
-          refresher && (
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-warning-surface px-5 py-2.5 text-sm">
-              <span>
-                <span className="font-semibold">Refresher</span> for {refresher.title}
-              </span>
-              <Link href={refresher.href} className="font-medium text-accent underline underline-offset-2">
-                Back to {refresher.title} →
-              </Link>
-            </div>
-          )
+          <>
+            {refresher && (
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-warning-surface px-5 py-2.5 text-sm">
+                <span>
+                  <span className="font-semibold">Refresher</span> for {refresher.title}
+                </span>
+                <Link href={refresher.href} className="font-medium text-accent underline underline-offset-2">
+                  Back to {refresher.title} →
+                </Link>
+              </div>
+            )}
+            {/* Inside the stage, so it stays reachable in full screen. */}
+            {session.languages.length > 1 && (
+              <div className="flex justify-end border-b border-border px-5 py-2">
+                <LanguageSwitch current={session.language} available={session.languages} />
+              </div>
+            )}
+          </>
         }
         questions={({ active, reread }) => (
           // Kept mounted so the current question and its feedback survive a trip back through the slides.
