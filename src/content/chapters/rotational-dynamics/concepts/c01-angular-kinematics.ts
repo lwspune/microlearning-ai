@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`On a merry-go-round, Riya sits at the edge and Aman sits halfway to the centre. In one full turn, who turns through the larger angle? Who moves faster?`,
     reveal: t`Both turn through the same angle, $2\pi$ rad, so they share one angular velocity. Riya covers a longer arc in the same time, so she moves faster: $v = r\omega$.`,

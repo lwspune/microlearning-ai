@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A swing left alone slowly stops. Pushed at just the right moments, though, it climbs higher and higher with only small pushes. Why?`,
     reveal: t`Friction drains its energy, so free swings **die away**. Pushes timed to its natural frequency feed energy in at the best moment: **resonance**.`,

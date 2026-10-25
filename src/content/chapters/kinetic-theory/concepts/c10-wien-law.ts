@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Why does an iron rod in a furnace glow first dull red, then orange, and at last white?`,
     reveal: t`As the rod gets hotter, the peak of its radiation shifts to shorter wavelengths, from the infrared towards the visible. This is **Wien's displacement law**.`,

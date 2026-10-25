@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A gas is warmed by the same amount twice: once in a sealed rigid can, once in a cylinder with a free piston. Which takes more heat?`,
     reveal: t`The cylinder. There the gas also pushes the piston out, doing work, so it needs extra heat: $C_P > C_V$.`,

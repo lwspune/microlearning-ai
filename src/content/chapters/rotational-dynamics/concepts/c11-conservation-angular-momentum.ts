@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An ice skater spinning with arms out pulls them in and spins much faster. Nobody pushed. Where did the extra spin come from?`,
     reveal: t`Nowhere new: the angular momentum $I\omega$ stays the same. Pulling the arms in cuts $I$, so $\omega$ has to rise.`,

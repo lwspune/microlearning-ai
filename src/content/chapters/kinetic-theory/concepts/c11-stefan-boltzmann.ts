@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A heater coil at about $1000\ \mathrm{K}$ pours out heat you can feel across the room. The same coil at room temperature, $300\ \mathrm{K}$, radiates almost nothing you notice. Why such a huge difference?`,
     reveal: t`Radiated power grows as the fourth power of the absolute temperature. $\left(\dfrac{1000}{300}\right)^4 \approx 123$, so the hot coil radiates over a hundred times as much.`,

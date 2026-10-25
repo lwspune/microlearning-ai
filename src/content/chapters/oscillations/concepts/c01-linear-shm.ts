@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Pull a mass on a spring down a little and let go. It bobs up and down, again and again, through the same point. What keeps it coming back?`,
     reveal: t`The spring always pulls it back towards where it rests, and harder the further it is displaced. That kind of pull makes **simple harmonic motion**.`,

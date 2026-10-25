@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A grandfather clock ticks once a second, each tick one swing of its pendulum. Why are such pendulums almost always about a metre long?`,
     reveal: t`A pendulum that takes one second per swing has a period of 2 s, and $T = 2\pi\sqrt{\dfrac{L}{g}}$ then gives $L = \dfrac{g}{\pi^2}$, nearly 1 m on the Earth.`,

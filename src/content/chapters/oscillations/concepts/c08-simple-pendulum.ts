@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Galileo timed a swinging church lamp against his pulse and found each swing took the same time, big or small. What does a pendulum's period depend on?`,
     reveal: t`For small swings, only on its length and on $g$: $T = 2\pi\sqrt{\dfrac{L}{g}}$. Not on the size of the swing, and not on the mass of the bob.`,

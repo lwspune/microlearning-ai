@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A pen fixed to a vibrating tuning fork, drawn steadily across paper, traces a wavy line. What shape is it, and what can you read from it?`,
     reveal: t`A sine curve: the fork's displacement against time. Its slope gives the velocity, and its curvature the acceleration, each a quarter cycle further on.`,

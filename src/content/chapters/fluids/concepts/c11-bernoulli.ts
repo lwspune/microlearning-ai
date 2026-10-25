@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Blow hard between two sheets of paper hanging close together. Do they fly apart or come together?`,
     reveal: t`They come together. The fast-moving air between them is at a lower pressure, so the still air outside pushes them in.`,

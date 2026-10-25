@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An engineer's notes show a gas's cycle on a graph of volume against temperature. To find the work it does, they need its $p$-$V$ diagram. How can they redraw it?`,
     reveal: t`Each step of the cycle keeps one quantity fixed. Spot which one from the $V$-$T$ graph, and $pV = nRT$ tells you how the step looks on the $p$-$V$ graph.`,

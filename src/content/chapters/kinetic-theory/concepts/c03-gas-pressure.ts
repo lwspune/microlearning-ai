@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Nothing pushes on the inside of a sealed bicycle tyre, yet it stays hard. What keeps pushing on its walls?`,
     reveal: t`Billions of air molecules, hitting the walls and bouncing off every second. Each bounce gives the wall a tiny push; together they make the gas's pressure.`,

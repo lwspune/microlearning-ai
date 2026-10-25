@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bucket of water swung fast in a vertical circle doesn't spill, even upside down at the top. Swing it slowly and you get wet. What decides it?`,
     reveal: t`At the top the water needs an inward pull of $\dfrac{mv^2}{r}$. Its weight alone gives $mg$; if $\dfrac{mv^2}{r} \ge mg$, the bucket's base pushes it round and it stays in.`,

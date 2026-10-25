@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A raindrop falls from a cloud more than a kilometre up, yet lands gently. Why doesn't it keep speeding up all the way down?`,
     reveal: t`Air drag grows with speed. Soon the drag and the upthrust balance the drop's weight, and it falls at a steady **terminal velocity**.`,

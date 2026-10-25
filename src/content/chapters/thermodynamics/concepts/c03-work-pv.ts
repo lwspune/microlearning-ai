@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a car engine, burning fuel heats the gas in a cylinder, and the gas shoves a piston down. Where does the work that turns the wheels come from?`,
     reveal: t`The hot gas presses on the piston and moves it: it does work $p\,\Delta V$. On a $p$-$V$ graph, that work is the area under the gas's path.`,

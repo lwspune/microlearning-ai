@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Pump up a bicycle tyre fast and the pump barrel gets hot, though no flame touched it. Where does the heat come from?`,
     reveal: t`The air is squeezed too quickly for heat to escape. The work done on it goes straight into its internal energy, and it warms up: an **adiabatic** compression.`,

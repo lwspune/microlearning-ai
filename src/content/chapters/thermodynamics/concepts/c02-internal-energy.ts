@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Rub your hands together and they warm up, though no heat flowed into them. Hold them over a fire and they warm up too. What has changed in both cases?`,
     reveal: t`In both, the **internal energy** of your hands rose. Heat from the fire and work done by rubbing are two ways of changing it.`,

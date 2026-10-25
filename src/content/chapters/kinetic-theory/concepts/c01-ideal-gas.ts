@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A sealed packet of chips puffs up when carried up a hill. Why?`,
     reveal: t`The air pressure outside falls with height. The air in the packet stays at the same temperature, so with less pressure on it, it takes up more volume: $PV$ stays the same.`,

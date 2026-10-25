@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A boat bobs on two sets of ripples at once, both with the same period but slightly out of step. Does it bob with the two amplitudes simply added?`,
     reveal: t`Only if the ripples are exactly in step. Two S.H.M.s of the same frequency combine into one S.H.M., whose amplitude depends on their phase difference.`,

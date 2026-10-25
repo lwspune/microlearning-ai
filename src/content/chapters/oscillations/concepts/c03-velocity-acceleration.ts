@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A child on a swing seems to hang still for an instant at each end, then rushes through the bottom. Where is the swing fastest, and where is it speeding up most?`,
     reveal: t`It is fastest at the mean position, where the pull back is zero, and it stops at the extremes, where the pull, and so the acceleration, is greatest.`,

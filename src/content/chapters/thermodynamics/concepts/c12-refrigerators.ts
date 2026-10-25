@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Put your hand behind a running refrigerator and you feel warm air. How can a machine that keeps food cold make the kitchen warmer?`,
     reveal: t`A refrigerator doesn't destroy heat; it pumps it out of the cold inside and dumps it, plus the work it uses, into the room behind it.`,

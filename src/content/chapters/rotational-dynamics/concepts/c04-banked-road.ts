@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Race tracks and highway bends tilt up towards their outer edge. Why would a road be built leaning inwards?`,
     reveal: t`A tilted road pushes the car partly inwards. That inward push turns the car, so it no longer has to rely on friction alone.`,

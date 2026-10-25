@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`On an icy, flat road, a car turns its wheels for a bend but slides straight on. What was missing?`,
     reveal: t`An inward force. On a flat road only friction can push the car towards the centre of the bend; on ice friction is almost zero, so nothing turns the car.`,

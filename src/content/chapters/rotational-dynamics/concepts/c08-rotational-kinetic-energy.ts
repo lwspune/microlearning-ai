@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A potter's wheel keeps turning long after the potter stops kicking it. Where is the energy stored?`,
     reveal: t`In its rotation. Every particle moves at $v = r\omega$, and together they carry a kinetic energy of $\dfrac{1}{2}I\omega^2$.`,

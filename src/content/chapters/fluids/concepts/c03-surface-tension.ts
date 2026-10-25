@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A steel needle laid gently on water floats, though steel is far denser than water. What holds it up?`,
     reveal: t`The water's surface. It behaves like a stretched skin: the needle dents it, and the surface pulls along the dent to hold the needle up.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Warming a mole of helium by $1\ \mathrm{K}$ at constant volume takes $12.5\ \mathrm{J}$; a mole of nitrogen takes about $20.8\ \mathrm{J}$. Why does nitrogen need more?`,
     reveal: t`A nitrogen molecule can also spin. Its energy is shared among 5 ways of moving instead of 3, so more heat goes in for the same rise in temperature.`,

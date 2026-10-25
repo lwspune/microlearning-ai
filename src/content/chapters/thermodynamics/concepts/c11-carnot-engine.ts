@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c11: Concept = {
   id: "C11",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Engineers keep making engines more efficient. Is there a limit no design can ever beat, however clever?`,
     reveal: t`Yes. Sadi Carnot found the best possible engine between two temperatures. Its efficiency, $1 - \dfrac{T_C}{T_H}$, depends only on those temperatures.`,

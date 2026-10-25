@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A car engine's gas is heated, pushes the piston, is pushed back and starts again, thousands of times a minute. If it keeps coming back to where it began, how does it do any useful work?`,
     reveal: t`Over each cycle its internal energy returns to the same value, but the work out on expansion is larger than the work in on compression. The difference, the area of the loop, is useful work.`,

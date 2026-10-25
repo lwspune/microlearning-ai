@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Helium and xenon are at the same temperature. Whose molecules have more kinetic energy on average?`,
     reveal: t`Neither. Temperature alone fixes the average kinetic energy of a molecule, $\dfrac{3}{2}k_BT$; xenon's heavier molecules simply move more slowly.`,

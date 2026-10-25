@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Small raindrops in a cloud join into bigger ones. Does joining take energy, or give it out?`,
     reveal: t`It gives energy out. One big drop has less surface than the many small ones that made it, so some surface energy is released.`,

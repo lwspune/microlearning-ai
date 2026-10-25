@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A gas in a cylinder, standing in a large water bath, is let out slowly against a piston. Its temperature never changes, yet it keeps doing work. Where does the energy come from?`,
     reveal: t`Heat flows in from the bath all the time. Since its temperature is fixed, the gas's internal energy stays the same, so every joule of that heat becomes work.`,

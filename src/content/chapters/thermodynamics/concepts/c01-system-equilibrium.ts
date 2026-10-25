@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A doctor's thermometer is left under your tongue for a minute before it is read. Why wait, and how does it tell your temperature at all?`,
     reveal: t`The thermometer and your body exchange heat until they reach the same temperature: **thermal equilibrium**. Only then does its reading equal your temperature.`,

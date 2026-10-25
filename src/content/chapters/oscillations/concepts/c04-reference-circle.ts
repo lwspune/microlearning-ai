@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Watch a peg on a turning wheel from the side, level with the wheel. The peg seems to move straight up and down, slowing at the top and bottom. What motion is that?`,
     reveal: t`It is S.H.M. The shadow, or projection, of steady circular motion on a diameter is simple harmonic. The angle round the circle is the motion's **phase**.`,

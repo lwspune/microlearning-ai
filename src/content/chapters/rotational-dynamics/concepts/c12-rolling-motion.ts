@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A ring, a disc and a solid ball are let go together at the top of a slope. Which reaches the bottom first?`,
     reveal: t`The ball, then the disc, then the ring. Each turns as it rolls, and the ring puts the largest share of its energy into turning, leaving the least for moving down.`,

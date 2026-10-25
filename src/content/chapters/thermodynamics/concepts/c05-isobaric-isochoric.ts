@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Heating a gas by $10\ \mathrm{K}$ takes more heat if it can push a piston out than if it is sealed in a rigid can. Why the difference?`,
     reveal: t`In the can, all the heat raises the internal energy. With a free piston, some of it also goes into work pushing the piston out, so more heat is needed.`,

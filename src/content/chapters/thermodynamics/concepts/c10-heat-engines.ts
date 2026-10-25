@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A car engine burns fuel to make heat, yet its exhaust and radiator pour much of that heat out into the air. Why can't a better design turn all of it into work?`,
     reveal: t`No engine working in cycles can do that. It must reject some heat to something colder: the **second law of thermodynamics**.`,

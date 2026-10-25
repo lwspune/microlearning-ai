@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A swing, once started, keeps going for a long time with no one pushing. Where is its energy as it slows at the top and races through the bottom?`,
     reveal: t`It keeps changing form: all potential at the ends, all kinetic in the middle. In S.H.M. the total stays fixed at $\dfrac{1}{2}m\omega^2A^2$.`,

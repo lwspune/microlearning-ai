@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Why are dam walls built much thicker at the bottom than at the top?`,
     reveal: t`Water pressure grows with depth, $p = h\rho g$, so the bottom of the wall has to hold back the greatest push.`,

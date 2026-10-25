@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Honey runs slowly off a spoon while water pours fast. What holds the honey back?`,
     reveal: t`Its layers drag hard on each other as they slide. Honey has a high **viscosity**: a kind of friction inside a flowing fluid.`,

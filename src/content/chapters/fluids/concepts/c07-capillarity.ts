@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Dip the corner of a paper towel in water, and the water climbs well above the water level. What lifts it?`,
     reveal: t`Surface tension. In each narrow gap between the fibres, the water clings to the walls and its curved surface pulls it up, higher in narrower gaps.`,

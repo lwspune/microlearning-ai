@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You heat a gas in a cylinder with a free piston. The gas warms up, and the piston rises. Where did the heat you supplied go?`,
     reveal: t`Part of it raised the gas's internal energy, and the rest became work lifting the piston. Energy is never lost: this is the **first law of thermodynamics**.`,

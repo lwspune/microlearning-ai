@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At a car service station, a mechanic lifts a whole car by pumping a small handle. How can a small push hold up a car?`,
     reveal: t`The push makes a pressure in the oil, and the oil passes that pressure on everywhere. Acting on a much bigger piston, the same pressure gives a much bigger force.`,

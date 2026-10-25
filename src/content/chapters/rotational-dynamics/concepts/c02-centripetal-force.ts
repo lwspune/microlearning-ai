@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A coin on a slowly spinning turntable stays put, but flies off when the turntable spins fast. Which force held it, and why did that force stop being enough?`,
     reveal: t`Static friction pulled it towards the centre. The pull needed, $m\omega^2 r$, grows with $\omega^2$; once it passes the most friction can give, $\mu mg$, the coin slips.`,

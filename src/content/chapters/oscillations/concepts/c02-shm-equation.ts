@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A heavy lorry bounces slowly on its springs; a light scooter jiggles fast. What sets how quickly something oscillates?`,
     reveal: t`Its mass and the stiffness of what pulls it back. A larger mass oscillates more slowly, a stiffer spring faster: $T = 2\pi\sqrt{\dfrac{m}{k}}$.`,

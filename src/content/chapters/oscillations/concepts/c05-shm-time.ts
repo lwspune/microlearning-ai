@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A pendulum takes 1 s to swing from the middle to one end. Does it take half a second to get halfway there?`,
     reveal: t`No. It moves fastest near the middle, so it covers the first half of the way in just a third of that second. To find when it reaches any point, use $x = A\sin\omega t$.`,

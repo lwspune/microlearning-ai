@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Air molecules move at hundreds of metres a second, yet a smell takes many seconds to cross a room. Why so slow?`,
     reveal: t`Each molecule collides billions of times a second, changing direction every time. It travels only about $10^{-7}\ \mathrm{m}$ between collisions, so it zigzags slowly across the room.`,

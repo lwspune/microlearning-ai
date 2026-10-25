@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c12: Concept = {
   id: "C12",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A cup of hot tea cools quickly at first, then more and more slowly as it nears room temperature. Why does it slow down?`,
     reveal: t`How fast a body cools depends on how much hotter it is than its surroundings. As the tea's excess temperature shrinks, so does its rate of cooling.`,

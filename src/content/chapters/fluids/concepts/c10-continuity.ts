@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Put your thumb partly over the end of a garden hose, and the water shoots out much faster. Why?`,
     reveal: t`The same volume of water has to leave each second through a smaller opening, so it must move faster: $Av$ stays the same.`,

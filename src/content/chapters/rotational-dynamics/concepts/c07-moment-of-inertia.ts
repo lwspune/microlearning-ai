@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two wheels have the same mass. One has all of it in a thin rim; the other is a solid disc. Which is harder to start spinning?`,
     reveal: t`The rim wheel. What resists turning is mass and how far it sits from the axis: the rim wheel's $I = MR^2$ is twice the disc's $\dfrac{1}{2}MR^2$.`,

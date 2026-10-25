@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A compass needle nudged off north swings back and forth before settling. A wall clock's balance wheel twists to and fro. What do these have in common with a mass on a spring?`,
     reveal: t`Each is pulled back by a **torque** proportional to how far it has turned. That gives **angular S.H.M.**, with the same mathematics as linear S.H.M.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Blowing a big soap bubble takes real effort, though the soap solution is thin and light. Where does that work go?`,
     reveal: t`Into new surface. Each square metre of new surface stores an energy $T$, and a bubble has two surfaces, inside and outside.`,

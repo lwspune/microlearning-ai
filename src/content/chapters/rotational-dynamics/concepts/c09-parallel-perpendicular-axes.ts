@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A door turns about its hinges, not about its middle. Tables give a slab's moment of inertia about its centre. How do we get it about the hinge line?`,
     reveal: t`Shift the axis: $I_{hinge} = I_{centre} + Mh^2$, where $h$ is the distance between the two parallel axes.`,

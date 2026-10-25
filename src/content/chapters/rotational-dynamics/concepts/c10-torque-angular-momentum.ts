@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c10: Concept = {
   id: "C10",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Why is a door's handle fixed far from its hinges, not next to them?`,
     reveal: t`The turning effect of a push, its torque, grows with the distance from the axis. The same push far from the hinges swings the door much more easily.`,

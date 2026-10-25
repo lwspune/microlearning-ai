@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Why do people in hot places wear white, and why are cooking pots often black underneath?`,
     reveal: t`White reflects most of the radiation falling on it, so it absorbs little and stays cool. Black absorbs almost all of it, so a black pot takes in heat fast.`,

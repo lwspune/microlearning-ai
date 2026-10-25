@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Two soap bubbles, one small and one big, are joined by a straw. Which one grows?`,
     reveal: t`The big one. The small bubble is more sharply curved, so the pressure inside it is higher; its air flows into the big bubble until the small one collapses.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a circus well of death, a motorcyclist rides round a vertical wall without falling. What holds the rider up?`,
     reveal: t`Friction from the wall, pointing up. The wall's push supplies the inward force, and the faster the ride, the harder it pushes, so more friction becomes available.`,

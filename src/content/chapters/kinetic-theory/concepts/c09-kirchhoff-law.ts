@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c09: Concept = {
   id: "C09",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Why is the inside of a vacuum flask silvered, like a mirror?`,
     reveal: t`A shiny surface absorbs little radiation, and by Kirchhoff's law a poor absorber is also a poor emitter. So the silvered walls let very little heat escape from the hot tea.`,
