@@ -20,6 +20,7 @@ import { c20 as hiC20 } from "./hi/c20.ts";
 import { c21 as hiC21 } from "./hi/c21.ts";
 import { c23 as hiC23 } from "./hi/c23.ts";
 import { c24 as hiC24 } from "./hi/c24.ts";
+import { c25 as hiC25 } from "./hi/c25.ts";
 import { c01 as mrC01 } from "./mr/c01.ts";
 import { c02 as mrC02 } from "./mr/c02.ts";
 import { c03 as mrC03 } from "./mr/c03.ts";
@@ -41,8 +42,9 @@ import { c20 as mrC20 } from "./mr/c20.ts";
 import { c21 as mrC21 } from "./mr/c21.ts";
 import { c23 as mrC23 } from "./mr/c23.ts";
 import { c24 as mrC24 } from "./mr/c24.ts";
+import { c25 as mrC25 } from "./mr/c25.ts";
 
 /** Hindi and Marathi lessons (AUTHORING.md, Translations). */
 export const translations: ConceptTranslation[] = [
-  hiC01, hiC02, hiC03, hiC04, hiC05, hiC06, hiC07, hiC08, hiC09, hiC10, hiC11, hiC12, hiC14, hiC15, hiC16, hiC17, hiC19, hiC20, hiC21, hiC23, hiC24, mrC01, mrC02, mrC03, mrC04, mrC05, mrC06, mrC07, mrC08, mrC09, mrC10, mrC11, mrC12, mrC14, mrC15, mrC16, mrC17, mrC19, mrC20, mrC21, mrC23, mrC24,
+  hiC01, hiC02, hiC03, hiC04, hiC05, hiC06, hiC07, hiC08, hiC09, hiC10, hiC11, hiC12, hiC14, hiC15, hiC16, hiC17, hiC19, hiC20, hiC21, hiC23, hiC24, hiC25, mrC01, mrC02, mrC03, mrC04, mrC05, mrC06, mrC07, mrC08, mrC09, mrC10, mrC11, mrC12, mrC14, mrC15, mrC16, mrC17, mrC19, mrC20, mrC21, mrC23, mrC24, mrC25,
 ];
