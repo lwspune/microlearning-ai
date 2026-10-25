@@ -21,6 +21,7 @@ import { c19 } from "./concepts/c19-recognising-an-ap.ts";
 import { c20 } from "./concepts/c20-counting-terms.ts";
 import { c21 } from "./concepts/c21-ap-word-problems.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const sequencesAndSeries: Chapter = {
   slug: "sequences-and-series",
@@ -30,4 +31,25 @@ export const sequencesAndSeries: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "sequence",
+    "series",
+    "A.P.",
+    "G.P.",
+    "H.P.",
+    "arithmetic progression",
+    "geometric progression",
+    "harmonic progression",
+    "common difference",
+    "common ratio",
+    "general term",
+    "arithmetic mean",
+    "geometric mean",
+    "harmonic mean",
+    "sum to infinity",
+    "partial sum",
+    "arithmetico-geometric series",
+  ],
+  translations,
 };
