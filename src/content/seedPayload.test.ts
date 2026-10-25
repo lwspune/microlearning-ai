@@ -91,7 +91,7 @@ describe("toSeedPayload", () => {
     });
 
     it("sends none for a concept nobody translated", () => {
-      expect(byCode("C07").translations).toEqual([]);
+      expect(toSeedPayload(chapter, true).concepts.find((c) => c.code === "C07")!.translations).toEqual([]);
     });
   });
 });
