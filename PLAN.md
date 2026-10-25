@@ -1519,3 +1519,8 @@ lesson in that language and switch back to English at any moment.
 2. Pilot: Angle and its Measurement in both languages; style rules into
 AUTHORING.md. 3. The other seven chapters, one at a time, each seeded and
 checked live.
+
+**Status, 2026-10-25 (owner: "merge"):** live: the switch, the translation
+checks and tables, and two chapters in both languages, Angle and its
+Measurement (7) and Trigonometry I (10). `npm run e2e:languages` covers the
+switch. Next: Trigonometry II, then the other five chapters.
