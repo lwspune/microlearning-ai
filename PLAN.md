@@ -17,7 +17,7 @@ and a learning engine routes the student by mastery and misconceptions.
 | Pilot chapter | **Complex Numbers** | PYQ Vault has notes for it in 3 exams (NDA, MHT-CET, JEE) and a dense web of prerequisites inside the chapter |
 | Platform | Mobile-first **PWA** (opens in any browser; installable to home screen) | Same stack as PYQ Vault; KaTeX works natively; no app store. Go native (Expo) only after retention is proven |
 | Backend | **Separate Supabase project** | Isolates learner data and RLS |
-| Language | English only for now | |
+| Language | English; Hindi and Marathi lessons for Std XI maths from 2026-10-25 | See "Hindi and Marathi lessons" |
 | Stack | Next.js · Supabase · Tailwind · Vitest · KaTeX (mirrors PYQ Vault) | Known stack; no new framework |
 
 ## Content model
@@ -1463,3 +1463,59 @@ with them. Book answer-key errors followed as PYQ Vault records them (e.g.
 Thermodynamics Ex Q.5 and Q.6 signs, Oscillations Ex Q.12 units and Ex Q.15
 direction). Still to come in wave 1: chapters 6–8 (Superposition of Waves, Wave
 Optics, Electrostatics), on a new branch from main.
+
+## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
+
+Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
+lesson in that language and switch back to English at any moment.
+
+**Owner's decisions (2026-10-25):**
+1. Both languages in **Devanagari**. Textbook terms stay in English (Latin
+   script), since the book and the board exam are in English, and are glossed
+   in the language the first time they appear: "ray जब रुकती है, वह
+   **terminal arm** है".
+2. A **glossary per chapter** keeps the terms consistent; a check enforces it.
+3. **Translated:** lesson slides (hook, idea, formal, worked example), the
+   remediation shown after a wrong answer, and item solutions. **English:**
+   question stems and options (students practise in the exam's language),
+   figure labels, alt text and app chrome.
+4. A lesson switch **English | Hindi | Marathi**, remembered on the browser
+   like the Std and subject switches. Translations belong to the concept, so
+   every course that shares a concept gets them; a concept without one stays
+   English.
+5. **I review and approve** the translations; the owner checks them later in
+   the app.
+6. **Scope:** eight Std XI chapters, the concepts the MH Board course covers
+   (106): Angle and its Measurement, Trigonometry I and II, Sets and
+   Relations, Determinants and Matrices, Complex Numbers, Sequences and
+   Series, Functions. Written by me, one chapter after another (no agents).
+
+**Design.**
+- **Content:** `chapters/<ch>/translations/<lang>/cNN.ts`, one
+  `ConceptTranslation` per concept and language: the text fields only (hook,
+  intuition, formal, worked, remediation per misconception, solution steps per
+  item). Figures and maths come from the English concept; `translateConcept`
+  merges the two.
+- **Checks** (`validateChapter`): the translated deck has the English deck's
+  slides, kinds and point counts; every misconception and item is there with
+  the same number of solution steps; each string holds exactly the English
+  string's `$…$` maths (as a multiset: word order may change, maths can't);
+  prose is in Devanagari; every glossary term in the English string is kept
+  in the translation; `source` is the fingerprint of the English text, so an
+  English edit fails the check for an approved translation until it is
+  updated (or set back to draft, and the concept falls back to English).
+- **Database:** `concept_translations`, `misconception_translations`,
+  `item_translations` (FKs with cascade, `lang in ('hi','mr')`, server-only
+  like the rest of the content). `seed_chapter` replaces a chapter's rows from
+  the payload, which carries approved translations only.
+- **Serving:** the `ml_lang` cookie picks the language; the lesson, the
+  remediation and the solution fall back to English per concept.
+- **Display:** Noto Sans Devanagari through `next/font` (loaded only when
+  Devanagari text is on the page), `lang="hi"`/`"mr"` on translated content,
+  `/review/<ch>/<concept>/slides?lang=hi` previews and the overflow probe per
+  language.
+
+**Phases.** 1. Plumbing (tests first; a before/after sheet for the switch).
+2. Pilot: Angle and its Measurement in both languages; style rules into
+AUTHORING.md. 3. The other seven chapters, one at a time, each seeded and
+checked live.
