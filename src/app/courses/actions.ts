@@ -1,8 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { parseGroup, parseStandard } from "@/content/courses";
-import { GROUP_COOKIE, STANDARD_COOKIE } from "@/server/courses";
+import { parseGroup, parseStandard, parseSubject } from "@/content/courses";
+import { GROUP_COOKIE, STANDARD_COOKIE, SUBJECT_COOKIE } from "@/server/courses";
 
 const YEAR = 60 * 60 * 24 * 365;
 
@@ -26,4 +26,10 @@ export async function rememberGroup(value: string): Promise<void> {
 export async function rememberStandard(value: string): Promise<void> {
   const standard = parseStandard(value);
   if (standard) await remember(STANDARD_COOKIE, String(standard));
+}
+
+/** Remembers the student's subject on this browser. Unknown values are ignored. */
+export async function rememberSubject(value: string): Promise<void> {
+  const subject = parseSubject(value);
+  if (subject) await remember(SUBJECT_COOKIE, subject);
 }

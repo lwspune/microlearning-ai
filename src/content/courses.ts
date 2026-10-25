@@ -71,7 +71,7 @@ export const GROUPS: Group[] = [
   { id: "graduate", title: "Graduates", blurb: "Defence and services exams after graduation." },
 ];
 
-export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths" };
+export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths", physics: "Physics" };
 
 export const STANDARD_TITLE: Record<Standard, string> = { 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" };
 
@@ -125,7 +125,7 @@ export const courses: Course[] = [
     board: true,
     // Std XI and XII students came first; Std IX and X joined on 2026-10-21 (owner: open on XI).
     defaultStandard: 11,
-    // Book order: Std IX Part 1 and Part 2, Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII.
+    // Book order: Std IX Part 1 and Part 2, Std X Part 1 and Part 2, Std XI Part 1, then Part 2, then Std XII; physics after maths.
     // A chapter without coverage is covered whole.
     chapters: [
       { chapter: "sets-9" },
@@ -196,6 +196,12 @@ export const courses: Course[] = [
       { chapter: "probability-distributions" },
       { chapter: "binomial-distribution" },
       lpp([]),
+      // Std XII Physics, Balbharati book order (PLAN.md "Std XI and XII Physics").
+      { chapter: "rotational-dynamics" },
+      { chapter: "fluids" },
+      { chapter: "kinetic-theory" },
+      { chapter: "thermodynamics" },
+      { chapter: "oscillations" },
     ],
   },
   {
@@ -609,6 +615,16 @@ export function openingStandard(course: Course, standards: Standard[], remembere
   if (remembered && standards.includes(remembered)) return remembered;
   if (course.defaultStandard && standards.includes(course.defaultStandard)) return course.defaultStandard;
   return standards[0];
+}
+
+/** The subject a board's Std opens on: the one the student picked, if that Std has it, else its first. */
+export function openingSubject(subjects: SubjectId[], remembered: SubjectId | null): SubjectId {
+  return remembered && subjects.includes(remembered) ? remembered : subjects[0];
+}
+
+/** A subject from untrusted input (a cookie), or null. */
+export function parseSubject(value: string | null | undefined): SubjectId | null {
+  return value && Object.hasOwn(SUBJECTS, value) ? (value as SubjectId) : null;
 }
 
 /** A standard from untrusted input (a cookie), or null. */

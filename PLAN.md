@@ -1412,3 +1412,54 @@ launching below 2 GB free disk):
   branch: the Std X wording pass (prerequisites now name the Std IX chapter or
   the earlier standard), and `content:seed -- <chapter>...` (seed only named
   chapters). Course order: Std IX Part 1, Part 2, then Std X.
+
+## Std XI and XII Physics, Maharashtra State Board (approved 2026-10-23)
+
+Owner, 2026-10-23: "take up 11th+12th state board physics end to end post this"
+(after Std IX maths). Decisions on the plan: the course page is a hierarchy,
+**MH Board → Std → Subject**: a subject switch (Maths | Physics) under the Std
+switch, remembered like the Std, shown only where a Std has more than one
+subject; **Std XII first**; run like the maths waves (I lock graphs, write,
+review, merge, seed and check live myself, reporting as each wave goes live).
+
+**Sources (PYQ Vault `Question_Bank/scripts`):** Std XI book `mh-sb-11/data/*-11-phy`
+(14 chapters, 587 rows); Std XII book `stateboard/data/*-12-phy` (16 chapters,
+617 rows, with numerical and theory solutions, keys and errata); Std XII board
+papers `mh-hsc-12-pyq/data/*-12-pyq` (16 chapters, 366 rows).
+
+**Foundations (branch `physics-foundations`, test-first, before any content):**
+1. `SubjectId` gains `physics`; `SUBJECTS` labels it.
+2. Course page: a subject switch inside the chosen Std, its choice kept in a
+   cookie like the Std; no change where a Std has one subject.
+3. PYQ Vault links name the chapter's own subject (physics chapters link to
+   PYQ Vault's physics pages).
+4. Figure helpers in `verify/figures.py`: circuit pieces (resistor, cell,
+   capacitor, coil, switch, meter), ray diagrams (lens, mirror, rays), a block
+   with force arrows, and waves, all drawn from existing segment/curve/label
+   elements (no renderer change).
+5. `verify/agent-brief-physics.md`: SI units and significant figures in
+   answers, the book's values of g, π and constants, conceptual items as
+   named answers, laws and formulas as slide points.
+6. Pack builder for physics chapters (book rows with solutions and keys, plus
+   the Std XII board rows by chapter).
+
+**Waves:** 1 Std XII Part 1 (8 chapters), 2 Std XII Part 2 (8), 3 Std XI
+chapters 1–7, 4 Std XI chapters 8–14; about 200 concepts in all. Owner,
+2026-10-23: **no agents; write sequentially**, so every concept is written in the
+main session, one at a time. Each wave: graphs, concepts one by one, every key
+and distractor re-derived, every figure sheet looked at, every lesson read,
+phone probe, approve, merge, seed only its chapters, live check.
+The subject switch (foundation 2) is built and checked in the browser
+(dd4b99d); it stays hidden until a Std has physics chapters, so it ships with
+wave 1.
+
+**Status, 2026-10-25 (owner: "lets merge the work done so far"; no before/after
+sheet, owner):** wave 1 goes live in part. Std XII chapters 1–5 are approved and
+merged: Rotational Dynamics (12 concepts), Mechanical Properties of Fluids (11),
+Kinetic Theory of Gases and Radiation (12), Thermodynamics (12) and Oscillations
+(12), 59 concepts and 295 items, every key and distractor verified in sympy,
+every figure sheet looked at in light and dark. The subject switch goes live
+with them. Book answer-key errors followed as PYQ Vault records them (e.g.
+Thermodynamics Ex Q.5 and Q.6 signs, Oscillations Ex Q.12 units and Ex Q.15
+direction). Still to come in wave 1: chapters 6–8 (Superposition of Waves, Wave
+Optics, Electrostatics), on a new branch from main.

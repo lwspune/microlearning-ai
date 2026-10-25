@@ -3,14 +3,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
-import { rememberStandard } from "@/app/courses/actions";
+import { rememberStandard, rememberSubject } from "@/app/courses/actions";
 import { ProgressRing } from "@/components/ProgressRing";
 import { Tabs } from "@/components/Tabs";
 import { card, eyebrow, linkCard } from "@/components/ui";
-import { byStandard, courses, findCourse, GROUPS, openingStandard, parseStandard, STANDARD_TITLE, SUBJECTS } from "@/content/courses";
+import {
+  byStandard,
+  courses,
+  findCourse,
+  GROUPS,
+  openingStandard,
+  openingSubject,
+  parseStandard,
+  parseSubject,
+  STANDARD_TITLE,
+  SUBJECTS,
+} from "@/content/courses";
 import type { SubjectId } from "@/content/types";
 import { currentUserId } from "@/lib/supabase/server";
-import { type CourseChapterProgress, courseProgress, rememberedStandardValue } from "@/server/courses";
+import { type CourseChapterProgress, courseProgress, rememberedStandardValue, rememberedSubjectValue } from "@/server/courses";
 
 export function generateStaticParams() {
   return courses.map((c) => ({ course: c.slug }));
@@ -48,10 +59,23 @@ function ChapterCard({ course, ch }: { course: string; ch: CourseChapterProgress
   );
 }
 
+function ChapterList({ course, chapters }: { course: string; chapters: CourseChapterProgress[] }) {
+  return (
+    <ul className="mt-3 grid gap-3">
+      {chapters.map((ch) => (
+        <li key={ch.slug}>
+          <ChapterCard course={course} ch={ch} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+const subjectsOf = (progress: CourseChapterProgress[]) => [...new Set(progress.map((p) => p.subject))] as SubjectId[];
+
 /** Chapters by subject, then by standard under headings (`headings` off: one standard's list). */
 function Subjects({ course, progress, id, headings }: { course: string; progress: CourseChapterProgress[]; id: string; headings: boolean }) {
-  const subjects = [...new Set(progress.map((p) => p.subject))] as SubjectId[];
-  return subjects.map((s) => (
+  return subjectsOf(progress).map((s) => (
     <section key={s} aria-labelledby={`${id}-${s}`} className="mt-10 first:mt-8">
       <h2 id={`${id}-${s}`} className="font-display text-2xl font-semibold">
         {SUBJECTS[s]}
@@ -59,17 +83,28 @@ function Subjects({ course, progress, id, headings }: { course: string; progress
       {byStandard(progress.filter((p) => p.subject === s)).map(({ standard, chapters }) => (
         <div key={standard ?? "none"} className="mt-4">
           {headings && standard && <h3 className={`${eyebrow} mt-6`}>{STANDARD_TITLE[standard]}</h3>}
-          <ul className="mt-3 grid gap-3">
-            {chapters.map((ch) => (
-              <li key={ch.slug}>
-                <ChapterCard course={course} ch={ch} />
-              </li>
-            ))}
-          </ul>
+          <ChapterList course={course} chapters={chapters} />
         </div>
       ))}
     </section>
   ));
+}
+
+/** One standard of a board: a subject switch when it has more than one subject, else its chapters under the subject's heading. */
+function StandardPanel({ course, progress, id, subject }: { course: string; progress: CourseChapterProgress[]; id: string; subject: SubjectId | null }) {
+  const subjects = subjectsOf(progress);
+  if (subjects.length < 2) return <Subjects course={course} progress={progress} id={id} headings={false} />;
+  return (
+    <div className="mt-6">
+      <Tabs
+        label="Your subject"
+        tabs={subjects.map((s) => ({ id: s, title: SUBJECTS[s] }))}
+        initial={openingSubject(subjects, subject)}
+        panels={Object.fromEntries(subjects.map((s) => [s, <ChapterList key={s} course={course} chapters={progress.filter((p) => p.subject === s)} />]))}
+        remember={rememberSubject}
+      />
+    </div>
+  );
 }
 
 async function Chapters({ slug }: { slug: string }) {
@@ -80,8 +115,12 @@ async function Chapters({ slug }: { slug: string }) {
   if (!course.board || standards.length < 2) return <Subjects course={slug} progress={progress} id="subject" headings />;
 
   const initial = openingStandard(course, standards, parseStandard(await rememberedStandardValue()));
+  const subject = parseSubject(await rememberedSubjectValue());
   const panels = Object.fromEntries(
-    standards.map((std) => [std, <Subjects key={std} course={slug} progress={progress.filter((p) => p.standard === std)} id={`std${std}`} headings={false} />]),
+    standards.map((std) => [
+      std,
+      <StandardPanel key={std} course={slug} progress={progress.filter((p) => p.standard === std)} id={`std${std}`} subject={subject} />,
+    ]),
   );
   return (
     <div className="mt-8">

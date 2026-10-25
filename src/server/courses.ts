@@ -11,12 +11,19 @@ export const GROUP_COOKIE = "ml_group";
 /** The student's standard (9 to 12), picked on a board's page; one choice for every board. */
 export const STANDARD_COOKIE = "ml_standard";
 
+/** The student's subject (Maths, Physics), picked inside a board's Std; one choice for every board. */
+export const SUBJECT_COOKIE = "ml_subject";
+
 export async function rememberedGroupValue(): Promise<string | undefined> {
   return (await cookies()).get(GROUP_COOKIE)?.value;
 }
 
 export async function rememberedStandardValue(): Promise<string | undefined> {
   return (await cookies()).get(STANDARD_COOKIE)?.value;
+}
+
+export async function rememberedSubjectValue(): Promise<string | undefined> {
+  return (await cookies()).get(SUBJECT_COOKIE)?.value;
 }
 
 export type CourseChapterProgress = { slug: string; title: string; subject: SubjectId; standard?: Standard; total: number; mastered: number };

@@ -19,7 +19,10 @@ import {
   GROUPS,
   parseGroup,
   parseStandard,
+  parseSubject,
+  openingSubject,
   STANDARD_TITLE,
+  SUBJECTS,
   uniqueConcepts,
   validateCatalog,
   withCourse,
@@ -324,6 +327,24 @@ describe("lookups", () => {
 
   it("titles the standards Std IX to Std XII", () => {
     expect(STANDARD_TITLE).toEqual({ 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" });
+  });
+
+  it("names the subjects Maths and Physics", () => {
+    expect(SUBJECTS).toEqual({ maths: "Maths", physics: "Physics" });
+  });
+
+  it("parses only known subjects", () => {
+    expect(parseSubject("maths")).toBe("maths");
+    expect(parseSubject("physics")).toBe("physics");
+    expect(parseSubject("chemistry")).toBeNull();
+    expect(parseSubject("Physics")).toBeNull();
+    expect(parseSubject(undefined)).toBeNull();
+  });
+
+  it("opens a Std on the subject the student picked, if it has it, else its first", () => {
+    expect(openingSubject(["maths", "physics"], "physics")).toBe("physics");
+    expect(openingSubject(["maths", "physics"], null)).toBe("maths");
+    expect(openingSubject(["maths"], "physics")).toBe("maths");
   });
 
   it("finds a course by slug, or null", () => {
@@ -859,6 +880,17 @@ describe("the catalog", () => {
           for (const id of ["C19", "C20", "C21"]) expect(partScope(c, part, series).has(id), `${c.slug} leaves ${id} out`).toBe(false);
         }
       }
+    });
+  });
+
+  // PLAN.md "Std XI and XII Physics" (owner, 2026-10-23).
+  describe("Maharashtra Board Std XII Physics", () => {
+    const resolved = findCourse("mh-board")!.chapters.map((e) => resolveEntry(e, chapters));
+
+    it("lists the Std XII physics chapters in book order", () => {
+      const physics = resolved.filter((r) => r.subject === "physics");
+      expect(physics.map((r) => r.title)).toEqual(["Rotational Dynamics", "Mechanical Properties of Fluids", "Kinetic Theory of Gases and Radiation", "Thermodynamics", "Oscillations"]);
+      expect(new Set(physics.map((r) => r.standard))).toEqual(new Set([12]));
     });
   });
 

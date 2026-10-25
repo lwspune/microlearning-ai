@@ -1,0 +1,25 @@
+import type { Chapter } from "../../types.ts";
+import { c01 } from "./concepts/c01-angular-kinematics.ts";
+import { c02 } from "./concepts/c02-centripetal-force.ts";
+import { c03 } from "./concepts/c03-flat-curved-road.ts";
+import { c04 } from "./concepts/c04-banked-road.ts";
+import { c05 } from "./concepts/c05-conical-pendulum.ts";
+import { c06 } from "./concepts/c06-vertical-circle.ts";
+import { c07 } from "./concepts/c07-moment-of-inertia.ts";
+import { c08 } from "./concepts/c08-rotational-kinetic-energy.ts";
+import { c09 } from "./concepts/c09-parallel-perpendicular-axes.ts";
+import { c10 } from "./concepts/c10-torque-angular-momentum.ts";
+import { c11 } from "./concepts/c11-conservation-angular-momentum.ts";
+import { c12 } from "./concepts/c12-rolling-motion.ts";
+import { graph } from "./graph.ts";
+
+export const rotationalDynamics: Chapter = {
+  slug: "rotational-dynamics",
+  title: "Rotational Dynamics",
+  group: "school",
+  subject: "physics",
+  // Balbharati Physics Std XII (PLAN.md "Std XI and XII Physics").
+  standard: 12,
+  graph,
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
+};
