@@ -301,7 +301,10 @@ Rules: AUTHORING.md "Translations" (23–29). One chapter at a time, both
 languages, written by me (owner, 2026-10-25: I approve; they check in the app).
 
 1. **Glossary first:** list the chapter's book terms in its `index.ts`
-   (`glossary`), before any translation is written.
+   (`glossary`), before any translation is written. Create
+   `translations/index.ts` (it may export `[]`) in the same edit that adds
+   `translations` to the chapter: every script loads the whole catalog, so a
+   missing file breaks them all, a seed already running included (2026-10-25).
 2. **Skeleton:** `node scripts/translation-skeleton.ts <chapter> <id>` prints
    the English text and its `source`. Write `translations/hi/cNN.ts` and
    `translations/mr/cNN.ts` from it (`status: "approved"`) and register both
