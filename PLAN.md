@@ -1520,7 +1520,8 @@ lesson in that language and switch back to English at any moment.
 AUTHORING.md. 3. The other seven chapters, one at a time, each seeded and
 checked live.
 
-**Status, 2026-10-25 (owner: "merge"):** live: the switch, the translation
-checks and tables, and two chapters in both languages, Angle and its
-Measurement (7) and Trigonometry I (10). `npm run e2e:languages` covers the
-switch. Next: Trigonometry II, then the other five chapters.
+**Status, 2026-10-25 (owner: "merge", "continue"):** live: the switch, the
+translation checks and tables, and four chapters in both languages, Angle and
+its Measurement (7), Trigonometry I (10), Trigonometry II (10) and Sets and
+Relations (16). `npm run e2e:languages` covers the switch. Next: Determinants
+and Matrices, then Complex Numbers, Sequences and Series, and Functions.
