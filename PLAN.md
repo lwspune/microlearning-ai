@@ -1520,10 +1520,11 @@ lesson in that language and switch back to English at any moment.
 AUTHORING.md. 3. The other seven chapters, one at a time, each seeded and
 checked live.
 
-**Status, 2026-10-27 (owner: "lets complete remaining chapters"):** live: the
-switch, the translation checks and tables, and seven chapters in both
-languages, Angle and its Measurement (7), Trigonometry I (10), Trigonometry II
-(10), Sets and Relations (16), Determinants and Matrices (C01–C12), Complex
-Numbers (the MH 22) and Sequences and Series (C01–C18; C19–C21 are Std X).
+**Status, 2026-10-27 (owner: "lets complete remaining chapters"): done.** Live
+in both languages: the switch, the translation checks and tables, and all
+eight chapters, Angle and its Measurement (7), Trigonometry I (10),
+Trigonometry II (10), Sets and Relations (16), Determinants and Matrices
+(C01–C12), Complex Numbers (the MH 22), Sequences and Series (C01–C18; C19–C21
+are Std X) and Functions (C01–C11; C12 is outside the MH book): 106 concepts.
 `npm run e2e:languages` covers the switch; TRANSLATION_RUNBOOK.md is the
-procedure. Next: Functions (C01–C11), the last chapter.
+procedure for any further chapter. The owner checks the translations in the UI.
