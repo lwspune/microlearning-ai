@@ -135,6 +135,8 @@ Words that recur, kept the same across chapters:
 | `node live.ts /learn/...` in Git Bash became `C:/Program Files/Git/learn/...` | Prefix `MSYS_NO_PATHCONV=1` when passing a `/path` argument |
 | `process.exit()` straight after `fetch` crashed Node on Windows | Set `process.exitCode` in scripts that fetch |
 | Stopping the background `npm run dev` task left the Node server on port 3000 | Check `Get-NetTCPConnection -LocalPort 3000`, confirm it is this project's `next` server, then stop that process |
+| Port 3000 was another project's `next` server, and the probe only knows `:3000` | Leave it running; `npx next dev -p 3100`, then `sed 's/localhost:3000/localhost:3100/' scripts/overflow-probe.mjs \| node --input-type=module - <chapter> --lang=hi <slug>...` |
+| A `head -18` slug list probed Std X concepts (C19–C21) and missed C12–C14; the probe still said `0 overflowing` | Take the slugs by concept id from `graph.ts` (ids in the course's `book(…, N)` range); a page with no slides passes the probe |
 
 ## Changing the English later
 
