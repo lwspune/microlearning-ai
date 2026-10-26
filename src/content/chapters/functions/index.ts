@@ -12,6 +12,7 @@ import { c10 } from "./concepts/c10-composition.ts";
 import { c11 } from "./concepts/c11-inverse-functions.ts";
 import { c12 } from "./concepts/c12-functional-equations.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const functions: Chapter = {
   slug: "functions",
@@ -21,4 +22,34 @@ export const functions: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "function",
+    "domain",
+    "co-domain",
+    "range",
+    "image",
+    "pre-image",
+    "one-one",
+    "onto",
+    "many-one",
+    "injective",
+    "surjective",
+    "bijective",
+    "bijection",
+    "modulus",
+    "signum",
+    "greatest integer",
+    "fractional part",
+    "logarithm",
+    "base",
+    "piecewise",
+    "composite",
+    "composition",
+    "inverse",
+    "constant function",
+    "vertical line test",
+    "horizontal line test",
+  ],
+  translations,
 };
