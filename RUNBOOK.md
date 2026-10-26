@@ -297,26 +297,12 @@ Guests are anonymous logins with no profile.
 
 ## 3a. Translating a concept (Hindi, Marathi)
 
-Rules: AUTHORING.md "Translations" (23–29). One chapter at a time, both
-languages, written by me (owner, 2026-10-25: I approve; they check in the app).
-
-1. **Glossary first:** list the chapter's book terms in its `index.ts`
-   (`glossary`), before any translation is written. Create
-   `translations/index.ts` (it may export `[]`) in the same edit that adds
-   `translations` to the chapter: every script loads the whole catalog, so a
-   missing file breaks them all, a seed already running included (2026-10-25).
-2. **Skeleton:** `node scripts/translation-skeleton.ts <chapter> <id>` prints
-   the English text and its `source`. Write `translations/hi/cNN.ts` and
-   `translations/mr/cNN.ts` from it (`status: "approved"`) and register both
-   in `translations/index.ts`.
-3. **Check:** `npm test` (the chapter test runs `validateChapter`, which
-   checks every translation); the messages name the language, concept and
-   field. Then the preview (`?lang=hi`, `?lang=mr`) and the overflow probe
-   with `--lang`.
-4. **Commit** per concept, both languages together; **seed** the chapter
-   (`npm run content:seed -- <chapter>`) to publish them.
-5. **Editing English later:** the check fails on every approved translation
-   of that concept until its text and `source` are brought up to date.
+The whole procedure, from glossary to live, is in **TRANSLATION_RUNBOOK.md**:
+the tools (`translations:index`, `translations:check`, `translations:status`),
+the chapter loop, choosing the glossary, a word list kept the same across
+chapters, and the pitfalls. The rules a translation must follow are
+AUTHORING.md "Translations" (23–29). One chapter at a time, both languages,
+written by me (owner, 2026-10-25: I approve; they check in the app).
 
 ## 4. Building a feature
 
