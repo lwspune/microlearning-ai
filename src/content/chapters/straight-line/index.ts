@@ -12,6 +12,7 @@ import { c10 } from "./concepts/c10-point-to-line-distance.ts";
 import { c11 } from "./concepts/c11-parallel-lines-distance.ts";
 import { c12 } from "./concepts/c12-family-of-lines.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const straightLine: Chapter = {
   slug: "straight-line",
@@ -21,4 +22,29 @@ export const straightLine: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "locus",
+    "origin",
+    "slope",
+    "inclination",
+    "intercept",
+    "parallel",
+    "perpendicular",
+    "point–slope form",
+    "two-point form",
+    "intercept form",
+    "normal form",
+    "general form",
+    "perpendicular bisector",
+    "foot of the perpendicular",
+    "median",
+    "altitude",
+    "centroid",
+    "orthocentre",
+    "circumcentre",
+    "concurrent",
+    "collinear",
+  ],
+  translations,
 };
