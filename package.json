@@ -18,6 +18,7 @@
     "db:push": "node scripts/db-push.ts",
     "db:types": "supabase gen types typescript --linked --schema public > src/db/types.ts",
     "content:seed": "node scripts/seed-content.ts",
+    "export:pyqvault": "node scripts/export-pyqvault.ts",
     "translations:index": "node scripts/translation-index.ts",
     "translations:check": "node scripts/translation-check.ts",
     "translations:status": "node scripts/translation-status.ts",

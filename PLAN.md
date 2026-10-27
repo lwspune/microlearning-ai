@@ -1542,3 +1542,19 @@ Binomial Distribution, Linear Programming. C, the other Std XI chapters:
 Quadratic Equations, Statistics, Linear Inequalities, Heights and Distances,
 Introduction to 3D Geometry, Binary Numbers, Logarithms. Live: Straight Line
 (12) and Circle (C01–C08), 2026-10-27.
+
+## Learn tab on PYQ Vault (approved 2026-10-27, branch `pyqvault-export`)
+
+An experiment: PYQ Vault shows this app's Std XII Maths lessons in a Learn tab for its
+Class 12 State Board and CBSE students. If they engage (owner: checked 4 weeks after launch),
+learning grows inside PYQ Vault; otherwise building continues here. This app keeps running
+and stays the only place lessons are written; PYQ Vault takes a copy.
+
+- **No shared code or database.** `npm run export:pyqvault -- <outDir>` writes `bundle.json`
+  (the courses' chapters with the concepts each shows, and every pool chapter's seed payload)
+  and `manifest.json` (this repo's commit). It runs the same gates as `content:seed`
+  (structure, then sympy) and refuses a dirty tree, so PYQ Vault gets only what this app
+  would serve. PYQ Vault seeds it with its own `learn_seed_chapter` (a copy of `seed_chapter`).
+- **Scope:** `PYQVAULT_TARGETS` in `src/content/pyqvaultBundle.ts`: `mh-board` and `cbse`,
+  Std XII, Maths (15 and 13 chapters). Physics and translations are not exported yet.
+- **After a content change** to one of these chapters, export again and re-import on PYQ Vault.
