@@ -1528,3 +1528,17 @@ Trigonometry II (10), Sets and Relations (16), Determinants and Matrices
 are Std X) and Functions (C01–C11; C12 is outside the MH book): 106 concepts.
 `npm run e2e:languages` covers the switch; TRANSLATION_RUNBOOK.md is the
 procedure for any further chapter. The owner checks the translations in the UI.
+
+**Phase 2 (owner 2026-10-27: "complete those", "mh 11th+12th first"):** every
+remaining chapter, in MH course order, one published at a time. A, MH Std XI:
+Straight Line, Circle (C01–C08), Conic Sections, Measures of Dispersion,
+Probability (C01–C10), Limits, Continuity, Differentiation, Permutations and
+Combinations, Binomial Theorem (C01–C09). B, MH Std XII: Mathematical Logic,
+Matrices (C01–C11), Trigonometric Functions (C01–C15), Pair of Straight Lines,
+Vectors, Line and Plane, Differentiation, Application of Derivatives
+(C01–C10), Indefinite Integration, Definite Integration (C01–C07), Application
+of Definite Integration, Differential Equations, Probability Distributions,
+Binomial Distribution, Linear Programming. C, the other Std XI chapters:
+Quadratic Equations, Statistics, Linear Inequalities, Heights and Distances,
+Introduction to 3D Geometry, Binary Numbers, Logarithms. Live: Straight Line
+(12), 2026-10-27.
