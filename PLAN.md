@@ -1541,4 +1541,4 @@ of Definite Integration, Differential Equations, Probability Distributions,
 Binomial Distribution, Linear Programming. C, the other Std XI chapters:
 Quadratic Equations, Statistics, Linear Inequalities, Heights and Distances,
 Introduction to 3D Geometry, Binary Numbers, Logarithms. Live: Straight Line
-(12) and Circle (C01–C08), 2026-10-27.
+(12) and Circle (C01–C08), 2026-10-27; Conic Sections (14), 2026-10-28.
