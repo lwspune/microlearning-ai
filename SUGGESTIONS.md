@@ -75,6 +75,16 @@ Slides reveal one point per click (PLAN.md "Slides as points"). A small
 "Show all" link below the points would help quick readers and revision. The
 owner chose not to add it for now.
 
+## Content slips found while translating (logged 2026-10-28)
+
+A translation copies the English maths exactly, so slips in the English stay
+until the English is fixed (then re-translate that concept: its source
+fingerprint changes).
+
+- Measures of Dispersion C03, worked example: the die table writes its row
+  breaks as `\ ` instead of `\\`, so KaTeX draws all six rows on one line.
+  The other tables in that file use `\\`.
+
 ## Also parked (details in PLAN.md)
 
 - Staff reset a student's password (PLAN.md Phase 2, "Later"). Self

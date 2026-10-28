@@ -7,6 +7,7 @@ import { c05 } from "./concepts/c05-change-of-origin-and-scale.ts";
 import { c06 } from "./concepts/c06-coefficient-of-variation.ts";
 import { c07 } from "./concepts/c07-combined-sd.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const measuresOfDispersion: Chapter = {
   slug: "measures-of-dispersion",
@@ -16,4 +17,17 @@ export const measuresOfDispersion: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "dispersion",
+    "range",
+    "coefficient of range",
+    "variance",
+    "standard deviation",
+    "coefficient of variation",
+    "frequency",
+    "class mark",
+    "origin",
+  ],
+  translations,
 };
