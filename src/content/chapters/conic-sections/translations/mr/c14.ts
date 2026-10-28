@@ -84,7 +84,7 @@ export const c14: ConceptTranslation = {
     steps: [
       t`इथे $a^2 = 36$ आणि $b^2 = 9$, म्हणून $a = 6$ आणि $b = 3$.`,
       t`Asymptotes: $1$ च्या जागी $0$ ठेवा: $\frac{x^2}{36} = \frac{y^2}{9}$, म्हणून $y = \pm\frac{3}{6}x = \pm\frac{1}{2}x$.`,
-      t`Tangent $y = mx + c$ ला $c^2 = 36m^2 - 9$ हवे. $P(h, k)$ मधून, $c = k - mh$: $(h^2 - 36)m^2 - 2hkm + k^2 + 9 = 0$.`,
+      t`Tangent $y = mx + c$ ला $c^2 = 36m^2 - 9$ हवे. $P(h, k)$ मधून, $c = k - mh$, म्हणून $(h^2 - 36)m^2 - 2hkm + k^2 + 9 = 0$ मिळते.`,
       t`लंब tangents: $m_1m_2 = \frac{k^2 + 9}{h^2 - 36} = -1$, म्हणून $h^2 + k^2 = 36 - 9 = 27$.`,
     ],
     answer: t`Asymptotes $y = \pm\frac{1}{2}x$; director circle $x^2 + y^2 = 27$, त्रिज्या $3\sqrt{3}$.`,
