@@ -9,6 +9,7 @@ import { c07 } from "./concepts/c07-trigonometric-limits.ts";
 import { c08 } from "./concepts/c08-exponential-limits.ts";
 import { c09 } from "./concepts/c09-log-limits-and-e.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const limits: Chapter = {
   slug: "limits",
@@ -18,4 +19,16 @@ export const limits: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "limit",
+    "left-hand limit",
+    "right-hand limit",
+    "indeterminate form",
+    "standard limit",
+    "greatest integer function",
+    "polynomial",
+    "radian",
+  ],
+  translations,
 };
