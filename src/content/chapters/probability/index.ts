@@ -11,6 +11,7 @@ import { c09 } from "./concepts/c09-independent-events.ts";
 import { c10 } from "./concepts/c10-total-probability-bayes.ts";
 import { c11 } from "./concepts/c11-bounds-on-probability.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const probability: Chapter = {
   slug: "probability",
@@ -20,4 +21,23 @@ export const probability: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "random experiment",
+    "sample space",
+    "outcome",
+    "event",
+    "equally likely",
+    "mutually exclusive",
+    "exhaustive",
+    "complement",
+    "odds",
+    "addition theorem",
+    "conditional probability",
+    "multiplication theorem",
+    "independent",
+    "total probability",
+    "Bayes",
+  ],
+  translations,
 };
