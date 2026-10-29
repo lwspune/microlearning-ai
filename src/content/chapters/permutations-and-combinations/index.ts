@@ -14,6 +14,7 @@ import { c12 } from "./concepts/c12-counting-in-geometry.ts";
 import { c13 } from "./concepts/c13-dividing-into-groups.ts";
 import { c14 } from "./concepts/c14-any-number-of-things.ts";
 import { graph } from "./graph.ts";
+import { translations } from "./translations/index.ts";
 
 export const permutationsAndCombinations: Chapter = {
   slug: "permutations-and-combinations",
@@ -23,4 +24,14 @@ export const permutationsAndCombinations: Chapter = {
   standard: 11,
   graph,
   concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14],
+  // The book's terms: a translation keeps them in English wherever the English uses them.
+  glossary: [
+    "permutation",
+    "combination",
+    "factorial",
+    "multiplication principle",
+    "addition principle",
+    "collinear",
+  ],
+  translations,
 };
