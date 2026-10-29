@@ -4,11 +4,15 @@ import { c02 as hiC02 } from "./hi/c02.ts";
 import { c03 as hiC03 } from "./hi/c03.ts";
 import { c04 as hiC04 } from "./hi/c04.ts";
 import { c05 as hiC05 } from "./hi/c05.ts";
+import { c06 as hiC06 } from "./hi/c06.ts";
 import { c01 as mrC01 } from "./mr/c01.ts";
 import { c02 as mrC02 } from "./mr/c02.ts";
 import { c03 as mrC03 } from "./mr/c03.ts";
 import { c04 as mrC04 } from "./mr/c04.ts";
 import { c05 as mrC05 } from "./mr/c05.ts";
+import { c06 as mrC06 } from "./mr/c06.ts";
 
 /** Hindi and Marathi lessons (AUTHORING.md, Translations). */
-export const translations: ConceptTranslation[] = [hiC01, hiC02, hiC03, hiC04, hiC05, mrC01, mrC02, mrC03, mrC04, mrC05];
+export const translations: ConceptTranslation[] = [
+  hiC01, hiC02, hiC03, hiC04, hiC05, hiC06, mrC01, mrC02, mrC03, mrC04, mrC05, mrC06,
+];
