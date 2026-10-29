@@ -1542,7 +1542,7 @@ Binomial Distribution, Linear Programming. C, the other Std XI chapters:
 Quadratic Equations, Statistics, Linear Inequalities, Heights and Distances,
 Introduction to 3D Geometry, Binary Numbers, Logarithms. Live: Straight Line
 (12) and Circle (C01–C08), 2026-10-27; Conic Sections (14) and Measures of
-Dispersion (7), 2026-10-28; Probability (C01–C10), Limits (9), Continuity (6) and Differentiation (6), 2026-10-29.
+Dispersion (7), 2026-10-28; Probability (C01–C10), Limits (9), Continuity (6), Differentiation (6) and Permutations and Combinations (14), 2026-10-29.
 
 ## Learn tab on PYQ Vault (approved 2026-10-27, branch `pyqvault-export`)
 
