@@ -187,7 +187,7 @@ describe("validateChapter", () => {
       const errors = errorsAfter((ch) => {
         c3(ch).hook.reveal = String.raw`$\begin{vmatrix} 1 & 2 \ 3 & 4 \end{vmatrix}$`;
       });
-      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.reveal: matrix row break needs \\\\, not \\/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.reveal: vmatrix row break needs \\\\, not \\/));
     });
 
     it("accepts a matrix whose rows are broken with \\\\", () => {
@@ -195,6 +195,29 @@ describe("validateChapter", () => {
         c3(ch).hook.reveal = String.raw`$\begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix} = -2$, and $a\ b$ is a space`;
       });
       expect(errors).toEqual([]);
+    });
+
+    it("rejects an array row break written with one backslash, like a matrix one", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = String.raw`$$\begin{array}{c|c} x & f \ \hline 1 & 1 \ 2 & 5 \end{array}$$`;
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.reveal: array row break needs \\\\, not \\/));
+    });
+
+    it("accepts an array whose rows are broken with \\\\", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = String.raw`$$\begin{array}{c|c} x & f \\ \hline 1 & 1 \\ 2 & 5 \end{array}$$`;
+      });
+      expect(errors).toEqual([]);
+    });
+
+    it("rejects maths KaTeX cannot parse, inline or display, which renders as red source", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = String.raw`So $\frac{1}{2$ is half.`;
+        c3(ch).hook.prompt = String.raw`$$x \hline y$$`;
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.reveal: maths does not parse: KaTeX parse error/));
+      expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.prompt: maths does not parse: KaTeX parse error/));
     });
 
     it("allows newlines, which separate slide sections", () => {

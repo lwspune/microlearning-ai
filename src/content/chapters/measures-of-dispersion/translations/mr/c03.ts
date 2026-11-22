@@ -6,7 +6,7 @@ export const c03: ConceptTranslation = {
   id: "C03",
   lang: "mr",
   status: "approved",
-  source: "075ff5476c17fb",
+  source: "05a68eb91b56d7",
   hook: {
     prompt: t`किंमत $1$ तीन वेळा, म्हणजे $3$ वेळा, येते आणि किंमत $5$ एकदा. **Variance हा दोन संख्या $1$ आणि $5$ यांच्यासारखाच आहे का?**`,
     reveal: t`नाही. दोन संख्या $1, 5$ यांचा मध्य $3$ आहे आणि variance $\frac{4 + 4}{2} = 4$. पण सामग्री खरे तर $1, 1, 1, 5$ आहे: मध्य $\frac{8}{4} = 2$, variance $\frac{1 + 1 + 1 + 9}{4} = 3$. प्रत्येक किंमत जितक्या वेळा येते तितक्या वेळा मोजली जाते, म्हणून वारंवारता उत्तर बदलतात.`,
@@ -62,7 +62,7 @@ export const c03: ConceptTranslation = {
   worked: {
     prompt: t`एक फासा $30$ वेळा टाकला, निकाल खाली आहेत. गुणांचा variance शोधा.
 
-$$\begin{array}{c|c} x & f \ \hline 1 & 1 \ 2 & 5 \ 3 & 5 \ 4 & 5 \ 5 & 10 \ 6 & 4 \end{array}$$`,
+$$\begin{array}{c|c} x & f \\ \hline 1 & 1 \\ 2 & 5 \\ 3 & 5 \\ 4 & 5 \\ 5 & 10 \\ 6 & 4 \end{array}$$`,
     steps: [
       t`$N = \sum f_i = 30$. $f_i x_i$ स्तंभ $1, 10, 15, 20, 50, 24$ आहे, म्हणून $\sum f_i x_i = 120$ आणि $\bar{x} = \frac{120}{30} = 4$.`,
       t`$f_i x_i^2$ स्तंभ $1 \times 1$, $5 \times 4$, $5 \times 9$, $5 \times 16$, $10 \times 25$, $4 \times 36$ आहे, म्हणजे $1, 20, 45, 80, 250, 144$. म्हणून $\sum f_i x_i^2 = 540$.`,
