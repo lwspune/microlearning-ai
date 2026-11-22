@@ -6,7 +6,7 @@ export const c03: ConceptTranslation = {
   id: "C03",
   lang: "hi",
   status: "approved",
-  source: "075ff5476c17fb",
+  source: "05a68eb91b56d7",
   hook: {
     prompt: t`मान $1$ तीन बार, यानी $3$ बार, आता है और मान $5$ एक बार। **क्या variance वही है जो दो संख्याओं $1$ और $5$ का है?**`,
     reveal: t`नहीं। दो संख्याओं $1, 5$ का माध्य $3$ है और variance $\frac{4 + 4}{2} = 4$। पर आँकड़े असल में $1, 1, 1, 5$ हैं: माध्य $\frac{8}{4} = 2$, variance $\frac{1 + 1 + 1 + 9}{4} = 3$। हर मान उतनी बार गिना जाता है जितनी बार वह आता है, इसलिए बारंबारताएँ उत्तर बदल देती हैं।`,
@@ -62,7 +62,7 @@ export const c03: ConceptTranslation = {
   worked: {
     prompt: t`एक पासा $30$ बार फेंका गया, परिणाम नीचे हैं। अंक का variance ज्ञात कीजिए।
 
-$$\begin{array}{c|c} x & f \ \hline 1 & 1 \ 2 & 5 \ 3 & 5 \ 4 & 5 \ 5 & 10 \ 6 & 4 \end{array}$$`,
+$$\begin{array}{c|c} x & f \\ \hline 1 & 1 \\ 2 & 5 \\ 3 & 5 \\ 4 & 5 \\ 5 & 10 \\ 6 & 4 \end{array}$$`,
     steps: [
       t`$N = \sum f_i = 30$। $f_i x_i$ स्तंभ $1, 10, 15, 20, 50, 24$ है, इसलिए $\sum f_i x_i = 120$ और $\bar{x} = \frac{120}{30} = 4$।`,
       t`$f_i x_i^2$ स्तंभ $1 \times 1$, $5 \times 4$, $5 \times 9$, $5 \times 16$, $10 \times 25$, $4 \times 36$ है, यानी $1, 20, 45, 80, 250, 144$। इसलिए $\sum f_i x_i^2 = 540$।`,

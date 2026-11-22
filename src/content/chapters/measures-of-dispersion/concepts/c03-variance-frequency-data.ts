@@ -86,7 +86,7 @@ export const c03: Concept = {
     worked: {
       prompt: t`A die is rolled $30$ times with the results below. Find the variance of the score.
 
-$$\begin{array}{c|c} x & f \ \hline 1 & 1 \ 2 & 5 \ 3 & 5 \ 4 & 5 \ 5 & 10 \ 6 & 4 \end{array}$$`,
+$$\begin{array}{c|c} x & f \\ \hline 1 & 1 \\ 2 & 5 \\ 3 & 5 \\ 4 & 5 \\ 5 & 10 \\ 6 & 4 \end{array}$$`,
       steps: [
         t`$N = \sum f_i = 30$. The $f_i x_i$ column is $1, 10, 15, 20, 50, 24$, so $\sum f_i x_i = 120$ and $\bar{x} = \frac{120}{30} = 4$.`,
         t`The $f_i x_i^2$ column is $1 \times 1$, $5 \times 4$, $5 \times 9$, $5 \times 16$, $10 \times 25$, $4 \times 36$, that is $1, 20, 45, 80, 250, 144$. So $\sum f_i x_i^2 = 540$.`,
