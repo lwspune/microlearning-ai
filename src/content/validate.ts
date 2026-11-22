@@ -1,3 +1,5 @@
+import katex from "katex";
+import { type Inline, parseRichText } from "../lib/richText.ts";
 import { leadIn } from "./leadIn.ts";
 import { translateConcept, validateTranslations } from "./translate.ts";
 import type { Chapter, Concept, ConceptId, Figure, FigureElement, GraphNode, Item, Pt, Shape } from "./types";
@@ -34,9 +36,36 @@ function translatedText(chapter: Chapter): string[] {
 /** Control characters other than newlines: what a mangled escape leaves (the `\t` of `\times` becomes a tab). */
 const CONTROL = /[\u0000-\u0009\u000b-\u001f\u007f]/;
 
-/** A matrix body, and a row break mangled from `\\` to `\ `, which KaTeX draws as a space: one long row. */
-const MATRIX = /\\begin\{([vbpB]?matrix)\}([\s\S]*?)\\end\{\1\}/g;
+/**
+ * The body of an environment whose rows break with `\\`, and a row break mangled to `\ `, which
+ * KaTeX draws as a space: one long row (or a parse error, when the next row starts with `\hline`).
+ */
+const ROWS = /\\begin\{(array|[vbpBV]?matrix|smallmatrix|cases|aligned|gathered|split)\}([\s\S]*?)\\end\{\1\}/g;
 const SINGLE_BREAK = /(?<!\\)\\ /;
+
+/** Every `$…$` and `$$…$$` fragment, split exactly as the renderer splits it. */
+function mathOf(src: string): string[] {
+  const inline = (nodes: Inline[]) => nodes.flatMap((n) => (n.type === "math" ? [n.tex] : []));
+  return parseRichText(src).flatMap((b) =>
+    b.type === "math" ? [b.tex] : b.type === "list" ? b.items.flatMap(inline) : inline(b.inline),
+  );
+}
+
+/** Translations repeat the English maths, so each fragment is checked once per process. */
+const katexSeen = new Map<string, string | null>();
+
+/** KaTeX's error for maths it cannot parse (the renderer would show it as red source), or null. */
+function katexError(tex: string): string | null {
+  if (katexSeen.has(tex)) return katexSeen.get(tex)!;
+  let err: string | null = null;
+  try {
+    katex.renderToString(tex, { throwOnError: true, trust: false, strict: "ignore" });
+  } catch (e) {
+    err = e instanceof Error ? e.message.split("\n")[0].slice(0, 160) : String(e);
+  }
+  katexSeen.set(tex, err);
+  return err;
+}
 
 function validateText(c: Concept): string[] {
   const errors: string[] = [];
@@ -44,8 +73,12 @@ function validateText(c: Concept): string[] {
     if (typeof v === "string") {
       const m = CONTROL.exec(v);
       if (m) errors.push(`${c.id} ${path}: control character U+${m[0].charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")}`);
-      for (const [, , body] of v.matchAll(MATRIX)) {
-        if (SINGLE_BREAK.test(body)) errors.push(`${c.id} ${path}: matrix row break needs \\\\, not \\`);
+      for (const [, env, body] of v.matchAll(ROWS)) {
+        if (SINGLE_BREAK.test(body)) errors.push(`${c.id} ${path}: ${env} row break needs \\\\, not \\`);
+      }
+      for (const tex of mathOf(v)) {
+        const err = katexError(tex);
+        if (err) errors.push(`${c.id} ${path}: maths does not parse: ${err}`);
       }
     } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}.${i}`));
     else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, path ? `${path}.${k}` : k);
