@@ -11,21 +11,31 @@ describe("pyqvaultBundle", () => {
     expect(bundle.courses.map((c) => [c.slug, c.exam, c.subject, c.standard])).toEqual([
       ["mh-hsc-12-maths", "mh-hsc-12", "maths", 12],
       ["cbse-12-maths", "cbse-12", "maths", 12],
+      ["nda-maths", "nda", "maths", 12],
     ]);
   });
 
-  it("takes every Std XII Maths chapter of each course, in the course's order", () => {
+  it("takes every Maths chapter of the target's standard (every standard when it names none), in the course's order", () => {
     for (const target of PYQVAULT_TARGETS) {
       const course = courses.find((c) => c.slug === target.course)!;
       const expected = course.chapters
         .map((entry) => resolveEntry(entry, chapters))
-        .filter((r) => r.standard === 12 && r.subject === "maths")
+        .filter((r) => (target.standard === undefined || r.standard === target.standard) && r.subject === "maths")
         .map((r) => r.slug);
       const got = bundle.courses.find((c) => c.exam === target.exam)!.chapters.map((c) => c.slug);
       expect(got).toEqual(expected);
     }
     expect(bundle.courses[0].chapters).toHaveLength(15);
     expect(bundle.courses[1].chapters).toHaveLength(13);
+    expect(bundle.courses[2].chapters).toHaveLength(31);
+  });
+
+  it("exports NDA across Std XI and XII: each chapter keeps its own standard, the course takes the highest", () => {
+    const nda = bundle.courses.find((c) => c.exam === "nda")!;
+    const course = courses.find((c) => c.slug === "nda")!;
+    expect(nda.chapters.map((c) => c.standard)).toEqual(course.chapters.map((e) => resolveEntry(e, chapters).standard));
+    expect(new Set(nda.chapters.map((c) => c.standard))).toEqual(new Set([11, 12]));
+    expect(nda.standard).toBe(12);
   });
 
   it("gives each part the concepts the course shows from that pool chapter", () => {
@@ -33,7 +43,7 @@ describe("pyqvaultBundle", () => {
       const course = courses.find((c) => c.slug === target.course)!;
       const out = bundle.courses.find((c) => c.exam === target.exam)!;
       for (const ch of out.chapters) {
-        const entry = course.chapters.find((e) => resolveEntry(e, chapters).slug === ch.slug && resolveEntry(e, chapters).standard === 12)!;
+        const entry = course.chapters.find((e) => resolveEntry(e, chapters).slug === ch.slug && resolveEntry(e, chapters).standard === ch.standard)!;
         const expected = partsOf(entry).map((p) => {
           const pool = chapters.find((c) => c.slug === p.chapter)!;
           const scope = partScope(course, p, pool);
@@ -65,6 +75,11 @@ describe("pyqvaultBundle", () => {
     const items = unverified.chapters.flatMap((c) => c.concepts.flatMap((k) => k.items));
     expect(items.length).toBeGreaterThan(0);
     expect(items.every((i) => !i.verified)).toBe(true);
+  });
+
+  it("refuses a chapter with no standard when the target takes every standard", () => {
+    const noYear = chapters.map((c) => (c.slug === "binary-numbers" ? { ...c, standard: undefined } : c));
+    expect(() => pyqvaultBundle([{ course: "nda", exam: "nda", subject: "maths" }], courses, noYear, true)).toThrow(/binary-numbers/);
   });
 
   it("refuses a target whose course does not exist", () => {
