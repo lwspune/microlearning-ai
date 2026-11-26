@@ -203,6 +203,7 @@ export const courses: Course[] = [
       { chapter: "laws-of-motion" },
       { chapter: "gravitation" },
       { chapter: "mechanical-properties-solids" },
+      { chapter: "sound" },
       { chapter: "semiconductors" },
       { chapter: "rotational-dynamics" },
       { chapter: "fluids" },
