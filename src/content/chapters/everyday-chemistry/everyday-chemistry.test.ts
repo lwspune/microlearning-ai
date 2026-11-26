@@ -13,9 +13,9 @@ describe("Std XI Chemistry in Everyday Life chapter", () => {
     expect([everydayChemistry.subject, everydayChemistry.standard]).toEqual(["chemistry", 11]);
   });
 
-  it("keeps the graph: 8 concepts, 2 edges", () => {
+  it("keeps the graph: 9 concepts, 2 edges", () => {
     const edges = everydayChemistry.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(everydayChemistry.graph).toHaveLength(8);
+    expect(everydayChemistry.graph).toHaveLength(9);
     expect(edges).toBe(2);
   });
 

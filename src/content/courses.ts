@@ -315,8 +315,8 @@ function ncertChemistry(exam: NcertExam): CourseChapter[] {
     xii("chemical-kinetics", "Chemical Kinetics", { chapter: "chemical-kinetics", ...(jee ? { more: [chm("nuclear-chemistry", ["C05"])] } : {}) }),
     // The rationalised CBSE book dropped the p-block; NEET's and JEE's 2024 syllabi keep groups 13 to 18.
     ...(exam === "cbse" ? [] : [xii("p-block-elements", "The p-Block Elements", { chapter: "p-block-13-14-15", more: [{ chapter: "p-block-16-17-18" }] })]),
-    // JEE adds salt analysis.
-    xii("d-and-f-block-elements", "The d- and f-Block Elements", chm("transition-elements", [...range(1, 5), ...range(7, 9), ...(jee ? ["C10"] : [])])),
+    // JEE adds salt analysis and the oxides.
+    xii("d-and-f-block-elements", "The d- and f-Block Elements", chm("transition-elements", [...range(1, 5), ...range(7, 9), ...(jee ? ["C10", "C11"] : [])])),
     // Metal carbonyls are NEET's and JEE's; the rationalised book dropped them.
     xii("coordination-compounds", "Coordination Compounds", exam === "cbse" ? chm("coordination-compounds", range(1, 10)) : { chapter: "coordination-compounds" }),
     xii("haloalkanes-and-haloarenes", "Haloalkanes and Haloarenes", { chapter: "halogen-derivatives" }),
@@ -448,7 +448,7 @@ export const courses: Course[] = [
       { chapter: "redox-reactions" },
       { chapter: "periodic-table" },
       book("s-block-elements", 6),
-      { chapter: "p-block-13-14-15" },
+      book("p-block-13-14-15", 7),
       { chapter: "states-of-matter" },
       { chapter: "adsorption-colloids" },
       { chapter: "chemical-equilibrium" },
@@ -652,7 +652,7 @@ export const courses: Course[] = [
       { chapter: "redox-reactions" },
       { chapter: "periodic-table" },
       book("s-block-elements", 6),
-      { chapter: "p-block-13-14-15" },
+      book("p-block-13-14-15", 7),
       { chapter: "states-of-matter" },
       { chapter: "adsorption-colloids", slug: "surface-chemistry", title: "Surface Chemistry" },
       book("organic-chemistry-basics", 8),
@@ -872,7 +872,7 @@ export const courses: Course[] = [
         slug: "acids-bases-and-salts",
         title: "Acids, Bases and Salts",
         standard: 11,
-        more: [chm("s-block-elements", ["C06"])],
+        more: [chm("s-block-elements", ["C06"]), chm("everyday-chemistry", ["C09"])],
       },
       // Water's anomalies are hydrogen bonding.
       { ...chm("s-block-elements", ["C01", "C02", "C07"]), slug: "hydrogen-and-water", title: "Hydrogen and Water", standard: 11, more: [chm("states-of-matter", ["C02"])] },

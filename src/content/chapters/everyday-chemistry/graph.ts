@@ -55,4 +55,11 @@ export const graph: GraphNode[] = [
     prereqs: [], ext: [],
     sources: ["nda/industrial-and-applied-chemistry#Fertilizers", "nda/industrial-and-applied-chemistry#Cement, Glass and Building Materials", "nda/industrial-and-applied-chemistry#Paints and Coatings"],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "common-chemicals", title: "Common acids, bases and salts", group: "Materials", tier: "core",
+    oneLiner: t`Acids of daily life (formic in ant stings, lactic in curd, citric in lemons), antacids, and salts like baking soda, plaster of Paris and bleaching powder`,
+    prereqs: [], ext: [],
+    sources: ["nda/acids-bases-and-salts#Common Acids: Names, Formulas and Uses", "nda/acids-bases-and-salts#Salts and Common Compounds"],
+  },
 ];

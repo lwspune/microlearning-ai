@@ -6,6 +6,8 @@ import { c04 } from "./concepts/c04-catenation-pi-bonds.ts";
 import { c05 } from "./concepts/c05-allotropes.ts";
 import { c06 } from "./concepts/c06-structures-of-compounds.ts";
 import { c07 } from "./concepts/c07-notable-compounds.ts";
+import { c08 } from "./concepts/c08-phosphorus-oxoacids.ts";
+import { c09 } from "./concepts/c09-nitrogen-oxides-nitric-acid.ts";
 import { graph } from "./graph.ts";
 
 export const pBlock131415: Chapter = {
@@ -16,5 +18,5 @@ export const pBlock131415: Chapter = {
   // Balbharati Chemistry Std XI (PLAN.md "Std XI and XII Chemistry").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09],
 };

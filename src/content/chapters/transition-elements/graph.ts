@@ -65,4 +65,11 @@ export const graph: GraphNode[] = [
     prereqs: ["C04"], ext: [],
     sources: ["jee-main/d-and-f-block-elements#Qualitative Analysis of Ions"],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C11", slug: "transition-metal-oxides", title: "Oxides of transition metals", group: "Compounds and metallurgy", tier: "core",
+    oneLiner: t`A metal's oxides grow more acidic and covalent as its oxidation state rises: MnO basic, $\ce{Mn2O7}$ acidic, $\ce{Cr2O3}$ amphoteric`,
+    prereqs: ["C02"], ext: [],
+    sources: ["jee-main/d-and-f-block-elements#Oxides of Transition Metals"],
+  },
 ];

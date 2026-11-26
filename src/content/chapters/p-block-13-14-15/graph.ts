@@ -48,4 +48,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`Borax and boric acid (borate test), boron nitride (inorganic graphite), silicones and their uses, ammonia by Haber's process as a base and complexing agent`,
     prereqs: ["C03"], ext: [], sources: [S("Chemistry of Notable Compounds")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C08", slug: "phosphorus-oxoacids", title: "Oxoacids of phosphorus", group: "Compounds", tier: "core",
+    oneLiner: t`Only H on O is acidic: $\ce{H3PO2}$ is monobasic, $\ce{H3PO3}$ dibasic, $\ce{H3PO4}$ tribasic; P–H bonds make the first two reducing agents`,
+    prereqs: ["C06"], ext: [],
+    sources: ["jee-main/p-block-elements#Phosphorus and Its Oxoacids", "neet/p-block-elements#Nitrogen Family"],
+  },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "nitrogen-oxides-nitric-acid", title: "Oxides of nitrogen and nitric acid", group: "Compounds", tier: "core",
+    oneLiner: t`Nitrogen's oxides run from $\ce{N2O}$ (+1) to $\ce{N2O5}$ (+5), with brown $\ce{NO2}$; nitric acid is made by Ostwald's process and gives $\ce{NO2}$ or NO with copper`,
+    prereqs: ["C03"], ext: [],
+    sources: ["jee-main/p-block-elements#Nitrogen and Its Compounds", "neet/p-block-elements#Nitrogen Family"],
+  },
 ];

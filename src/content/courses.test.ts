@@ -1277,7 +1277,7 @@ describe("the catalog", () => {
         const dBlock = "transition-elements C01,C02,C03,C04,C05,C07,C08,C09";
         expect(parts("cbse", "d-and-f-block-elements")).toEqual([dBlock]);
         expect(parts("neet", "d-and-f-block-elements")).toEqual([dBlock]);
-        expect(parts("jee-main", "d-and-f-block-elements")).toEqual([`${dBlock},C10`]);
+        expect(parts("jee-main", "d-and-f-block-elements")).toEqual([`${dBlock},C10,C11`]);
         // The book's concepts; JEE adds equivalents and normality.
         const basics = ["basic-concepts-chemistry C01,C02,C03,C04,C05,C06,C07", "analytical-chemistry C01,C02,C03,C04,C05,C06,C07,C08"];
         expect(parts("cbse", "some-basic-concepts-of-chemistry")).toEqual(basics);
@@ -1445,7 +1445,7 @@ describe("the catalog", () => {
           "electrochemistry C04",
           "ionic-equilibria C09",
         ]);
-        expect(parts("nda", "acids-bases-and-salts")).toEqual(["ionic-equilibria C01,C03,C05", "s-block-elements C06"]);
+        expect(parts("nda", "acids-bases-and-salts")).toEqual(["ionic-equilibria C01,C03,C05", "s-block-elements C06", "everyday-chemistry C09"]);
         expect(parts("nda", "hydrogen-and-water")).toEqual(["s-block-elements C01,C02,C07", "states-of-matter C02"]);
         expect(parts("nda", "carbon-and-its-compounds")).toEqual(["p-block-13-14-15 C04,C05", "organic-chemistry-basics C01,C02,C04", "hydrocarbons C01,C04,C07", "everyday-chemistry C03,C04"]);
         expect(parts("nda", "metals-and-non-metals")).toEqual(["s-block-elements C04", "electrochemistry C07,C11", "transition-elements C05,C06"]);
@@ -1477,6 +1477,11 @@ describe("the catalog", () => {
         ["basic-concepts-chemistry", "types-of-reactions", ["nda"]],
         ["s-block-elements", "hard-water", ["nda"]],
         ["everyday-chemistry", "industrial-materials", ["nda"]],
+        // Phase 2b: the smaller gaps.
+        ["p-block-13-14-15", "phosphorus-oxoacids", ["neet", "jee-main"]],
+        ["p-block-13-14-15", "nitrogen-oxides-nitric-acid", ["neet", "jee-main"]],
+        ["transition-elements", "transition-metal-oxides", ["jee-main"]],
+        ["everyday-chemistry", "common-chemicals", ["nda"]],
       ];
 
       it("puts each in its pool chapter, covered by exactly the courses that ask it", () => {

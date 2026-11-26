@@ -13,10 +13,10 @@ describe("Std XII Transition and Inner Transition Elements chapter", () => {
     expect([transitionElements.subject, transitionElements.standard]).toEqual(["chemistry", 12]);
   });
 
-  it("keeps the graph: 10 concepts, 9 edges", () => {
+  it("keeps the graph: 11 concepts, 10 edges", () => {
     const edges = transitionElements.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(transitionElements.graph).toHaveLength(10);
-    expect(edges).toBe(9);
+    expect(transitionElements.graph).toHaveLength(11);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {
