@@ -1,4 +1,6 @@
 import katex from "katex";
+// The same \ce and \pu the app renders (src/lib/richText.ts).
+import "katex/contrib/mhchem";
 import { type Inline, parseRichText } from "../lib/richText.ts";
 import { leadIn } from "./leadIn.ts";
 import { translateConcept, validateTranslations } from "./translate.ts";
@@ -27,11 +29,11 @@ export function validateChapter(chapter: Chapter): string[] {
 }
 
 /**
- * Physics figure labels are plain Unicode: a subscript is a Unicode letter (Bₕ, I꜀) or plain text, never "_",
- * which the figure prints as it is. Physics only for now: maths still has b_xy (SUGGESTIONS.md backfill ledger).
+ * Physics and chemistry figure labels are plain Unicode: a subscript is a Unicode letter or digit (Bₕ, H₂O) or plain
+ * text, never "_", which the figure prints as it is. Not maths yet: it still has b_xy (SUGGESTIONS.md backfill ledger).
  */
 function physicsLabels(chapter: Chapter): string[] {
-  if (chapter.subject !== "physics") return [];
+  if (chapter.subject === "maths") return [];
   const figures = chapter.concepts.flatMap((c) => {
     const ex = c.explanation;
     const formal = typeof ex.formal === "string" ? [] : ex.formal.map((sec, i) => [sec.figure, `${c.id} formal ${i + 1} figure`] as const);

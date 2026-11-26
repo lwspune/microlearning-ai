@@ -252,7 +252,7 @@ export type ConceptTranslation = {
 /** The two audiences. Each has its own concept pool; a student stays in one. */
 export type GroupId = "school" | "graduate";
 
-export type SubjectId = "maths" | "physics";
+export type SubjectId = "maths" | "physics" | "chemistry";
 
 export type Standard = 9 | 10 | 11 | 12;
 

@@ -1,4 +1,6 @@
 import katex from "katex";
+// Registers \ce and \pu (chemical formulas, equations and units) on KaTeX.
+import "katex/contrib/mhchem";
 import type { RenderedBlock, RenderedInline } from "./renderedText";
 
 /**

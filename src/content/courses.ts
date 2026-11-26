@@ -71,7 +71,7 @@ export const GROUPS: Group[] = [
   { id: "graduate", title: "Graduates", blurb: "Defence and services exams after graduation." },
 ];
 
-export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths", physics: "Physics" };
+export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths", physics: "Physics", chemistry: "Chemistry" };
 
 export const STANDARD_TITLE: Record<Standard, string> = { 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" };
 

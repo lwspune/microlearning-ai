@@ -220,6 +220,13 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 hook\.prompt: maths does not parse: KaTeX parse error/));
     });
 
+    it("parses chemical notation written with mhchem (ce and pu commands)", () => {
+      const errors = errorsAfter((ch) => {
+        c3(ch).hook.reveal = String.raw`So $\ce{2H2 + O2 -> 2H2O}$ and $\ce{N2 + 3H2 <=> 2NH3}$ with $\pu{8.314 J K-1 mol-1}$.`;
+      });
+      expect(errors.filter((e) => e.includes("hook.reveal"))).toEqual([]);
+    });
+
     it("allows newlines, which separate slide sections", () => {
       const errors = errorsAfter((ch) => {
         c3(ch).status = "approved"; // a draft must use points (item 20); older concepts keep text
@@ -397,6 +404,14 @@ describe("validateChapter", () => {
       const errors = errorsAfter((ch) => {
         ch.subject = "physics";
         c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "B_H" }] });
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*underscore/));
+    });
+
+    it("rejects an underscore in a chemistry figure label too", () => {
+      const errors = errorsAfter((ch) => {
+        ch.subject = "chemistry";
+        c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "H_2O" }] });
       });
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*underscore/));
     });

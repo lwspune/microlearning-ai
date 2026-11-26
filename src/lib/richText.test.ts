@@ -75,6 +75,14 @@ describe("renderMath", () => {
     expect(html).not.toContain("<a ");
   });
 
+  it("renders chemical notation with mhchem (the ce command)", () => {
+    const html = renderMath(String.raw`\ce{H2SO4 + 2NaOH -> Na2SO4 + 2H2O}`, false);
+    expect(html).toContain("katex");
+    expect(html).not.toContain("katex-error");
+    expect(html).not.toContain("#cc0000"); // an unknown command renders in red
+    expect(html).toContain("msub"); // H2 becomes a subscript
+  });
+
   it("does not throw on invalid TeX", () => {
     expect(() => renderMath("\\frac{", false)).not.toThrow();
   });

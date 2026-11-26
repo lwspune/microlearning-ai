@@ -1572,6 +1572,48 @@ keyed $f_2 > f_1$; it is $f_2 = f_1$. JEE Main 2021 Paper 12 Q6 has options A an
 JEE Main 2022 26 July Q92 and 2024 6 April Q108 key a negative vernier zero error as $-k$ LC (the geometry gives
 $-(N - k)$ LC; PYQ Vault's own solution to Q92 notes it); the NEET 2026 re-exam row is already marked "Bonus".
 
+## Std XI and XII Chemistry, Maharashtra State Board (started 2026-11-26)
+
+Owner, 2026-11-26: "lets take 11th+12th chem mh state board next. do it end to end completely and autonomously".
+Run like physics: I lock every graph, agents write whole chapters, I review every concept and figure, and alone
+register, commit, seed and push. Up to five agents at once (content batches, [feedback-parallel-content]).
+
+**Decisions (mine, owner asked for autonomy):**
+1. `SubjectId` gains `chemistry`; the course page's subject switch becomes Maths | Physics | Chemistry in Std XI and
+   XII. The switch is generic, so no new UI: a before/after sheet still ships with it.
+2. Chemical notation with KaTeX's mhchem extension, `\ce{H2SO4}` and `\ce{A + B -> C}` (PYQ Vault uses it too): one
+   import in `src/lib/richText.ts` and in the validator. Structures are condensed formulas in text
+   (`\ce{CH3CH2OH}`); figures only where a picture teaches (unit cells, energy diagrams, graphs), from the existing
+   helpers.
+3. Figure labels: the physics no-underscore rule covers chemistry too.
+4. `verify/chemistry.py`: the books' atomic masses and constants ($R$, $F$, $N_A$, molar volume), test first; answers
+   rounded with `physics.sig`.
+5. Slugs from PYQ Vault's book slugs, with a suffix only where a pool slug is taken: `chemical-thermodynamics`
+   (physics has `thermodynamics`), `chemical-kinetics`, `p-block-16-17-18`, `p-block-13-14-15`.
+6. **Std XII first** (board year, 380 board rows), then Std XI; Std XI sits before Std XII in the course as in physics.
+7. Other courses' chemistry (CBSE, MHT-CET, JEE, NEET) is not part of this: plan it separately when asked.
+
+**Sources (PYQ Vault `Question_Bank/scripts`):** Std XI book `mh-sb-11/data/*-11-chem` (16 chapters, 694 rows);
+Std XII book `stateboard/data/*-12-chem` (16 chapters, 727 rows, with solutions, keys and errata); Std XII board
+papers `mh-hsc-12-pyq/data/*-12-pyq` (16 chapters, 384 rows). Packs per chapter: `<scratch>/chem/pack.py`.
+
+**Chapters (PYQ Vault titles):**
+- Std XII: Solid State, Solutions, Ionic Equilibria, Chemical Thermodynamics, Electrochemistry, Chemical Kinetics,
+  Elements of Groups 16, 17 and 18, Transition and Inner Transition Elements, Coordination Compounds, Halogen
+  Derivatives, Alcohols, Phenols and Ethers, Aldehydes, Ketones and Carboxylic Acids, Amines, Biomolecules,
+  Introduction to Polymer Chemistry, Green Chemistry and Nanochemistry.
+- Std XI: Some Basic Concepts of Chemistry, Introduction to Analytical Chemistry, Some Analytical Techniques,
+  Structure of Atom, Chemical Bonding, Redox Reactions, Modern Periodic Table, Elements of Group 1 and 2, Elements of
+  Group 13, 14 and 15, States of Matter, Adsorption and Colloids, Chemical Equilibrium, Nuclear Chemistry and
+  Radioactivity, Basic Principles of Organic Chemistry, Hydrocarbons, Chemistry in Everyday Life.
+
+**Steps:**
+1. Foundations (branch `chemistry-foundations`, test-first): subject id and label, mhchem, label rule,
+   `verify/chemistry.py`, `verify/agent-brief-chemistry.md`. The switch shows once the first chapter lands.
+2. Std XII, chapter by chapter: graph (8 to 12 concepts from the book's sections), an agent writes the chapter,
+   I review every concept, key, distractor and figure, phone probe, register, commit, seed, push.
+3. Std XI the same way. Each chapter goes to main as it passes (owner: keep pushing while Vercel is blocked).
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a

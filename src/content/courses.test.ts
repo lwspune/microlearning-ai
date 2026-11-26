@@ -329,14 +329,15 @@ describe("lookups", () => {
     expect(STANDARD_TITLE).toEqual({ 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" });
   });
 
-  it("names the subjects Maths and Physics", () => {
-    expect(SUBJECTS).toEqual({ maths: "Maths", physics: "Physics" });
+  it("names the subjects Maths, Physics and Chemistry", () => {
+    expect(SUBJECTS).toEqual({ maths: "Maths", physics: "Physics", chemistry: "Chemistry" });
   });
 
   it("parses only known subjects", () => {
     expect(parseSubject("maths")).toBe("maths");
     expect(parseSubject("physics")).toBe("physics");
-    expect(parseSubject("chemistry")).toBeNull();
+    expect(parseSubject("chemistry")).toBe("chemistry");
+    expect(parseSubject("biology")).toBeNull();
     expect(parseSubject("Physics")).toBeNull();
     expect(parseSubject(undefined)).toBeNull();
   });
