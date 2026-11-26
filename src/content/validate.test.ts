@@ -393,6 +393,19 @@ describe("validateChapter", () => {
       ).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*plain text/));
     });
 
+    it("rejects an underscore in a physics figure label (labels are plain Unicode: Bₕ, not B_H)", () => {
+      const errors = errorsAfter((ch) => {
+        ch.subject = "physics";
+        c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "B_H" }] });
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*underscore/));
+    });
+
+    it("leaves underscores in maths labels alone, for now", () => {
+      const errors = errorsAfter((ch) => (c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "b_xy" }] })));
+      expect(errors).not.toContainEqual(expect.stringMatching(/underscore/));
+    });
+
     it("rejects a line through two equal points and an empty region", () => {
       const errors = errorsAfter(
         (ch) =>

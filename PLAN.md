@@ -670,6 +670,18 @@ south-west (test_figures), and Std IX Sets was built with the new placement.
 - **Recommendation:** one small batch (rebuild the six concepts' figures,
   then check a figure sheet). Ask the owner first.
 
+### 14. Underscores in figure labels print as they are (logged 2026-11-26, open)
+Learning: a figure label is plain text, so "B_H" shows its underscore instead of
+a subscript. It slipped into Ch.9 ("I_g") and Ch.12 ("B_H", "B_V") of Std XII
+physics; both were fixed with Unicode subscripts (Bₕ, Bᵥ). `validateChapter`
+now rejects "_" in a label for physics chapters (`physicsLabels`).
+- **Scope:** maths only: Std XII Statistics C13 (`c13-two-regression-lines`), three
+  labels "b_xy = 1/2", "b_yx = 1/2", "b_yx · b_xy = 1/4".
+- **Does it apply:** yes, the underscores show on the figure; cosmetic, readable.
+- **Recommendation:** relabel with Unicode (bₓᵧ has no Unicode ʏ subscript, so
+  "b(xy)" or "bxy"), reseed the chapter, then widen the rule to every subject.
+  Ask the owner first.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
@@ -1463,6 +1475,13 @@ with them. Book answer-key errors followed as PYQ Vault records them (e.g.
 Thermodynamics Ex Q.5 and Q.6 signs, Oscillations Ex Q.12 units and Ex Q.15
 direction). Still to come in wave 1: chapters 6–8 (Superposition of Waves, Wave
 Optics, Electrostatics), on a new branch from main.
+
+**Status, 2026-11-26 (owner: "lets complete physics end to end autonomously"; up to three
+agents, every concept reviewed in the main session):** physics is complete. All 16 Std XII chapters (ch 6–16 on
+branch `physics-xii-waves`, the last Semiconductor Devices at 8fd2c36) and all 14 Std XI chapters (eb7e957) are
+approved, seeded and on main. Std XI sits before Std XII in the MH Board course, under the subject switch. Book
+errata are keyed to corrected values as PYQ Vault records them; one PYQ Vault erratum is itself wrong (Std XI
+Optics Solved Ex.9.11: f_R is 24.51 cm, so the aberration is about 0.93 cm, not 1.93), so C07-Q2 uses new numbers.
 
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 

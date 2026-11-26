@@ -15,7 +15,7 @@ A spec file defines CHAPTER (e.g. "complex_numbers") and ITEMS, a list of:
     ask=None,                           # optional projection, an expression in z
     models=["key", "C02-M1", "C02-M2", "C02-M3"],  # key first, then one per distractor
     text={"C02-M1": "the real axis"},   # optional per-model text overrides (else LaTeX of the value)
-    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°) | pct (..%) | unit:<unit> (.. m/s)
+    fmt="pair",                         # optional: pair (x = .., y = ..) | point ((x, y)) | intercepts | pm (±(..)) | quadrant | deg (..°) | pct (..%) | sci (8.65 × 10^10) | unit:<unit> (.. m/s)
     value={"key": "x-2"},               # optional per-model value overrides (loci/points)
     figure={...},                       # optional: a Figure dict shown with the stem (no steps)
     source='{ kind: "authored" }',      # optional, TypeScript literal
@@ -28,7 +28,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from sympy import I, Rational, Tuple, latex, simplify, symbols, sympify, expand
+from sympy import Basic, I, Rational, SympifyError, Tuple, latex, simplify, symbols, sympify, expand
 
 from ts_literal import figure_ts
 
@@ -94,6 +94,17 @@ def quantity_text(val) -> str:
     return latex(val, mul_symbol="times")
 
 
+def option_value(value_str: str):
+    """Parse a model's value as written into the item. A named answer must come back as a sympy expression."""
+    try:
+        val = sympify(value_str, locals={"I": I, "x": _XR, "y": _YR})
+    except SympifyError:
+        raise ValueError(f"named answer {value_str!r} does not parse: rename it to start with a letter") from None
+    if not isinstance(val, Basic):
+        raise ValueError(f"named answer {value_str!r} parses as a Python or sympy name, not a symbol: rename it (e.g. add a suffix)")
+    return simplify(val)
+
+
 def option_text(val, fmt) -> str:
     """An option's text, written from its value so the two can't disagree."""
     if fmt == "pair":  # a complex value standing for the pair (x, y)
@@ -121,6 +132,8 @@ def option_text(val, fmt) -> str:
         return f"${latex(val)}\\%$"
     if fmt == "deg":  # an angle in degrees
         return f"${latex(val)}^\\circ$"
+    if fmt == "sci":  # a pure number in scientific notation, written as unit: writes it
+        return f"${quantity_text(val)}$"
     if fmt and fmt.startswith("unit:"):  # a physical quantity: unit:<unit in \mathrm form>, e.g. unit:m\,s^{-2}
         return f"${quantity_text(val)}\\ \\mathrm{{{fmt[5:]}}}$"
     if isinstance(val, Tuple):
@@ -165,7 +178,7 @@ def draft(spec_path: str) -> str:
         for key, m in zip(KEYS, order):
             v = values[m]
             value_str = v if isinstance(v, str) else str(simplify(v))
-            val = simplify(sympify(value_str, locals={"I": I, "x": _XR, "y": _YR}))
+            val = option_value(value_str)
             text = it.get("text", {}).get(m) or option_text(val, it.get("fmt"))
             correct = m == "key"
             tag = "" if correct else f', misconceptionId: "{m}"'

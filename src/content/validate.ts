@@ -22,7 +22,31 @@ export function validateChapter(chapter: Chapter): string[] {
     ...chapter.concepts.flatMap(validateText),
     ...validateTranslations(chapter),
     ...translatedText(chapter),
+    ...physicsLabels(chapter),
   ];
+}
+
+/**
+ * Physics figure labels are plain Unicode: a subscript is a Unicode letter (Bₕ, I꜀) or plain text, never "_",
+ * which the figure prints as it is. Physics only for now: maths still has b_xy (SUGGESTIONS.md backfill ledger).
+ */
+function physicsLabels(chapter: Chapter): string[] {
+  if (chapter.subject !== "physics") return [];
+  const figures = chapter.concepts.flatMap((c) => {
+    const ex = c.explanation;
+    const formal = typeof ex.formal === "string" ? [] : ex.formal.map((sec, i) => [sec.figure, `${c.id} formal ${i + 1} figure`] as const);
+    return [
+      [ex.figure, `${c.id} idea figure`] as const,
+      [ex.worked.figure, `${c.id} worked figure`] as const,
+      ...formal,
+      ...c.items.flatMap((it) => [[it.figure, `${it.id} figure`] as const, [it.solution?.figure, `${it.id} solution figure`] as const]),
+    ];
+  });
+  return figures.flatMap(([fig, where]) =>
+    (fig?.elements ?? []).flatMap((el, i) =>
+      el.label?.includes("_") ? [`${where} element ${i + 1} (${el.kind}): label has an underscore; write subscripts in Unicode (Bₕ, not B_H)`] : [],
+    ),
+  );
 }
 
 /** The text checks again on each translated concept. */

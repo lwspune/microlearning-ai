@@ -1,0 +1,362 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c03: Concept = {
+  id: "C03",
+  status: "approved",
+  hook: {
+    prompt: t`A medium-wave radio station can be heard hundreds of kilometres away at night, but a TV tower's signal fades beyond about a hundred kilometres, however powerful the transmitter. Why?`,
+    reveal: t`Different waves travel differently. Some follow the ground, some bounce off the **ionosphere**, and TV signals go in straight lines, so they stop at the **horizon**, a distance $d = \sqrt{2Rh}$ set by the tower's height.`,
+  },
+  explanation: {
+    intuition: [
+      t`Low-frequency radio waves travel as **ground waves**, following the curve of the Earth.`,
+      t`Waves of a few MHz up to about $30\ \mathrm{MHz}$ travel as **sky waves**, reflected back by the ionosphere.`,
+      t`Higher frequencies pass through the ionosphere, so TV and satellite links use **space waves** in straight lines.`,
+      t`A space wave from a tower reaches only to the horizon: higher towers reach farther.`,
+    ],
+    formal: [
+      {
+        title: "Ground, sky and space waves",
+        points: [
+          t`**Ground waves**: low frequencies, guided along the Earth's surface, weakening as the ground absorbs them.`,
+          t`**Sky waves**: about $3$ to $30\ \mathrm{MHz}$ (short waves), reflected by the ionosphere: long-distance radio.`,
+          t`**Space waves**: above about $30\ \mathrm{MHz}$, straight line of sight: TV, mobile phones, and satellites for long distances.`,
+        ],
+        figure: {
+          alt: "Step 1: ground waves follow the Earth's surface. Step 2: sky waves reflect off the ionosphere. Step 3: space waves travel in straight lines.",
+          axes: "none",
+          view: { x: [-8.2, 8.2], y: [7, 13.8] },
+          elements: [
+            { kind: "arc", centre: [0, 0], r: 10, from: 48, to: 132 },
+            { kind: "arc", centre: [0, 0], r: 12.6, from: 56, to: 119, tone: "muted" },
+            { kind: "label", at: [2.6, 12.45], label: "ionosphere", labelAt: "n" },
+            { kind: "segment", from: [-4.2262, 9.0631], to: [-4.6065, 9.8788] },
+            { kind: "point", at: [-4.6065, 9.8788], label: "T", labelAt: "w" },
+            { kind: "arc", centre: [0, 0], r: 10.35, from: 75, to: 112, tone: "good", step: 1 },
+            { kind: "label", at: [0.3682, 10.5436], label: "ground wave", labelAt: "n", tone: "good", step: 1 },
+            { kind: "segment", from: [-4.6065, 9.8788], to: [-0.4397, 12.5923], tone: "bad", step: 2 },
+            { kind: "segment", from: [-0.4397, 12.5923], to: [4.0674, 9.1355], tone: "bad", step: 2 },
+            { kind: "label", at: [3.5812, 10.4007], label: "sky wave", labelAt: "e", tone: "bad", step: 2 },
+            { kind: "segment", from: [-4.6065, 9.8788], to: [-6.85, 11.4003], step: 3 },
+            { kind: "point", at: [-6.85, 11.4003], label: "satellite", labelAt: "n", step: 3 },
+            { kind: "label", at: [-5.9, 10.5], label: "space wave", labelAt: "w", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Range of an antenna",
+        points: [
+          t`An antenna of height $h$ sees as far as the horizon, where its line of sight grazes the Earth.`,
+          t`The line of sight is a tangent: $(R + h)^2 = R^2 + d^2$, and $h \ll R$, so $d = \sqrt{2Rh}$.`,
+          t`The area covered is $\pi d^2 = 2\pi Rh$, so doubling the covered area needs twice the height.`,
+        ],
+        figure: {
+          alt: "A tower of height h at T. Step 1: the tower. Step 2: its line of sight d just grazes the Earth at the horizon. Step 3: with the radii R, a right-angled triangle: (R + h)² = R² + d², so d ≈ √(2Rh).",
+          axes: "none",
+          view: { x: [-3, 8.6], y: [-0.8, 12.8] },
+          elements: [
+            { kind: "arc", centre: [0, 0], r: 10, from: 40, to: 120 },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "s" },
+            { kind: "segment", from: [0, 10], to: [0, 11.8], step: 1 },
+            { kind: "point", at: [0, 11.8], label: "T", labelAt: "w", step: 1 },
+            { kind: "label", at: [0.1, 10.9], label: "h", labelAt: "e", step: 1 },
+            { kind: "segment", from: [0, 11.8], to: [5.3086, 8.4746], tone: "good", label: "d", labelAt: "ne", step: 2 },
+            { kind: "point", at: [5.3086, 8.4746], label: "horizon", labelAt: "e", step: 2 },
+            { kind: "segment", from: [0, 0], to: [5.3086, 8.4746], dashed: true, tone: "muted", label: "R", labelAt: "se", step: 3 },
+            { kind: "segment", from: [0, 0], to: [0, 10], dashed: true, tone: "muted", label: "R", labelAt: "w", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Two antennas",
+        points: [
+          t`A receiving antenna of height $h_R$ also sees its own horizon.`,
+          t`The greatest distance for line-of-sight contact is $d = \sqrt{2Rh_T} + \sqrt{2Rh_R}$.`,
+        ],
+        figure: {
+          alt: "Step 1: a transmitting tower hT and a receiving tower hR. Step 2: each sees the common horizon point; the greatest distance is dT + dR.",
+          axes: "none",
+          view: { x: [-7.4, 6.2], y: [7.4, 12.2] },
+          elements: [
+            { kind: "arc", centre: [0, 0], r: 10, from: 55, to: 125 },
+            { kind: "segment", from: [-4.6947, 8.8295], to: [-5.3171, 10], step: 1 },
+            { kind: "label", at: [-5.4171, 9.4147], label: "hT", labelAt: "w", step: 1 },
+            { kind: "segment", from: [3.4202, 9.3969], to: [3.6397, 10], step: 1 },
+            { kind: "label", at: [3.7397, 9.6985], label: "hR", labelAt: "e", step: 1 },
+            { kind: "segment", from: [-5.3171, 10], to: [0, 10], tone: "good", label: "dT", labelAt: "n", step: 2 },
+            { kind: "segment", from: [0, 10], to: [3.6397, 10], tone: "good", label: "dR", labelAt: "n", step: 2 },
+            { kind: "point", at: [0, 10], label: "horizon", labelAt: "s", step: 2 },
+          ],
+        },
+      },
+    ],
+    worked: {
+      prompt: t`A transmitting antenna is $32\ \mathrm{m}$ high and a receiving antenna $50\ \mathrm{m}$ high. What is the greatest distance between them for line-of-sight communication? ($R = 6.4 \times 10^{6}\ \mathrm{m}$)`,
+      steps: [
+        t`$d_T = \sqrt{2Rh_T}$ $= \sqrt{2 \times 6.4 \times 10^{6} \times 32}$ $\approx 20.2\ \mathrm{km}$.`,
+        t`$d_R$ $= \sqrt{2 \times 6.4 \times 10^{6} \times 50}$ $\approx 25.3\ \mathrm{km}$, so $d = d_T + d_R$ $\approx 45.5\ \mathrm{km}$.`,
+      ],
+      answer: t`$\approx 45.5\ \mathrm{km}$`,
+      figure: {
+        alt: "Step 1: the towers, 32 m and 50 m high. Step 2: dT ≈ 20.2 km and dR ≈ 25.3 km, so the greatest distance is about 45.5 km.",
+        axes: "none",
+        view: { x: [-7.4, 6.2], y: [7.4, 12.2] },
+        elements: [
+          { kind: "arc", centre: [0, 0], r: 10, from: 55, to: 125 },
+          { kind: "segment", from: [-4.6947, 8.8295], to: [-5.3171, 10], step: 1 },
+          { kind: "label", at: [-5.4171, 9.4147], label: "32 m", labelAt: "w", step: 1 },
+          { kind: "segment", from: [3.4202, 9.3969], to: [3.6397, 10], step: 1 },
+          { kind: "label", at: [3.7397, 9.6985], label: "50 m", labelAt: "e", step: 1 },
+          { kind: "segment", from: [-5.3171, 10], to: [0, 10], tone: "good", label: "20.2 km", labelAt: "n", step: 2 },
+          { kind: "segment", from: [0, 10], to: [3.6397, 10], tone: "good", label: "25.3 km", labelAt: "n", step: 2 },
+          { kind: "point", at: [0, 10], label: "horizon", labelAt: "s", step: 2 },
+        ],
+      },
+    },
+    figure: {
+      alt: "Three ways a radio wave can travel from a transmitter T. Step 1: a ground wave hugs the Earth's surface. Step 2: a sky wave is reflected back down by the ionosphere. Step 3: a space wave goes in a straight line. Step 4: space waves reach only as far as the horizon.",
+      axes: "none",
+      view: { x: [-8.2, 8.2], y: [7, 13.8] },
+      elements: [
+        { kind: "arc", centre: [0, 0], r: 10, from: 48, to: 132 },
+        { kind: "arc", centre: [0, 0], r: 12.6, from: 56, to: 119, tone: "muted" },
+        { kind: "label", at: [2.6, 12.45], label: "ionosphere", labelAt: "n" },
+        { kind: "segment", from: [-4.2262, 9.0631], to: [-4.6065, 9.8788] },
+        { kind: "point", at: [-4.6065, 9.8788], label: "T", labelAt: "w" },
+        { kind: "arc", centre: [0, 0], r: 10.35, from: 75, to: 112, tone: "good", step: 1 },
+        { kind: "label", at: [0.3682, 10.5436], label: "ground wave", labelAt: "n", tone: "good", step: 1 },
+        { kind: "segment", from: [-4.6065, 9.8788], to: [-0.4397, 12.5923], tone: "bad", step: 2 },
+        { kind: "segment", from: [-0.4397, 12.5923], to: [4.0674, 9.1355], tone: "bad", step: 2 },
+        { kind: "label", at: [3.5812, 10.4007], label: "sky wave", labelAt: "e", tone: "bad", step: 2 },
+        { kind: "segment", from: [-4.6065, 9.8788], to: [-6.85, 11.4003], step: 3 },
+        { kind: "point", at: [-6.85, 11.4003], label: "satellite", labelAt: "n", step: 3 },
+        { kind: "label", at: [-5.9, 10.5], label: "space wave", labelAt: "w", step: 3 },
+        { kind: "label", at: [0, 7.3], label: "space waves: line of sight only", labelAt: "n", step: 4 },
+      ],
+    },
+    visualSpec: t`Raise a transmitting tower and watch its line of sight reach farther round the curve of the Earth.`,
+  },
+  misconceptions: [
+    {
+      id: "C03-M1",
+      mistake: t`Forgets the $2$ in $d = \sqrt{2Rh}$.`,
+      remediation: t`From $(R + h)^2 = R^2 + d^2$, $d^2 = 2Rh + h^2 \approx 2Rh$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M2",
+      mistake: "Uses the Earth's diameter for R.",
+      remediation: t`$R$ is the radius, $6.4 \times 10^{6}\ \mathrm{m}$: $d = \sqrt{2Rh}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M3",
+      mistake: "Puts R in km and h in m.",
+      remediation: t`Use one unit for both: $R = 6.4 \times 10^{6}\ \mathrm{m}$ with $h$ in metres.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M4",
+      mistake: "Counts only the transmitter's range.",
+      remediation: t`The receiving antenna also sees beyond the horizon: add $\sqrt{2Rh_R}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M5",
+      mistake: "Adds the heights before taking the root.",
+      remediation: t`Each antenna has its own horizon distance: $\sqrt{2Rh_T} + \sqrt{2Rh_R}$, not $\sqrt{2R(h_T + h_R)}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M6",
+      mistake: "Thinks the range is proportional to the height.",
+      remediation: t`$d = \sqrt{2Rh}$, so $d \propto h^{1/2}$: four times the height only doubles the range.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M7",
+      mistake: t`Takes $d \propto h^{3/2}$.`,
+      remediation: t`$d^2 = 2Rh$, so $d \propto \sqrt{h}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M8",
+      mistake: t`Takes $d \propto h^2$.`,
+      remediation: t`It is the area covered, $\pi d^2$, that is proportional to $h$; $d$ itself goes as $\sqrt{h}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M9",
+      mistake: "Puts d in km with R in m.",
+      remediation: t`$d = 640\ \mathrm{km}$ $= 6.4 \times 10^{5}\ \mathrm{m}$, to match $R$ in metres.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M10",
+      mistake: "Puts R in km with d in m.",
+      remediation: t`$R = 6.4 \times 10^{6}\ \mathrm{m}$, in the same unit as $d$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M11",
+      mistake: t`Takes the covered area as $d^2$.`,
+      remediation: t`The covered region is a circle of radius $d$: area $\pi d^2$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M12",
+      mistake: t`Uses $d$ instead of $d^2$ for the area.`,
+      remediation: t`Area $= \pi d^2$ $= 2\pi Rh$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C03-M13",
+      mistake: t`Uses $\dfrac{\pi d^2}{4}$, treating $d$ as a diameter.`,
+      remediation: t`$d$ is the radius of the covered circle, so the area is $\pi d^2$.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  items: [
+    {
+      id: "C03-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/em-waves-comm-11-phy/Solved Ex.13.7" },
+      stem: t`A radar stands on a hill $500\ \mathrm{m}$ high. Up to what distance can it detect an object on the Earth's surface? (Radius of the Earth $= 6.4 \times 10^{6}\ \mathrm{m}$)`,
+      verify: { kind: "value", inputs: { h: "500", R: "6.4e6" }, params: { ask: "range" } },
+      options: [
+        { key: "A", text: t`$113\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M2", value: "113" },
+        { key: "B", text: t`$2530\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M3", value: "2530" },
+        { key: "C", text: t`$80\ \mathrm{km}$`, correct: true, value: "80" },
+        { key: "D", text: t`$56.6\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M1", value: "56.6000000000000" },
+      ],
+      solution: {
+        steps: [
+          t`$d = \sqrt{2Rh}$ $= \sqrt{2 \times 6.4 \times 10^{6} \times 500}$ $= \sqrt{6.4 \times 10^{9}}$.`,
+          t`$d = 8 \times 10^{4}\ \mathrm{m}$ $= 80\ \mathrm{km}$.`,
+        ],
+        figure: {
+          alt: "A tower of height h at T. Step 1: the tower. Step 2: its line of sight d just grazes the Earth at the horizon. Step 3: with the radii R, a right-angled triangle: (R + h)² = R² + d², so d ≈ √(2Rh).",
+          axes: "none",
+          view: { x: [-3, 8.6], y: [-0.8, 12.8] },
+          elements: [
+            { kind: "arc", centre: [0, 0], r: 10, from: 40, to: 120 },
+            { kind: "point", at: [0, 0], label: "O", labelAt: "s" },
+            { kind: "segment", from: [0, 10], to: [0, 11.8] },
+            { kind: "point", at: [0, 11.8], label: "T", labelAt: "w" },
+            { kind: "label", at: [0.1, 10.9], label: "h", labelAt: "e" },
+            { kind: "segment", from: [0, 11.8], to: [5.3086, 8.4746], tone: "good", label: "d", labelAt: "ne" },
+            { kind: "point", at: [5.3086, 8.4746], label: "horizon", labelAt: "e" },
+            { kind: "segment", from: [0, 0], to: [5.3086, 8.4746], dashed: true, tone: "muted", label: "R", labelAt: "se" },
+            { kind: "segment", from: [0, 0], to: [0, 10], dashed: true, tone: "muted", label: "R", labelAt: "w" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C03-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/em-waves-comm-11-phy/Solved Ex.13.9" },
+      stem: t`A transmitting antenna is $68\ \mathrm{m}$ high and the receiving antenna is on a tower $34\ \mathrm{m}$ high. What is the greatest distance between them for line-of-sight transmission? (Radius of the Earth $= 6400\ \mathrm{km}$)`,
+      verify: { kind: "value", inputs: { hT: "68", hR: "34", R: "6.4e6" }, params: { ask: "two" } },
+      options: [
+        { key: "A", text: t`$29.5\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M4", value: "29.5000000000000" },
+        { key: "B", text: t`$36.1\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M5", value: "36.1000000000000" },
+        { key: "C", text: t`$50.4\ \mathrm{km}$`, correct: true, value: "50.4000000000000" },
+        { key: "D", text: t`$35.6\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M1", value: "35.6000000000000" },
+      ],
+      solution: {
+        steps: [
+          t`$d_T$ $= \sqrt{2 \times 6.4 \times 10^{6} \times 68}$ $\approx 29.5\ \mathrm{km}$; $d_R$ $= \sqrt{2 \times 6.4 \times 10^{6} \times 34}$ $\approx 20.9\ \mathrm{km}$.`,
+          t`$d = d_T + d_R$ $\approx 50.4\ \mathrm{km}$.`,
+        ],
+        figure: {
+          alt: "Step 1: a transmitting tower hT and a receiving tower hR. Step 2: each sees the common horizon point; the greatest distance is dT + dR.",
+          axes: "none",
+          view: { x: [-7.4, 6.2], y: [7.4, 12.2] },
+          elements: [
+            { kind: "arc", centre: [0, 0], r: 10, from: 55, to: 125 },
+            { kind: "segment", from: [-4.6947, 8.8295], to: [-5.3171, 10] },
+            { kind: "label", at: [-5.4171, 9.4147], label: "hT", labelAt: "w" },
+            { kind: "segment", from: [3.4202, 9.3969], to: [3.6397, 10] },
+            { kind: "label", at: [3.7397, 9.6985], label: "hR", labelAt: "e" },
+            { kind: "segment", from: [-5.3171, 10], to: [0, 10], tone: "good", label: "dT", labelAt: "n" },
+            { kind: "segment", from: [0, 10], to: [3.6397, 10], tone: "good", label: "dR", labelAt: "n" },
+            { kind: "point", at: [0, 10], label: "horizon", labelAt: "s" },
+          ],
+        },
+      },
+    },
+    {
+      id: "C03-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/em-waves-comm-11-phy/Ex Q.1 (v)" },
+      stem: t`The greatest distance up to which signals from a TV tower of height $h$ can be received is proportional to`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "law" } },
+      options: [
+        { key: "A", text: t`$h$`, correct: false, misconceptionId: "C03-M6", value: "prop_h" },
+        { key: "B", text: t`$h^{3/2}$`, correct: false, misconceptionId: "C03-M7", value: "h_three_halves" },
+        { key: "C", text: t`$h^2$`, correct: false, misconceptionId: "C03-M8", value: "h_squared" },
+        { key: "D", text: t`$h^{1/2}$`, correct: true, value: "root_h" },
+      ],
+      solution: {
+        steps: [
+          t`$d = \sqrt{2Rh}$.`,
+          t`So $d \propto h^{1/2}$.`,
+        ],
+      },
+    },
+    {
+      id: "C03-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/em-waves-comm-11-phy/Ex Q.1 (vii)" },
+      stem: t`A TV telecast is to cover a radius of $640\ \mathrm{km}$. How high must the transmitting antenna be? (Radius of the Earth $= 6.4 \times 10^{6}\ \mathrm{m}$)`,
+      verify: { kind: "value", inputs: { d_km: "640", R: "6.4e6" }, params: { ask: "height" } },
+      options: [
+        { key: "A", text: t`$0.032\ \mathrm{m}$`, correct: false, misconceptionId: "C03-M9", value: "0.0320000000000000" },
+        { key: "B", text: t`$3.2 \times 10^{7}\ \mathrm{m}$`, correct: false, misconceptionId: "C03-M10", value: "32000000" },
+        { key: "C", text: t`$32000\ \mathrm{m}$`, correct: true, value: "32000" },
+        { key: "D", text: t`$64000\ \mathrm{m}$`, correct: false, misconceptionId: "C03-M1", value: "64000" },
+      ],
+      solution: {
+        steps: [
+          t`$d = \sqrt{2Rh}$, so $h = \dfrac{d^2}{2R}$.`,
+          t`$h$ $= \dfrac{\left(6.4 \times 10^{5}\right)^2}{2 \times 6.4 \times 10^{6}}$ $= 32000\ \mathrm{m}$.`,
+        ],
+      },
+    },
+    {
+      id: "C03-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/em-waves-comm-11-phy/Ex Q.2b (viii)" },
+      stem: t`A TV tower is $600\ \mathrm{m}$ high. What is its coverage range? (Radius of the Earth $= 6400\ \mathrm{km}$)`,
+      verify: { kind: "value", inputs: { h: "600", R: "6.4e6" }, params: { ask: "range" } },
+      options: [
+        { key: "A", text: t`$87.6\ \mathrm{km}$`, correct: true, value: "87.6000000000000" },
+        { key: "B", text: t`$62\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M1", value: "62" },
+        { key: "C", text: t`$124\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M2", value: "124" },
+        { key: "D", text: t`$2770\ \mathrm{km}$`, correct: false, misconceptionId: "C03-M3", value: "2770" },
+      ],
+      solution: {
+        steps: [
+          t`$d$ $= \sqrt{2 \times 6.4 \times 10^{6} \times 600}$ $= \sqrt{7.68 \times 10^{9}}$.`,
+          t`$d \approx 8.76 \times 10^{4}\ \mathrm{m}$ $= 87.6\ \mathrm{km}$.`,
+        ],
+      },
+    },
+    {
+      id: "C03-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-11/em-waves-comm-11-phy/Ex Q.2b (vii)" },
+      stem: t`A TV tower is $200\ \mathrm{m}$ high, and the population around it averages $1000$ people per $\mathrm{km^2}$. How many people can receive its signal? (Radius of the Earth $= 6.4 \times 10^{6}\ \mathrm{m}$)`,
+      verify: { kind: "value", inputs: { h: "200", R: "6.4e6", rho: "1000" }, params: { ask: "people" } },
+      options: [
+        { key: "A", text: t`$8.04 \times 10^{6}$`, correct: true, value: "8040000" },
+        { key: "B", text: t`$2.56 \times 10^{6}$`, correct: false, misconceptionId: "C03-M11", value: "2560000" },
+        { key: "C", text: t`$1.59 \times 10^{5}$`, correct: false, misconceptionId: "C03-M12", value: "159000" },
+        { key: "D", text: t`$2.01 \times 10^{6}$`, correct: false, misconceptionId: "C03-M13", value: "2010000" },
+      ],
+      solution: {
+        steps: [
+          t`Area covered $= \pi d^2$ $= 2\pi Rh$ $= 2\pi \times 6400 \times 0.2\ \mathrm{km^2}$ $\approx 8042\ \mathrm{km^2}$.`,
+          t`Population $= 8042 \times 1000$ $\approx 8.04 \times 10^{6}$.`,
+        ],
+      },
+    },
+  ],
+};

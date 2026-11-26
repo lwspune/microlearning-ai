@@ -1,0 +1,305 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c06: Concept = {
+  id: "C06",
+  status: "approved",
+  hook: {
+    prompt: t`A voltmeter across a new cell reads $1.46\ \mathrm{V}$, but the label says $1.5\ \mathrm{V}$. Is the cell faulty, or is the voltmeter?`,
+    reveal: t`Neither. A voltmeter draws a little current, so it reads the terminal p.d. $\varepsilon - Ir$, a bit below the emf. A potentiometer balances the cell so that it draws no current at all, and so it measures the emf itself.`,
+  },
+  explanation: {
+    intuition: [
+      t`A **potentiometer** is a long uniform wire carrying a steady current from a driver cell.`,
+      t`The steady current makes the potential fall evenly along the wire.`,
+      t`So the p.d. between one end and any point is proportional to the length between them.`,
+      t`A cell is joined through a galvanometer and a sliding contact, the **jockey**, to the wire.`,
+      t`At one point, the **balance point**, the galvanometer shows no deflection: the cell's emf equals the wire's p.d.`,
+      t`At balance the cell sends no current, so nothing is lost inside it.`,
+    ],
+    formal: [
+      {
+        title: "Principle",
+        points: [
+          t`A wire AB of length $L$ and resistance $R$ carries a steady current $I$ from the driver cell.`,
+          t`A length $l$ of the wire has resistance $\dfrac{R}{L}\,l$, so the p.d. across it is $V = \dfrac{IR}{L}\,l$.`,
+          t`With $I$ steady and the wire uniform, $V \propto l$.`,
+          t`This needs a wire of the same cross-section and material all along.`,
+        ],
+      },
+      {
+        title: "Potential gradient",
+        points: [
+          t`The **potential gradient** $K$ is the p.d. per unit length of the wire: $K = \dfrac{V_{AB}}{L}$.`,
+          t`With the driver's emf $\varepsilon$ and internal resistance $r$, $I = \dfrac{\varepsilon}{R + r}$.`,
+          t`So $K = \dfrac{IR}{L} = \dfrac{\varepsilon R}{L\left(R + r\right)}$, in V/m.`,
+          t`$K$ depends on the driver's emf and internal resistance, any rheostat, and the wire's $R$ and $L$.`,
+          t`It does not depend on the cell being measured.`,
+        ],
+      },
+      {
+        title: "The balance point",
+        points: [
+          t`The cell's positive terminal goes to A, the end at the higher potential.`,
+          t`At the balance point, a length $l$ from A, the galvanometer reads zero.`,
+          t`Then the cell's emf equals the p.d. of that length: $\varepsilon_1 = Kl$.`,
+          t`The driver keeps sending its current along the wire; only the cell's branch carries none.`,
+          t`A balance point exists only if $KL > \varepsilon_1$: the whole wire's p.d. must exceed the emf.`,
+          t`Tap the jockey, never slide it: scraping the wire spoils its uniform cross-section.`,
+        ],
+        figure: {
+          alt: "A potentiometer. A long wire AB, with a driver cell ε and a rheostat Rh joined across it above. Step 1: below, the cell under test ε₁, its + terminal joined to A, then a galvanometer G and a jockey J touching the wire. Step 2: the length l from A to the balance point J. Step 4: the driver's current I flowing along the wire from A to B.",
+          axes: "none",
+          view: { x: [0, 10], y: [-2.9, 2.9] },
+          elements: [
+            { kind: "segment", from: [0.5, 0], to: [9.5, 0], tone: "good" },
+            { kind: "segment", from: [0.5, 0], to: [0.5, 2] },
+            { kind: "segment", from: [0.5, 2], to: [2, 2] },
+            { kind: "segment", from: [2, 2], to: [2.88, 2] },
+            { kind: "segment", from: [3.12, 2], to: [4, 2] },
+            { kind: "segment", from: [2.88, 1.6], to: [2.88, 2.4] },
+            { kind: "segment", from: [3.12, 1.8], to: [3.12, 2.2] },
+            { kind: "label", at: [3, 2.5], label: "ε", labelAt: "n" },
+            { kind: "label", at: [2.88, 1.6], label: "+", labelAt: "sw" },
+            { kind: "segment", from: [4, 2], to: [5.5, 2] },
+            { kind: "segment", from: [5.5, 2], to: [6, 2] },
+            { kind: "curve", points: [[6, 2], [6.0833, 2.17], [6.1667, 2], [6.25, 1.83], [6.3333, 2], [6.4167, 2.17], [6.5, 2], [6.5833, 1.83], [6.6667, 2], [6.75, 2.17], [6.8333, 2], [6.9167, 1.83], [7, 2]] },
+            { kind: "segment", from: [7, 2], to: [7.5, 2] },
+            { kind: "label", at: [6.5, 2.29], label: "Rh", labelAt: "n" },
+            { kind: "segment", from: [7.5, 2], to: [9.5, 2] },
+            { kind: "segment", from: [9.5, 2], to: [9.5, 0] },
+            { kind: "point", at: [0.5, 0], label: "A", labelAt: "w" },
+            { kind: "point", at: [9.5, 0], label: "B", labelAt: "e" },
+            { kind: "segment", from: [0.5, 0], to: [0.5, -2], step: 1 },
+            { kind: "segment", from: [0.5, -2], to: [1.8, -2], step: 1 },
+            { kind: "segment", from: [1.8, -2], to: [2.58, -2], step: 1 },
+            { kind: "segment", from: [2.82, -2], to: [3.6, -2], step: 1 },
+            { kind: "segment", from: [2.58, -2.4], to: [2.58, -1.6], step: 1 },
+            { kind: "segment", from: [2.82, -2.2], to: [2.82, -1.8], step: 1 },
+            { kind: "label", at: [2.7, -2.5], label: "ε₁", labelAt: "s", step: 1 },
+            { kind: "label", at: [2.58, -1.6], label: "+", labelAt: "nw", step: 1 },
+            { kind: "segment", from: [3.6, -2], to: [4.3, -2], step: 1 },
+            { kind: "segment", from: [4.3, -2], to: [4.45, -2], step: 1 },
+            { kind: "segment", from: [5.15, -2], to: [5.3, -2], step: 1 },
+            { kind: "circle", centre: [4.8, -2], r: 0.35, step: 1 },
+            { kind: "label", at: [4.8, -2.375], label: "G", labelAt: "n", step: 1 },
+            { kind: "segment", from: [5.3, -2], to: [6.5, -2], step: 1 },
+            { kind: "segment", from: [6.5, -2], to: [6.5, 0], step: 1 },
+            { kind: "point", at: [6.5, 0], label: "J", labelAt: "ne", step: 2 },
+            { kind: "segment", from: [0.5, 0.55], to: [6.5, 0.55], label: "l", labelAt: "n", tone: "good", step: 2 },
+            { kind: "vector", from: [7.8, 0], to: [8.4, 0], label: "I", labelAt: "s", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Changing the gradient",
+        points: [
+          t`Since $l = \dfrac{\varepsilon_1}{K}$, a smaller $K$ moves the balance point farther from A.`,
+          t`A larger current in the wire raises $K$, so the balance point moves nearer A.`,
+          t`A longer wire with the same p.d. across it has a smaller $K$, so $l$ grows.`,
+          t`A small $K$ gives a long balancing length, which can be read more accurately.`,
+        ],
+      },
+      {
+        title: "Potentiometer and voltmeter",
+        points: [
+          t`A voltmeter has finite resistance, draws current, and reads the terminal p.d. $\varepsilon - Ir$.`,
+          t`A potentiometer draws no current at balance: it acts as a voltmeter of infinite resistance.`,
+          t`So it measures emf; it is also far more sensitive, down to about $10^{-6}\ \mathrm{V}$.`,
+          t`Its drawbacks: it is not portable, and gives no direct reading; $K$ must be found first.`,
+        ],
+      },
+    ],
+    worked: {
+      prompt: t`A potentiometer wire $5\ \mathrm{m}$ long has a resistance of $6\ \Omega$. Its driver cell has emf $3\ \mathrm{V}$ and internal resistance $3\ \Omega$. A cell balances at $3.5\ \mathrm{m}$. Find the potential gradient and the cell's emf.`,
+      steps: [
+        t`Current in the wire: $I = \dfrac{\varepsilon}{R + r} = \dfrac{3}{6 + 3} = \dfrac{1}{3}\ \mathrm{A}$.`,
+        t`P.d. across the whole wire: $V_{AB} = IR = \dfrac{1}{3} \times 6 = 2\ \mathrm{V}$.`,
+        t`$K = \dfrac{V_{AB}}{L} = \dfrac{2}{5} = 0.4\ \mathrm{V/m}$.`,
+        t`At balance no current flows from the cell: $\varepsilon_1 = Kl = 0.4 \times 3.5 = 1.4\ \mathrm{V}$.`,
+      ],
+      answer: t`$K = 0.4\ \mathrm{V/m}$, $\varepsilon_1 = 1.4\ \mathrm{V}$`,
+    },
+    visualSpec: t`Drag the jockey along the wire and watch the galvanometer needle swing one way, pass zero at the balance point, then swing the other way.`,
+  },
+  misconceptions: [
+    {
+      id: "C06-M1",
+      mistake: "Thinks no current flows anywhere in the circuit at the balance point.",
+      remediation: t`Only the galvanometer branch carries no current at balance. The driver keeps sending its steady current along the wire; that is what sets up $K$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M2",
+      mistake: "Thinks the cell under test still sends a small current at balance, as into a voltmeter.",
+      remediation: t`At balance the cell's emf exactly matches the wire's p.d., so it sends no current at all. That is why a potentiometer measures emf, not $\varepsilon - Ir$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M3",
+      mistake: "Takes the whole driver emf across the wire, ignoring its internal resistance.",
+      remediation: t`The driver's current is $I = \dfrac{\varepsilon}{R + r}$; part of its emf is lost inside it. The wire gets $IR$, so $K = \dfrac{IR}{L}$.`,
+      fallback: { kind: "ext", topic: "Ohm's law and internal resistance (Std XI Physics)" },
+    },
+    {
+      id: "C06-M4",
+      mistake: "Mixes centimetres or millimetres with metres.",
+      remediation: t`Write $K$ and the length in the same unit. $1\ \mathrm{V/m} = 0.01\ \mathrm{V/cm}$, and $1\ \mu\mathrm{V/mm} = 10^{-3}\ \mathrm{V/m}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M5",
+      mistake: "Confuses the potential gradient with the wire's resistance per unit length.",
+      remediation: t`$K$ is volts per metre, $\dfrac{IR}{L}$, set by the driver's current. The wire's ohms per metre, $\dfrac{R}{L}$, is a different quantity, and the wire's resistance is not what lets it measure emf.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M6",
+      mistake: "Takes the balancing length to grow as the potential gradient grows.",
+      remediation: t`At balance $\varepsilon_1 = Kl$, so $l = \dfrac{\varepsilon_1}{K}$: a larger gradient needs a shorter length to give the same p.d.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M7",
+      mistake: "Thinks the balance point is fixed by the cell alone, whatever happens to the wire's current.",
+      remediation: t`The balance point is where $Kl = \varepsilon_1$. Change the wire's current or length and $K$ changes, so $l$ moves.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M8",
+      mistake: "Thinks a longer wire has a larger potential gradient, because its resistance is larger.",
+      remediation: t`With the same p.d. spread over more length, each metre gets less: $K = \dfrac{V}{L}$ falls as $L$ grows.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M9",
+      mistake: "Swaps the roles of the driver cell and the cell under test.",
+      remediation: "The driver cell sends the current along the wire. The cell under test sits in the galvanometer branch, which carries no current at balance.",
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C06-M10",
+      mistake: "Leaves the wire's own resistance out of the series total.",
+      remediation: t`The battery drives its current through everything in series: $\varepsilon = I\left(R_{box} + R + r\right)$. Subtract both $R$ and $r$ to find the box.`,
+      fallback: { kind: "ext", topic: "resistors in series (Std XI Physics)" },
+    },
+  ],
+  items: [
+    {
+      id: "C06-Q1",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/current-electricity-12-phy/Ex Q.1 (ii)" },
+      stem: t`When the balance point is obtained in a potentiometer, a current is drawn from`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "bal" } },
+      options: [
+        { key: "A", text: t`neither the cell nor the auxiliary battery`, correct: false, misconceptionId: "C06-M1", value: "neither" },
+        { key: "B", text: t`both the cell and the auxiliary battery`, correct: false, misconceptionId: "C06-M2", value: "both" },
+        { key: "C", text: t`the cell only`, correct: false, misconceptionId: "C06-M9", value: "cell_only" },
+        { key: "D", text: t`the auxiliary (driver) battery only`, correct: true, value: "aux_only" },
+      ],
+      solution: {
+        steps: [
+          t`At balance the galvanometer shows no deflection, so the cell's branch carries no current.`,
+          t`The driver battery must still send its steady current along the wire to keep $K$ fixed.`,
+          t`So current is drawn from the auxiliary battery only.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q2",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2020-february/Q.1(i)" },
+      stem: t`The length of a potentiometer wire is increased, keeping the potential difference across the whole wire constant. Then`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "longer" } },
+      options: [
+        { key: "A", text: t`the null point is obtained at a larger distance`, correct: true, value: "larger_l" },
+        { key: "B", text: t`there is no change in the null point`, correct: false, misconceptionId: "C06-M7", value: "no_change" },
+        { key: "C", text: t`the potential gradient is increased`, correct: false, misconceptionId: "C06-M8", value: "K_up" },
+        { key: "D", text: t`the null point is obtained at a shorter distance`, correct: false, misconceptionId: "C06-M6", value: "shorter_l" },
+      ],
+      solution: {
+        steps: [
+          t`$K = \dfrac{V}{L}$; with $V$ fixed and $L$ larger, $K$ falls.`,
+          t`At balance $\varepsilon_1 = Kl$, so $l = \dfrac{\varepsilon_1}{K}$ grows.`,
+          t`The null point is obtained at a larger distance.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q3",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/current-electricity-12-phy/Ex Q.14" },
+      stem: t`A potentiometer wire has a length of $1.5\ \mathrm{m}$ and a resistance of $10\ \Omega$. It is connected in series with a cell of emf $4\ \mathrm{V}$ and internal resistance $5\ \Omega$. What is the potential drop per centimetre of the wire?`,
+      verify: { kind: "value", inputs: { eps: "4", r: "5", Rw: "10", L_cm: "150" }, params: { ask: "K" } },
+      options: [
+        { key: "A", text: t`$0.0178\ \mathrm{V/cm}$`, correct: true, value: "0.0178000000000000" },
+        { key: "B", text: t`$0.0267\ \mathrm{V/cm}$`, correct: false, misconceptionId: "C06-M3", value: "0.0267000000000000" },
+        { key: "C", text: t`$1.78\ \mathrm{V/cm}$`, correct: false, misconceptionId: "C06-M4", value: "1.78000000000000" },
+        { key: "D", text: t`$0.0667\ \mathrm{V/cm}$`, correct: false, misconceptionId: "C06-M5", value: "0.0667000000000000" },
+      ],
+      solution: {
+        steps: [
+          t`$I = \dfrac{\varepsilon}{R + r} = \dfrac{4}{10 + 5} = \dfrac{4}{15}\ \mathrm{A}$.`,
+          t`$V_{AB} = IR = \dfrac{4}{15} \times 10 = 2.667\ \mathrm{V}$.`,
+          t`$K = \dfrac{2.667}{150\ \mathrm{cm}} = 0.0178\ \mathrm{V/cm}$.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q4",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/current-electricity-12-phy/Ex Q.18" },
+      stem: t`A potentiometer wire $8\ \mathrm{m}$ long has a resistance of $8\ \Omega$. A resistance box and a battery of emf $2\ \mathrm{V}$ and internal resistance $2\ \Omega$ are connected in series with it. What resistance must the box have for a potential drop of $1\ \mu\mathrm{V/mm}$ along the wire?`,
+      verify: { kind: "value", inputs: { eps: "2", r: "2", Rw: "8", L_m: "8", K_uV_mm: "1" }, params: { ask: "box", sf: "4" } },
+      options: [
+        { key: "A", text: t`$2 \times 10^{6}\ \mathrm{\Omega}$`, correct: false, misconceptionId: "C06-M4", value: "2000000" },
+        { key: "B", text: t`$1990\ \mathrm{\Omega}$`, correct: true, value: "1990" },
+        { key: "C", text: t`$1992\ \mathrm{\Omega}$`, correct: false, misconceptionId: "C06-M3", value: "1992" },
+        { key: "D", text: t`$1998\ \mathrm{\Omega}$`, correct: false, misconceptionId: "C06-M10", value: "1998" },
+      ],
+      solution: {
+        steps: [
+          t`$K = \dfrac{10^{-6}\ \mathrm{V}}{10^{-3}\ \mathrm{m}} = 10^{-3}\ \mathrm{V/m}$, so the wire needs $V = KL = 8 \times 10^{-3}\ \mathrm{V}$.`,
+          t`$I = \dfrac{V}{R} = \dfrac{8 \times 10^{-3}}{8} = 10^{-3}\ \mathrm{A}$.`,
+          t`Total resistance $= \dfrac{\varepsilon}{I} = 2000\ \Omega$.`,
+          t`$R_{box} = 2000 - 8 - 2 = 1990\ \Omega$.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q5",
+      source: { kind: "pyqvault-practice", ref: "mh-hsc-12/phy-2017-march/Q.6(iii)" },
+      stem: t`What is the main advantage of a potentiometer over a voltmeter for measuring the emf of a cell?`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "adv" } },
+      options: [
+        { key: "A", text: t`At balance it draws no current from the cell, so it measures the emf itself`, correct: true, value: "no_current" },
+        { key: "B", text: t`It draws only a tiny current from the cell, so its reading is just below the emf`, correct: false, misconceptionId: "C06-M2", value: "tiny_current" },
+        { key: "C", text: t`At balance no current flows anywhere in its circuit, so it uses no power`, correct: false, misconceptionId: "C06-M1", value: "no_power" },
+        { key: "D", text: t`Its long wire has a very large resistance, larger than any voltmeter's`, correct: false, misconceptionId: "C06-M5", value: "high_resistance" },
+      ],
+      solution: {
+        steps: [
+          t`A voltmeter has finite resistance, draws current and reads $\varepsilon - Ir$, less than the emf.`,
+          t`A potentiometer at balance draws no current from the cell, so $Ir = 0$.`,
+          t`It therefore measures the emf itself.`,
+        ],
+      },
+    },
+    {
+      id: "C06-Q6",
+      source: { kind: "pyqvault-practice", ref: "mh-sb-12/current-electricity-12-phy/Ex Q.2 (viii)" },
+      stem: t`The potential gradient along a potentiometer wire does **not** depend on`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "factor" } },
+      options: [
+        { key: "A", text: t`the emf of the driver cell`, correct: false, misconceptionId: "C06-M5", value: "driver_emf" },
+        { key: "B", text: t`the current through the wire`, correct: false, misconceptionId: "C06-M7", value: "wire_current" },
+        { key: "C", text: t`the emf of the cell being measured`, correct: true, value: "test_emf" },
+        { key: "D", text: t`the internal resistance of the driver cell`, correct: false, misconceptionId: "C06-M3", value: "driver_r" },
+      ],
+      solution: {
+        steps: [
+          t`$K = \dfrac{\varepsilon R}{L\left(R + r\right)}$ uses only the driver circuit and the wire.`,
+          t`The driver's emf, its internal resistance and the wire's current all change $K$.`,
+          t`The cell being measured only decides where the balance point falls, not $K$.`,
+        ],
+      },
+    },
+  ],
+};
