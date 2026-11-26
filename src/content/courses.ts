@@ -203,6 +203,7 @@ export const courses: Course[] = [
       { chapter: "thermodynamics" },
       { chapter: "oscillations" },
       { chapter: "superposition-of-waves" },
+      { chapter: "wave-optics" },
     ],
   },
   {
