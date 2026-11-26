@@ -199,7 +199,7 @@ export const c05: Concept = {
         { key: "A", text: t`$54$`, correct: false, misconceptionId: "C05-M11", value: "54" },
         { key: "B", text: t`$46600$`, correct: false, misconceptionId: "C05-M12", value: "46600" },
         { key: "C", text: t`$0.0626$`, correct: true, value: "0.0626000000000000" },
-        { key: "D", text: t`$2.15 \cdot 10^{-5}$`, correct: false, misconceptionId: "C05-M10", value: "2.15000000000000e-5" },
+        { key: "D", text: t`$2.15 \times 10^{-5}$`, correct: false, misconceptionId: "C05-M10", value: "2.15000000000000e-5" },
       ],
       solution: {
         steps: [
