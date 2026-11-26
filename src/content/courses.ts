@@ -386,6 +386,7 @@ export const courses: Course[] = [
       { chapter: "p-block-16-17-18" },
       { chapter: "transition-elements" },
       { chapter: "halogen-derivatives" },
+      { chapter: "alcohols-phenols-ethers" },
     ],
   },
   {
