@@ -670,6 +670,18 @@ south-west (test_figures), and Std IX Sets was built with the new placement.
 - **Recommendation:** one small batch (rebuild the six concepts' figures,
   then check a figure sheet). Ask the owner first.
 
+### 14. Underscores in figure labels print as they are (logged 2026-11-26, open)
+Learning: a figure label is plain text, so "B_H" shows its underscore instead of
+a subscript. It slipped into Ch.9 ("I_g") and Ch.12 ("B_H", "B_V") of Std XII
+physics; both were fixed with Unicode subscripts (Bₕ, Bᵥ). `validateChapter`
+now rejects "_" in a label for physics chapters (`physicsLabels`).
+- **Scope:** maths only: Std XII Statistics C13 (`c13-two-regression-lines`), three
+  labels "b_xy = 1/2", "b_yx = 1/2", "b_yx · b_xy = 1/4".
+- **Does it apply:** yes, the underscores show on the figure; cosmetic, readable.
+- **Recommendation:** relabel with Unicode (bₓᵧ has no Unicode ʏ subscript, so
+  "b(xy)" or "bxy"), reseed the chapter, then widen the rule to every subject.
+  Ask the owner first.
+
 ## Sequences and Series opens with A.P. (approved 2026-10-16, branch `series-ap-basics`)
 
 The owner: the chapter "should start with basics of seq and series + ap". The
