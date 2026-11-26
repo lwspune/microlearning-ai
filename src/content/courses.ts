@@ -388,6 +388,7 @@ export const courses: Course[] = [
       { chapter: "coordination-compounds" },
       { chapter: "halogen-derivatives" },
       { chapter: "alcohols-phenols-ethers" },
+      { chapter: "aldehydes-ketones-acids" },
     ],
   },
   {
