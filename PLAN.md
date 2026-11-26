@@ -1614,6 +1614,13 @@ papers `mh-hsc-12-pyq/data/*-12-pyq` (16 chapters, 384 rows). Packs per chapter:
    I review every concept, key, distractor and figure, phone probe, register, commit, seed, push.
 3. Std XI the same way. Each chapter goes to main as it passes (owner: keep pushing while Vercel is blocked).
 
+**Status (2026-11-27): complete.** All 32 chapters (16 Std XII, then 16 Std XI) are live in the MH Board course,
+Std XI chemistry before Std XII, every chapter whole (258 concepts, 1314 items). Owner changes on the way: commit each
+chapter but merge and push once all are in (2026-11-26); after the first five agents finished, I wrote every remaining
+concept myself (Amines onwards and all of Std XI). Each chapter passed check-concept, its tests, the typecheck, the
+phone overflow probe and the seed; visual concepts' figures were read on figure sheets. Book and board misprints found
+on the way are logged for PYQ Vault.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
