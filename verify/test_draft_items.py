@@ -83,7 +83,7 @@ class NamedValue(unittest.TestCase):
     def test_a_name_that_clashes_with_python_or_sympy_says_to_rename_it(self):
         from draft_items import option_value
 
-        for name in ("sum", "field"):
+        for name in ("sum", "field", "1_minus_a"):
             with self.assertRaisesRegex(ValueError, f"'{name}'.*rename"):
                 option_value(name)
 

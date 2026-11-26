@@ -28,7 +28,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from sympy import Basic, I, Rational, Tuple, latex, simplify, symbols, sympify, expand
+from sympy import Basic, I, Rational, SympifyError, Tuple, latex, simplify, symbols, sympify, expand
 
 from ts_literal import figure_ts
 
@@ -96,7 +96,10 @@ def quantity_text(val) -> str:
 
 def option_value(value_str: str):
     """Parse a model's value as written into the item. A named answer must come back as a sympy expression."""
-    val = sympify(value_str, locals={"I": I, "x": _XR, "y": _YR})
+    try:
+        val = sympify(value_str, locals={"I": I, "x": _XR, "y": _YR})
+    except SympifyError:
+        raise ValueError(f"named answer {value_str!r} does not parse: rename it to start with a letter") from None
     if not isinstance(val, Basic):
         raise ValueError(f"named answer {value_str!r} parses as a Python or sympy name, not a symbol: rename it (e.g. add a suffix)")
     return simplify(val)
