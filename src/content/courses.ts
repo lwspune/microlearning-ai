@@ -392,6 +392,7 @@ export const courses: Course[] = [
       { chapter: "amines" },
       { chapter: "biomolecules" },
       { chapter: "polymers" },
+      { chapter: "green-chemistry-nanochemistry" },
     ],
   },
   {
