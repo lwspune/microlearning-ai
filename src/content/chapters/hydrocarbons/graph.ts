@@ -54,4 +54,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Benzene substitutes rather than adds: nitration ($\ce{NO2+}$), halogenation, sulfonation, Friedel-Crafts alkylation and acylation; groups direct ortho-para or meta`,
     prereqs: ["C07"], ext: [], sources: [S("Aromatic Hydrocarbons")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "conformations", title: "Conformations of ethane", group: "Alkanes", tier: "core",
+    oneLiner: t`Rotation about the C–C $\sigma$ bond gives conformations: staggered (most stable, least torsional strain) and eclipsed; Newman and sawhorse projections show them`,
+    prereqs: ["C01"], ext: [],
+    sources: ["jee-main/hydrocarbons#Alkanes: Preparation, Structure and Conformations", "cbse/hydrocarbons#Alkanes"],
+  },
 ];

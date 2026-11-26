@@ -96,7 +96,8 @@ const cnMaharashtra: Coverage = {
 // regions) is no longer doubtful for MH Board and MHT-CET: the HSC papers ask it (2026-10-18).
 // The book's concepts, in chapters where another course adds one the book doesn't teach: MHT-CET's
 // Cayley–Hamilton, two circles and angle between curves, NDA's phase 2c concepts (owner, 2026-10-19), and the
-// physics other courses ask (2026-11-26: PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET and NDA", phase 2).
+// physics other courses ask (2026-11-26: PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET and NDA", phase 2), and the
+// chemistry they ask (2026-11-27: PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA", phase 2).
 // Keeps MH Board's and MHT-CET's maps as they were.
 const book = (chapter: string, last: number): CourseChapter => ({ chapter, coverage: { ids: range(1, last), status: "approved" } });
 
@@ -283,10 +284,11 @@ function ncertChemistry(exam: NcertExam): CourseChapter[] {
   const xi = (slug: string, title: string, entry: CourseChapter): CourseChapter => ({ ...entry, slug, title, standard: 11 });
   const xii = (slug: string, title: string, entry: CourseChapter): CourseChapter => ({ ...entry, slug, title, standard: 12 });
   return [
+    // JEE adds equivalents and normality (analytical C09); NDA's general science (C08, C09) is NDA's alone.
     xi("some-basic-concepts-of-chemistry", "Some Basic Concepts of Chemistry", {
-      chapter: "basic-concepts-chemistry",
+      ...chm("basic-concepts-chemistry", range(1, 7)),
       more: [
-        { chapter: "analytical-chemistry" },
+        jee ? { chapter: "analytical-chemistry" } : chm("analytical-chemistry", range(1, 8)),
         ...(jee ? [chm("states-of-matter", ["C01", "C03", "C04", "C05", "C06"], ["C06"]), { chapter: "redox-reactions" }] : []),
       ],
     }),
@@ -307,13 +309,16 @@ function ncertChemistry(exam: NcertExam): CourseChapter[] {
     }),
     xi("hydrocarbons", "Hydrocarbons", { chapter: "hydrocarbons" }),
     xii("solutions", "Solutions", { chapter: "solutions" }),
-    xii("electrochemistry", "Electrochemistry", { chapter: "electrochemistry" }),
+    // Corrosion is JEE's; the rationalised book dropped it.
+    xii("electrochemistry", "Electrochemistry", jee ? { chapter: "electrochemistry" } : chm("electrochemistry", range(1, 10))),
     // JEE asks first-order kinetics through radioactive decay.
     xii("chemical-kinetics", "Chemical Kinetics", { chapter: "chemical-kinetics", ...(jee ? { more: [chm("nuclear-chemistry", ["C05"])] } : {}) }),
     // The rationalised CBSE book dropped the p-block; NEET's and JEE's 2024 syllabi keep groups 13 to 18.
     ...(exam === "cbse" ? [] : [xii("p-block-elements", "The p-Block Elements", { chapter: "p-block-13-14-15", more: [{ chapter: "p-block-16-17-18" }] })]),
-    xii("d-and-f-block-elements", "The d- and f-Block Elements", chm("transition-elements", [...range(1, 5), ...range(7, 9)])),
-    xii("coordination-compounds", "Coordination Compounds", { chapter: "coordination-compounds" }),
+    // JEE adds salt analysis.
+    xii("d-and-f-block-elements", "The d- and f-Block Elements", chm("transition-elements", [...range(1, 5), ...range(7, 9), ...(jee ? ["C10"] : [])])),
+    // Metal carbonyls are NEET's and JEE's; the rationalised book dropped them.
+    xii("coordination-compounds", "Coordination Compounds", exam === "cbse" ? chm("coordination-compounds", range(1, 10)) : { chapter: "coordination-compounds" }),
     xii("haloalkanes-and-haloarenes", "Haloalkanes and Haloarenes", { chapter: "halogen-derivatives" }),
     xii("alcohols-phenols-and-ethers", "Alcohols, Phenols and Ethers", { chapter: "alcohols-phenols-ethers" }),
     xii("aldehydes-ketones-and-carboxylic-acids", "Aldehydes, Ketones and Carboxylic Acids", { chapter: "aldehydes-ketones-acids" }),
@@ -435,37 +440,37 @@ export const courses: Course[] = [
       book("atoms-nuclei", 11),
       { chapter: "semiconductor-devices" },
       // Std XI Chemistry, Balbharati book order (PLAN.md "Std XI and XII Chemistry").
-      { chapter: "basic-concepts-chemistry" },
-      { chapter: "analytical-chemistry" },
+      book("basic-concepts-chemistry", 7),
+      book("analytical-chemistry", 8),
       { chapter: "analytical-techniques" },
-      { chapter: "structure-of-atom" },
+      book("structure-of-atom", 7),
       { chapter: "chemical-bonding" },
       { chapter: "redox-reactions" },
       { chapter: "periodic-table" },
-      { chapter: "s-block-elements" },
+      book("s-block-elements", 6),
       { chapter: "p-block-13-14-15" },
       { chapter: "states-of-matter" },
       { chapter: "adsorption-colloids" },
       { chapter: "chemical-equilibrium" },
       { chapter: "nuclear-chemistry" },
-      { chapter: "organic-chemistry-basics" },
-      { chapter: "hydrocarbons" },
-      { chapter: "everyday-chemistry" },
+      book("organic-chemistry-basics", 8),
+      book("hydrocarbons", 8),
+      book("everyday-chemistry", 7),
       // Std XII Chemistry, Balbharati book order (PLAN.md "Std XI and XII Chemistry").
       { chapter: "solid-state" },
       { chapter: "solutions" },
       { chapter: "ionic-equilibria" },
       { chapter: "chemical-thermodynamics" },
-      { chapter: "electrochemistry" },
+      book("electrochemistry", 10),
       { chapter: "chemical-kinetics" },
       { chapter: "p-block-16-17-18" },
-      { chapter: "transition-elements" },
-      { chapter: "coordination-compounds" },
+      book("transition-elements", 9),
+      book("coordination-compounds", 10),
       { chapter: "halogen-derivatives" },
       { chapter: "alcohols-phenols-ethers" },
       { chapter: "aldehydes-ketones-acids" },
       { chapter: "amines" },
-      { chapter: "biomolecules" },
+      book("biomolecules", 7),
       { chapter: "polymers" },
       { chapter: "green-chemistry-nanochemistry" },
     ],
@@ -641,16 +646,16 @@ export const courses: Course[] = [
       // chapters whole, in book order. CET splits Hydrocarbons four ways, files the analytical chapter's formulas and
       // stoichiometry (book 2.4 to 2.7) under Some Basic Concepts, and doesn't list Analytical Techniques, Chemical
       // Equilibrium, Nuclear Chemistry or Chemistry in Everyday Life.
-      { chapter: "basic-concepts-chemistry", more: [chm("analytical-chemistry", range(4, 8))] },
-      { chapter: "structure-of-atom" },
+      { ...book("basic-concepts-chemistry", 7), more: [chm("analytical-chemistry", range(4, 8))] },
+      book("structure-of-atom", 7),
       { chapter: "chemical-bonding", title: "Chemical Bonding and Molecular Structure" },
       { chapter: "redox-reactions" },
       { chapter: "periodic-table" },
-      { chapter: "s-block-elements" },
+      book("s-block-elements", 6),
       { chapter: "p-block-13-14-15" },
       { chapter: "states-of-matter" },
       { chapter: "adsorption-colloids", slug: "surface-chemistry", title: "Surface Chemistry" },
-      { chapter: "organic-chemistry-basics" },
+      book("organic-chemistry-basics", 8),
       { ...chm("hydrocarbons", range(1, 2)), slug: "alkanes", title: "Alkanes" },
       { ...chm("hydrocarbons", range(3, 5)), slug: "alkenes", title: "Alkenes" },
       { ...chm("hydrocarbons", ["C06"]), slug: "alkynes", title: "Alkynes" },
@@ -659,16 +664,16 @@ export const courses: Course[] = [
       { chapter: "solutions", title: "Solutions and Colligative Properties" },
       { chapter: "ionic-equilibria" },
       { chapter: "chemical-thermodynamics", title: "Chemical Thermodynamics and Energetics" },
-      { chapter: "electrochemistry" },
+      book("electrochemistry", 10),
       { chapter: "chemical-kinetics" },
       { chapter: "p-block-16-17-18" },
-      { chapter: "transition-elements" },
-      { chapter: "coordination-compounds" },
+      book("transition-elements", 9),
+      book("coordination-compounds", 10),
       { chapter: "halogen-derivatives" },
       { chapter: "alcohols-phenols-ethers" },
       { chapter: "aldehydes-ketones-acids" },
       { chapter: "amines" },
-      { chapter: "biomolecules" },
+      book("biomolecules", 7),
       { chapter: "polymers" },
       { chapter: "green-chemistry-nanochemistry" },
     ],
@@ -827,7 +832,7 @@ export const courses: Course[] = [
       // against the books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA"). NDA asks Class 9 and 10
       // general science, so each takes the books' basics, filed under Std XI.
       {
-        ...chm("basic-concepts-chemistry", ["C01"]),
+        ...chm("basic-concepts-chemistry", ["C01", "C08"]),
         slug: "matter-and-its-states",
         title: "Matter and Its States",
         standard: 11,
@@ -849,13 +854,18 @@ export const courses: Course[] = [
         standard: 11,
         more: [chm("analytical-chemistry", range(4, 7), ["C07"])],
       },
-      // Displacement as redox, exothermic reactions, electrolysis and precipitation.
+      // The types of reactions, then displacement as redox, exothermic reactions, electrolysis and precipitation.
       {
-        ...chm("redox-reactions", ["C01", "C04"]),
+        ...chm("basic-concepts-chemistry", ["C09"]),
         slug: "chemical-reactions",
         title: "Chemical Reactions",
         standard: 11,
-        more: [chm("chemical-thermodynamics", ["C07"], ["C07"]), chm("electrochemistry", ["C04"]), chm("ionic-equilibria", ["C09"], ["C09"])],
+        more: [
+          chm("redox-reactions", ["C01", "C04"]),
+          chm("chemical-thermodynamics", ["C07"], ["C07"]),
+          chm("electrochemistry", ["C04"]),
+          chm("ionic-equilibria", ["C09"], ["C09"]),
+        ],
       },
       {
         ...chm("ionic-equilibria", ["C01", "C03", "C05"]),
@@ -865,7 +875,7 @@ export const courses: Course[] = [
         more: [chm("s-block-elements", ["C06"])],
       },
       // Water's anomalies are hydrogen bonding.
-      { ...chm("s-block-elements", ["C01", "C02"]), slug: "hydrogen-and-water", title: "Hydrogen and Water", standard: 11, more: [chm("states-of-matter", ["C02"])] },
+      { ...chm("s-block-elements", ["C01", "C02", "C07"]), slug: "hydrogen-and-water", title: "Hydrogen and Water", standard: 11, more: [chm("states-of-matter", ["C02"])] },
       {
         ...chm("p-block-13-14-15", ["C04", "C05"]),
         slug: "carbon-and-its-compounds",
@@ -883,7 +893,7 @@ export const courses: Course[] = [
         slug: "metals-and-non-metals",
         title: "Metals and Non-Metals",
         standard: 11,
-        more: [chm("electrochemistry", ["C07"]), chm("transition-elements", ["C05", "C06"])],
+        more: [chm("electrochemistry", ["C07", "C11"]), chm("transition-elements", ["C05", "C06"])],
       },
       // The Haber, contact and other industrial processes.
       {
@@ -891,7 +901,7 @@ export const courses: Course[] = [
         slug: "industrial-and-applied-chemistry",
         title: "Industrial and Applied Chemistry",
         standard: 11,
-        more: [chm("p-block-13-14-15", ["C07"]), chm("p-block-16-17-18", ["C04", "C06"], ["C04"])],
+        more: [chm("p-block-13-14-15", ["C07"]), chm("p-block-16-17-18", ["C04", "C06"], ["C04"]), chm("everyday-chemistry", ["C08"])],
       },
       { ...chm("everyday-chemistry", ["C01", "C02", "C05", "C06", "C07"]), slug: "chemistry-in-everyday-life", standard: 11 },
     ],

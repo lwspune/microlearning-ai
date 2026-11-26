@@ -9,6 +9,7 @@ import { c07 } from "./concepts/c07-electrode-potentials.ts";
 import { c08 } from "./concepts/c08-nernst-equation.ts";
 import { c09 } from "./concepts/c09-cell-gibbs-energy.ts";
 import { c10 } from "./concepts/c10-commercial-cells.ts";
+import { c11 } from "./concepts/c11-corrosion.ts";
 import { graph } from "./graph.ts";
 
 export const electrochemistry: Chapter = {
@@ -19,5 +20,5 @@ export const electrochemistry: Chapter = {
   // Balbharati Chemistry Std XII (PLAN.md "Std XI and XII Chemistry").
   standard: 12,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
 };

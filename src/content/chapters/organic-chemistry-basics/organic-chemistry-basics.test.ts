@@ -13,10 +13,10 @@ describe("Std XI Basic Principles of Organic Chemistry chapter", () => {
     expect([organicChemistryBasics.subject, organicChemistryBasics.standard]).toEqual(["chemistry", 11]);
   });
 
-  it("keeps the graph: 8 concepts, 7 edges", () => {
+  it("keeps the graph: 10 concepts, 9 edges", () => {
     const edges = organicChemistryBasics.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(organicChemistryBasics.graph).toHaveLength(8);
-    expect(edges).toBe(7);
+    expect(organicChemistryBasics.graph).toHaveLength(10);
+    expect(edges).toBe(9);
   });
 
   it("keeps edges transitively reduced", () => {

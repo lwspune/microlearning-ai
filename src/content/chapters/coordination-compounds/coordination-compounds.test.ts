@@ -13,10 +13,10 @@ describe("Std XII Coordination Compounds chapter", () => {
     expect([coordinationCompounds.subject, coordinationCompounds.standard]).toEqual(["chemistry", 12]);
   });
 
-  it("keeps the graph: 10 concepts, 9 edges", () => {
+  it("keeps the graph: 11 concepts, 10 edges", () => {
     const edges = coordinationCompounds.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(coordinationCompounds.graph).toHaveLength(10);
-    expect(edges).toBe(9);
+    expect(coordinationCompounds.graph).toHaveLength(11);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {

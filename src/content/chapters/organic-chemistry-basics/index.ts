@@ -7,6 +7,8 @@ import { c05 } from "./concepts/c05-bond-fission-intermediates.ts";
 import { c06 } from "./concepts/c06-inductive-effect.ts";
 import { c07 } from "./concepts/c07-resonance-effect.ts";
 import { c08 } from "./concepts/c08-hyperconjugation.ts";
+import { c09 } from "./concepts/c09-detecting-elements.ts";
+import { c10 } from "./concepts/c10-estimating-elements.ts";
 import { graph } from "./graph.ts";
 
 export const organicChemistryBasics: Chapter = {
@@ -17,5 +19,5 @@ export const organicChemistryBasics: Chapter = {
   // Balbharati Chemistry Std XI (PLAN.md "Std XI and XII Chemistry").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10],
 };

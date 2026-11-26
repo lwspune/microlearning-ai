@@ -6,6 +6,7 @@ import { c04 } from "./concepts/c04-detergents.ts";
 import { c05 } from "./concepts/c05-analgesics.ts";
 import { c06 } from "./concepts/c06-antiseptics-disinfectants.ts";
 import { c07 } from "./concepts/c07-antibiotics.ts";
+import { c08 } from "./concepts/c08-industrial-materials.ts";
 import { graph } from "./graph.ts";
 
 export const everydayChemistry: Chapter = {
@@ -16,5 +17,5 @@ export const everydayChemistry: Chapter = {
   // Balbharati Chemistry Std XI (PLAN.md "Std XI and XII Chemistry").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08],
 };

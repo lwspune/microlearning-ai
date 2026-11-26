@@ -13,10 +13,10 @@ describe("Std XI Elements of Group 1 and 2 chapter", () => {
     expect([sBlockElements.subject, sBlockElements.standard]).toEqual(["chemistry", 11]);
   });
 
-  it("keeps the graph: 6 concepts, 4 edges", () => {
+  it("keeps the graph: 7 concepts, 5 edges", () => {
     const edges = sBlockElements.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(sBlockElements.graph).toHaveLength(6);
-    expect(edges).toBe(4);
+    expect(sBlockElements.graph).toHaveLength(7);
+    expect(edges).toBe(5);
   });
 
   it("keeps edges transitively reduced", () => {

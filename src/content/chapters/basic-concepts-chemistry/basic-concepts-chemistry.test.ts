@@ -13,10 +13,10 @@ describe("Std XI Some Basic Concepts of Chemistry chapter", () => {
     expect([basicConceptsChemistry.subject, basicConceptsChemistry.standard]).toEqual(["chemistry", 11]);
   });
 
-  it("keeps the graph: 7 concepts, 6 edges", () => {
+  it("keeps the graph: 9 concepts, 8 edges", () => {
     const edges = basicConceptsChemistry.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(basicConceptsChemistry.graph).toHaveLength(7);
-    expect(edges).toBe(6);
+    expect(basicConceptsChemistry.graph).toHaveLength(9);
+    expect(edges).toBe(8);
   });
 
   it("keeps edges transitively reduced", () => {

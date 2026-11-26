@@ -48,4 +48,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Antibiotics kill or stop microbes: penicillin (Fleming, narrow spectrum), chloramphenicol (broad spectrum), salvarsan (arsenic-based) and sulfa drugs`,
     prereqs: [], ext: [], sources: [S("Compounds with Medicinal Properties")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C08", slug: "industrial-materials", title: "Fertilisers, cement, glass and paints", group: "Materials", tier: "core",
+    oneLiner: t`Fertilisers supply N, P and K; cement is calcium silicates that set with water; glass is fused sand, soda and lime; paint is pigment in a binder`,
+    prereqs: [], ext: [],
+    sources: ["nda/industrial-and-applied-chemistry#Fertilizers", "nda/industrial-and-applied-chemistry#Cement, Glass and Building Materials", "nda/industrial-and-applied-chemistry#Paints and Coatings"],
+  },
 ];

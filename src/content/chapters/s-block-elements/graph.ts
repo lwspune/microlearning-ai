@@ -43,4 +43,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Solvay process: $\ce{CO2}$ through ammoniated brine gives $\ce{NaHCO3}$, then washing soda; temporary hardness ($\ce{Ca(HCO3)2}$) boils out; $\ce{LiAlH4}$ as a reducing agent`,
     prereqs: ["C04"], ext: [], sources: [S("Some Important Compounds of s-Block Elements")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C07", slug: "hard-water", title: "Hard water", group: "Compounds", tier: "core",
+    oneLiner: t`Calcium and magnesium salts make water hard: hydrogencarbonates give temporary hardness (boiling removes it), chlorides and sulfates permanent hardness (washing soda)`,
+    prereqs: ["C06"], ext: [],
+    sources: ["nda/hydrogen-and-water#Hardness and Purity of Water"],
+  },
 ];

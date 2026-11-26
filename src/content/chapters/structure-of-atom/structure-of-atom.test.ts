@@ -13,10 +13,10 @@ describe("Std XI Structure of Atom chapter", () => {
     expect([structureOfAtom.subject, structureOfAtom.standard]).toEqual(["chemistry", 11]);
   });
 
-  it("keeps the graph: 7 concepts, 6 edges", () => {
+  it("keeps the graph: 9 concepts, 8 edges", () => {
     const edges = structureOfAtom.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(structureOfAtom.graph).toHaveLength(7);
-    expect(edges).toBe(6);
+    expect(structureOfAtom.graph).toHaveLength(9);
+    expect(edges).toBe(8);
   });
 
   it("keeps edges transitively reduced", () => {

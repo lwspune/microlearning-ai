@@ -13,9 +13,9 @@ describe("Std XII Biomolecules chapter", () => {
     expect([biomolecules.subject, biomolecules.standard]).toEqual(["chemistry", 12]);
   });
 
-  it("keeps the graph: 7 concepts, 4 edges", () => {
+  it("keeps the graph: 8 concepts, 4 edges", () => {
     const edges = biomolecules.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(biomolecules.graph).toHaveLength(7);
+    expect(biomolecules.graph).toHaveLength(8);
     expect(edges).toBe(4);
   });
 

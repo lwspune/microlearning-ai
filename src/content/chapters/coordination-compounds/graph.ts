@@ -64,4 +64,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`A larger stability constant means a more stable complex; charge, size and chelation raise it; uses in medicine, analysis and biology`,
     prereqs: ["C02"], ext: [], sources: [S("Stability of Coordination Compounds"), S("Applications of Coordination Compounds")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C11", slug: "metal-carbonyls", title: "Metal carbonyls", group: "Bonding", tier: "core",
+    oneLiner: t`CO gives a lone pair to the metal ($\sigma$) and takes metal d electrons back into its $\pi^*$ orbital (synergic bonding), so the C–O bond lengthens`,
+    prereqs: ["C08"], ext: [],
+    sources: ["jee-main/coordination-compounds#Metal Carbonyls, Stability and Applications", "neet/coordination-compounds#Crystal Field Theory and Metal Carbonyls"],
+  },
 ];

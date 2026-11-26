@@ -1208,7 +1208,12 @@ describe("the catalog", () => {
         })
         .sort();
     const ids = (chapter: string, ...list: string[]) => list.map((id) => `${chapter} ${id}`);
-    const whole = (chapter: string) => chapters.find((c) => c.slug === chapter)!.graph.map((n) => `${chapter} ${n.id}`);
+    /** The book's concepts of a pool chapter (phase 2's concepts are tested below). */
+    const whole = (chapter: string) =>
+      chapters
+        .find((c) => c.slug === chapter)!
+        .graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-")))
+        .map((n) => `${chapter} ${n.id}`);
     const subjectsOf = (slug: string) => findCourse(slug)!.chapters.map((e) => resolveEntry(e, chapters).subject);
 
     it("comes last in each course, right after physics", () => {
@@ -1267,12 +1272,18 @@ describe("the catalog", () => {
           expect(parts(slug, "equilibrium")).toEqual(["chemical-equilibrium", "ionic-equilibria"]);
           // Purification and chromatography open NCERT's organic techniques.
           expect(parts(slug, "organic-chemistry")).toEqual(["organic-chemistry-basics", "analytical-techniques"]);
-          // NCERT's d-block has no metallurgy (its Isolation of Elements chapter was dropped).
-          expect(parts(slug, "d-and-f-block-elements")).toEqual(["transition-elements C01,C02,C03,C04,C05,C07,C08,C09"]);
         }
-        expect(parts("cbse", "some-basic-concepts-of-chemistry")).toEqual(["basic-concepts-chemistry", "analytical-chemistry"]);
+        // NCERT's d-block has no metallurgy (its Isolation of Elements chapter was dropped); JEE adds salt analysis.
+        const dBlock = "transition-elements C01,C02,C03,C04,C05,C07,C08,C09";
+        expect(parts("cbse", "d-and-f-block-elements")).toEqual([dBlock]);
+        expect(parts("neet", "d-and-f-block-elements")).toEqual([dBlock]);
+        expect(parts("jee-main", "d-and-f-block-elements")).toEqual([`${dBlock},C10`]);
+        // The book's concepts; JEE adds equivalents and normality.
+        const basics = ["basic-concepts-chemistry C01,C02,C03,C04,C05,C06,C07", "analytical-chemistry C01,C02,C03,C04,C05,C06,C07,C08"];
+        expect(parts("cbse", "some-basic-concepts-of-chemistry")).toEqual(basics);
+        expect(parts("neet", "some-basic-concepts-of-chemistry")).toEqual(basics);
         expect(parts("jee-main", "some-basic-concepts-of-chemistry")).toEqual([
-          "basic-concepts-chemistry",
+          basics[0],
           "analytical-chemistry",
           "states-of-matter C01,C03,C04,C05,C06",
           "redox-reactions",
@@ -1380,7 +1391,10 @@ describe("the catalog", () => {
         expect(parts("mht-cet", "alkenes")).toEqual(["hydrocarbons C03,C04,C05"]);
         expect(parts("mht-cet", "alkynes")).toEqual(["hydrocarbons C06"]);
         expect(parts("mht-cet", "aromatic-compounds")).toEqual(["hydrocarbons C07,C08"]);
-        expect(parts("mht-cet", "basic-concepts-chemistry")).toEqual(["basic-concepts-chemistry", "analytical-chemistry C04,C05,C06,C07,C08"]);
+        expect(parts("mht-cet", "basic-concepts-chemistry")).toEqual([
+          "basic-concepts-chemistry C01,C02,C03,C04,C05,C06,C07",
+          "analytical-chemistry C04,C05,C06,C07,C08",
+        ]);
       });
 
       it("takes every other book chapter whole, but those CET doesn't list", () => {
@@ -1420,17 +1434,78 @@ describe("the catalog", () => {
       });
 
       it("takes the books' basics where PYQ Vault's rulings place NDA's topics", () => {
-        expect(parts("nda", "matter-and-its-states")).toEqual(["basic-concepts-chemistry C01", "states-of-matter C01,C07", "adsorption-colloids C05,C07", "analytical-techniques"]);
+        expect(parts("nda", "matter-and-its-states")).toEqual(["basic-concepts-chemistry C01,C08", "states-of-matter C01,C07", "adsorption-colloids C05,C07", "analytical-techniques"]);
         expect(parts("nda", "atomic-structure-and-periodic-classification")).toEqual(["structure-of-atom C01,C02,C03,C04,C05,C06,C07", "periodic-table"]);
         expect(parts("nda", "chemical-bonding")).toEqual(["chemical-bonding C01,C02,C04,C05,C06,C07", "redox-reactions C02"]);
         expect(parts("nda", "mole-concept-and-stoichiometry")).toEqual(["basic-concepts-chemistry C03,C04,C05,C06,C07", "analytical-chemistry C04,C05,C06,C07"]);
-        expect(parts("nda", "chemical-reactions")).toEqual(["redox-reactions C01,C04", "chemical-thermodynamics C07", "electrochemistry C04", "ionic-equilibria C09"]);
+        expect(parts("nda", "chemical-reactions")).toEqual([
+          "basic-concepts-chemistry C09",
+          "redox-reactions C01,C04",
+          "chemical-thermodynamics C07",
+          "electrochemistry C04",
+          "ionic-equilibria C09",
+        ]);
         expect(parts("nda", "acids-bases-and-salts")).toEqual(["ionic-equilibria C01,C03,C05", "s-block-elements C06"]);
-        expect(parts("nda", "hydrogen-and-water")).toEqual(["s-block-elements C01,C02", "states-of-matter C02"]);
+        expect(parts("nda", "hydrogen-and-water")).toEqual(["s-block-elements C01,C02,C07", "states-of-matter C02"]);
         expect(parts("nda", "carbon-and-its-compounds")).toEqual(["p-block-13-14-15 C04,C05", "organic-chemistry-basics C01,C02,C04", "hydrocarbons C01,C04,C07", "everyday-chemistry C03,C04"]);
-        expect(parts("nda", "metals-and-non-metals")).toEqual(["s-block-elements C04", "electrochemistry C07", "transition-elements C05,C06"]);
-        expect(parts("nda", "industrial-and-applied-chemistry")).toEqual(["chemical-equilibrium C07", "p-block-13-14-15 C07", "p-block-16-17-18 C04,C06"]);
+        expect(parts("nda", "metals-and-non-metals")).toEqual(["s-block-elements C04", "electrochemistry C07,C11", "transition-elements C05,C06"]);
+        expect(parts("nda", "industrial-and-applied-chemistry")).toEqual([
+          "chemical-equilibrium C07",
+          "p-block-13-14-15 C07",
+          "p-block-16-17-18 C04,C06",
+          "everyday-chemistry C08",
+        ]);
         expect(parts("nda", "chemistry-in-everyday-life")).toEqual(["everyday-chemistry C01,C02,C05,C06,C07"]);
+      });
+    });
+
+    // Phase 2: what the other courses ask that the MH books don't teach, appended to the pool chapters.
+    describe("concepts the MH books don't teach", () => {
+      const NCERT = ["cbse", "neet", "jee-main"];
+      const gaps: [chapter: string, concept: string, courses: string[]][] = [
+        ["structure-of-atom", "photoelectric-effect", NCERT],
+        ["structure-of-atom", "de-broglie-uncertainty", NCERT],
+        ["organic-chemistry-basics", "detecting-elements", NCERT],
+        ["organic-chemistry-basics", "estimating-elements", NCERT],
+        ["hydrocarbons", "conformations", NCERT],
+        ["biomolecules", "vitamins", NCERT],
+        ["analytical-chemistry", "equivalents-normality", ["jee-main"]],
+        ["coordination-compounds", "metal-carbonyls", ["neet", "jee-main"]],
+        ["transition-elements", "tests-for-metal-ions", ["jee-main"]],
+        ["electrochemistry", "corrosion", ["jee-main", "nda"]],
+        ["basic-concepts-chemistry", "physical-chemical-changes", ["nda"]],
+        ["basic-concepts-chemistry", "types-of-reactions", ["nda"]],
+        ["s-block-elements", "hard-water", ["nda"]],
+        ["everyday-chemistry", "industrial-materials", ["nda"]],
+      ];
+
+      it("puts each in its pool chapter, covered by exactly the courses that ask it", () => {
+        for (const [slug, concept, want] of gaps) {
+          const ch = chapters.find((c) => c.slug === slug)!;
+          const id = ch.graph.find((n) => n.slug === concept)?.id;
+          expect(id, `${slug}/${concept} is in the graph`).toBeDefined();
+          const have = coursesIn("school").filter((c) => coveredIds(c, ch).has(id!)).map((c) => c.slug);
+          expect(have.sort(), `${slug}/${concept}`).toEqual([...want].sort());
+        }
+      });
+
+      it("keeps the MH Board's and MHT-CET's chemistry maps to the books' concepts", () => {
+        for (const slug of new Set(gaps.map(([s]) => s))) {
+          const ch = chapters.find((c) => c.slug === slug)!;
+          const book = ch.graph.filter((n) => !gaps.some(([s, concept]) => s === slug && concept === n.slug)).map((n) => n.id);
+          expect([...coveredIds(findCourse("mh-board")!, ch)].sort(), `mh-board ${slug}`).toEqual(book.sort());
+          const cet = coveredIds(findCourse("mht-cet")!, ch);
+          for (const n of ch.graph.filter((g) => !book.includes(g.id))) expect(cet.has(n.id), `mht-cet leaves out ${slug} ${n.id}`).toBe(false);
+        }
+      });
+
+      it("comes after the book's concepts in each pool chapter, with the next ids, sourced from the exams", () => {
+        for (const slug of new Set(gaps.map(([s]) => s))) {
+          const ch = chapters.find((c) => c.slug === slug)!;
+          const added = ch.graph.filter((n) => gaps.some(([s, concept]) => s === slug && concept === n.slug));
+          expect(ch.graph.slice(ch.graph.length - added.length), slug).toEqual(added);
+          for (const n of added) expect(n.sources.some((s) => s.startsWith("mh-sb-")), `${slug} ${n.id}`).toBe(false);
+        }
       });
     });
 
@@ -1599,11 +1674,13 @@ describe("the catalog", () => {
       expect(chemistry.slice(0, xi.length)).toEqual(xi);
     });
 
-    it("puts chemistry after physics and covers each chapter whole", () => {
+    it("puts chemistry after physics and covers each chapter's book concepts", () => {
       const subjects = resolved.map((r) => r.subject);
       expect(subjects.lastIndexOf("physics")).toBeLessThan(subjects.indexOf("chemistry"));
       for (const e of findCourse("mh-board")!.chapters.filter((x) => chapters.find((c) => c.slug === x.chapter)?.subject === "chemistry")) {
-        expect(e.coverage, e.chapter).toBeUndefined();
+        const ch = chapters.find((c) => c.slug === e.chapter)!;
+        const book = ch.graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-"))).map((n) => n.id);
+        expect(e.coverage?.ids ?? ch.graph.map((n) => n.id), e.chapter).toEqual(book);
       }
     });
   });

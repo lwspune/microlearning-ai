@@ -13,10 +13,10 @@ describe("Std XII Electrochemistry chapter", () => {
     expect([electrochemistry.subject, electrochemistry.standard]).toEqual(["chemistry", 12]);
   });
 
-  it("keeps the graph: 10 concepts, 7 edges", () => {
+  it("keeps the graph: 11 concepts, 8 edges", () => {
     const edges = electrochemistry.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(electrochemistry.graph).toHaveLength(10);
-    expect(edges).toBe(7);
+    expect(electrochemistry.graph).toHaveLength(11);
+    expect(edges).toBe(8);
   });
 
   it("keeps edges transitively reduced", () => {

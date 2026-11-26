@@ -13,10 +13,10 @@ describe("Std XI Introduction to Analytical Chemistry chapter", () => {
     expect([analyticalChemistry.subject, analyticalChemistry.standard]).toEqual(["chemistry", 11]);
   });
 
-  it("keeps the graph: 8 concepts, 3 edges", () => {
+  it("keeps the graph: 9 concepts, 4 edges", () => {
     const edges = analyticalChemistry.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(analyticalChemistry.graph).toHaveLength(8);
-    expect(edges).toBe(3);
+    expect(analyticalChemistry.graph).toHaveLength(9);
+    expect(edges).toBe(4);
   });
 
   it("keeps edges transitively reduced", () => {

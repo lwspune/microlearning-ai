@@ -48,4 +48,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Nucleotides are base + sugar + phosphate; DNA (deoxyribose, A T G C, double helix with A–T and G–C pairs) and RNA (ribose, U for T, single strand)`,
     prereqs: [], ext: [], sources: [S("Nucleic Acids")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C08", slug: "vitamins", title: "Vitamins", group: "Vitamins", tier: "core",
+    oneLiner: t`Fat-soluble vitamins A, D, E and K are stored in the body; water-soluble B and C must be eaten regularly; each deficiency causes its own disease`,
+    prereqs: [], ext: [],
+    sources: ["cbse/biomolecules#Vitamins", "jee-main/biomolecules#Enzymes and Vitamins", "neet/biomolecules#Vitamins and Nucleic Acids"],
+  },
 ];

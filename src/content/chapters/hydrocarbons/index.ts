@@ -7,6 +7,7 @@ import { c05 } from "./concepts/c05-alkene-oxidation-ozonolysis.ts";
 import { c06 } from "./concepts/c06-alkynes.ts";
 import { c07 } from "./concepts/c07-aromaticity-benzene.ts";
 import { c08 } from "./concepts/c08-electrophilic-substitution.ts";
+import { c09 } from "./concepts/c09-conformations.ts";
 import { graph } from "./graph.ts";
 
 export const hydrocarbons: Chapter = {
@@ -17,5 +18,5 @@ export const hydrocarbons: Chapter = {
   // Balbharati Chemistry Std XI (PLAN.md "Std XI and XII Chemistry").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09],
 };

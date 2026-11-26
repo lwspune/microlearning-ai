@@ -54,4 +54,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`C–H $\sigma$ bonds next to a carbocation or double bond overlap with its p orbital (no-bond resonance); more $\alpha$-hydrogens give more stabilisation`,
     prereqs: ["C07"], ext: [], sources: [S("Theoretical Basis of Organic Reactions")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "detecting-elements", title: "Detecting nitrogen, sulfur and halogens", group: "Analysis", tier: "core",
+    oneLiner: t`Lassaigne's sodium fusion turns N, S and halogens into NaCN, $\ce{Na2S}$ and NaX: Prussian blue shows N, violet with nitroprusside S, a silver halide precipitate X`,
+    prereqs: ["C01"], ext: [],
+    sources: ["jee-main/organic-chemistry#Lassaigne's Test and Estimation of Nitrogen", "cbse/organic-chemistry#Qualitative Analysis of Organic Compounds", "neet/organic-chemistry#Purification and Analysis"],
+  },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C10", slug: "estimating-elements", title: "Estimating the elements", group: "Analysis", tier: "core",
+    oneLiner: t`Percentages from what each element becomes: C and H from $\ce{CO2}$ and $\ce{H2O}$, N as $\ce{N2}$ (Dumas) or $\ce{NH3}$ (Kjeldahl), halogen as AgX (Carius), S as $\ce{BaSO4}$`,
+    prereqs: ["C09"], ext: ["molar mass (Some Basic Concepts of Chemistry)"],
+    sources: ["jee-main/organic-chemistry#Estimation of Carbon, Hydrogen, Halogens, Sulphur and Phosphorus", "cbse/organic-chemistry#Quantitative Analysis"],
+  },
 ];

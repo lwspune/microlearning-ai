@@ -63,4 +63,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`The dry cell, lead storage battery (discharging and recharging), NICAD cell and $\ce{H2}$–$\ce{O2}$ fuel cell, by their electrode reactions`,
     prereqs: ["C06"], ext: [], sources: [S("Galvanic Cells in Day-to-Day Life and Fuel Cells")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C11", slug: "corrosion", title: "Corrosion", group: "Corrosion", tier: "core",
+    oneLiner: t`Rusting is a cell on iron: Fe is oxidised at anodic spots, $\ce{O2}$ reduced at cathodic ones; paint, galvanising and a sacrificial metal prevent it`,
+    prereqs: ["C07"], ext: [],
+    sources: ["jee-main/electrochemistry#Batteries, Fuel Cells and Corrosion", "nda/metals-and-non-metals#Corrosion and Its Prevention"],
+  },
 ];

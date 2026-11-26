@@ -58,4 +58,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Actinoids fill $5f$, are all radioactive and show more oxidation states than lanthanoids`,
     prereqs: ["C08"], ext: [], sources: [S("Actinoids")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C10", slug: "tests-for-metal-ions", title: "Tests for metal ions", group: "Salt analysis", tier: "core",
+    oneLiner: t`Group reagents sort cations; colours confirm them: $\ce{Cu^2+}$ deep blue with ammonia, $\ce{Fe^3+}$ blood red with thiocyanate, $\ce{Ni^2+}$ red with dimethylglyoxime`,
+    prereqs: ["C04"], ext: [],
+    sources: ["jee-main/d-and-f-block-elements#Qualitative Analysis of Ions"],
+  },
 ];

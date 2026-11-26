@@ -53,4 +53,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Mass percent, mole fraction, molarity (mol per litre of solution) and molality (mol per kg of solvent); molarity changes with temperature, molality does not`,
     prereqs: [], ext: ["the mole and molar volume (Some Basic Concepts of Chemistry)"], sources: [S("Concentration of Solution")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "equivalents-normality", title: "Equivalents and normality", group: "Reactions", tier: "core",
+    oneLiner: t`Equivalent mass $=$ molar mass ÷ n-factor; normality $= n \times$ molarity; at a titration's end point $N_1V_1 = N_2V_2$`,
+    prereqs: ["C08"], ext: [],
+    sources: ["jee-main/some-basic-concepts-of-chemistry#Equivalents and Titrations"],
+  },
 ];

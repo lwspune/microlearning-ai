@@ -48,4 +48,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`A mole of any gas at STP occupies $22.4\ \mathrm{dm^3}$, so gas volume, moles and mass convert into each other`,
     prereqs: ["C04", "C06"], ext: [], sources: [S("Moles and Gases")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C08", slug: "physical-chemical-changes", title: "Physical and chemical changes", group: "Matter", tier: "core",
+    oneLiner: t`A physical change alters form or state and makes no new substance (melting, dissolving); a chemical change makes new substances (burning, rusting)`,
+    prereqs: ["C01"], ext: [],
+    sources: ["nda/matter-and-its-states#Physical vs Chemical Changes"],
+  },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "types-of-reactions", title: "Types of chemical reactions", group: "Matter", tier: "core",
+    oneLiner: t`Combination, decomposition (by heat, light or electricity), displacement by a more reactive element, and double displacement; each exothermic or endothermic`,
+    prereqs: ["C08"], ext: [],
+    sources: ["nda/chemical-reactions#Types of Reactions: Combination, Decomposition, Displacement"],
+  },
 ];

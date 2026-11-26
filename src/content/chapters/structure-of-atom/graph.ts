@@ -48,4 +48,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`Fill orbitals by the $(n + l)$ rule (Aufbau), at most two opposite spins each (Pauli), singly first (Hund); Cr and Cu take half-filled and full $d$`,
     prereqs: ["C06"], ext: [], sources: [S("Quantum Mechanical Model of the Atom")],
   },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C08", slug: "photoelectric-effect", title: "The photoelectric effect", group: "Dual nature", tier: "core",
+    oneLiner: t`Light above the threshold frequency $\nu_0$ ejects electrons: $h\nu = h\nu_0 + \tfrac12 mv^2$; brighter light ejects more electrons, not faster ones`,
+    prereqs: ["C04"], ext: [],
+    sources: ["jee-main/structure-of-atom#Photons, Planck's Quantum and the Photoelectric Effect", "cbse/structure-of-atom#Developments Leading to the Bohr's Model of Atom"],
+  },
+  // Asked by other courses, not taught in the MH books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  {
+    id: "C09", slug: "de-broglie-uncertainty", title: "de Broglie waves and uncertainty", group: "Dual nature", tier: "core",
+    oneLiner: t`A moving particle has a wavelength $\lambda = \dfrac{h}{mv}$; its position and momentum cannot both be exact: $\Delta x\,\Delta p \ge \dfrac{h}{4\pi}$`,
+    prereqs: ["C08"], ext: [],
+    sources: ["jee-main/structure-of-atom#de Broglie Waves and the Uncertainty Principle", "cbse/structure-of-atom#Towards Quantum Mechanical Model of the Atom"],
+  },
 ];
