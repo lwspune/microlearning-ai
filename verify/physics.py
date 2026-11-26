@@ -3,7 +3,7 @@
 Options compare exactly (verify_content._same_value), so a physics model returns its answer already rounded:
 `sig(x)` is the number an option shows, and key, distractors and verifier all see that same value.
 """
-from sympy import Float, Integer, N
+from sympy import Float, Integer, N, Rational, pi
 
 # The constants as the Std XI and XII books print them; add one here, from the book, when a chapter first needs it.
 BOOK = {
@@ -21,6 +21,8 @@ BOOK = {
     "N_A": Float("6.02e23"),  # per mol, Avogadro's number
     "eps0": Float("8.85e-12"),  # C^2/(N m^2), permittivity of free space
     "k_e": Integer(9) * 10**9,  # N m^2/C^2, 1/(4 pi eps0) as the book rounds it
+    "mu0": 4 * pi * Rational(1, 10**7),  # T m/A, permeability of free space
+    "m_p": Float("1.67e-27"),  # kg, proton mass
 }
 
 

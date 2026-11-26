@@ -4,7 +4,7 @@ Run: python -m unittest discover -s verify -p "test_*.py"
 """
 import unittest
 
-from sympy import Float, Integer, pi, sqrt, sympify
+from sympy import Float, Integer, Rational, pi, sqrt, sympify
 
 from physics import BOOK, sig
 from verify_content import _same_value
@@ -47,6 +47,8 @@ class Book(unittest.TestCase):
         self.assertEqual(BOOK["N_A"], Float("6.02e23"))
         self.assertEqual(BOOK["eps0"], Float("8.85e-12"))
         self.assertEqual(BOOK["k_e"], Integer(9) * 10**9)
+        self.assertEqual(BOOK["mu0"], 4 * pi * Rational(1, 10**7))
+        self.assertEqual(BOOK["m_p"], Float("1.67e-27"))
 
 
 if __name__ == "__main__":
