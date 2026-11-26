@@ -28,7 +28,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from sympy import I, Rational, Tuple, latex, simplify, symbols, sympify, expand
+from sympy import Basic, I, Rational, Tuple, latex, simplify, symbols, sympify, expand
 
 from ts_literal import figure_ts
 
@@ -92,6 +92,14 @@ def quantity_text(val) -> str:
         mantissa = mantissa.rstrip("0").rstrip(".")
         return f"{mantissa} \\times 10^{{{int(exponent)}}}"
     return latex(val, mul_symbol="times")
+
+
+def option_value(value_str: str):
+    """Parse a model's value as written into the item. A named answer must come back as a sympy expression."""
+    val = sympify(value_str, locals={"I": I, "x": _XR, "y": _YR})
+    if not isinstance(val, Basic):
+        raise ValueError(f"named answer {value_str!r} parses as a Python or sympy name, not a symbol: rename it (e.g. add a suffix)")
+    return simplify(val)
 
 
 def option_text(val, fmt) -> str:
@@ -167,7 +175,7 @@ def draft(spec_path: str) -> str:
         for key, m in zip(KEYS, order):
             v = values[m]
             value_str = v if isinstance(v, str) else str(simplify(v))
-            val = simplify(sympify(value_str, locals={"I": I, "x": _XR, "y": _YR}))
+            val = option_value(value_str)
             text = it.get("text", {}).get(m) or option_text(val, it.get("fmt"))
             correct = m == "key"
             tag = "" if correct else f', misconceptionId: "{m}"'

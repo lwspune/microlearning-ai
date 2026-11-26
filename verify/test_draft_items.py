@@ -73,6 +73,21 @@ class OptionText(unittest.TestCase):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
 
+class NamedValue(unittest.TestCase):
+    def test_a_named_answer_parses_as_a_symbol(self):
+        from sympy import Symbol
+        from draft_items import option_value
+
+        self.assertEqual(option_value("mag_field"), Symbol("mag_field"))
+
+    def test_a_name_that_clashes_with_python_or_sympy_says_to_rename_it(self):
+        from draft_items import option_value
+
+        for name in ("sum", "field"):
+            with self.assertRaisesRegex(ValueError, f"'{name}'.*rename"):
+                option_value(name)
+
+
 class FourOptions(unittest.TestCase):
     def test_an_item_needs_four_models(self):
         import tempfile, textwrap, os
