@@ -19,6 +19,8 @@ BOOK = {
     "b_wien": Float("2.897e-3"),  # m K, Wien's constant
     "u": Float("1.66e-27"),  # kg, atomic mass unit
     "N_A": Float("6.02e23"),  # per mol, Avogadro's number
+    "eps0": Float("8.85e-12"),  # C^2/(N m^2), permittivity of free space
+    "k_e": Integer(9) * 10**9,  # N m^2/C^2, 1/(4 pi eps0) as the book rounds it
 }
 
 
