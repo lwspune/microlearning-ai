@@ -380,6 +380,7 @@ export const courses: Course[] = [
       { chapter: "solid-state" },
       { chapter: "solutions" },
       { chapter: "ionic-equilibria" },
+      { chapter: "chemical-thermodynamics" },
     ],
   },
   {
