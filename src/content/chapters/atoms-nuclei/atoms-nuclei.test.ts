@@ -13,10 +13,10 @@ describe("Std XII Structure of Atoms and Nuclei chapter", () => {
     expect([atomsNuclei.subject, atomsNuclei.standard]).toEqual(["physics", 12]);
   });
 
-  it("keeps the graph: 11 concepts, 9 edges", () => {
+  it("keeps the graph: 12 concepts, 10 edges", () => {
     const edges = atomsNuclei.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(atomsNuclei.graph).toHaveLength(11);
-    expect(edges).toBe(9);
+    expect(atomsNuclei.graph).toHaveLength(12);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {

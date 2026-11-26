@@ -54,4 +54,10 @@ export const graph: GraphNode[] = [
     prereqs: ["C03"], ext: [],
     sources: ["jee-main/work-energy-and-power#Potential Energy and Conservation of Mechanical Energy", "neet/work-energy-and-power#Potential Energy and Conservation", "nda/work-energy-and-power#Energy and Conservation"],
   },
+  {
+    id: "C09", slug: "levers-and-pulleys", title: "Levers and pulleys", group: "Systems of particles", tier: "core", visual: true,
+    oneLiner: t`A lever balances when load $\times$ load arm $=$ effort $\times$ effort arm; its mechanical advantage is load $\div$ effort`,
+    prereqs: ["C07"], ext: [],
+    sources: ["nda/work-energy-and-power#Simple Machines"],
+  },
 ];

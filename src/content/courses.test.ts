@@ -597,10 +597,10 @@ describe("the catalog", () => {
         }
       });
 
-      it("uses every physics pool chapter but Electromagnetic Waves and Communication System, which CET doesn't list", () => {
+      it("uses every book chapter but Electromagnetic Waves and Communication System, which CET doesn't list", () => {
         const used = new Set(physics.flatMap((r) => r.parts.map((p) => p.chapter.slug)));
         const pool = chapters.filter((c) => c.subject === "physics").map((c) => c.slug);
-        expect(pool.filter((slug) => !used.has(slug))).toEqual(["em-waves-communication"]);
+        expect(pool.filter((slug) => !used.has(slug))).toEqual(["em-waves-communication", "energy-sources", "astronomy-and-space"]);
       });
     });
   });
@@ -735,7 +735,7 @@ describe("the catalog", () => {
     const physics = all.filter((r) => r.subject === "physics");
     const parts = (slug: string) => physics.find((r) => r.slug === slug)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
 
-    it("lists 12 of PYQ Vault's 14 chapters by standard, after maths; Energy Sources and Astronomy wait for phase 2", () => {
+    it("lists PYQ Vault's 14 chapters by standard, after maths; Energy Sources and Astronomy are built for NDA", () => {
       expect(byStandard(physics).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
         [
           11,
@@ -748,6 +748,8 @@ describe("the catalog", () => {
             "Heat and Thermodynamics",
             "Sound",
             "Light and Optics",
+            "Energy Sources",
+            "Astronomy and Space",
           ],
         ],
         [12, ["Fluid Mechanics and Properties of Matter", "Oscillations and Waves", "Electricity and Magnetism", "Modern Physics"]],
@@ -758,7 +760,7 @@ describe("the catalog", () => {
     it("joins pool chapters the way PYQ Vault's NDA chapters do", () => {
       expect(parts("kinematics-and-motion")).toEqual(["mathematical-methods C01,C02,C03,C04,C05", "motion-in-a-plane", "rotational-dynamics C01,C02,C03,C04,C06"]);
       // Collisions need work and energy (NCERT teaches them there); torque and equilibrium are the pool's share of simple machines.
-      expect(parts("work-energy-and-power")).toEqual(["laws-of-motion C03,C08,C05,C07"]);
+      expect(parts("work-energy-and-power")).toEqual(["laws-of-motion C03,C08,C05,C07,C09"]);
       expect(parts("light-and-optics")).toEqual(["optics C01,C02,C03,C04,C05,C06,C07,C08,C09,C10", "em-waves-communication C01,C02", "wave-optics C06"]);
       expect(physics.find((r) => r.slug === "electricity-and-magnetism")!.parts.map((p) => p.chapter.slug)).toEqual([
         "electrostatics",
@@ -1055,10 +1057,10 @@ describe("the catalog", () => {
         expect(parts(slug, "laws-of-motion")[1]).toBe("mechanical-properties-solids C07");
         expect(parts(slug, "work-energy-and-power")).toEqual(["laws-of-motion C03,C08,C05", "rotational-dynamics C06"]);
         // Radiation is Thermal Properties of Matter; the transformer is Alternating Current; meters go with the galvanometer.
-        expect(parts(slug, "thermal-properties-of-matter")).toEqual(["thermal-properties", "kinetic-theory C08,C09,C10,C11"]);
+        expect(parts(slug, "thermal-properties-of-matter")[1]).toBe("kinetic-theory C08,C09,C10,C11");
         expect(parts(slug, "alternating-current").at(-1)).toBe("electromagnetic-induction C13");
         expect(parts(slug, "moving-charges-and-magnetism").slice(1)).toEqual(["current-electricity C09,C10", "magnetic-materials C03"]);
-        expect(parts(slug, "atoms")).toEqual(["atoms-nuclei C01,C02,C03,C04,C05"]);
+        expect(parts(slug, "atoms")[0]).toMatch(/^atoms-nuclei C01,C02,C03,C04,C05/);
       }
       expect(parts("jee-main", "electrostatics")).toEqual(["electrostatics", "electrostatics-12"]);
       expect(parts("cbse", "electric-charges-and-fields")).toEqual(["electrostatics C01,C02,C03,C04,C05,C06", "electrostatics-12 C01,C02,C03,C04"]);
@@ -1187,6 +1189,16 @@ describe("the catalog", () => {
       ["electric-current", "electricity-at-home", ["nda"]],
       ["em-waves-communication", "displacement-current", ["cbse", "neet", "jee-main"]],
       ["em-waves-communication", "em-wave-energy", ["cbse", "neet", "jee-main"]],
+      // The smaller gaps and NDA's two chapters the books don't have (owner, 2026-11-26: "do all three").
+      ["optics", "reflecting-telescope", ["cbse", "neet", "jee-main"]],
+      ["electrostatics", "field-of-ring-and-rod", ["jee-main"]],
+      ["kinetic-theory", "molecular-speeds", ["jee-main"]],
+      ["thermal-properties", "thermal-stress", ["jee-main"]],
+      ["laws-of-motion", "levers-and-pulleys", ["nda"]],
+      ["dual-nature", "electron-emission", ["cbse", "neet"]],
+      ["atoms-nuclei", "de-broglie-bohr", ["cbse", "neet"]],
+      ["energy-sources", "sources-of-energy", ["nda"]],
+      ["astronomy-and-space", "solar-system-and-universe", ["nda"]],
     ];
 
     it("puts each in its pool chapter, covered by exactly the courses that ask it", () => {

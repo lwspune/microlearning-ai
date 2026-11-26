@@ -54,4 +54,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`Electrons scattered by a nickel crystal show a diffraction peak at the angle their de Broglie wavelength predicts: matter behaves as waves`,
     prereqs: ["C07"], ext: [], sources: [S("Davisson-Germer Experiment and Duality of Matter")],
   },
+  {
+    id: "C09", slug: "electron-emission", title: "Electron emission", group: "The photoelectric effect", tier: "core",
+    oneLiner: t`An electron leaves a metal only if it gets at least the work function $\phi_0$: by heat, a strong field, or light`,
+    prereqs: [], ext: ["free electrons in metals (Current Electricity)"],
+    sources: ["cbse-12/dual-nature-of-radiation-and-matter#Electron Emission"],
+  },
 ];

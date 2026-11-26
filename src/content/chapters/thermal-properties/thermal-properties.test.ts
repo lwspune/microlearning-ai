@@ -13,10 +13,10 @@ describe("Std XI Thermal Properties of Matter chapter", () => {
     expect([thermalProperties.subject, thermalProperties.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 8 concepts, 5 edges", () => {
+  it("keeps the graph: 9 concepts, 6 edges", () => {
     const edges = thermalProperties.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(thermalProperties.graph).toHaveLength(8);
-    expect(edges).toBe(5);
+    expect(thermalProperties.graph).toHaveLength(9);
+    expect(edges).toBe(6);
   });
 
   it("keeps edges transitively reduced", () => {

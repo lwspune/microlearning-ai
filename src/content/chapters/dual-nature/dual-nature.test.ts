@@ -13,9 +13,9 @@ describe("Std XII Dual Nature of Radiation and Matter chapter", () => {
     expect([dualNature.subject, dualNature.standard]).toEqual(["physics", 12]);
   });
 
-  it("keeps the graph: 8 concepts, 7 edges", () => {
+  it("keeps the graph: 9 concepts, 7 edges", () => {
     const edges = dualNature.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(dualNature.graph).toHaveLength(8);
+    expect(dualNature.graph).toHaveLength(9);
     expect(edges).toBe(7);
   });
 
