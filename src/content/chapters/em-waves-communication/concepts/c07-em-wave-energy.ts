@@ -1,0 +1,366 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c07: Concept = {
+  id: "C07",
+  status: "approved",
+  hook: {
+    prompt: t`A comet's dust tail always points away from the Sun, even when the comet is heading away from it. Nothing solid touches the dust. What pushes it?`,
+    reveal: t`Sunlight itself. An EM wave carries momentum as well as energy, so it presses on whatever absorbs or reflects it: **radiation pressure**.`,
+  },
+  explanation: {
+    intuition: [
+      t`An EM wave is an electric field and a magnetic field, oscillating together as they travel.`,
+      t`Each field stores energy, so the wave carries energy wherever it goes.`,
+      t`The two fields hold equal shares of that energy.`,
+      t`The energy arriving each second on each square metre is the **intensity**, $I = \tfrac{1}{2}\varepsilon_0E_0^2c$.`,
+      t`The wave carries momentum too, so it pushes on whatever it hits: **radiation pressure**.`,
+      t`The pressure is $\dfrac{I}{c}$ if absorbed and $\dfrac{2I}{c}$ if reflected, since a bounce reverses the momentum.`,
+    ],
+    formal: [
+      {
+        title: "Fields of a plane wave",
+        points: [
+          t`A plane wave travelling along $x$ has $E_y = E_0\sin(\omega t - kx)$.`,
+          t`Its magnetic field is $B_z = B_0\sin(\omega t - kx)$, at right angles to $\vec{E}$ and to the travel.`,
+          t`The fields are **in phase**: they peak, and pass through zero, at the same place and time.`,
+          t`Their amplitudes are linked: $E_0 = cB_0$, with $c = 3 \times 10^{8}\ \mathrm{m/s}$.`,
+        ],
+        figure: {
+          alt: "Step 1: the electric field E along x, a sine wave. Step 2: the magnetic field B along x, a smaller sine wave with its peaks and zeros at the same places. Step 3: a dashed line through a peak of both: they peak together.",
+          axes: "none",
+          view: { x: [-0.6, 15.8], y: [-2.6, 3.3] },
+          elements: [
+            { kind: "vector", from: [0, 0], to: [15, 0], tone: "muted", label: "x", labelAt: "e" },
+            { kind: "curve", points: [[0, 0], [0.177, 0.352], [0.353, 0.692], [0.53, 1.011], [0.707, 1.299], [0.884, 1.546], [1.06, 1.745], [1.237, 1.89], [1.414, 1.975], [1.59, 2], [1.767, 1.962], [1.944, 1.862], [2.121, 1.705], [2.297, 1.495], [2.474, 1.238], [2.651, 0.943], [2.827, 0.618], [3.004, 0.274], [3.181, -0.079], [3.358, -0.429], [3.534, -0.765], [3.711, -1.078], [3.888, -1.358], [4.064, -1.595], [4.241, -1.782], [4.418, -1.914], [4.595, -1.986], [4.771, -1.997], [4.948, -1.945], [5.125, -1.832], [5.301, -1.663], [5.478, -1.442], [5.655, -1.176], [5.832, -0.873], [6.008, -0.543], [6.185, -0.196], [6.362, 0.157], [6.538, 0.505], [6.715, 0.837], [6.892, 1.144], [7.069, 1.414], [7.245, 1.641], [7.422, 1.816], [7.599, 1.935], [7.775, 1.994], [7.952, 1.99], [8.129, 1.925], [8.306, 1.799], [8.482, 1.618], [8.659, 1.386], [8.836, 1.111], [9.012, 0.801], [9.189, 0.467], [9.366, 0.118], [9.543, -0.235], [9.719, -0.581], [9.896, -0.908], [10.073, -1.207], [10.249, -1.469], [10.426, -1.684], [10.603, -1.848], [10.78, -1.954], [10.956, -1.998], [11.133, -1.981], [11.31, -1.902], [11.486, -1.764], [11.663, -1.571], [11.84, -1.329], [12.017, -1.045], [12.193, -0.729], [12.37, -0.39], [12.547, -0.039], [12.723, 0.313], [12.9, 0.655], [13.077, 0.977], [13.254, 1.269], [13.43, 1.521], [13.607, 1.725], [13.784, 1.876], [13.96, 1.969], [14.137, 2]], step: 1, tone: "bad" },
+            { kind: "label", at: [14.137166941154069, 2], label: "E", labelAt: "e", tone: "bad", step: 1 },
+            { kind: "curve", points: [[0, 0], [0.177, 0.176], [0.353, 0.346], [0.53, 0.506], [0.707, 0.649], [0.884, 0.773], [1.06, 0.872], [1.237, 0.945], [1.414, 0.988], [1.59, 1], [1.767, 0.981], [1.944, 0.931], [2.121, 0.853], [2.297, 0.748], [2.474, 0.619], [2.651, 0.471], [2.827, 0.309], [3.004, 0.137], [3.181, -0.039], [3.358, -0.214], [3.534, -0.383], [3.711, -0.539], [3.888, -0.679], [4.064, -0.797], [4.241, -0.891], [4.418, -0.957], [4.595, -0.993], [4.771, -0.998], [4.948, -0.972], [5.125, -0.916], [5.301, -0.831], [5.478, -0.721], [5.655, -0.588], [5.832, -0.436], [6.008, -0.271], [6.185, -0.098], [6.362, 0.078], [6.538, 0.252], [6.715, 0.419], [6.892, 0.572], [7.069, 0.707], [7.245, 0.82], [7.422, 0.908], [7.599, 0.968], [7.775, 0.997], [7.952, 0.995], [8.129, 0.962], [8.306, 0.9], [8.482, 0.809], [8.659, 0.693], [8.836, 0.556], [9.012, 0.401], [9.189, 0.233], [9.366, 0.059], [9.543, -0.118], [9.719, -0.29], [9.896, -0.454], [10.073, -0.604], [10.249, -0.734], [10.426, -0.842], [10.603, -0.924], [10.78, -0.977], [10.956, -0.999], [11.133, -0.991], [11.31, -0.951], [11.486, -0.882], [11.663, -0.785], [11.84, -0.664], [12.017, -0.522], [12.193, -0.364], [12.37, -0.195], [12.547, -0.02], [12.723, 0.156], [12.9, 0.328], [13.077, 0.489], [13.254, 0.634], [13.43, 0.76], [13.607, 0.863], [13.784, 0.938], [13.96, 0.984], [14.137, 1]], step: 2, tone: "good" },
+            { kind: "label", at: [14.137166941154069, 1], label: "B", labelAt: "e", tone: "good", step: 2 },
+            { kind: "segment", from: [7.853981633974483, -0.4], to: [7.853981633974483, 2.4], dashed: true, tone: "muted", step: 3 },
+            { kind: "point", at: [7.853981633974483, 2], tone: "bad", step: 3 },
+            { kind: "point", at: [7.853981633974483, 1], tone: "good", step: 3 },
+            { kind: "label", at: [7.853981633974483, 2.4], label: "peaks together", labelAt: "n", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Energy density",
+        points: [
+          t`**Energy density** $u$ is the energy stored in unit volume of a field, in $\mathrm{J/m^3}$.`,
+          t`The electric field stores $u_E = \tfrac12\varepsilon_0E^2$; the magnetic field stores $u_B = \dfrac{B^2}{2\mu_0}$.`,
+          t`Put $B = \dfrac{E}{c}$ and $c^2 = \dfrac{1}{\mu_0\varepsilon_0}$: $u_B = \dfrac{E^2}{2\mu_0c^2}$ $= \tfrac12\varepsilon_0E^2$.`,
+          t`So $u_E = u_B$ at every point and instant: the two fields share the energy **equally**.`,
+          t`The total is $u = u_E + u_B$ $= \varepsilon_0E^2 = \dfrac{B^2}{\mu_0}$.`,
+        ],
+      },
+      {
+        title: "Averaging over a cycle",
+        points: [
+          t`With $E = E_0\sin(\omega t - kx)$, $u = \varepsilon_0E_0^2\sin^2(\omega t - kx)$ rises and falls.`,
+          t`$\sin^2$ peaks twice in each cycle, so $u$ oscillates at twice the wave's frequency.`,
+          t`The average of $\sin^2$ over a cycle is $\tfrac12$, so $\bar u = \tfrac12\varepsilon_0E_0^2$.`,
+          t`In magnetic terms $\bar u = \dfrac{B_0^2}{2\mu_0}$; each field holds half, $\tfrac14\varepsilon_0E_0^2$.`,
+          t`The **rms** (root mean square) field is $E_{rms} = \dfrac{E_0}{\sqrt2}$, so $\bar u = \varepsilon_0E_{rms}^2$.`,
+        ],
+        figure: {
+          alt: "Step 1: the energy density u against time t, a train of humps between 0 and its peak. Step 2: one cycle of E holds two humps. Step 3: a dashed line at half the peak: the average.",
+          axes: "none",
+          view: { x: [-0.6, 9.4], y: [-1.1, 2.8] },
+          elements: [
+            { kind: "vector", from: [0, 0], to: [7.2, 0], tone: "muted", label: "t", labelAt: "e" },
+            { kind: "curve", points: [[0, 0], [0.079, 0.012], [0.157, 0.049], [0.236, 0.109], [0.314, 0.191], [0.393, 0.293], [0.471, 0.412], [0.55, 0.546], [0.628, 0.691], [0.707, 0.844], [0.785, 1], [0.864, 1.156], [0.942, 1.309], [1.021, 1.454], [1.1, 1.588], [1.178, 1.707], [1.257, 1.809], [1.335, 1.891], [1.414, 1.951], [1.492, 1.988], [1.571, 2], [1.649, 1.988], [1.728, 1.951], [1.806, 1.891], [1.885, 1.809], [1.963, 1.707], [2.042, 1.588], [2.121, 1.454], [2.199, 1.309], [2.278, 1.156], [2.356, 1], [2.435, 0.844], [2.513, 0.691], [2.592, 0.546], [2.67, 0.412], [2.749, 0.293], [2.827, 0.191], [2.906, 0.109], [2.985, 0.049], [3.063, 0.012], [3.142, 0], [3.22, 0.012], [3.299, 0.049], [3.377, 0.109], [3.456, 0.191], [3.534, 0.293], [3.613, 0.412], [3.691, 0.546], [3.77, 0.691], [3.848, 0.844], [3.927, 1], [4.006, 1.156], [4.084, 1.309], [4.163, 1.454], [4.241, 1.588], [4.32, 1.707], [4.398, 1.809], [4.477, 1.891], [4.555, 1.951], [4.634, 1.988], [4.712, 2], [4.791, 1.988], [4.869, 1.951], [4.948, 1.891], [5.027, 1.809], [5.105, 1.707], [5.184, 1.588], [5.262, 1.454], [5.341, 1.309], [5.419, 1.156], [5.498, 1], [5.576, 0.844], [5.655, 0.691], [5.733, 0.546], [5.812, 0.412], [5.89, 0.293], [5.969, 0.191], [6.048, 0.109], [6.126, 0.049], [6.205, 0.012], [6.283, 0]], step: 1 },
+            { kind: "label", at: [1.5707963267948966, 2], label: "u", labelAt: "n", step: 1 },
+            { kind: "segment", from: [0, -0.4], to: [6.283185307179586, -0.4], tone: "muted", step: 2 },
+            { kind: "label", at: [3.141592653589793, -0.4], label: "one cycle of E", labelAt: "s", step: 2 },
+            { kind: "point", at: [1.5707963267948966, 2], tone: "bad", step: 2 },
+            { kind: "point", at: [4.71238898038469, 2], tone: "bad", step: 2 },
+            { kind: "segment", from: [0, 1], to: [7, 1], dashed: true, tone: "good", step: 3 },
+            { kind: "label", at: [7, 1], label: "average", labelAt: "e", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Intensity",
+        points: [
+          t`**Intensity** $I$ is the energy a wave carries each second across unit area facing it, in $\mathrm{W/m^2}$.`,
+          t`In time $t$ the wave moves $ct$, so a column of area $A$ and length $ct$ crosses $A$.`,
+          t`That column holds energy $\bar u\,Act$, so $I = \dfrac{\bar u\,Act}{At} = \bar u\,c$.`,
+          t`So $I = \tfrac{1}{2}\varepsilon_0E_0^2c$ $= \dfrac{cB_0^2}{2\mu_0}$.`,
+          t`Intensity goes as the square of the amplitude: double $E_0$ and $I$ is four times as large.`,
+        ],
+      },
+      {
+        title: "A point source",
+        points: [
+          t`A point source of power $P$ sends energy out equally in all directions.`,
+          t`At distance $r$ that power covers a sphere of area $4\pi r^2$: $I = \dfrac{P}{4\pi r^2}$.`,
+          t`At twice the distance the same power covers four times the area, so $I$ falls to a quarter.`,
+          t`As $I \propto E_0^2$, the amplitude $E_0$ falls only as $\dfrac{1}{r}$.`,
+          t`A bulb radiates only part of its power: use the radiated power, efficiency times rating.`,
+        ],
+        figure: {
+          alt: "Step 1: a point source P sending energy out in all directions. Step 2: a sphere of radius r round it, area 4πr². Step 3: a sphere of radius 2r, four times the area, so a quarter of the intensity.",
+          axes: "none",
+          view: { x: [-4.4, 4.4], y: [-4.6, 4.2] },
+          elements: [
+            { kind: "point", at: [0, 0], tone: "bad", label: "P", labelAt: "s", step: 1 },
+            { kind: "vector", from: [0.3181980515339464, 0.3181980515339464], to: [0.7778174593052024, 0.7778174593052024], tone: "bad", step: 1 },
+            { kind: "vector", from: [-0.31819805153394637, 0.3181980515339464], to: [-0.7778174593052023, 0.7778174593052024], tone: "bad", step: 1 },
+            { kind: "vector", from: [-0.3181980515339465, -0.31819805153394637], to: [-0.7778174593052025, -0.7778174593052023], tone: "bad", step: 1 },
+            { kind: "vector", from: [0.3181980515339463, -0.3181980515339465], to: [0.7778174593052022, -0.7778174593052025], tone: "bad", step: 1 },
+            { kind: "circle", centre: [0, 0], r: 1.8, step: 2 },
+            { kind: "segment", from: [0, 0], to: [1.8, 0], tone: "muted", step: 2 },
+            { kind: "label", at: [0.9, 0], label: "r", labelAt: "s", step: 2 },
+            { kind: "label", at: [0, 1.8], label: "area 4πr²", labelAt: "n", step: 2 },
+            { kind: "circle", centre: [0, 0], r: 3.6, dashed: true, tone: "good", step: 3 },
+            { kind: "segment", from: [0, 0], to: [-3.383, 1.231], tone: "muted", step: 3 },
+            { kind: "label", at: [-2.537, 0.923], label: "2r", labelAt: "n", step: 3 },
+            { kind: "label", at: [0, -3.6], label: "4 × area, ¼ of I", labelAt: "s", tone: "good", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Momentum of a wave",
+        points: [
+          t`An EM wave carries **momentum** as well as energy, even though light has no mass.`,
+          t`A wave that delivers energy $U$ brings momentum $p = \dfrac{U}{c}$.`,
+          t`**Absorbed**: the wave stops, so the surface gets momentum $\dfrac{U}{c}$.`,
+          t`**Reflected**: the momentum reverses, $+\dfrac{U}{c}$ to $-\dfrac{U}{c}$, so the surface gets $\dfrac{2U}{c}$.`,
+        ],
+        figure: {
+          alt: "A black sheet on the left and a mirror on the right. Step 1: a light beam travels towards each. Step 2: each beam carries momentum p = U/c. Step 3: the black sheet absorbs the beam and gets U/c. Step 4: the mirror sends the beam back with momentum U/c the other way, so the mirror gets 2U/c.",
+          axes: "none",
+          view: { x: [-6.4, 6.6], y: [-2.6, 2.4] },
+          elements: [
+            { kind: "segment", from: [-1.2, -1.8], to: [-1.2, 1.8] },
+            { kind: "label", at: [-1.2, -1.8], label: "black", labelAt: "s" },
+            { kind: "segment", from: [5.2, -1.8], to: [5.2, 1.8] },
+            { kind: "label", at: [5.2, -1.8], label: "mirror", labelAt: "s" },
+            { kind: "vector", from: [-5.8, 0.7], to: [-1.4, 0.7], tone: "bad", step: 1 },
+            { kind: "vector", from: [0.6, 0.7], to: [5, 0.7], tone: "bad", step: 1 },
+            { kind: "label", at: [-3.6, 0.7], label: "p = U/c", labelAt: "n", tone: "bad", step: 2 },
+            { kind: "label", at: [2.8, 0.7], label: "p = U/c", labelAt: "n", tone: "bad", step: 2 },
+            { kind: "label", at: [-3.6, -0.5], label: "gets U/c", labelAt: "s", tone: "good", step: 3 },
+            { kind: "vector", from: [5, -0.7], to: [0.6, -0.7], tone: "good", step: 4 },
+            { kind: "label", at: [2.8, -0.7], label: "gets 2U/c", labelAt: "s", tone: "good", step: 4 },
+          ],
+        },
+      },
+      {
+        title: "Radiation pressure",
+        points: [
+          t`Force is momentum delivered per second: absorbed, $F = \dfrac{U/c}{t} = \dfrac{IA}{c}$.`,
+          t`**Radiation pressure** is that force per unit area: $\dfrac{I}{c}$ if absorbed.`,
+          t`On a perfect reflector it doubles: $\dfrac{2I}{c}$.`,
+          t`A surface that reflects part of the light feels a pressure between $\dfrac{I}{c}$ and $\dfrac{2I}{c}$.`,
+          t`Sunlight, about $1.4\ \mathrm{kW/m^2}$, presses on a black sheet with only $4.7 \times 10^{-6}\ \mathrm{Pa}$.`,
+        ],
+      },
+    ],
+    worked: {
+      prompt: t`Light of intensity $1.2\ \mathrm{kW/m^2}$ falls normally on a black sheet of area $0.5\ \mathrm{m^2}$ for $10$ minutes. Find the momentum it delivers and the average force on the sheet.`,
+      steps: [
+        t`Energy delivered: $U = IAt$ $= 1200 \times 0.5 \times 600$ $= 3.6 \times 10^{5}\ \mathrm{J}$.`,
+        t`Absorbed, so $p = \dfrac{U}{c} = \dfrac{3.6 \times 10^{5}}{3 \times 10^{8}}$ $= 1.2 \times 10^{-3}\ \mathrm{kg\,m/s}$.`,
+        t`Average force: $F = \dfrac{p}{t} = \dfrac{1.2 \times 10^{-3}}{600}$ $= 2 \times 10^{-6}\ \mathrm{N}$.`,
+        t`Check: $F = \dfrac{IA}{c} = \dfrac{1200 \times 0.5}{3 \times 10^{8}}$ $= 2 \times 10^{-6}\ \mathrm{N}$. A mirror would feel twice this.`,
+      ],
+      answer: t`$p = 1.2 \times 10^{-3}\ \mathrm{kg\,m/s}$ and $F = 2 \times 10^{-6}\ \mathrm{N}$`,
+    },
+    visualSpec: t`Slide a surface from black to mirror and watch the push of a light beam grow from $\dfrac{I}{c}$ to $\dfrac{2I}{c}$.`,
+  },
+  misconceptions: [
+    {
+      id: "C07-M1",
+      mistake: t`Takes the average energy density as $\varepsilon_0E_0^2$, dropping the $\tfrac12$ that averaging brings.`,
+      remediation: t`$u = \varepsilon_0E^2$ follows $\sin^2$, whose average over a cycle is $\tfrac12$: $\bar u = \tfrac12\varepsilon_0E_0^2$ and $I = \tfrac12\varepsilon_0E_0^2c$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M2",
+      mistake: t`Counts only the electric field's energy, $\tfrac12\varepsilon_0E^2$, as the wave's whole energy density.`,
+      remediation: t`The magnetic field stores an equal share, $\dfrac{B^2}{2\mu_0} = \tfrac12\varepsilon_0E^2$, so the total is $\varepsilon_0E^2$, averaging $\tfrac12\varepsilon_0E_0^2$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M3",
+      mistake: t`Thinks a reflected wave pushes no harder than an absorbed one: $\dfrac{I}{c}$ on any surface.`,
+      remediation: t`Reflection reverses the wave's momentum, so the surface gets $\dfrac{2U}{c}$: pressure $\dfrac{2I}{c}$ on a perfect reflector.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M4",
+      mistake: t`Gives the average energy density as the intensity, forgetting that the energy moves at $c$.`,
+      remediation: t`Intensity is the energy crossing unit area each second: $I = \bar u\,c$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M5",
+      mistake: t`Takes the intensity of a point source to fall as $\dfrac{1}{r}$, dividing by $4\pi r$.`,
+      remediation: t`The power spreads over a sphere of area $4\pi r^2$, so $I = \dfrac{P}{4\pi r^2}$; it is $E_0$ that falls as $\dfrac{1}{r}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M6",
+      mistake: "Thinks light has no mass, so it carries no momentum and exerts no pressure.",
+      remediation: t`An EM wave carries momentum $p = \dfrac{U}{c}$ with its energy, massless or not, so it presses on what it hits.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M7",
+      mistake: "Takes a wave's energy to go as its amplitude, not as the square of the amplitude.",
+      remediation: t`$\bar u = \tfrac12\varepsilon_0E_0^2$: energy goes as $E_0^2$, so four times the energy density needs only twice the amplitude.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C07-M8",
+      mistake: "Thinks an absorbing surface is pushed harder than a mirror, as it takes in all the energy.",
+      remediation: t`Absorbed light hands over its momentum $\dfrac{U}{c}$ once; reflected light reverses and hands over $\dfrac{2U}{c}$. Absorbed: $\dfrac{I}{c}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M9",
+      mistake: t`Uses an energy flux in $\mathrm{W/cm^2}$ without converting it to $\mathrm{W/m^2}$.`,
+      remediation: t`$1\ \mathrm{W/cm^2} = 10^{4}\ \mathrm{W/m^2}$: convert to SI before using $\dfrac{I}{c}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M10",
+      mistake: t`Takes the momentum delivered over the whole time, $\dfrac{U}{c}$, as the force.`,
+      remediation: t`Force is momentum per second: $F = \dfrac{U/c}{t} = \dfrac{IA}{c}$, whatever the time the light shines for.`,
+      fallback: { kind: "ext", topic: "force as rate of change of momentum (Std XI Physics)" },
+    },
+    {
+      id: "C07-M11",
+      mistake: "Takes the cross-section of a cylinder to go as its diameter, not the diameter squared.",
+      remediation: t`Area $= \dfrac{\pi d^2}{4}$: half the diameter gives a quarter of the area, and a quarter of the volume.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C07-M12",
+      mistake: "Thinks the same energy means the same field, forgetting the energy is spread through a volume.",
+      remediation: t`Energy $= \bar u \times$ volume; a smaller volume holding the same energy needs a larger $\bar u$, so a larger $E_0$.`,
+      fallback: { kind: "none" },
+    },
+  ],
+  items: [
+    {
+      id: "C07-Q1",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2024 27 Jan 2024 Q16" },
+      stem: t`A plane electromagnetic wave travelling along $x$ in free space has $E_y = (200\ \mathrm{V/m})\sin(1.5 \times 10^{7}t - 0.05x)$. What is its intensity? ($\varepsilon_0 = 8.85 \times 10^{-12}\ \mathrm{C^2/(N\,m^2)}$, $c = 3 \times 10^{8}\ \mathrm{m/s}$)`,
+      verify: { kind: "value", inputs: { E0: "200" }, params: { ask: "intensity" } },
+      options: [
+        { key: "A", text: t`$26.6\ \mathrm{W/m^2}$`, correct: false, misconceptionId: "C07-M2", value: "26.6000000000000" },
+        { key: "B", text: t`$1.77 \times 10^{-7}\ \mathrm{W/m^2}$`, correct: false, misconceptionId: "C07-M4", value: "1.77000000000000e-7" },
+        { key: "C", text: t`$53.1\ \mathrm{W/m^2}$`, correct: true, value: "53.1000000000000" },
+        { key: "D", text: t`$106\ \mathrm{W/m^2}$`, correct: false, misconceptionId: "C07-M1", value: "106" },
+      ],
+      solution: {
+        steps: [
+          t`$\bar u = \tfrac12\varepsilon_0E_0^2$, and the energy moves at $c$: $I = \tfrac12\varepsilon_0E_0^2c$.`,
+          t`$I = \tfrac12 \times 8.85 \times 10^{-12} \times 200^2$ $\times 3 \times 10^{8}$`,
+          t`$= 53.1\ \mathrm{W/m^2}$.`,
+        ],
+      },
+    },
+    {
+      id: "C07-Q2",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2025 3 Apr 2025 Q4" },
+      stem: t`A point source radiates $450\ \mathrm{W}$ of light. What radiation pressure does it exert on a perfectly reflecting surface $2\ \mathrm{m}$ away, facing the source?`,
+      verify: { kind: "value", inputs: { P: "450", r: "2" }, params: { ask: "pressure", surface: "reflect" } },
+      options: [
+        { key: "A", text: t`$2.98 \times 10^{-8}\ \mathrm{Pa}$`, correct: false, misconceptionId: "C07-M3", value: "2.98000000000000e-8" },
+        { key: "B", text: t`$1.19 \times 10^{-7}\ \mathrm{Pa}$`, correct: false, misconceptionId: "C07-M5", value: "1.19000000000000e-7" },
+        { key: "C", text: t`$0\ \mathrm{Pa}$`, correct: false, misconceptionId: "C07-M6", value: "0" },
+        { key: "D", text: t`$5.97 \times 10^{-8}\ \mathrm{Pa}$`, correct: true, value: "5.97000000000000e-8" },
+      ],
+      solution: {
+        steps: [
+          t`At $r = 2\ \mathrm{m}$: $I = \dfrac{P}{4\pi r^2} = \dfrac{450}{16\pi}$ $= 8.95\ \mathrm{W/m^2}$.`,
+          t`A perfect reflector reverses the momentum, so the pressure is $\dfrac{2I}{c}$.`,
+          t`$\dfrac{2 \times 8.95}{3 \times 10^{8}}$ $= 5.97 \times 10^{-8}\ \mathrm{Pa}$.`,
+        ],
+      },
+    },
+    {
+      id: "C07-Q3",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2024 8 April 2024 Q2" },
+      stem: t`Light of energy flux $360\ \mathrm{W/cm^2}$ falls normally on a non-reflecting surface for $1$ hour $30$ minutes. The average force on the surface is $2.4 \times 10^{-4}\ \mathrm{N}$. What is the area of the surface?`,
+      verify: { kind: "value", inputs: { F: "2.4e-4", I: "360", t: "5400" }, params: { ask: "area" } },
+      options: [
+        { key: "A", text: t`$3.7 \times 10^{-6}\ \mathrm{m^2}$`, correct: false, misconceptionId: "C07-M10", value: "3.70000000000000e-6" },
+        { key: "B", text: t`$0.02\ \mathrm{m^2}$`, correct: true, value: "0.0200000000000000" },
+        { key: "C", text: t`$0.01\ \mathrm{m^2}$`, correct: false, misconceptionId: "C07-M8", value: "0.0100000000000000" },
+        { key: "D", text: t`$200\ \mathrm{m^2}$`, correct: false, misconceptionId: "C07-M9", value: "200" },
+      ],
+      solution: {
+        steps: [
+          t`$I = 360\ \mathrm{W/cm^2} = 3.6 \times 10^{6}\ \mathrm{W/m^2}$.`,
+          t`Absorbed: $F = \dfrac{IA}{c}$, which does not depend on the time, so $A = \dfrac{Fc}{I}$.`,
+          t`$Fc = 2.4 \times 10^{-4} \times 3 \times 10^{8}$ $= 7.2 \times 10^{4}\ \mathrm{W}$.`,
+          t`$A = \dfrac{7.2 \times 10^{4}}{3.6 \times 10^{6}}$ $= 0.02\ \mathrm{m^2}$.`,
+        ],
+      },
+    },
+    {
+      id: "C07-Q4",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2022 14 June 2022 Q107" },
+      stem: t`A $200\ \mathrm{W}$ bulb acts as a point source and turns $3.5\%$ of its power into radiation. What is the peak magnetic field of this radiation $4\ \mathrm{m}$ from the bulb? ($\mu_0 = 4\pi \times 10^{-7}\ \mathrm{T\,m/A}$)`,
+      verify: { kind: "value", inputs: { P: "200", eta: "0.035", r: "4" }, params: { ask: "b_peak" } },
+      options: [
+        { key: "A", text: t`$1.71 \times 10^{-8}\ \mathrm{T}$`, correct: true, value: "1.71000000000000e-8" },
+        { key: "B", text: t`$1.21 \times 10^{-8}\ \mathrm{T}$`, correct: false, misconceptionId: "C07-M1", value: "1.21000000000000e-8" },
+        { key: "C", text: t`$2.41 \times 10^{-8}\ \mathrm{T}$`, correct: false, misconceptionId: "C07-M2", value: "2.41000000000000e-8" },
+        { key: "D", text: t`$3.41 \times 10^{-8}\ \mathrm{T}$`, correct: false, misconceptionId: "C07-M5", value: "3.41000000000000e-8" },
+      ],
+      solution: {
+        steps: [
+          t`Radiated power $= 0.035 \times 200 = 7\ \mathrm{W}$, so $I = \dfrac{7}{4\pi \times 4^2}$ $= 0.0348\ \mathrm{W/m^2}$.`,
+          t`$I = \dfrac{cB_0^2}{2\mu_0}$, so $B_0^2 = \dfrac{2\mu_0 I}{c}$.`,
+          t`$2\mu_0 I = 8.75 \times 10^{-8}$, so $B_0^2 = \dfrac{8.75 \times 10^{-8}}{3 \times 10^{8}}$ $= 2.92 \times 10^{-16}$.`,
+          t`$B_0 = 1.71 \times 10^{-8}\ \mathrm{T}$.`,
+        ],
+      },
+    },
+    {
+      id: "C07-Q5",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2025 28 January 2025 Q16" },
+      stem: t`An EM wave with $E = 100\sin(\omega t - kx)\ \mathrm{N/C}$ fills a cylinder $200\ \mathrm{cm}$ long. A second cylinder of the same length but half the diameter holds the same amount of EM energy. What is the electric field amplitude of the wave in the second cylinder?`,
+      verify: { kind: "value", inputs: { E0: "100", k: "1/2" }, params: { ask: "cylinder" } },
+      options: [
+        { key: "A", text: t`$400\ \mathrm{N/C}$`, correct: false, misconceptionId: "C07-M7", value: "400" },
+        { key: "B", text: t`$141\ \mathrm{N/C}$`, correct: false, misconceptionId: "C07-M11", value: "141" },
+        { key: "C", text: t`$100\ \mathrm{N/C}$`, correct: false, misconceptionId: "C07-M12", value: "100" },
+        { key: "D", text: t`$200\ \mathrm{N/C}$`, correct: true, value: "200" },
+      ],
+      solution: {
+        steps: [
+          t`Energy in a cylinder $= \bar u \times$ volume, with $\bar u = \tfrac12\varepsilon_0E_0^2$.`,
+          t`Half the diameter gives a quarter of the cross-section, so a quarter of the volume.`,
+          t`The same energy then needs $4$ times the energy density, so $E_0^2$ is $4$ times as large.`,
+          t`$E_0 = 2 \times 100 = 200\ \mathrm{N/C}$.`,
+        ],
+      },
+    },
+    {
+      id: "C07-Q6",
+      source: { kind: "pyqvault-practice", ref: "cbse-12 2025 55/2/3 Q25" },
+      stem: t`The same beam of white light falls normally on a black surface, a yellow surface and a white surface of the same size, one at a time. On which surface is the radiation pressure greatest?`,
+      verify: { kind: "value", inputs: {  }, params: { ask: "surfaces" } },
+      options: [
+        { key: "A", text: t`The white surface`, correct: true, value: "white_most" },
+        { key: "B", text: t`It is the same on all three`, correct: false, misconceptionId: "C07-M3", value: "all_equal" },
+        { key: "C", text: t`None: light has no mass, so it exerts no pressure`, correct: false, misconceptionId: "C07-M6", value: "no_pressure" },
+        { key: "D", text: t`The black surface`, correct: false, misconceptionId: "C07-M8", value: "black_most" },
+      ],
+      solution: {
+        steps: [
+          t`Light hands a surface momentum $\dfrac{U}{c}$ if absorbed and $\dfrac{2U}{c}$ if reflected.`,
+          t`The black surface absorbs nearly all the light: pressure close to $\dfrac{I}{c}$.`,
+          t`The white surface reflects nearly all of it: pressure close to $\dfrac{2I}{c}$, the greatest. The yellow one lies between.`,
+        ],
+      },
+    },
+  ],
+};

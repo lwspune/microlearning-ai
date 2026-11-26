@@ -1,0 +1,312 @@
+import type { Concept } from "../../../types.ts";
+
+const t = String.raw;
+
+export const c13: Concept = {
+  id: "C13",
+  status: "approved",
+  hook: {
+    prompt: t`Helium has $\gamma = \tfrac53$ and oxygen has $\gamma = \tfrac75$. Mix one mole of each. Is the mixture's $\gamma$ just their average, about $1.53$?`,
+    reveal: t`No, it is $1.5$. The energies add, so the $C_V$s average: $C_V = \dfrac{\tfrac32R + \tfrac52R}{2}$ $= 2R$. Then $C_P = 3R$ and $\gamma = \dfrac{3R}{2R} = 1.5$.`,
+  },
+  explanation: {
+    intuition: [
+      t`Gases that do not react simply share a vessel: each spreads through all of it.`,
+      t`Each gas pushes on the walls as if it were alone, so the pressures add.`,
+      t`Each gas keeps its own degrees of freedom, so the internal energies add too.`,
+      t`So the mixture's $C_V$ is the mole-weighted mean of the gases' $C_V$s.`,
+      t`$C_P = C_V + R$ and $\gamma = \dfrac{C_P}{C_V}$ follow from it; the $\gamma$s are never averaged.`,
+      t`Mixed in an insulated vessel, the gases keep their total internal energy.`,
+    ],
+    formal: [
+      {
+        title: "Dalton's law",
+        points: [
+          t`The **partial pressure** $p_1$ of a gas is the pressure it would exert alone in the whole vessel.`,
+          t`A second gas, alone in the same vessel at the same $T$, exerts $p_2$.`,
+          t`**Dalton's law**: together they exert $p = p_1 + p_2$.`,
+          t`Each partial pressure obeys the gas law: $p_i = \dfrac{n_iRT}{V}$.`,
+          t`So $p = \dfrac{(n_1 + n_2)RT}{V}$: in a mixture, the moles add.`,
+          t`Find each $n_i = \dfrac{m_i}{M_i}$ first, with the molar mass of the molecule: $32\ \mathrm{g/mol}$ for $\mathrm{O_2}$.`,
+        ],
+        figure: {
+          alt: "Three equal vessels at the same temperature. Step 1: the first holds gas 1 alone, at pressure p1. Step 2: the second holds gas 2 alone, at pressure p2. Step 3: the third holds both gases together, at pressure p1 + p2.",
+          axes: "none",
+          view: { x: [0, 15], y: [-1.4, 3.8] },
+          elements: [
+            { kind: "segment", from: [0.5, 0], to: [4.5, 0], step: 1 },
+            { kind: "segment", from: [4.5, 0], to: [4.5, 3.2], step: 1 },
+            { kind: "segment", from: [4.5, 3.2], to: [0.5, 3.2], step: 1 },
+            { kind: "segment", from: [0.5, 3.2], to: [0.5, 0], step: 1 },
+            { kind: "point", at: [1.2, 0.6], tone: "bad", step: 1 },
+            { kind: "point", at: [2.6, 1.1], tone: "bad", step: 1 },
+            { kind: "point", at: [3.7, 0.5], tone: "bad", step: 1 },
+            { kind: "point", at: [1.5, 2.4], tone: "bad", step: 1 },
+            { kind: "point", at: [3.3, 2.5], tone: "bad", step: 1 },
+            { kind: "label", at: [2.5, -0.2], label: "p₁", labelAt: "s", tone: "bad", step: 1 },
+            { kind: "segment", from: [5.5, 0], to: [9.5, 0], step: 2 },
+            { kind: "segment", from: [9.5, 0], to: [9.5, 3.2], step: 2 },
+            { kind: "segment", from: [9.5, 3.2], to: [5.5, 3.2], step: 2 },
+            { kind: "segment", from: [5.5, 3.2], to: [5.5, 0], step: 2 },
+            { kind: "point", at: [6.1, 1.5], tone: "good", step: 2 },
+            { kind: "point", at: [7.1, 0.4], tone: "good", step: 2 },
+            { kind: "point", at: [8.9, 1.4], tone: "good", step: 2 },
+            { kind: "point", at: [7.4, 2.7], tone: "good", step: 2 },
+            { kind: "point", at: [8.2, 1.9], tone: "good", step: 2 },
+            { kind: "label", at: [7.5, -0.2], label: "p₂", labelAt: "s", tone: "good", step: 2 },
+            { kind: "segment", from: [10.5, 0], to: [14.5, 0], step: 3 },
+            { kind: "segment", from: [14.5, 0], to: [14.5, 3.2], step: 3 },
+            { kind: "segment", from: [14.5, 3.2], to: [10.5, 3.2], step: 3 },
+            { kind: "segment", from: [10.5, 3.2], to: [10.5, 0], step: 3 },
+            { kind: "point", at: [11.2, 0.6], tone: "bad", step: 3 },
+            { kind: "point", at: [12.6, 1.1], tone: "bad", step: 3 },
+            { kind: "point", at: [13.7, 0.5], tone: "bad", step: 3 },
+            { kind: "point", at: [11.5, 2.4], tone: "bad", step: 3 },
+            { kind: "point", at: [13.3, 2.5], tone: "bad", step: 3 },
+            { kind: "point", at: [11.1, 1.5], tone: "good", step: 3 },
+            { kind: "point", at: [12.1, 0.4], tone: "good", step: 3 },
+            { kind: "point", at: [13.9, 1.4], tone: "good", step: 3 },
+            { kind: "point", at: [12.4, 2.7], tone: "good", step: 3 },
+            { kind: "point", at: [13.2, 1.9], tone: "good", step: 3 },
+            { kind: "label", at: [12.5, -0.2], label: "p₁ + p₂", labelAt: "s", step: 3 },
+          ],
+        },
+      },
+      {
+        title: "Joining two chambers",
+        points: [
+          t`Remove a partition and each gas spreads from its own chamber into the whole volume $V_1 + V_2$.`,
+          t`Spreading out lowers each gas's pressure, so the old pressures $p_1$ and $p_2$ do not simply add.`,
+          t`For one gas at one temperature, Boyle's law gives $p(V_1 + V_2) = p_1V_1 + p_2V_2$.`,
+          t`The same holds for the same gas at two temperatures in an insulated vessel: $pV = \dfrac{2}{f}U$, and $U$ is kept.`,
+          t`So $p = \dfrac{p_1V_1 + p_2V_2}{V_1 + V_2}$, a mean weighted by volume.`,
+        ],
+      },
+      {
+        title: "Internal energy of a mixture",
+        points: [
+          t`By equipartition, each **degree of freedom** holds $\tfrac12RT$ per mole.`,
+          t`Monatomic (He, Ne, Ar): $f = 3$. Rigid diatomic ($\mathrm{O_2}$, $\mathrm{N_2}$): $f = 5$.`,
+          t`A non-linear polyatomic molecule, with no vibration, has $f = 6$.`,
+          t`Each gas keeps its own $f$ in a mixture: a mole of gas $i$ holds $\dfrac{f_i}{2}RT$.`,
+          t`So $U = n_1\dfrac{f_1}{2}RT + n_2\dfrac{f_2}{2}RT$.`,
+        ],
+      },
+      {
+        title: "Specific heats of a mixture",
+        points: [
+          t`Warming the mixture by $dT$ warms every gas by $dT$: $dU = (n_1C_{V1} + n_2C_{V2})\,dT$.`,
+          t`Per mole of mixture: $C_V = \dfrac{n_1C_{V1} + n_2C_{V2}}{n_1 + n_2}$.`,
+          t`Mayer's relation holds for the mixture too: $C_P = C_V + R$.`,
+          t`Then $\gamma = \dfrac{C_P}{C_V}$ $= 1 + \dfrac{R}{C_V}$.`,
+          t`Given the gases' $\gamma$s, use $C_{Vi} = \dfrac{R}{\gamma_i - 1}$. This gives a handy form:`,
+          t`$\dfrac{n_1 + n_2}{\gamma - 1}$ $= \dfrac{n_1}{\gamma_1 - 1} + \dfrac{n_2}{\gamma_2 - 1}$.`,
+        ],
+      },
+      {
+        title: "Mixing at two temperatures",
+        points: [
+          t`In an insulated vessel, with no work done, the total internal energy stays the same.`,
+          t`$n_1C_{V1}T_1 + n_2C_{V2}T_2$ $= (n_1C_{V1} + n_2C_{V2})T$.`,
+          t`So $T = \dfrac{n_1f_1T_1 + n_2f_2T_2}{n_1f_1 + n_2f_2}$: each gas weighs in with $nC_V$.`,
+          t`Only when the two gases have the same $C_V$ is $T$ the mole-weighted mean of $T_1$ and $T_2$.`,
+        ],
+      },
+      {
+        title: "Speeds in a mixture",
+        points: [
+          t`At one temperature every molecule has the same average translational kinetic energy, $\tfrac32k_BT$.`,
+          t`So each gas keeps its own rms speed, $v_{rms} = \sqrt{\dfrac{3RT}{M_i}}$: lighter molecules move faster.`,
+          t`In a helium and oxygen mixture, $\dfrac{v_{\mathrm{He}}}{v_{\mathrm{O_2}}} = \sqrt{\dfrac{32}{4}}$ $= 2\sqrt2$.`,
+          t`The mixture's mean molar mass is $M = \dfrac{n_1M_1 + n_2M_2}{n_1 + n_2}$.`,
+          t`Sound in the mixture travels at $v = \sqrt{\dfrac{\gamma RT}{M}}$, with the mixture's $\gamma$ and $M$.`,
+        ],
+      },
+    ],
+    worked: {
+      prompt: t`Three moles of helium are mixed with two moles of nitrogen (rigid diatomic). Find $C_V$, $C_P$ and $\gamma$ for the mixture.`,
+      steps: [
+        t`Helium is monatomic: $C_{V1} = \tfrac32R$. Nitrogen is rigid diatomic: $C_{V2} = \tfrac52R$.`,
+        t`$C_V = \dfrac{3 \times \tfrac32R + 2 \times \tfrac52R}{3 + 2}$ $= \dfrac{9.5R}{5} = 1.9R$.`,
+        t`$C_P = C_V + R = 2.9R$.`,
+        t`$\gamma = \dfrac{2.9R}{1.9R} = \dfrac{29}{19}$ $\approx 1.53$.`,
+        t`Check: $\dfrac{3}{2/3} + \dfrac{2}{2/5} = 9.5$ $= \dfrac{5}{\gamma - 1}$, so $\gamma - 1 = \dfrac{10}{19}$.`,
+      ],
+      answer: t`$C_V = 1.9R$, $C_P = 2.9R$, $\gamma = \dfrac{29}{19} \approx 1.53$`,
+    },
+    visualSpec: t`Slide the moles of two gases and watch the mixture's $C_V$ move between theirs, with $\gamma$ following from it, never the average of the two $\gamma$s.`,
+  },
+  misconceptions: [
+    {
+      id: "C13-M1",
+      mistake: t`Averages the gases' values plainly (pressures, temperatures, $C_V$ or $\gamma$), as if every gas counted equally.`,
+      remediation: t`Weight each gas by how much of it there is: $C_V$ by moles, temperatures by $nC_V$, chamber pressures by volume.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C13-M2",
+      mistake: t`Takes the $\gamma$, temperature or pressure of a mixture as the mole-weighted mean of the gases' values.`,
+      remediation: t`Only $C_V$ and $U$ go by moles. Find $C_V$, then $\gamma = 1 + \dfrac{R}{C_V}$; temperatures weigh in by $nC_V$, chamber pressures by volume.`,
+      fallback: { kind: "concept", id: "C07" },
+    },
+    {
+      id: "C13-M3",
+      mistake: t`Gives every molecule only its 3 translational degrees of freedom, so a diatomic gas gets $C_V = \tfrac32R$.`,
+      remediation: t`A rigid diatomic molecule also rotates about two axes: $f = 5$ and $C_V = \tfrac52R$. Only a monatomic gas has $f = 3$.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C13-M4",
+      mistake: "Weights each gas by its degrees of freedom but leaves out how many moles of it there are.",
+      remediation: t`A gas's share is $n_iC_{Vi}$, moles times $C_V$: twice the moles hold twice the energy.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C13-M5",
+      mistake: "Adds the chambers' original pressures, forgetting that each gas now spreads into the whole volume.",
+      remediation: t`Each gas's pressure falls as it spreads into $V_1 + V_2$; the products add: $p(V_1 + V_2) = p_1V_1 + p_2V_2$.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C13-M6",
+      mistake: t`Uses the atomic mass as the molar mass of a diatomic gas: $16\ \mathrm{g/mol}$ for $\mathrm{O_2}$.`,
+      remediation: t`An $\mathrm{O_2}$ molecule has two atoms: $M = 32\ \mathrm{g/mol}$. Likewise $\mathrm{N_2}$ has $M = 28\ \mathrm{g/mol}$.`,
+      fallback: { kind: "none" },
+    },
+    {
+      id: "C13-M7",
+      mistake: "Takes the mass in grams as the number of moles.",
+      remediation: t`Moles $n = \dfrac{m}{M}$: divide each mass by its molar mass before adding.`,
+      fallback: { kind: "concept", id: "C01" },
+    },
+    {
+      id: "C13-M8",
+      mistake: t`Gives each degree of freedom $RT$ per mole instead of $\tfrac12RT$.`,
+      remediation: t`Equipartition gives $\tfrac12k_BT$ per molecule, $\tfrac12RT$ per mole, to each degree of freedom: $U = \dfrac{f}{2}nRT$.`,
+      fallback: { kind: "concept", id: "C06" },
+    },
+    {
+      id: "C13-M9",
+      mistake: t`Turns the ratio upside down, giving $\dfrac{C_V}{C_P}$.`,
+      remediation: t`$\gamma = \dfrac{C_P}{C_V}$, which is always greater than 1 since $C_P = C_V + R$.`,
+      fallback: { kind: "concept", id: "C07" },
+    },
+  ],
+  items: [
+    {
+      id: "C13-Q1",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2021 Paper 5 Q9" },
+      stem: t`A vessel of volume $V$ holds $16\ \mathrm{g}$ of oxygen ($\mathrm{O_2}$), $28\ \mathrm{g}$ of nitrogen ($\mathrm{N_2}$) and $44\ \mathrm{g}$ of carbon dioxide ($\mathrm{CO_2}$) at absolute temperature $T$. What is the pressure of the mixture? (Atomic masses: C $= 12$, N $= 14$, O $= 16$)`,
+      verify: { kind: "value", inputs: { m1: "16", m2: "28", m3: "44", M1: "32", M2: "28", M3: "44", a1: "16", a2: "14", a3: "44" }, params: { ask: "dalton" } },
+      options: [
+        { key: "A", text: t`$\frac{5 R T}{2 V}$`, correct: true, value: "5*R*T/(2*V)" },
+        { key: "B", text: t`$\frac{5 R T}{6 V}$`, correct: false, misconceptionId: "C13-M1", value: "5*R*T/(6*V)" },
+        { key: "C", text: t`$\frac{4 R T}{V}$`, correct: false, misconceptionId: "C13-M6", value: "4*R*T/V" },
+        { key: "D", text: t`$\frac{88 R T}{V}$`, correct: false, misconceptionId: "C13-M7", value: "88*R*T/V" },
+      ],
+      solution: {
+        steps: [
+          t`Moles: $\mathrm{O_2}$ $\dfrac{16}{32} = \tfrac12$, $\mathrm{N_2}$ $\dfrac{28}{28} = 1$, $\mathrm{CO_2}$ $\dfrac{44}{44} = 1$.`,
+          t`By Dalton's law the partial pressures add, so the moles add: $n = 2.5$.`,
+          t`$p = \dfrac{nRT}{V} = \dfrac{5RT}{2V}$.`,
+        ],
+      },
+    },
+    {
+      id: "C13-Q2",
+      source: { kind: "pyqvault-practice", ref: "neet 2025 NEET (UG) 2025 — 04 May 2025 Q29" },
+      stem: t`An insulated container has two chambers, of volumes $2$ litres and $3$ litres, separated by a partition. They hold $5$ moles and $4$ moles of the same ideal gas, at pressures $1\ \mathrm{atm}$ and $2\ \mathrm{atm}$. The partition is removed. What is the equilibrium pressure?`,
+      verify: { kind: "value", inputs: { V1: "2", n1: "5", p1: "1", V2: "3", n2: "4", p2: "2" }, params: { ask: "chambers" } },
+      options: [
+        { key: "A", text: t`$1.6\ \mathrm{atm}$`, correct: true, value: "1.60000000000000" },
+        { key: "B", text: t`$1.5\ \mathrm{atm}$`, correct: false, misconceptionId: "C13-M1", value: "1.50000000000000" },
+        { key: "C", text: t`$1.44\ \mathrm{atm}$`, correct: false, misconceptionId: "C13-M2", value: "1.44000000000000" },
+        { key: "D", text: t`$3\ \mathrm{atm}$`, correct: false, misconceptionId: "C13-M5", value: "3" },
+      ],
+      solution: {
+        steps: [
+          t`Each gas spreads into the whole $5$ litres. For the same gas in an insulated vessel, the products $pV$ add.`,
+          t`$p \times 5 = 1 \times 2 + 2 \times 3 = 8$.`,
+          t`$p = 1.6\ \mathrm{atm}$. The numbers of moles are not needed.`,
+        ],
+      },
+    },
+    {
+      id: "C13-Q3",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2023 10 April 2023 Q93" },
+      stem: t`A gas mixture has $2$ moles of oxygen and $4$ moles of neon at temperature $T$. Neglecting vibration, what is the total internal energy of the mixture?`,
+      verify: { kind: "value", inputs: { n1: "2", f1: "5", n2: "4", f2: "3" }, params: { ask: "U" } },
+      options: [
+        { key: "A", text: t`$22 R T$`, correct: false, misconceptionId: "C13-M8", value: "22*R*T" },
+        { key: "B", text: t`$11 R T$`, correct: true, value: "11*R*T" },
+        { key: "C", text: t`$12 R T$`, correct: false, misconceptionId: "C13-M1", value: "12*R*T" },
+        { key: "D", text: t`$9 R T$`, correct: false, misconceptionId: "C13-M3", value: "9*R*T" },
+      ],
+      solution: {
+        steps: [
+          t`Oxygen is rigid diatomic, $f = 5$: $2 \times \tfrac52RT = 5RT$.`,
+          t`Neon is monatomic, $f = 3$: $4 \times \tfrac32RT = 6RT$.`,
+          t`Internal energies add: $U = 11RT$.`,
+        ],
+      },
+    },
+    {
+      id: "C13-Q4",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2024 1 February 2024 Q6" },
+      stem: t`Two moles of a monatomic gas are mixed with six moles of a rigid diatomic gas. What is the molar specific heat of the mixture at constant volume?`,
+      verify: { kind: "value", inputs: { n1: "2", f1: "3", n2: "6", f2: "5" }, params: { ask: "Cv" } },
+      options: [
+        { key: "A", text: t`$2 R$`, correct: false, misconceptionId: "C13-M1", value: "2*R" },
+        { key: "B", text: t`$\frac{3 R}{2}$`, correct: false, misconceptionId: "C13-M3", value: "3*R/2" },
+        { key: "C", text: t`$\frac{17 R}{8}$`, correct: false, misconceptionId: "C13-M4", value: "17*R/8" },
+        { key: "D", text: t`$\frac{9 R}{4}$`, correct: true, value: "9*R/4" },
+      ],
+      solution: {
+        steps: [
+          t`$C_{V1} = \tfrac32R$ (monatomic) and $C_{V2} = \tfrac52R$ (rigid diatomic).`,
+          t`$C_V = \dfrac{2 \times \tfrac32R + 6 \times \tfrac52R}{2 + 6}$ $= \dfrac{18R}{8}$`,
+          t`$= \dfrac{9}{4}R$.`,
+        ],
+      },
+    },
+    {
+      id: "C13-Q5",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2024 30 Jan 2024 Q106" },
+      stem: t`One mole of a monatomic gas ($\gamma = \tfrac{5}{3}$) is mixed with two moles of a polyatomic gas ($\gamma = \tfrac{4}{3}$). What is $\gamma$ for the mixture?`,
+      verify: { kind: "value", inputs: { n1: "1", g1: "5/3", n2: "2", g2: "4/3" }, params: { ask: "gamma" } },
+      options: [
+        { key: "A", text: t`$\frac{7}{5}$`, correct: true, value: "7/5" },
+        { key: "B", text: t`$\frac{3}{2}$`, correct: false, misconceptionId: "C13-M1", value: "3/2" },
+        { key: "C", text: t`$\frac{13}{9}$`, correct: false, misconceptionId: "C13-M2", value: "13/9" },
+        { key: "D", text: t`$\frac{5}{7}$`, correct: false, misconceptionId: "C13-M9", value: "5/7" },
+      ],
+      solution: {
+        steps: [
+          t`$C_{V1} = \dfrac{R}{5/3 - 1} = \tfrac32R$ and $C_{V2} = \dfrac{R}{4/3 - 1} = 3R$.`,
+          t`$C_V = \dfrac{1 \times \tfrac32R + 2 \times 3R}{3}$ $= \tfrac52R$.`,
+          t`$C_P = C_V + R = \tfrac72R$, so $\gamma = \dfrac{7}{5}$.`,
+        ],
+      },
+    },
+    {
+      id: "C13-Q6",
+      source: { kind: "pyqvault-practice", ref: "jee-main 2021 Paper 7 Q19" },
+      stem: t`In an insulated vessel, $2$ moles of helium at $200\ \mathrm{K}$ are mixed with $1$ mole of oxygen (rigid diatomic) at $500\ \mathrm{K}$. No energy is lost. What is the final temperature of the mixture?`,
+      verify: { kind: "value", inputs: { n1: "2", f1: "3", T1: "200", n2: "1", f2: "5", T2: "500" }, params: { ask: "T" } },
+      options: [
+        { key: "A", text: t`$350\ \mathrm{K}$`, correct: false, misconceptionId: "C13-M1", value: "350" },
+        { key: "B", text: t`$300\ \mathrm{K}$`, correct: false, misconceptionId: "C13-M2", value: "300" },
+        { key: "C", text: t`$388\ \mathrm{K}$`, correct: false, misconceptionId: "C13-M4", value: "388" },
+        { key: "D", text: t`$336\ \mathrm{K}$`, correct: true, value: "336" },
+      ],
+      solution: {
+        steps: [
+          t`No energy is lost, so $\sum n_iC_{Vi}T_i$ is the same before and after mixing.`,
+          t`Weights $nC_V$: helium $2 \times \tfrac32R = 3R$; oxygen $1 \times \tfrac52R = 2.5R$.`,
+          t`$T = \dfrac{3 \times 200 + 2.5 \times 500}{3 + 2.5}$ $= \dfrac{1850}{5.5}$`,
+          t`$= 336\ \mathrm{K}$.`,
+        ],
+      },
+    },
+  ],
+};
