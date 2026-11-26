@@ -1323,6 +1323,12 @@ describe("the catalog", () => {
       expect(chemistry.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Solid State", "Solutions", "Ionic Equilibria", "Chemical Thermodynamics", "Electrochemistry", "Chemical Kinetics", "Elements of Groups 16, 17 and 18", "Transition and Inner Transition Elements", "Coordination Compounds", "Halogen Derivatives", "Alcohols, Phenols and Ethers", "Aldehydes, Ketones and Carboxylic Acids", "Amines", "Biomolecules", "Introduction to Polymer Chemistry", "Green Chemistry and Nanochemistry"]);
     });
 
+    it("lists the Std XI chemistry chapters in book order, before Std XII", () => {
+      const xi = chemistry.filter((r) => r.standard === 11);
+      expect(xi.map((r) => r.title)).toEqual(["Some Basic Concepts of Chemistry"]);
+      expect(chemistry.slice(0, xi.length)).toEqual(xi);
+    });
+
     it("puts chemistry after physics and covers each chapter whole", () => {
       const subjects = resolved.map((r) => r.subject);
       expect(subjects.lastIndexOf("physics")).toBeLessThan(subjects.indexOf("chemistry"));
