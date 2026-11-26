@@ -1686,6 +1686,13 @@ Board and MHT-CET pinned to the book with `book()`. Each concept: 5 items, sympy
 Left for later (smaller gaps): oxoacids of phosphorus and nitrogen compounds (JEE p-block), oxides of transition metals,
 hydrogen bonding's own concept, NDA's common acids and salts survey.
 
+**Status, 2026-11-27: phase 2b built** (owner: "Continue"; branch `chemistry-gaps-2`). Four more concepts: oxoacids of
+phosphorus and oxides of nitrogen and nitric acid (p-block 13–15 C08, C09: NEET, JEE), oxides of transition metals
+(transition C11: JEE), common acids, bases and salts (everyday C09: NDA, in Acids, Bases and Salts). MH Board and
+MHT-CET pin p-block 13–15 to the book. Hydrogen bonding stays in States of Matter C02 (it is already Chemical Bonding's
+share in every NCERT course), so it needs no concept of its own. All 18 gap concepts: 0 KaTeX errors, 0 phone
+overflows, seeded. The chemistry courses are complete.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
