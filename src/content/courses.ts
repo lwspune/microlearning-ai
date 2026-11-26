@@ -208,6 +208,7 @@ export const courses: Course[] = [
       { chapter: "current-electricity" },
       { chapter: "magnetic-fields-current" },
       { chapter: "magnetic-materials" },
+      { chapter: "electromagnetic-induction" },
     ],
   },
   {
