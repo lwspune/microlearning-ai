@@ -1185,6 +1185,124 @@ describe("the catalog", () => {
     });
   });
 
+  // JEE Main maths from the maths pool (owner, 2026-11-27: "Ok" to PLAN.md "JEE Main Maths course"): PYQ Vault's
+  // chapters under its names, less what the 2024 syllabus dropped.
+  describe("JEE Main maths", () => {
+    const jee = findCourse("jee-main")!;
+    const maths = jee.chapters.map((e) => resolveEntry(e, chapters)).filter((r) => r.subject === "maths");
+    const parts = (slug: string) =>
+      maths.find((r) => r.slug === slug)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+    const ids = (chapter: string, ...list: string[]) => list.map((id) => `${chapter} ${id}`);
+    const whole = (chapter: string) => chapters.find((c) => c.slug === chapter)!.graph.map((n) => `${chapter} ${n.id}`);
+    // Std XI's Sequences and Series, C01–C18 (C19–C21 are the Std X book's A.P. work).
+    const SERIES_XI_IDS = Array.from({ length: 18 }, (_, i) => `C${String(i + 1).padStart(2, "0")}`);
+
+    it("lists PYQ Vault's chapters by class, in NCERT's order", () => {
+      expect(byStandard(maths).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
+        [
+          11,
+          [
+            "Relations and Functions",
+            "Trigonometric Identities",
+            "Complex Numbers",
+            "Quadratic Equations",
+            "Permutations and Combinations",
+            "Binomial Theorem",
+            "Sequences and Series",
+            "Straight Lines",
+            "Conic Sections",
+            "Limits and Continuity",
+            "Statistics",
+          ],
+        ],
+        [
+          12,
+          [
+            "Inverse Trigonometric Functions",
+            "Trigonometric Equations",
+            "Matrices",
+            "Determinants",
+            "Differentiation",
+            "Application of Derivatives",
+            "Indefinite Integration",
+            "Definite Integration",
+            "Application of Integrals",
+            "Differential Equations",
+            "Vector Algebra",
+            "Three Dimensional Geometry",
+            "Probability",
+          ],
+        ],
+      ]);
+    });
+
+    it("joins and splits pool chapters the way PYQ Vault's JEE chapters do", () => {
+      expect(parts("relations-and-functions")).toEqual(["sets-and-relations", "functions"]);
+      expect(parts("trigonometric-identities")).toEqual([
+        "angle-measurement C01,C03",
+        "trigonometric-functions C01,C02,C03,C04,C05,C06,C07,C08,C09",
+        "compound-and-multiple-angles",
+      ]);
+      expect(parts("conic-sections")).toEqual(["circle", "conic-sections"]);
+      expect(parts("limits-and-continuity")).toEqual(["limits", "continuity"]);
+      expect(parts("statistics")).toEqual(["statistics C01,C03,C04,C05,C06,C07,C08,C10", "measures-of-dispersion"]);
+      expect(parts("matrices")).toEqual(["determinants-and-matrices C07,C08,C09,C10,C11,C12,C13", "matrices C12"]);
+      expect(parts("determinants")).toEqual([
+        "determinants-and-matrices C01,C02,C03,C04,C05,C06",
+        "matrices C03,C04,C05,C06,C07,C08,C09,C10,C11",
+      ]);
+      expect(parts("differentiation")).toEqual(["differentiation", "differentiation-12"]);
+      expect(parts("vector-algebra")).toEqual(["vectors C01,C02,C03,C04,C05,C06,C08,C09,C10,C11,C12,C13"]);
+      expect(parts("three-dimensional-geometry")).toEqual(["introduction-to-3d-geometry", "vectors C07", "line-and-plane C01,C02,C03,C04,C05"]);
+      expect(parts("probability")).toEqual(["probability", "probability-distributions C01,C02,C03,C04", "binomial-distribution"]);
+      expect(parts("trigonometric-equations")).toEqual(["trigonometric-functions-12 C01,C02,C03,C04,C05"]);
+      expect(parts("inverse-trigonometric-functions")).toEqual(["trigonometric-functions-12 C12,C13,C14,C15"]);
+      expect(parts("sequences-and-series")).toEqual([`sequences-and-series ${SERIES_XI_IDS.join(",")}`]);
+      expect(parts("binomial-theorem")).toEqual(["binomial-theorem C01,C02,C03,C04,C05,C06,C07,C10"]);
+    });
+
+    it("leaves out what the 2024 syllabus dropped: reasoning, heights, triangles, planes, LPP and more", () => {
+      const leftOut = chapters
+        .filter((c) => c.subject === "maths" && (c.standard ?? 0) >= 11)
+        .flatMap((ch) => {
+          const covered = coveredIds(jee, ch);
+          return ch.graph.filter((n) => !covered.has(n.id)).map((n) => `${ch.slug} ${n.id}`);
+        })
+        .sort();
+      expect(leftOut).toEqual(
+        [
+          ...whole("linear-programming"),
+          ...whole("mathematical-logic"),
+          ...whole("pair-of-straight-lines"),
+          ...whole("heights-and-distances"),
+          ...whole("binary-numbers"),
+          ...whole("sphere"),
+          ...whole("logarithms"),
+          ...whole("linear-inequalities"),
+          ...ids("angle-measurement", "C02", "C04", "C05", "C06", "C07"),
+          ...ids("trigonometric-functions", "C10"),
+          ...ids("binomial-theorem", "C08", "C09"),
+          ...ids("matrices", "C01", "C02"),
+          ...ids("trigonometric-functions-12", "C06", "C07", "C08", "C09", "C10", "C11", "C16"),
+          ...ids("line-and-plane", "C06", "C07", "C08", "C09", "C10", "C11"),
+          ...ids("probability-distributions", "C05", "C06", "C07"),
+          ...ids("statistics", "C02", "C09", "C11", "C12", "C13"),
+          ...ids("sequences-and-series", "C19", "C20", "C21"),
+        ].sort(),
+      );
+    });
+
+    it("comes first in the course, and has every list approved (owner: 'Ok', 2026-11-27)", () => {
+      const subjects = jee.chapters.map((e) => resolveEntry(e, chapters).subject);
+      expect(subjects.slice(0, maths.length).every((s) => s === "maths")).toBe(true);
+      const statuses = jee.chapters
+        .filter((e) => resolveEntry(e, chapters).subject === "maths")
+        .flatMap(partsOf)
+        .flatMap((p) => (p.coverage ? [p.coverage.status] : []));
+      expect(new Set(statuses)).toEqual(new Set(["approved"]));
+    });
+  });
+
   // Chemistry for the other courses, from the MH chemistry pool (owner, 2026-11-27: "start other courses chem end to
   // end and autonomously"; PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
   describe("chemistry for the other courses", () => {

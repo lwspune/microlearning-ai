@@ -112,6 +112,10 @@ const cbse = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, c
 // (PLAN.md "Std IX and X Maths"); every other use of the chapter keeps C01–C18.
 const SERIES_XI = range(1, 18);
 
+// A JEE Main share of a maths pool chapter: what the 2024 syllabus and the 2024–26 papers ask, settled against PYQ
+// Vault's chapters and rulings; approved on the owner's "Ok" 2026-11-27 (PLAN.md "JEE Main Maths course").
+const jeeMaths = (chapter: string, ids: ConceptId[]): CourseChapter => ({ chapter, coverage: { ids, status: "approved" } });
+
 const lpp = (unsure: string[]): CourseChapter => ({
   chapter: "linear-programming",
   coverage: { ids: range(1, 13), unsure, status: "approved" },
@@ -684,8 +688,60 @@ export const courses: Course[] = [
     short: "JEE Main",
     group: "school",
     tagline: "National engineering entrance",
+    // Maths: PYQ Vault's chapters and names (owner, 2026-11-27: "Ok"; PLAN.md "JEE Main Maths course"), in NCERT's
+    // order. The 2024 syllabus dropped mathematical reasoning, heights and distances, properties of triangles, planes,
+    // linear programming and the binomial theorem for other indices; their concepts stay out.
     chapters: [
-      { chapter: "complex-numbers", coverage: { ids: range(1, 30), unsure: ["C17", "C20", "C21", "C22"], status: "draft" } },
+      { chapter: "sets-and-relations", slug: "relations-and-functions", title: "Relations and Functions", more: [{ chapter: "functions" }] },
+      {
+        ...jeeMaths("angle-measurement", ["C01", "C03"]),
+        slug: "trigonometric-identities",
+        title: "Trigonometric Identities",
+        more: [jeeMaths("trigonometric-functions", range(1, 9)), { chapter: "compound-and-multiple-angles" }],
+      },
+      { chapter: "complex-numbers" },
+      { chapter: "quadratic-equations" },
+      { chapter: "permutations-and-combinations" },
+      jeeMaths("binomial-theorem", [...range(1, 7), "C10"]),
+      jeeMaths("sequences-and-series", SERIES_XI),
+      { chapter: "straight-line", slug: "straight-lines", title: "Straight Lines" },
+      { chapter: "circle", slug: "conic-sections", title: "Conic Sections", more: [{ chapter: "conic-sections" }] },
+      { chapter: "limits", slug: "limits-and-continuity", title: "Limits and Continuity", more: [{ chapter: "continuity" }] },
+      // Mean, median, mode and mean deviation, then the book's variance and S.D.; no graphs, correlation or regression.
+      { ...jeeMaths("statistics", ["C01", ...range(3, 8), "C10"]), more: [{ chapter: "measures-of-dispersion" }] },
+      { ...jeeMaths("trigonometric-functions-12", range(12, 15)), slug: "inverse-trigonometric-functions", title: "Inverse Trigonometric Functions" },
+      { ...jeeMaths("trigonometric-functions-12", range(1, 5)), slug: "trigonometric-equations", title: "Trigonometric Equations" },
+      {
+        ...jeeMaths("determinants-and-matrices", range(7, 13)),
+        slug: "matrices",
+        title: "Matrices",
+        standard: 12,
+        more: [jeeMaths("matrices", ["C12"])],
+      },
+      {
+        ...jeeMaths("determinants-and-matrices", range(1, 6)),
+        slug: "determinants",
+        title: "Determinants",
+        standard: 12,
+        more: [jeeMaths("matrices", range(3, 11))],
+      },
+      { chapter: "differentiation", standard: 12, more: [{ chapter: "differentiation-12" }] },
+      { chapter: "application-of-derivatives" },
+      { chapter: "indefinite-integration" },
+      { chapter: "definite-integration" },
+      { chapter: "application-of-definite-integration", slug: "application-of-integrals", title: "Application of Integrals" },
+      { chapter: "differential-equations" },
+      // Direction cosines (Vectors C07) are 3D Geometry; lines only, since planes left the syllabus.
+      { ...jeeMaths("vectors", [...range(1, 6), ...range(8, 13)]), slug: "vector-algebra", title: "Vector Algebra" },
+      {
+        chapter: "introduction-to-3d-geometry",
+        slug: "three-dimensional-geometry",
+        title: "Three Dimensional Geometry",
+        standard: 12,
+        more: [jeeMaths("vectors", ["C07"]), jeeMaths("line-and-plane", range(1, 5))],
+      },
+      // Discrete random variables only.
+      { chapter: "probability", standard: 12, more: [jeeMaths("probability-distributions", range(1, 4)), { chapter: "binomial-distribution" }] },
       ...ncertPhysics("jee"),
       ...ncertChemistry("jee"),
     ],
