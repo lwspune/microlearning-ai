@@ -1621,6 +1621,52 @@ concept myself (Amines onwards and all of Std XI). Each chapter passed check-con
 phone overflow probe and the seed; visual concepts' figures were read on figure sheets. Book and board misprints found
 on the way are logged for PYQ Vault.
 
+**PYQ Vault errata, reported 2026-11-27** (owner: "Report errors to pyqvault"; `question_reports` 855dcc09,
+51c18ebd, ccac0cdd, 1731cf24, 5afe2d04, dcaf997f, 7cad1b59, all open): board 2014 Q.4.ii (12 g of H₂ needs 12 F; not
+an option), 2014 Q.4.v kinetics (A and D the same, none right: 3A → 2B + C), 2015 Q.1.vii kinetics (A, B and D all
+right), 2014 Q.8.i coordination (key lacks "(II)"), 2015 Q.5.vi aldehydes (A and C the same); book Electrochemistry Ex
+Q.4 (xiv) (2Br⁻(s) for 2Br⁻(aq)) and Transition Elements Ex Q.3 (ii) (three wrong blast-furnace equations). Not filed:
+the kinetics "P₁₀" note (the stored options are right: an agent misread $\log_{10}$), ozone's "reducing property" and
+the $[\ce{Cu(CN)4}]^{2-}$ constant (both the book's own claims, doubtful rather than wrong).
+
+## Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA (started 2026-11-27, branch `chemistry-courses`)
+
+Owner, 2026-11-27: "start other courses chem end to end and autonomously". Run like the physics courses, with no
+agents ([feedback-chemistry-no-agents]): I settle every list and write every new concept.
+
+**Decisions (mine, owner asked for autonomy):**
+1. Each course takes PYQ Vault's chemistry chapters, names and splits for its exam, built from the 258-concept MH
+   chemistry pool; concepts sit where that exam's book teaches them.
+2. CBSE: the rationalised NCERT books (Class 11: 9 chapters; Class 12: 10; Surface Chemistry is marked outdated in PYQ
+   Vault). NEET: the same plus The p-Block Elements (NMC 2024 syllabus). JEE Main: its 2024 syllabus, 19 chapters;
+   PYQ Vault files gas laws and redox under Some Basic Concepts, and so does the course.
+3. Dropped, as physics dropped Communication Systems: the chapters the 2024 JEE and NEET syllabi removed, which have
+   had 0 to 2 questions a year since (Environmental Chemistry, Surface Chemistry, Hydrogen, s-Block, Isolation of
+   Elements, Polymers, Solid State, States of Matter, Chemistry in Everyday Life); JEE's Organic Reaction Mechanisms (a
+   PYQ Vault cross-chapter grouping, its concepts already in the organic chapters); NDA's Practical Chemistry (three
+   questions, one paper).
+4. MHT-CET: the books' chapters whole, under PYQ Vault's 30 names, Std XI and XII in book order. CET splits
+   Hydrocarbons into Alkanes, Alkenes, Alkynes and Aromatic Compounds, files the analytical chapter's formulas and
+   stoichiometry (book 2.4 to 2.7) under Some Basic Concepts, and doesn't list Analytical Techniques, Chemical
+   Equilibrium, Nuclear Chemistry or Chemistry in Everyday Life.
+5. NDA: PYQ Vault's 11 chapters (Class 9 and 10 general science), each taking the books' basics, placed by PYQ Vault's
+   rulings (`Question_Bank/scripts/syllabus/data/chem-nda-rulings.json`); all filed under Std XI.
+6. The MH Board's chemistry lists stay whole; when phase 2 adds concepts to a pool chapter, MH Board and MHT-CET are
+   pinned to the book with `book()` first.
+
+**Sources:** PYQ Vault chapters, subtopics and PYQ counts per exam (CBSE 11 and 12, 1,653 board PYQs; MHT-CET 30
+chapters, 3,498; JEE Main 28, 3,458; NEET 29, 385; NDA 12, 277) and the CET, JEE and NDA rulings against the MH books.
+
+**Phase 1 (this branch):** the course chapters from the pool as it is. Tests first in `courses.test.ts`;
+`ncertChemistry(exam)` beside `ncertPhysics`; a before/after sheet of the courses that gain chemistry.
+
+**Phase 2: the gaps** the books don't teach, appended to their pool chapters, each placed only in the courses that ask
+it. Candidates with PYQ counts: qualitative and quantitative analysis of organic compounds (JEE 71, NEET, CBSE);
+photoelectric effect, de Broglie and the uncertainty principle (JEE 34, CBSE); conformations of alkanes (JEE 32);
+vitamins (CBSE 30, JEE, NEET); equivalents and titrations (JEE 31); qualitative salt analysis (JEE 35); metal
+carbonyls (JEE 21); corrosion (JEE, NDA 5); NDA's general science: physical and chemical changes and types of
+reactions (NDA 14), fertilisers, cement and glass, paints (NDA 16), hardness of water (NDA 5).
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
