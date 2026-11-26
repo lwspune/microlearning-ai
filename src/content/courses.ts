@@ -264,6 +264,64 @@ function ncertPhysics(exam: NcertExam): CourseChapter[] {
   ];
 }
 
+// A course's share of a chemistry pool chapter, settled against its syllabus, papers and PYQ Vault's rulings, approved
+// on the owner's say-so 2026-11-27 (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA"); `unsure` marks doubtful concepts.
+const chm = (chapter: string, ids: ConceptId[], unsure?: ConceptId[]): CourseChapter => ({
+  chapter,
+  coverage: unsure ? { ids, unsure, status: "approved" } : { ids, status: "approved" },
+});
+
+/**
+ * NCERT's Class 11 and 12 chemistry chapters, in book order, for CBSE, NEET and JEE Main, under each exam's PYQ Vault
+ * names. CBSE keeps to the rationalised books; NEET adds The p-Block Elements (NMC 2024 syllabus); JEE Main follows its
+ * 2024 syllabus, with gas laws and redox inside Some Basic Concepts as PYQ Vault files them. Concepts sit where NCERT
+ * teaches them: hydrogen bonding and Fajans' rules are Chemical Bonding, purification and chromatography open the
+ * organic techniques, and the d-block has no metallurgy.
+ */
+function ncertChemistry(exam: NcertExam): CourseChapter[] {
+  const jee = exam === "jee";
+  const xi = (slug: string, title: string, entry: CourseChapter): CourseChapter => ({ ...entry, slug, title, standard: 11 });
+  const xii = (slug: string, title: string, entry: CourseChapter): CourseChapter => ({ ...entry, slug, title, standard: 12 });
+  return [
+    xi("some-basic-concepts-of-chemistry", "Some Basic Concepts of Chemistry", {
+      chapter: "basic-concepts-chemistry",
+      more: [
+        { chapter: "analytical-chemistry" },
+        ...(jee ? [chm("states-of-matter", ["C01", "C03", "C04", "C05", "C06"], ["C06"]), { chapter: "redox-reactions" }] : []),
+      ],
+    }),
+    xi("structure-of-atom", "Structure of Atom", { chapter: "structure-of-atom" }),
+    xi("classification-of-elements", jee ? "Classification of Elements and Periodicity" : "Classification of Elements and Periodicity in Properties", {
+      chapter: "periodic-table",
+    }),
+    xi("chemical-bonding", "Chemical Bonding and Molecular Structure", {
+      chapter: "chemical-bonding",
+      more: [chm("states-of-matter", ["C02"]), chm("s-block-elements", ["C05"])],
+    }),
+    xi("chemical-thermodynamics", jee ? "Chemical Thermodynamics" : "Thermodynamics", { chapter: "chemical-thermodynamics" }),
+    xi("equilibrium", "Equilibrium", { chapter: "chemical-equilibrium", more: [{ chapter: "ionic-equilibria" }] }),
+    ...(jee ? [] : [xi("redox-reactions", "Redox Reactions", { chapter: "redox-reactions" })]),
+    xi("organic-chemistry", "Organic Chemistry – Some Basic Principles and Techniques", {
+      chapter: "organic-chemistry-basics",
+      more: [{ chapter: "analytical-techniques" }],
+    }),
+    xi("hydrocarbons", "Hydrocarbons", { chapter: "hydrocarbons" }),
+    xii("solutions", "Solutions", { chapter: "solutions" }),
+    xii("electrochemistry", "Electrochemistry", { chapter: "electrochemistry" }),
+    // JEE asks first-order kinetics through radioactive decay.
+    xii("chemical-kinetics", "Chemical Kinetics", { chapter: "chemical-kinetics", ...(jee ? { more: [chm("nuclear-chemistry", ["C05"])] } : {}) }),
+    // The rationalised CBSE book dropped the p-block; NEET's and JEE's 2024 syllabi keep groups 13 to 18.
+    ...(exam === "cbse" ? [] : [xii("p-block-elements", "The p-Block Elements", { chapter: "p-block-13-14-15", more: [{ chapter: "p-block-16-17-18" }] })]),
+    xii("d-and-f-block-elements", "The d- and f-Block Elements", chm("transition-elements", [...range(1, 5), ...range(7, 9)])),
+    xii("coordination-compounds", "Coordination Compounds", { chapter: "coordination-compounds" }),
+    xii("haloalkanes-and-haloarenes", "Haloalkanes and Haloarenes", { chapter: "halogen-derivatives" }),
+    xii("alcohols-phenols-and-ethers", "Alcohols, Phenols and Ethers", { chapter: "alcohols-phenols-ethers" }),
+    xii("aldehydes-ketones-and-carboxylic-acids", "Aldehydes, Ketones and Carboxylic Acids", { chapter: "aldehydes-ketones-acids" }),
+    xii("amines", "Amines", { chapter: "amines" }),
+    xii("biomolecules", "Biomolecules", { chapter: "biomolecules" }),
+  ];
+}
+
 export const courses: Course[] = [
   {
     slug: "mh-board",
@@ -504,6 +562,7 @@ export const courses: Course[] = [
       lpp(["C12", "C13"]),
       { ...cbse("probability", range(7, 10)), slug: "probability-12", standard: 12 },
       ...ncertPhysics("cbse"),
+      ...ncertChemistry("cbse"),
     ],
   },
   {
@@ -578,6 +637,40 @@ export const courses: Course[] = [
       book("dual-nature", 8),
       book("atoms-nuclei", 11),
       { chapter: "semiconductors", slug: "semiconductor-devices", title: "Semiconductor Devices", standard: 12, more: [{ chapter: "semiconductor-devices" }] },
+      // Chemistry: PYQ Vault's 30 chapters (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA"), the books'
+      // chapters whole, in book order. CET splits Hydrocarbons four ways, files the analytical chapter's formulas and
+      // stoichiometry (book 2.4 to 2.7) under Some Basic Concepts, and doesn't list Analytical Techniques, Chemical
+      // Equilibrium, Nuclear Chemistry or Chemistry in Everyday Life.
+      { chapter: "basic-concepts-chemistry", more: [chm("analytical-chemistry", range(4, 8))] },
+      { chapter: "structure-of-atom" },
+      { chapter: "chemical-bonding", title: "Chemical Bonding and Molecular Structure" },
+      { chapter: "redox-reactions" },
+      { chapter: "periodic-table" },
+      { chapter: "s-block-elements" },
+      { chapter: "p-block-13-14-15" },
+      { chapter: "states-of-matter" },
+      { chapter: "adsorption-colloids", slug: "surface-chemistry", title: "Surface Chemistry" },
+      { chapter: "organic-chemistry-basics" },
+      { ...chm("hydrocarbons", range(1, 2)), slug: "alkanes", title: "Alkanes" },
+      { ...chm("hydrocarbons", range(3, 5)), slug: "alkenes", title: "Alkenes" },
+      { ...chm("hydrocarbons", ["C06"]), slug: "alkynes", title: "Alkynes" },
+      { ...chm("hydrocarbons", range(7, 8)), slug: "aromatic-compounds", title: "Aromatic Compounds" },
+      { chapter: "solid-state" },
+      { chapter: "solutions", title: "Solutions and Colligative Properties" },
+      { chapter: "ionic-equilibria" },
+      { chapter: "chemical-thermodynamics", title: "Chemical Thermodynamics and Energetics" },
+      { chapter: "electrochemistry" },
+      { chapter: "chemical-kinetics" },
+      { chapter: "p-block-16-17-18" },
+      { chapter: "transition-elements" },
+      { chapter: "coordination-compounds" },
+      { chapter: "halogen-derivatives" },
+      { chapter: "alcohols-phenols-ethers" },
+      { chapter: "aldehydes-ketones-acids" },
+      { chapter: "amines" },
+      { chapter: "biomolecules" },
+      { chapter: "polymers" },
+      { chapter: "green-chemistry-nanochemistry" },
     ],
   },
   {
@@ -589,6 +682,7 @@ export const courses: Course[] = [
     chapters: [
       { chapter: "complex-numbers", coverage: { ids: range(1, 30), unsure: ["C17", "C20", "C21", "C22"], status: "draft" } },
       ...ncertPhysics("jee"),
+      ...ncertChemistry("jee"),
     ],
   },
   {
@@ -597,15 +691,15 @@ export const courses: Course[] = [
     short: "NEET",
     group: "school",
     tagline: "National medical entrance",
-    // Physics only for now (owner, 2026-11-26); Experimental Skills is left out (no PYQs).
-    chapters: ncertPhysics("neet"),
+    // Physics (owner, 2026-11-26), then chemistry (2026-11-27); Experimental Skills is left out (no PYQs). Biology waits.
+    chapters: [...ncertPhysics("neet"), ...ncertChemistry("neet")],
   },
   {
     slug: "nda",
     title: "NDA",
     short: "NDA",
     group: "school",
-    tagline: "UPSC NDA & NA, Mathematics and Physics",
+    tagline: "UPSC NDA & NA, Mathematics, Physics and Chemistry",
     // PYQ Vault's chapters that the pool covers (owner, 2026-10-19; PLAN.md "NDA Maths course"); the
     // phase 2b chapters (Logarithms, Height & Distance, Binary Numbers, the sphere) are built for NDA.
     // NDA's syllabus has no polar coordinates, Rolle or mean value theorems, approximations,
@@ -729,6 +823,77 @@ export const courses: Course[] = [
       // Built for NDA: general science the books don't teach.
       { chapter: "energy-sources" },
       { chapter: "astronomy-and-space" },
+      // Chemistry: PYQ Vault's NDA chapters but Practical Chemistry (three questions, one paper), placed by its rulings
+      // against the books (PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA"). NDA asks Class 9 and 10
+      // general science, so each takes the books' basics, filed under Std XI.
+      {
+        ...chm("basic-concepts-chemistry", ["C01"]),
+        slug: "matter-and-its-states",
+        title: "Matter and Its States",
+        standard: 11,
+        more: [chm("states-of-matter", ["C01", "C07"]), chm("adsorption-colloids", ["C05", "C07"]), { chapter: "analytical-techniques" }],
+      },
+      {
+        ...chm("structure-of-atom", range(1, 7), ["C06"]),
+        slug: "atomic-structure-and-periodic-classification",
+        title: "Atomic Structure and Periodic Classification",
+        standard: 11,
+        more: [{ chapter: "periodic-table" }],
+      },
+      // Bond counting needs overlap and hybridisation; valency sits beside oxidation numbers.
+      { ...chm("chemical-bonding", ["C01", "C02", "C04", "C05", "C06", "C07"], ["C05", "C07"]), standard: 11, more: [chm("redox-reactions", ["C02"])] },
+      {
+        ...chm("basic-concepts-chemistry", range(3, 7)),
+        slug: "mole-concept-and-stoichiometry",
+        title: "Mole Concept and Stoichiometry",
+        standard: 11,
+        more: [chm("analytical-chemistry", range(4, 7), ["C07"])],
+      },
+      // Displacement as redox, exothermic reactions, electrolysis and precipitation.
+      {
+        ...chm("redox-reactions", ["C01", "C04"]),
+        slug: "chemical-reactions",
+        title: "Chemical Reactions",
+        standard: 11,
+        more: [chm("chemical-thermodynamics", ["C07"], ["C07"]), chm("electrochemistry", ["C04"]), chm("ionic-equilibria", ["C09"], ["C09"])],
+      },
+      {
+        ...chm("ionic-equilibria", ["C01", "C03", "C05"]),
+        slug: "acids-bases-and-salts",
+        title: "Acids, Bases and Salts",
+        standard: 11,
+        more: [chm("s-block-elements", ["C06"])],
+      },
+      // Water's anomalies are hydrogen bonding.
+      { ...chm("s-block-elements", ["C01", "C02"]), slug: "hydrogen-and-water", title: "Hydrogen and Water", standard: 11, more: [chm("states-of-matter", ["C02"])] },
+      {
+        ...chm("p-block-13-14-15", ["C04", "C05"]),
+        slug: "carbon-and-its-compounds",
+        title: "Carbon and Its Compounds",
+        standard: 11,
+        more: [
+          chm("organic-chemistry-basics", ["C01", "C02", "C04"]),
+          chm("hydrocarbons", ["C01", "C04", "C07"], ["C07"]),
+          chm("everyday-chemistry", ["C03", "C04"]),
+        ],
+      },
+      // The reactivity series is the electrochemical series; alloys and extraction are the d-block chapter's.
+      {
+        ...chm("s-block-elements", ["C04"]),
+        slug: "metals-and-non-metals",
+        title: "Metals and Non-Metals",
+        standard: 11,
+        more: [chm("electrochemistry", ["C07"]), chm("transition-elements", ["C05", "C06"])],
+      },
+      // The Haber, contact and other industrial processes.
+      {
+        ...chm("chemical-equilibrium", ["C07"]),
+        slug: "industrial-and-applied-chemistry",
+        title: "Industrial and Applied Chemistry",
+        standard: 11,
+        more: [chm("p-block-13-14-15", ["C07"]), chm("p-block-16-17-18", ["C04", "C06"], ["C04"])],
+      },
+      { ...chm("everyday-chemistry", ["C01", "C02", "C05", "C06", "C07"]), slug: "chemistry-in-everyday-life", standard: 11 },
     ],
   },
   { slug: "cds", title: "CDS", short: "CDS", group: "graduate", tagline: "UPSC CDS, Elementary Mathematics", chapters: [] },

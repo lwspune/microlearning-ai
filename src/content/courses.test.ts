@@ -755,7 +755,7 @@ describe("the catalog", () => {
         ],
         [12, ["Fluid Mechanics and Properties of Matter", "Oscillations and Waves", "Electricity and Magnetism", "Modern Physics"]],
       ]);
-      expect(all.slice(all.length - physics.length)).toEqual(physics);
+      expect(all.filter((r) => r.subject !== "chemistry").slice(-physics.length)).toEqual(physics);
     });
 
     it("joins pool chapters the way PYQ Vault's NDA chapters do", () => {
@@ -1041,7 +1041,7 @@ describe("the catalog", () => {
       ]);
     });
 
-    it("is physics alone for NEET, and comes after maths for CBSE and JEE Main", () => {
+    it("has no maths for NEET, and comes after maths for CBSE and JEE Main", () => {
       expect(findCourse("neet")!.chapters.map((e) => resolveEntry(e, chapters).subject)).not.toContain("maths");
       for (const slug of ["cbse", "jee-main"]) {
         const subjects = findCourse(slug)!.chapters.map((e) => resolveEntry(e, chapters).subject);
@@ -1171,6 +1171,266 @@ describe("the catalog", () => {
           .flatMap(partsOf)
           .flatMap((p) => (p.coverage ? [p.coverage.status] : []));
         expect(new Set(statuses)).toEqual(new Set(["approved"]));
+      }
+    });
+  });
+
+  // Chemistry for the other courses, from the MH chemistry pool (owner, 2026-11-27: "start other courses chem end to
+  // end and autonomously"; PLAN.md "Chemistry for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  describe("chemistry for the other courses", () => {
+    const chemistryOf = (slug: string) =>
+      findCourse(slug)!
+        .chapters.map((e) => resolveEntry(e, chapters))
+        .filter((r) => r.subject === "chemistry");
+    const byClass = (slug: string) => byStandard(chemistryOf(slug)).map((g) => [g.standard, g.chapters.map((c) => c.title)]);
+    const parts = (slug: string, chapterSlug: string) =>
+      chemistryOf(slug)
+        .find((r) => r.slug === chapterSlug)!
+        .parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+    /** Every concept of the MH books the course doesn't cover, as "chapter Cnn". */
+    const leftOut = (slug: string) =>
+      chapters
+        .filter((c) => c.subject === "chemistry")
+        .flatMap((ch) => {
+          const covered = coveredIds(findCourse(slug)!, ch);
+          const book = ch.graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-")));
+          return book.filter((n) => !covered.has(n.id)).map((n) => `${ch.slug} ${n.id}`);
+        })
+        .sort();
+    const ids = (chapter: string, ...list: string[]) => list.map((id) => `${chapter} ${id}`);
+    const whole = (chapter: string) => chapters.find((c) => c.slug === chapter)!.graph.map((n) => `${chapter} ${n.id}`);
+    const subjectsOf = (slug: string) => findCourse(slug)!.chapters.map((e) => resolveEntry(e, chapters).subject);
+
+    it("comes last in each course, right after physics", () => {
+      for (const slug of ["cbse", "mht-cet", "jee-main", "neet", "nda"]) {
+        const subjects = subjectsOf(slug);
+        expect(subjects.indexOf("chemistry"), slug).toBe(subjects.lastIndexOf("physics") + 1);
+        expect(subjects.slice(subjects.indexOf("chemistry")).every((s) => s === "chemistry"), slug).toBe(true);
+      }
+    });
+
+    describe("from NCERT: CBSE, NEET and JEE Main", () => {
+      const XI_END = ["Equilibrium", "Redox Reactions", "Organic Chemistry – Some Basic Principles and Techniques", "Hydrocarbons"];
+      const XII_START = ["Solutions", "Electrochemistry", "Chemical Kinetics"];
+      const XII_END = [
+        "The d- and f-Block Elements",
+        "Coordination Compounds",
+        "Haloalkanes and Haloarenes",
+        "Alcohols, Phenols and Ethers",
+        "Aldehydes, Ketones and Carboxylic Acids",
+        "Amines",
+        "Biomolecules",
+      ];
+
+      it("lists the rationalised NCERT chapters by class, under each exam's names", () => {
+        const XI = ["Some Basic Concepts of Chemistry", "Structure of Atom", "Classification of Elements and Periodicity in Properties", "Chemical Bonding and Molecular Structure", "Thermodynamics", ...XI_END];
+        expect(byClass("cbse")).toEqual([
+          [11, XI],
+          [12, [...XII_START, ...XII_END]],
+        ]);
+        // NEET's 2024 syllabus keeps the p-block.
+        expect(byClass("neet")).toEqual([
+          [11, XI],
+          [12, [...XII_START, "The p-Block Elements", ...XII_END]],
+        ]);
+        // JEE Main examines redox and the gas laws inside Some Basic Concepts (PYQ Vault's split).
+        expect(byClass("jee-main")).toEqual([
+          [
+            11,
+            [
+              "Some Basic Concepts of Chemistry",
+              "Structure of Atom",
+              "Classification of Elements and Periodicity",
+              "Chemical Bonding and Molecular Structure",
+              "Chemical Thermodynamics",
+              ...XI_END.filter((t) => t !== "Redox Reactions"),
+            ],
+          ],
+          [12, [...XII_START, "The p-Block Elements", ...XII_END]],
+        ]);
+      });
+
+      it("places concepts where NCERT teaches them, not where the MH books do", () => {
+        for (const slug of ["cbse", "neet", "jee-main"]) {
+          // Hydrogen bonding (MH States of Matter) and Fajans' rules (MH s-block) are Chemical Bonding.
+          expect(parts(slug, "chemical-bonding")).toEqual(["chemical-bonding", "states-of-matter C02", "s-block-elements C05"]);
+          expect(parts(slug, "equilibrium")).toEqual(["chemical-equilibrium", "ionic-equilibria"]);
+          // Purification and chromatography open NCERT's organic techniques.
+          expect(parts(slug, "organic-chemistry")).toEqual(["organic-chemistry-basics", "analytical-techniques"]);
+          // NCERT's d-block has no metallurgy (its Isolation of Elements chapter was dropped).
+          expect(parts(slug, "d-and-f-block-elements")).toEqual(["transition-elements C01,C02,C03,C04,C05,C07,C08,C09"]);
+        }
+        expect(parts("cbse", "some-basic-concepts-of-chemistry")).toEqual(["basic-concepts-chemistry", "analytical-chemistry"]);
+        expect(parts("jee-main", "some-basic-concepts-of-chemistry")).toEqual([
+          "basic-concepts-chemistry",
+          "analytical-chemistry",
+          "states-of-matter C01,C03,C04,C05,C06",
+          "redox-reactions",
+        ]);
+        // JEE asks first-order kinetics through radioactive decay.
+        expect(parts("jee-main", "chemical-kinetics")).toEqual(["chemical-kinetics", "nuclear-chemistry C05"]);
+        expect(parts("cbse", "chemical-kinetics")).toEqual(["chemical-kinetics"]);
+        for (const slug of ["neet", "jee-main"]) expect(parts(slug, "p-block-elements")).toEqual(["p-block-13-14-15", "p-block-16-17-18"]);
+      });
+
+      // Dropped by the 2024 JEE and NEET syllabi and the rationalised books: surface chemistry, solid state, the
+      // s-block, polymers, everyday chemistry, metallurgy; nor do they teach liquids, nuclear chemistry or green chemistry.
+      const NONE = [
+        ...whole("adsorption-colloids"),
+        ...whole("everyday-chemistry"),
+        ...whole("solid-state"),
+        ...whole("polymers"),
+        ...whole("green-chemistry-nanochemistry"),
+        ...ids("nuclear-chemistry", "C01", "C02", "C03", "C04", "C06", "C07"),
+        ...ids("s-block-elements", "C01", "C02", "C03", "C04", "C06"),
+        ...ids("states-of-matter", "C07"),
+        ...ids("transition-elements", "C06"),
+      ];
+
+      it("leaves out what each exam neither teaches nor asks", () => {
+        const gases = ids("states-of-matter", "C01", "C03", "C04", "C05", "C06");
+        expect(leftOut("cbse")).toEqual([...NONE, ...gases, ...ids("nuclear-chemistry", "C05"), ...whole("p-block-13-14-15"), ...whole("p-block-16-17-18")].sort());
+        expect(leftOut("neet")).toEqual([...NONE, ...gases, ...ids("nuclear-chemistry", "C05")].sort());
+        expect(leftOut("jee-main")).toEqual([...NONE].sort());
+      });
+
+      it("gives each course chapter its own URL", () => {
+        expect(chemistryOf("cbse").map((r) => r.slug)).toEqual([
+          "some-basic-concepts-of-chemistry",
+          "structure-of-atom",
+          "classification-of-elements",
+          "chemical-bonding",
+          "chemical-thermodynamics",
+          "equilibrium",
+          "redox-reactions",
+          "organic-chemistry",
+          "hydrocarbons",
+          "solutions",
+          "electrochemistry",
+          "chemical-kinetics",
+          "d-and-f-block-elements",
+          "coordination-compounds",
+          "haloalkanes-and-haloarenes",
+          "alcohols-phenols-and-ethers",
+          "aldehydes-ketones-and-carboxylic-acids",
+          "amines",
+          "biomolecules",
+        ]);
+      });
+    });
+
+    describe("MHT-CET", () => {
+      it("lists PYQ Vault's 30 chapters by standard, in book order", () => {
+        expect(byClass("mht-cet")).toEqual([
+          [
+            11,
+            [
+              "Some Basic Concepts of Chemistry",
+              "Structure of Atom",
+              "Chemical Bonding and Molecular Structure",
+              "Redox Reactions",
+              "Modern Periodic Table",
+              "Elements of Group 1 and 2",
+              "Elements of Group 13, 14 and 15",
+              "States of Matter",
+              "Surface Chemistry",
+              "Basic Principles of Organic Chemistry",
+              "Alkanes",
+              "Alkenes",
+              "Alkynes",
+              "Aromatic Compounds",
+            ],
+          ],
+          [
+            12,
+            [
+              "Solid State",
+              "Solutions and Colligative Properties",
+              "Ionic Equilibria",
+              "Chemical Thermodynamics and Energetics",
+              "Electrochemistry",
+              "Chemical Kinetics",
+              "Elements of Groups 16, 17 and 18",
+              "Transition and Inner Transition Elements",
+              "Coordination Compounds",
+              "Halogen Derivatives",
+              "Alcohols, Phenols and Ethers",
+              "Aldehydes, Ketones and Carboxylic Acids",
+              "Amines",
+              "Biomolecules",
+              "Introduction to Polymer Chemistry",
+              "Green Chemistry and Nanochemistry",
+            ],
+          ],
+        ]);
+      });
+
+      it("splits Hydrocarbons four ways and files the book's formulas and stoichiometry under Some Basic Concepts", () => {
+        expect(parts("mht-cet", "alkanes")).toEqual(["hydrocarbons C01,C02"]);
+        expect(parts("mht-cet", "alkenes")).toEqual(["hydrocarbons C03,C04,C05"]);
+        expect(parts("mht-cet", "alkynes")).toEqual(["hydrocarbons C06"]);
+        expect(parts("mht-cet", "aromatic-compounds")).toEqual(["hydrocarbons C07,C08"]);
+        expect(parts("mht-cet", "basic-concepts-chemistry")).toEqual(["basic-concepts-chemistry", "analytical-chemistry C04,C05,C06,C07,C08"]);
+      });
+
+      it("takes every other book chapter whole, but those CET doesn't list", () => {
+        expect(leftOut("mht-cet")).toEqual(
+          [
+            ...ids("analytical-chemistry", "C01", "C02", "C03"),
+            ...whole("analytical-techniques"),
+            ...whole("chemical-equilibrium"),
+            ...whole("nuclear-chemistry"),
+            ...whole("everyday-chemistry"),
+          ].sort(),
+        );
+      });
+    });
+
+    describe("NDA", () => {
+      it("lists PYQ Vault's chapters but Practical Chemistry, all as Std XI general science", () => {
+        expect(byClass("nda")).toEqual([
+          [
+            11,
+            [
+              "Matter and Its States",
+              "Atomic Structure and Periodic Classification",
+              "Chemical Bonding",
+              "Mole Concept and Stoichiometry",
+              "Chemical Reactions",
+              "Acids, Bases and Salts",
+              "Hydrogen and Water",
+              "Carbon and Its Compounds",
+              "Metals and Non-Metals",
+              "Industrial and Applied Chemistry",
+              "Chemistry in Everyday Life",
+            ],
+          ],
+        ]);
+        expect(findCourse("nda")!.tagline).toBe("UPSC NDA & NA, Mathematics, Physics and Chemistry");
+      });
+
+      it("takes the books' basics where PYQ Vault's rulings place NDA's topics", () => {
+        expect(parts("nda", "matter-and-its-states")).toEqual(["basic-concepts-chemistry C01", "states-of-matter C01,C07", "adsorption-colloids C05,C07", "analytical-techniques"]);
+        expect(parts("nda", "atomic-structure-and-periodic-classification")).toEqual(["structure-of-atom C01,C02,C03,C04,C05,C06,C07", "periodic-table"]);
+        expect(parts("nda", "chemical-bonding")).toEqual(["chemical-bonding C01,C02,C04,C05,C06,C07", "redox-reactions C02"]);
+        expect(parts("nda", "mole-concept-and-stoichiometry")).toEqual(["basic-concepts-chemistry C03,C04,C05,C06,C07", "analytical-chemistry C04,C05,C06,C07"]);
+        expect(parts("nda", "chemical-reactions")).toEqual(["redox-reactions C01,C04", "chemical-thermodynamics C07", "electrochemistry C04", "ionic-equilibria C09"]);
+        expect(parts("nda", "acids-bases-and-salts")).toEqual(["ionic-equilibria C01,C03,C05", "s-block-elements C06"]);
+        expect(parts("nda", "hydrogen-and-water")).toEqual(["s-block-elements C01,C02", "states-of-matter C02"]);
+        expect(parts("nda", "carbon-and-its-compounds")).toEqual(["p-block-13-14-15 C04,C05", "organic-chemistry-basics C01,C02,C04", "hydrocarbons C01,C04,C07", "everyday-chemistry C03,C04"]);
+        expect(parts("nda", "metals-and-non-metals")).toEqual(["s-block-elements C04", "electrochemistry C07", "transition-elements C05,C06"]);
+        expect(parts("nda", "industrial-and-applied-chemistry")).toEqual(["chemical-equilibrium C07", "p-block-13-14-15 C07", "p-block-16-17-18 C04,C06"]);
+        expect(parts("nda", "chemistry-in-everyday-life")).toEqual(["everyday-chemistry C01,C02,C05,C06,C07"]);
+      });
+    });
+
+    it("has every list approved (owner: autonomy, 2026-11-27)", () => {
+      for (const slug of ["cbse", "mht-cet", "jee-main", "neet", "nda"]) {
+        const statuses = findCourse(slug)!
+          .chapters.filter((e) => resolveEntry(e, chapters).subject === "chemistry")
+          .flatMap(partsOf)
+          .flatMap((p) => (p.coverage ? [p.coverage.status] : []));
+        expect(new Set(statuses), slug).toEqual(new Set(["approved"]));
       }
     });
   });
