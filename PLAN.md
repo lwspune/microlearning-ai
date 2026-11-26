@@ -1483,6 +1483,62 @@ approved, seeded and on main. Std XI sits before Std XII in the MH Board course,
 errata are keyed to corrected values as PYQ Vault records them; one PYQ Vault erratum is itself wrong (Std XI
 Optics Solved Ex.9.11: f_R is 24.51 cm, so the aberration is about 0.93 cm, not 1.93), so C07-Q2 uses new numbers.
 
+## Physics for CBSE, MHT-CET, JEE Main, NEET and NDA (approved 2026-11-26, branch `physics-courses`)
+
+Owner, 2026-11-26: "Let's complete CBSE, CET, JEE, NEET, nda physics end to end"; the plan's five
+recommendations accepted ("Ok"). Commit and merge locally; push later together. Up to three agents.
+
+**Decisions:**
+1. Each course takes PYQ Vault's physics chapters, names and splits for its exam, built from the 301-concept
+   MH physics pool (as the maths courses do).
+2. Dropped: JEE Main's Communication Systems (no PYQs since 2023) and NEET's Experimental Skills (no PYQs).
+3. NEET is a new K-12 course, physics only for now.
+4. NDA skips the general-knowledge topics (Scientists and Discoveries, Scientific Acronyms).
+5. I settle and approve the coverage lists myself, as for CBSE maths.
+
+**Sources:** PYQ Vault's chapters and subtopics per exam (MHT-CET 24 chapters and 3,521 PYQs; CBSE Class 11 14 and
+Class 12 14 with 1,603 PYQs; JEE Main 28 and 3,489; NEET 29 and 384; NDA 14 and 473), and its rulings of each syllabus
+against the MH books (`Question_Bank/scripts/syllabus/data/phy-{cet,jee,nda,ncert}-rulings.json`): CET 92 of 93
+sections fully in the books, JEE 98 of 106, NCERT 232 of 238, NDA 42 of 52.
+
+**Phase 1 (this branch):** the course chapters, from the pool as it is. MHT-CET is the MH books' chapters whole (23 of
+the 30; Electromagnetic Waves and Communication System isn't on its list). CBSE and NEET take NCERT's 28 chapters
+(Class 11 and 12), JEE Main the same 27 with Electrostatics as one; NDA 12 (Energy Sources and Astronomy and Space wait
+for phase 2). Lists drafted by three agents (NCERT 11, NCERT 12, NDA) from the syllabi and PYQs; every list reviewed
+in the main session. Tests first; a before/after sheet (the NEET card, the physics sections).
+
+**Phase 2: the gaps** the books don't teach, as concepts in the pool, each course's lists pinned so the MH Board's
+maps don't change. Candidates: X-ray spectra, RC and LR transients, variable mass, thermal stress, motion of a charge
+in an electric field, power, equilibrium of a rigid body, the human eye and defects of vision, Fleming's rules,
+SONAR, simple machines, energy sources, astronomy. Written by up to three agents, every one reviewed.
+
+**Later (ask first):** PYQ Vault links for the physics chapters; exam-level PYQ practice.
+
+**Status, 2026-11-26: phase 1 built** (branch `physics-courses`; tests first in `courses.test.ts`, sheet
+`screenshots/2026-11-26-physics-courses/`). `ncertPhysics(exam)` in `courses.ts` builds NCERT's 28 chapters for CBSE
+and NEET and the 27 for JEE Main from one map, with each exam's differences inline. Concepts sit where NCERT teaches
+them: calculus opens kinematics; friction (MH Solids) and circular dynamics are Laws of Motion; the vertical circle is
+Work, Energy and Power; radiation (MH Kinetic Theory) is Thermal Properties; the transformer is Alternating Current;
+ammeter and voltmeter go with the galvanometer. Left out by all three: hardness, echo, qualities of sound, angular SHM,
+a string's free end, the second Newton's law of cooling, communication systems, the cyclotron, inductors in
+combination, coupling coefficient, parallel resonance, Doppler for light, the biprism, the p-n junction recap, filters
+and transistors (JEE's 2024 syllabus dropped them; last asked 2023). CBSE drops what the rationalised books did;
+NEET adds the metre bridge, axes theorems, rolling, eddy currents (unsure), LC oscillations, Brewster, decays, Zener,
+LED and gates; JEE adds parallax (unsure), conical pendulum, refrigerators, damping (unsure), composition of SHMs,
+Doppler, sonometer, end correction (unsure), potentiometer, Earth's field and hysteresis. NDA: 12 chapters taking 140
+concepts, mostly Class 9–12 basics; Heat and Thermodynamics sits in Std XI (most of its papers are calorimetry).
+NDA's tagline now says "Mathematics and Physics". Route smoke (every course chapter) and the golden path
+(course → chapter → lesson → back) pass on the dev server.
+
+**Phase 2 candidates, with PYQ counts from the drafts:** displacement current (CBSE 14, NEET 11, JEE 28); EM-wave
+energy, intensity and radiation pressure (JEE 30); a charge in a uniform electric field (JEE 25); buoyancy and
+flotation (NDA 15, JEE 9); vernier callipers and screw gauge (JEE 37, NEET 6); potential energy, conservative forces and
+conservation of mechanical energy (JEE 26, NEET 2, NDA thin); gas mixtures (JEE 18); human eye and defects (NDA 8);
+scattering, twinkling and colour (NDA 8); domestic electricity (NDA 7); binary stars (JEE 7); reflecting telescope
+(CBSE 5); field of a ring or rod (JEE 4); most probable and mean speeds (JEE 4); thermal stress (JEE 3); levers and
+pulleys (NDA 2); electron emission and de Broglie's view of Bohr (CBSE); Energy Sources (NDA 2) and Astronomy and
+Space (NDA 4). Before writing any, pin the MH Board and MHT-CET physics lists so their maps don't change.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
