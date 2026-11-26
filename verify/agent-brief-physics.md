@@ -1,8 +1,9 @@
 # Addendum: Std XI and XII Physics concepts (PLAN.md "Std XI and XII Physics")
 
 Read [agent-brief-concept.md](agent-brief-concept.md) first and follow it; this file changes only what differs
-for the Balbharati Std XI and XII Physics books. Where the two disagree, this file wins. Physics is written in
-the main session, one concept at a time (owner, 2026-10-23); "you" below is whoever writes the concept.
+for the Balbharati Std XI and XII Physics books. Where the two disagree, this file wins. Physics was written in
+the main session, one concept at a time (owner, 2026-10-23); since 2026-11-26 up to two concept agents may run at
+once, and the lead reviews every concept. "You" below is whoever writes the concept.
 
 ## Who you write for
 A Class 11 or 12 Maharashtra State Board (HSC) student, English medium, who has the book's maths: calculus
