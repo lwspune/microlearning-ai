@@ -376,6 +376,8 @@ export const courses: Course[] = [
       book("dual-nature", 8),
       book("atoms-nuclei", 11),
       { chapter: "semiconductor-devices" },
+      // Std XII Chemistry, Balbharati book order (PLAN.md "Std XI and XII Chemistry").
+      { chapter: "solutions" },
     ],
   },
   {

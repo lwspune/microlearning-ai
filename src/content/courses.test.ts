@@ -1314,6 +1314,24 @@ describe("the catalog", () => {
     });
   });
 
+  // PLAN.md "Std XI and XII Chemistry" (owner, 2026-11-26). The lists grow as chapters land.
+  describe("Maharashtra Board Chemistry", () => {
+    const resolved = findCourse("mh-board")!.chapters.map((e) => resolveEntry(e, chapters));
+    const chemistry = resolved.filter((r) => r.subject === "chemistry");
+
+    it("lists the Std XII chemistry chapters in book order", () => {
+      expect(chemistry.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Solutions"]);
+    });
+
+    it("puts chemistry after physics and covers each chapter whole", () => {
+      const subjects = resolved.map((r) => r.subject);
+      expect(subjects.lastIndexOf("physics")).toBeLessThan(subjects.indexOf("chemistry"));
+      for (const e of findCourse("mh-board")!.chapters.filter((x) => chapters.find((c) => c.slug === x.chapter)?.subject === "chemistry")) {
+        expect(e.coverage, e.chapter).toBeUndefined();
+      }
+    });
+  });
+
   it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {
     for (const slug of ["mh-board", "mht-cet"]) {
       const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;
