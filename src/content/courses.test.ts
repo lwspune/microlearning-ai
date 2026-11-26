@@ -1325,7 +1325,7 @@ describe("the catalog", () => {
 
     it("lists the Std XI chemistry chapters in book order, before Std XII", () => {
       const xi = chemistry.filter((r) => r.standard === 11);
-      expect(xi.map((r) => r.title)).toEqual(["Some Basic Concepts of Chemistry", "Introduction to Analytical Chemistry", "Some Analytical Techniques", "Structure of Atom", "Chemical Bonding", "Redox Reactions", "Modern Periodic Table", "Elements of Group 1 and 2", "Elements of Group 13, 14 and 15", "States of Matter", "Adsorption and Colloids", "Chemical Equilibrium", "Nuclear Chemistry and Radioactivity", "Basic Principles of Organic Chemistry"]);
+      expect(xi.map((r) => r.title)).toEqual(["Some Basic Concepts of Chemistry", "Introduction to Analytical Chemistry", "Some Analytical Techniques", "Structure of Atom", "Chemical Bonding", "Redox Reactions", "Modern Periodic Table", "Elements of Group 1 and 2", "Elements of Group 13, 14 and 15", "States of Matter", "Adsorption and Colloids", "Chemical Equilibrium", "Nuclear Chemistry and Radioactivity", "Basic Principles of Organic Chemistry", "Hydrocarbons"]);
       expect(chemistry.slice(0, xi.length)).toEqual(xi);
     });
 
