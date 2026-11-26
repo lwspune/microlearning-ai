@@ -1693,6 +1693,30 @@ MHT-CET pin p-block 13–15 to the book. Hydrogen bonding stays in States of Mat
 share in every NCERT course), so it needs no concept of its own. All 18 gap concepts: 0 KaTeX errors, 0 phone
 overflows, seeded. The chemistry courses are complete.
 
+## JEE Main Maths course (approved 2026-11-27, branch `jee-maths`)
+
+Owner, 2026-11-27: "Ok" to the plan (JEE Main had only Complex Numbers, as a draft). Recommendations accepted: PYQ
+Vault's chapters and names from the maths pool; drop what the 2024 syllabus dropped (Mathematical Reasoning, Heights and
+Distances, Properties of Triangle, planes, Linear Programming); I settle and approve the lists; no agents; merge and
+push each phase.
+
+**Sources:** PYQ Vault's 27 JEE Mains maths chapters (3,575 PYQs, counts since 2024) and its JEE rulings against the MH
+books (`Question_Bank/scripts/syllabus/data/maths-jee-rulings.json`: 79 of 112 subtopics full, 24 partial, 9 not).
+
+**Status, 2026-11-27: phase 1 built.** 24 chapters in NCERT's order (Std XI 11, Std XII 13): Relations and
+Functions, Trigonometric Identities, Complex Numbers (now approved, whole), Quadratic Equations, Permutations and
+Combinations, Binomial Theorem (positive index), Sequences and Series (C01–C18), Straight Lines, Conic Sections (circle
+and conics), Limits and Continuity, Statistics (central tendency and mean deviation, then dispersion); Inverse
+Trigonometric Functions and Trigonometric Equations (shares of Std XII Trigonometric Functions), Matrices and
+Determinants (two shares of the Std XI chapter plus Std XII Matrices; Cayley–Hamilton with Matrices), Differentiation,
+Application of Derivatives, Indefinite and Definite Integration, Application of Integrals, Differential Equations,
+Vector Algebra, Three Dimensional Geometry (lines only, with direction cosines), Probability (discrete random variables
+and the binomial distribution). Tests first; golden path on the dev server; sheet `screenshots/2026-11-27-jee-maths/`.
+
+**Phase 2: gap concepts**, after an audit of what the pool already has (many JEE gaps were built for CBSE, MHT-CET and
+NDA: symmetric functions and signs of roots, A.G.P., Σ sums, mean deviation, two circles, Cayley–Hamilton, Leibniz's
+rule, periodic and [x] integrands, remainders, absolute extrema).
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
