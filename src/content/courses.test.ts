@@ -896,7 +896,7 @@ describe("the catalog", () => {
     it("lists the Std XI physics chapters in book order, before Std XII", () => {
       const physics = resolved.filter((r) => r.subject === "physics");
       const xi = physics.filter((r) => r.standard === 11);
-      expect(xi.map((r) => r.title)).toEqual(["Units and Measurements", "Mathematical Methods"]);
+      expect(xi.map((r) => r.title)).toEqual(["Units and Measurements", "Mathematical Methods", "Motion in a Plane"]);
       expect(physics.slice(0, xi.length)).toEqual(xi);
     });
   });
