@@ -33,7 +33,8 @@ describe("pyqvaultBundle", () => {
   it("exports NDA across Std XI and XII: each chapter keeps its own standard, the course takes the highest", () => {
     const nda = bundle.courses.find((c) => c.exam === "nda")!;
     const course = courses.find((c) => c.slug === "nda")!;
-    expect(nda.chapters.map((c) => c.standard)).toEqual(course.chapters.map((e) => resolveEntry(e, chapters).standard));
+    const maths = course.chapters.map((e) => resolveEntry(e, chapters)).filter((r) => r.subject === "maths");
+    expect(nda.chapters.map((c) => c.standard)).toEqual(maths.map((r) => r.standard));
     expect(new Set(nda.chapters.map((c) => c.standard))).toEqual(new Set([11, 12]));
     expect(nda.standard).toBe(12);
   });

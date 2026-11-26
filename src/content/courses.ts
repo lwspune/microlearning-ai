@@ -115,6 +115,147 @@ const lpp = (unsure: string[]): CourseChapter => ({
   coverage: { ids: range(1, 13), unsure, status: "approved" },
 });
 
+// A course's share of a physics pool chapter, settled against its syllabus and papers and approved on the owner's
+// say-so 2026-11-26 (PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET and NDA"); `unsure` marks doubtful concepts.
+const phy = (chapter: string, ids: ConceptId[], unsure?: ConceptId[]): CourseChapter => ({
+  chapter,
+  coverage: unsure ? { ids, unsure, status: "approved" } : { ids, status: "approved" },
+});
+
+type NcertExam = "cbse" | "neet" | "jee";
+
+/**
+ * NCERT's Class 11 and 12 physics chapters, in book order, for CBSE, NEET and JEE Main, under each exam's
+ * PYQ Vault names. Concepts sit where NCERT teaches them: calculus opens kinematics, friction and circular
+ * dynamics are Laws of Motion, radiation is Thermal Properties, the transformer is Alternating Current and the
+ * meters go with the galvanometer. CBSE keeps to the rationalised books; NEET adds what the NMC 2024 syllabus
+ * and its 2021–26 papers ask; JEE Main goes further where its 2021–26 papers do, and drops what its 2024
+ * syllabus did (Communication Systems, transistors, the cyclotron). Unsure: one or two papers, or the syllabus alone.
+ */
+function ncertPhysics(exam: NcertExam): CourseChapter[] {
+  const by = <T>(choice: Record<NcertExam, T>): T => choice[exam];
+  const xi = (slug: string, title: string, entry: CourseChapter): CourseChapter => ({ ...entry, slug, title, standard: 11 });
+  const xii = (slug: string, title: string, entry: CourseChapter): CourseChapter => ({ ...entry, slug, title, standard: 12 });
+  const nuclei = by({ cbse: phy("atoms-nuclei", ["C06", "C07", "C11"]), neet: phy("atoms-nuclei", range(6, 11), ["C09", "C10"]), jee: phy("atoms-nuclei", range(6, 11)) });
+  return [
+    by({
+      cbse: xi("units-and-measurement", "Units and Measurement", phy("units-measurements", ["C01", ...range(3, 7)], ["C05", "C06"])),
+      neet: xi("units-and-measurements", "Units and Measurements", phy("units-measurements", ["C01", ...range(3, 7)])),
+      jee: xi("units-and-measurements", "Units and Measurements", phy("units-measurements", range(1, 7), ["C02"])),
+    }),
+    xi("motion-in-a-straight-line", "Motion in a Straight Line", { ...phy("mathematical-methods", ["C06", "C07"]), more: [phy("motion-in-a-plane", ["C01", "C02"])] }),
+    xi("motion-in-a-plane", "Motion in a Plane", {
+      ...phy("mathematical-methods", range(1, 5)),
+      // Relative velocity went from the rationalised book.
+      more: [phy("motion-in-a-plane", by({ cbse: ["C03", "C05", "C06"], neet: range(3, 6), jee: range(3, 6) })), phy("rotational-dynamics", ["C01"])],
+    }),
+    xi("laws-of-motion", "Laws of Motion", {
+      ...phy("laws-of-motion", ["C01", "C02", "C04"]),
+      // JEE asks the conical pendulum.
+      more: [phy("mechanical-properties-solids", ["C07"]), phy("rotational-dynamics", by({ cbse: range(2, 4), neet: range(2, 4), jee: range(2, 5) }))],
+    }),
+    xi("work-energy-and-power", "Work, Energy and Power", { ...phy("laws-of-motion", ["C03", "C05"]), more: [phy("rotational-dynamics", ["C06"])] }),
+    xi("rotational-motion", "System of Particles and Rotational Motion", {
+      ...phy("laws-of-motion", ["C06", "C07"]),
+      // CBSE's book dropped the axes theorems and rolling.
+      more: [phy("rotational-dynamics", by({ cbse: ["C07", "C08", "C10", "C11"], neet: range(7, 12), jee: range(7, 12) }))],
+    }),
+    xi("gravitation", "Gravitation", { chapter: "gravitation" }),
+    xi("mechanical-properties-of-solids", "Mechanical Properties of Solids", phy("mechanical-properties-solids", range(1, 5))),
+    xi("mechanical-properties-of-fluids", "Mechanical Properties of Fluids", { chapter: "fluids" }),
+    xi("thermal-properties-of-matter", "Thermal Properties of Matter", {
+      chapter: "thermal-properties",
+      more: [phy("kinetic-theory", range(8, 11), ["C08", "C09"])],
+    }),
+    xi("thermodynamics", "Thermodynamics", by({ cbse: phy("thermodynamics", range(1, 11)), neet: phy("thermodynamics", range(1, 11)), jee: { chapter: "thermodynamics" } })),
+    xi("kinetic-theory", "Kinetic Theory", phy("kinetic-theory", range(1, 7))),
+    xi(
+      "oscillations",
+      "Oscillations",
+      by({
+        cbse: phy("oscillations", range(1, 9), ["C09"]),
+        neet: phy("oscillations", range(1, 9), ["C09"]),
+        jee: phy("oscillations", [...range(1, 9), "C11", "C12"], ["C11"]),
+      }),
+    ),
+    xi("waves", "Waves", {
+      ...phy("sound", by({ cbse: range(1, 3), neet: range(1, 3), jee: [...range(1, 3), "C05"] })),
+      more: [
+        by({
+          cbse: phy("superposition-of-waves", [...range(1, 6), ...range(8, 11), "C13", "C14"], ["C09"]),
+          neet: phy("superposition-of-waves", [...range(1, 6), "C08", "C10", "C11", "C13", "C14"]),
+          jee: phy("superposition-of-waves", [...range(1, 6), ...range(8, 14)], ["C12"]),
+        }),
+      ],
+    }),
+    ...(exam === "jee"
+      ? [xii("electrostatics", "Electrostatics", { chapter: "electrostatics", more: [{ chapter: "electrostatics-12" }] })]
+      : [
+          xii("electric-charges-and-fields", "Electric Charges and Fields", { chapter: "electrostatics", more: [phy("electrostatics-12", range(1, 4))] }),
+          xii("electrostatic-potential-and-capacitance", "Electrostatic Potential and Capacitance", phy("electrostatics-12", range(5, 14))),
+        ]),
+    // CBSE's book dropped the metre bridge and potentiometer; NEET asks the bridge.
+    xii("current-electricity", "Current Electricity", {
+      chapter: "electric-current",
+      more: [phy("current-electricity", by({ cbse: range(1, 4), neet: range(1, 5), jee: range(1, 8) }))],
+    }),
+    xii("moving-charges-and-magnetism", "Moving Charges and Magnetism", {
+      ...phy("magnetic-fields-current", ["C01", "C02", "C04", "C05", "C06", "C10", "C11", "C07", "C08", "C09"]),
+      more: [phy("current-electricity", ["C09", "C10"]), phy("magnetic-materials", ["C03"])],
+    }),
+    // JEE asks the Earth's field, hysteresis and permanent magnets.
+    xii(
+      "magnetism-and-matter",
+      "Magnetism and Matter",
+      by({
+        cbse: { ...phy("magnetism", range(1, 3)), more: [phy("magnetic-materials", ["C01", "C02", ...range(4, 6)], ["C02"])] },
+        neet: { ...phy("magnetism", range(1, 3)), more: [phy("magnetic-materials", ["C01", "C02", ...range(4, 6)])] },
+        jee: { chapter: "magnetism", more: [phy("magnetic-materials", ["C01", "C02", ...range(4, 8)])] },
+      }),
+    ),
+    xii(
+      "electromagnetic-induction",
+      "Electromagnetic Induction",
+      exam === "cbse"
+        ? phy("electromagnetic-induction", [...range(1, 5), "C08", "C10", "C11", "C06"])
+        : phy("electromagnetic-induction", [...range(1, 5), "C07", "C08", "C10", "C11", "C06"], ["C07"]),
+    ),
+    xii("alternating-current", "Alternating Current", {
+      ...phy("ac-circuits", exam === "cbse" ? [...range(1, 7), "C09"] : [...range(1, 7), "C09", "C10"]),
+      more: [phy("electromagnetic-induction", ["C13"])],
+    }),
+    xii("electromagnetic-waves", "Electromagnetic Waves", phy("em-waves-communication", range(1, 2))),
+    exam === "jee"
+      ? xii("ray-optics", "Ray Optics", phy("optics", [...range(1, 6), "C08"]))
+      : xii(
+          "ray-optics-and-optical-instruments",
+          "Ray Optics and Optical Instruments",
+          exam === "cbse" ? phy("optics", [...range(1, 6), "C08", "C07"], ["C07"]) : phy("optics", [...range(1, 6), "C08"]),
+        ),
+    // CBSE's syllabus has no polarisation and its 2023–26 papers ask none, though the book keeps Malus.
+    xii(
+      "wave-optics",
+      "Wave Optics",
+      exam === "cbse"
+        ? phy("wave-optics", [...range(1, 4), "C08", "C10", "C09", "C11", "C13", "C14", "C06"], ["C06"])
+        : phy("wave-optics", [...range(1, 4), "C08", "C10", "C09", "C11", "C13", "C14", "C06", "C07"]),
+    ),
+    xii(
+      "dual-nature-of-radiation-and-matter",
+      "Dual Nature of Radiation and Matter",
+      exam === "cbse"
+        ? phy("dual-nature", ["C03", "C01", "C04", "C05", "C02", "C06", "C07"])
+        : phy("dual-nature", ["C03", "C01", "C04", "C05", "C02", "C06", "C07", "C08"], ["C08"]),
+    ),
+    xii("atoms", "Atoms", phy("atoms-nuclei", range(1, 5))),
+    xii("nuclei", "Nuclei", nuclei),
+    xii("semiconductor-electronics", exam === "cbse" ? "Semiconductor Electronics: Materials, Devices and Simple Circuits" : "Semiconductor Electronics", {
+      chapter: "semiconductors",
+      more: [phy("semiconductor-devices", exam === "cbse" ? ["C02"] : ["C02", "C04", "C05", "C09", "C10"])],
+    }),
+  ];
+}
+
 export const courses: Course[] = [
   {
     slug: "mh-board",
@@ -320,6 +461,7 @@ export const courses: Course[] = [
       },
       lpp(["C12", "C13"]),
       { ...cbse("probability", range(7, 10)), slug: "probability-12", standard: 12 },
+      ...ncertPhysics("cbse"),
     ],
   },
   {
@@ -366,6 +508,34 @@ export const courses: Course[] = [
       { chapter: "differential-equations" },
       { ...book("probability", 10), title: "Probability Distribution", standard: 12, more: [{ chapter: "probability-distributions" }] },
       { chapter: "binomial-distribution" },
+      // Physics: PYQ Vault's 24 chapters (owner, 2026-11-26; PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET
+      // and NDA"), the books' chapters whole, in book order. CET examines the Std XI and XII halves of
+      // electrostatics, current, magnetism and semiconductors as one chapter each; it doesn't list Std XI's
+      // Electromagnetic Waves and Communication System.
+      { chapter: "units-measurements", title: "Units and Measurement" },
+      { chapter: "mathematical-methods", slug: "motion-in-a-plane", title: "Motion in a Plane", more: [{ chapter: "motion-in-a-plane" }] },
+      { chapter: "laws-of-motion" },
+      { chapter: "gravitation" },
+      { chapter: "mechanical-properties-solids" },
+      { chapter: "thermal-properties" },
+      { chapter: "sound" },
+      { chapter: "optics", title: "Optics (Ray)" },
+      { chapter: "rotational-dynamics" },
+      { chapter: "fluids" },
+      { chapter: "kinetic-theory", title: "Kinetic Theory of Gases" },
+      { chapter: "thermodynamics" },
+      { chapter: "oscillations" },
+      { chapter: "superposition-of-waves" },
+      { chapter: "wave-optics" },
+      { chapter: "electrostatics", standard: 12, more: [{ chapter: "electrostatics-12" }] },
+      { chapter: "electric-current", slug: "current-electricity", title: "Current Electricity", standard: 12, more: [{ chapter: "current-electricity" }] },
+      { chapter: "magnetic-fields-current", title: "Magnetic Fields Due to Electric Current" },
+      { chapter: "magnetism", slug: "magnetic-materials", title: "Magnetic Materials", standard: 12, more: [{ chapter: "magnetic-materials" }] },
+      { chapter: "electromagnetic-induction" },
+      { chapter: "ac-circuits" },
+      { chapter: "dual-nature" },
+      { chapter: "atoms-nuclei" },
+      { chapter: "semiconductors", slug: "semiconductor-devices", title: "Semiconductor Devices", standard: 12, more: [{ chapter: "semiconductor-devices" }] },
     ],
   },
   {
@@ -374,14 +544,26 @@ export const courses: Course[] = [
     short: "JEE Main",
     group: "school",
     tagline: "National engineering entrance",
-    chapters: [{ chapter: "complex-numbers", coverage: { ids: range(1, 30), unsure: ["C17", "C20", "C21", "C22"], status: "draft" } }],
+    chapters: [
+      { chapter: "complex-numbers", coverage: { ids: range(1, 30), unsure: ["C17", "C20", "C21", "C22"], status: "draft" } },
+      ...ncertPhysics("jee"),
+    ],
+  },
+  {
+    slug: "neet",
+    title: "NEET",
+    short: "NEET",
+    group: "school",
+    tagline: "National medical entrance",
+    // Physics only for now (owner, 2026-11-26); Experimental Skills is left out (no PYQs).
+    chapters: ncertPhysics("neet"),
   },
   {
     slug: "nda",
     title: "NDA",
     short: "NDA",
     group: "school",
-    tagline: "UPSC NDA & NA, Mathematics",
+    tagline: "UPSC NDA & NA, Mathematics and Physics",
     // PYQ Vault's chapters that the pool covers (owner, 2026-10-19; PLAN.md "NDA Maths course"); the
     // phase 2b chapters (Logarithms, Height & Distance, Binary Numbers, the sphere) are built for NDA.
     // NDA's syllabus has no polar coordinates, Rolle or mean value theorems, approximations,
@@ -433,6 +615,75 @@ export const courses: Course[] = [
       { chapter: "differential-equations" },
       // "Random variable as function on a sample space", then the binomial distribution.
       { ...nda("probability-distributions", range(1, 4)), title: "Binomial Distribution", slug: "binomial-distribution", more: [{ chapter: "binomial-distribution" }] },
+      // Physics: 12 of PYQ Vault's 14 chapters (owner, 2026-11-26); Energy Sources and Astronomy and Space have
+      // no concepts yet, and the general-knowledge topics (scientists, acronyms) are left out. NDA asks Class 9–12
+      // basics in one step, so each takes what NDA's syllabus or its 2017–26 papers ask. Heat sits in Std XI, where
+      // most of its papers are (calorimetry, thermometry).
+      { ...phy("units-measurements", [...range(1, 4), "C07"], ["C07"]), slug: "units-measurement-and-dimensions", title: "Units, Measurement and Dimensions", standard: 11 },
+      {
+        ...phy("mathematical-methods", range(1, 5), ["C05"]),
+        slug: "kinematics-and-motion",
+        title: "Kinematics and Motion",
+        standard: 11,
+        more: [{ chapter: "motion-in-a-plane" }, phy("rotational-dynamics", [...range(1, 4), "C06"], ["C04"])],
+      },
+      {
+        ...phy("laws-of-motion", ["C01", "C02", "C04", "C06"]),
+        slug: "laws-of-motion-and-forces",
+        title: "Laws of Motion and Forces",
+        standard: 11,
+        // Friction is taught in the MH Solids chapter; PYQ Vault files moment of inertia here.
+        more: [phy("mechanical-properties-solids", ["C07"]), phy("rotational-dynamics", ["C07"])],
+      },
+      // Collisions need work and energy (NCERT teaches them here); torque and equilibrium are the pool's share of simple machines.
+      { ...phy("laws-of-motion", ["C03", "C05", "C07"]), slug: "work-energy-and-power", title: "Work, Energy and Power", standard: 11 },
+      { chapter: "gravitation", standard: 11 },
+      {
+        ...phy("thermal-properties", range(1, 7)),
+        slug: "heat-and-thermodynamics",
+        title: "Heat and Thermodynamics",
+        standard: 11,
+        more: [phy("thermodynamics", [...range(1, 8), "C10"]), phy("kinetic-theory", ["C07"], ["C07"])],
+      },
+      { ...phy("sound", [...range(1, 4), "C06"]), standard: 11, more: [phy("superposition-of-waves", ["C13"])] },
+      {
+        ...phy("optics", range(1, 8), ["C07"]),
+        slug: "light-and-optics",
+        title: "Light and Optics",
+        standard: 11,
+        // PYQ Vault files the spectrum here; one 2023 paper asks that light is transverse.
+        more: [phy("em-waves-communication", ["C01", "C02"]), phy("wave-optics", ["C06"], ["C06"])],
+      },
+      { ...phy("fluids", [...range(1, 3), "C06", "C07"], ["C06"]), slug: "fluid-mechanics-and-properties-of-matter", title: "Fluid Mechanics and Properties of Matter", standard: 12 },
+      { ...phy("oscillations", [...range(1, 3), ...range(7, 9)]), slug: "oscillations-and-waves", title: "Oscillations and Waves", standard: 12 },
+      {
+        ...phy("electrostatics", range(1, 4)),
+        slug: "electricity-and-magnetism",
+        title: "Electricity and Magnetism",
+        standard: 12,
+        more: [
+          phy("electrostatics-12", ["C05", "C08", "C10", "C11", "C12"], ["C11", "C12"]),
+          { chapter: "electric-current" },
+          phy("current-electricity", [...range(1, 3), "C09", "C10"], ["C09", "C10"]),
+          { chapter: "magnetism" },
+          phy("magnetic-fields-current", ["C01", ...range(4, 6), ...range(9, 11)], ["C09"]),
+          phy("magnetic-materials", ["C01", "C05", "C08"], ["C08"]),
+          // Generators and transformers come from the papers; motional emf stands in for Fleming's right-hand rule.
+          phy("electromagnetic-induction", ["C01", "C02", "C04", "C06", "C13"], ["C04"]),
+          phy("ac-circuits", ["C01"], ["C01"]),
+        ],
+      },
+      {
+        ...phy("dual-nature", [...range(1, 4), "C06"], ["C06"]),
+        slug: "modern-physics",
+        title: "Modern Physics",
+        standard: 12,
+        more: [
+          phy("atoms-nuclei", [...range(1, 4), ...range(6, 8), "C11"]),
+          phy("semiconductors", range(1, 4), ["C01", "C04"]),
+          phy("semiconductor-devices", ["C05"], ["C05"]),
+        ],
+      },
     ],
   },
   { slug: "cds", title: "CDS", short: "CDS", group: "graduate", tagline: "UPSC CDS, Elementary Mathematics", chapters: [] },

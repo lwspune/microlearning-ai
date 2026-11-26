@@ -436,12 +436,14 @@ describe("the catalog", () => {
   });
 
   it("lists the K-12 and Graduate courses", () => {
-    expect(coursesIn("school").map((c) => c.short)).toEqual(["MH Board", "CBSE", "MHT-CET", "JEE Main", "NDA"]);
+    expect(coursesIn("school").map((c) => c.short)).toEqual(["MH Board", "CBSE", "MHT-CET", "JEE Main", "NEET", "NDA"]);
     expect(coursesIn("graduate").map((c) => c.short)).toEqual(["CDS", "AFCAT", "CAPF"]);
   });
 
-  it("has Complex Numbers in every K-12 course (confirmed by the owner, 2026-10-14)", () => {
-    for (const c of coursesIn("school")) expect(c.chapters.map((x) => x.chapter)).toContain("complex-numbers");
+  it("has Complex Numbers in every K-12 course that teaches maths (confirmed by the owner, 2026-10-14)", () => {
+    const teachesMaths = (c: (typeof courses)[number]) => c.chapters.some((x) => resolveEntry(x, chapters).subject === "maths");
+    expect(coursesIn("school").filter((c) => !teachesMaths(c)).map((c) => c.slug)).toEqual(["neet"]);
+    for (const c of coursesIn("school").filter(teachesMaths)) expect(c.chapters.map((x) => x.chapter)).toContain("complex-numbers");
   });
 
   // Settled against the Std XI book and MHT-CET 2026 papers; approved by the owner 2026-10-18.
@@ -458,7 +460,8 @@ describe("the catalog", () => {
   // PYQ Vault's MHT-CET chapters, approved by the owner 2026-10-19 (PLAN.md "MHT-CET Maths course").
   describe("MHT-CET", () => {
     const cet = findCourse("mht-cet")!;
-    const resolved = cet.chapters.map((e) => resolveEntry(e, chapters));
+    const all = cet.chapters.map((e) => resolveEntry(e, chapters));
+    const resolved = all.filter((r) => r.subject === "maths");
 
     it("lists PYQ Vault's chapters by standard, in book order", () => {
       expect(byStandard(resolved).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
@@ -546,12 +549,63 @@ describe("the catalog", () => {
       const sets = partsOf(entryFor(cet, "sets-and-relations")!).find((p) => p.chapter === "sets-and-relations")!;
       expect(sets.coverage).toEqual({ ids: ["C01", "C02", "C09", "C10", "C11", "C12", "C13"], status: "approved" });
     });
+
+    // PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET and NDA" (owner, 2026-11-26).
+    describe("physics", () => {
+      const physics = all.filter((r) => r.subject === "physics");
+
+      it("lists PYQ Vault's 24 physics chapters by standard, in book order, after maths", () => {
+        expect(byStandard(physics).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
+          [11, ["Units and Measurement", "Motion in a Plane", "Laws of Motion", "Gravitation", "Mechanical Properties of Solids", "Thermal Properties of Matter", "Sound", "Optics (Ray)"]],
+          [
+            12,
+            [
+              "Rotational Dynamics",
+              "Mechanical Properties of Fluids",
+              "Kinetic Theory of Gases",
+              "Thermodynamics",
+              "Oscillations",
+              "Superposition of Waves",
+              "Wave Optics",
+              "Electrostatics",
+              "Current Electricity",
+              "Magnetic Fields Due to Electric Current",
+              "Magnetic Materials",
+              "Electromagnetic Induction",
+              "AC Circuits",
+              "Dual Nature of Radiation and Matter",
+              "Structure of Atoms and Nuclei",
+              "Semiconductor Devices",
+            ],
+          ],
+        ]);
+        expect(all.slice(0, resolved.length)).toEqual(resolved);
+      });
+
+      it("takes the books' chapters whole, joining the Std XI and XII halves PYQ Vault examines as one", () => {
+        const joined = Object.fromEntries(physics.filter((r) => r.parts.length > 1).map((r) => [r.slug, r.parts.map((p) => p.chapter.slug)]));
+        expect(joined).toEqual({
+          "motion-in-a-plane": ["mathematical-methods", "motion-in-a-plane"],
+          electrostatics: ["electrostatics", "electrostatics-12"],
+          "current-electricity": ["electric-current", "current-electricity"],
+          "magnetic-materials": ["magnetism", "magnetic-materials"],
+          "semiconductor-devices": ["semiconductors", "semiconductor-devices"],
+        });
+        expect(physics.flatMap((r) => r.parts.filter((p) => p.coverage))).toEqual([]);
+      });
+
+      it("uses every physics pool chapter but Electromagnetic Waves and Communication System, which CET doesn't list", () => {
+        const used = new Set(physics.flatMap((r) => r.parts.map((p) => p.chapter.slug)));
+        const pool = chapters.filter((c) => c.subject === "physics").map((c) => c.slug);
+        expect(pool.filter((slug) => !used.has(slug))).toEqual(["em-waves-communication"]);
+      });
+    });
   });
 
   // PYQ Vault's NDA chapters that the pool covers today (owner, 2026-10-19; PLAN.md "NDA Maths course").
   describe("NDA", () => {
     const nda = findCourse("nda")!;
-    const resolved = nda.chapters.map((e) => resolveEntry(e, chapters));
+    const resolved = nda.chapters.map((e) => resolveEntry(e, chapters)).filter((r) => r.subject === "maths");
     const parts = (title: string) =>
       resolved.find((r) => r.title === title)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
 
@@ -670,10 +724,86 @@ describe("the catalog", () => {
     });
   });
 
+  // PYQ Vault's NDA physics chapters that the pool covers (owner, 2026-11-26; PLAN.md "Physics for CBSE,
+  // MHT-CET, JEE Main, NEET and NDA"): what NDA's syllabus or its 2017–26 papers ask.
+  describe("NDA physics", () => {
+    const nda = findCourse("nda")!;
+    const all = nda.chapters.map((e) => resolveEntry(e, chapters));
+    const physics = all.filter((r) => r.subject === "physics");
+    const parts = (slug: string) => physics.find((r) => r.slug === slug)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+
+    it("lists 12 of PYQ Vault's 14 chapters by standard, after maths; Energy Sources and Astronomy wait for phase 2", () => {
+      expect(byStandard(physics).map((g) => [g.standard, g.chapters.map((c) => c.title)])).toEqual([
+        [
+          11,
+          [
+            "Units, Measurement and Dimensions",
+            "Kinematics and Motion",
+            "Laws of Motion and Forces",
+            "Work, Energy and Power",
+            "Gravitation",
+            "Heat and Thermodynamics",
+            "Sound",
+            "Light and Optics",
+          ],
+        ],
+        [12, ["Fluid Mechanics and Properties of Matter", "Oscillations and Waves", "Electricity and Magnetism", "Modern Physics"]],
+      ]);
+      expect(all.slice(all.length - physics.length)).toEqual(physics);
+    });
+
+    it("joins pool chapters the way PYQ Vault's NDA chapters do", () => {
+      expect(parts("kinematics-and-motion")).toEqual(["mathematical-methods C01,C02,C03,C04,C05", "motion-in-a-plane", "rotational-dynamics C01,C02,C03,C04,C06"]);
+      // Collisions need work and energy (NCERT teaches them there); torque and equilibrium are the pool's share of simple machines.
+      expect(parts("work-energy-and-power")).toEqual(["laws-of-motion C03,C05,C07"]);
+      expect(parts("light-and-optics")).toEqual(["optics C01,C02,C03,C04,C05,C06,C07,C08", "em-waves-communication C01,C02", "wave-optics C06"]);
+      expect(physics.find((r) => r.slug === "electricity-and-magnetism")!.parts.map((p) => p.chapter.slug)).toEqual([
+        "electrostatics",
+        "electrostatics-12",
+        "electric-current",
+        "current-electricity",
+        "magnetism",
+        "magnetic-fields-current",
+        "magnetic-materials",
+        "electromagnetic-induction",
+        "ac-circuits",
+      ]);
+      expect(physics.find((r) => r.slug === "modern-physics")!.parts.map((p) => p.chapter.slug)).toEqual([
+        "dual-nature",
+        "atoms-nuclei",
+        "semiconductors",
+        "semiconductor-devices",
+      ]);
+    });
+
+    it("leaves out the heavier MH material NDA never asks", () => {
+      const used = new Set(physics.flatMap((r) => r.parts.map((p) => p.chapter.slug)));
+      expect(used.has("mechanical-properties-solids")).toBe(true); // friction only
+      expect(parts("laws-of-motion-and-forces")).toContain("mechanical-properties-solids C07");
+      for (const [slug, out] of [
+        ["ac-circuits", ["C02", "C05", "C10"]],
+        ["superposition-of-waves", ["C05", "C10", "C14"]],
+        ["current-electricity", ["C04", "C06"]],
+        ["semiconductor-devices", ["C06", "C09"]],
+      ] as const) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        for (const id of out) expect(coveredIds(nda, ch).has(id), `NDA leaves out ${slug} ${id}`).toBe(false);
+      }
+    });
+
+    it("has every list approved (owner: 'you approve', 2026-11-26)", () => {
+      const statuses = nda.chapters
+        .filter((e) => resolveEntry(e, chapters).subject === "physics")
+        .flatMap(partsOf)
+        .flatMap((p) => (p.coverage ? [p.coverage.status] : []));
+      expect(new Set(statuses)).toEqual(new Set(["approved"]));
+    });
+  });
+
   // NCERT's chapters, as PYQ Vault names them, that the pool covers today (PLAN.md "CBSE Maths course").
   describe("CBSE", () => {
     const cbse = findCourse("cbse")!;
-    const resolved = cbse.chapters.map((e) => resolveEntry(e, chapters));
+    const resolved = cbse.chapters.map((e) => resolveEntry(e, chapters)).filter((r) => r.subject === "maths");
     const parts = (title: string) =>
       resolved.find((r) => r.title === title)!.parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
 
@@ -764,7 +894,7 @@ describe("the catalog", () => {
     });
 
     it("gives each course chapter its own URL", () => {
-      expect(cbse.chapters.map(slugOf)).toEqual([
+      expect(resolved.map((r) => r.slug)).toEqual([
         "sets",
         "relations-and-functions",
         "trigonometric-functions",
@@ -816,6 +946,225 @@ describe("the catalog", () => {
     it("has every list approved (owner: 'you approve', 2026-10-20)", () => {
       const statuses = cbse.chapters.flatMap(partsOf).flatMap((p) => (p.coverage ? [p.coverage.status] : []));
       expect(new Set(statuses)).toEqual(new Set(["approved"]));
+    });
+  });
+
+  // NCERT's chapters under each exam's PYQ Vault names, from the MH physics pool (owner, 2026-11-26;
+  // PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET and NDA"). Lists drafted from the rationalised
+  // NCERT books, the 2024 syllabi and 2021–26 PYQs, settled and approved in the main session.
+  describe("physics from NCERT: CBSE, NEET and JEE Main", () => {
+    const physicsOf = (slug: string) =>
+      findCourse(slug)!
+        .chapters.map((e) => resolveEntry(e, chapters))
+        .filter((r) => r.subject === "physics");
+    const byClass = (slug: string) => byStandard(physicsOf(slug)).map((g) => [g.standard, g.chapters.map((c) => c.title)]);
+    const parts = (slug: string, chapterSlug: string) =>
+      physicsOf(slug)
+        .find((r) => r.slug === chapterSlug)!
+        .parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
+    /** Every physics pool concept the course doesn't cover, as "chapter Cnn". */
+    const leftOut = (slug: string) =>
+      chapters
+        .filter((c) => c.subject === "physics")
+        .flatMap((ch) => {
+          const covered = coveredIds(findCourse(slug)!, ch);
+          return ch.graph.filter((n) => !covered.has(n.id)).map((n) => `${ch.slug} ${n.id}`);
+        })
+        .sort();
+    const ids = (chapter: string, ...list: string[]) => list.map((id) => `${chapter} ${id}`);
+
+    const XI = [
+      "Motion in a Straight Line",
+      "Motion in a Plane",
+      "Laws of Motion",
+      "Work, Energy and Power",
+      "System of Particles and Rotational Motion",
+      "Gravitation",
+      "Mechanical Properties of Solids",
+      "Mechanical Properties of Fluids",
+      "Thermal Properties of Matter",
+      "Thermodynamics",
+      "Kinetic Theory",
+      "Oscillations",
+      "Waves",
+    ];
+    const XII_MIDDLE = [
+      "Current Electricity",
+      "Moving Charges and Magnetism",
+      "Magnetism and Matter",
+      "Electromagnetic Induction",
+      "Alternating Current",
+      "Electromagnetic Waves",
+    ];
+    const XII_END = ["Wave Optics", "Dual Nature of Radiation and Matter", "Atoms", "Nuclei"];
+
+    it("lists NCERT's chapters by class, in book order, under each exam's names", () => {
+      expect(byClass("cbse")).toEqual([
+        [11, ["Units and Measurement", ...XI]],
+        [
+          12,
+          [
+            "Electric Charges and Fields",
+            "Electrostatic Potential and Capacitance",
+            ...XII_MIDDLE,
+            "Ray Optics and Optical Instruments",
+            ...XII_END,
+            "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+          ],
+        ],
+      ]);
+      expect(byClass("neet")).toEqual([
+        [11, ["Units and Measurements", ...XI]],
+        [
+          12,
+          [
+            "Electric Charges and Fields",
+            "Electrostatic Potential and Capacitance",
+            ...XII_MIDDLE,
+            "Ray Optics and Optical Instruments",
+            ...XII_END,
+            "Semiconductor Electronics",
+          ],
+        ],
+      ]);
+      // JEE examines electrostatics as one chapter; Communication Systems is dropped (no PYQs since 2023).
+      expect(byClass("jee-main")).toEqual([
+        [11, ["Units and Measurements", ...XI]],
+        [12, ["Electrostatics", ...XII_MIDDLE, "Ray Optics", ...XII_END, "Semiconductor Electronics"]],
+      ]);
+    });
+
+    it("is physics alone for NEET, and comes after maths for CBSE and JEE Main", () => {
+      expect(findCourse("neet")!.chapters.map((e) => resolveEntry(e, chapters).subject)).not.toContain("maths");
+      for (const slug of ["cbse", "jee-main"]) {
+        const subjects = findCourse(slug)!.chapters.map((e) => resolveEntry(e, chapters).subject);
+        expect(subjects.indexOf("physics")).toBe(subjects.lastIndexOf("maths") + 1);
+      }
+    });
+
+    it("places concepts where NCERT teaches them, not where the MH books do", () => {
+      for (const slug of ["cbse", "neet", "jee-main"]) {
+        // Calculus opens kinematics; vectors and angular kinematics come with Motion in a Plane.
+        expect(parts(slug, "motion-in-a-straight-line")).toEqual(["mathematical-methods C06,C07", "motion-in-a-plane C01,C02"]);
+        expect(parts(slug, "motion-in-a-plane")[0]).toBe("mathematical-methods C01,C02,C03,C04,C05");
+        // Friction (taught in the MH Solids chapter) and circular dynamics belong to Laws of Motion.
+        expect(parts(slug, "laws-of-motion")[1]).toBe("mechanical-properties-solids C07");
+        expect(parts(slug, "work-energy-and-power")).toEqual(["laws-of-motion C03,C05", "rotational-dynamics C06"]);
+        // Radiation is Thermal Properties of Matter; the transformer is Alternating Current; meters go with the galvanometer.
+        expect(parts(slug, "thermal-properties-of-matter")).toEqual(["thermal-properties", "kinetic-theory C08,C09,C10,C11"]);
+        expect(parts(slug, "alternating-current").at(-1)).toBe("electromagnetic-induction C13");
+        expect(parts(slug, "moving-charges-and-magnetism").slice(1)).toEqual(["current-electricity C09,C10", "magnetic-materials C03"]);
+        expect(parts(slug, "atoms")).toEqual(["atoms-nuclei C01,C02,C03,C04,C05"]);
+      }
+      expect(parts("jee-main", "electrostatics")).toEqual(["electrostatics", "electrostatics-12"]);
+      expect(parts("cbse", "electric-charges-and-fields")).toEqual(["electrostatics", "electrostatics-12 C01,C02,C03,C04"]);
+      expect(parts("cbse", "electrostatic-potential-and-capacitance")).toEqual(["electrostatics-12 C05,C06,C07,C08,C09,C10,C11,C12,C13,C14"]);
+    });
+
+    // Asked by none of the three: hardness, echo and the qualities of sound, angular SHM, a string's free end,
+    // the second Newton's law of cooling, communication systems, the cyclotron, inductors in combination, the
+    // coupling coefficient, parallel resonance, Doppler for light, the biprism, the p-n junction recap, filters,
+    // and transistors (JEE dropped them in 2024; last asked 2023).
+    const NONE = [
+      ...ids("mechanical-properties-solids", "C06"),
+      ...ids("sound", "C04", "C06"),
+      ...ids("oscillations", "C10"),
+      ...ids("superposition-of-waves", "C07"),
+      ...ids("kinetic-theory", "C12"),
+      ...ids("em-waves-communication", "C03", "C04", "C05"),
+      ...ids("magnetic-fields-current", "C03"),
+      ...ids("electromagnetic-induction", "C09", "C12"),
+      ...ids("ac-circuits", "C08"),
+      ...ids("wave-optics", "C05", "C12", "C15"),
+      ...ids("semiconductor-devices", "C01", "C03", "C06", "C07", "C08"),
+    ];
+
+    it("leaves out what each exam neither teaches nor asks", () => {
+      // CBSE: the rationalised books (no parallax, relative velocity, conical pendulum, axes theorems, rolling,
+      // Doppler, refrigerators, damping, end correction, metre bridge, potentiometer, Earth's field, hysteresis,
+      // eddy currents, LC oscillations, Brewster, Davisson–Germer, radioactivity, special diodes or gates).
+      expect(leftOut("cbse")).toEqual(
+        [
+          ...NONE,
+          ...ids("units-measurements", "C02"),
+          ...ids("motion-in-a-plane", "C04"),
+          ...ids("rotational-dynamics", "C05", "C09", "C12"),
+          ...ids("sound", "C05"),
+          ...ids("thermodynamics", "C12"),
+          ...ids("oscillations", "C11", "C12"),
+          ...ids("superposition-of-waves", "C12"),
+          ...ids("current-electricity", "C05", "C06", "C07", "C08"),
+          ...ids("magnetism", "C04"),
+          ...ids("magnetic-materials", "C07", "C08"),
+          ...ids("electromagnetic-induction", "C07"),
+          ...ids("ac-circuits", "C10"),
+          ...ids("wave-optics", "C07"),
+          ...ids("dual-nature", "C08"),
+          ...ids("atoms-nuclei", "C08", "C09", "C10"),
+          ...ids("semiconductor-devices", "C04", "C05", "C09", "C10"),
+        ].sort(),
+      );
+      // NEET: the NMC 2024 syllabus and 2021–26 papers.
+      expect(leftOut("neet")).toEqual(
+        [
+          ...NONE,
+          ...ids("units-measurements", "C02"),
+          ...ids("rotational-dynamics", "C05"),
+          ...ids("sound", "C05"),
+          ...ids("thermodynamics", "C12"),
+          ...ids("oscillations", "C11", "C12"),
+          ...ids("superposition-of-waves", "C09", "C12"),
+          ...ids("current-electricity", "C06", "C07", "C08"),
+          ...ids("magnetism", "C04"),
+          ...ids("magnetic-materials", "C07", "C08"),
+          ...ids("optics", "C07"),
+        ].sort(),
+      );
+      // JEE Main: beyond NCERT where its papers go.
+      expect(leftOut("jee-main")).toEqual([...NONE, ...ids("optics", "C07")].sort());
+    });
+
+    it("gives each course chapter its own URL", () => {
+      expect(physicsOf("cbse").map((r) => r.slug)).toEqual([
+        "units-and-measurement",
+        "motion-in-a-straight-line",
+        "motion-in-a-plane",
+        "laws-of-motion",
+        "work-energy-and-power",
+        "rotational-motion",
+        "gravitation",
+        "mechanical-properties-of-solids",
+        "mechanical-properties-of-fluids",
+        "thermal-properties-of-matter",
+        "thermodynamics",
+        "kinetic-theory",
+        "oscillations",
+        "waves",
+        "electric-charges-and-fields",
+        "electrostatic-potential-and-capacitance",
+        "current-electricity",
+        "moving-charges-and-magnetism",
+        "magnetism-and-matter",
+        "electromagnetic-induction",
+        "alternating-current",
+        "electromagnetic-waves",
+        "ray-optics-and-optical-instruments",
+        "wave-optics",
+        "dual-nature-of-radiation-and-matter",
+        "atoms",
+        "nuclei",
+        "semiconductor-electronics",
+      ]);
+    });
+
+    it("has every list approved (owner: 'you approve', 2026-11-26)", () => {
+      for (const slug of ["cbse", "neet", "jee-main"]) {
+        const statuses = findCourse(slug)!
+          .chapters.filter((e) => resolveEntry(e, chapters).subject === "physics")
+          .flatMap(partsOf)
+          .flatMap((p) => (p.coverage ? [p.coverage.status] : []));
+        expect(new Set(statuses)).toEqual(new Set(["approved"]));
+      }
     });
   });
 

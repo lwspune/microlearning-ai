@@ -441,6 +441,7 @@ written by me (owner, 2026-10-25: I approve; they check in the app).
 | Vercel's Hobby plan blocked every deploy from the private repo ("Deployment was blocked"): Std XII waves 2–5 were merged and seeded but not on the live site for hours, and nothing flagged it | the repo is public (2026-10-18); after each push to `main`, check the production deployment's status (`gh api repos/lwspune/microlearning-ai/deployments`) is `success`, not just that it exists, and smoke the live site |
 | Std X Geometry's 48 agents placed figure labels by calculation and never saw them: contact sheets showed labels on their own segments, vertex names touching across side-by-side triangles, angle values far from their arcs and three blank first frames, which took a second pass of 8 agents to fix | the concept brief now has agents build `figure-sheet.mjs` sheets and Read the PNGs before reporting; keep the dev server up while agents write |
 | A distractor fixed by editing the built concept `.ts` (and the spec) was undone when a later agent rebuilt from the stale `cNN_items.ts` | fix items in `cNN_spec.py`, rerun `draft_items.py` to rewrite `cNN_items.ts`, then `build_concepts.py`; never patch the built file alone |
+| `vitest` from Git Bash failed every file with "Cannot read properties of undefined (reading 'config')" at the first `describe` (2026-11-26): the lowercase `/c/` path made vitest load its runner twice | run `npx vitest` from PowerShell (`Set-Location C:\Users\...`), where the drive letter is upper case |
 
 ## 7. Fine-tuning knobs
 
