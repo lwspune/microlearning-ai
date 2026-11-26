@@ -7,6 +7,7 @@ import { c05 } from "./concepts/c05-specific-heat.ts";
 import { c06 } from "./concepts/c06-change-of-state.ts";
 import { c07 } from "./concepts/c07-heat-transfer.ts";
 import { c08 } from "./concepts/c08-newtons-cooling.ts";
+import { c09 } from "./concepts/c09-thermal-stress.ts";
 import { graph } from "./graph.ts";
 
 export const thermalProperties: Chapter = {
@@ -17,5 +18,5 @@ export const thermalProperties: Chapter = {
   // Balbharati Physics Std XI (PLAN.md "Std XI and XII Physics").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09],
 };

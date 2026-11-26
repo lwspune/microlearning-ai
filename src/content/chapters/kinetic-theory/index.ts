@@ -12,6 +12,7 @@ import { c10 } from "./concepts/c10-wien-law.ts";
 import { c11 } from "./concepts/c11-stefan-boltzmann.ts";
 import { c12 } from "./concepts/c12-newtons-law-of-cooling.ts";
 import { c13 } from "./concepts/c13-gas-mixtures.ts";
+import { c14 } from "./concepts/c14-molecular-speeds.ts";
 import { graph } from "./graph.ts";
 
 export const kineticTheory: Chapter = {
@@ -22,5 +23,5 @@ export const kineticTheory: Chapter = {
   // Balbharati Physics Std XII (PLAN.md "Std XI and XII Physics").
   standard: 12,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14],
 };

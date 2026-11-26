@@ -1,4 +1,5 @@
 import type { Chapter } from "../../types.ts";
+import { c01 } from "./concepts/c01-sources-of-energy.ts";
 import { graph } from "./graph.ts";
 
 export const energySources: Chapter = {
@@ -9,5 +10,5 @@ export const energySources: Chapter = {
   // Not in the Std XI/XII books: built for NDA, filed under Std XI (owner, 2026-11-26).
   standard: 11,
   graph,
-  concepts: [],
+  concepts: [c01],
 };

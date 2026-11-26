@@ -10,6 +10,7 @@ import { c08 } from "./concepts/c08-radioactive-decays.ts";
 import { c09 } from "./concepts/c09-decay-law.ts";
 import { c10 } from "./concepts/c10-half-life.ts";
 import { c11 } from "./concepts/c11-fission-fusion.ts";
+import { c12 } from "./concepts/c12-de-broglie-bohr.ts";
 import { graph } from "./graph.ts";
 
 export const atomsNuclei: Chapter = {
@@ -20,5 +21,5 @@ export const atomsNuclei: Chapter = {
   // Balbharati Physics Std XII (PLAN.md "Std XI and XII Physics").
   standard: 12,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12],
 };
