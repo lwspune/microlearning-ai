@@ -13,10 +13,10 @@ describe("Std XI Electric Current Through Conductors chapter", () => {
     expect([electricCurrent.subject, electricCurrent.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 6 concepts, 5 edges", () => {
+  it("keeps the graph: 7 concepts, 6 edges", () => {
     const edges = electricCurrent.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(electricCurrent.graph).toHaveLength(6);
-    expect(edges).toBe(5);
+    expect(electricCurrent.graph).toHaveLength(7);
+    expect(edges).toBe(6);
   });
 
   it("keeps edges transitively reduced", () => {

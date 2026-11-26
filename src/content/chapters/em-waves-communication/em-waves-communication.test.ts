@@ -13,10 +13,10 @@ describe("Std XI Electromagnetic Waves and Communication System chapter", () => 
     expect([emWavesCommunication.subject, emWavesCommunication.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 5 concepts, 3 edges", () => {
+  it("keeps the graph: 7 concepts, 4 edges", () => {
     const edges = emWavesCommunication.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(emWavesCommunication.graph).toHaveLength(5);
-    expect(edges).toBe(3);
+    expect(emWavesCommunication.graph).toHaveLength(7);
+    expect(edges).toBe(4);
   });
 
   it("keeps edges transitively reduced", () => {

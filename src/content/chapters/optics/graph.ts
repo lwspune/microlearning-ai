@@ -55,4 +55,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`A simple microscope magnifies $1 + \dfrac{D}{f}$; compound microscopes and telescopes multiply the magnifications of two lenses`,
     prereqs: ["C05"], ext: [], sources: [S("Optical Instruments")],
   },
+
+  // The eye and the sky (phase 2: NDA)
+  {
+    id: "C09", slug: "human-eye", title: "The human eye and its defects", group: "The eye and the sky", tier: "core", visual: true,
+    oneLiner: t`The eye lens changes its focal length to see from $25\ \mathrm{cm}$ to far away; a concave lens corrects short sight, a convex lens long sight`,
+    prereqs: ["C05"], ext: [],
+    sources: ["nda/light-and-optics#Human Eye and Optical Instruments", "jee-main/ray-optics#Optical Instruments and the Eye"],
+  },
+  {
+    id: "C10", slug: "scattering-of-light", title: "Scattering and atmospheric refraction", group: "The eye and the sky", tier: "core", visual: true,
+    oneLiner: t`Air scatters blue light far more than red (as $\dfrac{1}{\lambda^4}$), so the sky is blue and the setting Sun red; refraction in moving air makes stars twinkle`,
+    prereqs: ["C06"], ext: [],
+    sources: ["nda/light-and-optics#Light Phenomena and Spectrum"],
+  },
 ];

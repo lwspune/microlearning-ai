@@ -13,10 +13,10 @@ describe("Std XI Gravitation chapter", () => {
     expect([gravitation.subject, gravitation.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 7 concepts, 6 edges", () => {
+  it("keeps the graph: 8 concepts, 7 edges", () => {
     const edges = gravitation.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(gravitation.graph).toHaveLength(7);
-    expect(edges).toBe(6);
+    expect(gravitation.graph).toHaveLength(8);
+    expect(edges).toBe(7);
   });
 
   it("keeps edges transitively reduced", () => {

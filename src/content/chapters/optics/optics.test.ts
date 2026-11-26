@@ -13,10 +13,10 @@ describe("Std XI Optics chapter", () => {
     expect([optics.subject, optics.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 8 concepts, 8 edges", () => {
+  it("keeps the graph: 10 concepts, 10 edges", () => {
     const edges = optics.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(optics.graph).toHaveLength(8);
-    expect(edges).toBe(8);
+    expect(optics.graph).toHaveLength(10);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {

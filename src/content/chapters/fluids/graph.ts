@@ -74,4 +74,12 @@ export const graph: GraphNode[] = [
     prereqs: ["C01", "C10"], ext: ["conservation of mechanical energy (Std XI Physics)"],
     sources: [S("Equation of Continuity and Bernoulli's Equation")],
   },
+
+  // Buoyancy (phase 2: JEE Main and NDA)
+  {
+    id: "C12", slug: "buoyancy", title: "Buoyancy and flotation", group: "Buoyancy", tier: "core", visual: true,
+    oneLiner: t`A fluid pushes a body up with the weight of fluid it displaces, $V\rho g$; a floating body sinks until that equals its weight`,
+    prereqs: ["C01"], ext: ["density (Std IX Science)"],
+    sources: ["jee-main/mechanical-properties-of-fluids#Pressure, Pascal's Law and Buoyancy", "nda/fluid-mechanics-and-properties-of-matter#Buoyancy, Density and Flotation"],
+  },
 ];
