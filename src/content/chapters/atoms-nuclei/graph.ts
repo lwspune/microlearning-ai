@@ -70,4 +70,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`Splitting heavy nuclei or joining light ones raises the binding energy per nucleon and releases energy; a reactor controls a fission chain reaction`,
     prereqs: ["C07"], ext: [], sources: [S("Nuclear Fission and Fusion")],
   },
+  {
+    id: "C12", slug: "de-broglie-bohr", title: "de Broglie's explanation of Bohr's orbits", group: "The atom", tier: "core", visual: true,
+    oneLiner: t`An allowed orbit holds a whole number of electron waves: $2\pi r_n = n\lambda$, which gives Bohr's $mvr = \dfrac{nh}{2\pi}$`,
+    prereqs: ["C02"], ext: ["the de Broglie wavelength (Dual Nature, Ch.14)"],
+    sources: ["cbse-12/atoms#de Broglie's Explanation of Bohr's Postulate"],
+  },
 ];

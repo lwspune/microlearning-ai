@@ -48,4 +48,10 @@ export const graph: GraphNode[] = [
     prereqs: ["C04"], ext: ["projectile motion (Motion in a Plane, Ch.3)"],
     sources: ["jee-main/electrostatics#Charges Moving in Electric Fields"],
   },
+  {
+    id: "C08", slug: "field-of-ring-and-rod", title: "Field of a charged ring and rod", group: "Field", tier: "core", visual: true,
+    oneLiner: t`Add the fields of small bits of charge: on a ring's axis $E = \dfrac{kQx}{(R^2 + x^2)^{3/2}}$, zero at its centre`,
+    prereqs: ["C03", "C04"], ext: ["integration (Mathematical Methods, Ch.2)"],
+    sources: ["jee-main/electrostatics#Electric Field of Charges, Rods, Rings and Sheets"],
+  },
 ];

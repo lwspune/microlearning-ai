@@ -80,4 +80,10 @@ export const graph: GraphNode[] = [
     prereqs: ["C07"], ext: [],
     sources: ["jee-main/kinetic-theory#Internal Energy and Gas Mixtures"],
   },
+  {
+    id: "C14", slug: "molecular-speeds", title: "Mean and most probable speeds", group: "Gases", tier: "core", visual: true,
+    oneLiner: t`Molecules have a spread of speeds: $v_{mp} = \sqrt{\dfrac{2RT}{M}}$, $\bar v = \sqrt{\dfrac{8RT}{\pi M}}$ and $v_{rms} = \sqrt{\dfrac{3RT}{M}}$, in that order`,
+    prereqs: ["C04"], ext: [],
+    sources: ["jee-main/kinetic-theory#Molecular Speeds and Mean Free Path"],
+  },
 ];

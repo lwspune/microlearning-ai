@@ -1554,7 +1554,20 @@ though some JEE keys use $-k$ LC. Left for later: the smaller gaps (reflecting t
 probable speeds, thermal stress, levers and pulleys, electron emission, de Broglie and Bohr) and NDA's Energy Sources
 and Astronomy and Space.
 
-**PYQ Vault errata found (to report):** NDA 2023 Apr NDA 1 Q53 (a sphere floating on an accelerating spaceship) is
+**Status, 2026-11-26: phase 2b built and pushed** (owner: "do all three": push, report the errata, write the
+smaller gaps; branch `physics-gaps-2`). Seven more concepts appended to their pool chapters (reflecting telescopes,
+optics C11: CBSE, NEET, JEE; field of a charged ring and rod, electrostatics C08: JEE; mean and most probable speeds,
+kinetic theory C14: JEE; thermal stress, thermal properties C09: JEE; levers and pulleys, laws of motion C09: NDA;
+electron emission, dual nature C09: CBSE, NEET; de Broglie's explanation of Bohr's orbits, atoms and nuclei C12:
+CBSE, NEET) and two pool chapters built for NDA, filed under Std XI like Binary Numbers: Energy Sources (sources of
+energy) and Astronomy and Space (the solar system and the universe), so NDA now has all 14 of PYQ Vault's physics
+chapters. MH Board and MHT-CET pinned (thermal properties, dual nature, atoms and nuclei joined the pinned list).
+Up to five agents (owner: "use upto 5 agents"); packs were thin, so items are past-paper rows where they fit and
+authored in the exam's style otherwise. Nine chapters verified in sympy (0 problems), 0 phone overflows, seeded;
+browser check: each new concept opens from its course and links back; MH Board shows none of them.
+
+**PYQ Vault errata, reported 2026-11-26** (`question_reports` 191ba688, ba2c1452, 93c12ffd, 30ccdf63, all open;
+the fourth is Std XI Optics Solved Ex.9.11, f_R 24.51 cm not 25.51, aberration 0.93 cm): NDA 2023 Apr NDA 1 Q53 (a sphere floating on an accelerating spaceship) is
 keyed $f_2 > f_1$; it is $f_2 = f_1$. JEE Main 2021 Paper 12 Q6 has options A and C equal (both right), only C keyed.
 JEE Main 2022 26 July Q92 and 2024 6 April Q108 key a negative vernier zero error as $-k$ LC (the geometry gives
 $-(N - k)$ LC; PYQ Vault's own solution to Q92 notes it); the NEET 2026 re-exam row is already marked "Bonus".

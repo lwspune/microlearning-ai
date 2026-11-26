@@ -69,4 +69,11 @@ export const graph: GraphNode[] = [
     prereqs: ["C06"], ext: [],
     sources: ["nda/light-and-optics#Light Phenomena and Spectrum"],
   },
+  // Reflecting telescopes (phase 2: CBSE, NEET and JEE Main)
+  {
+    id: "C11", slug: "reflecting-telescope", title: "Reflecting telescopes", group: "Instruments", tier: "core", visual: true,
+    oneLiner: t`A concave mirror as the objective has no chromatic aberration and gathers more light; a Cassegrain telescope folds the beam back with a convex mirror`,
+    prereqs: ["C08"], ext: [],
+    sources: ["cbse-12/ray-optics-and-optical-instruments#Optical Instruments", "jee-main/ray-optics#Optical Instruments and the Eye"],
+  },
 ];

@@ -165,12 +165,13 @@ function ncertPhysics(exam: NcertExam): CourseChapter[] {
     xi("gravitation", "Gravitation", exam === "jee" ? { chapter: "gravitation" } : phy("gravitation", range(1, 7))),
     xi("mechanical-properties-of-solids", "Mechanical Properties of Solids", phy("mechanical-properties-solids", range(1, 5))),
     xi("mechanical-properties-of-fluids", "Mechanical Properties of Fluids", phy("fluids", exam === "jee" ? ["C01", "C02", "C12", ...range(3, 11)] : range(1, 11))),
+    // Thermal stress is JEE only.
     xi("thermal-properties-of-matter", "Thermal Properties of Matter", {
-      chapter: "thermal-properties",
+      ...(exam === "jee" ? { chapter: "thermal-properties" } : phy("thermal-properties", range(1, 8))),
       more: [phy("kinetic-theory", range(8, 11), ["C08", "C09"])],
     }),
     xi("thermodynamics", "Thermodynamics", by({ cbse: phy("thermodynamics", range(1, 11)), neet: phy("thermodynamics", range(1, 11)), jee: { chapter: "thermodynamics" } })),
-    xi("kinetic-theory", "Kinetic Theory", phy("kinetic-theory", exam === "jee" ? [...range(1, 7), "C13"] : range(1, 7))),
+    xi("kinetic-theory", "Kinetic Theory", phy("kinetic-theory", exam === "jee" ? [...range(1, 7), "C13", "C14"] : range(1, 7))),
     xi(
       "oscillations",
       "Oscillations",
@@ -229,11 +230,11 @@ function ncertPhysics(exam: NcertExam): CourseChapter[] {
     // Displacement current first, as NCERT has it.
     xii("electromagnetic-waves", "Electromagnetic Waves", phy("em-waves-communication", ["C06", "C01", "C02", "C07"])),
     exam === "jee"
-      ? xii("ray-optics", "Ray Optics", phy("optics", [...range(1, 6), "C08"]))
+      ? xii("ray-optics", "Ray Optics", phy("optics", [...range(1, 6), "C08", "C11"]))
       : xii(
           "ray-optics-and-optical-instruments",
           "Ray Optics and Optical Instruments",
-          exam === "cbse" ? phy("optics", [...range(1, 6), "C08", "C07"], ["C07"]) : phy("optics", [...range(1, 6), "C08"]),
+          exam === "cbse" ? phy("optics", [...range(1, 6), "C08", "C11", "C07"], ["C07"]) : phy("optics", [...range(1, 6), "C08", "C11"]),
         ),
     // CBSE's syllabus has no polarisation and its 2023–26 papers ask none, though the book keeps Malus.
     xii(
@@ -246,11 +247,15 @@ function ncertPhysics(exam: NcertExam): CourseChapter[] {
     xii(
       "dual-nature-of-radiation-and-matter",
       "Dual Nature of Radiation and Matter",
-      exam === "cbse"
-        ? phy("dual-nature", ["C03", "C01", "C04", "C05", "C02", "C06", "C07"])
-        : phy("dual-nature", ["C03", "C01", "C04", "C05", "C02", "C06", "C07", "C08"], ["C08"]),
+      // Electron emission opens NCERT's chapter; JEE's syllabus starts at the photoelectric effect.
+      by({
+        cbse: phy("dual-nature", ["C09", "C03", "C01", "C04", "C05", "C02", "C06", "C07"]),
+        neet: phy("dual-nature", ["C09", "C03", "C01", "C04", "C05", "C02", "C06", "C07", "C08"], ["C08"]),
+        jee: phy("dual-nature", ["C03", "C01", "C04", "C05", "C02", "C06", "C07", "C08"], ["C08"]),
+      }),
     ),
-    xii("atoms", "Atoms", phy("atoms-nuclei", range(1, 5))),
+    // NCERT 12.6, de Broglie's explanation of Bohr's postulate, is CBSE and NEET.
+    xii("atoms", "Atoms", phy("atoms-nuclei", exam === "jee" ? range(1, 5) : [...range(1, 5), "C12"])),
     xii("nuclei", "Nuclei", nuclei),
     xii("semiconductor-electronics", exam === "cbse" ? "Semiconductor Electronics: Materials, Devices and Simple Circuits" : "Semiconductor Electronics", {
       chapter: "semiconductors",
@@ -347,7 +352,7 @@ export const courses: Course[] = [
       book("laws-of-motion", 7),
       book("gravitation", 7),
       { chapter: "mechanical-properties-solids" },
-      { chapter: "thermal-properties" },
+      book("thermal-properties", 8),
       { chapter: "sound" },
       book("optics", 8),
       book("electrostatics", 6),
@@ -368,8 +373,8 @@ export const courses: Course[] = [
       { chapter: "magnetic-materials" },
       { chapter: "electromagnetic-induction" },
       { chapter: "ac-circuits" },
-      { chapter: "dual-nature" },
-      { chapter: "atoms-nuclei" },
+      book("dual-nature", 8),
+      book("atoms-nuclei", 11),
       { chapter: "semiconductor-devices" },
     ],
   },
@@ -520,7 +525,7 @@ export const courses: Course[] = [
       book("laws-of-motion", 7),
       book("gravitation", 7),
       { chapter: "mechanical-properties-solids" },
-      { chapter: "thermal-properties" },
+      book("thermal-properties", 8),
       { chapter: "sound" },
       { ...book("optics", 8), title: "Optics (Ray)" },
       { chapter: "rotational-dynamics" },
@@ -536,8 +541,8 @@ export const courses: Course[] = [
       { chapter: "magnetism", slug: "magnetic-materials", title: "Magnetic Materials", standard: 12, more: [{ chapter: "magnetic-materials" }] },
       { chapter: "electromagnetic-induction" },
       { chapter: "ac-circuits" },
-      { chapter: "dual-nature" },
-      { chapter: "atoms-nuclei" },
+      book("dual-nature", 8),
+      book("atoms-nuclei", 11),
       { chapter: "semiconductors", slug: "semiconductor-devices", title: "Semiconductor Devices", standard: 12, more: [{ chapter: "semiconductor-devices" }] },
     ],
   },
@@ -618,8 +623,8 @@ export const courses: Course[] = [
       { chapter: "differential-equations" },
       // "Random variable as function on a sample space", then the binomial distribution.
       { ...nda("probability-distributions", range(1, 4)), title: "Binomial Distribution", slug: "binomial-distribution", more: [{ chapter: "binomial-distribution" }] },
-      // Physics: 12 of PYQ Vault's 14 chapters (owner, 2026-11-26); Energy Sources and Astronomy and Space have
-      // no concepts yet, and the general-knowledge topics (scientists, acronyms) are left out. NDA asks Class 9–12
+      // Physics: PYQ Vault's 14 chapters (owner, 2026-11-26); Energy Sources and Astronomy and Space are built for
+      // NDA, and the general-knowledge topics (scientists, acronyms) are left out. NDA asks Class 9–12
       // basics in one step, so each takes what NDA's syllabus or its 2017–26 papers ask. Heat sits in Std XI, where
       // most of its papers are (calorimetry, thermometry).
       { ...phy("units-measurements", [...range(1, 4), "C07"], ["C07"]), slug: "units-measurement-and-dimensions", title: "Units, Measurement and Dimensions", standard: 11 },
@@ -639,7 +644,7 @@ export const courses: Course[] = [
         more: [phy("mechanical-properties-solids", ["C07"]), phy("rotational-dynamics", ["C07"])],
       },
       // Collisions need work and energy (NCERT teaches them here); torque and equilibrium are the pool's share of simple machines.
-      { ...phy("laws-of-motion", ["C03", "C08", "C05", "C07"]), slug: "work-energy-and-power", title: "Work, Energy and Power", standard: 11 },
+      { ...phy("laws-of-motion", ["C03", "C08", "C05", "C07", "C09"]), slug: "work-energy-and-power", title: "Work, Energy and Power", standard: 11 },
       { ...phy("gravitation", range(1, 7)), standard: 11 },
       {
         ...phy("thermal-properties", range(1, 7)),
@@ -687,6 +692,9 @@ export const courses: Course[] = [
           phy("semiconductor-devices", ["C05"], ["C05"]),
         ],
       },
+      // Built for NDA: general science the books don't teach.
+      { chapter: "energy-sources" },
+      { chapter: "astronomy-and-space" },
     ],
   },
   { slug: "cds", title: "CDS", short: "CDS", group: "graduate", tagline: "UPSC CDS, Elementary Mathematics", chapters: [] },

@@ -54,4 +54,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`A hot body cools at a rate proportional to its excess temperature over the surroundings, for small differences`,
     prereqs: ["C07"], ext: [], sources: [S("Newton's Law of Cooling")],
   },
+  {
+    id: "C09", slug: "thermal-stress", title: "Thermal stress", group: "Thermal expansion", tier: "core", visual: true,
+    oneLiner: t`A rod held between rigid walls cannot expand, so heating it by $\Delta T$ sets up a stress $Y\alpha\,\Delta T$`,
+    prereqs: ["C03"], ext: ["Young's modulus (Mechanical Properties of Solids, Ch.6)"],
+    sources: ["jee-main/thermal-properties-of-matter#Temperature Scales, Expansion and Thermal Stress"],
+  },
 ];
