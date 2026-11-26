@@ -1476,6 +1476,13 @@ Thermodynamics Ex Q.5 and Q.6 signs, Oscillations Ex Q.12 units and Ex Q.15
 direction). Still to come in wave 1: chapters 6–8 (Superposition of Waves, Wave
 Optics, Electrostatics), on a new branch from main.
 
+**Status, 2026-11-26 (owner: "lets complete physics end to end autonomously"; up to three
+agents, every concept reviewed in the main session):** physics is complete. All 16 Std XII chapters (ch 6–16 on
+branch `physics-xii-waves`, the last Semiconductor Devices at 8fd2c36) and all 14 Std XI chapters (eb7e957) are
+approved, seeded and on main. Std XI sits before Std XII in the MH Board course, under the subject switch. Book
+errata are keyed to corrected values as PYQ Vault records them; one PYQ Vault erratum is itself wrong (Std XI
+Optics Solved Ex.9.11: f_R is 24.51 cm, so the aberration is about 0.93 cm, not 1.93), so C07-Q2 uses new numbers.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a

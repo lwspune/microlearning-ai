@@ -2,8 +2,8 @@
 
 Read [agent-brief-concept.md](agent-brief-concept.md) first and follow it; this file changes only what differs
 for the Balbharati Std XI and XII Physics books. Where the two disagree, this file wins. Physics was written in
-the main session, one concept at a time (owner, 2026-10-23); since 2026-11-26 up to two concept agents may run at
-once, and the lead reviews every concept. "You" below is whoever writes the concept.
+the main session, one concept at a time (owner, 2026-10-23); since 2026-11-26 up to three concept agents may run at
+once, each slot refilled as soon as it frees, and the lead reviews every concept. "You" below is whoever writes the concept.
 
 ## Who you write for
 A Class 11 or 12 Maharashtra State Board (HSC) student, English medium, who has the book's maths: calculus
@@ -50,3 +50,19 @@ Most rows are subjective. Each becomes one MCQ whose wrong options come from mod
 ## Figures
 Physics figures use the same `figures.py` helpers and step rules. When a concept needs a shape the helpers
 lack (a spring, a pulley, a wave, a P–V curve, a circuit), add the helper to `figures.py` test first, then use it.
+
+## Lessons from review (2026-11-26, Std XI and XII)
+- A misconception's fallback is an ancestor in the graph (follow `prereqs`), an `ext` topic, or `none`; nothing else validates.
+- Misconception ids are contiguous: renumber after dropping one.
+- Named answers are not Python/sympy names (sum, field, minimum, degree, N, S, Q, I, E, pi) and do not start with a digit;
+  vector answers are plain symbols (`ihat`), not Tuples.
+- Keep distractors well apart from the key: if a modelled slip lands within about 2% of it (e.g. two Doppler formulas that
+  differ only at second order), change the item's numbers and keep the ref as a variant.
+- Use the book's symbols on the slides (s for specific heat, n and n0 in the Doppler formula) and keep the graph one-liner the same.
+- Strings with ``, `	` or `` (ec, 	heta, lpha) must be raw strings in the Python content files.
+- Figures: a point with no label leaves `label` out; solution figures use only steps up to the solution's step count (give
+  them unstepped copies); element props are typed (`arc` has no `dashed`), so run `npm run typecheck`, which check-concept
+  does not replace.
+- Check the physics of every figure, not only its labels: field lines leave a bar magnet near its ends, a dip needle tilts
+  below the local horizontal, rays leave a raindrop downward (a ray-traced exit needs the normal pointing against the ray).
+- Section titles are 1 to 6 words.
