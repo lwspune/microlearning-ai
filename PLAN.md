@@ -1554,7 +1554,7 @@ though some JEE keys use $-k$ LC. Left for later: the smaller gaps (reflecting t
 probable speeds, thermal stress, levers and pulleys, electron emission, de Broglie and Bohr) and NDA's Energy Sources
 and Astronomy and Space.
 
-**Status, 2026-11-26: phase 2b built and pushed** (owner: "do all three": push, report the errata, write the
+**Status, 2026-11-26: phase 2b built and merged** (owner: "do all three": push, report the errata, write the
 smaller gaps; branch `physics-gaps-2`). Seven more concepts appended to their pool chapters (reflecting telescopes,
 optics C11: CBSE, NEET, JEE; field of a charged ring and rod, electrostatics C08: JEE; mean and most probable speeds,
 kinetic theory C14: JEE; thermal stress, thermal properties C09: JEE; levers and pulleys, laws of motion C09: NDA;
