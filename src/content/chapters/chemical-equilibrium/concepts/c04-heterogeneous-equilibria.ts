@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Heat limestone in a closed furnace and the $\ce{CO2}$ pressure settles at one value, whether there is 1 kg or 10 kg of limestone. Why doesn't the amount of solid matter?`,
     reveal: t`A pure solid's concentration is fixed, so it drops out of K: $K_p = p_{\ce{CO2}}$ alone.`,

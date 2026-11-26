@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Alchemists never turned one element into another. Rutherford did it in 1919 by firing α particles at nitrogen. How?`,
     reveal: t`Bombarding a nucleus can change its proton count: nitrogen became oxygen. Nuclear reactions change elements.`,

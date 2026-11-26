@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Forensic labs separate inks on paper, drug labs on thin glass plates, and factories in tall glass columns. Are these different ideas?`,
     reveal: t`One idea, three set-ups. All share a stationary and a mobile phase; they differ in what the stationary phase is.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Drawing every C and H of a long molecule is slow. Organic chemists draw a zig-zag line instead. How can a line show a whole molecule?`,
     reveal: t`In a bond-line formula every corner and end is a carbon, and hydrogens are understood to fill each carbon's four bonds.`,

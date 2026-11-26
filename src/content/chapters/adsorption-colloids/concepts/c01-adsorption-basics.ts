@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A sachet of silica gel in a shoebox keeps the shoes dry, though the gel itself never looks wet. Where does the moisture go?`,
     reveal: t`It sticks to the vast internal surface of the gel: adsorption. The water stays on surfaces rather than soaking through.`,

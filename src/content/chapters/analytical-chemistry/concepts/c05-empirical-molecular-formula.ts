@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Glucose, acetic acid and formaldehyde all analyse to the same percentages of C, H and O. How can three different compounds share one composition?`,
     reveal: t`They share the simplest ratio, $\ce{CH2O}$: the empirical formula. Their molecular formulas are different multiples of it.`,

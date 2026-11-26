@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Raw natural rubber turns sticky in summer and brittle in winter. Tyres made from it last for years. What turned the raw latex into tyre rubber?`,
     reveal: t`Vulcanisation: heating with sulfur ties the chains together with sulfur bridges, so they no longer flow or crack.`,

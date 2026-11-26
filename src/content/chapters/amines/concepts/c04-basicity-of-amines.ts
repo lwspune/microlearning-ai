@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Methyl groups push electrons onto nitrogen, so trimethylamine should be the strongest base of the methylamines. Yet in water dimethylamine beats it. What holds trimethylamine back?`,
     reveal: t`Its cation, $\ce{(CH3)3NH+}$, has only one N-H to hydrogen bond with water, and its crowded N is hard to reach. In the gas phase, with no water, trimethylamine is strongest.`,

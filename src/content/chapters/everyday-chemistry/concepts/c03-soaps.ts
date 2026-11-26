@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Water alone will not wash oil off a plate. Add soap, and the oil lifts away. How does soap get water and oil to cooperate?`,
     reveal: t`Each soap molecule has an oil-loving tail and a water-loving head. The tails bury themselves in the grease and the heads pull it into the water.`,

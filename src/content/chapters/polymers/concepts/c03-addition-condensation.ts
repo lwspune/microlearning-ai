@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ethene molecules join into polythene with nothing left over. Diamines and diacids join into nylon, but a puddle of water collects. Why does one route make water and the other not?`,
     reveal: t`Ethene opens its double bond and adds whole. Nylon's monomers join by reacting their end groups, and each new link releases a water molecule.`,

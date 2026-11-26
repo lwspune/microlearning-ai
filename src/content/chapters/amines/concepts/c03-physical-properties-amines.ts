@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Trimethylamine and n-propylamine have the same formula, $\ce{C3H9N}$. Trimethylamine is a gas on a cool day; n-propylamine is a liquid until 322 K. What does n-propylamine have that trimethylamine lacks?`,
     reveal: t`N-H bonds. n-Propylamine's molecules hydrogen bond to each other; trimethylamine has no H on N, so it cannot.`,

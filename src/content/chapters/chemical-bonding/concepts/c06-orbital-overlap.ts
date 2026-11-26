@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A double bond is not simply two single bonds: C=C (612 kJ/mol) is less than twice C–C (348). Why is the second bond weaker?`,
     reveal: t`The first is a σ bond from head-on overlap. The second is a π bond from sideways overlap, which overlaps less.`,

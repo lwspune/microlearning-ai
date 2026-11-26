@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`tert-Butyl alcohol is a tertiary alcohol, but tert-butylamine is a primary amine. Both have the same carbon skeleton. Why the different labels?`,
     reveal: t`Alcohols are classified by the carbon that carries OH; amines by how many carbon groups sit on the nitrogen. tert-Butylamine's N has only one.`,

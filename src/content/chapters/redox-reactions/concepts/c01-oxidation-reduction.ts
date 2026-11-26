@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Sodium burns in chlorine to make salt, with no oxygen anywhere. Chemists still call it an oxidation of sodium. Why?`,
     reveal: t`Oxidation means losing electrons. Sodium hands an electron to chlorine, so sodium is oxidised and chlorine reduced.`,

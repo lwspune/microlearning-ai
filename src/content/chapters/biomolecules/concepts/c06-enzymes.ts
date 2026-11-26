@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a lab, hydrolysing starch needs boiling acid. In your mouth, saliva does it at body temperature in seconds. What does saliva have?`,
     reveal: t`An enzyme, amylase: a protein whose shape fits starch exactly and lowers the energy barrier of the reaction.`,

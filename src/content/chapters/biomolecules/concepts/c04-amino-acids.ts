@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Glycine has a mass of 75 and melts above 500 K. Propanoic acid, of similar mass, melts at 252 K. Why is glycine a high-melting solid?`,
     reveal: t`In glycine the COOH gives its proton to its own $\ce{NH2}$, forming $\ce{H3N+-CH2-COO-}$. Crystals of these charged ions are held by strong ionic attractions, like a salt.`,

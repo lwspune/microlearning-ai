@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In hard water, soap leaves grey scum on clothes, but washing powder still works. What makes detergents different?`,
     reveal: t`Their calcium and magnesium salts dissolve, so hard water cannot precipitate them.`,

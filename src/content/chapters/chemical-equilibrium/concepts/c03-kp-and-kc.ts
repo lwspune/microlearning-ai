@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For gases it is often easier to measure pressures than concentrations. Does an equilibrium constant in pressures equal $K_c$?`,
     reveal: t`Only when the gas moles are equal on both sides. In general $K_p = K_c(RT)^{\Delta n}$.`,

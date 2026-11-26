@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Lithium, sodium and potassium all fizz in water, but potassium bursts into lilac flame. Why does reactivity grow down group 1?`,
     reveal: t`The outer electron is further from the nucleus in each new period, so it is lost more easily.`,

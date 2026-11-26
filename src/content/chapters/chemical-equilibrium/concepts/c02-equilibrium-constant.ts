@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Start with any mix of $\ce{H2}$, $\ce{I2}$ and HI at 700 K, and at equilibrium $[\ce{HI}]^2/([\ce{H2}][\ce{I2}])$ always comes to about 54. Why that combination?`,
     reveal: t`The law of mass action: at equilibrium, products over reactants, each raised to its coefficient, is a constant, $K_c$.`,

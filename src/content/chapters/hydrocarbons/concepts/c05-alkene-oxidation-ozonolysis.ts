@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An unknown alkene is treated with ozone and gives two molecules of ethanal. Without ever seeing the alkene, can we draw it?`,
     reveal: t`Yes. Ozonolysis cuts the C=C and puts an O on each half; joining the two ethanal carbons gives but-2-ene.`,

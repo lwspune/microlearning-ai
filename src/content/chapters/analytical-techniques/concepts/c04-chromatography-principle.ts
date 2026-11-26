@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A drop of black ink on wet paper spreads into rings of blue, pink and yellow. Black ink was a mixture all along. Why did its colours separate?`,
     reveal: t`Each dye clings to the paper to a different extent, so the moving water carries each one a different distance.`,

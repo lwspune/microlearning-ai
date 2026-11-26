@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Chloroacetic acid is a hundred times stronger an acid than acetic acid. How can one chlorine atom, two bonds away, make such a difference?`,
     reveal: t`Chlorine pulls σ electrons along the chain towards itself, the −I effect, stabilising the acid's anion.`,

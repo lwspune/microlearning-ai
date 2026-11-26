@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Diamond is the hardest natural substance and an insulator; graphite is soft enough to write with and conducts electricity. Both are pure carbon. How?`,
     reveal: t`The atoms are bonded differently: a rigid 3D network of $sp^3$ carbons in diamond, sliding layers of $sp^2$ carbons with free electrons in graphite.`,

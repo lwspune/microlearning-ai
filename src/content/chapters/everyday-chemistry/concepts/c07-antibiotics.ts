@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In 1928 a mould contaminated Alexander Fleming's bacterial cultures, and the bacteria around it died. What had he found?`,
     reveal: t`Penicillin, the first antibiotic: a substance made by one microbe that kills or stops others.`,

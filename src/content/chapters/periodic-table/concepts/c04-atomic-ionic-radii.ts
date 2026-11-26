@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A sodium atom is 186 pm across, a sodium ion only 102 pm. Losing a single electron nearly halves its size. How?`,
     reveal: t`Na loses its whole outer shell, $3s^1$. The ion has one shell fewer, and its 11 protons pull the remaining 10 electrons tighter.`,

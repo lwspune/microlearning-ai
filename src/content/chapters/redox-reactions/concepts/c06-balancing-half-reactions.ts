@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A battery keeps oxidation and reduction in separate compartments, joined by a wire. Can we split a redox equation the same way to balance it?`,
     reveal: t`Yes. Write the oxidation and reduction as separate half reactions, balance each with electrons, then add them so the electrons cancel.`,

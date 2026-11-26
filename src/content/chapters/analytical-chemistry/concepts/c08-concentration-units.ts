@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bottle reads 1 M NaCl at 25 °C. Warm it to 60 °C and, without adding anything, its molarity falls. How?`,
     reveal: t`The solution expands on warming, so the same moles of salt sit in a larger volume. Molality, based on mass, stays put.`,

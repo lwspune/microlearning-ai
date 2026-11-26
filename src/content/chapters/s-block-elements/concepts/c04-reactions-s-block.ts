@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A drop of sodium in liquid ammonia makes a deep blue solution that conducts like a metal. No ordinary salt solution does that. What carries the current?`,
     reveal: t`Electrons. Sodium gives up its electron, which becomes surrounded by ammonia molecules: an ammoniated electron, which is blue and mobile.`,

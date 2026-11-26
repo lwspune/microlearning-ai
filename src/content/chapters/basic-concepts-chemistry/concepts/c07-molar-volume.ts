@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A balloon of hydrogen and a balloon of carbon dioxide are the same size at the same temperature and pressure. One weighs 22 times as much. Which number is the same in both?`,
     reveal: t`The number of molecules, and so the number of moles. At STP a mole of any gas fills 22.4 litres.`,

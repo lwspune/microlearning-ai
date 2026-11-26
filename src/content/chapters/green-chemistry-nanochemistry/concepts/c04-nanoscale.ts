@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A gold ring is yellow. Gold particles a few nanometres across are red. Same element, different colour. What changed?`,
     reveal: t`Only the size. At the nanoscale, a large share of atoms sit at the surface, and the material's properties change.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Crude sugar from a mill is brown and dirty. Dissolve it in hot water, filter, and let it cool slowly: white crystals appear. Where did the dirt go?`,
     reveal: t`Insoluble dirt stayed on the filter paper; soluble impurities stayed dissolved in the cold liquid. Only the sugar crystallised.`,

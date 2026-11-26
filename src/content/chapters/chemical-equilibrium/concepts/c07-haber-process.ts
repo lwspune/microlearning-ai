@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Lower temperatures give more ammonia at equilibrium, yet Haber's plants run hot, near 700 K. Why accept a smaller yield?`,
     reveal: t`At low temperature the reaction is far too slow. 700 K with an iron catalyst gives a good yield quickly enough: a compromise.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Phosphorus forms $\ce{PCl3}$ and $\ce{PCl5}$, but nitrogen, just above it, forms only $\ce{NCl3}$. What stops nitrogen at three?`,
     reveal: t`Nitrogen's valence shell ($n$ = 2) has no d orbitals, so it cannot hold more than four electron pairs.`,

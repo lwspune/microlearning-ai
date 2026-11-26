@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ethanol is a drink and dimethyl ether a refrigerant gas, yet both are $\ce{C2H6O}$. How can the same formula give such different substances?`,
     reveal: t`They are isomers: the same atoms joined differently, here into different functional groups.`,

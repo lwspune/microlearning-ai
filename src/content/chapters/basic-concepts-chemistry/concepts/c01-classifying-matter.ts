@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Seawater, sugar and ozone look nothing alike. Yet a chemist sorts all three with two questions: is it one substance, and if so, can it be broken down further?`,
     reveal: t`Seawater is a mixture of many substances; sugar is a compound, breakable into elements; ozone is an element, made of one kind of atom.`,

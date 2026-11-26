@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`One student writes a mass as 15000 g; another writes $1.50 \times 10^4$ g. Are they reporting the same measurement?`,
     reveal: t`Not quite. $1.50 \times 10^4$ says the balance was good to three figures; 15000 hides how many of those zeros were measured.`,

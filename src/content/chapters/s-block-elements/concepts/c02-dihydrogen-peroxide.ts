@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A bottle of hydrogen peroxide is labelled '20 volume', not '6 %'. What does a volume strength tell you?`,
     reveal: t`One litre of it releases 20 litres of oxygen at STP when it decomposes.`,

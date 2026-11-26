@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In $\ce{CO}$ carbon is +2; in $\ce{CO2}$ +4; in $\ce{CH4}$ −4. How can one element have so many 'charges'?`,
     reveal: t`Oxidation numbers are bookkeeping charges: each bond's electrons are given to the more electronegative atom, and they vary with partners.`,

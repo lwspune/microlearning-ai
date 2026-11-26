@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`When a C–Cl bond breaks, the pieces can be two radicals or two ions. What decides which?`,
     reveal: t`Whether the shared pair is split evenly (homolysis, radicals) or kept by one atom (heterolysis, ions).`,

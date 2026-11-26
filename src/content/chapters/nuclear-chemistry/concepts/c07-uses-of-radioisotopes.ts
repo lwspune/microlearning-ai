@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A wooden tool from an ancient site has less than half the carbon-14 activity of fresh wood. How old is it?`,
     reveal: t`More than one half life of carbon-14, over 5730 years. The decay law turns the activity ratio into an age.`,

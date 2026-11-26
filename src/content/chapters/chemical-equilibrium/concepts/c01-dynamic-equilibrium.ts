@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In a sealed bottle of soda the fizz seems to stop, yet $\ce{CO2}$ molecules never stop moving between gas and liquid. How can nothing seem to happen while so much is happening?`,
     reveal: t`Molecules escape the liquid exactly as fast as others dissolve back. The rates balance: a dynamic equilibrium.`,

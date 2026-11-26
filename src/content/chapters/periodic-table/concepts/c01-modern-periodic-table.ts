@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Mendeleev ordered elements by mass and had to swap tellurium and iodine to keep their families together. The modern table never needs such swaps. Why?`,
     reveal: t`It orders elements by atomic number, the number of protons, which rises by exactly one from each element to the next.`,

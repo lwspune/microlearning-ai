@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An oxygen atom weighs about $2.66 \times 10^{-23}$ g. Writing masses like that is clumsy. How do chemists weigh atoms more conveniently?`,
     reveal: t`They compare each atom with a carbon-12 atom. On that scale, oxygen's mass is simply 16 u.`,

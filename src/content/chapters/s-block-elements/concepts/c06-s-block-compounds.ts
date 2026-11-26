@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Washing soda is made from salt, limestone and ammonia, and almost nothing is wasted. How does the Solvay process manage that?`,
     reveal: t`$\ce{CO2}$ through ammoniated brine precipitates sodium bicarbonate; heating it gives washing soda; the ammonia and $\ce{CO2}$ are recycled.`,

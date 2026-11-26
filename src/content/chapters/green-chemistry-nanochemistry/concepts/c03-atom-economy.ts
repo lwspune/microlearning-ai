@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A reaction can give a 100 % yield and still throw away most of its atoms. How?`,
     reveal: t`If most reactant atoms end up in by-products, the desired product carries only a few of them, however complete the reaction. Atom economy measures that.`,

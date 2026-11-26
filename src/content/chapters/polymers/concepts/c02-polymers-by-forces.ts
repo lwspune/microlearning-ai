@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A rubber band stretches and snaps back. A nylon thread barely stretches. A plastic bottle softens in hot water. A Bakelite switch stays hard in a flame. Why do polymers behave so differently?`,
     reveal: t`The forces between their chains differ, from weak to very strong, and some have permanent cross-links.`,

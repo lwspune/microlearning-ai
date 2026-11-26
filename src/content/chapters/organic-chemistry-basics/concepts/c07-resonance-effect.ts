@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`In the acetate ion one O seems double-bonded and the other single-bonded, yet both C–O bonds are measured equal. How?`,
     reveal: t`Neither drawing is the real ion. It is a resonance hybrid: the double bond and the charge are spread over both oxygens.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Argon-40 and potassium-40 weigh almost the same, yet one is an inert gas and the other a reactive metal. Why does equal mass not mean the same element?`,
     reveal: t`They are isobars: same mass number, but 18 versus 19 protons. The proton count, not the mass, decides the element.`,

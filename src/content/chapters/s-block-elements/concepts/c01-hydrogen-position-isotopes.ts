@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Hydrogen sits above lithium in most periodic tables, but some chemists would rather put it above fluorine. Who is right?`,
     reveal: t`Both have a case. With one electron, hydrogen loses it like an alkali metal or gains one like a halogen.`,

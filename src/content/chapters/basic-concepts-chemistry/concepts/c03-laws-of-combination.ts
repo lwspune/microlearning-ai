@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Water from a Himalayan glacier and water from a laboratory flask both contain exactly 88.9 % oxygen by mass. Why can't one be 85 % and the other 92 %?`,
     reveal: t`Water is a compound: every molecule is two H atoms and one O atom, so the mass ratio never changes.`,

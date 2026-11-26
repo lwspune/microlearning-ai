@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`2-Bromobutane loses HBr to give an alkene. The double bond could form on either side. Which way does it go?`,
     reveal: t`Mostly towards the more substituted alkene, but-2-ene: Saytzeff's rule.`,

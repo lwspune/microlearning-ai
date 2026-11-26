@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`You have 10 slices of bread and 3 slices of cheese. Each sandwich needs 2 bread and 1 cheese. How many sandwiches?`,
     reveal: t`Three: the cheese runs out first and limits you, with 4 bread left over. Reactions work the same way.`,

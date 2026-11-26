@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`To make a statue you can carve a block of marble down, or build it up from clay. Nanoparticles are made both ways too. Which way is the sol-gel method?`,
     reveal: t`Bottom-up: it builds particles from molecules in solution, through a colloidal sol that sets into a gel.`,

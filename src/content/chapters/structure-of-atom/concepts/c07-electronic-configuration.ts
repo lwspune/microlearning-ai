@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`By the filling order, chromium should be $3d^4\,4s^2$. Experiments show $3d^5\,4s^1$. Why does chromium break the pattern?`,
     reveal: t`A half-filled d subshell is extra stable, so one 4s electron moves to 3d. Copper does the same to get a full 3d.`,

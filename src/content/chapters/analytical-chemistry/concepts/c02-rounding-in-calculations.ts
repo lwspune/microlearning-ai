@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A calculator divides 10.0 g by 3.0 mL and shows 3.333333333 g/mL. Should you copy all those 3s?`,
     reveal: t`No. A result cannot be more certain than the data that made it. 3.0 has two figures, so the answer is 3.3 g/mL.`,

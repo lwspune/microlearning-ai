@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Open a bottle of perfume in one corner of a room and soon it can be smelt in the other, with no fan. How does the scent travel?`,
     reveal: t`Gas molecules move fast and randomly, colliding constantly, so they spread through the room: diffusion.`,

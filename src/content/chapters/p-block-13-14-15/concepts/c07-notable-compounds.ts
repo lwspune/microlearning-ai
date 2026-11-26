@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Silicone bakeware goes from freezer to oven without cracking, and water beads on it. What kind of material is it?`,
     reveal: t`A silicone: a polymer with a backbone of alternating silicon and oxygen atoms, carrying organic groups.`,

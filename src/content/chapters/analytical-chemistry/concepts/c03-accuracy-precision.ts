@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Three darts land close together, far from the bullseye. Three more land scattered around it. Which thrower is better?`,
     reveal: t`Neither fully. The first is precise but not accurate; the second is closer to accurate but not precise. Lab results are judged the same way.`,

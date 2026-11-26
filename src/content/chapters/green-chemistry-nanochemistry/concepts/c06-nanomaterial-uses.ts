@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Water poured on a lotus leaf beads up and rolls off, taking the dust with it. Engineers now copy that leaf to make self-cleaning glass. What is the leaf's secret?`,
     reveal: t`Its surface is covered with nanoscale wax bumps. Water touches only their tips, so it forms beads that roll off.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Gold is insoluble in water, yet a ruby-red gold sol can be made by striking a spark between gold wires under water. How?`,
     reveal: t`The arc vaporises some gold, and the cold water condenses the vapour into particles of colloidal size: Bredig's arc method.`,

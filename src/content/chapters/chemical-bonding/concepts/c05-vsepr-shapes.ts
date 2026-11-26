@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Methane, ammonia and water each have four electron pairs around the central atom, yet their bond angles are 109.5°, 107° and 104.5°. Why do they differ?`,
     reveal: t`Lone pairs repel more than bonding pairs. Ammonia has one, water two, so their bonds are squeezed closer.`,

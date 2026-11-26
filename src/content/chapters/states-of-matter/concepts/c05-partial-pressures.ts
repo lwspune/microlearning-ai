@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Air is mostly nitrogen and oxygen. At sea level its pressure is 1 atm. How much of that does the oxygen alone supply?`,
     reveal: t`About 0.21 atm: each gas presses as if it were alone, in proportion to its mole fraction.`,

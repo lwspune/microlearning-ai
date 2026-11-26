@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Hydrogen glows with just four visible colours, never a rainbow. Bohr explained this in 1913 with one bold idea. What was it?`,
     reveal: t`The electron can occupy only certain orbits of fixed energy. Light is emitted only when it jumps between them, so only certain colours appear.`,

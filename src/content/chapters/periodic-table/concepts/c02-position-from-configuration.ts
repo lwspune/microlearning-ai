@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Tell a chemist only that an element ends in $3s^2\,3p^4$ and they will name it at once: sulfur. How?`,
     reveal: t`The 3 gives period 3; the p gives the p block; 2 + 4 = 6 valence electrons give group 10 + 6 = 16.`,

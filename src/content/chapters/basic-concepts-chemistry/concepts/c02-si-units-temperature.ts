@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A weather report from New York says 104 degrees; one from Mumbai says 40 degrees. Both cities are equally hot. How?`,
     reveal: t`New York uses the Fahrenheit scale and Mumbai the Celsius scale. $40\ ^\circ\mathrm{C}$ is $104\ ^\circ\mathrm{F}$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Carbon and silicon happily form four bonds, but lead mostly forms two: $\ce{PbCl2}$ is stable while $\ce{PbCl4}$ decomposes. Why does lead hold back?`,
     reveal: t`Its $6s^2$ pair is held tightly and reluctant to bond, the inert pair effect, so lead prefers +2.`,

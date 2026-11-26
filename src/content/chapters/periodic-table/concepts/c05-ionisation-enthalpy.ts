@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ionisation enthalpy rises across period 2, yet oxygen's is lower than nitrogen's. Why does oxygen break the trend?`,
     reveal: t`Nitrogen's $2p^3$ is half-filled and extra stable. Oxygen's fourth p electron is paired, and repulsion makes it easier to remove.`,

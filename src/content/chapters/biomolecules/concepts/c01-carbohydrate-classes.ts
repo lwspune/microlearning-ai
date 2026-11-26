@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Table sugar, the starch in rice and the cellulose in cotton are all carbohydrates. One dissolves and tastes sweet; the others do neither. What puts them in one family?`,
     reveal: t`All are built from simple sugar units. They differ in how many units are joined: one, a few, or thousands.`,

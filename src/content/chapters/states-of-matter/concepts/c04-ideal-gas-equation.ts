@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Boyle's, Charles' and Avogadro's laws each hold one variable fixed. Can they be combined into a single equation?`,
     reveal: t`Yes: $PV = nRT$, which holds for any ideal gas under any conditions.`,

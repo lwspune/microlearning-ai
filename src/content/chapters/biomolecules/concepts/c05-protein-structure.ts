@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Raw egg white is clear and runny. Boil it, and it turns white and solid, and cooling never undoes it. What has the heat changed?`,
     reveal: t`The protein's chains were folded in a precise shape, held by weak bonds. Heat breaks those bonds; the chains unfold and tangle. The sequence of amino acids is unchanged.`,

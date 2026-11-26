@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Iodine colours water a faint brown. Shake it with a little carbon tetrachloride and the water clears while a purple layer appears. What happened?`,
     reveal: t`Iodine dissolves far better in carbon tetrachloride than in water, so it moved into that layer.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Doubling the pressure of a gas over charcoal does not double the amount adsorbed. How does adsorption depend on pressure?`,
     reveal: t`It rises with pressure but less and less steeply as the surface fills, following the Freundlich isotherm, $x/m = kP^{1/n}$.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Gallium comes below aluminium in group 13, so it should be larger. Yet gallium's atoms are slightly smaller. What shrinks them?`,
     reveal: t`Gallium has ten 3d electrons, which shield the nucleus poorly. The outer electrons feel a stronger pull and are drawn in.`,

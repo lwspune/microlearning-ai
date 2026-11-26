@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Glucose has the formula $\ce{C6H12O6}$, but a formula does not show the structure. How did chemists, without modern instruments, work out where every atom goes?`,
     reveal: t`They ran reactions, each proving one feature: a six-carbon chain, an aldehyde group, five OH groups. Then puzzles in the evidence revealed a ring.`,

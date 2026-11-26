@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Fluorine is the most electronegative element, yet chlorine releases more energy when it gains an electron. How can both be true?`,
     reveal: t`They measure different things. Fluorine is tiny, so an added electron is crowded and repelled. In a bond, though, fluorine pulls shared electrons hardest.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Weigh a helium-4 nucleus and it is lighter than the 2 protons and 2 neutrons that make it. Where did the missing mass go?`,
     reveal: t`It was released as energy when the nucleons bound together: $E = mc^2$. That energy is the binding energy.`,

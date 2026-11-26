@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Drop a zinc strip in blue copper sulfate solution and copper coats the zinc. Drop a silver strip in and nothing happens. Who decides?`,
     reveal: t`Standard electrode potentials. Zinc's $E^0$ is below copper's, so zinc gives electrons to $\ce{Cu^{2+}}$; silver's is above, so it does not.`,

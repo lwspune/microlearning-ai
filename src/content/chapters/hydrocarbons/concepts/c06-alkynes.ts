@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Ethyne is a hydrocarbon, yet sodamide pulls a proton off it as though it were an acid. Ethane does not do this. What is special about ethyne's hydrogen?`,
     reveal: t`It sits on an $sp$ carbon, whose 50 % s character holds the C–H electrons close, so the H leaves as $\ce{H+}$ more easily.`,

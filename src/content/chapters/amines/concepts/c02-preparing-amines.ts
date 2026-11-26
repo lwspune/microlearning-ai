@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Acetamide has two carbons. Treat it with bromine and alkali and you get methylamine, with one. Treat it with $\ce{LiAlH4}$ and you get ethylamine, with two. Where did the carbon go?`,
     reveal: t`In the Hofmann bromamide reaction the carbonyl carbon leaves as carbonate, so the amine has one carbon fewer. $\ce{LiAlH4}$ only removes the oxygen, keeping every carbon.`,

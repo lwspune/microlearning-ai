@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`n-Pentane boils at 309 K, but its isomer neopentane at only 283 K. Same formula, $\ce{C5H12}$. Why the difference?`,
     reveal: t`Neopentane is compact, almost a ball, so its molecules touch less and attract less.`,

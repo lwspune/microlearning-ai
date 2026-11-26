@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Old electric switches and pan handles were made of a dark, hard plastic that never softened, even when hot. What was it, and why did it never melt?`,
     reveal: t`Bakelite. When it is made, its chains are cross-linked into one rigid network, so heat cannot make them slide.`,

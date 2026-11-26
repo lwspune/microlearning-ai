@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A hospital's radioactive iodine loses half its activity every 8 days. After 16 days, is it gone?`,
     reveal: t`No: a quarter is left. Each half life halves what remains, so the activity never quite reaches zero.`,

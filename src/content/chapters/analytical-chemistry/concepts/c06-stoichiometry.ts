@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`How much lime can a kiln make from a tonne of limestone? A balanced equation answers that before any rock is heated.`,
     reveal: t`$\ce{CaCO3 -> CaO + CO2}$: 100 g of limestone gives 56 g of lime, so a tonne gives 560 kg.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A plastic bag, a silk scarf and a car tyre seem to have nothing in common. Under a powerful microscope, though, all three look alike. What would you see?`,
     reveal: t`Very long chains, each made of thousands of small repeating units joined end to end. All three are polymers.`,

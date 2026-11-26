@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`An open tin of ghee smells sour after weeks in a warm kitchen. Packed oil labelled 'with vitamin E' stays fresh much longer. What is going on?`,
     reveal: t`Oxygen attacks the fat by a free-radical reaction, releasing smelly acids. Vitamin E is an antioxidant that stops the radical chain.`,

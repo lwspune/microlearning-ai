@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Alkanes are called paraffins, 'little affinity', because they resist most reagents. Yet in sunlight methane reacts readily with chlorine. What does light do?`,
     reveal: t`It splits Cl₂ into chlorine radicals, which start a chain reaction replacing H atoms one by one.`,

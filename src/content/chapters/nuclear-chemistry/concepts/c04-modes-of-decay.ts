@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Thorium-232 ends up, after a long chain of decays, as lead-208. How many α and β particles does it shed on the way?`,
     reveal: t`Six α and four β. Mass number falls only by α decay; atomic number falls by α and rises by β.`,

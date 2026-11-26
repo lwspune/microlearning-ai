@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A sucrose solution turns polarised light to the right. Boil it with a little acid and it turns light to the left. The sugar was split, not flipped. How can that reverse the rotation?`,
     reveal: t`Sucrose splits into equal amounts of glucose (+52.5°) and fructose (−92.4°). Fructose turns light more strongly, so the mixture turns it left.`,

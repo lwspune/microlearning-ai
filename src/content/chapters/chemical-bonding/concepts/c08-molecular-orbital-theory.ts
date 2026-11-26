@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Pour liquid oxygen between the poles of a strong magnet and it sticks there. A simple Lewis structure, O=O with all electrons paired, says it shouldn't. What's missing?`,
     reveal: t`Molecular orbital theory: it puts two of oxygen's electrons unpaired in antibonding orbitals, which makes $\ce{O2}$ magnetic.`,

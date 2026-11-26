@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Rutherford fired α-particles at gold foil. A few bounced straight back. He said it was as if a shell fired at tissue paper had rebounded. What did that reveal?`,
     reveal: t`That the atom's positive charge and mass are packed into a tiny, dense nucleus.`,

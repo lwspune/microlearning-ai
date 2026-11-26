@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Milk looks uniform, yet a torch beam through it lights up a visible path, which salt water never does. Is milk a solution?`,
     reveal: t`No. Milk is a colloid: fat droplets 1–1000 nm across, too small to settle but big enough to scatter light.`,

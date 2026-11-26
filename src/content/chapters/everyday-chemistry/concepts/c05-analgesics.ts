@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Willow bark was chewed for pain for centuries. Its active compound, salicylic acid, upset the stomach. How did chemists tame it?`,
     reveal: t`By acetylating it to acetylsalicylic acid: aspirin, gentler on the stomach and still a painkiller.`,

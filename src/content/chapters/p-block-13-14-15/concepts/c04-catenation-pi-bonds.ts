@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Millions of carbon compounds exist, built on long carbon chains. Silicon, right below carbon, forms only short chains. What does carbon have that silicon lacks?`,
     reveal: t`Strong C–C bonds. Carbon atoms are small and bond strongly to each other; Si–Si bonds are weaker.`,

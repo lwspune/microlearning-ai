@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Nylon stockings in 1940 and polyester shirts later replaced silk and cotton. Both fibres are made by condensation. What links their monomers?`,
     reveal: t`In nylon, amide links $\ce{-CO-NH-}$ like those in proteins; in polyester, ester links $\ce{-CO-O-}$.`,

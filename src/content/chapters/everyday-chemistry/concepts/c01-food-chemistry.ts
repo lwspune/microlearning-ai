@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Raw rice is hard and chalky; boiled rice is soft and easily digested. Nothing was added but water and heat. What changed?`,
     reveal: t`Heat and water made the starch granules swell and burst, so digestive enzymes can reach the starch easily.`,

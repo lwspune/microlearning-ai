@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`At the top of Mount Everest water boils at about 70 °C, too cool to cook rice properly. Why does water boil cooler up there?`,
     reveal: t`Air pressure is lower, so water's vapour pressure reaches it at a lower temperature.`,

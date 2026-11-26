@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Crude oil is a black mixture of hundreds of compounds. A refinery turns it into petrol, kerosene and diesel with one main step. What is it?`,
     reveal: t`Fractional distillation: compounds boil off at different temperatures and condense at different heights of a tall column.`,

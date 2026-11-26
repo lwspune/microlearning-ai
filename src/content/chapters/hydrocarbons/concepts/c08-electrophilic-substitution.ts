@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Benzene and nitric acid will not react on their own. Add concentrated sulfuric acid and nitrobenzene forms. What does the sulfuric acid do?`,
     reveal: t`It turns nitric acid into the nitronium ion, $\ce{NO2+}$, an electrophile strong enough to attack the ring.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The same chemical, phenol, is dabbed on a cut in one bottle and poured down drains in another. How can it be both safe and harsh?`,
     reveal: t`Concentration decides. Dilute phenol is a gentle antiseptic; concentrated phenol is a strong disinfectant.`,

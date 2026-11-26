@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Electrons can't vanish or appear from nowhere. How can that single fact balance a messy equation like dichromate with iron(II)?`,
     reveal: t`Electrons lost by iron must equal electrons gained by chromium. Match the rise and fall in oxidation number, and the coefficients follow.`,

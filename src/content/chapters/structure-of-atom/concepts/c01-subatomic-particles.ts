@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Every carbon atom has 6 protons, but some have 6 neutrons and some 8. Both are still carbon. What, then, makes an atom carbon?`,
     reveal: t`Its number of protons, the atomic number. Neutrons change the mass but not the element.`,

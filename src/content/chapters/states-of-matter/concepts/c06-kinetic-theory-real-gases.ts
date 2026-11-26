@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Carbon dioxide can be liquefied by pressure in a fire extinguisher, but squeezing hydrogen at room temperature never makes it liquid. Why not?`,
     reveal: t`Every gas has a critical temperature above which no pressure can liquefy it. Room temperature is below $\ce{CO2}$'s but far above hydrogen's.`,

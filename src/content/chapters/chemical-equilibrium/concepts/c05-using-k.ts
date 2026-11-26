@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A chemist mixes some reactants and products and wants to know: will the mixture react forward, backward, or not at all? Is there a quick test?`,
     reveal: t`Calculate $Q$, the same ratio as K but with the current concentrations, and compare it with K.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A postal address needs a country, city, street and house number. An electron's 'address' in an atom needs four numbers too. What are they?`,
     reveal: t`The quantum numbers: $n$ (shell), $l$ (subshell), $m_l$ (orbital) and $m_s$ (spin).`,

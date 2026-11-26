@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Red light, however bright, cannot expose photographic film made for blue light, while a dim blue light can. Why does colour beat brightness?`,
     reveal: t`Light comes in packets, quanta, of energy $h\nu$. A blue quantum carries more energy than a red one, whatever the brightness.`,

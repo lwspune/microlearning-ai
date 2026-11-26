@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Sodium oxide dissolves in water to make a strong alkali, while sulfur trioxide makes a strong acid. Both are oxides of period 3. Why are they opposites?`,
     reveal: t`Metallic character falls across the period. Metal oxides are basic; nonmetal oxides are acidic; aluminium's, in between, is amphoteric.`,

@@ -419,6 +419,16 @@ describe("the catalog", () => {
     expect(validateCatalog(courses, chapters)).toEqual([]);
   });
 
+  // A draft concept is not published, so a chapter of drafts shows "Coming soon" to students (2026-11-27: 20
+  // chemistry chapters were registered and seeded as drafts). Approve a chapter before a course lists it.
+  it("lists only chapters whose concepts are approved", () => {
+    const listed = new Set(courses.flatMap((c) => c.chapters.flatMap(partsOf)).map((p) => p.chapter));
+    const drafts = chapters
+      .filter((ch) => listed.has(ch.slug))
+      .flatMap((ch) => ch.concepts.filter((c) => c.status !== "approved").map((c) => `${ch.slug}/${c.id}`));
+    expect(drafts).toEqual([]);
+  });
+
   it("has the two groups, in order", () => {
     expect(GROUPS.map((g) => g.title)).toEqual(["K-12", "Graduates"]);
   });

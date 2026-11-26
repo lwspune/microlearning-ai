@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A few grams of iron, helped by a pinch of potassium oxide, turn millions of tonnes of nitrogen and hydrogen into ammonia each year. How does a surface do so much?`,
     reveal: t`The gases adsorb on the iron, where their bonds weaken and they react faster. The iron is not used up; potassium oxide boosts its activity.`,

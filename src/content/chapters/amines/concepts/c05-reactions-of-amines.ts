@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Three test tubes hold ethylamine, diethylamine and triethylamine. One reagent, benzenesulfonyl chloride, can tell them apart. How?`,
     reveal: t`Ethylamine's product keeps an acidic N-H and dissolves in NaOH; diethylamine's product has no N-H left and does not; triethylamine does not react at all.`,

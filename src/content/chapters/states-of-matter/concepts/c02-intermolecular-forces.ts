@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Methane ($M$ = 16) boils at 112 K, but water ($M$ = 18) at 373 K. Their molecules are almost the same mass. Why such a gap?`,
     reveal: t`Water molecules hydrogen bond to each other; methane molecules feel only weak dispersion forces.`,

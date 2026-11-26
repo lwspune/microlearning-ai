@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Benzene needs bromine and an iron catalyst to take on even one bromine atom. Aniline, shaken with plain bromine water, at once gives a white precipitate carrying three. Why is aniline so reactive?`,
     reveal: t`The lone pair on $\ce{NH2}$ feeds electrons into the ring, piling charge onto the ortho and para positions and making all three easy targets.`,

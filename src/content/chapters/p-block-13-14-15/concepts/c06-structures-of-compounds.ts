@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Diborane, $\ce{B2H6}$, has 12 valence electrons but would need 14 to bond all its atoms with ordinary two-electron bonds. How does it hold together?`,
     reveal: t`Two of its bonds are three-centre bonds: a single pair of electrons holds a B–H–B bridge.`,

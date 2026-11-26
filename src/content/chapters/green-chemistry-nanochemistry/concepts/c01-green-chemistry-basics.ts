@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`For a century, chemical plants dumped waste and paid to clean it up later. Some chemists asked a different question: why make the waste at all?`,
     reveal: t`That question is the heart of green chemistry: design the chemistry so the hazard never appears, instead of handling it afterwards.`,

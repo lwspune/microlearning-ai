@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Table salt melts at 1074 K; magnesium oxide only above 3000 K. Both are ionic solids built the same way. Why is one so much harder to break up?`,
     reveal: t`$\ce{Mg^{2+}}$ and $\ce{O^{2-}}$ carry double charges and are smaller, so they attract far more strongly: MgO has a much larger lattice energy.`,

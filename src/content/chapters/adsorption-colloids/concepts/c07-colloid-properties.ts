@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Car headlights pierce fog as visible beams, but in clear air you cannot see the beam itself. What does fog do to the light?`,
     reveal: t`Its droplets are colloidal and scatter the light sideways into your eyes: the Tyndall effect.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`One compound was called 'acetoin' in one lab and 'methyl acetyl carbinol' in another. How do chemists everywhere agree on one name?`,
     reveal: t`IUPAC rules: the longest chain, the principal group's suffix, prefixes in alphabetical order and the lowest locants.`,

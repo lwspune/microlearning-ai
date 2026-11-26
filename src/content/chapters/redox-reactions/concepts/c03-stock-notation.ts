@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Iron forms two chlorides, $\ce{FeCl2}$ and $\ce{FeCl3}$. Calling both 'iron chloride' would cause chaos in a lab. How are they told apart by name?`,
     reveal: t`Stock notation: iron(II) chloride and iron(III) chloride. The Roman numeral gives iron's oxidation number.`,

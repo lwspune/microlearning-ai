@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Nitrogen sticks to charcoal at low temperature and leaves when warmed. Oxygen on tungsten forms a film that heat cannot remove. Why the difference?`,
     reveal: t`The first is physisorption, weak van der Waals attraction. The second is chemisorption: oxygen bonds chemically to the metal.`,

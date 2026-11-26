@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`The thiocyanate ion, $\ce{SCN-}$, can be drawn three ways, all obeying the octet rule. Which drawing is the real one?`,
     reveal: t`Formal charge decides: the best structure keeps the charges on each atom as small as possible.`,

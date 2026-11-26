@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c05: Concept = {
   id: "C05",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Magnesium chloride melts at 987 K and conducts when molten. Beryllium chloride melts at 672 K and barely conducts. Same group, same chlorine. Why?`,
     reveal: t`$\ce{Be^{2+}}$ is so small that it pulls chloride's electron cloud towards itself, making the bond largely covalent.`,

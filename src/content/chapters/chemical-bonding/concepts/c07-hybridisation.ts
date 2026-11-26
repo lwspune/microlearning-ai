@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Carbon's ground state has only two unpaired electrons, which suggests two bonds. Yet methane has four identical C–H bonds pointing to a tetrahedron's corners. How?`,
     reveal: t`Carbon promotes a 2s electron and mixes its 2s and three 2p orbitals into four equal $sp^3$ hybrids.`,

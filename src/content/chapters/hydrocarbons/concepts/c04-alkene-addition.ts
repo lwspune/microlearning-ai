@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`HBr can add to propene two ways, giving 1-bromopropane or 2-bromopropane. Nature prefers one, unless a trace of peroxide is present. Why?`,
     reveal: t`Normally H goes to the carbon with more H (Markovnikov), giving 2-bromopropane. Peroxide switches the mechanism to radicals, reversing the outcome for HBr.`,

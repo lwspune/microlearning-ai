@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Copper sulfate solution is bright blue, zinc sulfate colourless. Both are d-block metals side by side. Why the difference?`,
     reveal: t`$\ce{Cu^{2+}}$ has a $3d^9$ subshell with a gap that absorbs visible light; $\ce{Zn^{2+}}$'s $3d^{10}$ is full, so nothing is absorbed.`,

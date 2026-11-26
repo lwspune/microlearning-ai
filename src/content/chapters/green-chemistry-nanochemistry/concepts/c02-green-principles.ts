@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Dry cleaners long used perchloroethylene, a suspected carcinogen. Today some use carbon dioxide instead. How can a gas clean clothes?`,
     reveal: t`Under high pressure $\ce{CO2}$ becomes a supercritical fluid that dissolves grease. Afterwards it simply evaporates: no toxic solvent left behind.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Squeeze a syringe of brown $\ce{NO2}$ and $\ce{N2O4}$ and the colour first darkens, then fades. Why does the mixture fight back?`,
     reveal: t`Le Chatelier: an equilibrium shifts to oppose a change. Higher pressure favours fewer gas molecules, so brown $\ce{NO2}$ turns into colourless $\ce{N2O4}$.`,

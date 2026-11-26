@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Squeeze a soft carry bag and a hard bucket. Both are polythene, from the same monomer, ethene. Why is one flimsy and the other rigid?`,
     reveal: t`The bag's chains are branched and pack loosely (LDP); the bucket's are straight and pack tightly (HDP).`,

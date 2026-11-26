@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Methanol, ethanol and propanol differ in size, yet all burn, all react with sodium and all form esters. What do they share?`,
     reveal: t`The OH functional group. It decides how they react, and they form a homologous series, each one $\ce{CH2}$ longer.`,

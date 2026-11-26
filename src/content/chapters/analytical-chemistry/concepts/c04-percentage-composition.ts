@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Blue copper sulfate crystals turn white when heated, and lose over a third of their mass. Where does all that mass go?`,
     reveal: t`Into steam. $\ce{CuSO4.5H2O}$ is 36 % water of crystallisation, driven off by heat.`,

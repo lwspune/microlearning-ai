@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`One litre of hydrogen and one litre of chlorine make two litres of hydrogen chloride. If gases were made of single atoms, how could one litre of each give two?`,
     reveal: t`They couldn't. Avogadro saw that hydrogen and chlorine must exist as two-atom molecules, $\ce{H2}$ and $\ce{Cl2}$, each splitting to give two HCl.`,

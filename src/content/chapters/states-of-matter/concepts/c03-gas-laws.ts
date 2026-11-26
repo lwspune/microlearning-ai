@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c03: Concept = {
   id: "C03",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Squeeze a sealed syringe of air to half its volume and it pushes back twice as hard. Warm it, and it pushes the plunger out. What rules decide how much?`,
     reveal: t`Boyle's law links pressure and volume; Charles' law links volume and temperature.`,

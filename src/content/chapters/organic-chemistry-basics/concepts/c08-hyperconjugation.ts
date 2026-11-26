@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c08: Concept = {
   id: "C08",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A tert-butyl cation is far more stable than a methyl cation, though neither has a lone pair or π bond to share. What stabilises it?`,
     reveal: t`Its nine C–H bonds next to the cationic carbon lean their electrons into its empty p orbital: hyperconjugation.`,

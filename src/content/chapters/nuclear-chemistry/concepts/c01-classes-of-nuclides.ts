@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Tritium has 1 proton and 2 neutrons; helium-3 has 2 protons and 1 neutron. They look like reflections of each other. Is there a name for such a pair?`,
     reveal: t`Yes: mirror nuclei. Nuclides are grouped by which of $Z$, $A$ and $N$ they share.`,

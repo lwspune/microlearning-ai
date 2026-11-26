@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Benzene, $\ce{C6H6}$, looks very unsaturated on paper, but it does not decolourise bromine water. Why is it so unreactive?`,
     reveal: t`Its six π electrons are spread around the ring, an extra-stable aromatic system that resists addition.`,

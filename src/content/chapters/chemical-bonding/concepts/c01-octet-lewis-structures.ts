@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c01: Concept = {
   id: "C01",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Sodium is a violent metal and chlorine a poisonous gas. Together they make harmless table salt. What makes them hold on to each other?`,
     reveal: t`Sodium gives its outer electron to chlorine. Both end with eight outer electrons, like noble gases, and the oppositely charged ions attract.`,

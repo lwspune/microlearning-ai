@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c04: Concept = {
   id: "C04",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Mixing barium chloride and sulfuric acid gives a dramatic white precipitate. Is anything oxidised?`,
     reveal: t`No. Every element keeps its oxidation number; ions just swap partners. Only a change in oxidation number marks a redox reaction.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c02: Concept = {
   id: "C02",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Of about 3000 known nuclides, only some 270 are stable. What makes those few special?`,
     reveal: t`Their neutron-to-proton ratio lies in a narrow belt, and most have even numbers of protons and neutrons.`,

@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Benzenediazonium chloride must be kept ice cold, yet chemists treasure it. From this one salt they make chlorobenzene, phenol, benzonitrile, iodobenzene and bright azo dyes. What makes it so useful?`,
     reveal: t`$\ce{N2}$ is an excellent leaving group: almost any group can replace it. And the diazonium ion can also attack another ring to make coloured azo compounds.`,

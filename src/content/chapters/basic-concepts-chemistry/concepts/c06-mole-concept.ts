@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c06: Concept = {
   id: "C06",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`A grocer sells rice by the kilogram, not by the grain. Chemists face the same problem with atoms. What is their kilogram?`,
     reveal: t`The mole: $6.022 \times 10^{23}$ particles. A mole of any substance weighs its formula mass in grams.`,

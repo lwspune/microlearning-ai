@@ -4,7 +4,7 @@ const t = String.raw;
 
 export const c07: Concept = {
   id: "C07",
-  status: "draft",
+  status: "approved",
   hook: {
     prompt: t`Every cell in your body holds about two metres of DNA, a code written in just four letters. How can a four-letter code copy itself exactly?`,
     reveal: t`Each letter pairs with only one partner: A with T, G with C. One strand fixes the sequence of the other.`,
