@@ -62,6 +62,13 @@ class OptionText(unittest.TestCase):
 
         self.assertEqual(option_text(Integer(101800), "unit:N/m^2"), r"$1.018 \times 10^{5}\ \mathrm{N/m^2}$")
 
+    def test_sci_writes_a_pure_number_in_powers_of_ten(self):
+        from sympy import Float, Integer
+
+        self.assertEqual(option_text(Integer(86500000000), "sci"), r"$8.65 \times 10^{10}$")
+        self.assertEqual(option_text(Float("1.44e-13"), "sci"), r"$1.44 \times 10^{-13}$")
+        self.assertEqual(option_text(Integer(86500), "sci"), r"$86500$")
+
     def test_quadrant_is_unchanged(self):
         self.assertEqual(option_text(4, "quadrant"), "Quadrant IV")
 
