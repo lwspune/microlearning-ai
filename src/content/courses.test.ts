@@ -888,9 +888,16 @@ describe("the catalog", () => {
     const resolved = findCourse("mh-board")!.chapters.map((e) => resolveEntry(e, chapters));
 
     it("lists the Std XII physics chapters in book order", () => {
-      const physics = resolved.filter((r) => r.subject === "physics");
+      const physics = resolved.filter((r) => r.subject === "physics" && r.standard === 12);
       expect(physics.map((r) => r.title)).toEqual(["Rotational Dynamics", "Mechanical Properties of Fluids", "Kinetic Theory of Gases and Radiation", "Thermodynamics", "Oscillations", "Superposition of Waves", "Wave Optics", "Electrostatics", "Current Electricity", "Magnetic Fields due to Electric Current", "Magnetic Materials", "Electromagnetic Induction", "AC Circuits", "Dual Nature of Radiation and Matter", "Structure of Atoms and Nuclei", "Semiconductor Devices"]);
       expect(new Set(physics.map((r) => r.standard))).toEqual(new Set([12]));
+    });
+
+    it("lists the Std XI physics chapters in book order, before Std XII", () => {
+      const physics = resolved.filter((r) => r.subject === "physics");
+      const xi = physics.filter((r) => r.standard === 11);
+      expect(xi.map((r) => r.title)).toEqual(["Units and Measurements", "Mathematical Methods"]);
+      expect(physics.slice(0, xi.length)).toEqual(xi);
     });
   });
 
