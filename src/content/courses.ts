@@ -391,6 +391,7 @@ export const courses: Course[] = [
       { chapter: "aldehydes-ketones-acids" },
       { chapter: "amines" },
       { chapter: "biomolecules" },
+      { chapter: "polymers" },
     ],
   },
   {
