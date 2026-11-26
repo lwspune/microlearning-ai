@@ -383,6 +383,7 @@ export const courses: Course[] = [
       { chapter: "structure-of-atom" },
       { chapter: "chemical-bonding" },
       { chapter: "redox-reactions" },
+      { chapter: "periodic-table" },
       // Std XII Chemistry, Balbharati book order (PLAN.md "Std XI and XII Chemistry").
       { chapter: "solid-state" },
       { chapter: "solutions" },
