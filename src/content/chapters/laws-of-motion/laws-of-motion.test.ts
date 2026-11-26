@@ -13,10 +13,10 @@ describe("Std XI Laws of Motion chapter", () => {
     expect([lawsOfMotion.subject, lawsOfMotion.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 7 concepts, 7 edges", () => {
+  it("keeps the graph: 8 concepts, 8 edges", () => {
     const edges = lawsOfMotion.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(lawsOfMotion.graph).toHaveLength(7);
-    expect(edges).toBe(7);
+    expect(lawsOfMotion.graph).toHaveLength(8);
+    expect(edges).toBe(8);
   });
 
   it("keeps edges transitively reduced", () => {

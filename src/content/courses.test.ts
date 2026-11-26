@@ -582,7 +582,7 @@ describe("the catalog", () => {
         expect(all.slice(0, resolved.length)).toEqual(resolved);
       });
 
-      it("takes the books' chapters whole, joining the Std XI and XII halves PYQ Vault examines as one", () => {
+      it("takes the books' chapters whole (pinned to the book where other courses add concepts), joining the Std XI and XII halves PYQ Vault examines as one", () => {
         const joined = Object.fromEntries(physics.filter((r) => r.parts.length > 1).map((r) => [r.slug, r.parts.map((p) => p.chapter.slug)]));
         expect(joined).toEqual({
           "motion-in-a-plane": ["mathematical-methods", "motion-in-a-plane"],
@@ -591,7 +591,10 @@ describe("the catalog", () => {
           "magnetic-materials": ["magnetism", "magnetic-materials"],
           "semiconductor-devices": ["semiconductors", "semiconductor-devices"],
         });
-        expect(physics.flatMap((r) => r.parts.filter((p) => p.coverage))).toEqual([]);
+        for (const { chapter, coverage } of physics.flatMap((r) => r.parts)) {
+          const book = chapter.graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-"))).map((n) => n.id);
+          if (coverage) expect(coverage.ids, chapter.slug).toEqual(book);
+        }
       });
 
       it("uses every physics pool chapter but Electromagnetic Waves and Communication System, which CET doesn't list", () => {
@@ -755,8 +758,8 @@ describe("the catalog", () => {
     it("joins pool chapters the way PYQ Vault's NDA chapters do", () => {
       expect(parts("kinematics-and-motion")).toEqual(["mathematical-methods C01,C02,C03,C04,C05", "motion-in-a-plane", "rotational-dynamics C01,C02,C03,C04,C06"]);
       // Collisions need work and energy (NCERT teaches them there); torque and equilibrium are the pool's share of simple machines.
-      expect(parts("work-energy-and-power")).toEqual(["laws-of-motion C03,C05,C07"]);
-      expect(parts("light-and-optics")).toEqual(["optics C01,C02,C03,C04,C05,C06,C07,C08", "em-waves-communication C01,C02", "wave-optics C06"]);
+      expect(parts("work-energy-and-power")).toEqual(["laws-of-motion C03,C08,C05,C07"]);
+      expect(parts("light-and-optics")).toEqual(["optics C01,C02,C03,C04,C05,C06,C07,C08,C09,C10", "em-waves-communication C01,C02", "wave-optics C06"]);
       expect(physics.find((r) => r.slug === "electricity-and-magnetism")!.parts.map((p) => p.chapter.slug)).toEqual([
         "electrostatics",
         "electrostatics-12",
@@ -962,13 +965,14 @@ describe("the catalog", () => {
       physicsOf(slug)
         .find((r) => r.slug === chapterSlug)!
         .parts.map((p) => `${p.chapter.slug}${p.coverage ? ` ${p.coverage.ids.join(",")}` : ""}`);
-    /** Every physics pool concept the course doesn't cover, as "chapter Cnn". */
+    /** Every concept of the MH books the course doesn't cover, as "chapter Cnn" (phase 2's concepts are tested below). */
     const leftOut = (slug: string) =>
       chapters
         .filter((c) => c.subject === "physics")
         .flatMap((ch) => {
           const covered = coveredIds(findCourse(slug)!, ch);
-          return ch.graph.filter((n) => !covered.has(n.id)).map((n) => `${ch.slug} ${n.id}`);
+          const book = ch.graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-")));
+          return book.filter((n) => !covered.has(n.id)).map((n) => `${ch.slug} ${n.id}`);
         })
         .sort();
     const ids = (chapter: string, ...list: string[]) => list.map((id) => `${chapter} ${id}`);
@@ -1049,7 +1053,7 @@ describe("the catalog", () => {
         expect(parts(slug, "motion-in-a-plane")[0]).toBe("mathematical-methods C01,C02,C03,C04,C05");
         // Friction (taught in the MH Solids chapter) and circular dynamics belong to Laws of Motion.
         expect(parts(slug, "laws-of-motion")[1]).toBe("mechanical-properties-solids C07");
-        expect(parts(slug, "work-energy-and-power")).toEqual(["laws-of-motion C03,C05", "rotational-dynamics C06"]);
+        expect(parts(slug, "work-energy-and-power")).toEqual(["laws-of-motion C03,C08,C05", "rotational-dynamics C06"]);
         // Radiation is Thermal Properties of Matter; the transformer is Alternating Current; meters go with the galvanometer.
         expect(parts(slug, "thermal-properties-of-matter")).toEqual(["thermal-properties", "kinetic-theory C08,C09,C10,C11"]);
         expect(parts(slug, "alternating-current").at(-1)).toBe("electromagnetic-induction C13");
@@ -1057,7 +1061,7 @@ describe("the catalog", () => {
         expect(parts(slug, "atoms")).toEqual(["atoms-nuclei C01,C02,C03,C04,C05"]);
       }
       expect(parts("jee-main", "electrostatics")).toEqual(["electrostatics", "electrostatics-12"]);
-      expect(parts("cbse", "electric-charges-and-fields")).toEqual(["electrostatics", "electrostatics-12 C01,C02,C03,C04"]);
+      expect(parts("cbse", "electric-charges-and-fields")).toEqual(["electrostatics C01,C02,C03,C04,C05,C06", "electrostatics-12 C01,C02,C03,C04"]);
       expect(parts("cbse", "electrostatic-potential-and-capacitance")).toEqual(["electrostatics-12 C05,C06,C07,C08,C09,C10,C11,C12,C13,C14"]);
     });
 
@@ -1164,6 +1168,53 @@ describe("the catalog", () => {
           .flatMap(partsOf)
           .flatMap((p) => (p.coverage ? [p.coverage.status] : []));
         expect(new Set(statuses)).toEqual(new Set(["approved"]));
+      }
+    });
+  });
+
+  // Phase 2: what the other courses ask that the MH books don't teach (owner, 2026-11-26: "11 main topics, now";
+  // PLAN.md "Physics for CBSE, MHT-CET, JEE Main, NEET and NDA").
+  describe("physics concepts the MH books don't teach", () => {
+    const gaps: [chapter: string, concept: string, courses: string[]][] = [
+      ["units-measurements", "vernier-screw-gauge", ["neet", "jee-main"]],
+      ["laws-of-motion", "potential-energy", ["cbse", "neet", "jee-main", "nda"]],
+      ["gravitation", "two-body-orbits", ["jee-main"]],
+      ["fluids", "buoyancy", ["jee-main", "nda"]],
+      ["kinetic-theory", "gas-mixtures", ["jee-main"]],
+      ["optics", "human-eye", ["nda"]],
+      ["optics", "scattering-of-light", ["nda"]],
+      ["electrostatics", "charge-in-uniform-field", ["jee-main"]],
+      ["electric-current", "electricity-at-home", ["nda"]],
+      ["em-waves-communication", "displacement-current", ["cbse", "neet", "jee-main"]],
+      ["em-waves-communication", "em-wave-energy", ["cbse", "neet", "jee-main"]],
+    ];
+
+    it("puts each in its pool chapter, covered by exactly the courses that ask it", () => {
+      for (const [slug, concept, want] of gaps) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const id = ch.graph.find((n) => n.slug === concept)?.id;
+        expect(id, `${slug}/${concept} is in the graph`).toBeDefined();
+        const have = coursesIn("school").filter((c) => coveredIds(c, ch).has(id!)).map((c) => c.slug);
+        expect(have.sort(), `${slug}/${concept}`).toEqual([...want].sort());
+      }
+    });
+
+    it("keeps the MH Board's and MHT-CET's physics maps to the books' concepts", () => {
+      for (const slug of new Set(gaps.map(([s]) => s))) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const book = ch.graph.filter((n) => !gaps.some(([s, concept]) => s === slug && concept === n.slug)).map((n) => n.id);
+        for (const course of ["mh-board", "mht-cet"]) {
+          if (slug === "em-waves-communication" && course === "mht-cet") continue;
+          expect([...coveredIds(findCourse(course)!, ch)].sort(), `${course} ${slug}`).toEqual(book.sort());
+        }
+      }
+    });
+
+    it("comes after the book's concepts in each pool chapter, with the next ids", () => {
+      for (const slug of new Set(gaps.map(([s]) => s))) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const added = ch.graph.filter((n) => gaps.some(([s, concept]) => s === slug && concept === n.slug));
+        expect(ch.graph.slice(ch.graph.length - added.length), slug).toEqual(added);
       }
     });
   });

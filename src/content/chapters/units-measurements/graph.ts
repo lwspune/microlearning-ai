@@ -48,4 +48,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`The reliable digits of a measurement are its significant figures; a result keeps no more than the least precise data allow`,
     prereqs: [], ext: [], sources: [S("Significant Figures")],
   },
+  {
+    id: "C08", slug: "vernier-screw-gauge", title: "Vernier callipers and screw gauge", group: "Instruments", tier: "core", visual: true,
+    oneLiner: t`Least count is one main-scale division minus one vernier division, or the pitch over the circular divisions; subtract the zero error from every reading`,
+    prereqs: [], ext: ["reading a metre scale (Std IX Science)"],
+    sources: ["jee-main/units-and-measurements#Vernier Callipers, Screw Gauge and Zero Error", "neet/units-and-measurements#Vernier Callipers and Screw Gauge"],
+  },
 ];

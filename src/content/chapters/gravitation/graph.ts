@@ -48,4 +48,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`Escape velocity $\sqrt{2gR}$; an orbiting satellite's binding energy is $\dfrac{GMm}{2r}$; in free fall a body feels weightless`,
     prereqs: ["C05", "C06"], ext: [], sources: [S("Earth Satellites")],
   },
+  {
+    id: "C08", slug: "two-body-orbits", title: "Two bodies orbiting each other", group: "Energy in gravity", tier: "core", visual: true,
+    oneLiner: t`Two stars circle their centre of mass with one period: $T^2 = \dfrac{4\pi^2 d^3}{G(m_1 + m_2)}$, $d$ their separation`,
+    prereqs: ["C06"], ext: ["centre of mass (Laws of Motion, Ch.4)"],
+    sources: ["jee-main/gravitation#Satellites: Orbital Speed, Energy and Mutual Orbits"],
+  },
 ];

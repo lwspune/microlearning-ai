@@ -42,4 +42,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`A dipole has moment $p = q \times 2l$; its field on the axis is twice that on the equator at the same far distance`,
     prereqs: ["C04"], ext: [], sources: [S("Electric Dipole")],
   },
+  {
+    id: "C07", slug: "charge-in-uniform-field", title: "A charge in a uniform electric field", group: "Field", tier: "core", visual: true,
+    oneLiner: t`A charge feels $qE$ and accelerates at $\dfrac{qE}{m}$; fired across the field it follows a parabola, like a projectile`,
+    prereqs: ["C04"], ext: ["projectile motion (Motion in a Plane, Ch.3)"],
+    sources: ["jee-main/electrostatics#Charges Moving in Electric Fields"],
+  },
 ];

@@ -37,4 +37,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`A low-frequency message rides on a high-frequency carrier by changing its amplitude (AM), frequency (FM) or phase (PM)`,
     prereqs: ["C04"], ext: [], sources: [S("Modulation")],
   },
+
+  // Maxwell's waves (phase 2: CBSE, NEET and JEE Main)
+  {
+    id: "C06", slug: "displacement-current", title: "Displacement current", group: "Maxwell's waves", tier: "core", visual: true,
+    oneLiner: t`A changing electric field makes a magnetic field just as a current does: $i_d = \varepsilon_0\dfrac{d\Phi_E}{dt}$`,
+    prereqs: [], ext: ["Ampere's circuital law (Std XII Physics)", "capacitors (Std XII Physics)"],
+    sources: ["cbse-12/electromagnetic-waves#Displacement Current", "neet/electromagnetic-waves#Displacement Current and EM Waves", "jee-main/electromagnetic-waves#Displacement Current, Maxwell's Equations and Wave Speed"],
+  },
+  {
+    id: "C07", slug: "em-wave-energy", title: "Energy and momentum of EM waves", group: "Maxwell's waves", tier: "core",
+    oneLiner: t`An EM wave carries energy at intensity $I = \tfrac{1}{2}\varepsilon_0E_0^2c$ and pushes on a surface: pressure $\dfrac{I}{c}$ if absorbed, $\dfrac{2I}{c}$ if reflected`,
+    prereqs: ["C01"], ext: [],
+    sources: ["jee-main/electromagnetic-waves#Energy, Intensity and Radiation Pressure"],
+  },
 ];

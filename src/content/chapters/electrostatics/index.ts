@@ -5,6 +5,7 @@ import { c03 } from "./concepts/c03-superposition.ts";
 import { c04 } from "./concepts/c04-electric-field.ts";
 import { c05 } from "./concepts/c05-gauss-law.ts";
 import { c06 } from "./concepts/c06-electric-dipole.ts";
+import { c07 } from "./concepts/c07-charge-in-uniform-field.ts";
 import { graph } from "./graph.ts";
 
 export const electrostatics: Chapter = {
@@ -15,5 +16,5 @@ export const electrostatics: Chapter = {
   // Balbharati Physics Std XI (PLAN.md "Std XI and XII Physics").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06],
+  concepts: [c01, c02, c03, c04, c05, c06, c07],
 };

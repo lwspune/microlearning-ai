@@ -43,4 +43,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`A cell of emf $E$ and internal resistance $r$ gives $I = \dfrac{E}{R + r}$; cells in series add emfs, identical cells in parallel share the current`,
     prereqs: ["C04"], ext: [], sources: [S("Electromotive Force"), S("Cells in Series and Parallel")],
   },
+  {
+    id: "C07", slug: "electricity-at-home", title: "Electricity at home", group: "Energy", tier: "core", visual: true,
+    oneLiner: t`Appliances run in parallel on the mains; energy is billed in kWh; a fuse melts and the earth wire carries current away when a fault draws too much`,
+    prereqs: ["C05"], ext: [],
+    sources: ["nda/electricity-and-magnetism#Electrical Devices"],
+  },
 ];

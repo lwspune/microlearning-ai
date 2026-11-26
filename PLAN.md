@@ -1539,6 +1539,26 @@ scattering, twinkling and colour (NDA 8); domestic electricity (NDA 7); binary s
 pulleys (NDA 2); electron emission and de Broglie's view of Bohr (CBSE); Energy Sources (NDA 2) and Astronomy and
 Space (NDA 4). Before writing any, pin the MH Board and MHT-CET physics lists so their maps don't change.
 
+**Status, 2026-11-26: phase 2 built** (owner: "11 main topics, now", then "complete this end to end autonomously";
+branch `physics-gaps`). Eleven concepts appended to their pool chapters (graphs locked first, df009af; MH Board and
+MHT-CET pinned with `book()`), each placed only in the courses that ask it: vernier callipers and screw gauge (units
+C08: NEET, JEE), potential energy and conservation of mechanical energy (laws of motion C08: CBSE, NEET, JEE, NDA),
+two bodies orbiting each other (gravitation C08: JEE), buoyancy and flotation (fluids C12: JEE, NDA), mixtures of ideal
+gases (kinetic theory C13: JEE), the human eye (optics C09: NDA), scattering and atmospheric refraction (optics C10:
+NDA), a charge in a uniform field (electrostatics C07: JEE), electricity at home (electric current C07: NDA),
+displacement current and energy of EM waves (EM waves C06, C07: CBSE, NEET, JEE). Written by up to three agents from
+packs of the exams' past papers (`verify/agent-brief-physics.md`, "Concepts the books don't teach"); every key and
+distractor re-derived in the main session, every figure sheet looked at; nine chapters verified in sympy (0 problems),
+0 phone overflows, seeded. Vernier: the geometry gives a negative zero error of $-(N - k)$ LC, which is taught,
+though some JEE keys use $-k$ LC. Left for later: the smaller gaps (reflecting telescope, field of a ring, mean and most
+probable speeds, thermal stress, levers and pulleys, electron emission, de Broglie and Bohr) and NDA's Energy Sources
+and Astronomy and Space.
+
+**PYQ Vault errata found (to report):** NDA 2023 Apr NDA 1 Q53 (a sphere floating on an accelerating spaceship) is
+keyed $f_2 > f_1$; it is $f_2 = f_1$. JEE Main 2021 Paper 12 Q6 has options A and C equal (both right), only C keyed.
+JEE Main 2022 26 July Q92 and 2024 6 April Q108 key a negative vernier zero error as $-k$ LC (the geometry gives
+$-(N - k)$ LC; PYQ Vault's own solution to Q92 notes it); the NEET 2026 re-exam row is already marked "Bonus".
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a

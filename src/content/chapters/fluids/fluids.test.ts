@@ -13,10 +13,10 @@ describe("Std XII Mechanical Properties of Fluids chapter", () => {
     expect([fluids.subject, fluids.standard]).toEqual(["physics", 12]);
   });
 
-  it("keeps the graph: 11 concepts, 10 edges", () => {
+  it("keeps the graph: 12 concepts, 11 edges", () => {
     const edges = fluids.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(fluids.graph).toHaveLength(11);
-    expect(edges).toBe(10);
+    expect(fluids.graph).toHaveLength(12);
+    expect(edges).toBe(11);
   });
 
   it("keeps edges transitively reduced", () => {

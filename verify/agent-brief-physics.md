@@ -51,6 +51,23 @@ Most rows are subjective. Each becomes one MCQ whose wrong options come from mod
 Physics figures use the same `figures.py` helpers and step rules. When a concept needs a shape the helpers
 lack (a spring, a pulley, a wave, a P–V curve, a circuit), add the helper to `figures.py` test first, then use it.
 
+## Concepts the books don't teach (other courses' gaps, 2026-11-26)
+Some concepts are written for CBSE, NEET, JEE Main or NDA alone (PLAN.md "Physics for CBSE, MHT-CET, JEE Main,
+NEET and NDA", phase 2). They sit at the end of an MH pool chapter, but MH Board and MHT-CET never show them.
+- **Audience:** the students of the courses your prompt names, Class 11–12. Never say "the book"; use NCERT's symbols
+  where they differ from the MH book's. Pitch numericals at the exam's level (NDA: one step; JEE: two or three).
+- **Sources:** your pack, `<pack>.pack.json`, holds past-paper rows only: `ref`, `exam`, `year`, `question`,
+  `options` with PYQ Vault's `key` flag, `numeric_answer` and a `solution`. The keys were derived by PYQ Vault, not
+  printed by the examiner: re-derive every one. Cite rows as `{ kind: "pyqvault-practice", ref: "<ref>" }`; at least
+  three items come from pack rows; a changed-numbers variant keeps its row's ref. Keep a ref short: exam, year,
+  paper code and question number (`cbse-12 2025 55/4/2 Q7`), never the paper's descriptive note.
+- PYQ Vault keys are sometimes wrong: say so in your reply, with the row's ref and the right answer, so the lead can
+  report it.
+- The graph node (id, slug, title, one-liner, prerequisites) is locked by the lead: don't edit `graph.ts`, and keep
+  the one-liner's formula on the slides. Leave the concept `draft`; the lead approves it.
+- Another agent may be writing a concept in another chapter at the same time. `build_index.py` touches only your
+  chapter's `index.ts`; run it for your chapter alone.
+
 ## Lessons from review (2026-11-26, Std XI and XII)
 - A misconception's fallback is an ancestor in the graph (follow `prereqs`), an `ext` topic, or `none`; nothing else validates.
 - Misconception ids are contiguous: renumber after dropping one.

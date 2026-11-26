@@ -13,9 +13,9 @@ describe("Std XI Units and Measurements chapter", () => {
     expect([unitsMeasurements.subject, unitsMeasurements.standard]).toEqual(["physics", 11]);
   });
 
-  it("keeps the graph: 7 concepts, 4 edges", () => {
+  it("keeps the graph: 8 concepts, 4 edges", () => {
     const edges = unitsMeasurements.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(unitsMeasurements.graph).toHaveLength(7);
+    expect(unitsMeasurements.graph).toHaveLength(8);
     expect(edges).toBe(4);
   });
 

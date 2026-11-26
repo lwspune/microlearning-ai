@@ -48,4 +48,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`Torque $\vec{\tau} = \vec{r} \times \vec{F}$; a body is in equilibrium when the net force and the net torque are zero`,
     prereqs: ["C01"], ext: ["cross product (Mathematical Methods, Ch.2)"], sources: [S("Moment of a Force and Torque"), S("Couple and its Torque"), S("Mechanical Equilibrium"), S("Centre of Gravity")],
   },
+  {
+    id: "C08", slug: "potential-energy", title: "Potential energy and conservation of mechanical energy", group: "Energy and momentum", tier: "core", visual: true,
+    oneLiner: t`For a conservative force $F = -\dfrac{dU}{dx}$; a stretched spring stores $\tfrac{1}{2}kx^2$; with no friction, $K + U$ stays the same`,
+    prereqs: ["C03"], ext: [],
+    sources: ["jee-main/work-energy-and-power#Potential Energy and Conservation of Mechanical Energy", "neet/work-energy-and-power#Potential Energy and Conservation", "nda/work-energy-and-power#Energy and Conservation"],
+  },
 ];

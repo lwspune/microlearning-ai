@@ -13,10 +13,10 @@ describe("Std XII Kinetic Theory of Gases and Radiation chapter", () => {
     expect([kineticTheory.subject, kineticTheory.standard]).toEqual(["physics", 12]);
   });
 
-  it("keeps the graph: 12 concepts, 9 edges", () => {
+  it("keeps the graph: 13 concepts, 10 edges", () => {
     const edges = kineticTheory.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(kineticTheory.graph).toHaveLength(12);
-    expect(edges).toBe(9);
+    expect(kineticTheory.graph).toHaveLength(13);
+    expect(edges).toBe(10);
   });
 
   it("keeps edges transitively reduced", () => {

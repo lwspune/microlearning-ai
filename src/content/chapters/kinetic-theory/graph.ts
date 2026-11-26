@@ -74,4 +74,10 @@ export const graph: GraphNode[] = [
     oneLiner: t`For small temperature differences, a body cools at a rate proportional to its excess temperature over the surroundings`,
     prereqs: ["C11"], ext: [], sources: [S("Perfect Blackbody and Emissivity")],
   },
+  {
+    id: "C13", slug: "gas-mixtures", title: "Mixtures of ideal gases", group: "Gases", tier: "core",
+    oneLiner: t`In a mixture the moles add, and so do the internal energies: $C_V = \dfrac{n_1C_{V1} + n_2C_{V2}}{n_1 + n_2}$, then $\gamma = \dfrac{C_P}{C_V}$`,
+    prereqs: ["C07"], ext: [],
+    sources: ["jee-main/kinetic-theory#Internal Energy and Gas Mixtures"],
+  },
 ];

@@ -6,6 +6,7 @@ import { c04 } from "./concepts/c04-variation-g.ts";
 import { c05 } from "./concepts/c05-gravitational-potential.ts";
 import { c06 } from "./concepts/c06-satellites.ts";
 import { c07 } from "./concepts/c07-escape-binding.ts";
+import { c08 } from "./concepts/c08-two-body-orbits.ts";
 import { graph } from "./graph.ts";
 
 export const gravitation: Chapter = {
@@ -16,5 +17,5 @@ export const gravitation: Chapter = {
   // Balbharati Physics Std XI (PLAN.md "Std XI and XII Physics").
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08],
 };
