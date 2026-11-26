@@ -383,6 +383,7 @@ export const courses: Course[] = [
       { chapter: "chemical-thermodynamics" },
       { chapter: "electrochemistry" },
       { chapter: "chemical-kinetics" },
+      { chapter: "p-block-16-17-18" },
     ],
   },
   {
