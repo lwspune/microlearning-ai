@@ -212,6 +212,7 @@ export const courses: Course[] = [
       { chapter: "ac-circuits" },
       { chapter: "dual-nature" },
       { chapter: "atoms-nuclei" },
+      { chapter: "semiconductor-devices" },
     ],
   },
   {
