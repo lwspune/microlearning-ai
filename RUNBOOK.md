@@ -265,7 +265,13 @@ Guests are anonymous logins with no profile.
 6. Register: `python verify/build_index.py <chapter-slug>` rewrites only the
    concept imports and `concepts: [...]` in the chapter's `index.ts` (its
    title, group and subject stay as written); the chapter test fails if any
-   concept file isn't registered.
+   concept file isn't registered. **Set `status: "approved"` once the concept
+   is reviewed, before any course lists its chapter:** a draft is not
+   published, so the course shows the chapter as "Coming soon". The catalog
+   test "lists only chapters whose concepts are approved" fails otherwise
+   (20 chemistry chapters were registered and seeded as drafts, 2026-11-27).
+   Draft items from bash, or strip the BOM: PowerShell 5.1's `>` writes one,
+   and it breaks the first item of the built concept file.
 7. **Check:** `npm test` (structure) · `npm run content:verify` (sympy:
    every key and distractor) · open `/review/<chapter>/<slug>` at phone width.
    The whole pool takes about two hours (Definite Integration alone dominates).

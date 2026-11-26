@@ -1667,6 +1667,25 @@ vitamins (CBSE 30, JEE, NEET); equivalents and titrations (JEE 31); qualitative 
 carbonyls (JEE 21); corrosion (JEE, NDA 5); NDA's general science: physical and chemical changes and types of
 reactions (NDA 14), fertilisers, cement and glass, paints (NDA 16), hardness of water (NDA 5).
 
+**Status, 2026-11-27: phase 1 built** (tests first; `ncertChemistry(exam)` in `courses.ts`; sheet
+`screenshots/2026-11-27-chemistry-courses/before-after.png`). CBSE 19 chapters, NEET 20, JEE Main 19, MHT-CET 30, NDA
+11; route and golden path checked on the dev server (a lesson from a split pool chapter leads back to its course
+chapter). On the way: **20 chemistry chapters had shipped as drafts** (Amines, Biomolecules, Polymers, Green Chemistry
+and all of Std XI): reviewed, registered and seeded, but never set to approved, so every course showed them as "Coming
+soon". Set approved and reseeded (cc5c99b); a catalog test now fails when a course lists a chapter with drafts, and
+RUNBOOK 3 step 6 says so.
+
+**Status, 2026-11-27: phase 2 built.** Fourteen concepts appended to their pool chapters, each placed only in the
+courses that ask it, written by me (no agents): the photoelectric effect and de Broglie and uncertainty (structure of
+atom C08, C09: CBSE, NEET, JEE), detecting and estimating the elements (organic C09, C10: CBSE, NEET, JEE),
+conformations of ethane (hydrocarbons C09: CBSE, NEET, JEE), vitamins (biomolecules C08: CBSE, NEET, JEE), equivalents
+and normality (analytical C09: JEE), metal carbonyls (coordination C11: NEET, JEE), tests for metal ions (transition
+C10: JEE), corrosion (electrochemistry C11: JEE, NDA), physical and chemical changes and types of reactions (basic
+concepts C08, C09: NDA), hard water (s-block C07: NDA), fertilisers, cement, glass and paints (everyday C08: NDA). MH
+Board and MHT-CET pinned to the book with `book()`. Each concept: 5 items, sympy-verified, 0 phone overflows, seeded.
+Left for later (smaller gaps): oxoacids of phosphorus and nitrogen compounds (JEE p-block), oxides of transition metals,
+hydrogen bonding's own concept, NDA's common acids and salts survey.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a

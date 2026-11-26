@@ -67,7 +67,10 @@ helper the file lacks, say so in your reply instead of editing `figures.py` (oth
 - Misconception ids are contiguous: renumber after dropping one.
 - Keep distractors well apart from the key (more than about 2%); change the numbers rather than accept a near miss.
 - Keep the graph one-liner's content on the slides. The graph node is locked: don't edit `graph.ts`. Leave concepts
-  `draft`; the lead approves them.
+  `draft`; the lead approves them, and must set `approved` before registering the chapter in a course (a catalog test
+  enforces it; RUNBOOK 3 step 6).
+- The Std XII models packages have no `_mix.py`; copy `verify/models/hydrocarbons/_mix.py` into one before using
+  `mixed_models` there.
 - Strings with `\b`, `\t`, `\f`, `\n`, `\r` after the backslash (`\beta`, `\times`, `\frac`, `\nu`, `\rightarrow`) must
   be raw strings in the Python content files; `\ce` is safe either way but use raw strings throughout.
 - Element props are typed: run `npm run typecheck` once at the end, which check-concept does not replace.
