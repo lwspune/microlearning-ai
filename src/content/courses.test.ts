@@ -1320,7 +1320,7 @@ describe("the catalog", () => {
     const chemistry = resolved.filter((r) => r.subject === "chemistry");
 
     it("lists the Std XII chemistry chapters in book order", () => {
-      expect(chemistry.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Solid State", "Solutions"]);
+      expect(chemistry.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Solid State", "Solutions", "Ionic Equilibria"]);
     });
 
     it("puts chemistry after physics and covers each chapter whole", () => {
