@@ -1850,6 +1850,15 @@ describe("the catalog", () => {
       expect(biology.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Reproduction in Lower and Higher Plants", "Reproduction in Lower and Higher Animals", "Inheritance and Variation", "Molecular Basis of Inheritance", "Origin and Evolution of Life", "Plant Water Relation", "Plant Growth and Mineral Nutrition", "Respiration and Circulation", "Control and Coordination", "Human Health and Diseases", "Enhancement of Food Production", "Biotechnology", "Organisms and Populations", "Ecosystems and Energy Flow", "Biodiversity, Conservation and Environmental Issues"]);
     });
 
+    it("lists the Std XI biology chapters in book order", () => {
+      expect(biology.filter((r) => r.standard === 11).map((r) => r.title)).toEqual(["Living World"]);
+    });
+
+    it("lists Std XI biology before Std XII biology", () => {
+      const standards = biology.map((r) => r.standard);
+      expect(standards.lastIndexOf(11)).toBeLessThan(standards.indexOf(12));
+    });
+
     it("puts biology after chemistry and covers each chapter whole", () => {
       const subjects = resolved.map((r) => r.subject);
       expect(subjects.lastIndexOf("chemistry")).toBeLessThan(subjects.indexOf("biology"));
