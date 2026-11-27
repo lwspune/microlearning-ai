@@ -7,7 +7,7 @@ export const c07: Concept = {
   status: "approved",
   hook: {
     prompt: t`Millions of sperms are deposited, yet only one fertilizes the egg. How are the rest kept out?`,
-    reveal: t`Once one sperm enters, the zona pellucida hardens (the zona reaction) and blocks all others.`,
+    reveal: t`Once one sperm enters, the cortical reaction changes the egg's coverings and blocks all others.`,
   },
   explanation: {
     intuition: [
@@ -22,7 +22,7 @@ export const c07: Concept = {
           t`**Capacitation**: sperms become able to fertilize after hours in the female tract.`,
           t`**Acrosome reaction**: lytic enzymes dissolve the corona radiata and zona pellucida.`,
           t`The sperm enters; the egg finishes meiosis II.`,
-          t`**Zona reaction**: the zona hardens, blocking other sperms.`,
+          t`**Cortical reaction**: the egg's membrane becomes a fertilization membrane and the zona's sperm receptors are switched off.`,
           t`The pronuclei fuse: a diploid zygote.`,
         ],
       },
@@ -113,7 +113,7 @@ export const c07: Concept = {
     {
       id: "C07-M13",
       mistake: "Picks the acrosome reaction.",
-      remediation: "That lets the sperm in; the zona reaction keeps others out.",
+      remediation: "That lets the sperm in; the cortical reaction keeps others out.",
       fallback: { kind: "none" },
     },
     {
@@ -211,12 +211,12 @@ export const c07: Concept = {
         { key: "A", text: t`acrosome reaction`, correct: false, misconceptionId: "C07-M13", value: "acrosome_reaction" },
         { key: "B", text: t`capacitation`, correct: false, misconceptionId: "C07-M14", value: "capacitation" },
         { key: "C", text: t`cleavage`, correct: false, misconceptionId: "C07-M15", value: "cleavage" },
-        { key: "D", text: t`zona reaction`, correct: true, value: "zona_reaction" },
+        { key: "D", text: t`cortical reaction`, correct: true, value: "cortical_reaction" },
       ],
       solution: {
         steps: [
-          t`After one sperm enters, the zona hardens.`,
-          t`The zona reaction.`,
+          t`After one sperm enters, the egg's coverings change.`,
+          t`The cortical reaction.`,
         ],
       },
     },

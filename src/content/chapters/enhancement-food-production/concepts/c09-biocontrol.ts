@@ -20,7 +20,7 @@ export const c09: Concept = {
         title: "Against pests",
         points: [
           t`***Bt***: caterpillars eat its spores; the **cry protein** toxin kills them.`,
-          t`*Beauveria* attacks aphids; ***Nosema*** attacks grasshoppers.`,
+          t`*Beauveria* attacks aphids, mealy bugs and white flies; ***Nosema*** attacks grasshoppers, crickets and some caterpillars.`,
           t`NPV viruses attack caterpillars.`,
         ],
       },
@@ -118,8 +118,8 @@ export const c09: Concept = {
     },
     {
       id: "C09-M13",
-      mistake: "Picks caterpillars.",
-      remediation: "That is Bt or NPV.",
+      mistake: "Picks mealy bugs.",
+      remediation: "Those are attacked by fungi such as *Beauveria*.",
       fallback: { kind: "none" },
     },
     {
@@ -217,7 +217,7 @@ export const c09: Concept = {
         { key: "A", text: t`aphids`, correct: false, misconceptionId: "C09-M14", value: "aphids_p" },
         { key: "B", text: t`water hyacinth`, correct: false, misconceptionId: "C09-M15", value: "water_hyacinth" },
         { key: "C", text: t`grasshoppers and crickets`, correct: true, value: "grasshoppers_p" },
-        { key: "D", text: t`caterpillars`, correct: false, misconceptionId: "C09-M13", value: "caterpillars_p" },
+        { key: "D", text: t`mealy bugs and white flies`, correct: false, misconceptionId: "C09-M13", value: "mealybugs_whiteflies" },
       ],
       solution: {
         steps: [

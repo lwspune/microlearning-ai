@@ -27,7 +27,7 @@ export const c01: Concept = {
       {
         title: "Results",
         points: [
-          t`Hybrids: **Ratna** (rice), **Ganga-3** (maize), CO-12 (jowar), Niphad (bajra).`,
+          t`Semi-dwarf rice: Jaya, Padma, **Ratna**. Hybrids: **Ganga-3** (maize), CO-12 (jowar), Niphad (bajra).`,
           t`Sugarcane: *S. barberi* (North India) and high-sugar *S. officinarum* (South), crossed at Coimbatore.`,
           t`Mutagens: **physical** (X-rays, UV) and chemical.`,
         ],
@@ -139,7 +139,7 @@ export const c01: Concept = {
     {
       id: "C01-Q1",
       source: { kind: "pyqvault-practice", ref: "mh-hsc-12/Enhancement of Food Production/2026 Q. 6" },
-      stem: t`A semi-dwarf, better-yielding hybrid variety of rice is`,
+      stem: t`A semi-dwarf, better-yielding variety of rice is`,
       verify: { kind: "value", inputs: {  }, params: { q: "rice" } },
       options: [
         { key: "A", text: t`Ratna`, correct: true, value: "ratna_v" },

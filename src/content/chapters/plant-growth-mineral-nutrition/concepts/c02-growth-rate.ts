@@ -130,8 +130,8 @@ export const c02: Concept = {
     },
     {
       id: "C02-M15",
-      mistake: "Picks efficiency index.",
-      remediation: "That is another name for RGR.",
+      mistake: "Picks lag phase.",
+      remediation: "The lag phase is a stage of growth, not a rate.",
       fallback: { kind: "none" },
     },
   ],
@@ -214,7 +214,7 @@ export const c02: Concept = {
       stem: t`The total growth of a plant or plant part per unit time is its`,
       verify: { kind: "value", inputs: {  }, params: { q: "agr" } },
       options: [
-        { key: "A", text: t`efficiency index`, correct: false, misconceptionId: "C02-M15", value: "efficiency_index" },
+        { key: "A", text: t`lag phase`, correct: false, misconceptionId: "C02-M15", value: "lag_phase_r" },
         { key: "B", text: t`absolute growth rate`, correct: true, value: "absolute_rate" },
         { key: "C", text: t`relative growth rate`, correct: false, misconceptionId: "C02-M13", value: "relative_rate" },
         { key: "D", text: t`grand period of growth`, correct: false, misconceptionId: "C02-M14", value: "grand_period" },

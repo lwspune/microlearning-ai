@@ -20,7 +20,7 @@ export const c07: Concept = {
         title: "Isolating mechanisms",
         points: [
           t`**Pre-mating**: habitat, seasonal, behavioural (ethological), mechanical.`,
-          t`**Post-mating**: hybrid inviability, **hybrid sterility** (the mule), hybrid breakdown.`,
+          t`**Post-mating**: gamete mortality, zygote mortality, **hybrid sterility** (the mule).`,
         ],
       },
       {

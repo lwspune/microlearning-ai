@@ -82,14 +82,14 @@ export const c08: Concept = {
     },
     {
       id: "C08-M7",
-      mistake: "Picks *Azotobacter*.",
-      remediation: "*Azolla* suits flooded rice.",
+      mistake: "Picks *Rhizobium*.",
+      remediation: "*Rhizobium* needs legume root nodules.",
       fallback: { kind: "none" },
     },
     {
       id: "C08-M8",
-      mistake: "Picks *Azospirillum*.",
-      remediation: "*Azolla* is the rice biofertilizer.",
+      mistake: "Picks *Trichoderma*.",
+      remediation: "*Trichoderma* is a biocontrol fungus, not a nitrogen fixer.",
       fallback: { kind: "none" },
     },
     {
@@ -178,8 +178,8 @@ export const c08: Concept = {
       stem: t`Farmers use which biofertilizer to raise the yield of rice?`,
       verify: { kind: "value", inputs: {  }, params: { q: "rice" } },
       options: [
-        { key: "A", text: t`*Azotobacter*`, correct: false, misconceptionId: "C08-M7", value: "azotobacter_b" },
-        { key: "B", text: t`*Azospirillum*`, correct: false, misconceptionId: "C08-M8", value: "azospirillum_b" },
+        { key: "A", text: t`*Rhizobium*`, correct: false, misconceptionId: "C08-M7", value: "rhizobium_b" },
+        { key: "B", text: t`*Trichoderma*`, correct: false, misconceptionId: "C08-M8", value: "trichoderma_f" },
         { key: "C", text: t`*Bacillus*`, correct: false, misconceptionId: "C08-M9", value: "bacillus_b" },
         { key: "D", text: t`*Azolla*`, correct: true, value: "azolla_f" },
       ],

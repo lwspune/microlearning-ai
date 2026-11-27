@@ -37,10 +37,10 @@ export const c05: Concept = {
     worked: {
       prompt: t`How many polar bodies can one primary oocyte give in all?`,
       steps: [
-        t`Meiosis I gives one; it may divide again into two.`,
+        t`Meiosis I gives one; normally it does not divide again.`,
         t`Meiosis II gives one more.`,
       ],
-      answer: t`Up to three`,
+      answer: t`Two normally (at most three, if the first one divides)`,
     },
     visualSpec: t`An oocyte dividing unequally, a big cell and tiny polar bodies at each step.`,
   },

@@ -35,12 +35,12 @@ export const c12: Concept = {
       },
     ],
     worked: {
-      prompt: t`In which technique is fertilization outside the body, but the early embryo placed in the uterus?`,
+      prompt: t`In which technique is an egg fertilized by sperm outside the body, in a test tube or glass plate?`,
       steps: [
         t`Fertilization outside the body is IVF.`,
-        t`The embryo is then transferred to the uterus.`,
+        t`The zygote or early embryo is then transferred into the woman's fallopian tube.`,
       ],
-      answer: t`IVF with embryo transfer`,
+      answer: t`IVF (in vitro fertilization)`,
     },
     visualSpec: t`Two paths, IVF and GIFT, showing where fertilization happens in each.`,
   },
@@ -131,8 +131,8 @@ export const c12: Concept = {
     },
     {
       id: "C12-M15",
-      mistake: "Says sperms in the vagina.",
-      remediation: "That is artificial insemination.",
+      mistake: "Says sperms in the cervix.",
+      remediation: "Sperms placed in the cervix is artificial insemination; GIFT places gametes in the oviduct.",
       fallback: { kind: "none" },
     },
   ],
@@ -216,7 +216,7 @@ export const c12: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "gift" } },
       options: [
         { key: "A", text: t`an embryo is placed in the uterus`, correct: false, misconceptionId: "C12-M14", value: "embryo_to_uterus" },
-        { key: "B", text: t`sperms are placed in the vagina`, correct: false, misconceptionId: "C12-M15", value: "sperm_to_vagina" },
+        { key: "B", text: t`sperms are placed in the cervix`, correct: false, misconceptionId: "C12-M15", value: "sperm_to_cervix" },
         { key: "C", text: t`eggs and sperms are placed in the fallopian tube to fertilize there`, correct: true, value: "gametes_to_tube" },
         { key: "D", text: t`a zygote is placed in the fallopian tube`, correct: false, misconceptionId: "C12-M13", value: "zygote_to_tube" },
       ],

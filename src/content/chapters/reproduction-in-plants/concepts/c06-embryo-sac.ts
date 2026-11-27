@@ -14,7 +14,7 @@ export const c06: Concept = {
       t`The functional megaspore grows into the **embryo sac**, the female gametophyte.`,
       t`Its nucleus divides three times by mitosis: 2, 4, then 8 nuclei.`,
       t`Walls form around six of them; two stay together in the middle.`,
-      t`So the mature embryo sac has **7 cells** and **8 nuclei**, all haploid.`,
+      t`So the mature embryo sac has **7 cells** and **8 nuclei**, all haploid until the two polar nuclei fuse.`,
     ],
     formal: [
       {
@@ -152,7 +152,7 @@ export const c06: Concept = {
     {
       id: "C06-Q2",
       source: { kind: "pyqvault-practice", ref: "mh-hsc-12/Reproduction in Lower and Higher Plants/2024 Q. 2(iv)" },
-      stem: t`How many haploid nuclei are there in the mature female gametophyte of an angiosperm?`,
+      stem: t`How many haploid nuclei are formed in the embryo sac by the three mitotic divisions of the functional megaspore?`,
       verify: { kind: "value", inputs: {  }, params: { q: "nuclei" } },
       options: [
         { key: "A", text: t`$8$`, correct: true, value: "8" },

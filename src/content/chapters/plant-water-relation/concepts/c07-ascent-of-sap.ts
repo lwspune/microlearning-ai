@@ -89,7 +89,7 @@ export const c07: Concept = {
     {
       id: "C07-M8",
       mistake: "Picks Priestley.",
-      remediation: "Priestley studied gases.",
+      remediation: "Dixon and Joly, not Priestley, proposed the cohesion–tension theory.",
       fallback: { kind: "none" },
     },
     {

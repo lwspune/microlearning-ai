@@ -22,7 +22,7 @@ export const c01: Concept = {
           t`**Binary fission**: the parent splits into two, as in *Amoeba*.`,
           t`**Budding**: an outgrowth grows into a new animal, as in *Hydra*.`,
           t`**Gemmules**: internal buds of dormant **archaeocytes**, only in sponges.`,
-          t`**Regeneration**: a lost part, or a whole body, regrows from a piece.`,
+          t`**Fragmentation**: the body splits into pieces, each regenerating into a whole animal (*Planaria*).`,
         ],
       },
       {
@@ -37,9 +37,9 @@ export const c01: Concept = {
       prompt: t`A planarian is cut into three pieces and each grows into a whole worm. What kind of reproduction is this?`,
       steps: [
         t`One parent, no gametes.`,
-        t`Pieces regrow into whole animals: regeneration, an asexual method.`,
+        t`Pieces regrow into whole animals: fragmentation, with regeneration of lost parts.`,
       ],
-      answer: t`Asexual: regeneration`,
+      answer: t`Asexual: fragmentation (each piece regenerates the rest)`,
     },
     visualSpec: t`A *Hydra* bud growing tentacles and pinching off.`,
   },

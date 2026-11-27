@@ -20,7 +20,7 @@ export const c11: Concept = {
         title: "Temporary methods",
         points: [
           t`Natural: avoiding intercourse around ovulation (the rhythm method).`,
-          t`Barrier: **condoms** stop sperms reaching the egg.`,
+          t`Mechanical (barrier) means: **condoms**, diaphragms and IUDs.`,
           t`**IUDs** such as Copper-T in the uterus.`,
           t`**Oral pills** of hormones stop ovulation.`,
         ],
@@ -88,8 +88,8 @@ export const c11: Concept = {
     },
     {
       id: "C11-M8",
-      mistake: "Picks Copper-T.",
-      remediation: "Copper-T is an IUD.",
+      mistake: "Picks vasectomy.",
+      remediation: "Vasectomy is a permanent surgical method, not a barrier.",
       fallback: { kind: "none" },
     },
     {
@@ -179,7 +179,7 @@ export const c11: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "barrier" } },
       options: [
         { key: "A", text: t`an oral pill`, correct: false, misconceptionId: "C11-M7", value: "oral_pill" },
-        { key: "B", text: t`a Copper-T`, correct: false, misconceptionId: "C11-M8", value: "copper_t" },
+        { key: "B", text: t`vasectomy`, correct: false, misconceptionId: "C11-M8", value: "vasectomy_m" },
         { key: "C", text: t`the rhythm method`, correct: false, misconceptionId: "C11-M9", value: "rhythm" },
         { key: "D", text: t`a condom`, correct: true, value: "condom" },
       ],

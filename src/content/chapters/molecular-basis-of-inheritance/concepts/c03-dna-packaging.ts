@@ -46,8 +46,8 @@ export const c03: Concept = {
   misconceptions: [
     {
       id: "C03-M1",
-      mistake: "Gives 200.",
-      remediation: "About 200 bp includes the linker; the octamer holds 146.",
+      mistake: "Gives 1000.",
+      remediation: "Far too many: about 146 bp wind round the octamer; with linker, about 200 per nucleosome.",
       fallback: { kind: "none" },
     },
     {
@@ -145,7 +145,7 @@ export const c03: Concept = {
         { key: "A", text: t`54`, correct: false, misconceptionId: "C03-M2", value: "54" },
         { key: "B", text: t`20`, correct: false, misconceptionId: "C03-M3", value: "20" },
         { key: "C", text: t`146`, correct: true, value: "146" },
-        { key: "D", text: t`200`, correct: false, misconceptionId: "C03-M1", value: "200" },
+        { key: "D", text: t`1000`, correct: false, misconceptionId: "C03-M1", value: "1000" },
       ],
       solution: {
         steps: [

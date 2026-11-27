@@ -17,7 +17,7 @@ export const c05: Concept = {
     ],
     formal: [
       {
-        title: "Sources of variation",
+        title: "Factors that change the gene pool",
         points: [
           t`**Mutation**: sudden heritable change.`,
           t`**Recombination** in sexual reproduction.`,

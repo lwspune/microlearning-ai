@@ -19,8 +19,8 @@ export const c07: Concept = {
       {
         title: "Macro and micro",
         points: [
-          t`**Macronutrients**, needed in large amounts: C, H, O, N, P, K, Ca, Mg, S.`,
-          t`**Micronutrients**, needed in traces: Fe, Mn, Zn, Cu, B, Mo, Cl, Ni.`,
+          t`**Macronutrients**, needed in large amounts: C, H, O, N, P, K, Ca, Mg, S and (in this book) Fe.`,
+          t`**Micronutrients**, needed in traces: Zn, Cu, Mn, B, Mo, Cl (the book also lists Al and Si).`,
           t`Zinc helps make auxin (3-IAA); molybdenum is needed for nitrogen metabolism.`,
         ],
       },

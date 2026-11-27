@@ -21,7 +21,7 @@ export const c04: Concept = {
         title: "The theories",
         points: [
           t`Lamarck: use and disuse change organs, and the changes pass on.`,
-          t`**Weismann** cut mice's tails for generations: no tailless mice. Germplasm theory.`,
+          t`**Weismann** cut rats' tails for 21 generations: no tailless rats. Germplasm theory.`,
           t`Darwin: small, directional variations; the fittest survive and breed.`,
           t`De Vries: large, sudden, random **mutations** in the evening primrose, *Oenothera*.`,
         ],
@@ -35,7 +35,7 @@ export const c04: Concept = {
       },
     ],
     worked: {
-      prompt: t`Why did Weismann cut mice's tails for 22 generations?`,
+      prompt: t`Why did Weismann cut the tails of rats for 21 generations?`,
       steps: [
         t`To test whether acquired changes are inherited.`,
         t`Tails stayed normal, so they are not.`,

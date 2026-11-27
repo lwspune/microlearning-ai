@@ -65,7 +65,7 @@ export const c02: Concept = {
     {
       id: "C02-M4",
       mistake: "Picks fishes and amphibians.",
-      remediation: "That link is lobe-finned fishes.",
+      remediation: "That link is *Ichthyostega* (or the lung fishes).",
       fallback: { kind: "none" },
     },
     {
