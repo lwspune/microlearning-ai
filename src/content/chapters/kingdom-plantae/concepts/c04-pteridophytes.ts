@@ -95,7 +95,7 @@ export const c04: Concept = {
     {
       id: "C04-M9",
       mistake: "Says aquatic.",
-      remediation: "Ferns live on land.",
+      remediation: "Most live on land; even aquatic ones like *Azolla* are cryptogams because they bear spores.",
       fallback: { kind: "none" },
     },
     {

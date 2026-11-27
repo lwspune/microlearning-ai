@@ -175,7 +175,7 @@ export const c01: Concept = {
     {
       id: "C01-Q3",
       source: { kind: "pyqvault-practice", ref: "mh-sb-11/cell-division-11-bio/Ex Q3(A)" },
-      stem: t`The longest phase of the cell cycle, lasting 8 hours or more, is`,
+      stem: t`The longest sub-phase of interphase, lasting 8 hours or more, is`,
       verify: { kind: "value", inputs: {  }, params: { q: "longest" } },
       options: [
         { key: "A", text: t`$\mathrm{G_2}$`, correct: false, misconceptionId: "C01-M8", value: "g2_phase" },

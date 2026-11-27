@@ -34,9 +34,9 @@ export const c01: Concept = {
       },
     ],
     worked: {
-      prompt: t`A cell has a nucleus, mitochondria and a cell wall but no chloroplast. Plant or animal?`,
+      prompt: t`A cell has a nucleus, mitochondria and a cell wall of cellulose but no chloroplast. Plant or animal?`,
       steps: [
-        t`A cell wall marks plant cells.`,
+        t`A cellulose wall marks plant cells.`,
         t`Not all plant cells have chloroplasts.`,
       ],
       answer: t`Plant`,

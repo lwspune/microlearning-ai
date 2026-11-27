@@ -28,7 +28,7 @@ export const c02: Concept = {
         title: "Keys, floras and museums",
         points: [
           t`A **dichotomous key** uses pairs of **contrasting characters**.`,
-          t`A **flora** or **manual** gives keys to the species of an area.`,
+          t`A **manual** gives keys to identify the species of an area; a **flora** is the plant life of an area.`,
           t`A **museum** keeps preserved specimens and herbaria.`,
         ],
       },
@@ -131,7 +131,7 @@ export const c02: Concept = {
     {
       id: "C02-M15",
       mistake: "Picks dictionary.",
-      remediation: "A flora has keys.",
+      remediation: "A manual has keys.",
       fallback: { kind: "none" },
     },
   ],
@@ -215,14 +215,14 @@ export const c02: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "flora" } },
       options: [
         { key: "A", text: t`dictionary`, correct: false, misconceptionId: "C02-M15", value: "dictionary_a" },
-        { key: "B", text: t`flora or manual`, correct: true, value: "flora_manual" },
+        { key: "B", text: t`manual`, correct: true, value: "flora_manual" },
         { key: "C", text: t`herbarium`, correct: false, misconceptionId: "C02-M13", value: "herbarium_a" },
         { key: "D", text: t`museum`, correct: false, misconceptionId: "C02-M14", value: "museum_a" },
       ],
       solution: {
         steps: [
           t`An area's species.`,
-          t`Flora or manual.`,
+          t`Manual.`,
         ],
       },
     },

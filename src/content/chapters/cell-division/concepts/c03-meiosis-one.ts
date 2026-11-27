@@ -193,7 +193,7 @@ export const c03: Concept = {
     {
       id: "C03-Q4",
       source: { kind: "pyqvault-practice", ref: "mh-sb-11/cell-division-11-bio/Ex Q4" },
-      stem: t`Desynapsis, when homologues begin to separate but stay joined at chiasmata, occurs in`,
+      stem: t`Desynapsis, the repulsion between synapsed homologues that makes the chiasmata clearly visible, occurs in`,
       verify: { kind: "value", inputs: {  }, params: { q: "desynapsis" } },
       options: [
         { key: "A", text: t`Zygotene`, correct: false, misconceptionId: "C03-M11", value: "zygotene_s" },

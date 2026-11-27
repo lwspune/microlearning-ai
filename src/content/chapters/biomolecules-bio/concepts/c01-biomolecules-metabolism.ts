@@ -211,7 +211,7 @@ export const c01: Concept = {
     {
       id: "C01-Q5",
       source: { kind: "pyqvault-practice", ref: "mh-sb-11/biomolecules-11-bio/Ex Q4(C)" },
-      stem: t`The yam plant gives a secondary metabolite used to make`,
+      stem: t`The yam plant (*Dioscorea*) gives diosgenin, a steroid compound used to make`,
       verify: { kind: "value", inputs: {  }, params: { q: "yam" } },
       options: [
         { key: "A", text: t`anti-fertility pills`, correct: true, value: "antifertility_pills" },

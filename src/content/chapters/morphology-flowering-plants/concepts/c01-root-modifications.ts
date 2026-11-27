@@ -89,7 +89,7 @@ export const c01: Concept = {
     {
       id: "C01-M8",
       mistake: "Picks clinging roots.",
-      remediation: "Clinging roots fix epiphytes to trees.",
+      remediation: "Clinging roots stick a climber to a wall, as in English ivy.",
       fallback: { kind: "none" },
     },
     {
