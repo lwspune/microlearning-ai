@@ -112,8 +112,8 @@ export const c04: Concept = {
     },
     {
       id: "C04-M12",
-      mistake: "Picks ethylene.",
-      remediation: "Ethylene ripens fruit.",
+      mistake: "Picks abscisic acid.",
+      remediation: "ABA inhibits growth in general; the tip's auxin holds the side buds back.",
       fallback: { kind: "none" },
     },
     {
@@ -198,7 +198,7 @@ export const c04: Concept = {
       options: [
         { key: "A", text: t`Cytokinin`, correct: false, misconceptionId: "C04-M10", value: "cytokinin_h" },
         { key: "B", text: t`Gibberellin`, correct: false, misconceptionId: "C04-M11", value: "gibberellin_h" },
-        { key: "C", text: t`Ethylene`, correct: false, misconceptionId: "C04-M12", value: "ethylene_h" },
+        { key: "C", text: t`Abscisic acid`, correct: false, misconceptionId: "C04-M12", value: "abscisic_h" },
         { key: "D", text: t`Auxin`, correct: true, value: "auxin_h" },
       ],
       solution: {

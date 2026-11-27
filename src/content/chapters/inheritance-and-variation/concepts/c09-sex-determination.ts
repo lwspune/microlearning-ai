@@ -70,8 +70,8 @@ export const c09: Concept = {
     },
     {
       id: "C09-M6",
-      mistake: "Picks a worker's egg.",
-      remediation: "Drones come from unfertilized eggs.",
+      mistake: "Thinks two sperms make a male.",
+      remediation: "Drones come from unfertilized eggs: they are haploid.",
       fallback: { kind: "none" },
     },
     {
@@ -157,7 +157,7 @@ export const c09: Concept = {
         { key: "A", text: t`an unfertilized egg`, correct: true, value: "unfertilized_egg" },
         { key: "B", text: t`a fertilized egg`, correct: false, misconceptionId: "C09-M4", value: "fertilized_egg" },
         { key: "C", text: t`royal jelly`, correct: false, misconceptionId: "C09-M5", value: "royal_jelly" },
-        { key: "D", text: t`a worker's egg`, correct: false, misconceptionId: "C09-M6", value: "worker_egg" },
+        { key: "D", text: t`an egg fertilized by two sperms`, correct: false, misconceptionId: "C09-M6", value: "two_sperm_egg" },
       ],
       solution: {
         steps: [
