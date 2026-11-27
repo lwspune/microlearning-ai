@@ -1759,6 +1759,15 @@ solutions, then the book's own text) before its commit; the fixes are in their o
 shipped Std XII chapters are logged in SUGGESTIONS.md as backfill candidates, not applied. Book errata so far: 32
 lines in the scratch errata list, to file in PYQ Vault (step 4).
 
+**Step 4 done (2026-11-27, owner: "Report errors to pyqvault"):** 16 PYQ Vault `question_reports` filed, all open, on
+the question rows with a defect PYQ Vault can fix: 10 `wrong-answer` (two or three right options or a doubtful key:
+plant-growth Ex Q1(7) 5bebcfb8, human-health Ex Q1(8) d804ab3f, board 2024 Q.1(v) 9426dedb, food-production Ex Q1(7)
+e62ffbb6, kingdom-plantae Ex Q1(E) 76025590, biomolecules Ex Q1(D) 23809e92, respiration Ex Q1(B) 59b41101,
+photosynthesis Ex Q1(F) 94123bf3 and Ex Q1(K) e11dff5a, excretion Ex Q1(G) 3562345c), 4 `typo-or-formatting`
+(morphology Ex Q1(C) e740c8fb and Ex Q2(A) 1cbdeab6, photosynthesis Ex Q1(G) dae4ee73, skeleton-movement Ex Q1(D)
+2d215287), 1 `other` (excretion Ex Q1(I) 98f260c1) and 1 `incorrect-solution` (animal-tissue Ex Q2(C) 96da595f).
+Not filed: the 16 textbook misprints (figures, equations, wording) that PYQ Vault's own solutions already note.
+
 **Later (plan separately):** NEET biology (PYQ Vault has its Botany 19 and Zoology 17 chapters) from this pool.
 
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
