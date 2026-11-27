@@ -480,6 +480,7 @@ export const courses: Course[] = [
       // Std XI Biology, Balbharati book order, before Std XII (PLAN.md "Std XI and XII Biology").
       { chapter: "living-world" },
       { chapter: "systematics" },
+      { chapter: "kingdom-plantae" },
       // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
       { chapter: "reproduction-in-plants" },
       { chapter: "reproduction-in-animals" },
