@@ -20,7 +20,7 @@ export const c08: Concept = {
         title: "Fixation",
         points: [
           t`**Diazotrophs** fix $\ce{N2}$ to ammonia, e.g. *Rhizobium* in root nodules.`,
-          t`$\ce{N2 + 8H+ + 8e- + 16ATP -> 2NH3 + H2 + 16ADP + 16Pi}$`,
+          t`$\ce{N2 + 8H+ + 8e- + 16ATP}$ $\rightarrow$ $\ce{2NH3 + H2}$ $+$ $\ce{16ADP + 16Pi}$`,
           t`So 16 ATP per $\ce{N2}$, or 8 ATP per ammonia. Cyanobacteria fix it in **heterocysts**.`,
         ],
       },
