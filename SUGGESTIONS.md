@@ -85,6 +85,78 @@ fingerprint changes).
   breaks as `\ ` instead of `\\`, so KaTeX draws all six rows on one line.
   The other tables in that file use `\\`.
 
+## Backfill ledger: Std XII biology fact-check (logged 2026-11-27)
+
+An independent fact-check of the shipped Std XII biology chapters (pushed
+e61aaf3). Every marked answer is right; these are an ambiguous item and
+loose lines. Not applied: shipped work, owner's OK needed (360 analysis first).
+
+- reproduction-in-plants C06-Q2: "haploid nuclei in the mature female
+  gametophyte" = 8 clashes with C06-Q1 (secondary nucleus is diploid). Reword
+  to "nuclei formed by the three mitotic divisions"; lesson line to "7 cells,
+  8 nuclei, all haploid until the polar nuclei fuse".
+- reproduction-in-plants C05-M3: right-angled ovule is hemianatropous, not
+  "campylotropous-like".
+- reproduction-in-animals C07-Q5, formal point, hook: the book's term is
+  "cortical reaction", not "zona reaction".
+- inheritance-and-variation C09-Q2: wrong option "a worker's egg" is arguably
+  right (laying workers' eggs become drones); replace with "an egg fertilized
+  by two sperms".
+- inheritance-and-variation C06 formal: say which is which, "1 normal : 2
+  carriers".
+- molecular-basis-of-inheritance C06-Q2 solution: "AUG starts every mRNA" is
+  false; "translation begins at AUG".
+- origin-and-evolution-of-life C04 worked example and formal: Weismann used
+  rats for 21 generations (draft says mice, 22).
+- origin-and-evolution-of-life C05 formal title "Sources of variation" lists
+  genetic drift; retitle "Factors that change the gene pool".
+- plant-growth-mineral-nutrition C04-Q4 (apical dominance): wrong option
+  "Ethylene" is right by the book ("ethylene ... causes apical dominance");
+  replace with "Abscisic acid".
+- plant-growth-mineral-nutrition C02-Q5 (total growth per unit time): wrong
+  option "efficiency index" is the book's synonym for growth rate; replace
+  with "lag phase".
+- plant-growth-mineral-nutrition C07 lesson: the book lists Fe as a
+  macroelement and micro as Zn, Cu, Al, Si, Mn, B, Mo, Cl (no Ni).
+- plant-water-relation C08 lesson and C08-Q5: mineral uptake is not only
+  active (book: some solutes enter passively); soften to "independent of
+  water uptake, often active".
+- plant-water-relation C07-M8: Priestley line mixes up Joseph and J. H.
+  Priestley; say "Dixon and Joly, not Priestley, proposed cohesion–tension".
+- enhancement-food-production C08-Q3 (rice biofertilizer): wrong options
+  *Azotobacter* (book: "especially rice") and *Azospirillum* (cereals) are
+  right by the book; replace with *Rhizobium* and *Trichoderma*.
+- enhancement-food-production C09-Q5 (*Nosema*): wrong option "caterpillars"
+  is in the book's table; replace with "mealy bugs and white flies" and widen
+  the lesson line.
+- enhancement-food-production C01 lesson and C01-Q1: the book calls Ratna a
+  semi-dwarf variety, not a hybrid (hybrids: Ganga-3, CO-12, Niphad).
+- ecosystems-energy-flow C01-M2: "1–5% is the share captured" is false (book:
+  2–10% of PAR).
+- biodiversity-conservation C05 lesson: BOD is "biochemical", not
+  "biological", oxygen demand.
+- reproduction-in-animals C11-Q3 (barrier contraceptive): wrong option
+  "a Copper-T" is a barrier by the book (IUDs listed under mechanical
+  barriers); replace with "vasectomy".
+- reproduction-in-animals C12 worked example: the book's IVF transfers the
+  embryo to the fallopian tube, not the uterus.
+- reproduction-in-animals C01 lesson and worked example: the book calls
+  Planaria's method fragmentation; regeneration "differs distinctly from
+  reproduction".
+- reproduction-in-animals C05 worked example ("up to three" polar bodies):
+  the book says the first polar body normally does not divide; C12-M15:
+  artificial insemination is into the cervix.
+- molecular-basis-of-inheritance C03-Q1 (bp round one octamer, key 146):
+  wrong option 200 is also in the book ("200 bps wraps ... 1¾ turns");
+  replace with 1000.
+- origin-and-evolution-of-life C07, C01, C02-M4 lessons: post-mating barriers
+  are gamete mortality, zygote mortality, hybrid sterility; Miller ran sparks
+  "for several days" giving urea, amino acids, lactic acid; the fish–amphibian
+  link is *Ichthyostega* (or lung fishes).
+- Judgement call: reproduction-in-plants C08-Q3 says the stigma decides
+  pollen compatibility (book Ex Q2(1)); in gametophytic self-incompatibility
+  rejection is often in the style.
+
 ## Also parked (details in PLAN.md)
 
 - Staff reset a student's password (PLAN.md Phase 2, "Later"). Self
