@@ -60,4 +60,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`$\lim_{x \to 0}\frac{\log(1 + x)}{x} = 1$ and $\lim_{x \to 0}(1 + x)^{\frac{1}{x}} = e$`,
     prereqs: ["C08"], ext: [], sources: [S("Limits of Exponential and Logarithmic Functions")],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C10", slug: "series-expansions-in-limits", title: "Series expansions in limits", group: "Special limits", tier: "core",
+    oneLiner: t`Replace $\sin x$, $\cos x$, $\tan x$, $e^x$, $\log(1 + x)$ by enough terms of their series: $\sin x = x - \frac{x^3}{6} + \dots$`,
+    prereqs: ["C07", "C09"], ext: [],
+    sources: ["jee-main/limits-and-continuity#Series Expansions and Unknown Constants"],
+  },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C11", slug: "one-to-the-infinity", title: "The 1-to-the-infinity form", group: "Special limits", tier: "core",
+    oneLiner: t`If $f \to 1$ and $g \to \infty$, then $\lim f^g = e^{\lim (f - 1)g}$`,
+    prereqs: ["C09"], ext: [],
+    sources: ["jee-main/limits-and-continuity#Exponential Limits (1 to the Power Infinity)"],
+  },
 ];

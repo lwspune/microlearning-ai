@@ -9,10 +9,10 @@ describe("Straight Line chapter", () => {
     expect(validateChapter(straightLine)).toEqual([]);
   });
 
-  it("keeps the graph: 12 concepts, 12 edges", () => {
+  it("keeps the graph: 14 concepts, 14 edges", () => {
     const edges = straightLine.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(straightLine.graph).toHaveLength(12);
-    expect(edges).toBe(12);
+    expect(straightLine.graph).toHaveLength(14);
+    expect(edges).toBe(14);
   });
 
   it("keeps edges transitively reduced", () => {

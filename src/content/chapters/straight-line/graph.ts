@@ -75,4 +75,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`$L_1 + kL_2 = 0$ passes through the meeting point of $L_1 = 0$ and $L_2 = 0$; find $k$ from one more condition`,
     prereqs: ["C07"], ext: ["simultaneous linear equations"], sources: [S("Family of Lines")],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C13", slug: "image-in-a-line", title: "Image of a point in a line", group: "Angles and distances", tier: "core",
+    oneLiner: t`Foot and image of $(x_1, y_1)$ in $ax + by + c = 0$: $\frac{x - x_1}{a} = \frac{y - y_1}{b} = -k\frac{ax_1 + by_1 + c}{a^2 + b^2}$, with $k = 1$ for the foot, $2$ for the image`,
+    prereqs: ["C10"], ext: [],
+    sources: ["jee-main/straight-lines#Image of a Point and Reflected Rays"],
+  },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C14", slug: "centres-of-a-triangle", title: "Centres of a triangle", group: "Angles and distances", tier: "core",
+    oneLiner: t`Centroid: the mean of the vertices; incentre: the vertices weighted by the opposite sides; circumcentre and orthocentre from perpendiculars; $G$ divides $HO$ in $2 : 1$`,
+    prereqs: ["C08"], ext: [],
+    sources: ["jee-main/straight-lines#Centres of a Triangle"],
+  },
 ];

@@ -9,10 +9,10 @@ describe("Permutations and Combinations chapter", () => {
     expect(validateChapter(permutationsAndCombinations)).toEqual([]);
   });
 
-  it("keeps the graph: 14 concepts, 14 edges", () => {
+  it("keeps the graph: 16 concepts, 17 edges", () => {
     const edges = permutationsAndCombinations.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(permutationsAndCombinations.graph).toHaveLength(14);
-    expect(edges).toBe(14);
+    expect(permutationsAndCombinations.graph).toHaveLength(16);
+    expect(edges).toBe(17);
   });
 
   it("keeps edges transitively reduced", () => {

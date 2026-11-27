@@ -13,6 +13,7 @@ import { c11 } from "./concepts/c11-hyperbola-standard.ts";
 import { c12 } from "./concepts/c12-hyperbola-from-data.ts";
 import { c13 } from "./concepts/c13-hyperbola-tangents.ts";
 import { c14 } from "./concepts/c14-asymptotes.ts";
+import { c15 } from "./concepts/c15-normals-to-conics.ts";
 import { graph } from "./graph.ts";
 import { translations } from "./translations/index.ts";
 
@@ -23,7 +24,7 @@ export const conicSections: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15],
   // The book's terms: a translation keeps them in English wherever the English uses them.
   glossary: [
     "conic",

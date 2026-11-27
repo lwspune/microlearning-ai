@@ -85,4 +85,18 @@ export const graph: GraphNode[] = [
     oneLiner: t`Each thing is in or out: $2^n$ selections, $2^n - 1$ with at least one`,
     prereqs: ["C03", "C09"], ext: [], sources: [S("Properties of Combinations")],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C15", slug: "integer-solutions", title: "Integer solutions and identical objects", group: "Combinations", tier: "core",
+    oneLiner: t`$x_1 + \dots + x_r = n$ has $^{n+r-1}C_{r-1}$ non-negative and $^{n-1}C_{r-1}$ positive integer solutions; identical objects into boxes count the same way`,
+    prereqs: ["C09"], ext: [],
+    sources: ["jee-main/permutations-and-combinations#Distributions and Integer Solutions"],
+  },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C16", slug: "divisors-and-factorials", title: "Divisors and factorials", group: "Counting", tier: "core",
+    oneLiner: t`$N = p^a q^b r^c$ has $(a + 1)(b + 1)(c + 1)$ divisors; the power of a prime $p$ in $n!$ is $\left[\frac{n}{p}\right] + \left[\frac{n}{p^2}\right] + \dots$`,
+    prereqs: ["C01", "C02"], ext: [],
+    sources: ["jee-main/permutations-and-combinations#Divisibility, Divisors and Factorials"],
+  },
 ];

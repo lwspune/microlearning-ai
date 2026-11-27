@@ -20,6 +20,7 @@ import { c18 } from "./concepts/c18-numbers-in-ap.ts";
 import { c19 } from "./concepts/c19-recognising-an-ap.ts";
 import { c20 } from "./concepts/c20-counting-terms.ts";
 import { c21 } from "./concepts/c21-ap-word-problems.ts";
+import { c22 } from "./concepts/c22-method-of-differences.ts";
 import { graph } from "./graph.ts";
 import { translations } from "./translations/index.ts";
 
@@ -30,7 +31,7 @@ export const sequencesAndSeries: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22],
   // The book's terms: a translation keeps them in English wherever the English uses them.
   glossary: [
     "sequence",

@@ -86,4 +86,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Asymptotes $y = \pm\frac{b}{a}x$; perpendicular tangents meet on $x^2 + y^2 = a^2 - b^2$`,
     prereqs: ["C13"], ext: [], sources: [S("Hyperbola — Standard Equation and Properties"), S("Tangents to a Hyperbola")],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C15", slug: "normals-to-conics", title: "Normals to a parabola and an ellipse", group: "Parabola", tier: "core",
+    oneLiner: t`A normal is perpendicular to the tangent at its point: on $y^2 = 4ax$ the normal with slope $m$ is $y = mx - 2am - am^3$, at $(am^2, -2am)$`,
+    prereqs: ["C05", "C09"], ext: [],
+    sources: ["jee-main/conic-sections#Tangents and Normals to a Parabola", "jee-main/conic-sections#Tangents, Normals and Chords of an Ellipse"],
+  },
 ];

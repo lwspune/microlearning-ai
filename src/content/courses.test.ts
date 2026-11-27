@@ -682,7 +682,7 @@ describe("the catalog", () => {
         "compound-and-multiple-angles",
       ]);
       expect(parts("Matrices & Determinants")).toEqual(["determinants-and-matrices", "matrices"]);
-      expect(parts("Limits & Continuity")).toEqual(["limits", "continuity C01,C02,C03,C04,C05"]);
+      expect(parts("Limits & Continuity")).toEqual(["limits C01,C02,C03,C04,C05,C06,C07,C08,C09", "continuity C01,C02,C03,C04,C05"]);
       expect(parts("Differentiation")).toEqual(["differentiation", "differentiation-12"]);
       expect(parts("3D Geometry")).toEqual(["line-and-plane", "vectors C07", "sphere"]);
       expect(parts("Logarithms")).toEqual(["functions C07", "logarithms"]);
@@ -722,7 +722,9 @@ describe("the catalog", () => {
           const course = findCourse(other)!;
           if (!partsFor(course, slug).length) continue;
           expect(coveredIds(course, ch).has(id!), `${other} leaves out ${slug}/${concept}`).toBe(false);
-          expect(coveredIds(course, ch).size, `${other} keeps the rest of ${slug}`).toBe(ch.graph.length - gaps.filter(([s]) => s === slug).length);
+          // The book's concepts (other courses' gaps, such as JEE Main's, are not the book's either).
+          const book = ch.graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-"))).length;
+          expect(coveredIds(course, ch).size, `${other} keeps the rest of ${slug}`).toBe(book);
         }
       }
     });
@@ -1257,8 +1259,8 @@ describe("the catalog", () => {
       expect(parts("probability")).toEqual(["probability", "probability-distributions C01,C02,C03,C04", "binomial-distribution"]);
       expect(parts("trigonometric-equations")).toEqual(["trigonometric-functions-12 C01,C02,C03,C04,C05"]);
       expect(parts("inverse-trigonometric-functions")).toEqual(["trigonometric-functions-12 C12,C13,C14,C15"]);
-      expect(parts("sequences-and-series")).toEqual([`sequences-and-series ${SERIES_XI_IDS.join(",")}`]);
-      expect(parts("binomial-theorem")).toEqual(["binomial-theorem C01,C02,C03,C04,C05,C06,C07,C10"]);
+      expect(parts("sequences-and-series")).toEqual([`sequences-and-series ${SERIES_XI_IDS.join(",")},C22`]);
+      expect(parts("binomial-theorem")).toEqual(["binomial-theorem C01,C02,C03,C04,C05,C06,C07,C10,C11"]);
     });
 
     it("leaves out what the 2024 syllabus dropped: reasoning, heights, triangles, planes, LPP and more", () => {
@@ -1290,6 +1292,36 @@ describe("the catalog", () => {
           ...ids("sequences-and-series", "C19", "C20", "C21"),
         ].sort(),
       );
+    });
+
+    // Phase 2: what JEE asks that no course's books teach, appended to the pool chapters for JEE alone.
+    const gaps: [chapter: string, concept: string][] = [
+      ["sequences-and-series", "method-of-differences"],
+      ["permutations-and-combinations", "integer-solutions"],
+      ["permutations-and-combinations", "divisors-and-factorials"],
+      ["straight-line", "image-in-a-line"],
+      ["straight-line", "centres-of-a-triangle"],
+      ["conic-sections", "normals-to-conics"],
+      ["limits", "series-expansions-in-limits"],
+      ["limits", "one-to-the-infinity"],
+      ["differential-equations", "bernoulli-equations"],
+      ["binomial-theorem", "binomial-sums-by-calculus"],
+    ];
+
+    it("adds the JEE gaps to their pool chapters, after the concepts there, covered by JEE alone", () => {
+      for (const [slug, concept] of gaps) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const node = ch.graph.find((n) => n.slug === concept);
+        expect(node, `${slug}/${concept} is in the graph`).toBeDefined();
+        expect(node!.sources.every((s) => s.startsWith("jee-main/")), `${slug}/${concept} sources`).toBe(true);
+        const have = coursesIn("school").filter((c) => coveredIds(c, ch).has(node!.id)).map((c) => c.slug);
+        expect(have, `${slug}/${concept}`).toEqual(["jee-main"]);
+      }
+      for (const slug of new Set(gaps.map(([s]) => s))) {
+        const ch = chapters.find((c) => c.slug === slug)!;
+        const added = ch.graph.filter((n) => gaps.some(([s, concept]) => s === slug && concept === n.slug));
+        expect(ch.graph.slice(ch.graph.length - added.length), slug).toEqual(added);
+      }
     });
 
     it("comes first in the course, and has every list approved (owner: 'Ok', 2026-11-27)", () => {

@@ -9,10 +9,10 @@ describe("Limits chapter", () => {
     expect(validateChapter(limits)).toEqual([]);
   });
 
-  it("keeps the graph: 9 concepts, 8 edges", () => {
+  it("keeps the graph: 11 concepts, 11 edges", () => {
     const edges = limits.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(limits.graph).toHaveLength(9);
-    expect(edges).toBe(8);
+    expect(limits.graph).toHaveLength(11);
+    expect(edges).toBe(11);
   });
 
   it("keeps edges transitively reduced", () => {

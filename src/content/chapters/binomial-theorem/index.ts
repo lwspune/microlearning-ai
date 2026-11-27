@@ -9,6 +9,7 @@ import { c07 } from "./concepts/c07-binomial-for-numbers.ts";
 import { c08 } from "./concepts/c08-negative-fractional-index.ts";
 import { c09 } from "./concepts/c09-binomial-approximation.ts";
 import { c10 } from "./concepts/c10-remainders-and-integer-parts.ts";
+import { c11 } from "./concepts/c11-binomial-sums-by-calculus.ts";
 import { graph } from "./graph.ts";
 import { translations } from "./translations/index.ts";
 
@@ -19,7 +20,7 @@ export const binomialTheorem: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
   // The book's terms: a translation keeps them in English wherever the English uses them.
   glossary: [
     "binomial",

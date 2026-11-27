@@ -60,4 +60,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Newton's law of cooling $\dfrac{d\theta}{dt} = -k(\theta - \theta_0)$; a curve from its slope condition; set up the equation, solve it, then use the given values`,
     prereqs: ["C08"], ext: [], sources: [S("Applications of Differential Equations"), S("Solution of a Differential Equation")],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C10", slug: "bernoulli-equations", title: "Equations reducible to linear", group: "Solving", tier: "core",
+    oneLiner: t`Bernoulli's $\dfrac{dy}{dx} + Py = Qy^n$ becomes linear in $v = y^{1-n}$: $\dfrac{dv}{dx} + (1 - n)Pv = (1 - n)Q$`,
+    prereqs: ["C07"], ext: [],
+    sources: ["jee-main/differential-equations#Equations Reducible to Linear"],
+  },
 ];

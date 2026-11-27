@@ -65,4 +65,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Write $9^n = (1 + 8)^n$ to find remainders; pair $(a + \sqrt{b})^n$ with $(a - \sqrt{b})^n$ to find integer and fractional parts`,
     prereqs: ["C07"], ext: [], sources: [`nda/binomial-theorem#Integer and Fractional Parts of Binomial Expressions`, `nda/binomial-theorem#Remainders and Divisibility via Binomial Expansion`],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C11", slug: "binomial-sums-by-calculus", title: "Coefficient sums by calculus", group: "Using the expansion", tier: "core",
+    oneLiner: t`Differentiate or integrate $(1 + x)^n$, then put $x = 1$: $\sum r\,^nC_r = n2^{n-1}$, $\sum \frac{^nC_r}{r + 1} = \frac{2^{n+1} - 1}{n + 1}$; also $\sum (^nC_r)^2 = {}^{2n}C_n$`,
+    prereqs: ["C06"], ext: [],
+    sources: ["jee-main/binomial-theorem#Coefficient Sums by Substitution and Differentiation", "jee-main/binomial-theorem#Sums with Fractions and Products of Coefficients"],
+  },
 ];

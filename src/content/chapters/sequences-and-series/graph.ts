@@ -128,4 +128,11 @@ export const graph: GraphNode[] = [
     oneLiner: t`Write the $r$th term, expand it, and sum each power of $r$ separately`,
     prereqs: ["C13"], ext: [], sources: ["mh-sb-11/sequences-series-11#Properties of Summation"],
   },
+  // Asked by JEE Main, not taught in the books (PLAN.md "JEE Main Maths course", phase 2).
+  {
+    id: "C22", slug: "method-of-differences", title: "Telescoping sums", group: "Special series", tier: "core",
+    oneLiner: t`Split the rth term into a difference $f(r) - f(r + 1)$; the middle terms cancel and $S_n = f(1) - f(n + 1)$`,
+    prereqs: ["C14"], ext: [],
+    sources: ["jee-main/sequences-and-series#Telescoping Sums"],
+  },
 ];

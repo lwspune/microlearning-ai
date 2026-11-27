@@ -9,10 +9,10 @@ describe("Sequences and Series chapter", () => {
     expect(validateChapter(sequencesAndSeries)).toEqual([]);
   });
 
-  it("keeps the graph: 21 concepts, 21 edges", () => {
+  it("keeps the graph: 22 concepts, 22 edges", () => {
     const edges = sequencesAndSeries.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(sequencesAndSeries.graph).toHaveLength(21);
-    expect(edges).toBe(21);
+    expect(sequencesAndSeries.graph).toHaveLength(22);
+    expect(edges).toBe(22);
   });
 
   it("opens with sequences and A.P., which the G.P. and H.P. concepts build on", () => {

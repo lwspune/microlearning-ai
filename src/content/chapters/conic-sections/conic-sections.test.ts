@@ -9,10 +9,10 @@ describe("Conic Sections chapter", () => {
     expect(validateChapter(conicSections)).toEqual([]);
   });
 
-  it("keeps the graph: 14 concepts, 13 edges", () => {
+  it("keeps the graph: 15 concepts, 15 edges", () => {
     const edges = conicSections.graph.reduce((n, node) => n + node.prereqs.length, 0);
-    expect(conicSections.graph).toHaveLength(14);
-    expect(edges).toBe(13);
+    expect(conicSections.graph).toHaveLength(15);
+    expect(edges).toBe(15);
   });
 
   it("keeps edges transitively reduced", () => {

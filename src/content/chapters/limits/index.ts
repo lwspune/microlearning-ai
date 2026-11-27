@@ -8,6 +8,8 @@ import { c06 } from "./concepts/c06-limits-at-infinity.ts";
 import { c07 } from "./concepts/c07-trigonometric-limits.ts";
 import { c08 } from "./concepts/c08-exponential-limits.ts";
 import { c09 } from "./concepts/c09-log-limits-and-e.ts";
+import { c10 } from "./concepts/c10-series-expansions-in-limits.ts";
+import { c11 } from "./concepts/c11-one-to-the-infinity.ts";
 import { graph } from "./graph.ts";
 import { translations } from "./translations/index.ts";
 
@@ -18,7 +20,7 @@ export const limits: Chapter = {
   subject: "maths",
   standard: 11,
   graph,
-  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09],
+  concepts: [c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11],
   // The book's terms: a translation keeps them in English wherever the English uses them.
   glossary: [
     "limit",
