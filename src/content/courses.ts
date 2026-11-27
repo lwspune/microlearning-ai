@@ -491,6 +491,7 @@ export const courses: Course[] = [
       { chapter: "enhancement-food-production" },
       { chapter: "biotechnology" },
       { chapter: "organisms-populations" },
+      { chapter: "ecosystems-energy-flow" },
     ],
   },
   {
