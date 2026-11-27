@@ -481,6 +481,7 @@ export const courses: Course[] = [
       { chapter: "living-world" },
       { chapter: "systematics" },
       { chapter: "kingdom-plantae" },
+      { chapter: "kingdom-animalia" },
       // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
       { chapter: "reproduction-in-plants" },
       { chapter: "reproduction-in-animals" },
