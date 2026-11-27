@@ -18,6 +18,12 @@ concept that rests on Std XI Biology writes it as `("ext", "<topic> (Std XI Biol
 Cite book rows as `source='{ kind: "pyqvault-practice", ref: "mh-sb-12/<slug>-12-bio/<ref>" }'` (Std XI `mh-sb-11/...`)
 and board rows as `ref: "mh-hsc-12/<chapter name>/<year> <qno>"`. Re-derive every key; PYQ Vault keys are sometimes wrong:
 log the ref and the right answer in `<scratch>/bio/errata.md` for the end-of-build report.
+- **The book's own text** is at `Question_Bank/scripts/{mh-sb-11,stateboard}/out/<slug>-{11,12}-bio.text.md`. Grep it
+  for every wrong option: if the book names it as true anywhere (a second hormone, a second biofertilizer, a synonym
+  such as "efficiency index" for growth rate), it is not a wrong option, whatever standard biology says. A fact-check
+  of the shipped Std XII chapters (SUGGESTIONS.md backfill ledger, 2026-11-27) found six such slips.
+- Where the book is wrong (a misprint, a clash with its own figure), test the uncontested fact instead of the
+  disputed one, and log the erratum.
 
 ## Turning biology questions into one-answer MCQs
 Most rows are "name", "define", "distinguish" or "explain". Each becomes one MCQ whose wrong options are stated
@@ -49,3 +55,8 @@ alleles. Labels are plain Unicode (CO₂, Na⁺); the validator rejects `_` in a
 - Set `status: "approved"` once the concept is reviewed, before the chapter joins the MH Board course (a catalog test
   enforces it). Misconception ids are contiguous; fallbacks are ancestors, `ext` topics, or `none`.
 - Each formal section: 1 to 6 words of title, at most 6 points of at most 25 words.
+- Prerequisites stay transitively reduced: never list one that another listed prerequisite already reaches (the
+  chapter test enforces it, and so does `<scratch>/bio/lintdraft.py` on draft files).
+- Hooks are facts too: "a starfish matches when cut any way", "siblings are never identical" and "our cells carry
+  chloroplasts" all shipped in drafts and were caught only by an independent fact-check. Give every draft one before
+  it is committed.

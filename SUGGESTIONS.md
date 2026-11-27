@@ -135,6 +135,24 @@ loose lines. Not applied: shipped work, owner's OK needed (360 analysis first).
   2–10% of PAR).
 - biodiversity-conservation C05 lesson: BOD is "biochemical", not
   "biological", oxygen demand.
+- reproduction-in-animals C11-Q3 (barrier contraceptive): wrong option
+  "a Copper-T" is a barrier by the book (IUDs listed under mechanical
+  barriers); replace with "vasectomy".
+- reproduction-in-animals C12 worked example: the book's IVF transfers the
+  embryo to the fallopian tube, not the uterus.
+- reproduction-in-animals C01 lesson and worked example: the book calls
+  Planaria's method fragmentation; regeneration "differs distinctly from
+  reproduction".
+- reproduction-in-animals C05 worked example ("up to three" polar bodies):
+  the book says the first polar body normally does not divide; C12-M15:
+  artificial insemination is into the cervix.
+- molecular-basis-of-inheritance C03-Q1 (bp round one octamer, key 146):
+  wrong option 200 is also in the book ("200 bps wraps ... 1¾ turns");
+  replace with 1000.
+- origin-and-evolution-of-life C07, C01, C02-M4 lessons: post-mating barriers
+  are gamete mortality, zygote mortality, hybrid sterility; Miller ran sparks
+  "for several days" giving urea, amino acids, lactic acid; the fish–amphibian
+  link is *Ichthyostega* (or lung fishes).
 - Judgement call: reproduction-in-plants C08-Q3 says the stigma decides
   pollen compatibility (book Ex Q2(1)); in gametophytic self-incompatibility
   rejection is often in the style.
