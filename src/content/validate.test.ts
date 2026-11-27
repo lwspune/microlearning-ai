@@ -408,6 +408,14 @@ describe("validateChapter", () => {
       expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*underscore/));
     });
 
+    it("rejects an underscore in a biology figure label too", () => {
+      const errors = errorsAfter((ch) => {
+        ch.subject = "biology";
+        c3(ch).explanation.figure = figure({ elements: [{ kind: "point", at: [0, 0], label: "CO_2" }] });
+      });
+      expect(errors).toContainEqual(expect.stringMatching(/C3 idea figure element 1.*underscore/));
+    });
+
     it("rejects an underscore in a chemistry figure label too", () => {
       const errors = errorsAfter((ch) => {
         ch.subject = "chemistry";

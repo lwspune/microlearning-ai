@@ -1728,6 +1728,32 @@ KaTeX errors, 0 phone overflows, seeded; English only (the Std XI chapters' Hind
 yet). Not built (thin or dropped): rotation of vectors, reduction formulas, trigonometric inequalities, continued
 fractions, common tangents across conics.
 
+## Std XI and XII Biology, Maharashtra State Board (approved 2026-11-27, branch `biology-foundations`)
+
+Owner, 2026-11-27: "Let's take state board 11th+12th biology next"; then "b" to the plan: no agents, so I write every
+concept; the other recommendations stand (figures only where a graph or schematic teaches, named-answer MCQs from stated
+misconceptions, commit per chapter and merge and push after each standard, MH Board only for now).
+
+**Sources:** PYQ Vault's Balbharati Std XI (16 chapters, ~425 exercise rows) and Std XII (15 chapters, ~500 rows, with
+solutions and verified MCQ keys) books, `Question_Bank/scripts/{mh-sb-11,stateboard}/data/*-bio.*.json`, and its HSC
+board biology rows (15 chapters, ~235 PYQs, in the database). No Std XI board exam.
+
+**Steps:**
+1. Foundations (this branch, test-first): the `biology` subject and label, figure labels under the no-underscore rule,
+   `verify/agent-brief-biology.md`. The subject switch grows to four tabs once the first chapter lands: check it fits a
+   390 px phone, with a before/after sheet.
+2. Std XII, chapter by chapter in book order: graph (6–10 concepts from the book's sections), 5 items each from book
+   and board rows, verified, phone-probed, approved, registered, seeded, committed. Merge and push when Std XII is in.
+3. Std XI the same way; Std XI biology before Std XII in the course, after chemistry. Merge and push.
+4. Errata found on the way filed in PYQ Vault at the end.
+
+**Status (2026-11-27):** steps 1 and 2 done. All 15 Std XII chapters are in, 131 concepts and 655 items, each chapter
+approved, seeded and committed on its own (a3c4f0d … 659d12a); the four-tab switch fits phones (d1f8afb). Errata so far:
+plant-growth Ex Q1(7), human-health Ex Q1(8), food-production Ex Q1(7) (two or more right options) and board 2024
+Q. 1(v) of Human Health (malaria also needle-borne). Next: step 3, Std XI.
+
+**Later (plan separately):** NEET biology (PYQ Vault has its Botany 19 and Zoology 17 chapters) from this pool.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a

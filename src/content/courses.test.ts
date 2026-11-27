@@ -329,15 +329,16 @@ describe("lookups", () => {
     expect(STANDARD_TITLE).toEqual({ 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" });
   });
 
-  it("names the subjects Maths, Physics and Chemistry", () => {
-    expect(SUBJECTS).toEqual({ maths: "Maths", physics: "Physics", chemistry: "Chemistry" });
+  it("names the subjects Maths, Physics, Chemistry and Biology", () => {
+    expect(SUBJECTS).toEqual({ maths: "Maths", physics: "Physics", chemistry: "Chemistry", biology: "Biology" });
   });
 
   it("parses only known subjects", () => {
     expect(parseSubject("maths")).toBe("maths");
     expect(parseSubject("physics")).toBe("physics");
     expect(parseSubject("chemistry")).toBe("chemistry");
-    expect(parseSubject("biology")).toBeNull();
+    expect(parseSubject("biology")).toBe("biology");
+    expect(parseSubject("zoology")).toBeNull();
     expect(parseSubject("Physics")).toBeNull();
     expect(parseSubject(undefined)).toBeNull();
   });
@@ -1836,6 +1837,25 @@ describe("the catalog", () => {
         const ch = chapters.find((c) => c.slug === e.chapter)!;
         const book = ch.graph.filter((n) => n.sources.some((s) => s.startsWith("mh-sb-"))).map((n) => n.id);
         expect(e.coverage?.ids ?? ch.graph.map((n) => n.id), e.chapter).toEqual(book);
+      }
+    });
+  });
+
+  // PLAN.md "Std XI and XII Biology" (owner, 2026-11-27). The lists grow as chapters land.
+  describe("Maharashtra Board Biology", () => {
+    const resolved = findCourse("mh-board")!.chapters.map((e) => resolveEntry(e, chapters));
+    const biology = resolved.filter((r) => r.subject === "biology");
+
+    it("lists the Std XII biology chapters in book order", () => {
+      expect(biology.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Reproduction in Lower and Higher Plants", "Reproduction in Lower and Higher Animals", "Inheritance and Variation", "Molecular Basis of Inheritance", "Origin and Evolution of Life", "Plant Water Relation", "Plant Growth and Mineral Nutrition", "Respiration and Circulation", "Control and Coordination", "Human Health and Diseases", "Enhancement of Food Production", "Biotechnology", "Organisms and Populations", "Ecosystems and Energy Flow", "Biodiversity, Conservation and Environmental Issues"]);
+    });
+
+    it("puts biology after chemistry and covers each chapter whole", () => {
+      const subjects = resolved.map((r) => r.subject);
+      expect(subjects.lastIndexOf("chemistry")).toBeLessThan(subjects.indexOf("biology"));
+      expect(subjects.slice(subjects.indexOf("biology")).every((s) => s === "biology")).toBe(true);
+      for (const e of findCourse("mh-board")!.chapters.filter((x) => chapters.find((c) => c.slug === x.chapter)?.subject === "biology")) {
+        expect(e.coverage, e.chapter).toBeUndefined();
       }
     });
   });

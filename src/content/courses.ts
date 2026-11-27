@@ -71,7 +71,7 @@ export const GROUPS: Group[] = [
   { id: "graduate", title: "Graduates", blurb: "Defence and services exams after graduation." },
 ];
 
-export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths", physics: "Physics", chemistry: "Chemistry" };
+export const SUBJECTS: Record<SubjectId, string> = { maths: "Maths", physics: "Physics", chemistry: "Chemistry", biology: "Biology" };
 
 export const STANDARD_TITLE: Record<Standard, string> = { 9: "Std IX", 10: "Std X", 11: "Std XI", 12: "Std XII" };
 
@@ -477,6 +477,22 @@ export const courses: Course[] = [
       book("biomolecules", 7),
       { chapter: "polymers" },
       { chapter: "green-chemistry-nanochemistry" },
+      // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
+      { chapter: "reproduction-in-plants" },
+      { chapter: "reproduction-in-animals" },
+      { chapter: "inheritance-and-variation" },
+      { chapter: "molecular-basis-of-inheritance" },
+      { chapter: "origin-and-evolution-of-life" },
+      { chapter: "plant-water-relation" },
+      { chapter: "plant-growth-mineral-nutrition" },
+      { chapter: "respiration-circulation" },
+      { chapter: "control-coordination" },
+      { chapter: "human-health-diseases" },
+      { chapter: "enhancement-food-production" },
+      { chapter: "biotechnology" },
+      { chapter: "organisms-populations" },
+      { chapter: "ecosystems-energy-flow" },
+      { chapter: "biodiversity-conservation" },
     ],
   },
   {
