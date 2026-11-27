@@ -1717,6 +1717,17 @@ and the binomial distribution). Tests first; golden path on the dev server; shee
 NDA: symmetric functions and signs of roots, A.G.P., Σ sums, mean deviation, two circles, Cayley–Hamilton, Leibniz's
 rule, periodic and [x] integrands, remainders, absolute extrema).
 
+**Status, 2026-11-27: phase 2 built** (branch `jee-maths-gaps`). The audit found ten JEE topics no course's books
+teach, now concepts appended to their pool chapters for JEE Main alone (PYQs in brackets, all / since 2024): telescoping
+sums (sequences C22; 30/13), integer solutions and identical objects (P&C C15; 17/10), divisors and factorials (P&C C16;
+20/7), image of a point in a line (straight line C13; 13/8), centres of a triangle (straight line C14; 26/13), normals
+to a parabola and an ellipse (conics C15), series expansions in limits (limits C10; 22/13), the $1^\infty$ form (limits
+C11; 10/7), equations reducible to linear (differential equations C10; 19/6), coefficient sums by calculus (binomial
+C11; 43/20). MH Board, MHT-CET and NDA pinned to their concepts in those chapters. Each: 5 items, sympy-verified, 0
+KaTeX errors, 0 phone overflows, seeded; English only (the Std XI chapters' Hindi and Marathi lessons don't cover them
+yet). Not built (thin or dropped): rotation of vectors, reduction formulas, trigonometric inequalities, continued
+fractions, common tangents across conics.
+
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
 
 Goal: Std XI MH Board maths students who think in Hindi or Marathi can read a
