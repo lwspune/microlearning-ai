@@ -53,7 +53,7 @@ export const c01: Concept = {
     {
       id: "C01-M2",
       mistake: "Gives 1–5%.",
-      remediation: "That is the share actually captured.",
+      remediation: "Far too low: just under half of incident sunlight is PAR.",
       fallback: { kind: "none" },
     },
     {

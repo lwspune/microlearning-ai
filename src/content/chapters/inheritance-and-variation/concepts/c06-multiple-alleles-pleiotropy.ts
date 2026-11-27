@@ -29,7 +29,7 @@ export const c06: Concept = {
         title: "Pleiotropy",
         points: [
           t`Sickle-cell anaemia: one gene alters haemoglobin, red cells and health.`,
-          t`$\mathrm{Hb^S}\,\mathrm{Hb^S}$ is lethal, so carriers' children come 1 : 2.`,
+          t`$\mathrm{Hb^S}\,\mathrm{Hb^S}$ is lethal, so two carriers' surviving children are 1 normal : 2 carriers, not 3 : 1.`,
         ],
       },
     ],

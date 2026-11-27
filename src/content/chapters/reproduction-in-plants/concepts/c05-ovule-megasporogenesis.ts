@@ -62,7 +62,7 @@ export const c05: Concept = {
     {
       id: "C05-M3",
       mistake: "Puts it at a right angle.",
-      remediation: "That is a campylotropous-like bend; anatropous turns fully down.",
+      remediation: "That is a hemianatropous ovule (body at right angles to the funicle); an anatropous one turns fully down.",
       fallback: { kind: "none" },
     },
     {

@@ -169,7 +169,7 @@ export const c06: Concept = {
       ],
       solution: {
         steps: [
-          t`AUG starts every mRNA.`,
+          t`Translation of an mRNA begins at the codon AUG.`,
           t`AUG.`,
         ],
       },
