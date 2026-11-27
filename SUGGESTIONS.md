@@ -89,7 +89,8 @@ fingerprint changes).
 
 An independent fact-check of the shipped Std XII biology chapters (pushed
 e61aaf3). Every marked answer is right; these are an ambiguous item and
-loose lines. Not applied: shipped work, owner's OK needed (360 analysis first).
+loose lines. APPLIED 2026-11-27 on the owner's OK ("Fix all 3 groups"): commits 3e96f99
+(options), 3d6a87d (lesson facts), 36ae652 (feedback lines); the judgement call below was left as is.
 
 - reproduction-in-plants C06-Q2: "haploid nuclei in the mature female
   gametophyte" = 8 clashes with C06-Q1 (secondary nucleus is diploid). Reword
