@@ -1747,6 +1747,11 @@ board biology rows (15 chapters, ~235 PYQs, in the database). No Std XI board ex
 3. Std XI the same way; Std XI biology before Std XII in the course, after chemistry. Merge and push.
 4. Errata found on the way filed in PYQ Vault at the end.
 
+**Status (2026-11-27):** steps 1 and 2 done. All 15 Std XII chapters are in, 131 concepts and 655 items, each chapter
+approved, seeded and committed on its own (a3c4f0d … 659d12a); the four-tab switch fits phones (d1f8afb). Errata so far:
+plant-growth Ex Q1(7), human-health Ex Q1(8), food-production Ex Q1(7) (two or more right options) and board 2024
+Q. 1(v) of Human Health (malaria also needle-borne). Next: step 3, Std XI.
+
 **Later (plan separately):** NEET biology (PYQ Vault has its Botany 19 and Zoology 17 chapters) from this pool.
 
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
