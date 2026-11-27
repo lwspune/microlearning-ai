@@ -11,7 +11,7 @@ export const GROUP_COOKIE = "ml_group";
 /** The student's standard (9 to 12), picked on a board's page; one choice for every board. */
 export const STANDARD_COOKIE = "ml_standard";
 
-/** The student's subject (Maths, Physics), picked inside a board's Std; one choice for every board. */
+/** The student's subject (Maths, Physics, Chemistry, Biology), picked inside a board's Std; one choice for every board. */
 export const SUBJECT_COOKIE = "ml_subject";
 
 export async function rememberedGroupValue(): Promise<string | undefined> {
