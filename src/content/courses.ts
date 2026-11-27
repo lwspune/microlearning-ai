@@ -487,6 +487,7 @@ export const courses: Course[] = [
       { chapter: "plant-growth-mineral-nutrition" },
       { chapter: "respiration-circulation" },
       { chapter: "control-coordination" },
+      { chapter: "human-health-diseases" },
     ],
   },
   {
