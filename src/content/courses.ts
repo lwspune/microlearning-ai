@@ -482,6 +482,7 @@ export const courses: Course[] = [
       { chapter: "reproduction-in-animals" },
       { chapter: "inheritance-and-variation" },
       { chapter: "molecular-basis-of-inheritance" },
+      { chapter: "origin-and-evolution-of-life" },
     ],
   },
   {
