@@ -1752,6 +1752,13 @@ approved, seeded and committed on its own (a3c4f0d … 659d12a); the four-tab sw
 plant-growth Ex Q1(7), human-health Ex Q1(8), food-production Ex Q1(7) (two or more right options) and board 2024
 Q. 1(v) of Human Health (malaria also needle-borne). Next: step 3, Std XI.
 
+**Status (2026-11-27, later):** step 3 done on `biology-std11`. All 16 Std XI chapters are in, 99 concepts and 495
+items, listed before Std XII (a test keeps the order). Owner, mid-way: "use up to three agents, keep every slot full":
+Ch.8–16 were drafted by agents in the scratchpad, and every Std XI chapter had two independent fact-checks (against the
+solutions, then the book's own text) before its commit; the fixes are in their own commits. The same checks on the
+shipped Std XII chapters are logged in SUGGESTIONS.md as backfill candidates, not applied. Book errata so far: 32
+lines in the scratch errata list, to file in PYQ Vault (step 4).
+
 **Later (plan separately):** NEET biology (PYQ Vault has its Botany 19 and Zoology 17 chapters) from this pool.
 
 ## Hindi and Marathi lessons (approved 2026-10-25, branch `lesson-languages`)
