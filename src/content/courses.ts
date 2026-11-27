@@ -479,6 +479,7 @@ export const courses: Course[] = [
       { chapter: "green-chemistry-nanochemistry" },
       // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
       { chapter: "reproduction-in-plants" },
+      { chapter: "reproduction-in-animals" },
     ],
   },
   {
