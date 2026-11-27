@@ -14,6 +14,21 @@ describe("Tabs", () => {
     expect(html()).toMatch(/role="tablist" aria-label="Your standard"/);
   });
 
+  // Four subjects (Maths, Physics, Chemistry, Biology) must fit a 390 px phone: equal columns are as wide as the
+  // longest title, so with four or more tabs the phone padding and text shrink (desktop keeps its size).
+  it("tightens its tabs on phones when there are four or more", () => {
+    const classes = (n: number) => {
+      const many = Array.from({ length: n }, (_, i) => ({ id: String(i), title: `Subject ${i}` }));
+      const out = renderToStaticMarkup(<Tabs label="Your subject" tabs={many} initial="0" panels={{}} />);
+      return [...out.matchAll(/<button[^>]*class="([^"]+)"/g)].map((m) => m[1].split(" "));
+    };
+    for (const cls of classes(3)) expect(cls).toEqual(expect.arrayContaining(["px-5", "text-sm", "sm:px-7", "sm:text-base"]));
+    for (const cls of classes(4)) {
+      expect(cls).toEqual(expect.arrayContaining(["px-2", "text-[13px]", "sm:px-7", "sm:text-base"]));
+      expect(cls).not.toContain("px-5");
+    }
+  });
+
   it("opens on the initial tab: the only one selected and in the tab order", () => {
     const buttons = [...html().matchAll(/<button[^>]*>([^<]*)<\/button>/g)].map(([b, title]) => ({
       title,

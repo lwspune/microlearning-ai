@@ -71,7 +71,8 @@ export function Tabs({
             aria-controls={`${base}-panel-${t.id}`}
             tabIndex={t.id === active ? 0 : -1}
             onClick={() => select(i)}
-            className={`relative rounded-full px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors duration-300 sm:px-7 sm:text-base ${
+            // Equal columns are as wide as the longest title, so four or more tabs shrink on phones to fit 390 px.
+            className={`relative rounded-full ${tabs.length >= 4 ? "px-2 text-[13px]" : "px-5 text-sm"} py-2.5 font-semibold whitespace-nowrap transition-colors duration-300 sm:px-7 sm:text-base ${
               t.id === active ? "text-background" : "text-muted hover:text-foreground"
             }`}
           >
