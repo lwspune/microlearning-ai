@@ -1847,7 +1847,7 @@ describe("the catalog", () => {
     const biology = resolved.filter((r) => r.subject === "biology");
 
     it("lists the Std XII biology chapters in book order", () => {
-      expect(biology.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Reproduction in Lower and Higher Plants", "Reproduction in Lower and Higher Animals", "Inheritance and Variation", "Molecular Basis of Inheritance", "Origin and Evolution of Life", "Plant Water Relation"]);
+      expect(biology.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Reproduction in Lower and Higher Plants", "Reproduction in Lower and Higher Animals", "Inheritance and Variation", "Molecular Basis of Inheritance", "Origin and Evolution of Life", "Plant Water Relation", "Plant Growth and Mineral Nutrition"]);
     });
 
     it("puts biology after chemistry and covers each chapter whole", () => {
