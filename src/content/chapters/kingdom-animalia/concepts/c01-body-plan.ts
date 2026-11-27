@@ -6,7 +6,7 @@ export const c01: Concept = {
   id: "C01",
   status: "approved",
   hook: {
-    prompt: t`Cut a starfish any way through its centre and the halves match. Cut a dog, and only one cut works. Why does that matter?`,
+    prompt: t`Cut a jelly fish through its central axis in any direction and the halves match. Cut a dog, and only one cut works. Why does that matter?`,
     reveal: t`Symmetry, with germ layers and body cavity, is one of the basic plans biologists use to group animals.`,
   },
   explanation: {
@@ -113,7 +113,7 @@ export const c01: Concept = {
     {
       id: "C01-M12",
       mistake: "Says none.",
-      remediation: "All animals have layers.",
+      remediation: "Cnidarians form two germ layers.",
       fallback: { kind: "none" },
     },
     {

@@ -94,8 +94,8 @@ export const c04: Concept = {
     },
     {
       id: "C04-M9",
-      mistake: "Picks nuclear face.",
-      remediation: "It is called cis.",
+      mistake: "Picks a vesicle.",
+      remediation: "Vesicles bud off the trans face.",
       fallback: { kind: "none" },
     },
     {
@@ -179,7 +179,7 @@ export const c04: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "cis" } },
       options: [
         { key: "A", text: t`lumen`, correct: false, misconceptionId: "C04-M8", value: "lumen_g" },
-        { key: "B", text: t`nuclear face`, correct: false, misconceptionId: "C04-M9", value: "nuclear_face" },
+        { key: "B", text: t`a secretory vesicle`, correct: false, misconceptionId: "C04-M9", value: "secretory_vesicle" },
         { key: "C", text: t`cis face`, correct: true, value: "cis_face" },
         { key: "D", text: t`trans face`, correct: false, misconceptionId: "C04-M7", value: "trans_face" },
       ],

@@ -29,7 +29,7 @@ export const c06: Concept = {
         points: [
           t`**Not bound by a membrane**.`,
           t`Made of **rRNA and ribosomal proteins**.`,
-          t`Site of **ribosome biogenesis**; subunits assemble in the cytoplasm.`,
+          t`Site of **ribosome biogenesis**; the subunits leave the nucleus and join into ribosomes in the cytoplasm.`,
         ],
       },
     ],

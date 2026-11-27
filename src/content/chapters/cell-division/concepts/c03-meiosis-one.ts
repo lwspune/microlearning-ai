@@ -6,7 +6,7 @@ export const c03: Concept = {
   id: "C03",
   status: "approved",
   hook: {
-    prompt: t`Brothers and sisters from the same parents are never identical. Where does the shuffling happen?`,
+    prompt: t`Brothers and sisters from the same parents differ from one another, unless they are identical twins. Where does the shuffling happen?`,
     reveal: t`In meiosis I: paired chromosomes swap pieces (crossing over), then separate at random.`,
   },
   explanation: {
@@ -125,7 +125,7 @@ export const c03: Concept = {
     {
       id: "C03-M14",
       mistake: "Halves it.",
-      remediation: "Halving comes after meiosis I.",
+      remediation: "The cell still holds all 20 chromosomes until telophase I.",
       fallback: { kind: "none" },
     },
     {

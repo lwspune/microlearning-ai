@@ -76,8 +76,8 @@ export const c03: Concept = {
     },
     {
       id: "C03-M6",
-      mistake: "Picks complex.",
-      remediation: "The term is conjugated.",
+      mistake: "Picks fibrous.",
+      remediation: "Haemoglobin is globular; its haem group makes it conjugated.",
       fallback: { kind: "none" },
     },
     {
@@ -161,7 +161,7 @@ export const c03: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "haemoglobin" } },
       options: [
         { key: "A", text: t`derived protein`, correct: false, misconceptionId: "C03-M5", value: "derived_p" },
-        { key: "B", text: t`complex protein`, correct: false, misconceptionId: "C03-M6", value: "complex_p" },
+        { key: "B", text: t`fibrous protein`, correct: false, misconceptionId: "C03-M6", value: "fibrous_p" },
         { key: "C", text: t`conjugated protein`, correct: true, value: "conjugated_p" },
         { key: "D", text: t`simple protein`, correct: false, misconceptionId: "C03-M4", value: "simple_p" },
       ],

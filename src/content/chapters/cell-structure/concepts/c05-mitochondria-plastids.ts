@@ -6,7 +6,7 @@ export const c05: Concept = {
   id: "C05",
   status: "approved",
   hook: {
-    prompt: t`Mitochondria and chloroplasts have their own DNA, like tiny bacteria inside our cells. Why?`,
+    prompt: t`Mitochondria and chloroplasts have their own DNA, like tiny bacteria living inside cells. Why?`,
     reveal: t`They probably were bacteria once, engulfed long ago (the endosymbiont theory), and they still carry their own circular DNA.`,
   },
   explanation: {

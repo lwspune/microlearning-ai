@@ -95,7 +95,7 @@ export const c02: Concept = {
     {
       id: "C02-M9",
       mistake: "Says semipermeable.",
-      remediation: "It also moves solutes actively.",
+      remediation: "Semipermeable lets only water through; this membrane lets some solutes through too.",
       fallback: { kind: "none" },
     },
     {

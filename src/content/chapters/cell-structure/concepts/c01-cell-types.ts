@@ -156,7 +156,7 @@ export const c01: Concept = {
     },
     {
       id: "C01-Q2",
-      source: { kind: "pyqvault-practice", ref: "mh-sb-11/cell-structure-11-bio/Ex Q6" },
+      source: { kind: "authored" },
       stem: t`Prokaryotic cells lack`,
       verify: { kind: "value", inputs: {  }, params: { q: "prokaryote" } },
       options: [
@@ -192,7 +192,7 @@ export const c01: Concept = {
     },
     {
       id: "C01-Q4",
-      source: { kind: "pyqvault-practice", ref: "mh-sb-11/cell-structure-11-bio/Ex Q6" },
+      source: { kind: "authored" },
       stem: t`Which organelle is usually absent from the cells of higher plants?`,
       verify: { kind: "value", inputs: {  }, params: { q: "centrioles" } },
       options: [
@@ -210,7 +210,7 @@ export const c01: Concept = {
     },
     {
       id: "C01-Q5",
-      source: { kind: "pyqvault-practice", ref: "mh-sb-11/cell-structure-11-bio/Ex Q6" },
+      source: { kind: "authored" },
       stem: t`Which is found in plant cells but not in animal cells?`,
       verify: { kind: "value", inputs: {  }, params: { q: "plant_only" } },
       options: [

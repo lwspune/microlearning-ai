@@ -47,7 +47,7 @@ export const c07: Concept = {
     {
       id: "C07-M1",
       mistake: "Says mitosis.",
-      remediation: "Spores halve the chromosomes.",
+      remediation: "Meiosis, not mitosis, halves the chromosome number to form spores.",
       fallback: { kind: "none" },
     },
     {

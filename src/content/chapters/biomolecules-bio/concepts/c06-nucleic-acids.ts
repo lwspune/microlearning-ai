@@ -47,7 +47,7 @@ export const c06: Concept = {
     {
       id: "C06-M1",
       mistake: "Subtracts C from 100.",
-      remediation: "Subtract G as well.",
+      remediation: "Subtract G too (100 − 28 = 72), then halve: A = 36%.",
       fallback: { kind: "none" },
     },
     {

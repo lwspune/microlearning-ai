@@ -28,7 +28,7 @@ export const c03: Concept = {
         title: "Shapes and roles",
         points: [
           t`**Bacillus** rod, **coccus** sphere, **vibrio** comma, **spirillum** spiral.`,
-          t`**Cyanobacteria** photosynthesise; the rest (lactobacilli, methanogens, nitrogen fixers) are heterotrophs.`,
+          t`**Cyanobacteria** photosynthesise; lactobacilli, nitrogen fixers such as *Azotobacter* and methanogens do not.`,
           t`Useful: decomposers, curd, antibiotics; harmful: typhoid, cholera, tetanus.`,
         ],
       },
@@ -59,7 +59,7 @@ export const c03: Concept = {
     {
       id: "C03-M3",
       mistake: "Picks methanogens.",
-      remediation: "Methanogens are heterotrophs here.",
+      remediation: "Methanogens do not photosynthesise; only cyanobacteria here do.",
       fallback: { kind: "none" },
     },
     {

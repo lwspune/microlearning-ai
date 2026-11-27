@@ -6,7 +6,7 @@ export const c01: Concept = {
   id: "C01",
   status: "approved",
   hook: {
-    prompt: t`Your body is made of the same few elements as rocks: carbon, hydrogen, oxygen, nitrogen. What makes it alive?`,
+    prompt: t`Your body is made mostly of carbon, hydrogen, oxygen and nitrogen, the same atoms found in air and water. What makes it alive?`,
     reveal: t`How those atoms are arranged: into huge biomolecules, constantly broken down and rebuilt by the cell's reactions.`,
   },
   explanation: {

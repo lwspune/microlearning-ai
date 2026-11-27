@@ -83,7 +83,7 @@ export const c02: Concept = {
     {
       id: "C02-M7",
       mistake: "Picks Cnidaria.",
-      remediation: "Cnidarians have tentacles.",
+      remediation: "Cnidarians have stinging cells, not comb plates.",
       fallback: { kind: "none" },
     },
     {
@@ -211,12 +211,12 @@ export const c02: Concept = {
     {
       id: "C02-Q5",
       source: { kind: "pyqvault-practice", ref: "mh-sb-11/kingdom-animalia-11-bio/Ex Q3(B)" },
-      stem: t`*Aurelia*, the umbrella-shaped jelly fish, is the`,
+      stem: t`*Aurelia*, the umbrella-shaped jelly fish, is`,
       verify: { kind: "value", inputs: {  }, params: { q: "aurelia" } },
       options: [
         { key: "A", text: t`a comb jelly`, correct: false, misconceptionId: "C02-M15", value: "comb_jelly" },
-        { key: "B", text: t`medusa form of a cnidarian`, correct: true, value: "medusa_f" },
-        { key: "C", text: t`polyp form of a cnidarian`, correct: false, misconceptionId: "C02-M13", value: "polyp_f" },
+        { key: "B", text: t`the medusa form of a cnidarian`, correct: true, value: "medusa_f" },
+        { key: "C", text: t`the polyp form of a cnidarian`, correct: false, misconceptionId: "C02-M13", value: "polyp_f" },
         { key: "D", text: t`a sponge`, correct: false, misconceptionId: "C02-M14", value: "sponge_f" },
       ],
       solution: {

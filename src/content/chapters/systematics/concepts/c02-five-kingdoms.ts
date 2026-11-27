@@ -113,7 +113,7 @@ export const c02: Concept = {
     {
       id: "C02-M12",
       mistake: "Picks Protista.",
-      remediation: "*Rhizopus* is multicellular.",
+      remediation: "*Rhizopus* forms a mycelium of hyphae, not single cells.",
       fallback: { kind: "none" },
     },
     {

@@ -100,8 +100,8 @@ export const c01: Concept = {
     },
     {
       id: "C01-M10",
-      mistake: "Picks Bryophyta.",
-      remediation: "Mosses have leaf-like parts.",
+      mistake: "Picks Angiospermae.",
+      remediation: "Angiosperms have true roots, stems and leaves.",
       fallback: { kind: "none" },
     },
     {
@@ -197,7 +197,7 @@ export const c01: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "undifferentiated" } },
       options: [
         { key: "A", text: t`Thallophyta`, correct: true, value: "thallophyta_g" },
-        { key: "B", text: t`Bryophyta`, correct: false, misconceptionId: "C01-M10", value: "bryophyta_g" },
+        { key: "B", text: t`Angiospermae`, correct: false, misconceptionId: "C01-M10", value: "angiospermae_g" },
         { key: "C", text: t`Pteridophyta`, correct: false, misconceptionId: "C01-M11", value: "pteridophyta_g" },
         { key: "D", text: t`Gymnospermae`, correct: false, misconceptionId: "C01-M12", value: "gymnospermae_g" },
       ],

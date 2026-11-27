@@ -21,7 +21,7 @@ export const c04: Concept = {
         points: [
           t`A **homotypic** division: chromosome number does not change.`,
           t`Chromatids of each chromosome separate.`,
-          t`Gametes have half the body cells' number: an onion with 16 in its leaf has **8** in its pollen.`,
+          t`Cells formed by meiosis have half the body cells' number: an onion with 16 in its leaf has **8** in its pollen.`,
         ],
       },
       {
