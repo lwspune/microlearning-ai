@@ -483,6 +483,7 @@ export const courses: Course[] = [
       { chapter: "inheritance-and-variation" },
       { chapter: "molecular-basis-of-inheritance" },
       { chapter: "origin-and-evolution-of-life" },
+      { chapter: "plant-water-relation" },
     ],
   },
   {
