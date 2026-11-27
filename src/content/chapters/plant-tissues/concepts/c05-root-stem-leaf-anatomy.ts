@@ -77,7 +77,7 @@ export const c05: Concept = {
     {
       id: "C05-M6",
       mistake: "Says dicot stem.",
-      remediation: "Those form a ring.",
+      remediation: "Stem bundles are collateral; xylem and phloem do not alternate.",
       fallback: { kind: "none" },
     },
     {
@@ -107,7 +107,7 @@ export const c05: Concept = {
     {
       id: "C05-M11",
       mistake: "Says dicot.",
-      remediation: "Dicots lack upper stomata.",
+      remediation: "A dicot leaf has palisade and spongy mesophyll.",
       fallback: { kind: "none" },
     },
     {
@@ -179,7 +179,7 @@ export const c05: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "casparian" } },
       options: [
         { key: "A", text: t`suberin`, correct: true, value: "suberin_s" },
-        { key: "B", text: t`lignin`, correct: false, misconceptionId: "C05-M7", value: "lignin_s" },
+        { key: "B", text: t`pectin`, correct: false, misconceptionId: "C05-M7", value: "pectin_s" },
         { key: "C", text: t`cellulose`, correct: false, misconceptionId: "C05-M8", value: "cellulose_s" },
         { key: "D", text: t`cutin`, correct: false, misconceptionId: "C05-M9", value: "cutin_s" },
       ],

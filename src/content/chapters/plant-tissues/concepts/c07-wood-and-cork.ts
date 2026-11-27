@@ -13,7 +13,7 @@ export const c07: Concept = {
     intuition: [
       t`Secondary xylem is **wood**.`,
       t`The cambium works faster in good seasons.`,
-      t`A **cork cambium** replaces the broken epidermis.`,
+      t`**Cork** from a cork cambium replaces the broken epidermis.`,
     ],
     formal: [
       {
@@ -28,7 +28,7 @@ export const c07: Concept = {
         title: "Cork cambium",
         points: [
           t`Outer cortex forms the **cork cambium** (phellogen).`,
-          t`It forms **cork** (phellem) outside and **phelloderm** inside: together, the **periderm**.`,
+          t`It forms **cork** (phellem) outside and **phelloderm** inside; with the phellogen, these three form the **periderm**.`,
           t`Cork walls are **suberized**, so cork is impervious; **lenticels** allow gas exchange.`,
         ],
       },
@@ -70,8 +70,8 @@ export const c07: Concept = {
     },
     {
       id: "C07-M5",
-      mistake: "Says uniform.",
-      remediation: "Uniform climate gives faint rings.",
+      mistake: "Says no cambium.",
+      remediation: "All these trees have a cambium; the season contrast differs.",
       fallback: { kind: "none" },
     },
     {
@@ -119,7 +119,7 @@ export const c07: Concept = {
     {
       id: "C07-M13",
       mistake: "Says alive.",
-      remediation: "Suberin, not life, keeps water out.",
+      remediation: "Cork cells are dead; suberin keeps water out.",
       fallback: { kind: "none" },
     },
     {
@@ -161,7 +161,7 @@ export const c07: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "rings" } },
       options: [
         { key: "A", text: t`Kashmir trees are simply bigger`, correct: false, misconceptionId: "C07-M4", value: "tree_size" },
-        { key: "B", text: t`a climate that stays the same all year`, correct: false, misconceptionId: "C07-M5", value: "uniform_climate" },
+        { key: "B", text: t`trees in Maharashtra have no vascular cambium`, correct: false, misconceptionId: "C07-M5", value: "no_cambium" },
         { key: "C", text: t`rings made by the cork cambium`, correct: false, misconceptionId: "C07-M6", value: "cork_rings" },
         { key: "D", text: t`a sharp contrast between favourable and unfavourable seasons`, correct: true, value: "season_contrast" },
       ],
