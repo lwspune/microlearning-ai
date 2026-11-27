@@ -491,6 +491,7 @@ export const courses: Course[] = [
       { chapter: "cockroach" },
       { chapter: "photosynthesis" },
       { chapter: "respiration-energy-transfer" },
+      { chapter: "human-nutrition" },
       // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
       { chapter: "reproduction-in-plants" },
       { chapter: "reproduction-in-animals" },
