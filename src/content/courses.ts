@@ -477,6 +477,8 @@ export const courses: Course[] = [
       book("biomolecules", 7),
       { chapter: "polymers" },
       { chapter: "green-chemistry-nanochemistry" },
+      // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
+      { chapter: "reproduction-in-plants" },
     ],
   },
   {

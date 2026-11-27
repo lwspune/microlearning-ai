@@ -1841,6 +1841,25 @@ describe("the catalog", () => {
     });
   });
 
+  // PLAN.md "Std XI and XII Biology" (owner, 2026-11-27). The lists grow as chapters land.
+  describe("Maharashtra Board Biology", () => {
+    const resolved = findCourse("mh-board")!.chapters.map((e) => resolveEntry(e, chapters));
+    const biology = resolved.filter((r) => r.subject === "biology");
+
+    it("lists the Std XII biology chapters in book order", () => {
+      expect(biology.filter((r) => r.standard === 12).map((r) => r.title)).toEqual(["Reproduction in Lower and Higher Plants"]);
+    });
+
+    it("puts biology after chemistry and covers each chapter whole", () => {
+      const subjects = resolved.map((r) => r.subject);
+      expect(subjects.lastIndexOf("chemistry")).toBeLessThan(subjects.indexOf("biology"));
+      expect(subjects.slice(subjects.indexOf("biology")).every((s) => s === "biology")).toBe(true);
+      for (const e of findCourse("mh-board")!.chapters.filter((x) => chapters.find((c) => c.slug === x.chapter)?.subject === "biology")) {
+        expect(e.coverage, e.chapter).toBeUndefined();
+      }
+    });
+  });
+
   it("has no doubtful Linear Programming concepts for MH Board and MHT-CET (C10 is in the HSC papers)", () => {
     for (const slug of ["mh-board", "mht-cet"]) {
       const coverage = findCourse(slug)!.chapters.find((x) => x.chapter === "linear-programming")!.coverage!;
