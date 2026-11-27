@@ -1851,7 +1851,7 @@ describe("the catalog", () => {
     });
 
     it("lists the Std XI biology chapters in book order", () => {
-      expect(biology.filter((r) => r.standard === 11).map((r) => r.title)).toEqual(["Living World", "Systematics of Living Organisms", "Kingdom Plantae", "Kingdom Animalia", "Cell Structure and Organization", "Biomolecules", "Cell Division"]);
+      expect(biology.filter((r) => r.standard === 11).map((r) => r.title)).toEqual(["Living World", "Systematics of Living Organisms", "Kingdom Plantae", "Kingdom Animalia", "Cell Structure and Organization", "Biomolecules", "Cell Division", "Plant Tissues and Anatomy"]);
     });
 
     it("lists Std XI biology before Std XII biology", () => {

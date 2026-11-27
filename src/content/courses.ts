@@ -485,6 +485,7 @@ export const courses: Course[] = [
       { chapter: "cell-structure" },
       { chapter: "biomolecules-bio" },
       { chapter: "cell-division" },
+      { chapter: "plant-tissues" },
       // Std XII Biology, Balbharati book order (PLAN.md "Std XI and XII Biology").
       { chapter: "reproduction-in-plants" },
       { chapter: "reproduction-in-animals" },
