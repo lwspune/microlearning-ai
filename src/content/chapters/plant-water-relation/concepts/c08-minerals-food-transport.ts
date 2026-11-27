@@ -12,7 +12,7 @@ export const c08: Concept = {
   explanation: {
     intuition: [
       t`Minerals are absorbed as dissolved **ions**.`,
-      t`Their uptake is **active** and **independent** of water uptake.`,
+      t`Their uptake is **independent** of water uptake; many ions are taken in actively, some passively.`,
       t`Food moves through phloem as **sucrose**.`,
     ],
     formal: [
@@ -125,7 +125,7 @@ export const c08: Concept = {
     {
       id: "C08-M14",
       mistake: "Says passive only.",
-      remediation: "It uses ATP.",
+      remediation: "Many ions are taken in actively, using ATP.",
       fallback: { kind: "none" },
     },
     {
@@ -215,7 +215,7 @@ export const c08: Concept = {
       verify: { kind: "value", inputs: {  }, params: { q: "independent" } },
       options: [
         { key: "A", text: t`only through the leaves`, correct: false, misconceptionId: "C08-M15", value: "leaves_only" },
-        { key: "B", text: t`active and independent of water absorption`, correct: true, value: "independent_active" },
+        { key: "B", text: t`independent of water absorption, and often active (using ATP)`, correct: true, value: "independent_active" },
         { key: "C", text: t`carried along with water absorption`, correct: false, misconceptionId: "C08-M13", value: "with_water" },
         { key: "D", text: t`always passive`, correct: false, misconceptionId: "C08-M14", value: "passive_only" },
       ],

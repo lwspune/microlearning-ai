@@ -28,7 +28,7 @@ export const c01: Concept = {
         title: "Urey and Miller",
         points: [
           t`A spark-discharge apparatus with $\ce{CH4}$, $\ce{NH3}$ and $\ce{H2}$ in the ratio 1 : 2 : 2, plus steam.`,
-          t`Electric sparks for a week produced simple **amino acids**.`,
+          t`Electric sparks for several days produced simple organic compounds such as **amino acids**, urea and lactic acid.`,
           t`It supported chemical evolution.`,
         ],
       },

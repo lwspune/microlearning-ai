@@ -12,7 +12,7 @@ export const c05: Concept = {
   explanation: {
     intuition: [
       t`Water is polluted by sewage, industrial waste and farm run-off.`,
-      t`**BOD** (biological oxygen demand) measures organic pollution.`,
+      t`**BOD** (biochemical oxygen demand) measures organic pollution.`,
       t`Wastes can be biodegradable or not.`,
     ],
     formal: [
